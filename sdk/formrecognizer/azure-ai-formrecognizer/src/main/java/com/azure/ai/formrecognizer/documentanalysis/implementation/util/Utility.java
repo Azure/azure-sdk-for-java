@@ -30,11 +30,13 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -44,17 +46,15 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * Utility method class.
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     // Please see https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
     // for more information on Azure resource provider namespaces.
-    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
+    public static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
@@ -124,10 +124,14 @@ public final class Utility {
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
 
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
         return new HttpPipelineBuilder()
             .clientOptions(buildClientOptions)
             .httpClient(httpClient)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
+            .tracer(tracer)
             .build();
     }
 
@@ -174,17 +178,6 @@ public final class Utility {
      */
     public static String generateRandomModelID() {
         return CoreUtils.randomUuid().toString();
-    }
-
-    public static Context enableSyncRestProxy(Context context) {
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-
-    public static Context getTracingContext(Context context) {
-        if (context == null) {
-            context = Context.NONE;
-        }
-        return context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
     }
 
     public static BuildDocumentModelOptions getBuildDocumentModelOptions(
