@@ -162,18 +162,6 @@
         </executions>
       </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-
       <!-- This plugin scans reports spotbugs in the code -->
       <plugin>
         <groupId>com.github.spotbugs</groupId>
@@ -188,6 +176,20 @@
             </plugin>
           </plugins>
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <dependencies>
+          <!-- Inject slf4j-simple into integration testing to verify the shim works as intended. -->
+          <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>
