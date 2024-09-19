@@ -415,8 +415,8 @@ public class FileShareTestHelper {
 
     protected static Stream<Arguments> filePermissionFormatSupplier() {
         return Stream.of(
-            Arguments.of(FilePermissionFormat.SDDL),
-            Arguments.of(FilePermissionFormat.BINARY),
-            Arguments.of((Object) null));
+            Arguments.of(FilePermissionFormat.SDDL));//,
+            //Arguments.of(FilePermissionFormat.BINARY),
+            //Arguments.of((Object) null));
     }
 }

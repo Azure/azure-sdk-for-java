@@ -1470,6 +1470,27 @@ class FileApiTests extends FileShareTestBase {
         assertEquals(properties.getNtfsFileAttributes(), smbProperties.getNtfsFileAttributes());
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
+    public void startCopyFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        primaryFileClient.create(1024);
+        String sourceURL = primaryFileClient.getFileUrl();
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareFileCopyOptions options = new ShareFileCopyOptions()
+            .setFilePermission(permission)
+            .setFilePermissionFormat(filePermissionFormat);
+
+        SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
+        PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();
+
+        FileSmbProperties properties = primaryFileClient.getProperties().getSmbProperties();
+
+        assertEquals(pollResponse.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        assertNotNull(properties.getFilePermissionKey());
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
     @Test
     public void startCopyWithOptionsChangeTime() {

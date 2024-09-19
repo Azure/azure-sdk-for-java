@@ -104,14 +104,14 @@ public final class TestEnvironment {
             connectionString =  Configuration.getGlobalConfiguration().get(prefix + "CONNECTION_STRING");
             if (connectionString == null || connectionString.trim().isEmpty()) {
                 connectionString = String.format("DefaultEndpointsProtocol=" + SCHEME + ";AccountName=%s;"
-                    + "AccountKey=%s;EndpointSuffix=core.windows.net", name, key);
+                    + "AccountKey=%s;EndpointSuffix=preprod.core.windows.net", name, key);
             }
         }
         String blobEndpoint = String.format(SCHEME + "://%s.blob.core.windows.net", name);
         String blobEndpointSecondary = String.format(SCHEME + "://%s-secondary.blob.core.windows.net", name);
         String dataLakeEndpoint = String.format(SCHEME + "://%s.dfs.core.windows.net", name);
         String queueEndpoint = String.format(SCHEME + "://%s.queue.core.windows.net", name);
-        String fileEndpoint = String.format(SCHEME + "://%s.file.core.windows.net", name);
+        String fileEndpoint = String.format(SCHEME + "://%s.file.preprod.core.windows.net", name);
 
         return new TestAccount(name, key, connectionString, blobEndpoint, blobEndpointSecondary,
             dataLakeEndpoint, queueEndpoint, fileEndpoint);
