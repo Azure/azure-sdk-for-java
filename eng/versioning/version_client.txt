@@ -42,6 +42,7 @@ com.azure:azure-ai-documentintelligence;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-formrecognizer;4.1.10;4.1.10
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-ai-inference;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-metricsadvisor;1.2.1;1.3.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai;1.0.0-beta.11;1.0.0-beta.12
@@ -70,10 +71,10 @@ com.azure:azure-code-customization-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-callautomation;1.2.4;1.3.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.5.4;1.6.0-beta.1
-com.azure:azure-communication-common;1.3.6;1.4.0-beta.1
+com.azure:azure-communication-common;1.3.7;1.4.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.16;1.1.0-beta.1
-com.azure:azure-communication-identity;1.5.8;1.6.0-beta.1
+com.azure:azure-communication-identity;1.6.0;1.7.0-beta.1
 com.azure:azure-communication-jobrouter;1.1.7;2.0.0-beta.1
 com.azure:azure-communication-messages;1.0.6;1.1.0-beta.1
 com.azure:azure-communication-phonenumbers;1.1.16;1.2.0-beta.4
@@ -82,23 +83,23 @@ com.azure:azure-communication-sms;1.1.27;1.2.0-beta.1
 com.azure:azure-compute-batch;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-containers-containerregistry;1.2.11;1.3.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core;1.51.0;1.52.0-beta.1
-com.azure:azure-core-amqp;2.9.8;2.10.0-beta.1
+com.azure:azure-core;1.52.0;1.53.0-beta.1
+com.azure:azure-core-amqp;2.9.9;2.10.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-experimental;1.0.0-beta.52;1.0.0-beta.53
-com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.15;1.0.0-beta.16
-com.azure:azure-core-http-netty;1.15.3;1.16.0-beta.1
-com.azure:azure-core-http-okhttp;1.12.2;1.13.0-beta.1
-com.azure:azure-core-http-vertx;1.0.0-beta.20;1.0.0-beta.21
-com.azure:azure-core-management;1.15.2;1.16.0-beta.1
-com.azure:azure-core-metrics-opentelemetry;1.0.0-beta.21;1.0.0-beta.22
+com.azure:azure-core-experimental;1.0.0-beta.53;1.0.0-beta.54
+com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.16;1.0.0-beta.17
+com.azure:azure-core-http-netty;1.15.4;1.16.0-beta.1
+com.azure:azure-core-http-okhttp;1.12.3;1.13.0-beta.1
+com.azure:azure-core-http-vertx;1.0.0-beta.21;1.0.0-beta.22
+com.azure:azure-core-management;1.15.3;1.16.0-beta.1
+com.azure:azure-core-metrics-opentelemetry;1.0.0-beta.22;1.0.0-beta.23
 com.azure:azure-core-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core-serializer-avro-apache;1.0.0-beta.48;1.0.0-beta.49
+com.azure:azure-core-serializer-avro-apache;1.0.0-beta.49;1.0.0-beta.50
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-core-serializer-json-gson;1.3.0;1.4.0-beta.1
-com.azure:azure-core-serializer-json-jackson;1.5.0;1.6.0-beta.1
-com.azure:azure-core-test;1.26.2;1.27.0-beta.1
-com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.48;1.0.0-beta.49
+com.azure:azure-core-serializer-json-gson;1.3.1;1.4.0-beta.1
+com.azure:azure-core-serializer-json-jackson;1.5.1;1.6.0-beta.1
+com.azure:azure-core-test;1.26.2;1.27.0-beta.2
+com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.49;1.0.0-beta.50
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-cosmos;4.63.3;4.64.0-beta.1
@@ -117,9 +118,9 @@ com.azure:azure-cosmos-tests;1.0.0-beta.1;1.0.0-beta.1
 com.azure.cosmos.kafka:azure-cosmos-kafka-connect;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-data-appconfiguration;1.7.0;1.8.0-beta.1
 com.azure:azure-data-appconfiguration-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-data-schemaregistry;1.4.9;1.5.0-beta.1
-com.azure:azure-data-schemaregistry-apacheavro;1.1.20;1.2.0-beta.2
-com.azure:azure-data-schemaregistry-jsonschema;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-data-schemaregistry;1.4.9;1.5.0
+com.azure:azure-data-schemaregistry-apacheavro;1.1.20;1.1.21
+com.azure:azure-data-schemaregistry-jsonschema;1.0.0-beta.1;1.0.0
 com.azure:azure-data-tables;12.4.4;12.5.0-beta.1
 com.azure:azure-data-tables-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-developer-devcenter;1.0.3;1.1.0-beta.1
@@ -130,14 +131,14 @@ com.azure:azure-health-deidentification;1.0.0;1.0.0-beta.2
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-identity;1.13.2;1.14.0-beta.2
+com.azure:azure-identity;1.13.3;1.14.0-beta.2
 com.azure:azure-identity-extensions;1.1.19;1.2.0-beta.2
-com.azure:azure-identity-broker;1.1.4;1.2.0-beta.1
+com.azure:azure-identity-broker;1.1.5;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-iot-deviceupdate;1.0.21;1.1.0-beta.1
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-json;1.2.0;1.3.0
+com.azure:azure-json;1.3.0;1.4.0-beta.1
 com.azure:azure-json-gson;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-json-reflect;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
@@ -186,17 +187,17 @@ com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
 com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-blob;12.27.1;12.28.0-beta.2
-com.azure:azure-storage-blob-batch;12.23.1;12.24.0-beta.2
-com.azure:azure-storage-blob-changefeed;12.0.0-beta.24;12.0.0-beta.25
-com.azure:azure-storage-blob-cryptography;12.26.1;12.27.0-beta.2
-com.azure:azure-storage-blob-nio;12.0.0-beta.25;12.0.0-beta.26
-com.azure:azure-storage-common;12.26.1;12.27.0-beta.2
-com.azure:azure-storage-file-share;12.23.1;12.24.0-beta.2
-com.azure:azure-storage-file-datalake;12.20.1;12.21.0-beta.2
-com.azure:azure-storage-internal-avro;12.12.1;12.13.0-beta.2
+com.azure:azure-storage-blob;12.28.0;12.29.0-beta.1
+com.azure:azure-storage-blob-batch;12.24.0;12.25.0-beta.1
+com.azure:azure-storage-blob-changefeed;12.0.0-beta.25;12.0.0-beta.26
+com.azure:azure-storage-blob-cryptography;12.27.0;12.28.0-beta.1
+com.azure:azure-storage-blob-nio;12.0.0-beta.26;12.0.0-beta.27
+com.azure:azure-storage-common;12.27.0;12.28.0-beta.1
+com.azure:azure-storage-file-share;12.24.0;12.25.0-beta.1
+com.azure:azure-storage-file-datalake;12.21.0;12.22.0-beta.1
+com.azure:azure-storage-internal-avro;12.13.0;12.14.0-beta.1
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.22.1;12.23.0-beta.2
+com.azure:azure-storage-queue;12.23.0;12.24.0-beta.1
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-template-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
@@ -273,7 +274,7 @@ com.azure.resourcemanager:azure-resourcemanager-compute;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.42.0;2.43.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dns;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.42.0;2.43.0-beta.1
@@ -486,11 +487,10 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-identity;1.14.0-beta.2
-unreleased_com.azure:azure-core-experimental;1.0.0-beta.53
-unreleased_com.azure:azure-json;1.3.0
-
-unreleased_com.azure:azure-core-amqp;2.10.0-beta.1
+unreleased_com.azure:azure-core-experimental;1.0.0-beta.54
+unreleased_com.azure:azure-messaging-servicebus;7.18.0-beta.2
+unreleased_com.azure:azure-messaging-eventhubs;5.19.0-beta.3
+unreleased_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.0-beta.3
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

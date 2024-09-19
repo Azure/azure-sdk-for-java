@@ -7,11 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 
-/**
- * This component alerts the user to the fact that the OpenTelemetry version used is not compatible
- * with the starter. One use case is Spring Boot 3 using OpenTelemetry.
- */
-public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
+class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(OpenTelemetryVersionCheckRunner.class);
 
     // If this version is not up-to-date, a test will fail.
@@ -19,13 +15,8 @@ public class OpenTelemetryVersionCheckRunner implements CommandLineRunner {
     /**
      * OpenTelemetry version of the starter
      */
-    static final String STARTER_OTEL_VERSION = "1.41.0";
+    static final String STARTER_OTEL_VERSION = "1.42.1";
 
-    /**
-     * To verify the OpenTelemetry version at the application start-up.
-     *
-     * @param args args
-     */
     @Override
     public void run(String... args) {
         try {

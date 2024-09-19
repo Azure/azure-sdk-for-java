@@ -1,6 +1,6 @@
 # Release History
 
-## 12.28.0-beta.2 (Unreleased)
+## 12.29.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.28.0 (2024-09-17)
+
+### Features Added
+- Added ability to retrieve SAS string to sign for debugging purposes.
+- Added support for service version 2024-11-04.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.4`.
+- Upgraded `azure-storage-common` from `12.26.0` to version `12.27.0`.
+- Upgraded `azure-storage-internal-avro` from `12.12.0` to version `12.13.0`.
 
 ## 12.28.0-beta.1 (2024-08-06)
 

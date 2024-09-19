@@ -44,6 +44,8 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_KEY_KEY;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_EVENT_HUB_PROPERTIES;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.GET_PARTITION_PROPERTIES;
 
 /**
  * <p>An <b>asynchronous</b> producer responsible for transmitting {@link EventData} to a specific Event Hub, grouped
@@ -297,9 +299,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventHubProperties> getEventHubProperties() {
-        return instrumentation.getTracer().traceMono(
+        return instrumentation.instrumentMono(
             connectionProcessor.getManagementNodeWithRetries().flatMap(EventHubManagementNode::getEventHubProperties),
-            "EventHubs.getEventHubProperties");
+            GET_EVENT_HUB_PROPERTIES, null);
     }
 
     /**
@@ -322,9 +324,9 @@ public class EventHubProducerAsyncClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PartitionProperties> getPartitionProperties(String partitionId) {
-        return instrumentation.getTracer().traceMono(
+        return instrumentation.instrumentMono(
             connectionProcessor.getManagementNodeWithRetries().flatMap(node -> node.getPartitionProperties(partitionId)),
-            "EventHubs.getPartitionProperties");
+            GET_PARTITION_PROPERTIES, partitionId);
     }
 
     /**
@@ -614,7 +616,7 @@ public class EventHubProducerAsyncClient implements Closeable {
             .publishOn(scheduler);
 
         // important to end spans after metrics are reported so metrics get relevant context for exemplars.
-        return instrumentation.onSendBatch(send, batch, "EventHubs.send");
+        return instrumentation.sendBatch(send, batch);
     }
 
     private Mono<Void> sendInternal(Flux<EventData> events, SendOptions options) {

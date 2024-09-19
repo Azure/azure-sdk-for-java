@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class LocalNetworkGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/LocalNetworkGatewayCreate.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/LocalNetworkGatewayCreate.
      * json
      */
     /**

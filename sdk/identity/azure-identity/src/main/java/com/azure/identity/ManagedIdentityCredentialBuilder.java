@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.implementation.util.ValidationUtil;
 
 /**
  * <p>Fluent credential builder for instantiating a {@link ManagedIdentityCredential}.</p>
@@ -58,6 +59,7 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
 
     private String clientId;
     private String resourceId;
+    private String objectId;
 
     /**
      * Constructs an instance of ManagedIdentityCredentialBuilder.
@@ -67,9 +69,9 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the client ID of user assigned or system assigned identity.
+     * Specifies the client ID of a user-assigned or system-assigned managed identity.
      *
-     * Only one of clientId and resourceId can be specified.
+     * Only one of clientId, resourceId, or objectId can be specified.
      *
      * @param clientId the client ID
      * @return the ManagedIdentityCredentialBuilder itself
@@ -80,9 +82,9 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
-     * Specifies the resource ID of a user assigned or system assigned identity.
+     * Specifies the resource ID of a user-assigned or system-assigned managed identity.
      *
-     * Only one of clientId and resourceId can be specified.
+     * Only one of clientId, resourceId, or objectId can be specified.
      *
      * @param resourceId the resource ID
      * @return the ManagedIdentityCredentialBuilder itself
@@ -93,17 +95,27 @@ public class ManagedIdentityCredentialBuilder extends CredentialBuilderBase<Mana
     }
 
     /**
+     * Specifies the object ID of a user-assigned or system-assigned managed identity.
+     *
+     * Only one of clientId, resourceId, or objectId can be specified.
+     *
+     * @param objectId the object ID
+     * @return the ManagedIdentityCredentialBuilder itself
+     */
+    public ManagedIdentityCredentialBuilder objectId(String objectId) {
+        this.objectId = objectId;
+        return this;
+    }
+
+    /**
      * Creates a new {@link ManagedIdentityCredential} with the current configurations.
      *
      * @return a {@link ManagedIdentityCredential} with the current configurations.
      * @throws IllegalStateException if clientId and resourceId are both set.
      */
     public ManagedIdentityCredential build() {
-        if (clientId != null && resourceId != null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of clientId and resourceId can be specified."));
-        }
+        ValidationUtil.validateManagedIdentityIdParams(clientId, resourceId, objectId, LOGGER);
 
-        return new ManagedIdentityCredential(clientId, resourceId, identityClientOptions);
+        return new ManagedIdentityCredential(clientId, resourceId, objectId, identityClientOptions);
     }
 }

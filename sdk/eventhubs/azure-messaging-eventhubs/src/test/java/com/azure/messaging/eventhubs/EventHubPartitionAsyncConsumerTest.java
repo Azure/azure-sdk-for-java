@@ -31,10 +31,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.Disposable;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
@@ -82,11 +82,8 @@ class EventHubPartitionAsyncConsumerTest {
 
     private final EventPosition originalPosition = EventPosition.latest();
     private final AtomicReference<Supplier<EventPosition>> currentPosition = new AtomicReference<>(() -> originalPosition);
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final FluxSink<AmqpEndpointState> endpointProcessorSink = endpointProcessor.sink();
-
-    private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
-    private final FluxSink<Message> messageProcessorSink = messageProcessor.sink();
+    final Sinks.Many<AmqpEndpointState> endpointStatesSink = Sinks.many().multicast().onBackpressureBuffer();
+    final Sinks.Many<Message> messagesSink = Sinks.many().multicast().onBackpressureBuffer();
 
     private MessageFluxWrapper linkProcessor;
     private EventHubPartitionAsyncConsumer consumer;
@@ -97,8 +94,8 @@ class EventHubPartitionAsyncConsumerTest {
 
         when(retryPolicy.getRetryOptions()).thenReturn(new AmqpRetryOptions());
 
-        when(link1.getEndpointStates()).thenReturn(endpointProcessor);
-        when(link1.receive()).thenReturn(messageProcessor);
+        when(link1.getEndpointStates()).thenReturn(endpointStatesSink.asFlux());
+        when(link1.receive()).thenReturn(messagesSink.asFlux());
         when(link1.addCredits(anyInt())).thenReturn(Mono.empty());
 
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
@@ -139,9 +136,9 @@ class EventHubPartitionAsyncConsumerTest {
         // Act & Assert
         StepVerifier.create(consumer.receive())
             .then(() -> {
-                endpointProcessorSink.next(AmqpEndpointState.ACTIVE);
-                messageProcessorSink.next(message1);
-                messageProcessorSink.next(message2);
+                endpointStatesSink.emitNext(AmqpEndpointState.ACTIVE, Sinks.EmitFailureHandler.FAIL_FAST);
+                messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+                messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
             })
             .assertNext(partitionEvent -> {
                 verifyPartitionContext(partitionEvent.getPartitionContext());
@@ -195,8 +192,8 @@ class EventHubPartitionAsyncConsumerTest {
         // Act & Assert
         StepVerifier.create(consumer.receive())
             .then(() -> {
-                messageProcessorSink.next(message1);
-                messageProcessorSink.next(message2);
+                messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+                messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
             })
             .assertNext(partitionEvent -> {
                 verifyPartitionContext(partitionEvent.getPartitionContext());
@@ -269,9 +266,9 @@ class EventHubPartitionAsyncConsumerTest {
                     });
 
         // Act
-        messageProcessorSink.next(message1);
-        messageProcessorSink.next(message2);
-        messageProcessorSink.next(message3);
+        messagesSink.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+        messagesSink.emitNext(message2, Sinks.EmitFailureHandler.FAIL_FAST);
+        messagesSink.emitNext(message3, Sinks.EmitFailureHandler.FAIL_FAST);
 
         linkProcessor.cancel();
 

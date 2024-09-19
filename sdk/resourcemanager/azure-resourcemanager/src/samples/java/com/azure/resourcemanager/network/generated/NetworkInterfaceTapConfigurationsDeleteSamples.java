@@ -9,7 +9,7 @@ package com.azure.resourcemanager.network.generated;
  */
 public final class NetworkInterfaceTapConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * NetworkInterfaceTapConfigurationDelete.json
      */
     /**
@@ -22,6 +22,6 @@ public final class NetworkInterfaceTapConfigurationsDeleteSamples {
             .manager()
             .serviceClient()
             .getNetworkInterfaceTapConfigurations()
-            .delete("rg1", "test-networkinterface", "test-tapconfiguration", com.azure.core.util.Context.NONE);
+            .delete("testrg", "mynic", "tapconfiguration1", com.azure.core.util.Context.NONE);
     }
 }

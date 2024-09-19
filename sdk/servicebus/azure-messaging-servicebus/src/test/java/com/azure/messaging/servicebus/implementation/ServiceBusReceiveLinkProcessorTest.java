@@ -22,10 +22,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
 
@@ -402,10 +402,9 @@ class ServiceBusReceiveLinkProcessorTest {
 
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
 
-        final DirectProcessor<AmqpEndpointState> link2StateProcessor = DirectProcessor.create();
-        final FluxSink<AmqpEndpointState> link2StateSink = link2StateProcessor.sink();
+        final Sinks.Many<AmqpEndpointState> link2EndpointStates = Sinks.many().multicast().onBackpressureBuffer();
 
-        when(link2.getEndpointStates()).thenReturn(link2StateProcessor);
+        when(link2.getEndpointStates()).thenReturn(link2EndpointStates.asFlux());
         when(link2.receive()).thenReturn(Flux.never());
         when(link2.addCredits(anyInt())).thenReturn(Mono.empty());
 
@@ -431,7 +430,7 @@ class ServiceBusReceiveLinkProcessorTest {
             .expectNext(message1)
             .then(() -> endpointProcessor.error(amqpException))
             .thenAwait(delay)
-            .then(() -> link2StateSink.error(amqpException2))
+            .then(() -> link2EndpointStates.emitError(amqpException2, Sinks.EmitFailureHandler.FAIL_FAST))
             .expectErrorSatisfies(error -> assertSame(amqpException2, error))
             .verify();
 
