@@ -6,29 +6,30 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SSIS package execution credential.
  */
 @Fluent
-public final class SsisExecutionCredential {
+public final class SsisExecutionCredential implements JsonSerializable<SsisExecutionCredential> {
     /*
      * Domain for windows authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "domain", required = true)
     private Object domain;
 
     /*
      * UseName for windows authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName", required = true)
     private Object username;
 
     /*
      * Password for windows authentication.
      */
-    @JsonProperty(value = "password", required = true)
     private SecureString password;
 
     /**
@@ -124,4 +125,47 @@ public final class SsisExecutionCredential {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SsisExecutionCredential.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("domain", this.domain);
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisExecutionCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisExecutionCredential if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SsisExecutionCredential.
+     */
+    public static SsisExecutionCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisExecutionCredential deserializedSsisExecutionCredential = new SsisExecutionCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domain".equals(fieldName)) {
+                    deserializedSsisExecutionCredential.domain = reader.readUntyped();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSsisExecutionCredential.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSsisExecutionCredential.password = SecureString.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisExecutionCredential;
+        });
+    }
 }

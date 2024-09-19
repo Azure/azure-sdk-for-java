@@ -11,19 +11,19 @@ public final class HiveSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HiveSource model = BinaryData.fromString(
-            "{\"type\":\"HiveSource\",\"query\":\"datam\",\"queryTimeout\":\"dataklzomdfcp\",\"additionalColumns\":\"dataimijzhrbs\",\"sourceRetryCount\":\"datavublouel\",\"sourceRetryWait\":\"dataqfbgeblp\",\"maxConcurrentConnections\":\"datackmnpzubz\",\"disableMetricsCollection\":\"dataswgfjrg\",\"\":{\"nklfs\":\"datapbshqzzlcfemnry\",\"ygczab\":\"datazsyigxsyx\",\"pcdia\":\"datapeuqyzfdsu\"}}")
+            "{\"type\":\"HiveSource\",\"query\":\"datawbqaibkyeysf\",\"queryTimeout\":\"datahdydyybztlylh\",\"additionalColumns\":\"datacjq\",\"sourceRetryCount\":\"datacie\",\"sourceRetryWait\":\"datak\",\"maxConcurrentConnections\":\"dataxf\",\"disableMetricsCollection\":\"datahvecjhbttmhneqd\",\"\":{\"kna\":\"dataeyxxidabqla\",\"ljsfcryqrrsjqt\":\"datacseqo\"}}")
             .toObject(HiveSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HiveSource model = new HiveSource().withSourceRetryCount("datavublouel")
-            .withSourceRetryWait("dataqfbgeblp")
-            .withMaxConcurrentConnections("datackmnpzubz")
-            .withDisableMetricsCollection("dataswgfjrg")
-            .withQueryTimeout("dataklzomdfcp")
-            .withAdditionalColumns("dataimijzhrbs")
-            .withQuery("datam");
+        HiveSource model = new HiveSource().withSourceRetryCount("datacie")
+            .withSourceRetryWait("datak")
+            .withMaxConcurrentConnections("dataxf")
+            .withDisableMetricsCollection("datahvecjhbttmhneqd")
+            .withQueryTimeout("datahdydyybztlylh")
+            .withAdditionalColumns("datacjq")
+            .withQuery("datawbqaibkyeysf");
         model = BinaryData.fromObject(model).toObject(HiveSource.class);
     }
 }

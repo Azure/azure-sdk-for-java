@@ -6,67 +6,42 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billing.BillingManager;
 import com.azure.resourcemanager.billing.models.BillingRoleAssignment;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BillingRoleAssignmentsListByBillingAccountMockTests {
     @Test
     public void testListByBillingAccount() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Creating\",\"createdOn\":\"2021-04-05T18:53:39Z\",\"createdByPrincipalTenantId\":\"irjvqxvwkiocxo\",\"createdByPrincipalId\":\"jwbu\",\"createdByPrincipalPuid\":\"qflm\",\"createdByUserEmailAddress\":\"rlqxbctatez\",\"modifiedOn\":\"2021-12-08T02:06:08Z\",\"modifiedByPrincipalPuid\":\"bcqqnlsjxcs\",\"modifiedByUserEmailAddress\":\"it\",\"modifiedByPrincipalId\":\"mra\",\"modifiedByPrincipalTenantId\":\"jido\",\"principalPuid\":\"vltcvmahpuwku\",\"principalId\":\"bnhi\",\"principalTenantId\":\"hyzhrcqdfwbifn\",\"roleDefinitionId\":\"hlsforsimtf\",\"scope\":\"mmynbrpelpfi\",\"userAuthenticationType\":\"ezgxmpeszam\",\"userEmailAddress\":\"ler\",\"principalTenantName\":\"nfu\",\"principalDisplayName\":\"czktllxswt\",\"principalType\":\"Unknown\",\"billingRequestId\":\"mirmnrijefmrt\",\"billingAccountId\":\"c\",\"billingAccountDisplayName\":\"dspthg\",\"billingProfileId\":\"mwtbl\",\"billingProfileDisplayName\":\"kok\",\"invoiceSectionId\":\"i\",\"invoiceSectionDisplayName\":\"iefwlnm\",\"customerId\":\"ffcnuestbsliejdn\",\"customerDisplayName\":\"otelikji\"},\"tags\":{\"dwbymuqlngncrd\":\"hhxtzx\"},\"id\":\"ctysecpekhx\",\"name\":\"byh\",\"type\":\"tzcvimmwckoz\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"createdOn\":\"ldudxjascowv\",\"createdByPrincipalTenantId\":\"jkpdxphlkksnm\",\"createdByPrincipalId\":\"vyfijdkzuqnw\",\"createdByUserEmailAddress\":\"thuqolyahluq\",\"principalId\":\"ulsutrjbhxy\",\"principalTenantId\":\"hyqezvqq\",\"roleDefinitionId\":\"drftbcvexreuquo\",\"scope\":\"ljvfwhreagk\",\"userAuthenticationType\":\"xv\",\"userEmailAddress\":\"tvbczsulm\"},\"id\":\"gglmepjpfsey\",\"name\":\"g\",\"type\":\"angpszngafpgyl\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingManager manager = BillingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<BillingRoleAssignment> response = manager.billingRoleAssignments()
+            .listByBillingAccount("r", "uydldp", 8679544889546246428L, 9007721601109399576L,
+                com.azure.core.util.Context.NONE);
 
-        BillingManager manager =
-            BillingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<BillingRoleAssignment> response =
-            manager.billingRoleAssignments().listByBillingAccount("rke", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("ulsutrjbhxy", response.iterator().next().principalId());
-        Assertions.assertEquals("hyqezvqq", response.iterator().next().principalTenantId());
-        Assertions.assertEquals("drftbcvexreuquo", response.iterator().next().roleDefinitionId());
-        Assertions.assertEquals("xv", response.iterator().next().userAuthenticationType());
-        Assertions.assertEquals("tvbczsulm", response.iterator().next().userEmailAddress());
+        Assertions.assertEquals("hhxtzx", response.iterator().next().tags().get("dwbymuqlngncrd"));
+        Assertions.assertEquals("vltcvmahpuwku", response.iterator().next().properties().principalPuid());
+        Assertions.assertEquals("bnhi", response.iterator().next().properties().principalId());
+        Assertions.assertEquals("hyzhrcqdfwbifn", response.iterator().next().properties().principalTenantId());
+        Assertions.assertEquals("hlsforsimtf", response.iterator().next().properties().roleDefinitionId());
+        Assertions.assertEquals("mmynbrpelpfi", response.iterator().next().properties().scope());
+        Assertions.assertEquals("ezgxmpeszam", response.iterator().next().properties().userAuthenticationType());
+        Assertions.assertEquals("ler", response.iterator().next().properties().userEmailAddress());
     }
 }

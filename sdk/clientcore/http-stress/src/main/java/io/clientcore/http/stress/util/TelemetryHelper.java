@@ -4,8 +4,8 @@
 package io.clientcore.http.stress.util;
 
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import io.clientcore.http.stress.StressOptions;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.http.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -30,11 +30,13 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.UncheckedIOException;
 import java.time.Instant;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
@@ -140,6 +142,74 @@ public class TelemetryHelper {
         }
     }
 
+    /**
+     * Instruments a Mono: records mono duration along with the status (success, error, cancellation),
+     * @param runAsync the mono to instrument
+     * @return the instrumented mono
+     */
+    @SuppressWarnings("try")
+    public Mono<Void> instrumentRunAsync(Mono<Void> runAsync) {
+        return Mono.defer(() -> {
+            Instant start = Instant.now();
+            Span span = tracer.spanBuilder("runAsync").startSpan();
+            try (Scope s = span.makeCurrent()) {
+                return runAsync.doOnError(e -> trackFailure(start, e, span))
+                    .doOnCancel(() -> trackCancellation(start, span))
+                    .doOnSuccess(v -> trackSuccess(start, span))
+                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+            }
+        });
+    }
+
+    /**
+     * Instruments a CompletableFuture: records future duration along with the status (success, error, cancellation),
+     * @param runAsyncFuture the future to instrument
+     * @return the instrumented future
+     */
+    @SuppressWarnings("try")
+    public CompletableFuture<Void> instrumentRunAsyncWithCompletableFuture(CompletableFuture<Void> runAsyncFuture) {
+        Instant start = Instant.now();
+        Span span = tracer.spanBuilder("runAsyncCompletableFuture").startSpan();
+
+        CompletableFuture<Void> instrumentedFuture = runAsyncFuture
+            .whenComplete((result, throwable) -> {
+                try (Scope s = span.makeCurrent()) {
+                    if (throwable != null) {
+                        trackFailure(start, throwable, span);
+                    } else {
+                        trackSuccess(start, span);
+                    }
+                } finally {
+                    span.end();
+                }
+            });
+
+        return instrumentedFuture;
+    }
+
+    /**
+     * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation),
+     * @param task the runnable to instrument
+     * @return
+     */
+    @SuppressWarnings("try")
+    public Runnable instrumentRunAsyncWithRunnable(Runnable task) {
+        return () -> {
+            Instant start = Instant.now();
+            Span span = tracer.spanBuilder("runAsyncRunnable").startSpan();
+            try (Scope s = span.makeCurrent()) {
+                try {
+                    task.run();
+                    trackSuccess(start, span);
+                } catch (Exception e) {
+                    trackFailure(start, e, span);
+                } finally {
+                    span.end();
+                }
+            }
+        };
+    }
+
     private void trackSuccess(Instant start, Span span) {
         logger.atInfo()
             .log("run ended");
@@ -202,6 +272,10 @@ public class TelemetryHelper {
         before.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
         before.setAttribute(AttributeKey.stringKey("gitCommit"), System.getenv("GIT_COMMIT"));
+        before.setAttribute(AttributeKey.booleanKey("completeableFuture"), options.isCompletableFuture());
+        before.setAttribute(AttributeKey.booleanKey("executorservice"), options.isExecutorService());
+        before.setAttribute(AttributeKey.booleanKey("virtualthread"), options.isVirtualThread());
+
         before.end();
     }
 

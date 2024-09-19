@@ -5,26 +5,40 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to determine the datastore contents type. */
+/**
+ * Enum to determine the datastore contents type.
+ */
 public final class DatastoreType extends ExpandableStringEnum<DatastoreType> {
-    /** Static value AzureBlob for DatastoreType. */
+    /**
+     * Static value AzureBlob for DatastoreType.
+     */
     public static final DatastoreType AZURE_BLOB = fromString("AzureBlob");
 
-    /** Static value AzureDataLakeGen1 for DatastoreType. */
+    /**
+     * Static value AzureDataLakeGen1 for DatastoreType.
+     */
     public static final DatastoreType AZURE_DATA_LAKE_GEN1 = fromString("AzureDataLakeGen1");
 
-    /** Static value AzureDataLakeGen2 for DatastoreType. */
+    /**
+     * Static value AzureDataLakeGen2 for DatastoreType.
+     */
     public static final DatastoreType AZURE_DATA_LAKE_GEN2 = fromString("AzureDataLakeGen2");
 
-    /** Static value AzureFile for DatastoreType. */
+    /**
+     * Static value AzureFile for DatastoreType.
+     */
     public static final DatastoreType AZURE_FILE = fromString("AzureFile");
 
     /**
+     * Static value OneLake for DatastoreType.
+     */
+    public static final DatastoreType ONE_LAKE = fromString("OneLake");
+
+    /**
      * Creates a new instance of DatastoreType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +47,17 @@ public final class DatastoreType extends ExpandableStringEnum<DatastoreType> {
 
     /**
      * Creates or finds a DatastoreType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatastoreType.
      */
-    @JsonCreator
     public static DatastoreType fromString(String name) {
         return fromString(name, DatastoreType.class);
     }
 
     /**
      * Gets known DatastoreType values.
-     *
+     * 
      * @return known DatastoreType values.
      */
     public static Collection<DatastoreType> values() {

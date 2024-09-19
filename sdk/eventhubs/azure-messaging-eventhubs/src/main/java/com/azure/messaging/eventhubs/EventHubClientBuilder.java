@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -257,7 +258,7 @@ public class EventHubClientBuilder implements
     private String fullyQualifiedNamespace;
     private String eventHubName;
     private String consumerGroup;
-    private EventHubConnectionProcessor eventHubConnectionProcessor;
+    private ConnectionCacheWrapper eventHubConnectionProcessor;
     private Integer prefetchCount;
     private ClientOptions clientOptions;
     private SslDomain.VerifyMode verifyMode;
@@ -275,6 +276,7 @@ public class EventHubClientBuilder implements
      * Keeps track of the open clients that were created from this builder when there is a shared connection.
      */
     private final AtomicInteger openClients = new AtomicInteger();
+    private final V2StackSupport v2StackSupport = new V2StackSupport(LOGGER);
 
     /**
      * Creates a new instance with the default transport {@link AmqpTransportType#AMQP} and a non-shared connection. A
@@ -984,16 +986,19 @@ public class EventHubClientBuilder implements
             prefetchCount = DEFAULT_PREFETCH_COUNT;
         }
 
-        final Meter meter = MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
-            clientOptions == null ? null : clientOptions.getMetricsOptions());
-
+        final Meter meter = createMeter();
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
-        final EventHubConnectionProcessor processor;
+        final ConnectionCacheWrapper processor;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
-                    eventHubConnectionProcessor = buildConnectionProcessor(messageSerializer, meter);
+                    if (v2StackSupport.isV2StackEnabled(configuration)) {
+                        final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
+                        eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                    } else {
+                        eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+                    }
                 }
             }
 
@@ -1002,7 +1007,12 @@ public class EventHubClientBuilder implements
             final int numberOfOpenClients = openClients.incrementAndGet();
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
-            processor = buildConnectionProcessor(messageSerializer, meter);
+            if (v2StackSupport.isV2StackEnabled(configuration)) {
+                final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
+                processor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
+            } else {
+                processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
+            }
         }
 
         String identifier;
@@ -1079,6 +1089,11 @@ public class EventHubClientBuilder implements
             AZ_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
     }
 
+    Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+            clientOptions == null ? null : clientOptions.getMetricsOptions());
+    }
+
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
         final ConnectionOptions connectionOptions = getConnectionOptions();
         final Supplier<String> getEventHubName = () -> {
@@ -1113,7 +1128,7 @@ public class EventHubClientBuilder implements
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
                     connectionOptions, getEventHubName.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
-                    messageSerializer);
+                    messageSerializer, false, false);
 
                 sink.next(connection);
             });
@@ -1121,6 +1136,17 @@ public class EventHubClientBuilder implements
 
         return connectionFlux.subscribeWith(new EventHubConnectionProcessor(
             connectionOptions.getFullyQualifiedNamespace(), getEventHubName.get(), connectionOptions.getRetry()));
+    }
+
+    private ReactorConnectionCache<EventHubReactorAmqpConnection> buildConnectionCache(MessageSerializer messageSerializer, Meter meter, boolean useSessionChannelCache) {
+        final ConnectionOptions connectionOptions = getConnectionOptions();
+        final Supplier<String> getEventHubName = () -> {
+            if (CoreUtils.isNullOrEmpty(eventHubName)) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'eventHubName' cannot be an empty string."));
+            }
+            return eventHubName;
+        };
+        return v2StackSupport.createConnectionCache(connectionOptions, getEventHubName, messageSerializer, meter, useSessionChannelCache);
     }
 
     ConnectionOptions getConnectionOptions() {

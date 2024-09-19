@@ -30,7 +30,12 @@ public enum HostType {
     /**
      * Host is Container App
      */
-    CONTAINER_APP("ContainerApp");
+    CONTAINER_APP("ContainerApp"),
+    
+    /**
+     * Host is Service Fabric
+     */
+    SERVICE_FABRIC("ServiceFabric");
 
     private final String text;
 

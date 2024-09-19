@@ -15,16 +15,17 @@ import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.test.http.TestProxyTestServer;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -38,6 +39,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,7 +62,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class TestProxyTests extends TestProxyTestBase {
     public static final String TEST_DATA = "{\"test\":\"proxy\"}";
     static TestProxyTestServer server;
-    private static final ObjectMapper RECORD_MAPPER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
 
     private static final List<TestProxySanitizer> CUSTOM_SANITIZER = new ArrayList<>();
 
@@ -77,7 +78,6 @@ public class TestProxyTests extends TestProxyTestBase {
     @BeforeAll
     public static void setupClass() {
         server = new TestProxyTestServer();
-
     }
 
     @AfterAll
@@ -174,8 +174,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Playback")
     public void testPlayback() {
-
         HttpClient client = interceptorManager.getPlaybackClient();
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Connection")));
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/first/path")
             // For this test set an Accept header as most HttpClients will use a default which could result in this
@@ -206,8 +206,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Playback")
     public void testRecordWithRedaction() {
-
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
+        interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Connection")));
         HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
@@ -243,7 +243,7 @@ public class TestProxyTests extends TestProxyTestBase {
     public void testPlaybackWithRedaction() {
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
         interceptorManager.addMatchers(Collections.singletonList(
-            new CustomMatcher().setExcludedHeaders(Collections.singletonList("Ocp-Apim-Subscription-Key"))));
+            new CustomMatcher().setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key", "Connection"))));
         HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/models")
@@ -264,7 +264,8 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+            .setExcludedHeaders(Collections.singletonList("Connection")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
@@ -296,7 +297,8 @@ public class TestProxyTests extends TestProxyTestBase {
 
         HttpClient client = interceptorManager.getPlaybackClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
+        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept"))
+            .setExcludedHeaders(Collections.singletonList("Connection")));
 
         //        HttpClient client = new HttpURLConnectionHttpClient();
         //        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
@@ -364,17 +366,15 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        try {
-            BufferedReader reader = Files.newBufferedReader(Paths.get(interceptorManager.getRecordingFileLocation()));
-            return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(interceptorManager.getRecordingFileLocation()));
+            JsonReader jsonReader = JsonProviders.createReader(reader)) {
+            return RecordedTestProxyData.fromJson(jsonReader);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    static class RecordedTestProxyData {
-        @JsonProperty("Entries")
+    static class RecordedTestProxyData implements JsonSerializable<RecordedTestProxyData> {
         private final LinkedList<TestProxyDataRecord> testProxyDataRecords;
 
         RecordedTestProxyData() {
@@ -385,24 +385,37 @@ public class TestProxyTests extends TestProxyTestBase {
             return testProxyDataRecords;
         }
 
-        @JsonIgnoreProperties(ignoreUnknown = true)
-        static class TestProxyDataRecord {
-            @JsonProperty("RequestMethod")
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeStartObject()
+                .writeArrayField("Entries", testProxyDataRecords, JsonWriter::writeJson)
+                .writeEndObject();
+        }
+
+        /**
+         * Deserializes an instance of RecordedTestProxyData from the input JSON.
+         *
+         * @param jsonReader The JSON reader to deserialize the data from.
+         * @return An instance of RecordedTestProxyData deserialized from the JSON.
+         * @throws IOException If the JSON reader encounters an error while reading the JSON.
+         */
+        public static RecordedTestProxyData fromJson(JsonReader jsonReader) throws IOException {
+            return TestingHelpers.readObject(jsonReader, RecordedTestProxyData::new,
+                (recordedData, fieldName, reader) -> {
+                    if ("Entries".equals(fieldName)) {
+                        recordedData.testProxyDataRecords.addAll(reader.readArray(TestProxyDataRecord::fromJson));
+                    } else {
+                        reader.skipChildren();
+                    }
+                });
+        }
+
+        static class TestProxyDataRecord implements JsonSerializable<TestProxyDataRecord> {
             private String method;
-
-            @JsonProperty("RequestUri")
             private String uri;
-
-            @JsonProperty("RequestHeaders")
             private Map<String, String> headers;
-
-            @JsonProperty("ResponseBody")
             private Map<String, String> response;
-
-            @JsonProperty("ResponseHeaders")
             private Map<String, String> responseHeaders;
-
-            @JsonProperty("RequestBody")
             private String requestBody;
 
             public String getMethod() {
@@ -427,6 +440,46 @@ public class TestProxyTests extends TestProxyTestBase {
 
             public String getRequestBody() {
                 return requestBody;
+            }
+
+            @Override
+            public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+                return jsonWriter.writeStartObject()
+                    .writeStringField("RequestMethod", method)
+                    .writeStringField("RequestUri", uri)
+                    .writeMapField("RequestHeaders", headers, JsonWriter::writeString)
+                    .writeMapField("ResponseBody", response, JsonWriter::writeString)
+                    .writeMapField("ResponseHeaders", responseHeaders, JsonWriter::writeString)
+                    .writeStringField("RequestBody", requestBody)
+                    .writeEndObject();
+            }
+
+            /**
+             * Deserializes an instance of TestProxyDataRecord from the input JSON.
+             *
+             * @param jsonReader The JSON reader to deserialize the data from.
+             * @return An instance of TestProxyDataRecord deserialized from the JSON.
+             * @throws IOException If the JSON reader encounters an error while reading the JSON.
+             */
+            public static TestProxyDataRecord fromJson(JsonReader jsonReader) throws IOException {
+                return TestingHelpers.readObject(jsonReader, TestProxyDataRecord::new,
+                    (dataRecord, fieldName, reader) -> {
+                        if ("RequestMethod".equals(fieldName)) {
+                            dataRecord.method = reader.getString();
+                        } else if ("RequestUri".equals(fieldName)) {
+                            dataRecord.uri = reader.getString();
+                        } else if ("RequestHeaders".equals(fieldName)) {
+                            dataRecord.headers = reader.readMap(JsonReader::getString);
+                        } else if ("ResponseBody".equals(fieldName)) {
+                            dataRecord.response = reader.readMap(JsonReader::getString);
+                        } else if ("ResponseHeaders".equals(fieldName)) {
+                            dataRecord.responseHeaders = reader.readMap(JsonReader::getString);
+                        } else if ("RequestBody".equals(fieldName)) {
+                            dataRecord.requestBody = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    });
             }
         }
     }

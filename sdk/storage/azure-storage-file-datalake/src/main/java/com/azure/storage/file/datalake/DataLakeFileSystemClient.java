@@ -722,9 +722,9 @@ public class DataLakeFileSystemClient {
         String path = finalOptions.getPath();
 
         BiFunction<String, Integer, PagedResponse<PathItem>> pageRetriever = (continuation, pageSize) -> {
-            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation = () ->
-                this.azureDataLakeStorage.getFileSystems().listPathsWithResponse(recursive, null, null, continuation,
-                    path, pageSize == null ? maxResults : pageSize, upn, Context.NONE);
+            Callable<ResponseBase<FileSystemsListPathsHeaders, PathList>> operation
+                = () -> this.azureDataLakeStorage.getFileSystems().listPathsWithResponse(recursive, null, null,
+                continuation, path, pageSize == null ? maxResults : pageSize, upn, Context.NONE);
 
             ResponseBase<FileSystemsListPathsHeaders, PathList> response = StorageImplUtils.sendRequest(operation,
                 timeout, DataLakeStorageException.class);
@@ -796,9 +796,9 @@ public class DataLakeFileSystemClient {
     public PagedIterable<PathDeletedItem> listDeletedPaths(String prefix, Duration timeout,
         Context context) {
         BiFunction<String, Integer, PagedResponse<PathDeletedItem>> retriever = (marker, pageSize) -> {
-            Callable<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation =
-                () -> this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponse(prefix, null,
-                    marker, pageSize, null, ListBlobsShowOnly.DELETED, null, null, context);
+            Callable<ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse>> operation
+                = () -> this.blobDataLakeStorageFs.getFileSystems().listBlobHierarchySegmentWithResponse(prefix, null,
+                marker, pageSize, null, ListBlobsShowOnly.DELETED, null, null, context);
 
             ResponseBase<FileSystemsListBlobHierarchySegmentHeaders, ListBlobsHierarchySegmentResponse> response =
                 StorageImplUtils.sendRequest(operation, timeout, DataLakeStorageException.class);
@@ -1562,9 +1562,9 @@ public class DataLakeFileSystemClient {
             .buildClient();
 
         // Initial rest call
-        Callable<ResponseBase<PathsUndeleteHeaders, Void>> operation = () ->
-            blobDataLakeStoragePath.getPaths().undeleteWithResponse(null, String.format("?%s=%s",
-                Constants.UrlConstants.DELETIONID_QUERY_PARAMETER, deletionId), null, finalContext);
+        Callable<ResponseBase<PathsUndeleteHeaders, Void>> operation = () -> blobDataLakeStoragePath.getPaths()
+            .undeleteWithResponse(null, "?" + Constants.UrlConstants.DELETIONID_QUERY_PARAMETER + "=" + deletionId,
+                null, finalContext);
 
         ResponseBase<PathsUndeleteHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout,
             DataLakeStorageException.class);

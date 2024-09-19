@@ -5,7 +5,7 @@ package com.azure.ai.vision.face.samples;
 
 import com.azure.ai.vision.face.FaceSessionClient;
 import com.azure.ai.vision.face.FaceSessionClientBuilder;
-import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionJsonContent;
+import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessSessionAuditEntry;
@@ -41,7 +41,7 @@ public class DetectLivenessWithVerify {
             .credential(new AzureKeyCredential(ConfigurationHelper.getAccountKey()))
             .buildClient();
 
-        CreateLivenessWithVerifySessionJsonContent parameters = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
+        CreateLivenessWithVerifySessionContent parameters = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE)
             .setDeviceCorrelationId(UUID.randomUUID().toString())
             .setSendResultsToClient(false)
             .setAuthTokenTimeToLiveInSeconds(60);

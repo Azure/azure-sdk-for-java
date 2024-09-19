@@ -19,6 +19,11 @@ import java.util.List;
 @Fluent
 public final class ManagedRulesDefinition implements JsonSerializable<ManagedRulesDefinition> {
     /*
+     * The exceptions that are applied on the policy.
+     */
+    private List<ExceptionEntry> exceptions;
+
+    /*
      * The Exclusions that are applied on the policy.
      */
     private List<OwaspCrsExclusionEntry> exclusions;
@@ -32,6 +37,26 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
      * Creates an instance of ManagedRulesDefinition class.
      */
     public ManagedRulesDefinition() {
+    }
+
+    /**
+     * Get the exceptions property: The exceptions that are applied on the policy.
+     * 
+     * @return the exceptions value.
+     */
+    public List<ExceptionEntry> exceptions() {
+        return this.exceptions;
+    }
+
+    /**
+     * Set the exceptions property: The exceptions that are applied on the policy.
+     * 
+     * @param exceptions the exceptions value to set.
+     * @return the ManagedRulesDefinition object itself.
+     */
+    public ManagedRulesDefinition withExceptions(List<ExceptionEntry> exceptions) {
+        this.exceptions = exceptions;
+        return this;
     }
 
     /**
@@ -80,6 +105,9 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (exceptions() != null) {
+            exceptions().forEach(e -> e.validate());
+        }
         if (exclusions() != null) {
             exclusions().forEach(e -> e.validate());
         }
@@ -102,6 +130,7 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("managedRuleSets", this.managedRuleSets,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("exceptions", this.exceptions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("exclusions", this.exclusions, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
@@ -126,6 +155,9 @@ public final class ManagedRulesDefinition implements JsonSerializable<ManagedRul
                     List<ManagedRuleSet> managedRuleSets
                         = reader.readArray(reader1 -> ManagedRuleSet.fromJson(reader1));
                     deserializedManagedRulesDefinition.managedRuleSets = managedRuleSets;
+                } else if ("exceptions".equals(fieldName)) {
+                    List<ExceptionEntry> exceptions = reader.readArray(reader1 -> ExceptionEntry.fromJson(reader1));
+                    deserializedManagedRulesDefinition.exceptions = exceptions;
                 } else if ("exclusions".equals(fieldName)) {
                     List<OwaspCrsExclusionEntry> exclusions
                         = reader.readArray(reader1 -> OwaspCrsExclusionEntry.fromJson(reader1));

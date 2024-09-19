@@ -5,81 +5,70 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A copy activity SQL Data Warehouse sink.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = SqlDWSink.class, visible = true)
-@JsonTypeName("SqlDWSink")
 @Fluent
 public final class SqlDWSink extends CopySink {
     /*
      * Copy sink type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "SqlDWSink";
 
     /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
     /*
      * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "allowPolyBase")
     private Object allowPolyBase;
 
     /*
      * Specifies PolyBase-related settings when allowPolyBase is true.
      */
-    @JsonProperty(value = "polyBaseSettings")
     private PolybaseSettings polyBaseSettings;
 
     /*
      * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
      * boolean).
      */
-    @JsonProperty(value = "allowCopyCommand")
     private Object allowCopyCommand;
 
     /*
      * Specifies Copy Command related settings when allowCopyCommand is true.
      */
-    @JsonProperty(value = "copyCommandSettings")
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
      * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableOption")
     private Object tableOption;
 
     /*
      * Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "sqlWriterUseTableLock")
     private Object sqlWriterUseTableLock;
 
     /*
      * Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum (or Expression with resultType
      * SqlDWWriteBehaviorEnum)
      */
-    @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
     /*
      * SQL DW upsert settings.
      */
-    @JsonProperty(value = "upsertSettings")
     private SqlDWUpsertSettings upsertSettings;
 
     /**
@@ -359,5 +348,97 @@ public final class SqlDWSink extends CopySink {
         if (upsertSettings() != null) {
             upsertSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        jsonWriter.writeUntypedField("allowPolyBase", this.allowPolyBase);
+        jsonWriter.writeJsonField("polyBaseSettings", this.polyBaseSettings);
+        jsonWriter.writeUntypedField("allowCopyCommand", this.allowCopyCommand);
+        jsonWriter.writeJsonField("copyCommandSettings", this.copyCommandSettings);
+        jsonWriter.writeUntypedField("tableOption", this.tableOption);
+        jsonWriter.writeUntypedField("sqlWriterUseTableLock", this.sqlWriterUseTableLock);
+        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        jsonWriter.writeJsonField("upsertSettings", this.upsertSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlDWSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlDWSink if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SqlDWSink.
+     */
+    public static SqlDWSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlDWSink deserializedSqlDWSink = new SqlDWSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedSqlDWSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedSqlDWSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedSqlDWSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedSqlDWSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSqlDWSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedSqlDWSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlDWSink.type = reader.getString();
+                } else if ("preCopyScript".equals(fieldName)) {
+                    deserializedSqlDWSink.preCopyScript = reader.readUntyped();
+                } else if ("allowPolyBase".equals(fieldName)) {
+                    deserializedSqlDWSink.allowPolyBase = reader.readUntyped();
+                } else if ("polyBaseSettings".equals(fieldName)) {
+                    deserializedSqlDWSink.polyBaseSettings = PolybaseSettings.fromJson(reader);
+                } else if ("allowCopyCommand".equals(fieldName)) {
+                    deserializedSqlDWSink.allowCopyCommand = reader.readUntyped();
+                } else if ("copyCommandSettings".equals(fieldName)) {
+                    deserializedSqlDWSink.copyCommandSettings = DWCopyCommandSettings.fromJson(reader);
+                } else if ("tableOption".equals(fieldName)) {
+                    deserializedSqlDWSink.tableOption = reader.readUntyped();
+                } else if ("sqlWriterUseTableLock".equals(fieldName)) {
+                    deserializedSqlDWSink.sqlWriterUseTableLock = reader.readUntyped();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedSqlDWSink.writeBehavior = reader.readUntyped();
+                } else if ("upsertSettings".equals(fieldName)) {
+                    deserializedSqlDWSink.upsertSettings = SqlDWUpsertSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlDWSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedSqlDWSink;
+        });
     }
 }

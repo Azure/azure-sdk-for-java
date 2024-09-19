@@ -22,60 +22,62 @@ public final class SqlServerStoredProcedureActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlServerStoredProcedureActivity model = BinaryData.fromString(
-            "{\"type\":\"SqlServerStoredProcedure\",\"typeProperties\":{\"storedProcedureName\":\"datalzk\",\"storedProcedureParameters\":\"datacgtbpbfbgfwjq\"},\"linkedServiceName\":{\"referenceName\":\"vse\",\"parameters\":{\"hrw\":\"dataxxdrgbnq\",\"flq\":\"datamexwg\",\"k\":\"dataugxudsmdglq\"}},\"policy\":{\"timeout\":\"datadjdasomxws\",\"retry\":\"datayl\",\"retryIntervalInSeconds\":45833654,\"secureInput\":false,\"secureOutput\":true,\"\":{\"yzzeqdjx\":\"dataikglmc\",\"zvtwfbqxoqnv\":\"datarbjxkarxvg\",\"pp\":\"datajhdcolnxw\",\"zvi\":\"dataodnntoloezptngr\"}},\"name\":\"xacxcac\",\"description\":\"dkomrpucytjxpdqw\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"skyrhsijxm\",\"dependencyConditions\":[\"Failed\",\"Skipped\"],\"\":{\"zy\":\"dataxjsuwmbdtfetr\"}},{\"activity\":\"prrapghloemqapv\",\"dependencyConditions\":[\"Skipped\",\"Succeeded\",\"Skipped\"],\"\":{\"wrbqadtvpgu\":\"datasnxue\",\"iv\":\"datatmtgk\",\"plphkiyiqpi\":\"dataxxe\"}}],\"userProperties\":[{\"name\":\"vzjkzslvxdp\",\"value\":\"datapubbwps\"},{\"name\":\"cxbkwm\",\"value\":\"datajqakacbc\"},{\"name\":\"rsnnvlm\",\"value\":\"datagfgtwqmtyfqutmj\"}],\"\":{\"qzdor\":\"datasjurilqc\",\"auwojgvpqzvtgwlz\":\"dataufogockbizqqajs\",\"br\":\"datacyvrbgi\"}}")
+            "{\"type\":\"SqlServerStoredProcedure\",\"typeProperties\":{\"storedProcedureName\":\"datapaiat\",\"storedProcedureParameters\":\"dataxvbwsa\"},\"linkedServiceName\":{\"referenceName\":\"vtinro\",\"parameters\":{\"pyh\":\"datatylseu\",\"n\":\"datanngijnzlokxihf\",\"ssxid\":\"databljlrfwq\"}},\"policy\":{\"timeout\":\"datavbicdzvypfo\",\"retry\":\"dataxbfctqnq\",\"retryIntervalInSeconds\":1638131634,\"secureInput\":false,\"secureOutput\":true,\"\":{\"q\":\"datakmjqfachfm\",\"qeu\":\"datakgs\",\"f\":\"datajvs\"}},\"name\":\"wpqvgxpwmoefhbur\",\"description\":\"a\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"wpxvptqnqbd\",\"dependencyConditions\":[\"Skipped\"],\"\":{\"juuwmcugveiiegoo\":\"datazlfhn\",\"dfqthohfqbeai\":\"datablvcalb\",\"gdascmf\":\"datavnnhxgiydk\",\"xgy\":\"datakabwpdvedmxckb\"}},{\"activity\":\"xszetaonkfbgwf\",\"dependencyConditions\":[\"Succeeded\",\"Failed\",\"Skipped\"],\"\":{\"j\":\"datazrsz\",\"udnxaw\":\"datadcisceiauoy\",\"cc\":\"datagmbmb\"}},{\"activity\":\"ikp\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"o\":\"datajizbjsu\"}}],\"userProperties\":[{\"name\":\"ltcrtmebrssrlxen\",\"value\":\"datapthc\"},{\"name\":\"j\",\"value\":\"dataqmb\"},{\"name\":\"xensog\",\"value\":\"datavhqqxggncgyzvt\"},{\"name\":\"excjqrvpgukscrsb\",\"value\":\"datahkdemaxoaj\"}],\"\":{\"ajkkzkzprjqbmgf\":\"datacachsojgagey\",\"zbeemlsrtgbgcmut\":\"datawy\",\"lpuuf\":\"datakwd\"}}")
             .toObject(SqlServerStoredProcedureActivity.class);
-        Assertions.assertEquals("xacxcac", model.name());
-        Assertions.assertEquals("dkomrpucytjxpdqw", model.description());
+        Assertions.assertEquals("wpqvgxpwmoefhbur", model.name());
+        Assertions.assertEquals("a", model.description());
         Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("skyrhsijxm", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.FAILED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("vzjkzslvxdp", model.userProperties().get(0).name());
-        Assertions.assertEquals("vse", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(45833654, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("wpxvptqnqbd", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("ltcrtmebrssrlxen", model.userProperties().get(0).name());
+        Assertions.assertEquals("vtinro", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(1638131634, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(false, model.policy().secureInput());
         Assertions.assertEquals(true, model.policy().secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerStoredProcedureActivity model
-            = new SqlServerStoredProcedureActivity().withName("xacxcac")
-                .withDescription("dkomrpucytjxpdqw")
-                .withState(ActivityState.INACTIVE)
-                .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                .withDependsOn(Arrays.asList(
-                    new ActivityDependency().withActivity("skyrhsijxm")
-                        .withDependencyConditions(
-                            Arrays.asList(DependencyCondition.FAILED, DependencyCondition.SKIPPED))
-                        .withAdditionalProperties(mapOf()),
-                    new ActivityDependency().withActivity("prrapghloemqapv")
-                        .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED,
-                            DependencyCondition.SUCCEEDED, DependencyCondition.SKIPPED))
-                        .withAdditionalProperties(mapOf())))
-                .withUserProperties(Arrays.asList(new UserProperty().withName("vzjkzslvxdp").withValue("datapubbwps"),
-                    new UserProperty().withName("cxbkwm").withValue("datajqakacbc"),
-                    new UserProperty().withName("rsnnvlm").withValue("datagfgtwqmtyfqutmj")))
-                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("vse")
-                    .withParameters(mapOf("hrw", "dataxxdrgbnq", "flq", "datamexwg", "k", "dataugxudsmdglq")))
-                .withPolicy(new ActivityPolicy().withTimeout("datadjdasomxws")
-                    .withRetry("datayl")
-                    .withRetryIntervalInSeconds(45833654)
-                    .withSecureInput(false)
-                    .withSecureOutput(true)
-                    .withAdditionalProperties(mapOf()))
-                .withStoredProcedureName("datalzk")
-                .withStoredProcedureParameters("datacgtbpbfbgfwjq");
+        SqlServerStoredProcedureActivity model = new SqlServerStoredProcedureActivity().withName("wpqvgxpwmoefhbur")
+            .withDescription("a")
+            .withState(ActivityState.INACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+            .withDependsOn(Arrays.asList(
+                new ActivityDependency().withActivity("wpxvptqnqbd")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SKIPPED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("xszetaonkfbgwf")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED, DependencyCondition.FAILED,
+                        DependencyCondition.SKIPPED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("ikp")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
+                    .withAdditionalProperties(mapOf())))
+            .withUserProperties(Arrays.asList(new UserProperty().withName("ltcrtmebrssrlxen").withValue("datapthc"),
+                new UserProperty().withName("j").withValue("dataqmb"),
+                new UserProperty().withName("xensog").withValue("datavhqqxggncgyzvt"),
+                new UserProperty().withName("excjqrvpgukscrsb").withValue("datahkdemaxoaj")))
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("vtinro")
+                .withParameters(mapOf("pyh", "datatylseu", "n", "datanngijnzlokxihf", "ssxid", "databljlrfwq")))
+            .withPolicy(new ActivityPolicy().withTimeout("datavbicdzvypfo")
+                .withRetry("dataxbfctqnq")
+                .withRetryIntervalInSeconds(1638131634)
+                .withSecureInput(false)
+                .withSecureOutput(true)
+                .withAdditionalProperties(mapOf()))
+            .withStoredProcedureName("datapaiat")
+            .withStoredProcedureParameters("dataxvbwsa");
         model = BinaryData.fromObject(model).toObject(SqlServerStoredProcedureActivity.class);
-        Assertions.assertEquals("xacxcac", model.name());
-        Assertions.assertEquals("dkomrpucytjxpdqw", model.description());
+        Assertions.assertEquals("wpqvgxpwmoefhbur", model.name());
+        Assertions.assertEquals("a", model.description());
         Assertions.assertEquals(ActivityState.INACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("skyrhsijxm", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.FAILED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("vzjkzslvxdp", model.userProperties().get(0).name());
-        Assertions.assertEquals("vse", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(45833654, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("wpxvptqnqbd", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.SKIPPED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("ltcrtmebrssrlxen", model.userProperties().get(0).name());
+        Assertions.assertEquals("vtinro", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(1638131634, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(false, model.policy().secureInput());
         Assertions.assertEquals(true, model.policy().secureOutput());
     }

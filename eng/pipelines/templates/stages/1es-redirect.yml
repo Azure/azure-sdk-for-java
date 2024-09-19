@@ -11,7 +11,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20240711.1
+      ref: refs/tags/azure-sdk-build-tools_20240910.2
 
 parameters:
 - name: stages
@@ -41,6 +41,10 @@ extends:
     settings:
       skipBuildTagsForGitHubPullRequests: true
     sdl:
+      ${{ if and(eq(variables['Build.DefinitionName'], 'java - core'), eq(variables['Build.SourceBranchName'], 'main'), eq(variables['System.TeamProject'], 'internal')) }}:
+        autobaseline:
+          isMainPipeline: true
+          enableForGitHub: true
       sourceAnalysisPool:
         name: azsdk-pool-mms-win-2022-general
         image: azsdk-pool-mms-win-2022-1espt
@@ -51,6 +55,8 @@ extends:
       # TODO: migrate analyze spot bugs configuration here from steps/run-and-validate-linting.yml
       spotBugs:
         enabled: false
+      # Turn off the build warnings caused by disabling some sdl checks
+      createAdoIssuesForJustificationsForDisablement: false
       binskim:
         # Exclude imported azure-sdk-build-tools gpg/azcopy binaries
         # See https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format

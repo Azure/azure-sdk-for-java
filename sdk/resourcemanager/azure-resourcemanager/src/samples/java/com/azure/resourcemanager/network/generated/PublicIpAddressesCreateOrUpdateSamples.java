@@ -19,7 +19,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddressSkuTier;
 public final class PublicIpAddressesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpAddressCreateDns.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PublicIpAddressCreateDns.json
      */
     /**
      * Sample code: Create public IP address DNS.
@@ -38,7 +38,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PublicIpAddressCreateCustomizedValues.json
      */
     /**
@@ -63,7 +63,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpAddressCreateDefaults
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PublicIpAddressCreateDefaults
      * .json
      */
     /**
@@ -81,7 +81,7 @@ public final class PublicIpAddressesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * PublicIpAddressCreateDnsWithDomainNameLabelScope.json
      */
     /**

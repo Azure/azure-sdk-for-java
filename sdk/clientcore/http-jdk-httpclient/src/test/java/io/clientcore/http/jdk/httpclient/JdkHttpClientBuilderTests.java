@@ -75,9 +75,9 @@ public class JdkHttpClientBuilderTests {
 
         final JdkHttpClient client = (JdkHttpClient) new JdkHttpClientBuilder(existingClientBuilder).build();
 
-        final String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
+        final String defaultUri = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
-        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUri))) {
             assertEquals(200, response.getStatusCode());
 
             assertNotNull(marker[0]);
@@ -110,9 +110,9 @@ public class JdkHttpClientBuilderTests {
             }
         }).build();
 
-        final String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
+        final String defaultUri = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, defaultUri))) {
             assertEquals(200, response.getStatusCode());
 
             assertNotNull(marker[0]);
@@ -139,10 +139,10 @@ public class JdkHttpClientBuilderTests {
 
         HttpClient httpClient
             = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder()).proxy(clientProxyOptions).build();
-        // Url of the service behind proxy
-        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
+        // Uri of the service behind proxy
+        final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
             assertNotNull(response);
         }
     }
@@ -172,9 +172,9 @@ public class JdkHttpClientBuilderTests {
     public void buildWithNonProxyConfigurationProxy(Configuration configuration) throws IOException {
         final HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();
 
-        final String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
+        final String defaultUri = SERVER_HTTP_URI + SERVICE_ENDPOINT;
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, defaultUrl))) {
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, defaultUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -283,9 +283,9 @@ public class JdkHttpClientBuilderTests {
     private static void configurationProxyTest(Configuration configuration) throws IOException {
         HttpClient httpClient
             = new JdkHttpClientBuilder(java.net.http.HttpClient.newBuilder()).configuration(configuration).build();
-        // Url of the service behind proxy
-        final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+        // Uri of the service behind proxy
+        final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
             assertNotNull(response);
         }
     }

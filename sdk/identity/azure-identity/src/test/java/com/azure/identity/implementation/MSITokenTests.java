@@ -3,9 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
 
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
+
 
     @Test
     public void canParseLong() {
@@ -36,6 +35,8 @@ public class MSITokenTests {
 
     @Test
     public void canDeserialize() {
+        // this is the shape of a payload from the IMDS endpoint.
+        // we only ever deserialize these like this.
         String json = "{\n"
             + "  \"access_token\": \"fake_token\",\n"
             + "  \"refresh_token\": \"\",\n"
@@ -47,12 +48,15 @@ public class MSITokenTests {
             + "}";
         MSIToken token;
         try {
-            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+            try (JsonReader reader = JsonProviders.createReader(json)) {
+                token = MSIToken.fromJson(reader);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
         assertEquals(1506484173, token.getExpiresAt().toEpochSecond());
+        assertEquals("fake_token", token.getToken());
     }
 
     @Test

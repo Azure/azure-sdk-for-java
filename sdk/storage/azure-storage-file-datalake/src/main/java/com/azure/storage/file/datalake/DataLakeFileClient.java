@@ -1684,9 +1684,8 @@ public class DataLakeFileClient extends DataLakePathClient {
             expiresOn = null;
         }
 
-        Callable<ResponseBase<PathsSetExpiryHeaders, Void>> operation = () ->
-            this.blobDataLakeStorage.getPaths().setExpiryWithResponse(pathExpiryOptions, null, null, expiresOn,
-                finalContext);
+        Callable<ResponseBase<PathsSetExpiryHeaders, Void>> operation = () -> this.blobDataLakeStorage.getPaths()
+            .setExpiryWithResponse(pathExpiryOptions, null, null, expiresOn, finalContext);
 
         ResponseBase<PathsSetExpiryHeaders, Void> response = StorageImplUtils.sendRequest(operation, timeout,
             DataLakeStorageException.class);

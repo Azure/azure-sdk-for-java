@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.fluent.models.DdosProtectionPlanInner;
 public final class DdosProtectionPlansCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/DdosProtectionPlanCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/DdosProtectionPlanCreate.json
      */
     /**
      * Sample code: Create DDoS protection plan.

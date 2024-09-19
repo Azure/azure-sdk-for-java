@@ -7,89 +7,224 @@ package com.azure.resourcemanager.billing.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billing.fluent.models.ReservationInner;
+import com.azure.resourcemanager.billing.models.PatchModel;
 
-/** An instance of this class provides access to all the operations defined in ReservationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationsClient.
+ */
 public interface ReservationsClient {
     /**
-     * Lists the reservations for a billing account and the roll up counts of reservations group by provisioning states.
-     *
+     * Lists the reservations in the billing account and the roll up counts of reservations group by provisioning
+     * states.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationInner> listByBillingAccount(String billingAccountName);
 
     /**
-     * Lists the reservations for a billing account and the roll up counts of reservations group by provisioning states.
-     *
+     * Lists the reservations in the billing account and the roll up counts of reservations group by provisioning
+     * states.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'.
-     * @param orderby May be used to sort order by reservation properties.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     states.
+     * states.
      * @param selectedState The selected provisioning state.
+     * @param take The number of reservations to return in API response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationInner> listByBillingAccount(
-        String billingAccountName,
-        String filter,
-        String orderby,
-        String refreshSummary,
-        String selectedState,
-        Context context);
+    PagedIterable<ReservationInner> listByBillingAccount(String billingAccountName, String filter, String orderBy,
+        Float skiptoken, String refreshSummary, String selectedState, Float take, Context context);
 
     /**
      * Lists the reservations for a billing profile and the roll up counts of reservations group by provisioning state.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationInner> listByBillingProfile(String billingAccountName, String billingProfileName);
 
     /**
      * Lists the reservations for a billing profile and the roll up counts of reservations group by provisioning state.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'.
-     * @param orderby May be used to sort order by reservation properties.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     state.
+     * states.
      * @param selectedState The selected provisioning state.
+     * @param take The number of reservations to return in API response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReservationInner> listByBillingProfile(
-        String billingAccountName,
-        String billingProfileName,
-        String filter,
-        String orderby,
-        String refreshSummary,
-        String selectedState,
+    PagedIterable<ReservationInner> listByBillingProfile(String billingAccountName, String billingProfileName,
+        String filter, String orderBy, Float skiptoken, String refreshSummary, String selectedState, Float take,
+        Context context);
+
+    /**
+     * Get Reservation details in the billing account.
+     * 
+     * Get specific Reservation details in the billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @param reservationId Id of the reservation item.
+     * @param expand May be used to expand the detail information of some properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specific Reservation details in the billing account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ReservationInner> getByReservationOrderWithResponse(String billingAccountName, String reservationOrderId,
+        String reservationId, String expand, Context context);
+
+    /**
+     * Get Reservation details in the billing account.
+     * 
+     * Get specific Reservation details in the billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @param reservationId Id of the reservation item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specific Reservation details in the billing account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReservationInner getByReservationOrder(String billingAccountName, String reservationOrderId, String reservationId);
+
+    /**
+     * Update reservation by billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @param reservationId Id of the reservation item.
+     * @param body Request body for patching a reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the definition of the reservation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReservationInner>, ReservationInner> beginUpdateByBillingAccount(String billingAccountName,
+        String reservationOrderId, String reservationId, PatchModel body);
+
+    /**
+     * Update reservation by billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @param reservationId Id of the reservation item.
+     * @param body Request body for patching a reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the definition of the reservation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ReservationInner>, ReservationInner> beginUpdateByBillingAccount(String billingAccountName,
+        String reservationOrderId, String reservationId, PatchModel body, Context context);
+
+    /**
+     * Update reservation by billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @param reservationId Id of the reservation item.
+     * @param body Request body for patching a reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the definition of the reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReservationInner updateByBillingAccount(String billingAccountName, String reservationOrderId, String reservationId,
+        PatchModel body);
+
+    /**
+     * Update reservation by billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @param reservationId Id of the reservation item.
+     * @param body Request body for patching a reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the definition of the reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ReservationInner updateByBillingAccount(String billingAccountName, String reservationOrderId, String reservationId,
+        PatchModel body, Context context);
+
+    /**
+     * Get Reservations in a given reservation Order in the billing account
+     * 
+     * List Reservations within a single ReservationOrder in the billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of `Reservations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ReservationInner> listByReservationOrder(String billingAccountName, String reservationOrderId);
+
+    /**
+     * Get Reservations in a given reservation Order in the billing account
+     * 
+     * List Reservations within a single ReservationOrder in the billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param reservationOrderId Order Id of the reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of `Reservations as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ReservationInner> listByReservationOrder(String billingAccountName, String reservationOrderId,
         Context context);
 }

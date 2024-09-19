@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.AdminState;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.ResiliencyModel;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
@@ -160,6 +161,11 @@ public final class VirtualNetworkGatewayPropertiesFormat
      * in the vnet
      */
     private AdminState adminState;
+
+    /*
+     * Property to indicate if the Express Route Gateway has resiliency model of MultiHomed or SingleHomed
+     */
+    private ResiliencyModel resiliencyModel;
 
     /**
      * Creates an instance of VirtualNetworkGatewayPropertiesFormat class.
@@ -665,6 +671,28 @@ public final class VirtualNetworkGatewayPropertiesFormat
     }
 
     /**
+     * Get the resiliencyModel property: Property to indicate if the Express Route Gateway has resiliency model of
+     * MultiHomed or SingleHomed.
+     * 
+     * @return the resiliencyModel value.
+     */
+    public ResiliencyModel resiliencyModel() {
+        return this.resiliencyModel;
+    }
+
+    /**
+     * Set the resiliencyModel property: Property to indicate if the Express Route Gateway has resiliency model of
+     * MultiHomed or SingleHomed.
+     * 
+     * @param resiliencyModel the resiliencyModel value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withResiliencyModel(ResiliencyModel resiliencyModel) {
+        this.resiliencyModel = resiliencyModel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -727,6 +755,8 @@ public final class VirtualNetworkGatewayPropertiesFormat
         jsonWriter.writeBooleanField("allowVirtualWanTraffic", this.allowVirtualWanTraffic);
         jsonWriter.writeBooleanField("allowRemoteVnetTraffic", this.allowRemoteVnetTraffic);
         jsonWriter.writeStringField("adminState", this.adminState == null ? null : this.adminState.toString());
+        jsonWriter.writeStringField("resiliencyModel",
+            this.resiliencyModel == null ? null : this.resiliencyModel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -818,6 +848,9 @@ public final class VirtualNetworkGatewayPropertiesFormat
                 } else if ("adminState".equals(fieldName)) {
                     deserializedVirtualNetworkGatewayPropertiesFormat.adminState
                         = AdminState.fromString(reader.getString());
+                } else if ("resiliencyModel".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayPropertiesFormat.resiliencyModel
+                        = ResiliencyModel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
