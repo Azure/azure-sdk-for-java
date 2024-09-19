@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicReference;
  * <p>This credential is a legacy mechanism for authenticating clients using credentials provided to Visual Studio.</p>
  *
  * @see com.azure.identity
- * @see VisualStudioCodeCredential
  */
 public class SharedTokenCacheCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(SharedTokenCacheCredential.class);
