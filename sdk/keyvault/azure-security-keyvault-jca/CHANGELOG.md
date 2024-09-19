@@ -9,6 +9,9 @@
 - Fixed bug about intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).
 - Changed the authentication mechanism to allow for discovering the login URI for a given Azure Key Vault instance by requesting an authentication challenge from the service, as opposed to using a hard-coded list of URIs to choose from depending on a vault's URI. This should add support for customers using Azure Stack instances, for example.
 
+#### Dependency Updates
+- Upgraded `jackson-databind` from `2.13.5` to version `2.17.2`.
+
 ### Other Changes
 
 ## 2.8.2 (2024-07-17)
