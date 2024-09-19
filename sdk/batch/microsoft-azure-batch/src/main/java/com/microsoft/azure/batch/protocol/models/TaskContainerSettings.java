@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -45,6 +46,16 @@ public class TaskContainerSettings {
      */
     @JsonProperty(value = "workingDirectory")
     private ContainerWorkingDirectory workingDirectory;
+
+    /**
+     * The paths you want to mounted to container task.
+     * If this array is null or be not present, container task will mount
+     * entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in
+     * Linux). It won't' mount any data paths into container if this array is
+     * set as empty.
+     */
+    @JsonProperty(value = "containerHostBatchBindMounts")
+    private List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts;
 
     /**
      * Get these additional options are supplied as arguments to the "docker create" command, in addition to those controlled by the Batch Service.
@@ -123,6 +134,26 @@ public class TaskContainerSettings {
      */
     public TaskContainerSettings withWorkingDirectory(ContainerWorkingDirectory workingDirectory) {
         this.workingDirectory = workingDirectory;
+        return this;
+    }
+
+    /**
+     * Get if this array is null or be not present, container task will mount entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @return the containerHostBatchBindMounts value
+     */
+    public List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts() {
+        return this.containerHostBatchBindMounts;
+    }
+
+    /**
+     * Set if this array is null or be not present, container task will mount entire temporary disk drive in windows (or AZ_BATCH_NODE_ROOT_DIR in Linux). It won't' mount any data paths into container if this array is set as empty.
+     *
+     * @param containerHostBatchBindMounts the containerHostBatchBindMounts value to set
+     * @return the TaskContainerSettings object itself.
+     */
+    public TaskContainerSettings withContainerHostBatchBindMounts(List<ContainerHostBatchBindMountEntry> containerHostBatchBindMounts) {
+        this.containerHostBatchBindMounts = containerHostBatchBindMounts;
         return this;
     }
 

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualRoutersDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualRouterDelete.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualRouterDelete.json
      */
     /**
      * Sample code: Delete VirtualRouter.

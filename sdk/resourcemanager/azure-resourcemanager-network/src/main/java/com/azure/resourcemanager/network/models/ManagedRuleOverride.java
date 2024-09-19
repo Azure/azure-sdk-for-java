@@ -32,6 +32,11 @@ public final class ManagedRuleOverride implements JsonSerializable<ManagedRuleOv
      */
     private ActionType action;
 
+    /*
+     * Describes the override sensitivity to be applied when rule matches.
+     */
+    private SensitivityType sensitivity;
+
     /**
      * Creates an instance of ManagedRuleOverride class.
      */
@@ -99,6 +104,26 @@ public final class ManagedRuleOverride implements JsonSerializable<ManagedRuleOv
     }
 
     /**
+     * Get the sensitivity property: Describes the override sensitivity to be applied when rule matches.
+     * 
+     * @return the sensitivity value.
+     */
+    public SensitivityType sensitivity() {
+        return this.sensitivity;
+    }
+
+    /**
+     * Set the sensitivity property: Describes the override sensitivity to be applied when rule matches.
+     * 
+     * @param sensitivity the sensitivity value to set.
+     * @return the ManagedRuleOverride object itself.
+     */
+    public ManagedRuleOverride withSensitivity(SensitivityType sensitivity) {
+        this.sensitivity = sensitivity;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -121,6 +146,7 @@ public final class ManagedRuleOverride implements JsonSerializable<ManagedRuleOv
         jsonWriter.writeStringField("ruleId", this.ruleId);
         jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
         jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("sensitivity", this.sensitivity == null ? null : this.sensitivity.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -146,6 +172,8 @@ public final class ManagedRuleOverride implements JsonSerializable<ManagedRuleOv
                     deserializedManagedRuleOverride.state = ManagedRuleEnabledState.fromString(reader.getString());
                 } else if ("action".equals(fieldName)) {
                     deserializedManagedRuleOverride.action = ActionType.fromString(reader.getString());
+                } else if ("sensitivity".equals(fieldName)) {
+                    deserializedManagedRuleOverride.sensitivity = SensitivityType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

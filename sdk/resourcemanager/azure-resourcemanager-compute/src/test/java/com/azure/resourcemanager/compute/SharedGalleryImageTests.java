@@ -35,12 +35,13 @@ import java.util.Map;
 
 public class SharedGalleryImageTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST_CENTRAL;
-    private final String vmName = "javavm";
+    private final Region region = Region.US_WEST3;
+    private String vmName = "";
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
+        vmName = generateRandomResourceName("javavm", 12);
         super.initializeClients(httpPipeline, profile);
     }
 
@@ -221,7 +222,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -315,7 +316,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();

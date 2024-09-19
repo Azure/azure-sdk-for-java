@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.ApplicationGatewayForContainersReferenceDefinition;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -64,6 +65,11 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
      * A collection of references to application gateway path rules.
      */
     private List<SubResource> pathBasedRules;
+
+    /*
+     * A collection of references to application gateway for containers.
+     */
+    private List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers;
 
     /**
      * Creates an instance of WebApplicationFirewallPolicyPropertiesFormat class.
@@ -178,6 +184,16 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
     }
 
     /**
+     * Get the applicationGatewayForContainers property: A collection of references to application gateway for
+     * containers.
+     * 
+     * @return the applicationGatewayForContainers value.
+     */
+    public List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers() {
+        return this.applicationGatewayForContainers;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -198,6 +214,9 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
                     "Missing required property managedRules in model WebApplicationFirewallPolicyPropertiesFormat"));
         } else {
             managedRules().validate();
+        }
+        if (applicationGatewayForContainers() != null) {
+            applicationGatewayForContainers().forEach(e -> e.validate());
         }
     }
 
@@ -258,6 +277,11 @@ public final class WebApplicationFirewallPolicyPropertiesFormat
                 } else if ("pathBasedRules".equals(fieldName)) {
                     List<SubResource> pathBasedRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
                     deserializedWebApplicationFirewallPolicyPropertiesFormat.pathBasedRules = pathBasedRules;
+                } else if ("applicationGatewayForContainers".equals(fieldName)) {
+                    List<ApplicationGatewayForContainersReferenceDefinition> applicationGatewayForContainers = reader
+                        .readArray(reader1 -> ApplicationGatewayForContainersReferenceDefinition.fromJson(reader1));
+                    deserializedWebApplicationFirewallPolicyPropertiesFormat.applicationGatewayForContainers
+                        = applicationGatewayForContainers;
                 } else {
                     reader.skipChildren();
                 }

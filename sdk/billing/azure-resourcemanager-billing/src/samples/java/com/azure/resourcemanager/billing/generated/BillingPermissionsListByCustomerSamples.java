@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for BillingPermissions ListByCustomer. */
+/**
+ * Samples for BillingPermissions ListByCustomer.
+ */
 public final class BillingPermissionsListByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/CustomerPermissionsList.json
+     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/
+     * billingPermissionsListByCustomer.json
      */
     /**
-     * Sample code: BillingProfilePermissionsList.
-     *
+     * Sample code: BillingPermissionsListByCustomer.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void billingProfilePermissionsList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingPermissions()
-            .listByCustomer("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
+    public static void billingPermissionsListByCustomer(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingPermissions()
+            .listByCustomer("10000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                "BKM6-54VH-BG7-PGB", "11111111-1111-1111-1111-111111111111", com.azure.core.util.Context.NONE);
     }
 }

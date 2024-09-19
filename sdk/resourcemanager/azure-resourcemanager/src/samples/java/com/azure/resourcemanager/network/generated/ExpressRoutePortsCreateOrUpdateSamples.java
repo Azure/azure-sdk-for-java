@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class ExpressRoutePortsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortUpdateLink.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ExpressRoutePortUpdateLink.
      * json
      */
     /**
@@ -41,7 +41,7 @@ public final class ExpressRoutePortsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/ExpressRoutePortCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/ExpressRoutePortCreate.json
      */
     /**
      * Sample code: ExpressRoutePortCreate.

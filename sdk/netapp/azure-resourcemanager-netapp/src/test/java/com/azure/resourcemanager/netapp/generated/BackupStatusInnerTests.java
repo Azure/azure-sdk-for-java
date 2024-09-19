@@ -11,7 +11,7 @@ public final class BackupStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupStatusInner model = BinaryData.fromString(
-            "{\"healthy\":false,\"relationshipStatus\":\"Failed\",\"mirrorState\":\"Broken\",\"unhealthyReason\":\"hxacpqjlihhyu\",\"errorMessage\":\"skasdvlmfwdgzxu\",\"lastTransferSize\":4427086989076318317,\"lastTransferType\":\"amrsreuzv\",\"totalTransferBytes\":8043472867946567550,\"transferProgressBytes\":1231697029448842610}")
+            "{\"healthy\":true,\"relationshipStatus\":\"Unknown\",\"mirrorState\":\"Broken\",\"unhealthyReason\":\"hpjbib\",\"errorMessage\":\"mfxumvfcluyovw\",\"lastTransferSize\":9180905954554209142,\"lastTransferType\":\"ezzxscyhwzdgiruj\",\"totalTransferBytes\":4366398544066137642,\"transferProgressBytes\":8232701631993997082}")
             .toObject(BackupStatusInner.class);
     }
 

@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.ProductInner;
-import com.azure.resourcemanager.billing.models.Amount;
-import com.azure.resourcemanager.billing.models.AutoRenew;
-import com.azure.resourcemanager.billing.models.BillingFrequency;
 import com.azure.resourcemanager.billing.models.Product;
-import com.azure.resourcemanager.billing.models.ProductStatusType;
-import com.azure.resourcemanager.billing.models.Reseller;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.billing.models.ProductProperties;
+import java.util.Collections;
+import java.util.Map;
 
 public final class ProductImpl implements Product {
     private ProductInner innerObject;
@@ -35,92 +33,21 @@ public final class ProductImpl implements Product {
         return this.innerModel().type();
     }
 
-    public AutoRenew autoRenew() {
-        return this.innerModel().autoRenew();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
-    public String displayName() {
-        return this.innerModel().displayName();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public OffsetDateTime purchaseDate() {
-        return this.innerModel().purchaseDate();
-    }
-
-    public String productTypeId() {
-        return this.innerModel().productTypeId();
-    }
-
-    public String productType() {
-        return this.innerModel().productType();
-    }
-
-    public ProductStatusType status() {
-        return this.innerModel().status();
-    }
-
-    public OffsetDateTime endDate() {
-        return this.innerModel().endDate();
-    }
-
-    public BillingFrequency billingFrequency() {
-        return this.innerModel().billingFrequency();
-    }
-
-    public Amount lastCharge() {
-        return this.innerModel().lastCharge();
-    }
-
-    public OffsetDateTime lastChargeDate() {
-        return this.innerModel().lastChargeDate();
-    }
-
-    public Float quantity() {
-        return this.innerModel().quantity();
-    }
-
-    public String skuId() {
-        return this.innerModel().skuId();
-    }
-
-    public String skuDescription() {
-        return this.innerModel().skuDescription();
-    }
-
-    public String tenantId() {
-        return this.innerModel().tenantId();
-    }
-
-    public String availabilityId() {
-        return this.innerModel().availabilityId();
-    }
-
-    public String invoiceSectionId() {
-        return this.innerModel().invoiceSectionId();
-    }
-
-    public String invoiceSectionDisplayName() {
-        return this.innerModel().invoiceSectionDisplayName();
-    }
-
-    public String billingProfileId() {
-        return this.innerModel().billingProfileId();
-    }
-
-    public String billingProfileDisplayName() {
-        return this.innerModel().billingProfileDisplayName();
-    }
-
-    public String customerId() {
-        return this.innerModel().customerId();
-    }
-
-    public String customerDisplayName() {
-        return this.innerModel().customerDisplayName();
-    }
-
-    public Reseller reseller() {
-        return this.innerModel().reseller();
+    public ProductProperties properties() {
+        return this.innerModel().properties();
     }
 
     public ProductInner innerModel() {

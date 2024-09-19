@@ -13,21 +13,22 @@ public final class ClusterAvailableUpgradeAksPatchUpgradePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterAvailableUpgradeAksPatchUpgradeProperties model = BinaryData.fromString(
-            "{\"upgradeType\":\"AKSPatchUpgrade\",\"currentVersion\":\"fffiak\",\"currentVersionStatus\":\"Deprecated\",\"latestVersion\":\"qmt\"}")
+            "{\"upgradeType\":\"AKSPatchUpgrade\",\"currentVersion\":\"slevufuztc\",\"currentVersionStatus\":\"Supported\",\"latestVersion\":\"jtqedcgzulwmm\"}")
             .toObject(ClusterAvailableUpgradeAksPatchUpgradeProperties.class);
-        Assertions.assertEquals("fffiak", model.currentVersion());
-        Assertions.assertEquals(CurrentClusterAksVersionStatus.DEPRECATED, model.currentVersionStatus());
-        Assertions.assertEquals("qmt", model.latestVersion());
+        Assertions.assertEquals("slevufuztc", model.currentVersion());
+        Assertions.assertEquals(CurrentClusterAksVersionStatus.SUPPORTED, model.currentVersionStatus());
+        Assertions.assertEquals("jtqedcgzulwmm", model.latestVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterAvailableUpgradeAksPatchUpgradeProperties model
-            = new ClusterAvailableUpgradeAksPatchUpgradeProperties().withCurrentVersion("fffiak")
-                .withCurrentVersionStatus(CurrentClusterAksVersionStatus.DEPRECATED).withLatestVersion("qmt");
+            = new ClusterAvailableUpgradeAksPatchUpgradeProperties().withCurrentVersion("slevufuztc")
+                .withCurrentVersionStatus(CurrentClusterAksVersionStatus.SUPPORTED)
+                .withLatestVersion("jtqedcgzulwmm");
         model = BinaryData.fromObject(model).toObject(ClusterAvailableUpgradeAksPatchUpgradeProperties.class);
-        Assertions.assertEquals("fffiak", model.currentVersion());
-        Assertions.assertEquals(CurrentClusterAksVersionStatus.DEPRECATED, model.currentVersionStatus());
-        Assertions.assertEquals("qmt", model.latestVersion());
+        Assertions.assertEquals("slevufuztc", model.currentVersion());
+        Assertions.assertEquals(CurrentClusterAksVersionStatus.SUPPORTED, model.currentVersionStatus());
+        Assertions.assertEquals("jtqedcgzulwmm", model.latestVersion());
     }
 }

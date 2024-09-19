@@ -13,6 +13,7 @@ import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.vertx.VertxAsyncHttpClientBuilder;
 import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
@@ -23,12 +24,20 @@ import reactor.core.publisher.Mono;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
 import javax.net.ssl.X509TrustManager;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
@@ -41,6 +50,7 @@ import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.VERTX;
  * @param <TOptions> the performance test options to use while running the test.
  */
 public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
+    ClientLogger LOGGER = new ClientLogger(ApiPerfTestBase.class);
     private final reactor.netty.http.client.HttpClient recordPlaybackHttpClient;
     private final URI testProxy;
     private final TestProxyPolicy testProxyPolicy;
@@ -225,6 +235,106 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             .then();
     }
 
+    public CompletableFuture<Void> runAllAsyncWithCompletableFuture(long endNanoTime) {
+        completedOperations = 0;
+        lastCompletionNanoTime = 0;
+        long startNanoTime = System.nanoTime();
+        Semaphore semaphore = new Semaphore(options.getParallel()); // Use configurable limit
+
+        List<CompletableFuture<Void>> futures = new LinkedList<>();
+        while (System.nanoTime() < endNanoTime) {
+            try {
+                semaphore.acquire();
+                // Each runTestAsyncWithCompletableFuture() call runs independently
+                CompletableFuture<Void> testFuture = runTestAsyncWithCompletableFuture()
+                    .thenAccept(result -> {
+                        completedOperations += result;
+                        lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                    })
+                    .whenComplete((res, ex) -> semaphore.release());
+                futures.add(testFuture);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException(e);
+            }
+        }
+
+        // Remove all completed CompletableFutures from the list
+        futures.removeIf(CompletableFuture::isDone);
+        // Combine all futures so we can wait for all to complete
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
+    }
+
+    @Override
+    public Runnable runAllAsyncWithExecutorService(long endNanoTime) {
+        completedOperations = 0;
+        lastCompletionNanoTime = 0;
+        final ExecutorService executor = Executors.newFixedThreadPool(options.getParallel());
+
+        return () -> {
+            try {
+                while (System.nanoTime() < endNanoTime) {
+                    long startNanoTime = System.nanoTime();
+
+                    try {
+                        Runnable task = runTestAsyncWithExecutorService();
+                        executor.submit(() -> {
+                            task.run();
+                            completedOperations++;
+                            lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                        }).get(); // Wait for the task to complete
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } finally {
+                executor.shutdown();
+                try {
+                    if (!executor.awaitTermination(options.getDuration(), TimeUnit.SECONDS)) {
+                        executor.shutdownNow();
+                    }
+                } catch (InterruptedException e) {
+                    executor.shutdownNow();
+                    Thread.currentThread().interrupt();
+                }
+            }
+        };
+    }
+
+    @Override
+    public Runnable runAllAsyncWithVirtualThread(long endNanoTime) {
+        completedOperations = 0;
+        lastCompletionNanoTime = 0;
+
+        ExecutorService virtualThreadExecutor;
+        try {
+            Method method = Executors.class.getMethod("newVirtualThreadPerTaskExecutor");
+            virtualThreadExecutor = (ExecutorService) method.invoke(null);
+        } catch (Exception e) {
+            // Skip virtual thread tests and report 0 completed operations rather than fallback
+            return () -> {
+                completedOperations = 0;
+                lastCompletionNanoTime = 0;
+            };
+        }
+
+        return () -> {
+            while (System.nanoTime() < endNanoTime) {
+                long startNanoTime = System.nanoTime();
+                virtualThreadExecutor.execute(() -> {
+                    try {
+                        runTestAsyncWithVirtualThread();
+                        completedOperations++;
+                        lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                    } catch (Exception e) {
+                        LOGGER.logThrowableAsError(e);
+                    }
+                });
+            }
+            virtualThreadExecutor.shutdown();
+        };
+    }
+
     /**
      * Indicates how many operations were completed in a single run of the test. Good to be used for batch operations.
      *
@@ -239,6 +349,31 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
      * @return the number of successful operations completed.
      */
     abstract Mono<Integer> runTestAsync();
+
+    /**
+     * Indicates how many operations were completed in a single run of the async test using CompletableFuture.
+     *
+     * @return the number of successful operations completed.
+     */
+    CompletableFuture<Integer> runTestAsyncWithCompletableFuture() {
+        throw new UnsupportedOperationException("runAllAsyncWithCompletableFuture is not supported.");
+    }
+
+    /**
+     * Indicates how many operations were completed in a single run of the async test using ExecutorService.
+     *
+     * @return the number of successful operations completed.
+     */
+    Runnable runTestAsyncWithExecutorService() {
+        throw new UnsupportedOperationException("runAllAsyncWithExecutorService is not supported.");
+    }
+
+    /**
+     * Indicates how many operations were completed in a single run of the async test using Virtual Threads.
+     */
+    Runnable runTestAsyncWithVirtualThread() {
+        throw new UnsupportedOperationException("runAllAsyncWithVirtualThread is not supported.");
+    }
 
     /**
      * Stops playback tests.
@@ -327,6 +462,12 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         return Mono.defer(() -> {
             if (options.isSync()) {
                 return Mono.fromFuture(CompletableFuture.supplyAsync(() -> runTest())).then();
+            } else if (options.isCompletableFuture()) {
+                return Mono.fromFuture(CompletableFuture.supplyAsync(() -> runTestAsyncWithCompletableFuture())).then();
+            } else if (options.isExecutorService()) {
+                return  Mono.fromRunnable(runTestAsyncWithExecutorService());
+            } else if (options.isVirtualThread()) {
+                return  Mono.fromRunnable(this::runTestAsyncWithVirtualThread);
             } else {
                 return runTestAsync().then();
             }

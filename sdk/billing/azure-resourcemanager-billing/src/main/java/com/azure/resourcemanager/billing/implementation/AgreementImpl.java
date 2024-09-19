@@ -4,15 +4,12 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.AgreementInner;
-import com.azure.resourcemanager.billing.models.AcceptanceMode;
 import com.azure.resourcemanager.billing.models.Agreement;
-import com.azure.resourcemanager.billing.models.BillingProfileInfo;
-import com.azure.resourcemanager.billing.models.Category;
-import com.azure.resourcemanager.billing.models.Participants;
-import java.time.OffsetDateTime;
+import com.azure.resourcemanager.billing.models.AgreementProperties;
 import java.util.Collections;
-import java.util.List;
+import java.util.Map;
 
 public final class AgreementImpl implements Agreement {
     private AgreementInner innerObject;
@@ -36,41 +33,21 @@ public final class AgreementImpl implements Agreement {
         return this.innerModel().type();
     }
 
-    public String agreementLink() {
-        return this.innerModel().agreementLink();
-    }
-
-    public Category category() {
-        return this.innerModel().category();
-    }
-
-    public AcceptanceMode acceptanceMode() {
-        return this.innerModel().acceptanceMode();
-    }
-
-    public BillingProfileInfo billingProfileInfo() {
-        return this.innerModel().billingProfileInfo();
-    }
-
-    public OffsetDateTime effectiveDate() {
-        return this.innerModel().effectiveDate();
-    }
-
-    public OffsetDateTime expirationDate() {
-        return this.innerModel().expirationDate();
-    }
-
-    public List<Participants> participants() {
-        List<Participants> inner = this.innerModel().participants();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections.unmodifiableMap(inner);
         } else {
-            return Collections.emptyList();
+            return Collections.emptyMap();
         }
     }
 
-    public String status() {
-        return this.innerModel().status();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public AgreementProperties properties() {
+        return this.innerModel().properties();
     }
 
     public AgreementInner innerModel() {

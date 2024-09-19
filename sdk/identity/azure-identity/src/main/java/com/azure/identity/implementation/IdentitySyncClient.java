@@ -76,11 +76,11 @@ public class IdentitySyncClient extends IdentityClientBase {
      * @param options the options configuring the client.
      */
     IdentitySyncClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                       String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
+                       String clientAssertionFilePath, String resourceId, String objectId, Supplier<String> clientAssertionSupplier,
                        Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                        byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                        Duration clientAssertionTimeout, IdentityClientOptions options) {
-        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
+        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, objectId, clientAssertionSupplier,
             clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, isSharedTokenCacheCredential,
             clientAssertionTimeout, options);
 
@@ -185,8 +185,8 @@ public class IdentitySyncClient extends IdentityClientBase {
             .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(claimsRequest);
             parametersBuilder.forceRefresh(true);
         }
 
@@ -241,9 +241,9 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
         if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest
+            ClaimsRequest claimsRequest = ClaimsRequest
                 .formatAsClaimsRequest(request.getClaims());
-            parametersBuilder.claims(customClaimRequest);
+            parametersBuilder.claims(claimsRequest);
             parametersBuilder.forceRefresh(true);
         }
 

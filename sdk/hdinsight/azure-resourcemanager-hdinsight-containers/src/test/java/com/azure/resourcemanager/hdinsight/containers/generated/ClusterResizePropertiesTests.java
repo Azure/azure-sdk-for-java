@@ -12,14 +12,14 @@ public final class ClusterResizePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterResizeProperties model
-            = BinaryData.fromString("{\"targetWorkerNodeCount\":1950925712}").toObject(ClusterResizeProperties.class);
-        Assertions.assertEquals(1950925712, model.targetWorkerNodeCount());
+            = BinaryData.fromString("{\"targetWorkerNodeCount\":1825902686}").toObject(ClusterResizeProperties.class);
+        Assertions.assertEquals(1825902686, model.targetWorkerNodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterResizeProperties model = new ClusterResizeProperties().withTargetWorkerNodeCount(1950925712);
+        ClusterResizeProperties model = new ClusterResizeProperties().withTargetWorkerNodeCount(1825902686);
         model = BinaryData.fromObject(model).toObject(ClusterResizeProperties.class);
-        Assertions.assertEquals(1950925712, model.targetWorkerNodeCount());
+        Assertions.assertEquals(1825902686, model.targetWorkerNodeCount());
     }
 }

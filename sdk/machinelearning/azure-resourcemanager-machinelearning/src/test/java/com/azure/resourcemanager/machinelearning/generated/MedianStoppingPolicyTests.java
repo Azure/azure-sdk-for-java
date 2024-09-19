@@ -11,21 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class MedianStoppingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MedianStoppingPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"policyType\":\"MedianStopping\",\"delayEvaluation\":2026820948,\"evaluationInterval\":660103653}")
-                .toObject(MedianStoppingPolicy.class);
-        Assertions.assertEquals(2026820948, model.delayEvaluation());
-        Assertions.assertEquals(660103653, model.evaluationInterval());
+        MedianStoppingPolicy model = BinaryData
+            .fromString(
+                "{\"policyType\":\"MedianStopping\",\"evaluationInterval\":146013478,\"delayEvaluation\":808656938}")
+            .toObject(MedianStoppingPolicy.class);
+        Assertions.assertEquals(146013478, model.evaluationInterval());
+        Assertions.assertEquals(808656938, model.delayEvaluation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MedianStoppingPolicy model =
-            new MedianStoppingPolicy().withDelayEvaluation(2026820948).withEvaluationInterval(660103653);
+        MedianStoppingPolicy model
+            = new MedianStoppingPolicy().withEvaluationInterval(146013478).withDelayEvaluation(808656938);
         model = BinaryData.fromObject(model).toObject(MedianStoppingPolicy.class);
-        Assertions.assertEquals(2026820948, model.delayEvaluation());
-        Assertions.assertEquals(660103653, model.evaluationInterval());
+        Assertions.assertEquals(146013478, model.evaluationInterval());
+        Assertions.assertEquals(808656938, model.delayEvaluation());
     }
 }

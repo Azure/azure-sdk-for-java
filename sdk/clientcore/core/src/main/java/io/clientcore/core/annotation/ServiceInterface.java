@@ -29,7 +29,7 @@ public @interface ServiceInterface {
      * Property that denotes a parameterized host name targeting a REST service.
      *
      * <p>This is the 'host' field in a Swagger document. Parameters are enclosed in {}s, e.g. {accountName}. An HTTP
-     * client must accept the parameterized host as the base URL for the request, replacing the parameters during
+     * client must accept the parameterized host as the base URI for the request, replacing the parameters during
      * runtime with the actual values users provide.</p>
      *
      * <p>For parameterized hosts, parameters annotated with {@link HostParam} must be provided. See Javadocs in
@@ -40,6 +40,5 @@ public @interface ServiceInterface {
      *
      * @return The protocol/scheme, host, and optional port number in a single string.
      */
-
     String host() default "";
 }

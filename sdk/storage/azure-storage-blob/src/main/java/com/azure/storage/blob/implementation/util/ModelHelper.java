@@ -18,6 +18,7 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConst
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobName;
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalDownload;
+import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
@@ -32,6 +33,7 @@ import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
@@ -464,6 +466,21 @@ public final class ModelHelper {
     public static long getBlobLength(BlobDownloadHeaders headers) {
         return headers.getContentRange() == null ? headers.getContentLength()
             : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
+    }
+
+    /**
+     * Maps the internal exception to a public exception, if and only if {@code internal} is an instance of
+     * {@link BlobStorageExceptionInternal} and it will be mapped to {@link BlobStorageException}.
+     * <p>
+     * The internal exception is required as the public exception was created using Object as the exception value. This
+     * was incorrect and should have been a specific type that was XML deserializable. So, an internal exception was
+     * added to handle this and we map that to the public exception, keeping the API the same.
+     *
+     * @param internal The internal exception.
+     * @return The public exception.
+     */
+    public static BlobStorageException mapToBlobStorageException(BlobStorageExceptionInternal internal) {
+        return new BlobStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 
     private ModelHelper() {

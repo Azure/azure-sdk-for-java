@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoscaleCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoscaleCapacity model =
-            BinaryData
-                .fromString("{\"minInstanceCount\":358956997,\"maxInstanceCount\":1965159297}")
+        AutoscaleCapacity model
+            = BinaryData.fromString("{\"minInstanceCount\":358956997,\"maxInstanceCount\":1965159297}")
                 .toObject(AutoscaleCapacity.class);
         Assertions.assertEquals(358956997, model.minInstanceCount());
         Assertions.assertEquals(1965159297, model.maxInstanceCount());
@@ -21,8 +20,8 @@ public final class AutoscaleCapacityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutoscaleCapacity model =
-            new AutoscaleCapacity().withMinInstanceCount(358956997).withMaxInstanceCount(1965159297);
+        AutoscaleCapacity model
+            = new AutoscaleCapacity().withMinInstanceCount(358956997).withMaxInstanceCount(1965159297);
         model = BinaryData.fromObject(model).toObject(AutoscaleCapacity.class);
         Assertions.assertEquals(358956997, model.minInstanceCount());
         Assertions.assertEquals(1965159297, model.maxInstanceCount());

@@ -57,9 +57,7 @@ public final class LogsTableRow {
      * @return The value associated with the given column name.
      */
     public Optional<LogsTableCell> getColumnValue(String columnName) {
-        return tableRow.stream()
-                .filter(cell -> cell.getColumnName().equals(columnName))
-                .findFirst();
+        return tableRow.stream().filter(cell -> cell.getColumnName().equals(columnName)).findFirst();
     }
 
     /**
@@ -77,49 +75,47 @@ public final class LogsTableRow {
             T t = type.newInstance();
 
             Map<String, Field> declaredFieldMapping = Arrays.stream(type.getDeclaredFields())
-                    .collect(Collectors.toMap(field -> field.getName().toLowerCase(Locale.ROOT), field -> field));
+                .collect(Collectors.toMap(field -> field.getName().toLowerCase(Locale.ROOT), field -> field));
 
-            tableRow.stream()
-                    .forEach(tableCell -> {
-                        String columnName = tableCell.getColumnName();
-                        try {
-                            Field field = declaredFieldMapping.get(columnName.toLowerCase(Locale.ROOT));
-                            if (field == null) {
-                                return;
-                            }
-                            field.setAccessible(true);
-                            if (tableCell.getColumnType() == LogsColumnType.BOOL) {
-                                field.set(t, tableCell.getValueAsBoolean());
-                            } else if (tableCell.getColumnType() == LogsColumnType.DATETIME) {
-                                field.set(t, tableCell.getValueAsDateTime());
-                            } else if (tableCell.getColumnType() == LogsColumnType.DYNAMIC) {
-                                if (tableCell.getValueAsDynamic() != null) {
-                                    field.set(t,
-                                            tableCell.getValueAsDynamic()
-                                                    .toObject(TypeReference.createInstance(field.getType())));
-                                }
-                            } else if (tableCell.getColumnType() == LogsColumnType.INT) {
-                                field.set(t, tableCell.getValueAsInteger());
-                            } else if (tableCell.getColumnType() == LogsColumnType.LONG) {
-                                field.set(t, tableCell.getValueAsLong());
-                            } else if (tableCell.getColumnType() == LogsColumnType.REAL
-                                || tableCell.getColumnType() == LogsColumnType.DECIMAL) {
-                                field.set(t, tableCell.getValueAsDouble());
-                            } else if (tableCell.getColumnType() == LogsColumnType.STRING
-                                || tableCell.getColumnType() == LogsColumnType.GUID
-                                || tableCell.getColumnType() == LogsColumnType.TIMESPAN) {
-                                field.set(t, tableCell.getValueAsString());
-                            }
-                            field.setAccessible(false);
-                        } catch (IllegalAccessException ex) {
-                            throw logger.logExceptionAsError(
-                                    new IllegalArgumentException("Failed to set column value for " + columnName, ex));
+            tableRow.stream().forEach(tableCell -> {
+                String columnName = tableCell.getColumnName();
+                try {
+                    Field field = declaredFieldMapping.get(columnName.toLowerCase(Locale.ROOT));
+                    if (field == null) {
+                        return;
+                    }
+                    field.setAccessible(true);
+                    if (tableCell.getColumnType() == LogsColumnType.BOOL) {
+                        field.set(t, tableCell.getValueAsBoolean());
+                    } else if (tableCell.getColumnType() == LogsColumnType.DATETIME) {
+                        field.set(t, tableCell.getValueAsDateTime());
+                    } else if (tableCell.getColumnType() == LogsColumnType.DYNAMIC) {
+                        if (tableCell.getValueAsDynamic() != null) {
+                            field.set(t,
+                                tableCell.getValueAsDynamic().toObject(TypeReference.createInstance(field.getType())));
                         }
-                    });
+                    } else if (tableCell.getColumnType() == LogsColumnType.INT) {
+                        field.set(t, tableCell.getValueAsInteger());
+                    } else if (tableCell.getColumnType() == LogsColumnType.LONG) {
+                        field.set(t, tableCell.getValueAsLong());
+                    } else if (tableCell.getColumnType() == LogsColumnType.REAL
+                        || tableCell.getColumnType() == LogsColumnType.DECIMAL) {
+                        field.set(t, tableCell.getValueAsDouble());
+                    } else if (tableCell.getColumnType() == LogsColumnType.STRING
+                        || tableCell.getColumnType() == LogsColumnType.GUID
+                        || tableCell.getColumnType() == LogsColumnType.TIMESPAN) {
+                        field.set(t, tableCell.getValueAsString());
+                    }
+                    field.setAccessible(false);
+                } catch (IllegalAccessException ex) {
+                    throw logger.logExceptionAsError(
+                        new IllegalArgumentException("Failed to set column value for " + columnName, ex));
+                }
+            });
             return t;
         } catch (InstantiationException | IllegalAccessException ex) {
             throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Cannot create an instance of class " + type.getName(), ex));
+                new IllegalArgumentException("Cannot create an instance of class " + type.getName(), ex));
         }
     }
 }

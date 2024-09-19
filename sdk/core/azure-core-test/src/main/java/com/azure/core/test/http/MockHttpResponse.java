@@ -27,9 +27,7 @@ public class MockHttpResponse extends HttpResponse {
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
     private final int statusCode;
-
     private final HttpHeaders headers;
-
     private final byte[] bodyBytes;
 
     /**

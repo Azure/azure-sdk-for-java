@@ -229,9 +229,14 @@ public final class EffectiveDefaultSecurityAdminRule extends EffectiveBaseSecuri
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (ruleCollectionAppliesToGroups() != null) {
+            ruleCollectionAppliesToGroups().forEach(e -> e.validate());
+        }
+        if (ruleGroups() != null) {
+            ruleGroups().forEach(e -> e.validate());
         }
     }
 

@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.MapperDslConnectorProperties;
 import com.azure.resourcemanager.datafactory.models.MapperTableSchema;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties for a CDC table.
  */
 @Fluent
-public final class MapperTableProperties {
+public final class MapperTableProperties implements JsonSerializable<MapperTableProperties> {
     /*
      * List of columns for the source table.
      */
-    @JsonProperty(value = "schema")
     private List<MapperTableSchema> schema;
 
     /*
      * List of name/value pairs for connection properties.
      */
-    @JsonProperty(value = "dslConnectorProperties")
     private List<MapperDslConnectorProperties> dslConnectorProperties;
 
     /**
@@ -85,5 +87,48 @@ public final class MapperTableProperties {
         if (dslConnectorProperties() != null) {
             dslConnectorProperties().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("schema", this.schema, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dslConnectorProperties", this.dslConnectorProperties,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapperTableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapperTableProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapperTableProperties.
+     */
+    public static MapperTableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapperTableProperties deserializedMapperTableProperties = new MapperTableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schema".equals(fieldName)) {
+                    List<MapperTableSchema> schema = reader.readArray(reader1 -> MapperTableSchema.fromJson(reader1));
+                    deserializedMapperTableProperties.schema = schema;
+                } else if ("dslConnectorProperties".equals(fieldName)) {
+                    List<MapperDslConnectorProperties> dslConnectorProperties
+                        = reader.readArray(reader1 -> MapperDslConnectorProperties.fromJson(reader1));
+                    deserializedMapperTableProperties.dslConnectorProperties = dslConnectorProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapperTableProperties;
+        });
     }
 }

@@ -6,83 +6,75 @@ package com.azure.resourcemanager.qumulo.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.qumulo.models.MarketplaceDetails;
 import com.azure.resourcemanager.qumulo.models.ProvisioningState;
-import com.azure.resourcemanager.qumulo.models.StorageSku;
 import com.azure.resourcemanager.qumulo.models.UserDetails;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties specific to the Qumulo File System resource. */
+/**
+ * Properties specific to the Qumulo File System resource.
+ */
 @Fluent
-public final class FileSystemResourceProperties {
+public final class FileSystemResourceProperties implements JsonSerializable<FileSystemResourceProperties> {
     /*
      * Marketplace details
      */
-    @JsonProperty(value = "marketplaceDetails", required = true)
     private MarketplaceDetails marketplaceDetails;
 
     /*
      * Provisioning State of the resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Storage Sku
      */
-    @JsonProperty(value = "storageSku", required = true)
-    private StorageSku storageSku;
+    private String storageSku;
 
     /*
      * User Details
      */
-    @JsonProperty(value = "userDetails", required = true)
     private UserDetails userDetails;
 
     /*
      * Delegated subnet id for Vnet injection
      */
-    @JsonProperty(value = "delegatedSubnetId", required = true)
     private String delegatedSubnetId;
 
     /*
      * File system Id of the resource
      */
-    @JsonProperty(value = "clusterLoginUrl")
     private String clusterLoginUrl;
 
     /*
      * Private IPs of the resource
      */
-    @JsonProperty(value = "privateIPs")
     private List<String> privateIPs;
 
     /*
      * Initial administrator password of the resource
      */
-    @JsonProperty(value = "adminPassword", required = true)
     private String adminPassword;
-
-    /*
-     * Storage capacity in TB
-     */
-    @JsonProperty(value = "initialCapacity", required = true)
-    private int initialCapacity;
 
     /*
      * Availability zone
      */
-    @JsonProperty(value = "availabilityZone")
     private String availabilityZone;
 
-    /** Creates an instance of FileSystemResourceProperties class. */
+    /**
+     * Creates an instance of FileSystemResourceProperties class.
+     */
     public FileSystemResourceProperties() {
     }
 
     /**
      * Get the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @return the marketplaceDetails value.
      */
     public MarketplaceDetails marketplaceDetails() {
@@ -91,7 +83,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Set the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @param marketplaceDetails the marketplaceDetails value to set.
      * @return the FileSystemResourceProperties object itself.
      */
@@ -102,7 +94,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Get the provisioningState property: Provisioning State of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -111,27 +103,27 @@ public final class FileSystemResourceProperties {
 
     /**
      * Get the storageSku property: Storage Sku.
-     *
+     * 
      * @return the storageSku value.
      */
-    public StorageSku storageSku() {
+    public String storageSku() {
         return this.storageSku;
     }
 
     /**
      * Set the storageSku property: Storage Sku.
-     *
+     * 
      * @param storageSku the storageSku value to set.
      * @return the FileSystemResourceProperties object itself.
      */
-    public FileSystemResourceProperties withStorageSku(StorageSku storageSku) {
+    public FileSystemResourceProperties withStorageSku(String storageSku) {
         this.storageSku = storageSku;
         return this;
     }
 
     /**
      * Get the userDetails property: User Details.
-     *
+     * 
      * @return the userDetails value.
      */
     public UserDetails userDetails() {
@@ -140,7 +132,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Set the userDetails property: User Details.
-     *
+     * 
      * @param userDetails the userDetails value to set.
      * @return the FileSystemResourceProperties object itself.
      */
@@ -151,7 +143,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Get the delegatedSubnetId property: Delegated subnet id for Vnet injection.
-     *
+     * 
      * @return the delegatedSubnetId value.
      */
     public String delegatedSubnetId() {
@@ -160,7 +152,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Set the delegatedSubnetId property: Delegated subnet id for Vnet injection.
-     *
+     * 
      * @param delegatedSubnetId the delegatedSubnetId value to set.
      * @return the FileSystemResourceProperties object itself.
      */
@@ -171,7 +163,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Get the clusterLoginUrl property: File system Id of the resource.
-     *
+     * 
      * @return the clusterLoginUrl value.
      */
     public String clusterLoginUrl() {
@@ -180,7 +172,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Set the clusterLoginUrl property: File system Id of the resource.
-     *
+     * 
      * @param clusterLoginUrl the clusterLoginUrl value to set.
      * @return the FileSystemResourceProperties object itself.
      */
@@ -191,7 +183,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Get the privateIPs property: Private IPs of the resource.
-     *
+     * 
      * @return the privateIPs value.
      */
     public List<String> privateIPs() {
@@ -200,7 +192,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Set the privateIPs property: Private IPs of the resource.
-     *
+     * 
      * @param privateIPs the privateIPs value to set.
      * @return the FileSystemResourceProperties object itself.
      */
@@ -211,7 +203,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Get the adminPassword property: Initial administrator password of the resource.
-     *
+     * 
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -220,7 +212,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Set the adminPassword property: Initial administrator password of the resource.
-     *
+     * 
      * @param adminPassword the adminPassword value to set.
      * @return the FileSystemResourceProperties object itself.
      */
@@ -230,28 +222,8 @@ public final class FileSystemResourceProperties {
     }
 
     /**
-     * Get the initialCapacity property: Storage capacity in TB.
-     *
-     * @return the initialCapacity value.
-     */
-    public int initialCapacity() {
-        return this.initialCapacity;
-    }
-
-    /**
-     * Set the initialCapacity property: Storage capacity in TB.
-     *
-     * @param initialCapacity the initialCapacity value to set.
-     * @return the FileSystemResourceProperties object itself.
-     */
-    public FileSystemResourceProperties withInitialCapacity(int initialCapacity) {
-        this.initialCapacity = initialCapacity;
-        return this;
-    }
-
-    /**
      * Get the availabilityZone property: Availability zone.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -260,7 +232,7 @@ public final class FileSystemResourceProperties {
 
     /**
      * Set the availabilityZone property: Availability zone.
-     *
+     * 
      * @param availabilityZone the availabilityZone value to set.
      * @return the FileSystemResourceProperties object itself.
      */
@@ -271,45 +243,102 @@ public final class FileSystemResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (marketplaceDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property marketplaceDetails in model FileSystemResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property marketplaceDetails in model FileSystemResourceProperties"));
         } else {
             marketplaceDetails().validate();
         }
         if (storageSku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageSku in model FileSystemResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageSku in model FileSystemResourceProperties"));
         }
         if (userDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userDetails in model FileSystemResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property userDetails in model FileSystemResourceProperties"));
         } else {
             userDetails().validate();
         }
         if (delegatedSubnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property delegatedSubnetId in model FileSystemResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property delegatedSubnetId in model FileSystemResourceProperties"));
         }
         if (adminPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property adminPassword in model FileSystemResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property adminPassword in model FileSystemResourceProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FileSystemResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("marketplaceDetails", this.marketplaceDetails);
+        jsonWriter.writeStringField("storageSku", this.storageSku);
+        jsonWriter.writeJsonField("userDetails", this.userDetails);
+        jsonWriter.writeStringField("delegatedSubnetId", this.delegatedSubnetId);
+        jsonWriter.writeStringField("adminPassword", this.adminPassword);
+        jsonWriter.writeStringField("clusterLoginUrl", this.clusterLoginUrl);
+        jsonWriter.writeArrayField("privateIPs", this.privateIPs, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("availabilityZone", this.availabilityZone);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileSystemResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileSystemResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileSystemResourceProperties.
+     */
+    public static FileSystemResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileSystemResourceProperties deserializedFileSystemResourceProperties = new FileSystemResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("marketplaceDetails".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.marketplaceDetails = MarketplaceDetails.fromJson(reader);
+                } else if ("storageSku".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.storageSku = reader.getString();
+                } else if ("userDetails".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.userDetails = UserDetails.fromJson(reader);
+                } else if ("delegatedSubnetId".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.delegatedSubnetId = reader.getString();
+                } else if ("adminPassword".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.adminPassword = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("clusterLoginUrl".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.clusterLoginUrl = reader.getString();
+                } else if ("privateIPs".equals(fieldName)) {
+                    List<String> privateIPs = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFileSystemResourceProperties.privateIPs = privateIPs;
+                } else if ("availabilityZone".equals(fieldName)) {
+                    deserializedFileSystemResourceProperties.availabilityZone = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileSystemResourceProperties;
+        });
+    }
 }

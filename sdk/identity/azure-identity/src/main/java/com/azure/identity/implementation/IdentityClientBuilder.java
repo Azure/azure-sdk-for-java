@@ -20,6 +20,7 @@ public final class IdentityClientBuilder {
     private String tenantId;
     private String clientId;
     private String resourceId;
+    private String objectId;
     private String clientSecret;
     private String clientAssertionPath;
     private String certificatePath;
@@ -50,8 +51,23 @@ public final class IdentityClientBuilder {
         return this;
     }
 
+    /**
+     * Sets the resource ID for the client.
+     * @param resourceId the resource ID for the client.
+     * @return the IdentityClientBuilder itself
+     */
     public IdentityClientBuilder resourceId(String resourceId) {
         this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Sets the object ID for the client.
+     * @param objectId the object ID for the client.
+     * @return the IdentityClientBuilder itself
+     */
+    public IdentityClientBuilder objectId(String objectId) {
+        this.objectId = objectId;
         return this;
     }
 
@@ -162,13 +178,13 @@ public final class IdentityClientBuilder {
      * @return a {@link IdentityClient} with the current configurations.
      */
     public IdentityClient build() {
-        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
+        return new IdentityClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId, objectId,
             clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }
 
     public IdentitySyncClient buildSyncClient() {
-        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId,
+        return new IdentitySyncClient(tenantId, clientId, clientSecret, certificatePath, clientAssertionPath, resourceId, objectId,
             clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, sharedTokenCacheCred, clientAssertionTimeout,
             identityClientOptions);
     }

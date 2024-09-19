@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
  * Enables checking of Configuration updates.
  */
 public interface AppConfigurationRefresh extends ApplicationEventPublisherAware {
+
     /**
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
      * trigger has been updated configuration are reloaded.

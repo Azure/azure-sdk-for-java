@@ -1,6 +1,4 @@
 displayNames:
-  True: "sync"
-  False: "async"
   java-template: ""
   dockerfiles/java21: jre21
   dockerfiles/java11: jre11
@@ -15,8 +13,4 @@ matrix:
       testDurationMin: 30
       testScenario: httpget
       concurrency: 75
-    patch:
-      imageBuildDir: ..\..\..\
-      testDurationMin: 30
-      testScenario: httppatch
-      concurrency: 75
+

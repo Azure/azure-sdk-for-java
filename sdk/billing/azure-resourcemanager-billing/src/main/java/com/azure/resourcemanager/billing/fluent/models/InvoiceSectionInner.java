@@ -5,144 +5,178 @@
 package com.azure.resourcemanager.billing.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.resourcemanager.billing.models.InvoiceSectionState;
-import com.azure.resourcemanager.billing.models.TargetCloud;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.billing.models.InvoiceSectionProperties;
+import com.azure.resourcemanager.billing.models.ProxyResourceWithTags;
+import java.io.IOException;
 import java.util.Map;
 
-/** An invoice section. */
+/**
+ * An invoice section.
+ */
 @Fluent
-public final class InvoiceSectionInner extends ProxyResource {
+public final class InvoiceSectionInner extends ProxyResourceWithTags {
     /*
-     * The properties of an invoice section.
+     * An invoice section.
      */
-    @JsonProperty(value = "properties")
-    private InvoiceSectionProperties innerProperties;
+    private InvoiceSectionProperties properties;
 
-    /** Creates an instance of InvoiceSectionInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of InvoiceSectionInner class.
+     */
     public InvoiceSectionInner() {
     }
 
     /**
-     * Get the innerProperties property: The properties of an invoice section.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: An invoice section.
+     * 
+     * @return the properties value.
      */
-    private InvoiceSectionProperties innerProperties() {
-        return this.innerProperties;
+    public InvoiceSectionProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the displayName property: The name of the invoice section.
-     *
-     * @return the displayName value.
-     */
-    public String displayName() {
-        return this.innerProperties() == null ? null : this.innerProperties().displayName();
-    }
-
-    /**
-     * Set the displayName property: The name of the invoice section.
-     *
-     * @param displayName the displayName value to set.
+     * Set the properties property: An invoice section.
+     * 
+     * @param properties the properties value to set.
      * @return the InvoiceSectionInner object itself.
      */
-    public InvoiceSectionInner withDisplayName(String displayName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InvoiceSectionProperties();
-        }
-        this.innerProperties().withDisplayName(displayName);
+    public InvoiceSectionInner withProperties(InvoiceSectionProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
-     * Get the labels property: Dictionary of metadata associated with the invoice section.
-     *
-     * @return the labels value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public Map<String, String> labels() {
-        return this.innerProperties() == null ? null : this.innerProperties().labels();
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Set the labels property: Dictionary of metadata associated with the invoice section.
-     *
-     * @param labels the labels value to set.
-     * @return the InvoiceSectionInner object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public InvoiceSectionInner withLabels(Map<String, String> labels) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InvoiceSectionProperties();
-        }
-        this.innerProperties().withLabels(labels);
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the state property: Identifies the state of an invoice section.
-     *
-     * @return the state value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public InvoiceSectionState state() {
-        return this.innerProperties() == null ? null : this.innerProperties().state();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the systemId property: The system generated unique identifier for an invoice section.
-     *
-     * @return the systemId value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String systemId() {
-        return this.innerProperties() == null ? null : this.innerProperties().systemId();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the tags property: Dictionary of metadata associated with the invoice section. Maximum key/value length
-     * supported of 256 characters. Keys/value should not empty value nor null. Keys can not contain &lt; &gt; % &amp; \
-     * ? /.
-     *
-     * @return the tags value.
+     * {@inheritDoc}
      */
-    public Map<String, String> tags() {
-        return this.innerProperties() == null ? null : this.innerProperties().tags();
-    }
-
-    /**
-     * Set the tags property: Dictionary of metadata associated with the invoice section. Maximum key/value length
-     * supported of 256 characters. Keys/value should not empty value nor null. Keys can not contain &lt; &gt; % &amp; \
-     * ? /.
-     *
-     * @param tags the tags value to set.
-     * @return the InvoiceSectionInner object itself.
-     */
+    @Override
     public InvoiceSectionInner withTags(Map<String, String> tags) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InvoiceSectionProperties();
-        }
-        this.innerProperties().withTags(tags);
+        super.withTags(tags);
         return this;
-    }
-
-    /**
-     * Get the targetCloud property: Identifies the cloud environments that are associated with an invoice section. This
-     * is a system managed optional field and gets updated as the invoice section gets associated with accounts in
-     * various clouds.
-     *
-     * @return the targetCloud value.
-     */
-    public TargetCloud targetCloud() {
-        return this.innerProperties() == null ? null : this.innerProperties().targetCloud();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InvoiceSectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InvoiceSectionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InvoiceSectionInner.
+     */
+    public static InvoiceSectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InvoiceSectionInner deserializedInvoiceSectionInner = new InvoiceSectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInvoiceSectionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInvoiceSectionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInvoiceSectionInner.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInvoiceSectionInner.withTags(tags);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedInvoiceSectionInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInvoiceSectionInner.properties = InvoiceSectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInvoiceSectionInner;
+        });
     }
 }

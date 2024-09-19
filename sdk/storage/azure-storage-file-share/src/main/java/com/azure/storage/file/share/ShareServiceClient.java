@@ -15,7 +15,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
@@ -39,11 +38,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
@@ -222,24 +218,19 @@ public final class ShareServiceClient {
 
         BiFunction<String, Integer, PagedResponse<ShareItem>> retriever =
             (nextMarker, pageSize) -> {
-                Supplier<PagedResponse<ShareItemInternal>> operation = () -> this.azureFileStorageClient.getServices()
+                Callable<PagedResponse<ShareItemInternal>> operation = () -> this.azureFileStorageClient.getServices()
                     .listSharesSegmentNoCustomHeadersSinglePage(prefix, nextMarker,
                         pageSize == null ? maxResultsPerPage : pageSize, include, null, finalContext);
 
-                try {
-                    PagedResponse<ShareItemInternal> response = timeout != null
-                        ? CoreUtils.getResultWithTimeout(SharedExecutorService.getInstance().submit(operation::get), timeout)
-                        : operation.get();
+                PagedResponse<ShareItemInternal> response
+                    = sendRequest(operation, timeout, ShareStorageException.class);
 
-                    List<ShareItem> value = response.getValue() == null ? Collections.emptyList()
-                        : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
+                List<ShareItem> value = response.getValue() == null ? Collections.emptyList()
+                    : response.getValue().stream().map(ModelHelper::populateShareItem).collect(Collectors.toList());
 
-                    return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), value, response.getContinuationToken(),
-                        ModelHelper.transformListSharesHeaders(response.getHeaders()));
-                } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Failed to retrieve shares with timeout.", e));
-                }
+                return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), value, response.getContinuationToken(),
+                    ModelHelper.transformListSharesHeaders(response.getHeaders()));
             };
 
         return new PagedIterable<>(pageSize -> retriever.apply(null, pageSize), retriever);

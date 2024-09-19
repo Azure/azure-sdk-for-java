@@ -3,16 +3,18 @@
 
 package com.azure.ai.openai.impl;
 
+import com.azure.ai.openai.MyFunctionCallArguments;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.MyFunctionCallArguments;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
 import com.azure.ai.openai.models.AudioTranslation;
 import com.azure.ai.openai.models.AudioTranslationFormat;
 import com.azure.ai.openai.models.AudioTranslationOptions;
+import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.BatchCreateRequest;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -35,10 +37,15 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.FileDeletionStatus;
+import com.azure.ai.openai.models.FileDetails;
+import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.OpenAIFile;
+import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
@@ -353,6 +360,37 @@ public final class ReadmeSamples {
         Path path = Paths.get("{your-local-file-path}/speech.wav");
         Files.write(path, speech.toBytes());
         // END: readme-sample-textToSpeech
+    }
+
+    public void fileOperations() {
+        // BEGIN: readme-sample-fileOperations
+        // Upload a file
+        FileDetails fileDetails = new FileDetails(
+            BinaryData.fromFile(Paths.get("{your-local-file-path}/batch_tasks.jsonl")),
+            "batch_tasks.jsonl");
+        OpenAIFile file = client.uploadFile(fileDetails, FilePurpose.BATCH);
+        String fileId = file.getId();
+        // Get single file
+        OpenAIFile fileFromBackend = client.getFile(fileId);
+        // List files
+        List<OpenAIFile> files = client.listFiles(FilePurpose.ASSISTANTS);
+        // Delete file
+        FileDeletionStatus deletionStatus = client.deleteFile(fileId);
+        // END: readme-sample-fileOperations
+    }
+
+    public void batchOperations() {
+        // BEGIN: readme-sample-batchOperations
+        String fileId = "{fileId-from-service-side}";
+        // Create a batch
+        Batch batch = client.createBatch(new BatchCreateRequest("/chat/completions", fileId, "24h"));
+        // Get single file
+        byte[] fileContent = client.getFileContent(batch.getOutputFileId());
+        // List batches
+        PageableList<Batch> batchPageableList = client.listBatches();
+        // Cancel a batch
+        Batch cancelledBatch = client.cancelBatch(batch.getId());
+        // END: readme-sample-batchOperations
     }
 
     public void enableHttpLogging() {

@@ -17,45 +17,54 @@ import org.junit.jupiter.api.Assertions;
 public final class TableVerticalFeaturizationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TableVerticalFeaturizationSettings model =
-            BinaryData
-                .fromString(
-                    "{\"blockedTransformers\":[\"TextTargetEncoder\"],\"columnNameAndTypes\":{\"qyv\":\"blhtjq\",\"a\":\"eh\"},\"enableDnnFeaturization\":false,\"mode\":\"Auto\",\"transformerParams\":{\"tjvv\":[{\"fields\":[\"usxivzrrryvei\",\"ipsk\"],\"parameters\":\"datazatvfuzka\"}]},\"datasetLanguage\":\"xwigsye\"}")
-                .toObject(TableVerticalFeaturizationSettings.class);
-        Assertions.assertEquals("xwigsye", model.datasetLanguage());
-        Assertions.assertEquals(BlockedTransformers.TEXT_TARGET_ENCODER, model.blockedTransformers().get(0));
-        Assertions.assertEquals("blhtjq", model.columnNameAndTypes().get("qyv"));
+        TableVerticalFeaturizationSettings model = BinaryData.fromString(
+            "{\"mode\":\"Off\",\"blockedTransformers\":[\"LabelEncoder\"],\"columnNameAndTypes\":{\"klkqnqvkixnmb\":\"ujcyohigimwdc\",\"zayspzvriet\":\"mecuyrzwim\"},\"transformerParams\":{\"smcwoxfaxd\":[{\"fields\":[\"zxplgtpvdvatlz\",\"gschnzrsbk\"],\"parameters\":\"dataovlzdm\"},{\"fields\":[\"fwsx\",\"fo\",\"uworimmov\"],\"parameters\":\"datade\"},{\"fields\":[\"mvhzfovanyrvaprt\",\"elgwewi\"],\"parameters\":\"datayaqandmymnqoqju\"},{\"fields\":[\"sfbpbvzop\",\"x\"],\"parameters\":\"datam\"}],\"riwmmtmqrxrzqv\":[{\"fields\":[\"fbsatroi\"],\"parameters\":\"dataesugmocpcjycbo\"},{\"fields\":[\"gttwfldsi\",\"or\"],\"parameters\":\"dataikcedpk\"}],\"laetscflwtjdtlr\":[{\"fields\":[\"yayub\",\"g\",\"bxiqahragpxmibpl\"],\"parameters\":\"datapoyryefqmwovyzt\"},{\"fields\":[\"omfpb\",\"ceeg\",\"yieztkutnjil\",\"ukkrehyh\"],\"parameters\":\"datajoduifvulxfaryrv\"},{\"fields\":[\"dezvjqw\",\"hoyiyaxqvjweiw\",\"czkddn\"],\"parameters\":\"datavbooqbmdqrxy\"}]},\"enableDnnFeaturization\":false,\"datasetLanguage\":\"oyycuxdtz\"}")
+            .toObject(TableVerticalFeaturizationSettings.class);
+        Assertions.assertEquals("oyycuxdtz", model.datasetLanguage());
+        Assertions.assertEquals(FeaturizationMode.OFF, model.mode());
+        Assertions.assertEquals(BlockedTransformers.LABEL_ENCODER, model.blockedTransformers().get(0));
+        Assertions.assertEquals("ujcyohigimwdc", model.columnNameAndTypes().get("klkqnqvkixnmb"));
+        Assertions.assertEquals("zxplgtpvdvatlz", model.transformerParams().get("smcwoxfaxd").get(0).fields().get(0));
         Assertions.assertEquals(false, model.enableDnnFeaturization());
-        Assertions.assertEquals(FeaturizationMode.AUTO, model.mode());
-        Assertions.assertEquals("usxivzrrryvei", model.transformerParams().get("tjvv").get(0).fields().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TableVerticalFeaturizationSettings model =
-            new TableVerticalFeaturizationSettings()
-                .withDatasetLanguage("xwigsye")
-                .withBlockedTransformers(Arrays.asList(BlockedTransformers.TEXT_TARGET_ENCODER))
-                .withColumnNameAndTypes(mapOf("qyv", "blhtjq", "a", "eh"))
-                .withEnableDnnFeaturization(false)
-                .withMode(FeaturizationMode.AUTO)
-                .withTransformerParams(
-                    mapOf(
-                        "tjvv",
-                        Arrays
-                            .asList(
-                                new ColumnTransformer()
-                                    .withFields(Arrays.asList("usxivzrrryvei", "ipsk"))
-                                    .withParameters("datazatvfuzka"))));
+        TableVerticalFeaturizationSettings model = new TableVerticalFeaturizationSettings()
+            .withDatasetLanguage("oyycuxdtz")
+            .withMode(FeaturizationMode.OFF)
+            .withBlockedTransformers(Arrays.asList(BlockedTransformers.LABEL_ENCODER))
+            .withColumnNameAndTypes(mapOf("klkqnqvkixnmb", "ujcyohigimwdc", "zayspzvriet", "mecuyrzwim"))
+            .withTransformerParams(mapOf("smcwoxfaxd", Arrays.asList(
+                new ColumnTransformer().withFields(Arrays.asList("zxplgtpvdvatlz", "gschnzrsbk"))
+                    .withParameters("dataovlzdm"),
+                new ColumnTransformer().withFields(Arrays.asList("fwsx", "fo", "uworimmov")).withParameters("datade"),
+                new ColumnTransformer().withFields(Arrays.asList("mvhzfovanyrvaprt", "elgwewi"))
+                    .withParameters("datayaqandmymnqoqju"),
+                new ColumnTransformer().withFields(Arrays.asList("sfbpbvzop", "x")).withParameters("datam")),
+                "riwmmtmqrxrzqv",
+                Arrays.asList(
+                    new ColumnTransformer().withFields(Arrays.asList("fbsatroi")).withParameters("dataesugmocpcjycbo"),
+                    new ColumnTransformer().withFields(Arrays.asList("gttwfldsi", "or")).withParameters("dataikcedpk")),
+                "laetscflwtjdtlr",
+                Arrays.asList(
+                    new ColumnTransformer().withFields(Arrays.asList("yayub", "g", "bxiqahragpxmibpl"))
+                        .withParameters("datapoyryefqmwovyzt"),
+                    new ColumnTransformer().withFields(Arrays.asList("omfpb", "ceeg", "yieztkutnjil", "ukkrehyh"))
+                        .withParameters("datajoduifvulxfaryrv"),
+                    new ColumnTransformer().withFields(Arrays.asList("dezvjqw", "hoyiyaxqvjweiw", "czkddn"))
+                        .withParameters("datavbooqbmdqrxy"))))
+            .withEnableDnnFeaturization(false);
         model = BinaryData.fromObject(model).toObject(TableVerticalFeaturizationSettings.class);
-        Assertions.assertEquals("xwigsye", model.datasetLanguage());
-        Assertions.assertEquals(BlockedTransformers.TEXT_TARGET_ENCODER, model.blockedTransformers().get(0));
-        Assertions.assertEquals("blhtjq", model.columnNameAndTypes().get("qyv"));
+        Assertions.assertEquals("oyycuxdtz", model.datasetLanguage());
+        Assertions.assertEquals(FeaturizationMode.OFF, model.mode());
+        Assertions.assertEquals(BlockedTransformers.LABEL_ENCODER, model.blockedTransformers().get(0));
+        Assertions.assertEquals("ujcyohigimwdc", model.columnNameAndTypes().get("klkqnqvkixnmb"));
+        Assertions.assertEquals("zxplgtpvdvatlz", model.transformerParams().get("smcwoxfaxd").get(0).fields().get(0));
         Assertions.assertEquals(false, model.enableDnnFeaturization());
-        Assertions.assertEquals(FeaturizationMode.AUTO, model.mode());
-        Assertions.assertEquals("usxivzrrryvei", model.transformerParams().get("tjvv").get(0).fields().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -51,9 +51,9 @@ public interface AnnotationJavadocCodesnippets {
         // END: io.clientcore.core.http.annotation.Delete.class1
 
         // BEGIN: io.clientcore.core.http.annotation.Delete.class2
-        @HttpRequestInformation(method = HttpMethod.DELETE, path = "{vaultBaseUrl}/secrets/{secretName}",
+        @HttpRequestInformation(method = HttpMethod.DELETE, path = "{vaultBaseUri}/secrets/{secretName}",
             returnValueWireType = void.class)
-        void delete(@PathParam(value = "vaultBaseUrl", encoded = true) String vaultBaseUrl,
+        void delete(@PathParam(value = "vaultBaseUri", encoded = true) String vaultBaseUri,
             @PathParam("secretName") String secretName);
         // END: io.clientcore.core.http.annotation.Delete.class2
     }
@@ -66,9 +66,9 @@ public interface AnnotationJavadocCodesnippets {
         // BEGIN: io.clientcore.core.http.annotation.ExpectedResponses.class
         @HttpRequestInformation(method = HttpMethod.POST, path = "/subscriptions/{subscriptionId}/resourceGroups/"
             + "{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/"
-            + "getEntityTypeImageUploadUrl",
+            + "getEntityTypeImageUploadUri",
             returnValueWireType = void.class, expectedStatusCodes = {200, 201})
-        void getUploadUrlForEntityType(@PathParam("resourceGroupName") String resourceGroupName,
+        void getUploadUriForEntityType(@PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hubName") String hubName, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RequestBody parameters);
         // END: io.clientcore.core.http.annotation.ExpectedResponses.class
@@ -177,10 +177,10 @@ public interface AnnotationJavadocCodesnippets {
         // BEGIN: io.clientcore.core.http.annotation.Headers.class
         @HttpRequestInformation(method = HttpMethod.POST, path = "/subscriptions/{subscriptionId}/resourceGroups/"
             + "{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/"
-            + "getEntityTypeImageUploadUrl",
+            + "getEntityTypeImageUploadUri",
             returnValueWireType = void.class,
-            requestHeaders = {"Content-Type: application/json; charset=utf-8", "accept-language: en-US"})
-        void getUploadUrlForEntityType(@PathParam("resourceGroupName") String resourceGroupName,
+            headers = {"Content-Type: application/json; charset=utf-8", "accept-language: en-US"})
+        void getUploadUriForEntityType(@PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hubName") String hubName, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RequestBody parameters);
         // END: io.clientcore.core.http.annotation.Headers.class
@@ -252,9 +252,9 @@ public interface AnnotationJavadocCodesnippets {
         // END: io.clientcore.core.http.annotation.Options.class1
 
         // BEGIN: io.clientcore.core.http.annotation.Options.class2
-        @HttpRequestInformation(method = HttpMethod.OPTIONS, path = "{vaultBaseUrl}/secrets/{secretName}",
+        @HttpRequestInformation(method = HttpMethod.OPTIONS, path = "{vaultBaseUri}/secrets/{secretName}",
             returnValueWireType = ResponseBody.class)
-        Response<ResponseBody> options(@PathParam(value = "vaultBaseUrl", encoded = true) String vaultBaseUrl,
+        Response<ResponseBody> options(@PathParam(value = "vaultBaseUri", encoded = true) String vaultBaseUri,
             @PathParam("secretName") String secretName);
         // END: io.clientcore.core.http.annotation.Options.class2
     }
@@ -274,9 +274,9 @@ public interface AnnotationJavadocCodesnippets {
         // END: io.clientcore.core.http.annotation.Patch.class1
 
         // BEGIN: io.clientcore.core.http.annotation.Patch.class2
-        @HttpRequestInformation(method = HttpMethod.PATCH, path = "{vaultBaseUrl}/secrets/{secretName}",
+        @HttpRequestInformation(method = HttpMethod.PATCH, path = "{vaultBaseUri}/secrets/{secretName}",
             returnValueWireType = Secret.class)
-        Secret patch(@PathParam(value = "vaultBaseUrl", encoded = true) String vaultBaseUrl,
+        Secret patch(@PathParam(value = "vaultBaseUri", encoded = true) String vaultBaseUri,
             @PathParam("secretName") String secretName,
             @BodyParam("application/json") SecretUpdateParameters updateParameters);
         // END: io.clientcore.core.http.annotation.Patch.class2
@@ -306,7 +306,7 @@ public interface AnnotationJavadocCodesnippets {
             returnValueWireType = String.class)
         String getValue(@PathParam("subpath") String param1);
 
-        // In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks like:
+        // In this case, if consumer pass "a/b" as the value for param1 then the resolved uri looks like:
         // "http://wq.com/foo/a%2Fb/value".
         // END: io.clientcore.core.annotation.http.PathParam.class2
 
@@ -317,7 +317,7 @@ public interface AnnotationJavadocCodesnippets {
             returnValueWireType = String.class)
         List<String> getValues(@PathParam(value = "subpath", encoded = true) String param1);
 
-        // In this case, if consumer pass "a/b" as the value for param1 then the resolved url looks as expected:
+        // In this case, if consumer pass "a/b" as the value for param1 then the resolved uri looks as expected:
         // "http://wq.com/foo/a/b/values".
         // END: io.clientcore.core.annotation.http.PathParam.class3
     }
@@ -357,9 +357,9 @@ public interface AnnotationJavadocCodesnippets {
         // END: io.clientcore.core.http.annotation.Put.class1
 
         // BEGIN: io.clientcore.core.http.annotation.Put.class2
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "{vaultBaseUrl}/secrets/{secretName}",
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "{vaultBaseUri}/secrets/{secretName}",
             returnValueWireType = Secret.class)
-        Secret createOrUpdate(@PathParam(value = "vaultBaseUrl", encoded = true) String vaultBaseUrl,
+        Secret createOrUpdate(@PathParam(value = "vaultBaseUri", encoded = true) String vaultBaseUri,
             @PathParam("secretName") String secretName, @BodyParam("application/json") Secret secret);
         // END: io.clientcore.core.http.annotation.Put.class2
     }
@@ -378,7 +378,7 @@ public interface AnnotationJavadocCodesnippets {
             @QueryParam("api-version") String apiVersion);
 
         // The value of parameters filter, expand, top, apiVersion will be encoded and will be used to set the query
-        // parameters {$filter}, {$expand}, {$top}, {api-version} on the HTTP URL.
+        // parameters {$filter}, {$expand}, {$top}, {api-version} on the HTTP URI.
         // END: io.clientcore.core.annotation.http.QueryParam.class1
 
         // BEGIN: io.clientcore.core.annotation.http.QueryParam.class2
@@ -387,7 +387,7 @@ public interface AnnotationJavadocCodesnippets {
             returnValueWireType = String.class)
         String getValue(@PathParam("subpath") String param, @QueryParam("query") String query);
 
-        // In this case, if consumer pass "a=b" as the value for 'query' then the resolved url looks like:
+        // In this case, if consumer pass "a=b" as the value for 'query' then the resolved uri looks like:
         // "http://wq.com/foo/subpath/value?query=a%3Db"
         // END: io.clientcore.core.annotation.http.QueryParam.class2
 
@@ -397,7 +397,7 @@ public interface AnnotationJavadocCodesnippets {
         List<String> getValues(@PathParam("subpath") String param,
             @QueryParam(value = "query", encoded = true) String query);
 
-        // In this case, if consumer pass "a=b" as the value for 'query' then the resolved url looks like:
+        // In this case, if consumer pass "a=b" as the value for 'query' then the resolved uri looks like:
         // "http://wq.com/foo/paramblah/values?connectionString=a=b"
         // END: io.clientcore.core.annotation.http.QueryParam.class3
 
@@ -422,7 +422,7 @@ public interface AnnotationJavadocCodesnippets {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = MyCustomExceptionBody.class)
         @HttpRequestInformation(method = HttpMethod.POST, path = "subscriptions/{subscriptionId}/resourceGroups/"
             + "{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/"
-            + "getEntityTypeImageUploadUrl",
+            + "getEntityTypeImageUploadUri",
             returnValueWireType = void.class)
         void singleExceptionType(@PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hubName") String hubName, @PathParam("subscriptionId") String subscriptionId,
@@ -434,7 +434,7 @@ public interface AnnotationJavadocCodesnippets {
         @UnexpectedResponseExceptionDetail(statusCode = {404}, exceptionBodyClass = MyCustomExceptionBody.class)
         @HttpRequestInformation(method = HttpMethod.POST, path = "subscriptions/{subscriptionId}/resourceGroups/"
             + "{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/"
-            + "getEntityTypeImageUploadUrl",
+            + "getEntityTypeImageUploadUri",
             returnValueWireType = void.class)
         void multipleExceptionTypes(@PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hubName") String hubName,

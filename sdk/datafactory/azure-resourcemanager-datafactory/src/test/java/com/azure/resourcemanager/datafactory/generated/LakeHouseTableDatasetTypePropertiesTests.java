@@ -11,14 +11,14 @@ public final class LakeHouseTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableDatasetTypeProperties model
-            = BinaryData.fromString("{\"schema\":\"datarcatkuhskegdkvv\",\"table\":\"datal\"}")
+            = BinaryData.fromString("{\"schema\":\"dataokbxxcdk\",\"table\":\"datajwtkftgzl\"}")
                 .toObject(LakeHouseTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LakeHouseTableDatasetTypeProperties model
-            = new LakeHouseTableDatasetTypeProperties().withSchema("datarcatkuhskegdkvv").withTable("datal");
+            = new LakeHouseTableDatasetTypeProperties().withSchema("dataokbxxcdk").withTable("datajwtkftgzl");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableDatasetTypeProperties.class);
     }
 }

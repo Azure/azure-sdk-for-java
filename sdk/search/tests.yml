@@ -3,19 +3,24 @@ trigger: none
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
   parameters:
+    UseFederatedAuth: true
     ServiceDirectory: search
-    # TODO: change 'Preview' cloud back to public after search RP fixes deletion metadata issue
-    Clouds: 'Preview'
-    SupportedClouds: 'Preview,UsGov,China'
+    SupportedClouds: 'Public,UsGov,China'
     TimeoutInMinutes: 60
     CloudConfig:
-      Preview:
-        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-        Location: 'eastus2euap'
+      Public:
+        ServiceConnection: azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzurePublicMsft.json
+        Location: eastus
       UsGov:
-        SubscriptionConfiguration: $(sub-config-gov-test-resources)
+        ServiceConnection: usgov_azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzureUsGovMsft.json
       China:
-        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+        ServiceConnection: china_azure-sdk-tests
+        SubscriptionConfigurationFilePaths:
+          - eng/common/TestResources/sub-config/AzureChinaMsft.json
     EnvVars:
       AZURE_SEARCH_TEST_MODE: Live
     Artifacts:

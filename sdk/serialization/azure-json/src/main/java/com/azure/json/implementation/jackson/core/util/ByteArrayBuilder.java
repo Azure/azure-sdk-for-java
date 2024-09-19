@@ -15,7 +15,7 @@ import java.util.*;
  * in usage, but more geared to Jackson use cases internally.
  * Specific changes include segment storage (no need to have linear
  * backing buffer, can avoid reallocations, copying), as well API
- * not based on {@link java.io.OutputStream}. In short, a very much
+ * not based on {@link OutputStream}. In short, a very much
  * specialized builder object.
  *<p>
  * Also implements {@link OutputStream} to allow
@@ -38,11 +38,9 @@ public final class ByteArrayBuilder extends OutputStream {
     // For 2.10, let's limit to using 128k chunks (was 256k up to 2.9)
     private final static int MAX_BLOCK_SIZE = (1 << 17);
 
-    final static int DEFAULT_BLOCK_ARRAY_SIZE = 40;
-
     // Optional buffer recycler instance that we can use for allocating the first block.
     private final BufferRecycler _bufferRecycler;
-    private final LinkedList<byte[]> _pastBlocks = new LinkedList<byte[]>();
+    private final LinkedList<byte[]> _pastBlocks = new LinkedList<>();
 
     // Number of bytes within byte arrays in {@link _pastBlocks}.
     private int _pastLen;
@@ -55,10 +53,6 @@ public final class ByteArrayBuilder extends OutputStream {
 
     public ByteArrayBuilder(BufferRecycler br) {
         this(br, INITIAL_BLOCK_SIZE);
-    }
-
-    public ByteArrayBuilder(int firstBlockSize) {
-        this(null, firstBlockSize);
     }
 
     public ByteArrayBuilder(BufferRecycler br, int firstBlockSize) {
@@ -142,21 +136,6 @@ public final class ByteArrayBuilder extends OutputStream {
         }
     }
 
-    // @since 2.9
-    public void appendFourBytes(int b32) {
-        if ((_currBlockPtr + 3) < _currBlock.length) {
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 24);
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 16);
-            _currBlock[_currBlockPtr++] = (byte) (b32 >> 8);
-            _currBlock[_currBlockPtr++] = (byte) b32;
-        } else {
-            append(b32 >> 24);
-            append(b32 >> 16);
-            append(b32 >> 8);
-            append(b32);
-        }
-    }
-
     /**
      * Method called when results are finalized and we can get the
      * full aggregated result buffer to return to the caller
@@ -197,17 +176,6 @@ public final class ByteArrayBuilder extends OutputStream {
      */
 
     /**
-     * Method called when starting "manual" output: will clear out
-     * current state and return the first segment buffer to fill
-     *
-     * @return Segment to use for writing
-     */
-    public byte[] resetAndGetFirstSegment() {
-        reset();
-        return _currBlock;
-    }
-
-    /**
      * Method called when the current segment buffer is full; will
      * append to current contents, allocate a new segment buffer
      * and return it
@@ -222,10 +190,10 @@ public final class ByteArrayBuilder extends OutputStream {
     /**
      * Method that will complete "manual" output process, coalesce
      * content (if necessary) and return results as a contiguous buffer.
-     * 
+     *
      * @param lastBlockLength Amount of content in the current segment
      * buffer.
-     * 
+     *
      * @return Coalesced contents
      */
     public byte[] completeAndCoalesce(int lastBlockLength) {

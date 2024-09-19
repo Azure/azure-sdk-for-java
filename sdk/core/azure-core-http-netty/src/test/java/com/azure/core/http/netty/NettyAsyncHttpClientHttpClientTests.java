@@ -4,9 +4,9 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.HttpClientTestsServer;
-import com.azure.core.test.http.HttpClientTests;
-import com.azure.core.test.http.LocalTestServer;
+import com.azure.core.validation.http.HttpClientTests;
+import com.azure.core.validation.http.HttpClientTestsServer;
+import com.azure.core.validation.http.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.parallel.Execution;
