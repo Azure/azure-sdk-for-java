@@ -91,6 +91,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
@@ -1038,67 +1039,36 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
-        ShareRequestConditions requestConditions, Duration timeout, Context context) {
+                                                                    ShareRequestConditions requestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(downloadFilePath, "'downloadFilePath' cannot be null");
         ShareRequestConditions finalRequestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
 
         Callable<Response<ShareFileProperties>> operation = () -> {
             try (FileChannel fileChannel = FileChannel.open(Paths.get(downloadFilePath), StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)) {
-                // Get properties first to find out the total file size
                 Response<ShareFileProperties> propertiesResponse = getPropertiesWithResponse(null, context);
                 ShareFileProperties fileProperties = propertiesResponse.getValue();
                 long fileSize = fileProperties.getContentLength();
 
                 ShareFileRange currentRange = range == null ? new ShareFileRange(0, fileSize) : range;
-
-                List<ShareFileRange> chunks = new ArrayList<>();
-                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += ModelHelper.FILE_DEFAULT_BLOCK_SIZE) {
-                    long count = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
-                    if (pos + count > currentRange.getEnd()) {
-                        count = currentRange.getEnd() - pos;
-                    }
-                    chunks.add(new ShareFileRange(pos, pos + count - 1));
+                long chunkSize = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += chunkSize) {
+                    long count = Math.min(chunkSize, currentRange.getEnd() - pos);
+                    ShareFileRange chunkRange = new ShareFileRange(pos, pos + count - 1);
+                    OutputStream os = Channels.newOutputStream(fileChannel.position(pos));
+                    ShareFileDownloadOptions options = new ShareFileDownloadOptions()
+                        .setRange(chunkRange)
+                        .setRangeContentMd5Requested(false)
+                        .setRequestConditions(finalRequestConditions);
+                    downloadWithResponse(os, options, timeout, context);
                 }
-                for (ShareFileRange chunkRange : chunks) {
-                    int retries = 0;
-                    boolean success = false;
-                    while (!success) {
-                        try {
-                            // Download the chunk
-                            ResponseBase<FilesDownloadHeaders, InputStream> downloadResponse = downloadRange(chunkRange,
-                                false, finalRequestConditions, context);
-
-                            // Write the chunk to the file
-                            try (InputStream stream = downloadResponse.getValue()) {
-                                int bufferSize = (int) (chunkRange.getEnd() - chunkRange.getStart() + 1);
-                                byte[] buffer = new byte[bufferSize];
-                                int bytesRead;
-                                while ((bytesRead = stream.read(buffer)) != -1) {
-                                    fileChannel.write(ByteBuffer.wrap(buffer, 0, bytesRead));
-                                }
-                            }
-                            success = true; // Mark as successful if no exception is thrown
-                        } catch (IOException e) {
-                            retries++;
-                            if (retries > 3) {
-                                //throw e;
-                                throw LOGGER.logExceptionAsError(new UncheckedIOException(e)); // Rethrow after max retries
-                            }
-                            LOGGER.info("Retrying download due to " + e.getClass().getSimpleName() + ". Attempt: " + retries);
-                        }
-                    }
-                }
-
                 return propertiesResponse;
-
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
             }
         };
-
         return sendRequest(operation, timeout, ShareStorageException.class);
-
     }
+
 
     /**
      * Downloads a file from the system, including its metadata and properties
