@@ -435,7 +435,7 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
             policies.add(new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
         }
 
-        if(retryOptions != null) {
+        if (retryOptions != null) {
             policies.add(new RetryPolicy(retryOptions));
         }
 
