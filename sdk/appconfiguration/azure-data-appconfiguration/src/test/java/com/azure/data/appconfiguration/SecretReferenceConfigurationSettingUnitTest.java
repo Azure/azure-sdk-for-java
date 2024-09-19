@@ -15,6 +15,7 @@ public class SecretReferenceConfigurationSettingUnitTest {
     static final String SECRET_ID_VALUE = "https://www.microsoft.com/";
     // Updated value
     static final String UPDATED_SECRET_ID_VALUE = "https://www.microsoft.com/updated";
+
     @Test
     public void accessingStronglyTypedPropertiesAfterSettingDifferentSecretReferenceJSON() {
         // Create a new configuration setting,
@@ -51,7 +52,8 @@ public class SecretReferenceConfigurationSettingUnitTest {
         String expectedValue = getSecretReferenceConfigurationSettingValue(SECRET_ID_VALUE);
         String originalValue = setting.getValue();
         assertEquals(expectedValue, originalValue);
-        assertThrows(IllegalArgumentException.class, () -> setting.setValue("invalidValueForSecretReferenceConfigurationSetting"));
+        assertThrows(IllegalArgumentException.class,
+            () -> setting.setValue("invalidValueForSecretReferenceConfigurationSetting"));
         assertEquals(originalValue, setting.getValue());
         assertThrows(IllegalArgumentException.class, () -> setting.getSecretId());
     }
@@ -59,7 +61,8 @@ public class SecretReferenceConfigurationSettingUnitTest {
     @Test
     public void reserveUnknownPropertiesTest() {
         SecretReferenceConfigurationSetting setting = getSecretReferenceConfigurationSetting(NEW_KEY, SECRET_ID_VALUE);
-        String newSettingValueJSON = getUnknownPropertiesSecretReferenceConfigurationSettingValue(UPDATED_SECRET_ID_VALUE);
+        String newSettingValueJSON
+            = getUnknownPropertiesSecretReferenceConfigurationSettingValue(UPDATED_SECRET_ID_VALUE);
 
         setting.setValue(newSettingValueJSON);
         assertEquals(newSettingValueJSON, setting.getValue());

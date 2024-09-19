@@ -47,8 +47,8 @@ public class SyncTokenPolicyTest {
      */
     @Test
     public void parseSyncTokenString() {
-        final SyncToken syncToken =
-            SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER));
+        final SyncToken syncToken
+            = SyncToken.createSyncToken(constructSyncTokenString(ID, VALUE, SN_NAME, SEQUENCE_NUMBER));
         syncTokenEquals(syncToken, ID, VALUE, SEQUENCE_NUMBER);
     }
 
@@ -141,18 +141,14 @@ public class SyncTokenPolicyTest {
             return next.process();
         };
 
-        final HttpPipeline pipeline =
-            new HttpPipelineBuilder()
-                .httpClient(new NoOpHttpClient() {
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
 
-                    @Override
-                    public Mono<HttpResponse> send(HttpRequest request) {
-                        return Mono.just(new MockHttpResponse(request, 200,
-                            new HttpHeaders().set(SYNC_TOKEN, SYNC_TOKEN_VALUE + ";sn=1")));
-                    }
-                })
-                .policies(syncTokenPolicy, auditorPolicy)
-                .build();
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                return Mono.just(
+                    new MockHttpResponse(request, 200, new HttpHeaders().set(SYNC_TOKEN, SYNC_TOKEN_VALUE + ";sn=1")));
+            }
+        }).policies(syncTokenPolicy, auditorPolicy).build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
         request.getHeaders().set(REQUEST_ID, FIRST);
@@ -200,8 +196,8 @@ public class SyncTokenPolicyTest {
         };
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-                                          .policies(syncTokenPolicy, auditorPolicy)
-                                          .build();
+            .policies(syncTokenPolicy, auditorPolicy)
+            .build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(LOCAL_HOST));
         SyncAsyncExtension.execute(() -> pipeline.sendSync(request, Context.NONE), () -> pipeline.send(request));

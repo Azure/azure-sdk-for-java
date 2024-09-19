@@ -21,8 +21,8 @@ public final class SyncToken {
     private static final String EQUAL = "=";
     private static final String SEMICOLON = ";";
     private static final String SEQUENCE_NUMBER_CANNOT_PARSED = "Sequence number cannot be parsed to long.";
-    private static final String VALID_FORMAT_ERROR_MESSAGE =
-        "Expected sync-token valid format should be <id>=<value>;sn=<sn>. For multiple sync tokens, "
+    private static final String VALID_FORMAT_ERROR_MESSAGE
+        = "Expected sync-token valid format should be <id>=<value>;sn=<sn>. For multiple sync tokens, "
             + "<id>=<value>;sn=<sn>,<id>=<value>;sn=<sn>.";
 
     private static final ClientLogger LOGGER = new ClientLogger(SyncToken.class);
@@ -53,9 +53,12 @@ public final class SyncToken {
 
         final String[] idParts = syncTokenParts[0].split(EQUAL, 2);
         final String[] snParts = syncTokenParts[1].split(EQUAL, 2);
-        if (idParts.length != 2 || snParts.length != 2
-                || idParts[0].isEmpty() || idParts[1].isEmpty()
-                || snParts[0].isEmpty() || snParts[1].isEmpty()) {
+        if (idParts.length != 2
+            || snParts.length != 2
+            || idParts[0].isEmpty()
+            || idParts[1].isEmpty()
+            || snParts[0].isEmpty()
+            || snParts[1].isEmpty()) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(VALID_FORMAT_ERROR_MESSAGE));
         }
 
