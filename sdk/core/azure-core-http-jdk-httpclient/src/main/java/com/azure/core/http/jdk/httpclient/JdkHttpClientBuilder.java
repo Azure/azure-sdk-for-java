@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -20,7 +21,6 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
@@ -72,26 +72,34 @@ public class JdkHttpClientBuilder {
 
     /**
      * Creates JdkHttpClientBuilder from the builder of an existing {@link java.net.http.HttpClient.Builder}.
+     * <p>
+     * Null may be passed for {@code httpClientBuilder}, this is the same as calling {@link #JdkHttpClientBuilder()}.
      *
-     * @param httpClientBuilder the HttpClient builder to use
-     * @throws NullPointerException if {@code httpClientBuilder} is null
+     * @param httpClientBuilder the HttpClient builder to use, may be null.
      */
     public JdkHttpClientBuilder(java.net.http.HttpClient.Builder httpClientBuilder) {
-        this.httpClientBuilder = Objects.requireNonNull(httpClientBuilder, "'httpClientBuilder' cannot be null.");
+        this.httpClientBuilder = httpClientBuilder;
     }
 
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
      * <p>
-     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
-     * newly built {@code HttpClient}.
+     * If this method is not invoked prior to {@link #build()} and
+     * {@link #JdkHttpClientBuilder(java.net.http.HttpClient.Builder)} wasn't used to create this builder,
+     * {@link SharedExecutorService} will be used as the default for each newly built {@code HttpClient}.
+     * <p>
+     * If an {@link Executor} was set and {@link #JdkHttpClientBuilder(java.net.http.HttpClient.Builder)} was used to
+     * create an instance of this builder, the set {@link Executor} will override any value configured in the
+     * {@link java.net.http.HttpClient.Builder} passed in the constructor.
+     * <p>
+     * Passing null for the {@link Executor} is allowed and is considered clearing the previously set {@link Executor},
+     * if a previous {@link Executor} was set.
      *
-     * @param executor the executor to be used for asynchronous and dependent tasks
+     * @param executor the executor to be used for asynchronous and dependent tasks, if null a default will be used.
      * @return the updated JdkHttpClientBuilder object
-     * @throws NullPointerException if {@code executor} is null
      */
     public JdkHttpClientBuilder executor(Executor executor) {
-        this.executor = Objects.requireNonNull(executor, "executor can not be null");
+        this.executor = executor;
         return this;
     }
 
@@ -245,6 +253,10 @@ public class JdkHttpClientBuilder {
 
         if (executor != null) {
             httpClientBuilder.executor(executor);
+        } else if (this.httpClientBuilder == null) {
+            // Only set the default Executor when a specific value wasn't configured in this builder and a pre-existing
+            // JDK HttpClient.Builder wasn't configured by the constructor.
+            httpClientBuilder.executor(SharedExecutorService.getInstance());
         }
 
         if (buildProxyOptions != null) {

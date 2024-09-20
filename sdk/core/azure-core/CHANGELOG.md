@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Allow setting `SharedExecutorService`'s backing `ExecutorService` to allow for external configuration to manage the
+  shared thread pool.
+- Change `SharedExecutorService` from implementing `ExecutorService` to `ScheduledExecutorService` to allow 
+  scheduled-based execution.
+
 ### Breaking Changes
 
 ### Bugs Fixed

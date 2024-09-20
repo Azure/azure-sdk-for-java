@@ -7,10 +7,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
+import com.azure.core.validation.http.models.TestConfigurationSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
@@ -35,10 +35,10 @@ import java.util.stream.Stream;
 
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.PROXY_PASSWORD;
 import static com.azure.core.http.jdk.httpclient.JdkHttpClientLocalTestServer.PROXY_USERNAME;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -81,16 +81,16 @@ public class JdkHttpClientBuilderTests {
             .verifyComplete();
 
         assertNotNull(marker[0]);
-        assertEquals(marker[0], "on_custom_executor");
+        assertEquals("on_custom_executor", marker[0]);
     }
 
     /**
-     * Tests that instantiating an {@link JdkHttpClientBuilder} with a {@code null} {@link JdkHttpClient} will throw a
-     * {@link NullPointerException}.
+     * Tests that instantiating an {@link JdkHttpClientBuilder} with a {@code null} {@link JdkHttpClient} won't throw an
+     * exception.
      */
     @Test
-    public void startingWithNullClientThrows() {
-        assertThrows(NullPointerException.class, () -> new JdkHttpClientBuilder(null));
+    public void startingWithNullClientDoesNotThrow() {
+        assertDoesNotThrow(() -> new JdkHttpClientBuilder(null));
     }
 
     /**
@@ -116,15 +116,15 @@ public class JdkHttpClientBuilderTests {
             .verifyComplete();
 
         assertNotNull(marker[0]);
-        assertEquals(marker[0], "on_custom_executor");
+        assertEquals("on_custom_executor", marker[0]);
     }
 
     /**
-     * Tests that passing a {@code null} {@code executor} to the builder will throw a {@link NullPointerException}.
+     * Tests that passing a {@code null} {@code executor} to the builder won't throw an exception.
      */
     @Test
-    public void nullExecutorThrows() {
-        assertThrows(NullPointerException.class, () -> new JdkHttpClientBuilder().executor(null));
+    public void nullExecutorDoesNotThrow() {
+        assertDoesNotThrow(() -> new JdkHttpClientBuilder().executor(null));
     }
 
     /**
@@ -256,7 +256,7 @@ public class JdkHttpClientBuilderTests {
         Set<String> expectedRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         expectedRestrictedHeaders
             .addAll(com.azure.core.http.jdk.httpclient.JdkHttpClientBuilder.DEFAULT_RESTRICTED_HEADERS);
-        expectedRestrictedHeaders.removeAll(Arrays.asList("content-length", "host", "connection", "upgrade"));
+        Arrays.asList("content-length", "host", "connection", "upgrade").forEach(expectedRestrictedHeaders::remove);
 
         validateRestrictedHeaders(jdkHttpClientBuilder, expectedRestrictedHeaders, 1);
     }

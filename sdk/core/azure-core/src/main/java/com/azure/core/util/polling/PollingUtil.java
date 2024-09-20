@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -58,11 +59,9 @@ class PollingUtil {
                 firstPoll = false;
                 pollOp = SharedExecutorService.getInstance().submit(() -> pollOperation.apply(pollingContext));
             } else {
-                final PollResponse<T> finalIntermediatePollResponse = intermediatePollResponse;
-                pollOp = SharedExecutorService.getInstance().submit(() -> {
-                    Thread.sleep(getDelay(finalIntermediatePollResponse, pollInterval).toMillis());
-                    return pollOperation.apply(pollingContext);
-                });
+                Duration delay = getDelay(intermediatePollResponse, pollInterval);
+                pollOp = SharedExecutorService.getInstance()
+                    .schedule(() -> pollOperation.apply(pollingContext), delay.toMillis(), TimeUnit.MILLISECONDS);
             }
 
             try {
