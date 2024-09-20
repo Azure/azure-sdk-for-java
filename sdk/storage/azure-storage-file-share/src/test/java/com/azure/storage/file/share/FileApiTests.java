@@ -1480,7 +1480,8 @@ class FileApiTests extends FileShareTestBase {
 
         ShareFileCopyOptions options = new ShareFileCopyOptions()
             .setFilePermission(permission)
-            .setFilePermissionFormat(filePermissionFormat);
+            .setFilePermissionFormat(filePermissionFormat)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
 
         SyncPoller<ShareFileCopyInfo, Void> poller = primaryFileClient.beginCopy(sourceURL, options, null);
         PollResponse<ShareFileCopyInfo> pollResponse = poller.poll();

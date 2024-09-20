@@ -6,7 +6,10 @@ package com.azure.storage.file.share;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -942,6 +945,31 @@ public class FileAsyncApiTests extends FileShareTestBase {
         FileShareTestHelper.compareDatesWithPrecision(properties.getFileLastWriteTime(),
             smbProperties.getFileLastWriteTime());
         assertEquals(properties.getNtfsFileAttributes(), smbProperties.getNtfsFileAttributes());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @ParameterizedTest
+    @MethodSource("com.azure.storage.file.share.FileShareTestHelper#filePermissionFormatSupplier")
+    public void startCopyFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
+        String sourceURL = primaryFileAsyncClient.getFileUrl();
+        String permission = FileShareTestHelper.getPermissionFromFormat(filePermissionFormat);
+
+        ShareFileCopyOptions options = new ShareFileCopyOptions()
+            .setFilePermission(permission)
+            .setFilePermissionFormat(filePermissionFormat)
+            .setPermissionCopyModeType(PermissionCopyModeType.OVERRIDE);
+
+        Mono<ShareFileProperties> response =  primaryFileAsyncClient.create(1024)
+            .then(setPlaybackPollerFluxPollInterval(primaryFileAsyncClient.beginCopy(sourceURL, options, null))
+                .last())
+            .flatMap(r -> {
+                assertEquals(r.getStatus(), LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+                return primaryFileAsyncClient.getProperties();
+            });
+
+        StepVerifier.create(response)
+            .assertNext(r -> assertNotNull(r.getSmbProperties().getFilePermissionKey()))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-06-08")
