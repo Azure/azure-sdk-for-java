@@ -60,7 +60,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -70,7 +69,7 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // Please see https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
     // for more information on Azure resource provider namespaces.
-    public static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
+    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
 
     private static final String DEFAULT_SCOPE = "/.default";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";

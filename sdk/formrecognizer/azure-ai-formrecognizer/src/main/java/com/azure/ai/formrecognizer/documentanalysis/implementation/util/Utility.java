@@ -54,7 +54,7 @@ public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     // Please see https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
     // for more information on Azure resource provider namespaces.
-    public static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
+    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private static final String CLIENT_NAME;
     private static final String CLIENT_VERSION;
 
