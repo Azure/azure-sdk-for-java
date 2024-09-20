@@ -11,6 +11,7 @@ extends:
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagermediaservices
     Clouds: 'Public'
+    UseFederatedAuth: true
     # Only run tests on Windows to save cost.
     MatrixFilters:
       - pool=.*(win).*
