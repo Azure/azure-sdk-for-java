@@ -365,6 +365,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
         }
 
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
+
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
         // For server generated retries, it is safe to retry
         // For SDK generated 503, it will be more tricky as we have to decide the cause of it. For any causes that SDK not sure whether the request
@@ -396,8 +398,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        if (!this.canUseMultipleWriteLocations && !isReadRequest) {
+        if (!this.canUseMultipleWriteLocations && !isReadRequest && !Configs.isPerPartitionAutomaticFailoverEnabled()) {
             // Write requests on single master cannot be retried, no other regions available
+            // but retry when PPAF is enabled
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
@@ -490,6 +493,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean nonIdempotentWriteRetriesEnabled,
         boolean isWebExceptionRetriable,
         CosmosException cosmosException) {
+
+        if (Configs.isPerPartitionAutomaticFailoverEnabled()) {
+            return true;
+        }
 
         if (nonIdempotentWriteRetriesEnabled || isWebExceptionRetriable) {
             return true;
