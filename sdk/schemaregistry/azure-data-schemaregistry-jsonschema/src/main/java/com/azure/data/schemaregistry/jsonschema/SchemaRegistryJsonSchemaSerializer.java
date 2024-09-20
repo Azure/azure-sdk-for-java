@@ -11,7 +11,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import com.azure.data.schemaregistry.SchemaRegistryClient;
@@ -23,6 +22,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
@@ -33,7 +33,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public final class SchemaRegistryJsonSchemaSerializer {
     private static final String CONTENT_TYPE = ContentType.APPLICATION_JSON;
-    private static final SerializerEncoding ENCODING = SerializerEncoding.JSON;
+    private static final Pattern SPLIT_PATTERN = Pattern.compile("\\+");
 
     private static final ClientLogger LOGGER = new ClientLogger(SchemaRegistryJsonSchemaSerializer.class);
     private final SchemaRegistrySchemaCache schemaCache;
@@ -368,7 +368,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
         }
 
         // It is the new format, so we parse the mime-type.
-        final String[] parts = message.getContentType().split("\\+");
+        final String[] parts = SPLIT_PATTERN.split(message.getContentType());
         if (parts.length != 2) {
             throw new IllegalArgumentException(
                 "Content type was not in the expected format of MIME type + schema ID. Actual: "
