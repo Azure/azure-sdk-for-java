@@ -69,9 +69,10 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
         try {
             LOGGER.verbose("Trying to get a token...");
             credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
-        } catch (ClientAuthenticationException e) {
-            LOGGER.verbose("Body: " + e.getResponse().getBodyAsString().block());
-            LOGGER.verbose("Status code: " + e.getResponse().getStatusCode());
+        } catch (RuntimeException e) {
+            ClientAuthenticationException cae = (ClientAuthenticationException) e.getCause();
+            LOGGER.verbose("Body: " + cae.getResponse().getBodyAsString().block());
+            LOGGER.verbose("Status code: " + cae.getResponse().getStatusCode());
             fail();
         }
 
