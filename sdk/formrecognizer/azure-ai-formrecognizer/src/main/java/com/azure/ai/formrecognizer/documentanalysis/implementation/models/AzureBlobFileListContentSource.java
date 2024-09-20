@@ -24,7 +24,7 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
     private final String containerUrl;
 
     /*
-     * Path to a JSONL file within the container specifying a subset of documents.
+     * Path to a JSONL file within the container specifying a subset of documents for training.
      */
     private final String fileList;
 
@@ -49,7 +49,8 @@ public final class AzureBlobFileListContentSource implements JsonSerializable<Az
     }
 
     /**
-     * Get the fileList property: Path to a JSONL file within the container specifying a subset of documents.
+     * Get the fileList property: Path to a JSONL file within the container specifying a subset of documents for
+     * training.
      * 
      * @return the fileList value.
      */
