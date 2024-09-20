@@ -6,24 +6,26 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Office365 dataset properties.
  */
 @Fluent
-public final class Office365DatasetTypeProperties {
+public final class Office365DatasetTypeProperties implements JsonSerializable<Office365DatasetTypeProperties> {
     /*
      * Name of the dataset to extract from Office 365. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableName", required = true)
     private Object tableName;
 
     /*
      * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "predicate")
     private Object predicate;
 
     /**
@@ -90,4 +92,45 @@ public final class Office365DatasetTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Office365DatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("predicate", this.predicate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Office365DatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Office365DatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Office365DatasetTypeProperties.
+     */
+    public static Office365DatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Office365DatasetTypeProperties deserializedOffice365DatasetTypeProperties
+                = new Office365DatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedOffice365DatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("predicate".equals(fieldName)) {
+                    deserializedOffice365DatasetTypeProperties.predicate = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOffice365DatasetTypeProperties;
+        });
+    }
 }

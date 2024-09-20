@@ -9,11 +9,16 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.PoliciesClient;
+import com.azure.resourcemanager.billing.fluent.models.BillingAccountPolicyInner;
+import com.azure.resourcemanager.billing.fluent.models.BillingProfilePolicyInner;
 import com.azure.resourcemanager.billing.fluent.models.CustomerPolicyInner;
-import com.azure.resourcemanager.billing.fluent.models.PolicyInner;
+import com.azure.resourcemanager.billing.fluent.models.SubscriptionPolicyInner;
+import com.azure.resourcemanager.billing.models.BillingAccountPolicy;
+import com.azure.resourcemanager.billing.models.BillingProfilePolicy;
 import com.azure.resourcemanager.billing.models.CustomerPolicy;
 import com.azure.resourcemanager.billing.models.Policies;
-import com.azure.resourcemanager.billing.models.Policy;
+import com.azure.resourcemanager.billing.models.ServiceDefinedResourceName;
+import com.azure.resourcemanager.billing.models.SubscriptionPolicy;
 
 public final class PoliciesImpl implements Policies {
     private static final ClientLogger LOGGER = new ClientLogger(PoliciesImpl.class);
@@ -27,71 +32,22 @@ public final class PoliciesImpl implements Policies {
         this.serviceManager = serviceManager;
     }
 
-    public Response<Policy> getByBillingProfileWithResponse(
-        String billingAccountName, String billingProfileName, Context context) {
-        Response<PolicyInner> inner =
-            this.serviceClient().getByBillingProfileWithResponse(billingAccountName, billingProfileName, context);
+    public Response<CustomerPolicy> getByCustomerWithResponse(String billingAccountName, String billingProfileName,
+        String customerName, ServiceDefinedResourceName policyName, Context context) {
+        Response<CustomerPolicyInner> inner = this.serviceClient()
+            .getByCustomerWithResponse(billingAccountName, billingProfileName, customerName, policyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Policy getByBillingProfile(String billingAccountName, String billingProfileName) {
-        PolicyInner inner = this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName);
-        if (inner != null) {
-            return new PolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Policy> updateWithResponse(
-        String billingAccountName, String billingProfileName, PolicyInner parameters, Context context) {
-        Response<PolicyInner> inner =
-            this.serviceClient().updateWithResponse(billingAccountName, billingProfileName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Policy update(String billingAccountName, String billingProfileName, PolicyInner parameters) {
-        PolicyInner inner = this.serviceClient().update(billingAccountName, billingProfileName, parameters);
-        if (inner != null) {
-            return new PolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CustomerPolicy> getByCustomerWithResponse(
-        String billingAccountName, String customerName, Context context) {
-        Response<CustomerPolicyInner> inner =
-            this.serviceClient().getByCustomerWithResponse(billingAccountName, customerName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomerPolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CustomerPolicy getByCustomer(String billingAccountName, String customerName) {
-        CustomerPolicyInner inner = this.serviceClient().getByCustomer(billingAccountName, customerName);
+    public CustomerPolicy getByCustomer(String billingAccountName, String billingProfileName, String customerName,
+        ServiceDefinedResourceName policyName) {
+        CustomerPolicyInner inner
+            = this.serviceClient().getByCustomer(billingAccountName, billingProfileName, customerName, policyName);
         if (inner != null) {
             return new CustomerPolicyImpl(inner, this.manager());
         } else {
@@ -99,26 +55,172 @@ public final class PoliciesImpl implements Policies {
         }
     }
 
-    public Response<CustomerPolicy> updateCustomerWithResponse(
-        String billingAccountName, String customerName, CustomerPolicyInner parameters, Context context) {
-        Response<CustomerPolicyInner> inner =
-            this.serviceClient().updateCustomerWithResponse(billingAccountName, customerName, parameters, context);
+    public CustomerPolicy createOrUpdateByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, CustomerPolicyInner parameters) {
+        CustomerPolicyInner inner = this.serviceClient()
+            .createOrUpdateByCustomer(billingAccountName, billingProfileName, customerName, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new CustomerPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CustomerPolicy createOrUpdateByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, CustomerPolicyInner parameters, Context context) {
+        CustomerPolicyInner inner = this.serviceClient()
+            .createOrUpdateByCustomer(billingAccountName, billingProfileName, customerName, parameters, context);
+        if (inner != null) {
+            return new CustomerPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<BillingProfilePolicy> getByBillingProfileWithResponse(String billingAccountName,
+        String billingProfileName, Context context) {
+        Response<BillingProfilePolicyInner> inner
+            = this.serviceClient().getByBillingProfileWithResponse(billingAccountName, billingProfileName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BillingProfilePolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingProfilePolicy getByBillingProfile(String billingAccountName, String billingProfileName) {
+        BillingProfilePolicyInner inner
+            = this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName);
+        if (inner != null) {
+            return new BillingProfilePolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingProfilePolicy createOrUpdateByBillingProfile(String billingAccountName, String billingProfileName,
+        BillingProfilePolicyInner parameters) {
+        BillingProfilePolicyInner inner
+            = this.serviceClient().createOrUpdateByBillingProfile(billingAccountName, billingProfileName, parameters);
+        if (inner != null) {
+            return new BillingProfilePolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingProfilePolicy createOrUpdateByBillingProfile(String billingAccountName, String billingProfileName,
+        BillingProfilePolicyInner parameters, Context context) {
+        BillingProfilePolicyInner inner = this.serviceClient()
+            .createOrUpdateByBillingProfile(billingAccountName, billingProfileName, parameters, context);
+        if (inner != null) {
+            return new BillingProfilePolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CustomerPolicy> getByCustomerAtBillingAccountWithResponse(String billingAccountName,
+        String customerName, Context context) {
+        Response<CustomerPolicyInner> inner
+            = this.serviceClient().getByCustomerAtBillingAccountWithResponse(billingAccountName, customerName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomerPolicyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CustomerPolicy updateCustomer(
-        String billingAccountName, String customerName, CustomerPolicyInner parameters) {
-        CustomerPolicyInner inner = this.serviceClient().updateCustomer(billingAccountName, customerName, parameters);
+    public CustomerPolicy getByCustomerAtBillingAccount(String billingAccountName, String customerName) {
+        CustomerPolicyInner inner
+            = this.serviceClient().getByCustomerAtBillingAccount(billingAccountName, customerName);
         if (inner != null) {
             return new CustomerPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CustomerPolicy createOrUpdateByCustomerAtBillingAccount(String billingAccountName, String customerName,
+        CustomerPolicyInner parameters) {
+        CustomerPolicyInner inner = this.serviceClient()
+            .createOrUpdateByCustomerAtBillingAccount(billingAccountName, customerName, parameters);
+        if (inner != null) {
+            return new CustomerPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public CustomerPolicy createOrUpdateByCustomerAtBillingAccount(String billingAccountName, String customerName,
+        CustomerPolicyInner parameters, Context context) {
+        CustomerPolicyInner inner = this.serviceClient()
+            .createOrUpdateByCustomerAtBillingAccount(billingAccountName, customerName, parameters, context);
+        if (inner != null) {
+            return new CustomerPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<BillingAccountPolicy> getByBillingAccountWithResponse(String billingAccountName, Context context) {
+        Response<BillingAccountPolicyInner> inner
+            = this.serviceClient().getByBillingAccountWithResponse(billingAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BillingAccountPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingAccountPolicy getByBillingAccount(String billingAccountName) {
+        BillingAccountPolicyInner inner = this.serviceClient().getByBillingAccount(billingAccountName);
+        if (inner != null) {
+            return new BillingAccountPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingAccountPolicy createOrUpdateByBillingAccount(String billingAccountName,
+        BillingAccountPolicyInner parameters) {
+        BillingAccountPolicyInner inner
+            = this.serviceClient().createOrUpdateByBillingAccount(billingAccountName, parameters);
+        if (inner != null) {
+            return new BillingAccountPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingAccountPolicy createOrUpdateByBillingAccount(String billingAccountName,
+        BillingAccountPolicyInner parameters, Context context) {
+        BillingAccountPolicyInner inner
+            = this.serviceClient().createOrUpdateByBillingAccount(billingAccountName, parameters, context);
+        if (inner != null) {
+            return new BillingAccountPolicyImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<SubscriptionPolicy> getBySubscriptionWithResponse(Context context) {
+        Response<SubscriptionPolicyInner> inner = this.serviceClient().getBySubscriptionWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SubscriptionPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SubscriptionPolicy getBySubscription() {
+        SubscriptionPolicyInner inner = this.serviceClient().getBySubscription();
+        if (inner != null) {
+            return new SubscriptionPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

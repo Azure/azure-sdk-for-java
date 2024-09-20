@@ -16,15 +16,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class WindowsUserConfiguration {
     /**
      * The login mode for the user.
-     * The default value for VirtualMachineConfiguration Pools is 'batch' and
-     * for CloudServiceConfiguration Pools is 'interactive'. Possible values
-     * include: 'batch', 'interactive'.
+     * The default is 'batch'. Possible values include: 'batch', 'interactive'.
      */
     @JsonProperty(value = "loginMode")
     private LoginMode loginMode;
 
     /**
-     * Get the default value for VirtualMachineConfiguration Pools is 'batch' and for CloudServiceConfiguration Pools is 'interactive'. Possible values include: 'batch', 'interactive'.
+     * Get the default is 'batch'. Possible values include: 'batch', 'interactive'.
      *
      * @return the loginMode value
      */
@@ -33,7 +31,7 @@ public class WindowsUserConfiguration {
     }
 
     /**
-     * Set the default value for VirtualMachineConfiguration Pools is 'batch' and for CloudServiceConfiguration Pools is 'interactive'. Possible values include: 'batch', 'interactive'.
+     * Set the default is 'batch'. Possible values include: 'batch', 'interactive'.
      *
      * @param loginMode the loginMode value to set
      * @return the WindowsUserConfiguration object itself.

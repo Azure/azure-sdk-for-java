@@ -11,22 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class AksClusterProfileAksClusterAgentPoolIdentityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AksClusterProfileAksClusterAgentPoolIdentityProfile model = BinaryData.fromString(
-            "{\"msiResourceId\":\"ctazakljlahbcryf\",\"msiClientId\":\"dfdosygexp\",\"msiObjectId\":\"ojakhmsbzjhcrze\"}")
-            .toObject(AksClusterProfileAksClusterAgentPoolIdentityProfile.class);
-        Assertions.assertEquals("ctazakljlahbcryf", model.msiResourceId());
-        Assertions.assertEquals("dfdosygexp", model.msiClientId());
-        Assertions.assertEquals("ojakhmsbzjhcrze", model.msiObjectId());
+        AksClusterProfileAksClusterAgentPoolIdentityProfile model
+            = BinaryData.fromString("{\"msiResourceId\":\"jfm\",\"msiClientId\":\"pee\",\"msiObjectId\":\"vmgxsab\"}")
+                .toObject(AksClusterProfileAksClusterAgentPoolIdentityProfile.class);
+        Assertions.assertEquals("jfm", model.msiResourceId());
+        Assertions.assertEquals("pee", model.msiClientId());
+        Assertions.assertEquals("vmgxsab", model.msiObjectId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AksClusterProfileAksClusterAgentPoolIdentityProfile model
-            = new AksClusterProfileAksClusterAgentPoolIdentityProfile().withMsiResourceId("ctazakljlahbcryf")
-                .withMsiClientId("dfdosygexp").withMsiObjectId("ojakhmsbzjhcrze");
+            = new AksClusterProfileAksClusterAgentPoolIdentityProfile().withMsiResourceId("jfm")
+                .withMsiClientId("pee")
+                .withMsiObjectId("vmgxsab");
         model = BinaryData.fromObject(model).toObject(AksClusterProfileAksClusterAgentPoolIdentityProfile.class);
-        Assertions.assertEquals("ctazakljlahbcryf", model.msiResourceId());
-        Assertions.assertEquals("dfdosygexp", model.msiClientId());
-        Assertions.assertEquals("ojakhmsbzjhcrze", model.msiObjectId());
+        Assertions.assertEquals("jfm", model.msiResourceId());
+        Assertions.assertEquals("pee", model.msiClientId());
+        Assertions.assertEquals("vmgxsab", model.msiObjectId());
     }
 }

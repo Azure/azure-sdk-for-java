@@ -6,34 +6,70 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The MLFlowModelJobInput model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobInputType")
-@JsonTypeName("mlflow_model")
+/**
+ * The MLFlowModelJobInput model.
+ */
 @Fluent
 public final class MLFlowModelJobInput extends JobInput {
     /*
-     * Input Asset Delivery Mode.
+     * [Required] Specifies the type of job.
      */
-    @JsonProperty(value = "mode")
-    private InputDeliveryMode mode;
+    private JobInputType jobInputType = JobInputType.MLFLOW_MODEL;
 
     /*
      * [Required] Input Asset URI.
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
-    /** Creates an instance of MLFlowModelJobInput class. */
+    /*
+     * Input Asset Delivery Mode.
+     */
+    private InputDeliveryMode mode;
+
+    /**
+     * Creates an instance of MLFlowModelJobInput class.
+     */
     public MLFlowModelJobInput() {
     }
 
     /**
+     * Get the jobInputType property: [Required] Specifies the type of job.
+     * 
+     * @return the jobInputType value.
+     */
+    @Override
+    public JobInputType jobInputType() {
+        return this.jobInputType;
+    }
+
+    /**
+     * Get the uri property: [Required] Input Asset URI.
+     * 
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.uri;
+    }
+
+    /**
+     * Set the uri property: [Required] Input Asset URI.
+     * 
+     * @param uri the uri value to set.
+     * @return the MLFlowModelJobInput object itself.
+     */
+    public MLFlowModelJobInput withUri(String uri) {
+        this.uri = uri;
+        return this;
+    }
+
+    /**
      * Get the mode property: Input Asset Delivery Mode.
-     *
+     * 
      * @return the mode value.
      */
     public InputDeliveryMode mode() {
@@ -42,7 +78,7 @@ public final class MLFlowModelJobInput extends JobInput {
 
     /**
      * Set the mode property: Input Asset Delivery Mode.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the MLFlowModelJobInput object itself.
      */
@@ -52,26 +88,8 @@ public final class MLFlowModelJobInput extends JobInput {
     }
 
     /**
-     * Get the uri property: [Required] Input Asset URI.
-     *
-     * @return the uri value.
+     * {@inheritDoc}
      */
-    public String uri() {
-        return this.uri;
-    }
-
-    /**
-     * Set the uri property: [Required] Input Asset URI.
-     *
-     * @param uri the uri value to set.
-     * @return the MLFlowModelJobInput object itself.
-     */
-    public MLFlowModelJobInput withUri(String uri) {
-        this.uri = uri;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public MLFlowModelJobInput withDescription(String description) {
         super.withDescription(description);
@@ -80,18 +98,63 @@ public final class MLFlowModelJobInput extends JobInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (uri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property uri in model MLFlowModelJobInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property uri in model MLFlowModelJobInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MLFlowModelJobInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("jobInputType", this.jobInputType == null ? null : this.jobInputType.toString());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MLFlowModelJobInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MLFlowModelJobInput if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MLFlowModelJobInput.
+     */
+    public static MLFlowModelJobInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MLFlowModelJobInput deserializedMLFlowModelJobInput = new MLFlowModelJobInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedMLFlowModelJobInput.withDescription(reader.getString());
+                } else if ("uri".equals(fieldName)) {
+                    deserializedMLFlowModelJobInput.uri = reader.getString();
+                } else if ("jobInputType".equals(fieldName)) {
+                    deserializedMLFlowModelJobInput.jobInputType = JobInputType.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedMLFlowModelJobInput.mode = InputDeliveryMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMLFlowModelJobInput;
+        });
+    }
 }

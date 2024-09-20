@@ -6,18 +6,26 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Cluster pool profile.
  */
 @Fluent
-public class ClusterPoolProfile {
+public class ClusterPoolProfile implements JsonSerializable<ClusterPoolProfile> {
     /*
      * Cluster pool version is a 2-part version.
      */
-    @JsonProperty(value = "clusterPoolVersion", required = true)
     private String clusterPoolVersion;
+
+    /*
+     * Gets or sets the IP tag for the public IPs created along with the HDInsightOnAks ClusterPools and Clusters.
+     */
+    private IpTag publicIpTag;
 
     /**
      * Creates an instance of ClusterPoolProfile class.
@@ -46,16 +54,82 @@ public class ClusterPoolProfile {
     }
 
     /**
+     * Get the publicIpTag property: Gets or sets the IP tag for the public IPs created along with the HDInsightOnAks
+     * ClusterPools and Clusters.
+     * 
+     * @return the publicIpTag value.
+     */
+    public IpTag publicIpTag() {
+        return this.publicIpTag;
+    }
+
+    /**
+     * Set the publicIpTag property: Gets or sets the IP tag for the public IPs created along with the HDInsightOnAks
+     * ClusterPools and Clusters.
+     * 
+     * @param publicIpTag the publicIpTag value to set.
+     * @return the ClusterPoolProfile object itself.
+     */
+    public ClusterPoolProfile withPublicIpTag(IpTag publicIpTag) {
+        this.publicIpTag = publicIpTag;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clusterPoolVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property clusterPoolVersion in model ClusterPoolProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterPoolVersion in model ClusterPoolProfile"));
+        }
+        if (publicIpTag() != null) {
+            publicIpTag().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterPoolProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clusterPoolVersion", this.clusterPoolVersion);
+        jsonWriter.writeJsonField("publicIpTag", this.publicIpTag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPoolProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPoolProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterPoolProfile.
+     */
+    public static ClusterPoolProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPoolProfile deserializedClusterPoolProfile = new ClusterPoolProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterPoolVersion".equals(fieldName)) {
+                    deserializedClusterPoolProfile.clusterPoolVersion = reader.getString();
+                } else if ("publicIpTag".equals(fieldName)) {
+                    deserializedClusterPoolProfile.publicIpTag = IpTag.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPoolProfile;
+        });
+    }
 }

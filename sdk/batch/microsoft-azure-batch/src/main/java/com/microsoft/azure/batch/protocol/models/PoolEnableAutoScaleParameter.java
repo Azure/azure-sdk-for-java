@@ -21,7 +21,7 @@ public class PoolEnableAutoScaleParameter {
      * the formula is not valid, the Batch service rejects the request with
      * detailed error information. For more information about specifying this
      * formula, see Automatically scale Compute Nodes in an Azure Batch Pool
-     * (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      */
     @JsonProperty(value = "autoScaleFormula")
     private String autoScaleFormula;
@@ -42,7 +42,7 @@ public class PoolEnableAutoScaleParameter {
     private Period autoScaleEvaluationInterval;
 
     /**
-     * Get the formula is checked for validity before it is applied to the Pool. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * Get the formula is checked for validity before it is applied to the Pool. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      *
      * @return the autoScaleFormula value
      */
@@ -51,7 +51,7 @@ public class PoolEnableAutoScaleParameter {
     }
 
     /**
-     * Set the formula is checked for validity before it is applied to the Pool. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * Set the formula is checked for validity before it is applied to the Pool. If the formula is not valid, the Batch service rejects the request with detailed error information. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      *
      * @param autoScaleFormula the autoScaleFormula value to set
      * @return the PoolEnableAutoScaleParameter object itself.

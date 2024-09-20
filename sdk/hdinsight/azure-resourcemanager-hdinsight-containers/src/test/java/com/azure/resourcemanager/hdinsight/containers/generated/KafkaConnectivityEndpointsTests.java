@@ -12,19 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class KafkaConnectivityEndpointsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KafkaConnectivityEndpoints model
-            = BinaryData.fromString("{\"bootstrapServerEndpoint\":\"qik\",\"brokerEndpoints\":[\"ovplw\",\"bhvgy\"]}")
-                .toObject(KafkaConnectivityEndpoints.class);
-        Assertions.assertEquals("qik", model.bootstrapServerEndpoint());
-        Assertions.assertEquals("ovplw", model.brokerEndpoints().get(0));
+        KafkaConnectivityEndpoints model = BinaryData.fromString(
+            "{\"bootstrapServerEndpoint\":\"wyhzdx\",\"brokerEndpoints\":[\"dbzm\",\"vdfznudaodvxzb\",\"cblylpstdbhhxsr\",\"dzu\"]}")
+            .toObject(KafkaConnectivityEndpoints.class);
+        Assertions.assertEquals("wyhzdx", model.bootstrapServerEndpoint());
+        Assertions.assertEquals("dbzm", model.brokerEndpoints().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KafkaConnectivityEndpoints model = new KafkaConnectivityEndpoints().withBootstrapServerEndpoint("qik")
-            .withBrokerEndpoints(Arrays.asList("ovplw", "bhvgy"));
+        KafkaConnectivityEndpoints model = new KafkaConnectivityEndpoints().withBootstrapServerEndpoint("wyhzdx")
+            .withBrokerEndpoints(Arrays.asList("dbzm", "vdfznudaodvxzb", "cblylpstdbhhxsr", "dzu"));
         model = BinaryData.fromObject(model).toObject(KafkaConnectivityEndpoints.class);
-        Assertions.assertEquals("qik", model.bootstrapServerEndpoint());
-        Assertions.assertEquals("ovplw", model.brokerEndpoints().get(0));
+        Assertions.assertEquals("wyhzdx", model.bootstrapServerEndpoint());
+        Assertions.assertEquals("dbzm", model.brokerEndpoints().get(0));
     }
 }

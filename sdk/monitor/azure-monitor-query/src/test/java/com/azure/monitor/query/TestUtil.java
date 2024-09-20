@@ -24,13 +24,12 @@ public class TestUtil {
         if (interceptorManager.isLiveMode()) {
             Configuration config = Configuration.getGlobalConfiguration();
 
-            String serviceConnectionId  = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
             String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
             String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
             String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
 
-            return new AzurePipelinesCredentialBuilder()
-                .systemAccessToken(systemAccessToken)
+            return new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
                 .clientId(clientId)
                 .tenantId(tenantId)
                 .serviceConnectionId(serviceConnectionId)

@@ -11,19 +11,19 @@ public final class MicrosoftAccessSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MicrosoftAccessSink model = BinaryData.fromString(
-            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datayipjzgmxqaupy\",\"writeBatchSize\":\"datagoyp\",\"writeBatchTimeout\":\"dataooyyfysn\",\"sinkRetryCount\":\"datajnl\",\"sinkRetryWait\":\"datacmhonojese\",\"maxConcurrentConnections\":\"dataxel\",\"disableMetricsCollection\":\"dataxwmpziy\",\"\":{\"wpcutzlvx\":\"datajswedkfofyfwpu\",\"vddwgozr\":\"dataolvedzrjkrpor\",\"dyhcwcgvyuuse\":\"dataglkmgcxmkrldfo\"}}")
+            "{\"type\":\"MicrosoftAccessSink\",\"preCopyScript\":\"datawimmmmgbynvoytd\",\"writeBatchSize\":\"datakfqznvahpxdg\",\"writeBatchTimeout\":\"dataowxcptxvxfwwv\",\"sinkRetryCount\":\"datagcfazt\",\"sinkRetryWait\":\"dataaszjrihca\",\"maxConcurrentConnections\":\"dataj\",\"disableMetricsCollection\":\"datavkttiteb\",\"\":{\"zlzzmygoutqe\":\"datapmoadjooer\",\"wp\":\"datapuoyc\",\"ufdxpwj\":\"dataxqx\",\"cecukzt\":\"dataajvskpbu\"}}")
             .toObject(MicrosoftAccessSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datagoyp")
-            .withWriteBatchTimeout("dataooyyfysn")
-            .withSinkRetryCount("datajnl")
-            .withSinkRetryWait("datacmhonojese")
-            .withMaxConcurrentConnections("dataxel")
-            .withDisableMetricsCollection("dataxwmpziy")
-            .withPreCopyScript("datayipjzgmxqaupy");
+        MicrosoftAccessSink model = new MicrosoftAccessSink().withWriteBatchSize("datakfqznvahpxdg")
+            .withWriteBatchTimeout("dataowxcptxvxfwwv")
+            .withSinkRetryCount("datagcfazt")
+            .withSinkRetryWait("dataaszjrihca")
+            .withMaxConcurrentConnections("dataj")
+            .withDisableMetricsCollection("datavkttiteb")
+            .withPreCopyScript("datawimmmmgbynvoytd");
         model = BinaryData.fromObject(model).toObject(MicrosoftAccessSink.class);
     }
 }

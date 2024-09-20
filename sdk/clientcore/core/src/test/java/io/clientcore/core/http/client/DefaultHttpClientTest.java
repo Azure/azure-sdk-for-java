@@ -27,10 +27,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -193,7 +191,7 @@ public class DefaultHttpClientTest {
             .set(multiValueHeaderName, multiValueHeaderValue);
 
         try (Response<?> response = client.send(
-            new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+            new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
             HttpHeaders responseHeaders = response.getHeaders();
@@ -233,7 +231,7 @@ public class DefaultHttpClientTest {
         HttpClient client = new DefaultHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"));
+        HttpRequest request = new HttpRequest(HttpMethod.POST, uri(server, "/shortPost"));
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
         request.setBody(BinaryData.fromString(contentChunk));
 
@@ -253,30 +251,30 @@ public class DefaultHttpClientTest {
             .sslSocketFactory(sslContext.getSocketFactory())
             .build();
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUrl(server, "/short")))) {
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
     private static Response<?> getResponse(HttpClient client, String path, Context context) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path))
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path))
             .setRequestOptions(new RequestOptions().setContext(context));
 
         return client.send(request);
     }
 
-    static URL url(LocalTestServer server, String path) {
+    static URI uri(LocalTestServer server, String path) {
         try {
-            return new URI(server.getHttpUri() + path).toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
+            return new URI(server.getHttpUri() + path);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 
-    static URL httpsUrl(LocalTestServer server, String path) {
+    static URI httpsUri(LocalTestServer server, String path) {
         try {
-            return new URI(server.getHttpsUri() + path).toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
+            return new URI(server.getHttpsUri() + path);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -293,7 +291,7 @@ public class DefaultHttpClientTest {
     }
 
     private static Response<?> doRequest(HttpClient client, String path) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path));
 
         return client.send(request);
     }

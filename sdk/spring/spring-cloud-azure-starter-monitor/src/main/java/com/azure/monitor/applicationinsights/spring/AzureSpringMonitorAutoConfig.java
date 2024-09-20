@@ -6,13 +6,10 @@ package com.azure.monitor.applicationinsights.spring;
 import com.azure.core.http.HttpPipeline;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
+import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
+import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
+import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizerProvider;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
-import io.opentelemetry.sdk.autoconfigure.spi.logs.ConfigurableLogRecordExporterProvider;
-import io.opentelemetry.sdk.autoconfigure.spi.metrics.ConfigurableMetricExporterProvider;
-import io.opentelemetry.sdk.autoconfigure.spi.traces.ConfigurableSpanExporterProvider;
-import io.opentelemetry.sdk.logs.export.LogRecordExporter;
-import io.opentelemetry.sdk.metrics.export.MetricExporter;
-import io.opentelemetry.sdk.trace.export.SpanExporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -22,7 +19,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Auto config for Azure Spring Monitor
@@ -34,18 +33,33 @@ public class AzureSpringMonitorAutoConfig {
 
     private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfig.class);
 
-    static final String AZURE_EXPORTER_NAME = "azure-exporter";
+    private static final Function<ConfigProperties, Map<String, String>> OTEL_DISABLE_CONFIG = configProperties -> {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("otel.sdk.disabled", "true");
+        return properties;
+    };
 
-    private final Optional<AzureMonitorExporterBuilder> azureMonitorExporterBuilderOpt;
+    private static final Function<ConfigProperties, Map<String, String>> NO_EXPORT_CONFIG = configProperties -> {
+        Map<String, String> properties = new HashMap<>(3);
+        properties.put("otel.traces.exporter", "none");
+        properties.put("otel.metrics.exporter", "none");
+        properties.put("otel.logs.exporter", "none");
+        return properties;
+    };
+
+    private final String connectionString;
+    private final ObjectProvider<HttpPipeline> httpPipeline;
+
 
     /**
      * Create an instance of AzureSpringMonitorConfig
      *
-     * @param connectionStringSysProp connection string system property
+     * @param connectionString connection string system property
      * @param httpPipeline an instance of HttpPipeline
      */
-    public AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
-        this.azureMonitorExporterBuilderOpt = createAzureMonitorExporterBuilder(connectionStringSysProp, httpPipeline);
+    AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
+        this.connectionString = connectionString;
+        this.httpPipeline = httpPipeline;
         if (!isNativeRuntimeExecution()) {
             LOG.warn("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
         }
@@ -56,104 +70,54 @@ public class AzureSpringMonitorAutoConfig {
         return imageCode != null;
     }
 
-    private Optional<AzureMonitorExporterBuilder> createAzureMonitorExporterBuilder(String connectionStringSysProp, ObjectProvider<HttpPipeline> httpPipeline) {
-        Optional<String> connectionString = ConnectionStringRetriever.retrieveConnectionString(connectionStringSysProp);
-        if (connectionString.isPresent()) {
-            AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString.get());
-            HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
-            if (providedHttpPipeline != null) {
-                azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
-            }
-            return Optional.of(azureMonitorExporterBuilder);
-        } else {
-            LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure.");
+    private static boolean applicationInsightsAgentIsAttached() {
+        try {
+            Class.forName("com.microsoft.applicationinsights.agent.Agent", false, null);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false;
         }
-        return Optional.empty();
     }
 
-    /**
-     * Declare a ConfigurableMetricExporterProvider bean
-     *
-     * @return ConfigurableMetricExporterProvider
-     */
     @Bean
-    ConfigurableMetricExporterProvider otlpMetricExporterProvider() {
-        MetricExporter metricExporter = createMetricExporter();
-        return new ConfigurableMetricExporterProvider() {
+    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider() {
+        return new AutoConfigurationCustomizerProvider() {
             @Override
-            public MetricExporter createExporter(ConfigProperties configProperties) {
-                return metricExporter;
-            }
-            @Override
-            public String getName() {
-                return AZURE_EXPORTER_NAME;
-            }
-        };
+            public void customize(AutoConfigurationCustomizer autoConfigurationCustomizer) {
 
-    }
+                if (!isNativeRuntimeExecution() && applicationInsightsAgentIsAttached()) {
+                    LOG.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
+                        + " You can remove this message by adding the otel.sdk.disabled=true property.");
+                    autoConfigurationCustomizer.addPropertiesCustomizer(OTEL_DISABLE_CONFIG);
+                    return;
+                }
 
-    private MetricExporter createMetricExporter() {
-        if (!azureMonitorExporterBuilderOpt.isPresent()) {
-            return null;
-        }
-        return azureMonitorExporterBuilderOpt.get().buildMetricExporter();
-    }
+                if (connectionString == null || connectionString.isEmpty()) {
+                    LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure.");
+                    // If the user does not provide a connection, we disable the export and leave the instrumentation enabled to spot potential failures from
+                    // the instrumentation, in the customer automatic tests for example.
+                    autoConfigurationCustomizer.addPropertiesCustomizer(NO_EXPORT_CONFIG);
+                    return;
+                }
 
-    /**
-     * Declare a ConfigurableSpanExporterProvider bean
-     *
-     * @return ConfigurableSpanExporterProvider
-     */
-    @Bean
-    ConfigurableSpanExporterProvider otlpSpanExporterProvider() {
-        SpanExporter spanExporter = createSpanExporter();
-        return new ConfigurableSpanExporterProvider() {
-            @Override
-            public SpanExporter createExporter(ConfigProperties configProperties) {
-                return spanExporter;
+                if (!connectionString.contains("InstrumentationKey=")) {
+                    throw new WrongConnectionStringException();
+                }
+
+                if (autoConfigurationCustomizer instanceof AutoConfiguredOpenTelemetrySdkBuilder) {
+                    AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = (AutoConfiguredOpenTelemetrySdkBuilder) autoConfigurationCustomizer;
+
+                    AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString);
+                    HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
+                    if (providedHttpPipeline != null) {
+                        azureMonitorExporterBuilder = azureMonitorExporterBuilder.httpPipeline(providedHttpPipeline);
+                    }
+                    azureMonitorExporterBuilder.install(sdkBuilder);
+                }
             }
-            @Override
-            public String getName() {
-                return AZURE_EXPORTER_NAME;
-            }
+
         };
     }
-
-    private SpanExporter createSpanExporter() {
-        if (!azureMonitorExporterBuilderOpt.isPresent()) {
-            return null;
-        }
-        return azureMonitorExporterBuilderOpt.get().buildTraceExporter();
-    }
-
-
-    /**
-     * Declare a ConfigurableLogRecordExporterProvider bean
-     *
-     * @return ConfigurableLogRecordExporterProvider
-     */
-    @Bean
-    ConfigurableLogRecordExporterProvider otlpLogRecordExporterProvider() {
-        LogRecordExporter logRecordExporter = createLogRecordExporter();
-        return new ConfigurableLogRecordExporterProvider() {
-            @Override
-            public LogRecordExporter createExporter(ConfigProperties configProperties) {
-                return logRecordExporter;
-            }
-            @Override
-            public String getName() {
-                return AZURE_EXPORTER_NAME;
-            }
-        };
-    }
-
-    private LogRecordExporter createLogRecordExporter() {
-        if (!azureMonitorExporterBuilderOpt.isPresent()) {
-            return null;
-        }
-        return azureMonitorExporterBuilderOpt.get().buildLogRecordExporter();
-    }
-
 
     /**
      * Declare OpenTelemetryVersionCheckRunner bean to check the OpenTelemetry version
@@ -161,7 +125,7 @@ public class AzureSpringMonitorAutoConfig {
      * @return OpenTelemetryVersionCheckRunner
      */
     @Bean
-    public OpenTelemetryVersionCheckRunner openTelemetryVersionCheckRunner() {
+    OpenTelemetryVersionCheckRunner openTelemetryVersionCheckRunner() {
         return new OpenTelemetryVersionCheckRunner();
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.generated;
 
 import com.azure.resourcemanager.network.fluent.models.NetworkGroupInner;
+import com.azure.resourcemanager.network.models.GroupMemberType;
 
 /**
  * Samples for NetworkGroups CreateOrUpdate.
@@ -12,7 +13,7 @@ import com.azure.resourcemanager.network.fluent.models.NetworkGroupInner;
 public final class NetworkGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkManagerGroupPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkManagerGroupPut.json
      */
     /**
      * Sample code: NetworkGroupsPut.
@@ -25,6 +26,8 @@ public final class NetworkGroupsCreateOrUpdateSamples {
             .serviceClient()
             .getNetworkGroups()
             .createOrUpdateWithResponse("rg1", "testNetworkManager", "testNetworkGroup",
-                new NetworkGroupInner().withDescription("A sample group"), null, com.azure.core.util.Context.NONE);
+                new NetworkGroupInner().withDescription("A sample group")
+                    .withMemberType(GroupMemberType.VIRTUAL_NETWORK),
+                null, com.azure.core.util.Context.NONE);
     }
 }

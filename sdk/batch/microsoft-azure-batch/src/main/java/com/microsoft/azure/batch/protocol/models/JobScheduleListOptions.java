@@ -20,7 +20,7 @@ public class JobScheduleListOptions {
     /**
      * An OData $filter clause. For more information on constructing this
      * filter, see
-     * https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      */
     @JsonProperty(value = "")
     private String filter;
@@ -75,7 +75,7 @@ public class JobScheduleListOptions {
     private DateTimeRfc1123 ocpDate;
 
     /**
-     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * Get an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      *
      * @return the filter value
      */
@@ -84,7 +84,7 @@ public class JobScheduleListOptions {
     }
 
     /**
-     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/en-us/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
+     * Set an OData $filter clause. For more information on constructing this filter, see https://docs.microsoft.com/rest/api/batchservice/odata-filters-in-batch#list-job-schedules.
      *
      * @param filter the filter value to set
      * @return the JobScheduleListOptions object itself.

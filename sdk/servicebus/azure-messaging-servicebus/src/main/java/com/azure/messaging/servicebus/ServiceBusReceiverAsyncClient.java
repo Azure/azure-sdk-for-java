@@ -1735,10 +1735,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono = RetryUtil.withRetry(receiveLinkMono.onErrorMap(
                 RequestResponseChannelClosedException.class,
                 e -> {
-                    // When the current connection is being disposed, the connectionProcessor can produce
-                    // a new connection if downstream request.
-                    // In this context, treat RequestResponseChannelClosedException from the RequestResponseChannel scoped
-                    // to the current connection being disposed as retry-able so that retry can obtain new connection.
+                    // When the current connection is being disposed, the V1 ConnectionProcessor or V2 ReactorConnectionCache
+                    // can produce a new connection if downstream request. In this context, treat
+                    // RequestResponseChannelClosedException error from the following two sources as retry-able so that
+                    // retry can obtain a new connection -
+                    // 1. error from the RequestResponseChannel scoped to the current connection being disposed,
+                    // 2. error from the V2 RequestResponseChannelCache scoped to the current connection being disposed.
+                    //
                     return new AmqpException(true, e.getMessage(), e, null);
                 }),
             connectionCacheWrapper.getRetryOptions(),

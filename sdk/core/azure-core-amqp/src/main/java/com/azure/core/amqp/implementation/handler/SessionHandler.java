@@ -21,6 +21,8 @@ import java.util.Locale;
 import java.util.concurrent.RejectedExecutionException;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
+import static com.azure.core.amqp.implementation.ClientConstants.SESSION_ID_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.SESSION_NAME_KEY;
 
 /**
@@ -52,6 +54,15 @@ public class SessionHandler extends Handler {
     }
 
     /**
+     * Gets the name of the session.
+     *
+     * @return the session name.
+     */
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    /**
      * Gets the error context of the session.
      *
      * @return The error context of the session.
@@ -63,6 +74,7 @@ public class SessionHandler extends Handler {
     @Override
     public void onSessionLocalOpen(Event e) {
         addErrorCondition(logger.atVerbose(), e.getSession().getCondition()).addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue(SESSION_ID_KEY, getId())
             .log("onSessionLocalOpen");
 
         final Session session = e.getSession();
@@ -99,6 +111,7 @@ public class SessionHandler extends Handler {
         }
 
         logBuilder.addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue(SESSION_ID_KEY, getId())
             .addKeyValue("sessionIncCapacity", session.getIncomingCapacity())
             .addKeyValue("sessionOutgoingWindow", session.getOutgoingWindow())
             .log("onSessionRemoteOpen");
@@ -111,6 +124,7 @@ public class SessionHandler extends Handler {
         final ErrorCondition condition = (e != null && e.getSession() != null) ? e.getSession().getCondition() : null;
 
         addErrorCondition(logger.atVerbose(), condition).addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue(SESSION_ID_KEY, getId())
             .log("onSessionLocalClose");
     }
 
@@ -120,6 +134,7 @@ public class SessionHandler extends Handler {
         final ErrorCondition condition = session != null ? session.getRemoteCondition() : null;
 
         addErrorCondition(logger.atInfo(), condition).addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue(SESSION_ID_KEY, getId())
             .log("onSessionRemoteClose");
 
         if (session != null && session.getLocalState() != EndpointState.CLOSED) {
@@ -151,11 +166,18 @@ public class SessionHandler extends Handler {
         final Session session = e.getSession();
         final ErrorCondition condition = session != null ? session.getCondition() : null;
 
-        addErrorCondition(logger.atInfo(), condition).addKeyValue(SESSION_NAME_KEY, sessionName).log("onSessionFinal.");
+        addErrorCondition(logger.atInfo(), condition).addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue(SESSION_ID_KEY, getId())
+            .log("onSessionFinal.");
         close();
     }
 
     private void onSessionTimeout() {
+        logger.atWarning()
+            .addKeyValue(SESSION_NAME_KEY, sessionName)
+            .addKeyValue(ERROR_DESCRIPTION_KEY, "timeout")
+            .log("onSessionTimeout");
+
         // It is supposed to close a local session to handle timeout exception.
         // However, closing the session can result in NPE because of proton-j bug (https://issues.apache
         // .org/jira/browse/PROTON-1939).

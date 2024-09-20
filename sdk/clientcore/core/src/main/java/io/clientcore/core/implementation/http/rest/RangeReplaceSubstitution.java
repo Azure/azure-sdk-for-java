@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * A range replace substitution is a substitution that replaces a range of characters in a String with the supplied
  * value. This type of substitution is commonly used for host and path replacements where the Swagger interface will
- * have a definition such as {@code @Host("{url}")} which will be replaced with a value such as
+ * have a definition such as {@code @Host("{uri}")} which will be replaced with a value such as
  * {@code https://myhost.com}.
  * <p>
  * Before the introduction of this replacement {@link String#replace(CharSequence, CharSequence)} was used which would
@@ -22,19 +22,19 @@ public class RangeReplaceSubstitution extends Substitution {
     /**
      * Create a new Substitution.
      *
-     * @param urlParameterName The name that is used between curly quotes as a placeholder in the target URL.
+     * @param uriParameterName The name that is used between curly quotes as a placeholder in the target URI.
      * @param methodParameterIndex The index of the parameter in the original interface method where the value for the
      * placeholder is.
      * @param shouldEncode Whether the value from the method's argument should be encoded when the substitution is
      * taking place.
      * @param substitutionBase The string that will have its ranges substituted.
      */
-    public RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
+    public RangeReplaceSubstitution(String uriParameterName, int methodParameterIndex, boolean shouldEncode,
         String substitutionBase) {
-        super(urlParameterName, methodParameterIndex, shouldEncode);
+        super(uriParameterName, methodParameterIndex, shouldEncode);
         this.ranges = new ArrayList<>();
 
-        String placeholder = "{" + urlParameterName + "}";
+        String placeholder = "{" + uriParameterName + "}";
         int indexOf = 0;
         while (true) {
             indexOf = substitutionBase.indexOf(placeholder, indexOf);

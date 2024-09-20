@@ -22,9 +22,9 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.implementation.util.UrlBuilder;
+import io.clientcore.core.implementation.util.UriBuilder;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.util.Context;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -136,8 +136,8 @@ public class SwaggerMethodParserTests {
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void noWireType();
 
-        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Base64Url.class)
-        void base64Url();
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = Base64Uri.class)
+        void base64Uri();
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test", returnValueWireType = DateTimeRfc1123.class)
         void dateTimeRfc1123();
@@ -159,7 +159,7 @@ public class SwaggerMethodParserTests {
 
         return Stream.of(
             Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
-            Arguments.of(clazz.getDeclaredMethod("base64Url"), Base64Url.class),
+            Arguments.of(clazz.getDeclaredMethod("base64Uri"), Base64Uri.class),
             Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
             Arguments.of(clazz.getDeclaredMethod("unknownType"), null)
         );
@@ -228,13 +228,13 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("hostSubstitutionSupplier")
-    public void hostSubstitution(Method method, Object[] arguments, String expectedUrl) {
+    public void hostSubstitution(Method method, Object[] arguments, String expectedUri) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
-        UrlBuilder urlBuilder = new UrlBuilder();
+        UriBuilder uriBuilder = new UriBuilder();
         SwaggerMethodParser.setSchemeAndHost("https://{sub1}.host.com", swaggerMethodParser.hostSubstitutions,
-            arguments, urlBuilder, DEFAULT_SERIALIZER);
+            arguments, uriBuilder, DEFAULT_SERIALIZER);
 
-        assertEquals(expectedUrl, urlBuilder.toString());
+        assertEquals(expectedUri, uriBuilder.toString());
     }
 
     private static Stream<Arguments> hostSubstitutionSupplier() throws NoSuchMethodException {
@@ -280,13 +280,13 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("schemeSubstitutionSupplier")
-    public void schemeSubstitution(Method method, Object[] arguments, String expectedUrl) {
+    public void schemeSubstitution(Method method, Object[] arguments, String expectedUri) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
-        UrlBuilder urlBuilder = new UrlBuilder();
+        UriBuilder uriBuilder = new UriBuilder();
         SwaggerMethodParser.setSchemeAndHost("{sub1}://raw.host.com", swaggerMethodParser.hostSubstitutions, arguments,
-            urlBuilder, DEFAULT_SERIALIZER);
+            uriBuilder, DEFAULT_SERIALIZER);
 
-        assertEquals(expectedUrl, urlBuilder.toString());
+        assertEquals(expectedUri, uriBuilder.toString());
     }
 
     private static Stream<Arguments> schemeSubstitutionSupplier() throws NoSuchMethodException {
@@ -362,13 +362,13 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("querySubstitutionSupplier")
-    public void querySubstitution(Method method, Object[] arguments, String expectedUrl) {
+    public void querySubstitution(Method method, Object[] arguments, String expectedUri) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        UrlBuilder urlBuilder = UrlBuilder.parse("https://raw.host.com");
-        swaggerMethodParser.setEncodedQueryParameters(arguments, urlBuilder, DEFAULT_SERIALIZER);
+        UriBuilder uriBuilder = UriBuilder.parse("https://raw.host.com");
+        swaggerMethodParser.setEncodedQueryParameters(arguments, uriBuilder, DEFAULT_SERIALIZER);
 
-        assertEquals(expectedUrl, urlBuilder.toString());
+        assertEquals(expectedUri, uriBuilder.toString());
     }
 
     private static Stream<Arguments> querySubstitutionSupplier() throws NoSuchMethodException {
@@ -545,8 +545,8 @@ public class SwaggerMethodParserTests {
             .addHeader(new HttpHeader(HttpHeaderName.fromString("x-ms-foo"), "bar"))
             .addQueryParam("foo", "bar");
 
-        RequestOptions urlOptions = new RequestOptions()
-            .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
+        RequestOptions uriOptions = new RequestOptions()
+            .addRequestCallback(httpRequest -> httpRequest.setUri("https://foo.host.com"));
 
         // Add this test back if error options is ever made public.
         // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
@@ -555,7 +555,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
             Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(headerQueryOptions), headerQueryOptions),
-            Arguments.of(swaggerMethodParser, toObjectArray(urlOptions), urlOptions)
+            Arguments.of(swaggerMethodParser, toObjectArray(uriOptions), uriOptions)
             // Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
         );
     }

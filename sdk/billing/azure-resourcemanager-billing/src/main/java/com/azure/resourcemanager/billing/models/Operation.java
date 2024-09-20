@@ -6,32 +6,36 @@ package com.azure.resourcemanager.billing.models;
 
 import com.azure.resourcemanager.billing.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
-     * Gets the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * Gets the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
+     * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".
+     * 
      * @return the name value.
      */
     String name();
 
     /**
-     * Gets the isDataAction property: Identifies if the operation is a data operation.
-     *
+     * Gets the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
+     * operations and "false" for ARM/control-plane operations.
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
-     * Gets the display property: The object that represents the operation.
-     *
+     * Gets the display property: Localized display information for this particular operation.
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

@@ -837,6 +837,13 @@
       ]
     },
     {
+      "filename": "/sdk/ai/**",
+      "words": [
+        "ubinary",
+        "UBINARY"
+      ]
+    },
+    {
       "filename": "/sdk/datalakeanalytics/**",
       "words": [
         "adal",
@@ -1156,7 +1163,10 @@
         "xsom",
         "yasson",
         "yugabytedb",
-        "zaxxer"
+        "zaxxer",
+        "LINUXVMIMAGE",
+        "LINUXPOOL",
+        "OSVmImage"
       ]
     },
     {
@@ -1193,6 +1203,7 @@
         "Authoritys",
         "autoconfiguation",
         "Conditonal",
+        "DCOSMOS",
         "documentdb",
         "DOCUMENTDB",
         "DOWHILE",
@@ -1202,6 +1213,7 @@
         "Jndi",
         "JPMS",
         "JWKS",
+        "LINUXVMIMAGE",
         "myproject",
         "MYPROJECT",
         "namesapce",

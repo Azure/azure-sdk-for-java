@@ -72,7 +72,7 @@ public class RedirectPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).policies(new RedirectPolicy()).build();
 
-        try (HttpResponse response = sendRequest(pipeline, HttpMethod.GET)) {
+        try (HttpResponse response = sendRequestSync(pipeline, HttpMethod.GET)) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
         }
@@ -331,8 +331,8 @@ public class RedirectPolicyTest {
         }
     }
 
-    private HttpResponse sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
-        return pipeline.send(new HttpRequest(httpMethod, createUrl("http://localhost/"))).block();
+    private Mono<HttpResponse> sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {
+        return pipeline.send(new HttpRequest(httpMethod, createUrl("http://localhost/")));
     }
 
     private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpMethod httpMethod) throws MalformedURLException {

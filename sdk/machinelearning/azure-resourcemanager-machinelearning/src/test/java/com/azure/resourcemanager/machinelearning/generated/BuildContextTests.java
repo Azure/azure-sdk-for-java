@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class BuildContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BuildContext model =
-            BinaryData
-                .fromString("{\"contextUri\":\"mfpjbabw\",\"dockerfilePath\":\"fcxsspuunnoxy\"}")
+        BuildContext model
+            = BinaryData.fromString("{\"contextUri\":\"zrcxfailcfxwmdbo\",\"dockerfilePath\":\"fgsftufqob\"}")
                 .toObject(BuildContext.class);
-        Assertions.assertEquals("mfpjbabw", model.contextUri());
-        Assertions.assertEquals("fcxsspuunnoxy", model.dockerfilePath());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.contextUri());
+        Assertions.assertEquals("fgsftufqob", model.dockerfilePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BuildContext model = new BuildContext().withContextUri("mfpjbabw").withDockerfilePath("fcxsspuunnoxy");
+        BuildContext model = new BuildContext().withContextUri("zrcxfailcfxwmdbo").withDockerfilePath("fgsftufqob");
         model = BinaryData.fromObject(model).toObject(BuildContext.class);
-        Assertions.assertEquals("mfpjbabw", model.contextUri());
-        Assertions.assertEquals("fcxsspuunnoxy", model.dockerfilePath());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.contextUri());
+        Assertions.assertEquals("fgsftufqob", model.dockerfilePath());
     }
 }

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ExecuteScriptActionParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteScriptActionParameters model =
-            BinaryData
-                .fromString(
-                    "{\"scriptActions\":[{\"name\":\"ddjib\",\"uri\":\"bxv\",\"parameters\":\"itvtzeexavo\",\"roles\":[\"fglecdmdqbwp\",\"pqtgsfjac\"],\"applicationName\":\"lhhxudbxvodhtnsi\"},{\"name\":\"ud\",\"uri\":\"z\",\"parameters\":\"es\",\"roles\":[\"dlpagzrcxfail\",\"f\"],\"applicationName\":\"m\"}],\"persistOnSuccess\":true}")
-                .toObject(ExecuteScriptActionParameters.class);
+        ExecuteScriptActionParameters model = BinaryData.fromString(
+            "{\"scriptActions\":[{\"name\":\"ddjib\",\"uri\":\"bxv\",\"parameters\":\"itvtzeexavo\",\"roles\":[\"fglecdmdqbwp\",\"pqtgsfjac\"],\"applicationName\":\"lhhxudbxvodhtnsi\"},{\"name\":\"ud\",\"uri\":\"z\",\"parameters\":\"es\",\"roles\":[\"dlpagzrcxfail\",\"f\"],\"applicationName\":\"m\"}],\"persistOnSuccess\":true}")
+            .toObject(ExecuteScriptActionParameters.class);
         Assertions.assertEquals("ddjib", model.scriptActions().get(0).name());
         Assertions.assertEquals("bxv", model.scriptActions().get(0).uri());
         Assertions.assertEquals("itvtzeexavo", model.scriptActions().get(0).parameters());
@@ -27,22 +25,16 @@ public final class ExecuteScriptActionParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteScriptActionParameters model =
-            new ExecuteScriptActionParameters()
-                .withScriptActions(
-                    Arrays
-                        .asList(
-                            new RuntimeScriptAction()
-                                .withName("ddjib")
-                                .withUri("bxv")
-                                .withParameters("itvtzeexavo")
-                                .withRoles(Arrays.asList("fglecdmdqbwp", "pqtgsfjac")),
-                            new RuntimeScriptAction()
-                                .withName("ud")
-                                .withUri("z")
-                                .withParameters("es")
-                                .withRoles(Arrays.asList("dlpagzrcxfail", "f"))))
-                .withPersistOnSuccess(true);
+        ExecuteScriptActionParameters model = new ExecuteScriptActionParameters().withScriptActions(Arrays.asList(
+            new RuntimeScriptAction().withName("ddjib")
+                .withUri("bxv")
+                .withParameters("itvtzeexavo")
+                .withRoles(Arrays.asList("fglecdmdqbwp", "pqtgsfjac")),
+            new RuntimeScriptAction().withName("ud")
+                .withUri("z")
+                .withParameters("es")
+                .withRoles(Arrays.asList("dlpagzrcxfail", "f"))))
+            .withPersistOnSuccess(true);
         model = BinaryData.fromObject(model).toObject(ExecuteScriptActionParameters.class);
         Assertions.assertEquals("ddjib", model.scriptActions().get(0).name());
         Assertions.assertEquals("bxv", model.scriptActions().get(0).uri());

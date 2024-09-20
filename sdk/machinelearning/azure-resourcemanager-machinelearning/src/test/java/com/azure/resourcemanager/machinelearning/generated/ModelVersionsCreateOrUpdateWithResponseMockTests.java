@@ -6,101 +6,69 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
+import com.azure.resourcemanager.machinelearning.models.FlavorData;
 import com.azure.resourcemanager.machinelearning.models.ModelVersion;
 import com.azure.resourcemanager.machinelearning.models.ModelVersionProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ModelVersionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"flavors\":{\"eouxpdnl\":{\"data\":{\"eipfotaaqyxk\":\"qztrpj\",\"q\":\"oabcoxqaavjkre\",\"ivianklqclftp\":\"sviysbvo\"}},\"xfspxghwf\":{\"data\":{\"ohnroa\":\"bc\",\"ur\":\"zekg\"}}},\"modelType\":\"uofegrzfsf\",\"modelUri\":\"ookwnz\",\"jobName\":\"jb\",\"provisioningState\":\"Deleting\",\"stage\":\"dlo\",\"isArchived\":true,\"isAnonymous\":true,\"description\":\"kkqvmmmw\",\"tags\":{\"mnsmnjitxug\":\"cauegym\",\"ioecmbyoxpv\":\"lbibwodayipgsh\"},\"properties\":{\"okzdshhhdixn\":\"chfuxuqpdde\",\"ywspajakjhv\":\"apzibmstvzzkzv\",\"srvsbkn\":\"ktbnmhxtmzzpau\"}},\"id\":\"uytsaj\",\"name\":\"gvusnwich\",\"type\":\"kwctlsohrtgpv\"}";
 
-        String responseStr =
-            "{\"properties\":{\"flavors\":{},\"jobName\":\"icjuft\",\"modelType\":\"iooanduewfhv\",\"modelUri\":\"jhxzubfjzabbwzgv\",\"isAnonymous\":false,\"isArchived\":true,\"description\":\"dckixspsaigavkmv\",\"properties\":{\"yetjxryo\":\"erejrkpzj\",\"pemnrrabo\":\"taeitwhlbecgihz\"},\"tags\":{\"pskpeswyhhmif\":\"wxywpjhspboxhif\",\"y\":\"uajxwwvcmmpeg\",\"exbzbqufpnezsjza\":\"qvcml\",\"dror\":\"m\"}},\"id\":\"ogzmsimehtcuuwdh\",\"name\":\"qqhyhnimxtns\",\"type\":\"gi\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ModelVersion response = manager.modelVersions()
+            .define("wzoup")
+            .withExistingModel("lllkfjgjl", "fssgieb", "vuscmcegy")
+            .withProperties(new ModelVersionProperties().withDescription("v")
+                .withTags(mapOf("cvnhpebuiywkysgq", "jzofyldxkzhvfo", "dnmguifqj", "cbeauvld", "arfumitjaiis",
+                    "oxzxbljpzauug"))
+                .withProperties(mapOf("y", "fdyb", "rwrylcttvxk", "bgmjrvrsqrjco", "jbl", "gffpvvqwvvnxoqaa",
+                    "tsztxoswvfrym", "qwwtevfeugc"))
+                .withIsArchived(false)
+                .withIsAnonymous(false)
+                .withFlavors(mapOf("sgn",
+                    new FlavorData()
+                        .withData(mapOf("o", "ffvxnis", "zzcdrgtu", "wfdtjpsjwlpcxl", "rolge", "oouocafaxvhjrpb")),
+                    "bnduqgjibrxxiao",
+                    new FlavorData().withData(mapOf("uwd", "tx", "cbwmvp", "rqahlbyjahbzbtlm", "rlazcgwn", "mjyzice")),
+                    "okoxqboz", new FlavorData().withData(mapOf("pugnvhtgwadu", "uhumgw"))))
+                .withModelType("xzwinrguk")
+                .withModelUri("bov")
+                .withJobName("ltqlqufkrnrbnjkc")
+                .withStage("qlyputawdmd"))
+            .create();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ModelVersion response =
-            manager
-                .modelVersions()
-                .define("nmxynlsuqbwzst")
-                .withExistingModel("tfbjampq", "c", "a")
-                .withProperties(
-                    new ModelVersionProperties()
-                        .withDescription("okr")
-                        .withProperties(
-                            mapOf(
-                                "pujzfl", "sgaojbtqpqsdoctp", "wlluunxhfwlfxz", "cdsgxceluji", "eupcknecexkgrv", "wu"))
-                        .withTags(
-                            mapOf(
-                                "wawoxcgzbejqf",
-                                "jdmngsytqpdzfyxc",
-                                "xdwdrpazqjkrfm",
-                                "ifopf",
-                                "gtji",
-                                "wotfcuu",
-                                "cjjkmqenh",
-                                "pgayiawohfmhnnzm"))
-                        .withIsAnonymous(false)
-                        .withIsArchived(true)
-                        .withFlavors(mapOf())
-                        .withJobName("vpatrgjjk")
-                        .withModelType("i")
-                        .withModelUri("hoksmmculwk"))
-                .create();
-
-        Assertions.assertEquals("dckixspsaigavkmv", response.properties().description());
-        Assertions.assertEquals("erejrkpzj", response.properties().properties().get("yetjxryo"));
-        Assertions.assertEquals("wxywpjhspboxhif", response.properties().tags().get("pskpeswyhhmif"));
-        Assertions.assertEquals(false, response.properties().isAnonymous());
+        Assertions.assertEquals("kkqvmmmw", response.properties().description());
+        Assertions.assertEquals("cauegym", response.properties().tags().get("mnsmnjitxug"));
+        Assertions.assertEquals("chfuxuqpdde", response.properties().properties().get("okzdshhhdixn"));
         Assertions.assertEquals(true, response.properties().isArchived());
-        Assertions.assertEquals("icjuft", response.properties().jobName());
-        Assertions.assertEquals("iooanduewfhv", response.properties().modelType());
-        Assertions.assertEquals("jhxzubfjzabbwzgv", response.properties().modelUri());
+        Assertions.assertEquals(true, response.properties().isAnonymous());
+        Assertions.assertEquals("qztrpj", response.properties().flavors().get("eouxpdnl").data().get("eipfotaaqyxk"));
+        Assertions.assertEquals("uofegrzfsf", response.properties().modelType());
+        Assertions.assertEquals("ookwnz", response.properties().modelUri());
+        Assertions.assertEquals("jb", response.properties().jobName());
+        Assertions.assertEquals("dlo", response.properties().stage());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

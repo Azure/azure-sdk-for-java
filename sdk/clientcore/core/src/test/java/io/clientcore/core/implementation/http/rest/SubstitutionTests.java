@@ -13,7 +13,7 @@ public class SubstitutionTests {
     public void substitutionConstructor() {
         final Substitution s = new Substitution("A", 2, true);
 
-        assertEquals("A", s.getUrlParameterName());
+        assertEquals("A", s.getUriParameterName());
         assertEquals(2, s.getMethodParameterIndex());
         assertTrue(s.shouldEncode());
     }
@@ -22,7 +22,7 @@ public class SubstitutionTests {
     public void querySubstitutionConstructor() {
         final QuerySubstitution s = new QuerySubstitution("A", 2, true, true);
 
-        assertEquals("A", s.getUrlParameterName());
+        assertEquals("A", s.getUriParameterName());
         assertEquals(2, s.getMethodParameterIndex());
         assertTrue(s.shouldEncode());
         assertTrue(s.mergeParameters());

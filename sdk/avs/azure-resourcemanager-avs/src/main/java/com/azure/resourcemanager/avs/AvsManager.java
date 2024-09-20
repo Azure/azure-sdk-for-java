@@ -269,7 +269,7 @@ public final class AvsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.avs")
                 .append("/")
-                .append("1.2.0-beta.1");
+                .append("1.2.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))

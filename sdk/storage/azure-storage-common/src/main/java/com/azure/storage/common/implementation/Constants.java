@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.storage.common.sas.SasProtocol;
 import java.time.ZoneId;
@@ -223,6 +224,8 @@ public final class Constants {
          */
         public static final String ERROR_CODE = "x-ms-error-code";
 
+        public static final HttpHeaderName ERROR_CODE_HEADER_NAME = HttpHeaderName.fromString(ERROR_CODE);
+
         /**
          * Compression type used on the body.
          */
@@ -235,6 +238,8 @@ public final class Constants {
         public static final String ENCRYPTION_KEY = "x-ms-encryption-key";
 
         public static final String ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+        public static final HttpHeaderName ENCRYPTION_KEY_SHA256_HEADER_NAME
+            = HttpHeaderName.fromString(ENCRYPTION_KEY_SHA256);
 
         public static final String SERVER_ENCRYPTED = "x-ms-server-encrypted";
 

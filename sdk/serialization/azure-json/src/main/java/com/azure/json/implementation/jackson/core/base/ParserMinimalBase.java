@@ -4,6 +4,7 @@ package com.azure.json.implementation.jackson.core.base;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 import com.azure.json.implementation.jackson.core.*;
 import com.azure.json.implementation.jackson.core.exc.InputCoercionException;
@@ -30,10 +31,7 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static int INT_CR = '\r';
     protected final static int INT_SPACE = 0x0020;
 
-    // Markup
-    protected final static int INT_LBRACKET = '[';
     protected final static int INT_RBRACKET = ']';
-    protected final static int INT_LCURLY = '{';
     protected final static int INT_RCURLY = '}';
     protected final static int INT_QUOTE = '"';
     protected final static int INT_APOS = '\'';
@@ -60,11 +58,6 @@ public abstract class ParserMinimalBase extends JsonParser {
      * @since 2.9
      */
     protected final static byte[] NO_BYTES = new byte[0];
-
-    /**
-     * @since 2.9
-     */
-    protected final static int[] NO_INTS = new int[0];
 
     /*
      * /**********************************************************
@@ -106,16 +99,16 @@ public abstract class ParserMinimalBase extends JsonParser {
     protected final static BigDecimal BD_MIN_INT = new BigDecimal(BI_MIN_INT);
     protected final static BigDecimal BD_MAX_INT = new BigDecimal(BI_MAX_INT);
 
-    protected final static long MIN_INT_L = (long) Integer.MIN_VALUE;
-    protected final static long MAX_INT_L = (long) Integer.MAX_VALUE;
+    protected final static long MIN_INT_L = Integer.MIN_VALUE;
+    protected final static long MAX_INT_L = Integer.MAX_VALUE;
 
     // These are not very accurate, but have to do... (for bounds checks)
 
     protected final static double MIN_LONG_D = (double) Long.MIN_VALUE;
     protected final static double MAX_LONG_D = (double) Long.MAX_VALUE;
 
-    protected final static double MIN_INT_D = (double) Integer.MIN_VALUE;
-    protected final static double MAX_INT_D = (double) Integer.MAX_VALUE;
+    protected final static double MIN_INT_D = Integer.MIN_VALUE;
+    protected final static double MAX_INT_D = Integer.MAX_VALUE;
 
     /*
      * /**********************************************************
@@ -155,9 +148,6 @@ public abstract class ParserMinimalBase extends JsonParser {
      * /* Life-cycle
      * /**********************************************************
      */
-
-    protected ParserMinimalBase() {
-    }
 
     protected ParserMinimalBase(int features) {
         super(features);
@@ -778,7 +768,7 @@ public abstract class ParserMinimalBase extends JsonParser {
      * /**********************************************************
      */
 
-    protected final static String _getCharDesc(int ch) {
+    protected static String _getCharDesc(int ch) {
         char c = (char) ch;
         if (Character.isISOControl(c)) {
             return "(CTRL-CHAR, code " + ch + ")";
@@ -826,10 +816,6 @@ public abstract class ParserMinimalBase extends JsonParser {
 
     @Deprecated // since 2.11
     protected static String _ascii(byte[] b) {
-        try {
-            return new String(b, "US-ASCII");
-        } catch (IOException e) { // never occurs
-            throw new RuntimeException(e);
-        }
+        return new String(b, StandardCharsets.US_ASCII);
     }
 }

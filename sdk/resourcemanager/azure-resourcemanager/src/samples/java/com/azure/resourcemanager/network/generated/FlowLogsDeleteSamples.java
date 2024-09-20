@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class FlowLogsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NetworkWatcherFlowLogDelete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NetworkWatcherFlowLogDelete.
      * json
      */
     /**

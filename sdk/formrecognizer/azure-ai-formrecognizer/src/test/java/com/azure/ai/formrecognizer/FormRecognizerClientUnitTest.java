@@ -185,7 +185,7 @@ public class FormRecognizerClientUnitTest {
                     new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
                     Context.NONE)
                 .setPollInterval(ONE_NANO_DURATION));
-        assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
     /**
@@ -196,7 +196,7 @@ public class FormRecognizerClientUnitTest {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.beginRecognizeCustomFormsFromUrl("", FAKE_ENCODED_EMPTY_SPACE_URL,
                 new RecognizeCustomFormsOptions().setPollInterval(ONE_NANO_DURATION), Context.NONE));
-        assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
     /**

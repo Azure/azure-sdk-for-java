@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for Datastores Get. */
+/**
+ * Samples for Datastores Get.
+ */
 public final class DatastoresGetSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Datastore/get.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Datastore/get.json
      */
     /**
      * Sample code: Get datastore.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void getDatastore(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {

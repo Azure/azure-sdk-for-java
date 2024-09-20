@@ -9,7 +9,7 @@ package com.azure.resourcemanager.privatedns.generated;
  */
 public final class PrivateZonesListSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/
      * PrivateZoneListInSubscription.json
      */
     /**

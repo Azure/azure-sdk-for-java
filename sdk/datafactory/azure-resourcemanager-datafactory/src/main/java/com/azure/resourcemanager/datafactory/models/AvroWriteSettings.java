@@ -5,49 +5,43 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Avro write settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AvroWriteSettings.class, visible = true)
-@JsonTypeName("AvroWriteSettings")
 @Fluent
 public final class AvroWriteSettings extends FormatWriteSettings {
     /*
      * The write setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "AvroWriteSettings";
 
     /*
      * Top level record name in write result, which is required in AVRO spec.
      */
-    @JsonProperty(value = "recordName")
     private String recordName;
 
     /*
      * Record namespace in the write result.
      */
-    @JsonProperty(value = "recordNamespace")
     private String recordNamespace;
 
     /*
      * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
      * Expression with resultType integer).
      */
-    @JsonProperty(value = "maxRowsPerFile")
     private Object maxRowsPerFile;
 
     /*
      * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store
      * without partitionOptions. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
 
     /**
@@ -160,5 +154,64 @@ public final class AvroWriteSettings extends FormatWriteSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("recordName", this.recordName);
+        jsonWriter.writeStringField("recordNamespace", this.recordNamespace);
+        jsonWriter.writeUntypedField("maxRowsPerFile", this.maxRowsPerFile);
+        jsonWriter.writeUntypedField("fileNamePrefix", this.fileNamePrefix);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvroWriteSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvroWriteSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvroWriteSettings.
+     */
+    public static AvroWriteSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvroWriteSettings deserializedAvroWriteSettings = new AvroWriteSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedAvroWriteSettings.type = reader.getString();
+                } else if ("recordName".equals(fieldName)) {
+                    deserializedAvroWriteSettings.recordName = reader.getString();
+                } else if ("recordNamespace".equals(fieldName)) {
+                    deserializedAvroWriteSettings.recordNamespace = reader.getString();
+                } else if ("maxRowsPerFile".equals(fieldName)) {
+                    deserializedAvroWriteSettings.maxRowsPerFile = reader.readUntyped();
+                } else if ("fileNamePrefix".equals(fieldName)) {
+                    deserializedAvroWriteSettings.fileNamePrefix = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAvroWriteSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedAvroWriteSettings;
+        });
     }
 }
