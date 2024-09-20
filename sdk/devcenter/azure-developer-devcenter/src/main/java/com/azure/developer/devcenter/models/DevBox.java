@@ -10,9 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 /**
  * A Dev Box.
@@ -131,7 +131,6 @@ public final class DevBox implements JsonSerializable<DevBox> {
      * @param devBoxName the dev box name value to set.
      * @param poolName the pool name value to set.
      */
-    @JsonCreator
     public DevBox(String devBoxName, String poolName) {
         this.name = devBoxName;
         this.poolName = poolName;

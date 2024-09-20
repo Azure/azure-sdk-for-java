@@ -3,48 +3,74 @@
 
 package com.azure.ai.personalizer.testmodels;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-public class ActionFeatures {
-    @JsonGetter
+import java.io.IOException;
+
+public class ActionFeatures implements JsonSerializable<ActionFeatures> {
     public String getVideoType() {
         return videoType;
     }
 
-    @JsonSetter
     public ActionFeatures setVideoType(String videoType) {
         this.videoType = videoType;
         return this;
     }
 
-    @JsonGetter
     public Integer getVideoLength() {
         return videoLength;
     }
 
-    @JsonSetter
     public ActionFeatures setVideoLength(Integer videoLength) {
         this.videoLength = videoLength;
         return this;
     }
 
-    @JsonGetter
     public String getDirector() {
         return director;
     }
 
-    @JsonSetter
     public ActionFeatures setDirector(String director) {
         this.director = director;
         return this;
     }
 
-    @JsonProperty
     String videoType;
-    @JsonProperty
     Integer videoLength;
-    @JsonProperty
     String director;
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("videoType", videoType)
+            .writeNumberField("videoLength", videoLength)
+            .writeStringField("director", director)
+            .writeEndObject();
+    }
+
+    public static ActionFeatures fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionFeatures actionFeatures = new ActionFeatures();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("videoType".equals(fieldName)) {
+                    actionFeatures.videoType = reader.getString();
+                } else if ("videoLength".equals(fieldName)) {
+                    actionFeatures.videoLength = reader.getNullable(JsonReader::getInt);
+                } else if ("director".equals(fieldName)) {
+                    actionFeatures.director = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return actionFeatures;
+        });
+    }
 }

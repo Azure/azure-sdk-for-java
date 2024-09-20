@@ -7,23 +7,32 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** List of quotas. */
 @Immutable
-public final class QuotaList {
+public final class QuotaList implements JsonSerializable<QuotaList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<Quota> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /**
+     * Creates a new instance of {@link QuotaList}.
+     */
+    public QuotaList() {
+    }
 
     /**
      * Get the value property: The value property.
@@ -41,5 +50,39 @@ public final class QuotaList {
      */
     public String getNextLink() {
         return this.nextLink;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link QuotaList} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link QuotaList}, or null if {@link JsonReader} was pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static QuotaList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaList quotaList = new QuotaList();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    quotaList.value = reader.readArray(Quota::fromJson);
+                } else if ("nextLink".equals(fieldName)) {
+                    quotaList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return quotaList;
+        });
     }
 }

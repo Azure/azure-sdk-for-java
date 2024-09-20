@@ -7,7 +7,7 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for DimensionScope. */
@@ -19,12 +19,20 @@ public final class DimensionScope extends ExpandableStringEnum<DimensionScope> {
     public static final DimensionScope SUBSCRIPTION = fromString("Subscription");
 
     /**
+     * Creates a new instance of {@link DimensionScope} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link DimensionScope} instead.
+     */
+    @Deprecated
+    public DimensionScope() {
+    }
+
+    /**
      * Creates or finds a DimensionScope from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding DimensionScope.
      */
-    @JsonCreator
     public static DimensionScope fromString(String name) {
         return fromString(name, DimensionScope.class);
     }

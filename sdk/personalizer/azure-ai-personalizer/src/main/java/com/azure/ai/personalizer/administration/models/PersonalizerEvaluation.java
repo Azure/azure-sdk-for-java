@@ -7,78 +7,80 @@ package com.azure.ai.personalizer.administration.models;
 import com.azure.ai.personalizer.models.EvaluationJobStatus;
 import com.azure.ai.personalizer.models.EvaluationType;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /** A counterfactual evaluation. */
 @Fluent
-public final class PersonalizerEvaluation {
+public final class PersonalizerEvaluation implements JsonSerializable<PersonalizerEvaluation> {
     /*
      * The ID of the evaluation.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the evaluation.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The start time of the evaluation.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The ID of the job processing the evaluation.
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobId;
 
     /*
      * The status of the job processing the evaluation.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EvaluationJobStatus status;
 
     /*
      * The results of the evaluation.
      */
-    @JsonProperty(value = "policyResults")
     private List<PersonalizerPolicyResult> policyResults;
 
     /*
      * Feature Importance.
      */
-    @JsonProperty(value = "featureImportance")
     private List<List<String>> featureImportance;
 
     /*
      * Evaluation type (manual or through Automatic Optimization).
      */
-    @JsonProperty(value = "evaluationType")
     private EvaluationType evaluationType;
 
     /*
      * Thr optimal policy.
      */
-    @JsonProperty(value = "optimalPolicy")
     private String optimalPolicy;
 
     /*
      * Creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
+
+    /**
+     * Creates a new instance of {@link PersonalizerEvaluation}.
+     */
+    public PersonalizerEvaluation() {
+    }
 
     /**
      * Get the id property: The ID of the evaluation.
@@ -232,5 +234,65 @@ public final class PersonalizerEvaluation {
     PersonalizerEvaluation setCreationTime(OffsetDateTime creationTime) {
         this.creationTime = creationTime;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeArrayField("policyResults", policyResults, JsonWriter::writeJson)
+            .writeArrayField("featureImportance", featureImportance,
+                (writer, array) -> writer.writeArray(array, JsonWriter::writeString))
+            .writeStringField("evaluationType", Objects.toString(evaluationType, null))
+            .writeStringField("optimalPolicy", optimalPolicy)
+            .writeStringField("creationTime", Objects.toString(creationTime, null))
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerEvaluation} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerEvaluation}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerEvaluation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerEvaluation personalizerEvaluation = new PersonalizerEvaluation();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    personalizerEvaluation.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    personalizerEvaluation.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    personalizerEvaluation.startTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else if ("endTime".equals(fieldName)) {
+                    personalizerEvaluation.endTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else if ("jobId".equals(fieldName)) {
+                    personalizerEvaluation.jobId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    personalizerEvaluation.status = EvaluationJobStatus.fromString(reader.getString());
+                } else if ("policyResults".equals(fieldName)) {
+                    personalizerEvaluation.policyResults = reader.readArray(PersonalizerPolicyResult::fromJson);
+                } else if ("featureImportance".equals(fieldName)) {
+                    personalizerEvaluation.featureImportance = reader.readArray(arrayReader ->
+                        arrayReader.readArray(JsonReader::getString));
+                } else if ("evaluationType".equals(fieldName)) {
+                    personalizerEvaluation.evaluationType = EvaluationType.fromString(reader.getString());
+                } else if ("optimalPolicy".equals(fieldName)) {
+                    personalizerEvaluation.optimalPolicy = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    personalizerEvaluation.creationTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerEvaluation;
+        });
     }
 }

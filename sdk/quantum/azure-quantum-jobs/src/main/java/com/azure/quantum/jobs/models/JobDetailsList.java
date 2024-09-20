@@ -7,29 +7,37 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** List of job details. */
 @Fluent
-public final class JobDetailsList {
+public final class JobDetailsList implements JsonSerializable<JobDetailsList> {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobDetails> value;
 
     /*
      * Total records count number.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /**
+     * Creates a new instance of {@link JobDetailsList}.
+     */
+    public JobDetailsList() {
+    }
 
     /**
      * Get the value property: The value property.
@@ -67,5 +75,43 @@ public final class JobDetailsList {
      */
     public String getNextLink() {
         return this.nextLink;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeNumberField("count", count)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link JobDetailsList} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link JobDetailsList}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static JobDetailsList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDetailsList jobDetailsList = new JobDetailsList();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    jobDetailsList.value = reader.readArray(JobDetails::fromJson);
+                } else if ("count".equals(fieldName)) {
+                    jobDetailsList.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    jobDetailsList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return jobDetailsList;
+        });
     }
 }

@@ -5,22 +5,31 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The PersonalizerSlotResult model. */
 @Fluent
-public final class PersonalizerSlotResult {
+public final class PersonalizerSlotResult implements JsonSerializable<PersonalizerSlotResult> {
     /*
      * Id is the slot ID.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * RewardActionID is the action ID recommended by Personalizer.
      */
-    @JsonProperty(value = "rewardActionId", access = JsonProperty.Access.WRITE_ONLY)
     private String rewardActionId;
+
+    /**
+     * Creates a new instance of {@link PersonalizerSlotResult}.
+     */
+    public PersonalizerSlotResult() {
+    }
 
     /**
      * Get the id property: Id is the slot ID.
@@ -49,5 +58,41 @@ public final class PersonalizerSlotResult {
      */
     public String getRewardActionId() {
         return this.rewardActionId;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("id", id)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerSlotResult} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerSlotResult}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerSlotResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerSlotResult personalizerSlotResult = new PersonalizerSlotResult();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    personalizerSlotResult.id = reader.getString();
+                } else if ("rewardActionId".equals(fieldName)) {
+                    personalizerSlotResult.rewardActionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerSlotResult;
+        });
     }
 }

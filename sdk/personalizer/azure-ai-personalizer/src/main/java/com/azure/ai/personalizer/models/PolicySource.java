@@ -5,7 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for PolicySource. */
@@ -26,12 +26,20 @@ public final class PolicySource extends ExpandableStringEnum<PolicySource> {
     public static final PolicySource OFFLINE_EXPERIMENTATION = fromString("OfflineExperimentation");
 
     /**
+     * Creates a new instance of {@link PolicySource} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public PolicySource() {
+    }
+
+    /**
      * Creates or finds a PolicySource from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PolicySource.
      */
-    @JsonCreator
     public static PolicySource fromString(String name) {
         return fromString(name, PolicySource.class);
     }

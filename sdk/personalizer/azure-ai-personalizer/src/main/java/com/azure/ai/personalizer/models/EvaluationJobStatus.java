@@ -5,7 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for EvaluationJobStatus. */
@@ -32,12 +32,20 @@ public final class EvaluationJobStatus extends ExpandableStringEnum<EvaluationJo
     public static final EvaluationJobStatus ONLINE_POLICY_RETAINED = fromString("onlinePolicyRetained");
 
     /**
+     * Creates a new instance of {@link EvaluationJobStatus} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public EvaluationJobStatus() {
+    }
+
+    /**
      * Creates or finds a EvaluationJobStatus from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding EvaluationJobStatus.
      */
-    @JsonCreator
     public static EvaluationJobStatus fromString(String name) {
         return fromString(name, EvaluationJobStatus.class);
     }

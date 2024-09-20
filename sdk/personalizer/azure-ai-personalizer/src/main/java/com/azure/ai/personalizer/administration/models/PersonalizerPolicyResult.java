@@ -6,43 +6,49 @@ package com.azure.ai.personalizer.administration.models;
 
 import com.azure.ai.personalizer.models.PolicySource;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /**
  * This class contains the Learning Settings information and the results of the Offline Evaluation using that policy.
  */
 @Immutable
-public final class PersonalizerPolicyResult {
+public final class PersonalizerPolicyResult implements JsonSerializable<PersonalizerPolicyResult> {
     /*
      * The name of the Learning Settings.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The arguments of the Learning Settings.
      */
-    @JsonProperty(value = "arguments", access = JsonProperty.Access.WRITE_ONLY)
     private String arguments;
 
     /*
      * The source of the Learning Settings.
      */
-    @JsonProperty(value = "policySource", access = JsonProperty.Access.WRITE_ONLY)
     private PolicySource policySource;
 
     /*
      * The aggregate results of the Offline Evaluation.
      */
-    @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private List<PersonalizerPolicyResultSummary> summary;
 
     /*
      * The aggregate total of the Offline Evaluation.
      */
-    @JsonProperty(value = "totalSummary", access = JsonProperty.Access.WRITE_ONLY)
     private PersonalizerPolicyResultTotalSummary totalSummary;
+
+    /**
+     * Creates a new instance of {@link PersonalizerPolicyResult}.
+     */
+    public PersonalizerPolicyResult() {
+    }
 
     /**
      * Get the name property: The name of the Learning Settings.
@@ -88,5 +94,46 @@ public final class PersonalizerPolicyResult {
     public PersonalizerPolicyResultSummary getTotalSummary() {
         PersonalizerPolicyResultTotalSummary returnValue = this.totalSummary;
         return returnValue;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerPolicyResult} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerPolicyResult}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerPolicyResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicyResult personalizerPolicyResult = new PersonalizerPolicyResult();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    personalizerPolicyResult.name = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    personalizerPolicyResult.arguments = reader.getString();
+                } else if ("policySource".equals(fieldName)) {
+                    personalizerPolicyResult.policySource = PolicySource.fromString(reader.getString());
+                } else if ("summary".equals(fieldName)) {
+                    personalizerPolicyResult.summary = reader.readArray(PersonalizerPolicyResultSummary::fromJson);
+                } else if ("totalSummary".equals(fieldName)) {
+                    personalizerPolicyResult.totalSummary = PersonalizerPolicyResultTotalSummary.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerPolicyResult;
+        });
     }
 }

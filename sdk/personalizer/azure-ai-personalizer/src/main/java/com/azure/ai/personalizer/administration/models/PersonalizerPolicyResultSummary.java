@@ -5,68 +5,71 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** This class contains the summary of evaluating a policy on a counterfactual evaluation. */
 @Fluent
-public class PersonalizerPolicyResultSummary {
+public class PersonalizerPolicyResultSummary implements JsonSerializable<PersonalizerPolicyResultSummary> {
     /*
      * Timestamp of the aggregation.
      */
-    @JsonProperty(value = "timeStamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime timeStamp;
+    OffsetDateTime timeStamp;
 
     /*
      * Numerator for IPS estimator.
      */
-    @JsonProperty(value = "ipsEstimatorNumerator", access = JsonProperty.Access.WRITE_ONLY)
-    private Float ipsEstimatorNumerator;
+    Float ipsEstimatorNumerator;
 
     /*
      * Denominator for IPS estimator.
      */
-    @JsonProperty(value = "ipsEstimatorDenominator", access = JsonProperty.Access.WRITE_ONLY)
-    private Float ipsEstimatorDenominator;
+    Float ipsEstimatorDenominator;
 
     /*
      * Denominator for SNIPS estimator.
      */
-    @JsonProperty(value = "snipsEstimatorDenominator", access = JsonProperty.Access.WRITE_ONLY)
-    private Float snipsEstimatorDenominator;
+    Float snipsEstimatorDenominator;
 
     /*
      * Time window for aggregation.
      * For example, PT5M (5 mins). For information about the time format,
      * see http://en.wikipedia.org/wiki/ISO_8601#Durations
      */
-    @JsonProperty(value = "aggregateTimeWindow", access = JsonProperty.Access.WRITE_ONLY)
-    private Duration aggregateTimeWindow;
+    Duration aggregateTimeWindow;
 
     /*
      * Probability of non-zero values for the Policy evaluation.
      */
-    @JsonProperty(value = "nonZeroProbability")
-    private Float nonZeroProbability;
+    Float nonZeroProbability;
 
     /*
      * Sum of Squares for the Policy evaluation results.
      */
-    @JsonProperty(value = "sumOfSquares", access = JsonProperty.Access.WRITE_ONLY)
-    private Float sumOfSquares;
+    Float sumOfSquares;
 
     /*
      * Gaussian confidence interval for the Policy evaluation.
      */
-    @JsonProperty(value = "confidenceInterval", access = JsonProperty.Access.WRITE_ONLY)
-    private Float confidenceInterval;
+    Float confidenceInterval;
 
     /*
      * Average reward.
      */
-    @JsonProperty(value = "averageReward", access = JsonProperty.Access.WRITE_ONLY)
-    private Float averageReward;
+    Float averageReward;
+
+    /**
+     * Creates a new instance of {@link PersonalizerPolicyResultSummary}.
+     */
+    public PersonalizerPolicyResultSummary() {
+    }
 
     /**
      * Get the timeStamp property: Timestamp of the aggregation.
@@ -159,5 +162,57 @@ public class PersonalizerPolicyResultSummary {
      */
     public Float getAverageReward() {
         return this.averageReward;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeNumberField("nonZeroProbability", nonZeroProbability)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerPolicyResultSummary} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerPolicyResultSummary}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerPolicyResultSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicyResultSummary personalizerPolicyResultSummary = new PersonalizerPolicyResultSummary();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeStamp".equals(fieldName)) {
+                    personalizerPolicyResultSummary.timeStamp = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else if ("ipsEstimatorNumerator".equals(fieldName)) {
+                    personalizerPolicyResultSummary.ipsEstimatorNumerator = reader.getNullable(JsonReader::getFloat);
+                } else if ("ipsEstimatorDenominator".equals(fieldName)) {
+                    personalizerPolicyResultSummary.ipsEstimatorDenominator = reader.getNullable(JsonReader::getFloat);
+                } else if ("snipsEstimatorDenominator".equals(fieldName)) {
+                    personalizerPolicyResultSummary.snipsEstimatorDenominator = reader.getNullable(
+                        JsonReader::getFloat);
+                } else if ("aggregateTimeWindow".equals(fieldName)) {
+                    personalizerPolicyResultSummary.aggregateTimeWindow = reader.getNullable(
+                        nonNull -> Duration.parse(nonNull.getString()));
+                } else if ("nonZeroProbability".equals(fieldName)) {
+                    personalizerPolicyResultSummary.nonZeroProbability = reader.getNullable(JsonReader::getFloat);
+                } else if ("sumOfSquares".equals(fieldName)) {
+                    personalizerPolicyResultSummary.sumOfSquares = reader.getNullable(JsonReader::getFloat);
+                } else if ("confidenceInterval".equals(fieldName)) {
+                    personalizerPolicyResultSummary.confidenceInterval = reader.getNullable(JsonReader::getFloat);
+                } else if ("averageReward".equals(fieldName)) {
+                    personalizerPolicyResultSummary.averageReward = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerPolicyResultSummary;
+        });
     }
 }

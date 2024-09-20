@@ -6,12 +6,17 @@ package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** The PersonalizerRankMultiSlotOptions model. */
 @Fluent
-public final class PersonalizerRankMultiSlotOptions {
+public final class PersonalizerRankMultiSlotOptions implements JsonSerializable<PersonalizerRankMultiSlotOptions> {
     /*
      * Features of the context used for Personalizer as a
      * dictionary of dictionaries. This is determined by your application, and
@@ -20,7 +25,6 @@ public final class PersonalizerRankMultiSlotOptions {
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
-    @JsonProperty(value = "contextFeatures")
     private List<BinaryData> contextFeatures;
 
     /*
@@ -32,14 +36,12 @@ public final class PersonalizerRankMultiSlotOptions {
      * The first item in the array will be used as Baseline item in Offline
      * Evaluations.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<PersonalizerRankableAction> actions;
 
     /*
      * The set of slots the Personalizer service should select actions for.
      * The set should not contain more than 50 slots.
      */
-    @JsonProperty(value = "slots", required = true)
     private List<PersonalizerSlotOptions> slots;
 
     /*
@@ -50,7 +52,6 @@ public final class PersonalizerRankMultiSlotOptions {
      * pseudo-random
      * generator when making a Personalizer call.
      */
-    @JsonProperty(value = "eventId")
     private String eventId;
 
     /*
@@ -65,8 +66,13 @@ public final class PersonalizerRankMultiSlotOptions {
      * You must call the Activate Event API if the event output is shown to
      * users, otherwise Rewards will be ignored.
      */
-    @JsonProperty(value = "deferActivation")
     private Boolean deferActivation;
+
+    /**
+     * Creates a new instance of {@link PersonalizerRankMultiSlotOptions}.
+     */
+    public PersonalizerRankMultiSlotOptions() {
+    }
 
     /**
      * Get the contextFeatures property: Features of the context used for Personalizer as a dictionary of dictionaries.
@@ -192,5 +198,53 @@ public final class PersonalizerRankMultiSlotOptions {
     public PersonalizerRankMultiSlotOptions setDeferActivation(Boolean deferActivation) {
         this.deferActivation = deferActivation;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeArrayField("contextFeatures", contextFeatures,
+                (writer, data) -> writer.writeRawValue(data.toString()))
+            .writeArrayField("actions", actions, JsonWriter::writeJson)
+            .writeArrayField("slots", slots, JsonWriter::writeJson)
+            .writeStringField("eventId", eventId)
+            .writeBooleanField("deferActivation", deferActivation)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerRankMultiSlotOptions} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerRankMultiSlotOptions}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerRankMultiSlotOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerRankMultiSlotOptions personalizerRankMultiSlotOptions = new PersonalizerRankMultiSlotOptions();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contextFeatures".equals(fieldName)) {
+                    personalizerRankMultiSlotOptions.contextFeatures = reader.readArray(
+                        read -> BinaryData.fromObject(read.readUntyped()));
+                } else if ("actions".equals(fieldName)) {
+                    personalizerRankMultiSlotOptions.actions = reader.readArray(PersonalizerRankableAction::fromJson);
+                } else if ("slots".equals(fieldName)) {
+                    personalizerRankMultiSlotOptions.slots = reader.readArray(PersonalizerSlotOptions::fromJson);
+                } else if ("eventId".equals(fieldName)) {
+                    personalizerRankMultiSlotOptions.eventId = reader.getString();
+                } else if ("deferActivation".equals(fieldName)) {
+                    personalizerRankMultiSlotOptions.deferActivation = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerRankMultiSlotOptions;
+        });
     }
 }

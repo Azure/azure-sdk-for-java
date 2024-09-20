@@ -7,54 +7,59 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /** Quota information. */
 @Fluent
-public final class Quota {
+public final class Quota implements JsonSerializable<Quota> {
     /*
      * The name of the dimension associated with the quota.
      */
-    @JsonProperty(value = "dimension")
     private String dimension;
 
     /*
      * The scope at which the quota is applied.
      */
-    @JsonProperty(value = "scope")
     private DimensionScope scope;
 
     /*
      * The unique identifier for the provider.
      */
-    @JsonProperty(value = "providerId")
     private String providerId;
 
     /*
      * The amount of the usage that has been applied for the current period.
      */
-    @JsonProperty(value = "utilization")
     private Float utilization;
 
     /*
      * The amount of the usage that has been reserved but not applied for the
      * current period.
      */
-    @JsonProperty(value = "holds")
     private Float holds;
 
     /*
      * The maximum amount of usage allowed for the current period.
      */
-    @JsonProperty(value = "limit")
     private Float limit;
 
     /*
      * The time period in which the quota's underlying meter is accumulated.
      * Based on calendar year. 'None' is used for concurrent quotas.
      */
-    @JsonProperty(value = "period")
     private MeterPeriod period;
+
+    /**
+     * Creates a new instance of {@link Quota}.
+     */
+    public Quota() {
+    }
 
     /**
      * Get the dimension property: The name of the dimension associated with the quota.
@@ -196,5 +201,56 @@ public final class Quota {
     public Quota setPeriod(MeterPeriod period) {
         this.period = period;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("dimension", dimension)
+            .writeStringField("scope", Objects.toString(scope, null))
+            .writeStringField("providerId", providerId)
+            .writeNumberField("utilization", utilization)
+            .writeNumberField("holds", holds)
+            .writeNumberField("limit", limit)
+            .writeStringField("period", Objects.toString(period, null))
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link Quota} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link Quota}, or null if {@link JsonReader} was pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static Quota fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Quota quota = new Quota();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dimension".equals(fieldName)) {
+                    quota.dimension = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    quota.scope = DimensionScope.fromString(reader.getString());
+                } else if ("providerId".equals(fieldName)) {
+                    quota.providerId = reader.getString();
+                } else if ("utilization".equals(fieldName)) {
+                    quota.utilization = reader.getNullable(JsonReader::getFloat);
+                } else if ("holds".equals(fieldName)) {
+                    quota.holds = reader.getNullable(JsonReader::getFloat);
+                } else if ("limit".equals(fieldName)) {
+                    quota.limit = reader.getNullable(JsonReader::getFloat);
+                } else if ("period".equals(fieldName)) {
+                    quota.period = MeterPeriod.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return quota;
+        });
     }
 }

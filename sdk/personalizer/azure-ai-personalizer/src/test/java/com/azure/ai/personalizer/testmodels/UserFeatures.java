@@ -3,61 +3,87 @@
 
 package com.azure.ai.personalizer.testmodels;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-public class UserFeatures {
-    @JsonGetter
+import java.io.IOException;
+
+public class UserFeatures implements JsonSerializable<UserFeatures> {
     public boolean isPayingUser() {
         return isPayingUser;
     }
 
-    @JsonSetter
     public UserFeatures setPayingUser(boolean payingUser) {
         isPayingUser = payingUser;
         return this;
     }
 
-    @JsonGetter
     public String getFavoriteGenre() {
         return favoriteGenre;
     }
 
-    @JsonSetter
     public UserFeatures setFavoriteGenre(String favoriteGenre) {
         this.favoriteGenre = favoriteGenre;
         return this;
     }
 
-    @JsonGetter
     public double getHoursOnSite() {
         return hoursOnSite;
     }
 
-    @JsonSetter
     public UserFeatures setHoursOnSite(double hoursOnSite) {
         this.hoursOnSite = hoursOnSite;
         return this;
     }
 
-    @JsonGetter
     public String getLastWatchedType() {
         return lastWatchedType;
     }
 
-    @JsonSetter
     public UserFeatures setLastWatchedType(String lastWatchedType) {
         this.lastWatchedType = lastWatchedType;
         return this;
     }
 
-    @JsonProperty
     private boolean isPayingUser;
-    @JsonProperty
     private String favoriteGenre;
-    @JsonProperty
     private double hoursOnSite;
-    @JsonProperty
     private String lastWatchedType;
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeBooleanField("isPayingUser", isPayingUser)
+            .writeStringField("favoriteGenre", favoriteGenre)
+            .writeDoubleField("hoursOnSite", hoursOnSite)
+            .writeStringField("lastWatchedType", lastWatchedType)
+            .writeEndObject();
+    }
+
+    public static UserFeatures fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserFeatures userFeatures = new UserFeatures();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isPayingUser".equals(fieldName)) {
+                    userFeatures.isPayingUser = reader.getBoolean();
+                } else if ("favoriteGenre".equals(fieldName)) {
+                    userFeatures.favoriteGenre = reader.getString();
+                } else if ("hoursOnSite".equals(fieldName)) {
+                    userFeatures.hoursOnSite = reader.getDouble();
+                } else if ("lastWatchedType".equals(fieldName)) {
+                    userFeatures.lastWatchedType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return userFeatures;
+        });
+    }
 }

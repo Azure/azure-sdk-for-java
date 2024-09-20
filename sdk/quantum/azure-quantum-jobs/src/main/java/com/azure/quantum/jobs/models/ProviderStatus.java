@@ -7,29 +7,37 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** Providers status. */
 @Immutable
-public final class ProviderStatus {
+public final class ProviderStatus implements JsonSerializable<ProviderStatus> {
     /*
      * Provider id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Provider availability.
      */
-    @JsonProperty(value = "currentAvailability", access = JsonProperty.Access.WRITE_ONLY)
     private ProviderAvailability currentAvailability;
 
     /*
      * The targets property.
      */
-    @JsonProperty(value = "targets", access = JsonProperty.Access.WRITE_ONLY)
     private List<TargetStatus> targets;
+
+    /**
+     * Creates a new instance of {@link ProviderStatus}.
+     */
+    public ProviderStatus() {
+    }
 
     /**
      * Get the id property: Provider id.
@@ -56,5 +64,42 @@ public final class ProviderStatus {
      */
     public List<TargetStatus> getTargets() {
         return this.targets;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link ProviderStatus} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link ProviderStatus}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static ProviderStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderStatus providerStatus = new ProviderStatus();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    providerStatus.id = reader.getString();
+                } else if ("currentAvailability".equals(fieldName)) {
+                    providerStatus.currentAvailability = ProviderAvailability.fromString(reader.getString());
+                } else if ("targets".equals(fieldName)) {
+                    providerStatus.targets = reader.readArray(TargetStatus::fromJson);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return providerStatus;
+        });
     }
 }

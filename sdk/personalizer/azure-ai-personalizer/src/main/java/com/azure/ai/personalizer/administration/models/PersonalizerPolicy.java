@@ -5,22 +5,31 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Learning settings specifying how to train the model. */
 @Fluent
-public final class PersonalizerPolicy {
+public final class PersonalizerPolicy implements JsonSerializable<PersonalizerPolicy> {
     /*
      * Name of the learning settings.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Arguments of the learning settings.
      */
-    @JsonProperty(value = "arguments", required = true)
     private String arguments;
+
+    /**
+     * Creates a new instance of {@link PersonalizerPolicy}.
+     */
+    public PersonalizerPolicy() {
+    }
 
     /**
      * Get the name property: Name of the learning settings.
@@ -60,5 +69,42 @@ public final class PersonalizerPolicy {
     public PersonalizerPolicy setArguments(String arguments) {
         this.arguments = arguments;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("name", name)
+            .writeStringField("arguments", arguments)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerPolicy} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerPolicy}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicy personalizerPolicy = new PersonalizerPolicy();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    personalizerPolicy.name = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    personalizerPolicy.arguments = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerPolicy;
+        });
     }
 }

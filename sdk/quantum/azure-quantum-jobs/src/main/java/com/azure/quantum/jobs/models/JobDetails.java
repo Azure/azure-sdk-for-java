@@ -7,43 +7,44 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Job details. */
 @Fluent
-public final class JobDetails {
+public final class JobDetails implements JsonSerializable<JobDetails> {
     /*
      * The job id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The job name. Is not required for the name to be unique and it's only
      * used for display purposes.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The blob container SAS uri, the container is used to host job data.
      */
-    @JsonProperty(value = "containerUri", required = true)
     private String containerUri;
 
     /*
      * The input blob SAS uri, if specified, it will override the default input
      * blob in the container.
      */
-    @JsonProperty(value = "inputDataUri")
     private String inputDataUri;
 
     /*
      * The format of the input data.
      */
-    @JsonProperty(value = "inputDataFormat", required = true)
     private String inputDataFormat;
 
     /*
@@ -51,76 +52,70 @@ public final class JobDetails {
      * It is expected that the size of this object is small and only used to
      * specify parameters for the execution target, not the input data.
      */
-    @JsonProperty(value = "inputParams")
     private Object inputParams;
 
     /*
      * The unique identifier for the provider.
      */
-    @JsonProperty(value = "providerId", required = true)
     private String providerId;
 
     /*
      * The target identifier to run the job.
      */
-    @JsonProperty(value = "target", required = true)
     private String target;
 
     /*
      * The job metadata. Metadata provides client the ability to store
      * client-specific information
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
     /*
      * The output blob SAS uri. When a job finishes successfully, results will
      * be uploaded to this blob.
      */
-    @JsonProperty(value = "outputDataUri")
     private String outputDataUri;
 
     /*
      * The format of the output data.
      */
-    @JsonProperty(value = "outputDataFormat")
     private String outputDataFormat;
 
     /*
      * The job status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private JobStatus status;
 
     /*
      * The creation time of the job.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The time when the job began execution.
      */
-    @JsonProperty(value = "beginExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime beginExecutionTime;
 
     /*
      * The time when the job finished execution.
      */
-    @JsonProperty(value = "endExecutionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endExecutionTime;
 
     /*
      * The time when a job was successfully cancelled.
      */
-    @JsonProperty(value = "cancellationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime cancellationTime;
 
     /*
      * The error data for the job. This is expected only when Status 'Failed'.
      */
-    @JsonProperty(value = "errorData", access = JsonProperty.Access.WRITE_ONLY)
     private ErrorData errorData;
+
+    /**
+     * Creates a new instance of {@link JobDetails}.
+     */
+    public JobDetails() {
+    }
 
     /**
      * Get the id property: The job id.
@@ -406,5 +401,84 @@ public final class JobDetails {
      */
     public ErrorData getErrorData() {
         return this.errorData;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("id", id)
+            .writeStringField("name", name)
+            .writeStringField("containerUri", containerUri)
+            .writeStringField("inputDataUri", inputDataUri)
+            .writeStringField("inputDataFormat", inputDataFormat)
+            .writeUntypedField("inputParams", inputParams)
+            .writeStringField("providerId", providerId)
+            .writeStringField("target", target)
+            .writeMapField("metadata", metadata, JsonWriter::writeString)
+            .writeStringField("outputDataUri", outputDataUri)
+            .writeStringField("outputDataFormat", outputDataFormat)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link JobDetails} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link JobDetails}, or null if {@link JsonReader} was pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static JobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDetails jobDetails = new JobDetails();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    jobDetails.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    jobDetails.name = reader.getString();
+                } else if ("containerUri".equals(fieldName)) {
+                    jobDetails.containerUri = reader.getString();
+                } else if ("inputDataUri".equals(fieldName)) {
+                    jobDetails.inputDataUri = reader.getString();
+                } else if ("inputDataFormat".equals(fieldName)) {
+                    jobDetails.inputDataFormat = reader.getString();
+                } else if ("inputParams".equals(fieldName)) {
+                    jobDetails.inputParams = reader.readUntyped();
+                } else if ("providerId".equals(fieldName)) {
+                    jobDetails.providerId = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    jobDetails.target = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    jobDetails.metadata = reader.readMap(JsonReader::getString);
+                } else if ("outputDataUri".equals(fieldName)) {
+                    jobDetails.outputDataUri = reader.getString();
+                } else if ("outputDataFormat".equals(fieldName)) {
+                    jobDetails.outputDataFormat = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    jobDetails.status = JobStatus.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    jobDetails.creationTime = reader.getNullable(nonNull ->
+                        CoreUtils.parseBestOffsetDateTime(nonNull.getString()));
+                } else if ("beginExecutionTime".equals(fieldName)) {
+                    jobDetails.beginExecutionTime = reader.getNullable(nonNull ->
+                        CoreUtils.parseBestOffsetDateTime(nonNull.getString()));
+                } else if ("endExecutionTime".equals(fieldName)) {
+                    jobDetails.endExecutionTime = reader.getNullable(nonNull ->
+                        CoreUtils.parseBestOffsetDateTime(nonNull.getString()));
+                } else if ("cancellationTime".equals(fieldName)) {
+                    jobDetails.cancellationTime = reader.getNullable(nonNull ->
+                        CoreUtils.parseBestOffsetDateTime(nonNull.getString()));
+                } else if ("errorData".equals(fieldName)) {
+                    jobDetails.errorData = ErrorData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return jobDetails;
+        });
     }
 }

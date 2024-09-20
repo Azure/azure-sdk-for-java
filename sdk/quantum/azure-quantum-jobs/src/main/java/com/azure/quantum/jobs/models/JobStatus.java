@@ -7,7 +7,7 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for JobStatus. */
@@ -28,12 +28,20 @@ public final class JobStatus extends ExpandableStringEnum<JobStatus> {
     public static final JobStatus CANCELLED = fromString("Cancelled");
 
     /**
+     * Creates a new instance of {@link JobStatus} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public JobStatus() {
+    }
+
+    /**
      * Creates or finds a JobStatus from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding JobStatus.
      */
-    @JsonCreator
     public static JobStatus fromString(String name) {
         return fromString(name, JobStatus.class);
     }

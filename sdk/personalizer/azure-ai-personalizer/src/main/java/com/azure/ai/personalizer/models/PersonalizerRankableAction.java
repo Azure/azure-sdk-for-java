@@ -6,23 +6,32 @@ package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** An action with its associated features used for ranking. */
 @Fluent
-public final class PersonalizerRankableAction {
+public final class PersonalizerRankableAction implements JsonSerializable<PersonalizerRankableAction> {
     /*
      * Id of the action.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * List of dictionaries containing features.
      */
-    @JsonProperty(value = "features", required = true)
     private List<BinaryData> features;
+
+    /**
+     * Creates a new instance of {@link PersonalizerRankableAction}.
+     */
+    public PersonalizerRankableAction() {
+    }
 
     /**
      * Get the id property: Id of the action.
@@ -62,5 +71,43 @@ public final class PersonalizerRankableAction {
     public PersonalizerRankableAction setFeatures(List<BinaryData> features) {
         this.features = features;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("id", id)
+            .writeArrayField("features", features, (writer, data) -> writer.writeRawValue(data.toString()))
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerRankableAction} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerRankableAction}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerRankableAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerRankableAction personalizerRankableAction = new PersonalizerRankableAction();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    personalizerRankableAction.id = reader.getString();
+                } else if ("features".equals(fieldName)) {
+                    personalizerRankableAction.features = reader.readArray(
+                        read -> BinaryData.fromObject(read.readUntyped()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerRankableAction;
+        });
     }
 }

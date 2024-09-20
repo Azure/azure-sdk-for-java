@@ -5,22 +5,31 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Reference to the policy within the evaluation. */
 @Fluent
-public final class PersonalizerPolicyReferenceOptions {
+public final class PersonalizerPolicyReferenceOptions implements JsonSerializable<PersonalizerPolicyReferenceOptions> {
     /*
      * Evaluation Id of the evaluation.
      */
-    @JsonProperty(value = "evaluationId", required = true)
     private String evaluationId;
 
     /*
      * Name of the learning settings.
      */
-    @JsonProperty(value = "policyName", required = true)
     private String policyName;
+
+    /**
+     * Creates a new instance of {@link PersonalizerPolicyReferenceOptions}.
+     */
+    public PersonalizerPolicyReferenceOptions() {
+    }
 
     /**
      * Get the evaluationId property: Evaluation Id of the evaluation.
@@ -60,5 +69,43 @@ public final class PersonalizerPolicyReferenceOptions {
     public PersonalizerPolicyReferenceOptions setPolicyName(String policyName) {
         this.policyName = policyName;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("evaluationId", evaluationId)
+            .writeStringField("policyName", policyName)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerPolicyReferenceOptions} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerPolicyReferenceOptions}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerPolicyReferenceOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicyReferenceOptions personalizerPolicyReferenceOptions
+                = new PersonalizerPolicyReferenceOptions();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("evaluationId".equals(fieldName)) {
+                    personalizerPolicyReferenceOptions.evaluationId = reader.getString();
+                } else if ("policyName".equals(fieldName)) {
+                    personalizerPolicyReferenceOptions.policyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerPolicyReferenceOptions;
+        });
     }
 }

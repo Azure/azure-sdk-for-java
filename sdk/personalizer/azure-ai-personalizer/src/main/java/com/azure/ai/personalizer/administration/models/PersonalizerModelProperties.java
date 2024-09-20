@@ -5,23 +5,33 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /** Properties related to the trained model. */
 @Immutable
-public final class PersonalizerModelProperties {
+public final class PersonalizerModelProperties implements JsonSerializable<PersonalizerModelProperties> {
     /*
      * Creation time of the model.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Last time the model was modified.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
+
+    /**
+     * Creates a new instance of {@link PersonalizerModelProperties}.
+     */
+    public PersonalizerModelProperties() {
+    }
 
     /**
      * Get the creationTime property: Creation time of the model.
@@ -39,5 +49,41 @@ public final class PersonalizerModelProperties {
      */
     public OffsetDateTime getLastModifiedTime() {
         return this.lastModifiedTime;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerModelProperties} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerModelProperties}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerModelProperties personalizerModelProperties = new PersonalizerModelProperties();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationTime".equals(fieldName)) {
+                    personalizerModelProperties.creationTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    personalizerModelProperties.lastModifiedTime
+                        = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerModelProperties;
+        });
     }
 }

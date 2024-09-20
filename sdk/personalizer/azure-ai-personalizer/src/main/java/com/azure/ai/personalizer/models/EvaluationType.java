@@ -5,7 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for EvaluationType. */
@@ -17,12 +17,20 @@ public final class EvaluationType extends ExpandableStringEnum<EvaluationType> {
     public static final EvaluationType AUTO = fromString("Auto");
 
     /**
+     * Creates an instance of {@link EvaluationType} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public EvaluationType() {
+    }
+
+    /**
      * Creates or finds a EvaluationType from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding EvaluationType.
      */
-    @JsonCreator
     public static EvaluationType fromString(String name) {
         return fromString(name, EvaluationType.class);
     }

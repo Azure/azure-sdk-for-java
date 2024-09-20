@@ -5,7 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for PersonalizerErrorCode. */
@@ -138,12 +138,20 @@ public final class PersonalizerErrorCode extends ExpandableStringEnum<Personaliz
     public static final PersonalizerErrorCode OPERATION_NOT_ALLOWED = fromString("OperationNotAllowed");
 
     /**
+     * Creates a new instance of {@link PersonalizerErrorCode} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public PersonalizerErrorCode() {
+    }
+
+    /**
      * Creates or finds a PersonalizerErrorCode from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding PersonalizerErrorCode.
      */
-    @JsonCreator
     public static PersonalizerErrorCode fromString(String name) {
         return fromString(name, PersonalizerErrorCode.class);
     }

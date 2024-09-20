@@ -5,23 +5,32 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The PersonalizerSlotReward model. */
 @Fluent
-public final class PersonalizerSlotReward {
+public final class PersonalizerSlotReward implements JsonSerializable<PersonalizerSlotReward> {
     /*
      * Slot id for which we are sending the reward.
      */
-    @JsonProperty(value = "slotId", required = true)
     private String slotId;
 
     /*
      * Reward to be assigned to slotId. Value should be between -1 and 1
      * inclusive.
      */
-    @JsonProperty(value = "value", required = true)
     private float value;
+
+    /**
+     * Creates a new instance of {@link PersonalizerSlotReward}.
+     */
+    public PersonalizerSlotReward() {
+    }
 
     /**
      * Get the slotId property: Slot id for which we are sending the reward.
@@ -61,5 +70,42 @@ public final class PersonalizerSlotReward {
     public PersonalizerSlotReward setValue(float value) {
         this.value = value;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("slotId", slotId)
+            .writeFloatField("value", value)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerSlotReward} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerSlotReward}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerSlotReward fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerSlotReward personalizerSlotReward = new PersonalizerSlotReward();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("slotId".equals(fieldName)) {
+                    personalizerSlotReward.slotId = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    personalizerSlotReward.value = reader.getFloat();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerSlotReward;
+        });
     }
 }

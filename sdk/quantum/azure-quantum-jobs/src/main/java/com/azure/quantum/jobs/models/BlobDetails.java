@@ -7,22 +7,31 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Blob details. */
 @Fluent
-public final class BlobDetails {
+public final class BlobDetails implements JsonSerializable<BlobDetails> {
     /*
      * The container name.
      */
-    @JsonProperty(value = "containerName", required = true)
     private String containerName;
 
     /*
      * The blob name.
      */
-    @JsonProperty(value = "blobName")
     private String blobName;
+
+    /**
+     * Creates a new instance of {@link BlobDetails}.
+     */
+    public BlobDetails() {
+    }
 
     /**
      * Get the containerName property: The container name.
@@ -62,5 +71,41 @@ public final class BlobDetails {
     public BlobDetails setBlobName(String blobName) {
         this.blobName = blobName;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("containerName", containerName)
+            .writeStringField("blobName", blobName)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link BlobDetails} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link BlobDetails}, or null if {@link JsonReader} was pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static BlobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobDetails blobDetails = new BlobDetails();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("containerName".equals(fieldName)) {
+                    blobDetails.containerName = reader.getString();
+                } else if ("blobName".equals(fieldName)) {
+                    blobDetails.blobName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return blobDetails;
+        });
     }
 }

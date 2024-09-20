@@ -7,7 +7,7 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for ProviderAvailability. */
@@ -22,12 +22,20 @@ public final class ProviderAvailability extends ExpandableStringEnum<ProviderAva
     public static final ProviderAvailability UNAVAILABLE = fromString("Unavailable");
 
     /**
+     * Creates a new instance of {@link ProviderAvailability} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public ProviderAvailability() {
+    }
+
+    /**
      * Creates or finds a ProviderAvailability from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding ProviderAvailability.
      */
-    @JsonCreator
     public static ProviderAvailability fromString(String name) {
         return fromString(name, ProviderAvailability.class);
     }

@@ -7,24 +7,33 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** An error response from Azure. */
 @Fluent
-public final class ErrorData {
+public final class ErrorData implements JsonSerializable<ErrorData> {
     /*
      * An identifier for the error. Codes are invariant and are intended to be
      * consumed programmatically.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * A message describing the error, intended to be suitable for displaying
      * in a user interface.
      */
-    @JsonProperty(value = "message")
     private String message;
+
+    /**
+     * Creates a new instance of {@link ErrorData}.
+     */
+    public ErrorData() {
+    }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
@@ -68,5 +77,41 @@ public final class ErrorData {
     public ErrorData setMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", code)
+            .writeStringField("message", message)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link ErrorData} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link ErrorData}, or null if {@link JsonReader} was pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static ErrorData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorData errorData = new ErrorData();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    errorData.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    errorData.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return errorData;
+        });
     }
 }

@@ -5,8 +5,70 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
+import java.time.Duration;
 
 /** The aggregate total of the Offline Evaluation. */
 @Fluent
 class PersonalizerPolicyResultTotalSummary extends PersonalizerPolicyResultSummary {
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeNumberField("nonZeroProbability", getNonZeroProbability())
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerPolicyResultTotalSummary} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerPolicyResultTotalSummary}, or null if {@link JsonReader} was pointing
+     * to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerPolicyResultTotalSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerPolicyResultTotalSummary personalizerPolicyResultTotalSummary
+                = new PersonalizerPolicyResultTotalSummary();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeStamp".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.timeStamp = CoreUtils.parseBestOffsetDateTime(
+                        reader.getString());
+                } else if ("ipsEstimatorNumerator".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.ipsEstimatorNumerator = reader.getNullable(
+                        JsonReader::getFloat);
+                } else if ("ipsEstimatorDenominator".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.ipsEstimatorDenominator = reader.getNullable(
+                        JsonReader::getFloat);
+                } else if ("snipsEstimatorDenominator".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.snipsEstimatorDenominator = reader.getNullable(
+                        JsonReader::getFloat);
+                } else if ("aggregateTimeWindow".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.aggregateTimeWindow = reader.getNullable(
+                        nonNull -> Duration.parse(nonNull.getString()));
+                } else if ("nonZeroProbability".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.nonZeroProbability = reader.getNullable(JsonReader::getFloat);
+                } else if ("sumOfSquares".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.sumOfSquares = reader.getNullable(JsonReader::getFloat);
+                } else if ("confidenceInterval".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.confidenceInterval = reader.getNullable(JsonReader::getFloat);
+                } else if ("averageReward".equals(fieldName)) {
+                    personalizerPolicyResultTotalSummary.averageReward = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerPolicyResultTotalSummary;
+        });
+    }
 }

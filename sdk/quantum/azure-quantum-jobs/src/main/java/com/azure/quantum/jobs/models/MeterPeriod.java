@@ -7,7 +7,7 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for MeterPeriod. */
@@ -19,12 +19,20 @@ public final class MeterPeriod extends ExpandableStringEnum<MeterPeriod> {
     public static final MeterPeriod MONTHLY = fromString("Monthly");
 
     /**
+     * Creates a new instance of {@link MeterPeriod} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public MeterPeriod() {
+    }
+
+    /**
      * Creates or finds a MeterPeriod from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding MeterPeriod.
      */
-    @JsonCreator
     public static MeterPeriod fromString(String name) {
         return fromString(name, MeterPeriod.class);
     }

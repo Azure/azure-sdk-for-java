@@ -5,43 +5,50 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 /** The error object. */
 @Fluent
-public final class PersonalizerError {
+public final class PersonalizerError implements JsonSerializable<PersonalizerError> {
     /*
      * Error Codes returned by Personalizer
      */
-    @JsonProperty(value = "code", required = true)
     private PersonalizerErrorCode code;
 
     /*
      * A message explaining the error reported by the service.
      */
-    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Error source element.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * An array of details about specific errors that led to this reported
      * error.
      */
-    @JsonProperty(value = "details")
     private List<PersonalizerError> details;
 
     /*
      * An object containing more specific information than the parent object
      * about the error.
      */
-    @JsonProperty(value = "innerError")
     private InternalError innerError;
+
+    /**
+     * Creates a new instance of {@link PersonalizerError}.
+     */
+    public PersonalizerError() {
+    }
 
     /**
      * Get the code property: Error Codes returned by Personalizer.
@@ -143,5 +150,51 @@ public final class PersonalizerError {
     public PersonalizerError setInnerError(InternalError innerError) {
         this.innerError = innerError;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", Objects.toString(code, null))
+            .writeStringField("message", message)
+            .writeStringField("target", target)
+            .writeArrayField("details", details, JsonWriter::writeJson)
+            .writeJsonField("innerError", innerError)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerError} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerError}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerError personalizerError = new PersonalizerError();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    personalizerError.code = PersonalizerErrorCode.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    personalizerError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    personalizerError.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    personalizerError.details = reader.readArray(PersonalizerError::fromJson);
+                } else if ("innerError".equals(fieldName)) {
+                    personalizerError.innerError = InternalError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerError;
+        });
     }
 }

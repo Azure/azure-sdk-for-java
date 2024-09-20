@@ -8,13 +8,17 @@ import com.azure.ai.personalizer.models.PersonalizerRankMultiSlotResult;
 import com.azure.ai.personalizer.models.PersonalizerRankableAction;
 import com.azure.ai.personalizer.models.PersonalizerSlotOptions;
 import com.azure.ai.personalizer.models.PersonalizerSlotResult;
+import com.azure.ai.personalizer.testmodels.Device;
+import com.azure.ai.personalizer.testmodels.Environment;
+import com.azure.ai.personalizer.testmodels.FeatureMetadata;
+import com.azure.ai.personalizer.testmodels.RecentActivity;
+import com.azure.ai.personalizer.testmodels.SlotPositionFeatures;
+import com.azure.ai.personalizer.testmodels.UserProfile;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -31,28 +35,21 @@ public class MultiSlotRankActionsAndRewardEvents {
      */
     public static void main(final String[] args) throws IllegalArgumentException, NullPointerException {
         // Instantiate a client that will be used to call the service.
-        PersonalizerClient client = new PersonalizerClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
+        PersonalizerClient client = new PersonalizerClientBuilder().credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient();
 
-        PersonalizerRankMultiSlotOptions rankOptions = new PersonalizerRankMultiSlotOptions()
-            .setActions(getActions())
+        PersonalizerRankMultiSlotOptions rankOptions = new PersonalizerRankMultiSlotOptions().setActions(getActions())
             .setContextFeatures(getContextFeatures())
             .setSlots(getSlots());
 
         System.out.println("Sending rank request");
         PersonalizerRankMultiSlotResult result = client.rankMultiSlot(rankOptions);
         String eventId = rankOptions.getEventId();
-        System.out.println(String.format(
-            "Rank returned response with event id %s and recommended the following:",
-            eventId));
+        System.out.printf("Rank returned response with event id %s and recommended the following:%n", eventId);
 
         for (PersonalizerSlotResult slot : result.getSlots()) {
-            System.out.println(String.format(
-                "Action ${slotResponse.rewardActionId} for slot %s",
-                slot.getRewardActionId(),
-                slot.getId()));
+            System.out.printf("Action %s for slot %s%n", slot.getRewardActionId(), slot.getId());
         }
 
         // The event response will be determined by how the user interacted with the action that was presented to them.
@@ -71,7 +68,8 @@ public class MultiSlotRankActionsAndRewardEvents {
         return new ArrayList<BinaryData>() {
             {
                 add(BinaryData.fromObject(new UserProfile().setProfileType("AnonymousUser").setLatLong("47.6,-122.1")));
-                add(BinaryData.fromObject(new Environment().setDayOfMonth("28").setMonthOfYear("8").setWeather("Sunny")));
+                add(BinaryData.fromObject(
+                    new Environment().setDayOfMonth("28").setMonthOfYear("8").setWeather("Sunny")));
                 add(BinaryData.fromObject(new Device().setMobile(true).setWindows(true)));
                 add(BinaryData.fromObject(new RecentActivity().setItemsInCart(3)));
             }
@@ -85,21 +83,12 @@ public class MultiSlotRankActionsAndRewardEvents {
      */
     private static List<PersonalizerRankableAction> getActions() {
         ArrayList<PersonalizerRankableAction> actions = new ArrayList<>();
-        List<BinaryData> newsFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new FeatureMetadata().setFeatureType("News")));
-            }
-        };
-        List<BinaryData> sportsFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new FeatureMetadata().setFeatureType("Sports")));
-            }
-        };
-        List<BinaryData> entertainmentFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new FeatureMetadata().setFeatureType("Entertainment")));
-            }
-        };
+        List<BinaryData> newsFeatures = Arrays.asList(
+            BinaryData.fromObject(new FeatureMetadata().setFeatureType("News")));
+        List<BinaryData> sportsFeatures = Arrays.asList(
+            BinaryData.fromObject(new FeatureMetadata().setFeatureType("Sports")));
+        List<BinaryData> entertainmentFeatures = Arrays.asList(
+            BinaryData.fromObject(new FeatureMetadata().setFeatureType("Entertainment")));
 
         actions.add(new PersonalizerRankableAction().setId("NewsArticle").setFeatures(newsFeatures));
         actions.add(new PersonalizerRankableAction().setId("SportsArticle").setFeatures(sportsFeatures));
@@ -122,201 +111,24 @@ public class MultiSlotRankActionsAndRewardEvents {
     }
 
     private static PersonalizerSlotOptions getSlot1() {
-        ArrayList<BinaryData> positionFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new SlotPositionFeatures().setSize("Large").setPosition("Top Middle")));
-            }
-        };
+        List<BinaryData> positionFeatures = Arrays.asList(
+            BinaryData.fromObject(new SlotPositionFeatures().setSize("Large").setPosition("Top Middle")));
+        List<String> excludedActions = Arrays.asList("SportsArticle", "EntertainmentArticle");
 
-        ArrayList<String> excludedActions = new ArrayList<String>() {
-            {
-                add("SportsArticle");
-                add("EntertainmentArticle");
-            }
-        };
-        return new PersonalizerSlotOptions()
-            .setId("Main Article")
+        return new PersonalizerSlotOptions().setId("Main Article")
             .setBaselineAction("NewsArticle")
             .setFeatures(positionFeatures)
             .setExcludedActions(excludedActions);
     }
 
     private static PersonalizerSlotOptions getSlot2() {
-        ArrayList<BinaryData> positionFeatures = new ArrayList<BinaryData>() {
-            {
-                add(BinaryData.fromObject(new SlotPositionFeatures().setSize("Small").setPosition("Bottom Right")));
-            }
-        };
-        ArrayList<String> excludedActions = new ArrayList<String>() {
-            {
-                add("EntertainmentArticle");
-            }
-        };
-        return new PersonalizerSlotOptions()
-            .setId("Side Bar")
+        List<BinaryData> positionFeatures = Arrays.asList(
+            BinaryData.fromObject(new SlotPositionFeatures().setSize("Small").setPosition("Bottom Right")));
+        List<String> excludedActions = Arrays.asList("EntertainmentArticle");
+
+        return new PersonalizerSlotOptions().setId("Side Bar")
             .setBaselineAction("SportsArticle")
             .setFeatures(positionFeatures)
             .setExcludedActions(excludedActions);
     }
-}
-class FeatureMetadata {
-    @JsonGetter
-    public String getFeatureType() {
-        return featureType;
-    }
-
-    @JsonSetter
-    public FeatureMetadata setFeatureType(String featureType) {
-        this.featureType = featureType;
-        return this;
-    }
-
-    @JsonProperty
-    String featureType;
-
-}
-
-class SlotPositionFeatures {
-    @JsonGetter
-    public String getSize() {
-        return size;
-    }
-
-    @JsonSetter
-    public SlotPositionFeatures setSize(String size) {
-        this.size = size;
-        return this;
-    }
-
-    @JsonGetter
-    public String getPosition() {
-        return position;
-    }
-
-    @JsonSetter
-    public SlotPositionFeatures setPosition(String position) {
-        this.position = position;
-        return this;
-    }
-
-    @JsonProperty
-    String size;
-    @JsonProperty
-    String position;
-}
-
-class UserProfile {
-    @JsonGetter
-    public String getProfileType() {
-        return profileType;
-    }
-
-    @JsonSetter
-    public UserProfile setProfileType(String profileType) {
-        this.profileType = profileType;
-        return this;
-    }
-
-    @JsonGetter
-    public String getLatLong() {
-        return latLong;
-    }
-
-    @JsonSetter
-    public UserProfile setLatLong(String latLong) {
-        this.latLong = latLong;
-        return this;
-    }
-
-    @JsonProperty
-    String profileType;
-    @JsonProperty
-    String latLong;
-}
-
-class Environment {
-    @JsonGetter
-    public String getDayOfMonth() {
-        return dayOfMonth;
-    }
-
-    @JsonSetter
-    public Environment setDayOfMonth(String dayOfMonth) {
-        this.dayOfMonth = dayOfMonth;
-        return this;
-    }
-
-    @JsonGetter
-    public String getMonthOfYear() {
-        return monthOfYear;
-    }
-
-    @JsonSetter
-    public Environment setMonthOfYear(String monthOfYear) {
-        this.monthOfYear = monthOfYear;
-        return this;
-    }
-
-    @JsonGetter
-    public String getWeather() {
-        return weather;
-    }
-
-    @JsonSetter
-    public Environment setWeather(String weather) {
-        this.weather = weather;
-        return this;
-    }
-
-    @JsonProperty
-    String dayOfMonth;
-    @JsonProperty
-    String monthOfYear;
-    @JsonProperty
-    String weather;
-}
-
-class Device {
-    @JsonGetter
-    public boolean isMobile() {
-        return isMobile;
-    }
-
-    @JsonSetter
-    public Device setMobile(boolean mobile) {
-        isMobile = mobile;
-        return this;
-    }
-
-    @JsonGetter
-    public boolean isWindows() {
-        return isWindows;
-    }
-
-    @JsonSetter
-    public Device setWindows(boolean windows) {
-        isWindows = windows;
-        return this;
-    }
-
-    @JsonProperty
-    boolean isMobile;
-    @JsonProperty
-    boolean isWindows;
-}
-
-class RecentActivity {
-    @JsonGetter
-    public Integer getItemsInCart() {
-        return itemsInCart;
-    }
-
-    @JsonSetter
-    public RecentActivity setItemsInCart(Integer itemsInCart) {
-        this.itemsInCart = itemsInCart;
-        return this;
-    }
-
-    @JsonProperty
-    Integer itemsInCart;
 }

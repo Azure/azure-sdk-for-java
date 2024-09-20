@@ -7,17 +7,27 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Get SAS URL operation response. */
 @Fluent
-public final class SasUriResponse {
+public final class SasUriResponse implements JsonSerializable<SasUriResponse> {
     /*
      * A URL with a SAS token to upload a blob for execution in the given
      * workspace.
      */
-    @JsonProperty(value = "sasUri")
     private String sasUri;
+
+    /**
+     * Creates a new instance of {@link SasUriResponse}.
+     */
+    public SasUriResponse() {
+    }
 
     /**
      * Get the sasUri property: A URL with a SAS token to upload a blob for execution in the given workspace.
@@ -37,5 +47,39 @@ public final class SasUriResponse {
     public SasUriResponse setSasUri(String sasUri) {
         this.sasUri = sasUri;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("sasUri", sasUri)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link SasUriResponse} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link SasUriResponse}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static SasUriResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SasUriResponse sasUriResponse = new SasUriResponse();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sasUri".equals(fieldName)) {
+                    sasUriResponse.sasUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return sasUriResponse;
+        });
     }
 }

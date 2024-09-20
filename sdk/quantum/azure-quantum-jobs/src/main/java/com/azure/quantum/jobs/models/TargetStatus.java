@@ -7,34 +7,41 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Target status. */
 @Immutable
-public final class TargetStatus {
+public final class TargetStatus implements JsonSerializable<TargetStatus> {
     /*
      * Target id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Target availability.
      */
-    @JsonProperty(value = "currentAvailability", access = JsonProperty.Access.WRITE_ONLY)
     private TargetAvailability currentAvailability;
 
     /*
      * Average queue time in seconds.
      */
-    @JsonProperty(value = "averageQueueTime", access = JsonProperty.Access.WRITE_ONLY)
     private Long averageQueueTime;
 
     /*
      * A page with detailed status of the provider.
      */
-    @JsonProperty(value = "statusPage", access = JsonProperty.Access.WRITE_ONLY)
     private String statusPage;
+
+    /**
+     * Creates a new instance of {@link TargetStatus}.
+     */
+    public TargetStatus() {
+    }
 
     /**
      * Get the id property: Target id.
@@ -70,5 +77,44 @@ public final class TargetStatus {
      */
     public String getStatusPage() {
         return this.statusPage;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link TargetStatus} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link TargetStatus}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static TargetStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetStatus targetStatus = new TargetStatus();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    targetStatus.id = reader.getString();
+                } else if ("currentAvailability".equals(fieldName)) {
+                    targetStatus.currentAvailability = TargetAvailability.fromString(reader.getString());
+                } else if ("averageQueueTime".equals(fieldName)) {
+                    targetStatus.averageQueueTime = reader.getNullable(JsonReader::getLong);
+                } else if ("statusPage".equals(fieldName)) {
+                    targetStatus.statusPage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return targetStatus;
+        });
     }
 }

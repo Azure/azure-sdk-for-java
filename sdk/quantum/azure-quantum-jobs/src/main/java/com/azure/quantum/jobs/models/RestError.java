@@ -7,16 +7,26 @@
 package com.azure.quantum.jobs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Error information returned by the API. */
 @Fluent
-public final class RestError {
+public final class RestError implements JsonSerializable<RestError> {
     /*
      * An error response from Azure.
      */
-    @JsonProperty(value = "error")
     private ErrorData error;
+
+    /**
+     * Creates a new instance of {@link RestError}.
+     */
+    public RestError() {
+    }
 
     /**
      * Get the error property: An error response from Azure.
@@ -36,5 +46,38 @@ public final class RestError {
     public RestError setError(ErrorData error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeJsonField("error", error)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link RestError} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link RestError}, or null if {@link JsonReader} was pointing to {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static RestError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestError restError = new RestError();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    restError.error = ErrorData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return restError;
+        });
     }
 }

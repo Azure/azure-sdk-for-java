@@ -13,6 +13,12 @@ public final class CreateEvaluationOperationResult {
     private String evaluationId;
 
     /**
+     * Creates a new instance of {@link CreateEvaluationOperationResult}.
+     */
+    public CreateEvaluationOperationResult() {
+    }
+
+    /**
      * Get the evaluationId property.
      *
      * @return the evaluationId value.
@@ -33,11 +39,6 @@ public final class CreateEvaluationOperationResult {
     }
 
     static {
-        CreateEvaluationOperationResultHelper.setAccessor(new CreateEvaluationOperationResultHelper.CreateEvaluationOperationResultAccessor() {
-            @Override
-            public void setEvaluationId(CreateEvaluationOperationResult result, String evaluationId) {
-                result.setEvaluationId(evaluationId);
-            }
-        });
+        CreateEvaluationOperationResultHelper.setAccessor(CreateEvaluationOperationResult::setEvaluationId);
     }
 }

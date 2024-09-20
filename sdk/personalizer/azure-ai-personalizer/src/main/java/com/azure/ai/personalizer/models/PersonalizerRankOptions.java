@@ -6,12 +6,17 @@ package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.util.List;
 
 /** Request a set of actions to be ranked by the Personalizer service. */
 @Fluent
-public final class PersonalizerRankOptions {
+public final class PersonalizerRankOptions implements JsonSerializable<PersonalizerRankOptions> {
     /*
      * Features of the context used for Personalizer as a
      * dictionary of dictionaries. This is determined by your application, and
@@ -20,7 +25,6 @@ public final class PersonalizerRankOptions {
      * Features should not include personally identifiable information (PII),
      * unique UserIDs, or precise timestamps.
      */
-    @JsonProperty(value = "contextFeatures")
     private List<BinaryData> contextFeatures;
 
     /*
@@ -32,7 +36,6 @@ public final class PersonalizerRankOptions {
      * The first item in the array will be used as Baseline item in Offline
      * Evaluations.
      */
-    @JsonProperty(value = "actions", required = true)
     private List<PersonalizerRankableAction> actions;
 
     /*
@@ -40,7 +43,6 @@ public final class PersonalizerRankOptions {
      * Personalizer will consider the first non-excluded item in the array as
      * the Baseline action when performing Offline Evaluations.
      */
-    @JsonProperty(value = "excludedActions")
     private List<String> excludedActions;
 
     /*
@@ -51,7 +53,6 @@ public final class PersonalizerRankOptions {
      * pseudo-random
      * generator when making a Personalizer call.
      */
-    @JsonProperty(value = "eventId")
     private String eventId;
 
     /*
@@ -66,8 +67,13 @@ public final class PersonalizerRankOptions {
      * You must call the Activate Event API if the event output is shown to
      * users, otherwise Rewards will be ignored.
      */
-    @JsonProperty(value = "deferActivation")
     private Boolean deferActivation;
+
+    /**
+     * Creates a new instance of {@link PersonalizerRankOptions}.
+     */
+    public PersonalizerRankOptions() {
+    }
 
     /**
      * Get the contextFeatures property: Features of the context used for Personalizer as a dictionary of dictionaries.
@@ -193,5 +199,53 @@ public final class PersonalizerRankOptions {
     public PersonalizerRankOptions setDeferActivation(Boolean deferActivation) {
         this.deferActivation = deferActivation;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeArrayField("contextFeatures", contextFeatures,
+                (writer, data) -> writer.writeRawValue(data.toString()))
+            .writeArrayField("actions", actions, JsonWriter::writeJson)
+            .writeArrayField("excludedActions", excludedActions, JsonWriter::writeString)
+            .writeStringField("eventId", eventId)
+            .writeBooleanField("deferActivation", deferActivation)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerRankOptions} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerRankOptions}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerRankOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerRankOptions personalizerRankOptions = new PersonalizerRankOptions();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contextFeatures".equals(fieldName)) {
+                    personalizerRankOptions.contextFeatures = reader.readArray(
+                        read -> BinaryData.fromObject(read.readUntyped()));
+                } else if ("actions".equals(fieldName)) {
+                    personalizerRankOptions.actions = reader.readArray(PersonalizerRankableAction::fromJson);
+                } else if ("excludedActions".equals(fieldName)) {
+                    personalizerRankOptions.excludedActions = reader.readArray(JsonReader::getString);
+                } else if ("eventId".equals(fieldName)) {
+                    personalizerRankOptions.eventId = reader.getString();
+                } else if ("deferActivation".equals(fieldName)) {
+                    personalizerRankOptions.deferActivation = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerRankOptions;
+        });
     }
 }

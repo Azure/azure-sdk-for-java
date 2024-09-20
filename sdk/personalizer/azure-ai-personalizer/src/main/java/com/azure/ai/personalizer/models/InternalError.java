@@ -5,23 +5,32 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** An object containing more specific information than the parent object about the error. */
 @Fluent
-public final class InternalError {
+public final class InternalError implements JsonSerializable<InternalError> {
     /*
      * Detailed error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * An object containing more specific information than the parent object
      * about the error.
      */
-    @JsonProperty(value = "innererror")
     private InternalError innererror;
+
+    /**
+     * Creates a new instance of {@link InternalError}.
+     */
+    public InternalError() {
+    }
 
     /**
      * Get the code property: Detailed error code.
@@ -63,5 +72,42 @@ public final class InternalError {
     public InternalError setInnererror(InternalError innererror) {
         this.innererror = innererror;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", code)
+            .writeJsonField("innererror", innererror)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link InternalError} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link InternalError}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static InternalError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternalError internalError = new InternalError();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    internalError.code = reader.getString();
+                } else if ("innererror".equals(fieldName)) {
+                    internalError.innererror = InternalError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return internalError;
+        });
     }
 }

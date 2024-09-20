@@ -5,22 +5,31 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** A ranked action with its resulting probability. */
 @Immutable
-public final class PersonalizerRankedAction {
+public final class PersonalizerRankedAction implements JsonSerializable<PersonalizerRankedAction> {
     /*
      * Id of the action
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Probability of the action
      */
-    @JsonProperty(value = "probability", access = JsonProperty.Access.WRITE_ONLY)
     private Float probability;
+
+    /**
+     * Creates a new instance of {@link PersonalizerRankedAction}.
+     */
+    public PersonalizerRankedAction() {
+    }
 
     /**
      * Get the id property: Id of the action.
@@ -38,5 +47,40 @@ public final class PersonalizerRankedAction {
      */
     public Float getProbability() {
         return this.probability;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerRankedAction} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerRankedAction}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerRankedAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerRankedAction personalizerRankedAction = new PersonalizerRankedAction();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    personalizerRankedAction.id = reader.getString();
+                } else if ("probability".equals(fieldName)) {
+                    personalizerRankedAction.probability = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerRankedAction;
+        });
     }
 }

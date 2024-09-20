@@ -21,6 +21,8 @@ public final class EvaluationOperationException extends AzureException {
     }
 
     /**
+     * Gets the error information for this exception.
+     *
      * @return the error information for this exception.
      */
     public String getEvaluationOperationError() {

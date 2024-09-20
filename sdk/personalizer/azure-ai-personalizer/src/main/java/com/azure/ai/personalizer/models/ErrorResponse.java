@@ -5,15 +5,19 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Used to return an error to the client. */
 @Fluent
-public final class ErrorResponse {
+public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
      * The error object.
      */
-    @JsonProperty(value = "error", required = true)
     private PersonalizerError error;
 
     /**
@@ -34,5 +38,39 @@ public final class ErrorResponse {
     public ErrorResponse setError(PersonalizerError error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeJsonField("error", error)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link ErrorResponse} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link ErrorResponse}, or null if {@link JsonReader} is pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static ErrorResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorResponse errorResponse = new ErrorResponse();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    errorResponse.error = PersonalizerError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return errorResponse;
+        });
     }
 }

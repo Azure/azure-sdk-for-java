@@ -5,8 +5,8 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EvaluationsCreateHeaders model. */
 @Fluent
@@ -14,7 +14,6 @@ public final class EvaluationsCreateHeaders {
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
 
     // HttpHeaders containing the raw property values.
@@ -24,7 +23,7 @@ public final class EvaluationsCreateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public EvaluationsCreateHeaders(HttpHeaders rawHeaders) {
-        this.location = rawHeaders.getValue("Location");
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
     }
 
     /**

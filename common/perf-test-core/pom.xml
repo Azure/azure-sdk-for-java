@@ -53,8 +53,6 @@
           <rules>
             <bannedDependencies>
               <includes combine.children="append">
-                <include>com.fasterxml.jackson.core:jackson-databind:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-
                 <!-- Special allowance for performance libraries as they aren't shipped. -->
                 <include>com.beust:jcommander:[1.82]</include> <!-- {x-include-update;com.beust:jcommander;external_dependency} -->
 

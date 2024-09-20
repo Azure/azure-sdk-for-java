@@ -5,7 +5,7 @@
 package com.azure.ai.personalizer.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for LearningMode. */
@@ -20,12 +20,20 @@ public final class LearningMode extends ExpandableStringEnum<LearningMode> {
     public static final LearningMode LOGGING_ONLY = fromString("LoggingOnly");
 
     /**
+     * Creates a new instance of {@link LearningMode} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public LearningMode() {
+    }
+
+    /**
      * Creates or finds a LearningMode from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding LearningMode.
      */
-    @JsonCreator
     public static LearningMode fromString(String name) {
         return fromString(name, LearningMode.class);
     }

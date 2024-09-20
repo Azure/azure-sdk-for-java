@@ -5,43 +5,51 @@
 package com.azure.ai.personalizer.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /** A counterfactual evaluation. */
 @Fluent
-public final class PersonalizerEvaluationOptions {
+public final class PersonalizerEvaluationOptions implements JsonSerializable<PersonalizerEvaluationOptions> {
     /*
      * True if the evaluation should explore for a more optimal learning
      * settings.
      */
-    @JsonProperty(value = "enableOfflineExperimentation")
     private Boolean enableOfflineExperimentation;
 
     /*
      * The name of the evaluation.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The start time of the evaluation.
      */
-    @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the evaluation.
      */
-    @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
     /*
      * Additional learning settings to evaluate.
      */
-    @JsonProperty(value = "policies", required = true)
     private List<PersonalizerPolicy> policies;
+
+    /**
+     * Creates a new instance of {@link PersonalizerEvaluationOptions}.
+     */
+    public PersonalizerEvaluationOptions() {
+    }
 
     /**
      * Get the enableOfflineExperimentation property: True if the evaluation should explore for a more optimal learning
@@ -143,5 +151,52 @@ public final class PersonalizerEvaluationOptions {
     public PersonalizerEvaluationOptions setPolicies(List<PersonalizerPolicy> policies) {
         this.policies = policies;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeBooleanField("enableOfflineExperimentation", enableOfflineExperimentation)
+            .writeStringField("name", name)
+            .writeStringField("startTime", Objects.toString(startTime, null))
+            .writeStringField("endTime", Objects.toString(endTime, null))
+            .writeArrayField("policies", policies, JsonWriter::writeJson)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PersonalizerEvaluationOptions} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PersonalizerEvaluationOptions}, or null if {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PersonalizerEvaluationOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PersonalizerEvaluationOptions personalizerEvaluationOptions = new PersonalizerEvaluationOptions();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enableOfflineExperimentation".equals(fieldName)) {
+                    personalizerEvaluationOptions.enableOfflineExperimentation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    personalizerEvaluationOptions.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    personalizerEvaluationOptions.startTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else if ("endTime".equals(fieldName)) {
+                    personalizerEvaluationOptions.endTime = CoreUtils.parseBestOffsetDateTime(reader.getString());
+                } else if ("policies".equals(fieldName)) {
+                    personalizerEvaluationOptions.policies = reader.readArray(PersonalizerPolicy::fromJson);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return personalizerEvaluationOptions;
+        });
     }
 }
