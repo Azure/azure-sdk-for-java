@@ -15,7 +15,6 @@
   <suppress files="com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.messaging.servicebus.administration.implementation.EntitiesImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.messaging.servicebus.administration.implementation.EntityHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.messaging.servicebus.administration.implementation.NamespacesImpl.java" checks="MissingJavadocMethodCheck" />
