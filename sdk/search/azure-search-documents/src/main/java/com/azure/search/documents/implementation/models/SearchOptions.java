@@ -8,6 +8,7 @@ package com.azure.search.documents.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.search.documents.models.QueryDebugMode;
 import com.azure.search.documents.models.QueryLanguage;
+import com.azure.search.documents.models.QuerySpellerType;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.ScoringStatistics;
 import com.azure.search.documents.models.SearchMode;
@@ -189,7 +190,7 @@ public final class SearchOptions {
     /*
      * Improve search recall by spell-correcting individual search query terms.
      */
-    private Speller speller;
+    private QuerySpellerType speller;
 
     /*
      * The list of field names used for semantic ranking.
@@ -811,7 +812,7 @@ public final class SearchOptions {
      *
      * @return the speller value.
      */
-    public Speller getSpeller() {
+    public QuerySpellerType getSpeller() {
         return this.speller;
     }
 
@@ -821,7 +822,7 @@ public final class SearchOptions {
      * @param speller the speller value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setSpeller(Speller speller) {
+    public SearchOptions setSpeller(QuerySpellerType speller) {
         this.speller = speller;
         return this;
     }
