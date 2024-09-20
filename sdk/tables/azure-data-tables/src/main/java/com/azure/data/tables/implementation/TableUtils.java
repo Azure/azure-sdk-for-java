@@ -7,7 +7,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.models.AccessPolicy;
@@ -56,7 +55,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.CoreUtils.getResultWithTimeout;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * A class containing utility methods for the Azure Tables library.
@@ -64,8 +62,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public final class TableUtils {
     private static final String UTF8_CHARSET = "UTF-8";
     private static final String DELIMITER_CONTINUATION_TOKEN = ";";
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
     private static final long THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS = 5;
 
     private TableUtils() {
@@ -189,23 +185,6 @@ public final class TableUtils {
         }
 
         return monoError(logger, httpResponseException);
-    }
-
-    public static Context setContext(Context context) {
-        return setContext(context, false);
-    }
-
-    public static Context setContext(Context context, boolean isSync) {
-        Context val = context != null ? context : Context.NONE;
-        return isSync ? enableSyncRestProxy(setTrailingContext(val)) : setTrailingContext(val);
-    }
-
-    private static Context setTrailingContext(Context context) {
-        return context.addData(AZ_TRACING_NAMESPACE_KEY, TABLES_TRACING_NAMESPACE_VALUE);
-    }
-
-    private static Context enableSyncRestProxy(Context context) {
-        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 
     public static boolean hasTimeout(Duration timeout) {
