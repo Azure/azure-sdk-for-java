@@ -487,7 +487,6 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-core-experimental;1.0.0-beta.54
 unreleased_com.azure:azure-messaging-servicebus;7.18.0-beta.2
 unreleased_com.azure:azure-messaging-eventhubs;5.19.0-beta.3
 unreleased_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.0-beta.3
