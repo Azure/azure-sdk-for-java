@@ -41,19 +41,19 @@ stages:
             workingDirectory: $(Build.SourcesDirectory)
             displayName: 'Create release branch'
 
-#          # Push the release branch to the repo
-#          - task: PowerShell@2
-#            displayName: 'Push release branch to the repo'
-#            inputs:
-#              pwsh: true
-#              workingDirectory: $(System.DefaultWorkingDirectory)
-#              filePath: eng/common/scripts/git-branch-push.ps1
-#              arguments: >
-#                -PRBranchName $(BaseBranchName)
-#                -CommitMsg "none"
-#                -GitUrl "https://$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-java.git"
-#                -RemoteName
-#                -SkipCommit $true
+          # Push the release branch to the repo
+          - task: PowerShell@2
+            displayName: 'Push release branch to the repo'
+            inputs:
+              pwsh: true
+              workingDirectory: $(System.DefaultWorkingDirectory)
+              filePath: eng/common/scripts/git-branch-push.ps1
+              arguments: >
+                -PRBranchName $(BaseBranchName)
+                -CommitMsg "none"
+                -GitUrl "https://$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-java.git"
+                -RemoteName origin
+                -SkipCommit $true
 
           # Run the script to generate patches for automatic releases
           - task: PowerShell@2
@@ -67,7 +67,7 @@ stages:
           - pwsh: |
               Write-Host "git remote -v"
               git remote -v
-              displayName: 'After run release script and before create PR'
+            displayName: 'After run release script and before create PR'
 
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
