@@ -385,7 +385,7 @@ public class SchemaRegistryJsonSchemaSerializerTests {
             .setBodyAsBinaryData(BinaryData.fromBytes(serialized));
 
         // Act
-        assertThrows(IllegalArgumentException.class, () -> serializer.deserialize(message, type));
+        assertThrows(SchemaRegistryJsonSchemaException.class, () -> serializer.deserialize(message, type));
 
         // Verify the IllegalArgumentException is actually due to the false return.
         verify(jsonSchemaGenerator).isValid(any(Address.class), eq(type), eq(schemaDefinition));

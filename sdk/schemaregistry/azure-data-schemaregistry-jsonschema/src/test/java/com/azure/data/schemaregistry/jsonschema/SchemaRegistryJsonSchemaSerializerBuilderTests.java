@@ -76,7 +76,7 @@ public class SchemaRegistryJsonSchemaSerializerBuilderTests {
         final SchemaRegistryJsonSchemaSerializerBuilder asyncBuilder = new SchemaRegistryJsonSchemaSerializerBuilder()
             .schemaRegistryClient(schemaRegistryAsyncClient)
             .schemaRegistryClient((SchemaRegistryClient) null)
-            .serializer(jsonSerializer);
+            .jsonSchemaGenerator(jsonSchemaGenerator);
 
         assertDoesNotThrow(() -> asyncBuilder.buildSerializer());
 
@@ -84,7 +84,7 @@ public class SchemaRegistryJsonSchemaSerializerBuilderTests {
         final SchemaRegistryJsonSchemaSerializerBuilder syncBuilder = new SchemaRegistryJsonSchemaSerializerBuilder()
             .schemaRegistryClient((SchemaRegistryAsyncClient) null)
             .schemaRegistryClient(schemaRegistryClient)
-            .serializer(jsonSerializer);
+            .jsonSchemaGenerator(jsonSchemaGenerator);
 
         assertDoesNotThrow(() -> syncBuilder.buildSerializer());
     }
