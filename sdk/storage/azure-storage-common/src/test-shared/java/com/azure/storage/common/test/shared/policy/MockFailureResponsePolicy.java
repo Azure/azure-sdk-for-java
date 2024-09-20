@@ -8,13 +8,10 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.util.BinaryData;
-import org.eclipse.jetty.util.IO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 
 public class MockFailureResponsePolicy implements HttpPipelinePolicy {
 
