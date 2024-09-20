@@ -117,11 +117,18 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      *
      * @return A new instance of {@link SchemaRegistryJsonSchemaSerializer}.
      *
-     * @throws NullPointerException if {@link #jsonSchemaGenerator(JsonSchemaGenerator)} is {@code null}.
+     * @throws NullPointerException if {@link #jsonSchemaGenerator(JsonSchemaGenerator)} is {@code null}. Or if both
+     *      {@link #schemaRegistryClient(SchemaRegistryAsyncClient)} and
+     *      {@link #schemaRegistryClient(SchemaRegistryClient)} are not set.
      * @throws IllegalStateException if {@link #autoRegisterSchemas(boolean)} is true but
      *     {@link #schemaGroup(String)} is not set.
      */
     public SchemaRegistryJsonSchemaSerializer buildSerializer() {
+        if (Objects.isNull(schemaRegistryAsyncClient) && Objects.isNull(schemaRegistryClient)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException(
+                "'schemaRegistryAsyncClient' or 'schemaRegistryClient' is required.'"));
+        }
+
         if (Objects.isNull(jsonSchemaGenerator)) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'jsonSchemaGenerator' cannot be null."));
         }
