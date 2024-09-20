@@ -76,23 +76,13 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]opentelemetry[/\\]exporter[/\\]*"/>
-  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]applicationinsights[/\\]spring[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]cloud[/\\]autoconfigure[/\\]monitor[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.IntegrationTestBase.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.LoggingSpanProcessor.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.*Sample.*java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.*Test.*java"/>
-
-  <!-- AzureSpringMonitorConfig defines Spring bean used in https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/spring/spring-boot-autoconfigure/src/main/java/io/opentelemetry/instrumentation/spring/autoconfigure/OpenTelemetryAutoConfiguration.java-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.monitor.applicationinsights.spring.AzureSpringMonitorAutoConfig.java"/>
-  <!-- To be able to return a configured loggger for self-diagnostics and use it as a Spring bean-->
-  <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.monitor.applicationinsights.spring.selfdiagnostics.*Log.*Config.*.java"/>
-
-  <!-- For the Application Insights Spring Boot starter for Spring native, users have only to declare the starter dependency. Users won't manipulate the Java classes of this Spring Boot starter. -->
-  <suppress checks="Javadoc" files=".*[/\\]com[/\\]azure[/\\]monitor[/\\]applicationinsights[/\\]spring[/\\]*"/>
 
   <!-- Suppress external dependency Checkstyle on Event Hubs Stress Test packages as it use spring framework and may directly use external dependencies -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -312,9 +302,6 @@ the main ServiceBusClientBuilder. -->
   <!-- TODO: (https://github.com/Azure/azure-sdk-for-java/issues/18291)  -->
   <!-- GoodLoggingCheck: Spring as a framework, will not directly use ClientLogger-->
   <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck|UseCaughtExceptionCauseCheck)" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
-
-  <!-- Can be removed after https://github.com/Azure/azure-sdk-for-java/issues/36609 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.(GoodLoggingCheck|ThrowFromClientLoggerCheck|UseCaughtExceptionCauseCheck)" files="com.azure.monitor.applicationinsights.spring.*.java"/>
 
   <!-- ExternalDependencyExposedCheck: Spring will directly use classes from spring dependencies in methods-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>

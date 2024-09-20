@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.applicationinsights.spring;
+package com.azure.spring.cloud.autoconfigure.monitor;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
@@ -24,14 +24,14 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * Auto config for Azure Spring Monitor
+ * Auto-configuration for Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
  */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
-public class AzureSpringMonitorAutoConfig {
+class AzureSpringMonitorAutoConfiguration {
 
-    private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfig.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfiguration.class);
 
     private static final Function<ConfigProperties, Map<String, String>> OTEL_DISABLE_CONFIG = configProperties -> {
         Map<String, String> properties = new HashMap<>();
@@ -57,7 +57,7 @@ public class AzureSpringMonitorAutoConfig {
      * @param connectionString connection string system property
      * @param httpPipeline an instance of HttpPipeline
      */
-    AzureSpringMonitorAutoConfig(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
+    AzureSpringMonitorAutoConfiguration(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
         this.connectionString = connectionString;
         this.httpPipeline = httpPipeline;
         if (!isNativeRuntimeExecution()) {

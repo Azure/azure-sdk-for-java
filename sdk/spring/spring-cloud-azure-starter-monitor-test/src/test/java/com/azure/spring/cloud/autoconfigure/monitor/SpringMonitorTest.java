@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.monitor.applicationinsights.spring;
+package com.azure.spring.cloud.autoconfigure.monitor;
 
 import com.azure.Application;
 import com.azure.Controller;
@@ -10,11 +10,10 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.monitor.applicationinsights.spring.selfdiagnostics.SelfDiagnosticsLevel;
+import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.SelfDiagnosticsLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.common.internal.OtelVersion;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
