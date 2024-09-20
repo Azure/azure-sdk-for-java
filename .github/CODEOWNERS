@@ -530,7 +530,7 @@
 # ServiceOwners:                                     @minamnmik
 
 # ServiceLabel: %Maps
-# ServiceOwners:                                     @dubiety
+/sdk/maps/                                           @dubiety
 
 # ServiceLabel: %Managed Identity
 # ServiceOwners:                                     @varunkch
