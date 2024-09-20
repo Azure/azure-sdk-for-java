@@ -36,6 +36,7 @@ stages:
               
               Write-Host "Build.SourceBranch: $(Build.SourceBranch)"
               Write-Host "git remote -v"
+              git remote -v
 
             workingDirectory: $(Build.SourcesDirectory)
             displayName: 'Create release branch'
@@ -63,6 +64,10 @@ stages:
               arguments: >
                 -SourcesDirectory .
                 -PackagesYmlPath eng/pipelines/patch-release.yml
+          - pwsh: |
+              Write-Host "git remote -v"
+              git remote -v
+              displayName: 'After run release script and before create PR'
 
           # Create a PR with the patches prepared
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
