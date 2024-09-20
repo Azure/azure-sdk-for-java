@@ -45,8 +45,9 @@ $funcAppPom = "$funcAppRoot/pom.xml" | Resolve-Path
 az login --service-principal -u $(getVariable('IDENTITY_CLIENT_ID')) -p $(getVariable('IDENTITY_CLIENT_SECRET')) --tenant $(getVariable('IDENTITY_TENANT_ID'))
 az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
-ls "$azSerRootPom/azure-json/" 
-get-psdrive $(resolve-path $azserRootPom).Drive
+ls "$azSerRootPom/azure-json/" | Write-Host
+get-psdrive $(resolve-path $azserRootPom).Drive | Write-Host
+mvn --version | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azBuildToolsRootPom | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-json/pom.xml" | Write-Host
 mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-xml/pom.xml" | Write-Host

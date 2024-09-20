@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     static ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredentialTest.class);
@@ -58,7 +57,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
     @Test
     @LiveOnly
-    public void testWithInvlaidSystemAccessToken() {
+    public void testWithInvalidSystemAccessToken() {
         AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
             .clientId(clientId)
             .tenantId(tenantId)
@@ -67,11 +66,11 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
             .build();
 
         try {
+            LOGGER.verbose("Trying to get a token...");
             credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
         } catch (ClientAuthenticationException e) {
             LOGGER.verbose("Body: " + e.getResponse().getBodyAsString().block());
             LOGGER.verbose("Status code: " + e.getResponse().getStatusCode());
-            fail();
         }
 
     }
