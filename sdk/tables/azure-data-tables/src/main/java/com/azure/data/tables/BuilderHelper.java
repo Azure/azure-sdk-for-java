@@ -211,7 +211,7 @@ final class BuilderHelper {
     }
 
 
-    public  static Tracer createTracer(ClientOptions clientOptions) {
+    private static Tracer createTracer(ClientOptions clientOptions) {
         TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
         return TracerProvider.getDefaultProvider()
             .createTracer(CLIENT_NAME, CLIENT_VERSION, TABLES_TRACING_NAMESPACE_VALUE, tracingOptions);
