@@ -46,7 +46,7 @@
     <dependency>
       <groupId>org.springframework.integration</groupId>
       <artifactId>spring-integration-core</artifactId>
-      <version>6.3.3</version> <!-- {x-version-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
+      <version>6.3.4</version> <!-- {x-version-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
         Without this dependency, javadoc throws a warning as it cannot find enum When.MAYBE
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.1.12</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.1.13</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -139,7 +139,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.integration:spring-integration-core:[6.3.3]</include> <!-- {x-include-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
+                <include>org.springframework.integration:spring-integration-core:[6.3.4]</include> <!-- {x-include-update;springboot3_org.springframework.integration:spring-integration-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

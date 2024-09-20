@@ -150,7 +150,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.1.12</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.1.13</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -208,7 +208,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.apache.kafka:kafka-clients:[3.7.1]</include> <!-- {x-include-update;springboot3_org.apache.kafka:kafka-clients;external_dependency} -->
-                <include>org.postgresql:postgresql:[42.7.3]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.7.4]</include> <!-- {x-include-update;springboot3_org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
