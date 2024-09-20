@@ -21,6 +21,12 @@ public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     private PersonalizerError error;
 
     /**
+     * Creates a new instance of {@link ErrorResponse}.
+     */
+    public ErrorResponse() {
+    }
+
+    /**
      * Get the error property: The error object.
      *
      * @return the error value.

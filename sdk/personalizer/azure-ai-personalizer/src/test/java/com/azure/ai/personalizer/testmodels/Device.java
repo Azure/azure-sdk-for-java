@@ -37,6 +37,8 @@ public class Device implements JsonSerializable<Device> {
         return jsonWriter.writeStartObject()
             .writeBooleanField("isMobile", isMobile)
             .writeBooleanField("isWindows", isWindows)
+            .writeBooleanField("windows", isWindows)
+            .writeBooleanField("mobile", isMobile)
             .writeEndObject();
     }
 
@@ -48,9 +50,9 @@ public class Device implements JsonSerializable<Device> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("isMobile".equals(fieldName)) {
+                if ("mobile".equals(fieldName)) {
                     device.isMobile = reader.getBoolean();
-                } else if ("isWindows".equals(fieldName)) {
+                } else if ("windows".equals(fieldName)) {
                     device.isWindows = reader.getBoolean();
                 } else {
                     reader.skipChildren();

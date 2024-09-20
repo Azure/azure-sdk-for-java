@@ -55,7 +55,7 @@ public class UserFeatures implements JsonSerializable<UserFeatures> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject()
-            .writeBooleanField("isPayingUser", isPayingUser)
+            .writeBooleanField("payingUser", isPayingUser)
             .writeStringField("favoriteGenre", favoriteGenre)
             .writeDoubleField("hoursOnSite", hoursOnSite)
             .writeStringField("lastWatchedType", lastWatchedType)
@@ -70,7 +70,7 @@ public class UserFeatures implements JsonSerializable<UserFeatures> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("isPayingUser".equals(fieldName)) {
+                if ("payingUser".equals(fieldName)) {
                     userFeatures.isPayingUser = reader.getBoolean();
                 } else if ("favoriteGenre".equals(fieldName)) {
                     userFeatures.favoriteGenre = reader.getString();

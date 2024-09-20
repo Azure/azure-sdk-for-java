@@ -22,6 +22,15 @@ public final class PersonalizerAudience extends ExpandableStringEnum<Personalize
     public static final PersonalizerAudience AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD = fromString("https://cognitiveservices.azure.com");
 
     /**
+     * Creates a new instance of {@link PersonalizerAudience} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to get or create an instance instead.
+     */
+    @Deprecated
+    public PersonalizerAudience() {
+    }
+
+    /**
      * Creates or finds a PersonalizerAudience from its string representation.
      *
      * @param name a name to look for.
@@ -32,6 +41,8 @@ public final class PersonalizerAudience extends ExpandableStringEnum<Personalize
     }
 
     /**
+     * Gets the known FormRecognizerAudience values.
+     *
      * @return known FormRecognizerAudience values.
      */
     public static Collection<PersonalizerAudience> values() {

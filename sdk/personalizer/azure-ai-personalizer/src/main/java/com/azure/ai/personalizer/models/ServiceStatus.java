@@ -99,6 +99,14 @@ class ServiceStatus implements JsonSerializable<ServiceStatus> {
             .writeEndObject();
     }
 
+    /**
+     * Deserializes an instance of {@link ServiceStatus} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link ServiceStatus}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
     public static ServiceStatus fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             ServiceStatus serviceStatus = new ServiceStatus();

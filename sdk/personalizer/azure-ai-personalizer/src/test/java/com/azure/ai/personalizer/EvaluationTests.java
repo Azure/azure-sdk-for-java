@@ -54,7 +54,7 @@ public class EvaluationTests extends PersonalizerTestBase {
         PersonalizerAdministrationAsyncClient client = getStaticAdministrationClientBuilder(httpClient, serviceVersion)
             .buildAsyncClient();
         SyncPoller<CreateEvaluationOperationResult, PersonalizerEvaluation> syncPoller =
-            setPlaybackPollerFluxPollInterval(client.beginCreateEvaluation(evaluationOptions)).getSyncPoller();
+            setPlaybackSyncPollerPollInterval(client.beginCreateEvaluation(evaluationOptions).getSyncPoller());
 
         syncPoller.waitForCompletion();
 

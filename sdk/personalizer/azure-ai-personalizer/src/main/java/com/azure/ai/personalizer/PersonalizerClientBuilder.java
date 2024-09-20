@@ -59,6 +59,12 @@ public final class PersonalizerClientBuilder implements
     private PersonalizerServiceVersion version;
     private PersonalizerAudience audience;
 
+    /**
+     * Creates a new instance of {@link PersonalizerClientBuilder}.
+     */
+    public PersonalizerClientBuilder() {
+    }
+
     PersonalizerClientV1Preview3Impl getService() {
         // Endpoint cannot be null, which is required in request authentication
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
