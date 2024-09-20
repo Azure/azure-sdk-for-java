@@ -118,8 +118,6 @@ for (ChatChoice choice : chatCompletions.getChoices()) {
 ```
 For a complete sample example, see sample [Chat Completions][sample_get_chat_completions].
 
-Please refer to the service documentation for a conceptual discussion of [text completion][microsoft_docs_openai_completion].
-
 ### Streaming chat completions
 
 ```java readme-sample-getChatCompletionsStream
@@ -154,7 +152,6 @@ To compute tokens in streaming chat completions, see sample [Streaming Chat Comp
 ```
 For a complete sample example, see sample [Embedding][sample_get_embedding].
 
-Please refer to the service documentation for a conceptual discussion of [openAI embedding][microsoft_docs_openai_embedding].
 -->
 
 ### Service API versions
@@ -212,8 +209,6 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/BasicChatSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/StreamingChatSample.java 
-[microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
-[microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
 [chat_completions_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/main/java/com/azure/ai/inference/ChatCompletionsAsyncClient.java
 [chat_completions_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/main/java/com/azure/ai/inference/ChatCompletionsClientBuilder.java
 [chat_completions_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/main/java/com/azure/ai/inference/ChatCompletionsClient.java
