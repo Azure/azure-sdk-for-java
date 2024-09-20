@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = AttachmentsClientBuilder.class)
 public final class AttachmentsClient {
-    @Generated private final AttachmentsAsyncClient client;
+    @Generated
+    private final AttachmentsAsyncClient client;
 
     /**
      * Initializes an instance of AttachmentsClient class.
@@ -185,8 +186,8 @@ public final class AttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String attachmentId, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String attachmentId,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(partyId, attachmentId, requestOptions).block();
     }
 
@@ -228,8 +229,8 @@ public final class AttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadWithResponse(
-            String partyId, String attachmentId, RequestOptions requestOptions) {
+    public Response<BinaryData> downloadWithResponse(String partyId, String attachmentId,
+        RequestOptions requestOptions) {
         return this.client.downloadWithResponse(partyId, attachmentId, requestOptions).block();
     }
 }

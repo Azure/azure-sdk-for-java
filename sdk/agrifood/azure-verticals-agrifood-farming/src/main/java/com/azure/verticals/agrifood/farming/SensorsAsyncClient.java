@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = SensorsClientBuilder.class, isAsync = true)
 public final class SensorsAsyncClient {
-    @Generated private final SensorsImpl serviceClient;
+    @Generated
+    private final SensorsImpl serviceClient;
 
     /**
      * Initializes an instance of SensorsAsyncClient class.
@@ -199,10 +200,10 @@ public final class SensorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String sensorPartnerId, String sensorId, BinaryData sensorDetails, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                sensorPartnerId, sensorId, sensorDetails, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String sensorPartnerId, String sensorId,
+        BinaryData sensorDetails, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(sensorPartnerId, sensorId, sensorDetails,
+            requestOptions);
     }
 
     /**
@@ -255,8 +256,8 @@ public final class SensorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String sensorPartnerId, String sensorId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String sensorPartnerId, String sensorId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(sensorPartnerId, sensorId, requestOptions);
     }
 
@@ -274,8 +275,8 @@ public final class SensorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String sensorPartnerId, String sensorId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String sensorPartnerId, String sensorId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(sensorPartnerId, sensorId, requestOptions);
     }
 
@@ -302,8 +303,8 @@ public final class SensorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getConnectionStringWithResponse(
-            String sensorPartnerId, String sensorId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getConnectionStringWithResponse(String sensorPartnerId, String sensorId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getConnectionStringWithResponseAsync(sensorPartnerId, sensorId, requestOptions);
     }
 
@@ -340,12 +341,9 @@ public final class SensorsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> renewConnectionStringWithResponse(
-            String sensorPartnerId,
-            String sensorId,
-            BinaryData renewConnectionStringModel,
-            RequestOptions requestOptions) {
-        return this.serviceClient.renewConnectionStringWithResponseAsync(
-                sensorPartnerId, sensorId, renewConnectionStringModel, requestOptions);
+    public Mono<Response<BinaryData>> renewConnectionStringWithResponse(String sensorPartnerId, String sensorId,
+        BinaryData renewConnectionStringModel, RequestOptions requestOptions) {
+        return this.serviceClient.renewConnectionStringWithResponseAsync(sensorPartnerId, sensorId,
+            renewConnectionStringModel, requestOptions);
     }
 }

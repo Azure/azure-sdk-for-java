@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = DeviceDataModelsClientBuilder.class, isAsync = true)
 public final class DeviceDataModelsAsyncClient {
-    @Generated private final DeviceDataModelsImpl serviceClient;
+    @Generated
+    private final DeviceDataModelsImpl serviceClient;
 
     /**
      * Initializes an instance of DeviceDataModelsAsyncClient class.
@@ -175,13 +176,10 @@ public final class DeviceDataModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String sensorPartnerId,
-            String deviceDataModelId,
-            BinaryData deviceDataModelObject,
-            RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                sensorPartnerId, deviceDataModelId, deviceDataModelObject, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String sensorPartnerId, String deviceDataModelId,
+        BinaryData deviceDataModelObject, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(sensorPartnerId, deviceDataModelId,
+            deviceDataModelObject, requestOptions);
     }
 
     /**
@@ -227,8 +225,8 @@ public final class DeviceDataModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String sensorPartnerId, String deviceDataModelId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String sensorPartnerId, String deviceDataModelId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(sensorPartnerId, deviceDataModelId, requestOptions);
     }
 
@@ -246,8 +244,8 @@ public final class DeviceDataModelsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String sensorPartnerId, String deviceDataModelId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String sensorPartnerId, String deviceDataModelId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(sensorPartnerId, deviceDataModelId, requestOptions);
     }
 }

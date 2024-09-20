@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = SeasonalFieldsClientBuilder.class, isAsync = true)
 public final class SeasonalFieldsAsyncClient {
-    @Generated private final SeasonalFieldsImpl serviceClient;
+    @Generated
+    private final SeasonalFieldsImpl serviceClient;
 
     /**
      * Initializes an instance of SeasonalFieldsAsyncClient class.
@@ -150,8 +151,8 @@ public final class SeasonalFieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String seasonalFieldId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, seasonalFieldId, requestOptions);
     }
 
@@ -226,10 +227,10 @@ public final class SeasonalFieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String seasonalFieldId, BinaryData seasonalField, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, seasonalFieldId, seasonalField, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String seasonalFieldId,
+        BinaryData seasonalField, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, seasonalFieldId, seasonalField,
+            requestOptions);
     }
 
     /**
@@ -246,8 +247,8 @@ public final class SeasonalFieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String seasonalFieldId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(partyId, seasonalFieldId, requestOptions);
     }
 
@@ -355,8 +356,8 @@ public final class SeasonalFieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -394,8 +395,8 @@ public final class SeasonalFieldsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String seasonalFieldId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String seasonalFieldId, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, seasonalFieldId, requestOptions);
     }
 }

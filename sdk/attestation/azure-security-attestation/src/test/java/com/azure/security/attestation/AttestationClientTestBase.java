@@ -85,8 +85,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
         tracer = configureLoggingExporter(testContextManager.getTestName());
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Collections.singletonList("Authorization"))));
+            interceptorManager.addMatchers(Collections
+                .singletonList(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Authorization"))));
         }
     }
 
@@ -109,15 +109,13 @@ public class AttestationClientTestBase extends TestProxyTestBase {
     }
 
     enum ClientTypes {
-        SHARED,
-        ISOLATED,
-        AAD,
+        SHARED, ISOLATED, AAD,
     }
 
     @BeforeAll
     public static void beforeAll() {
         TestBase.setupClass();
-//        Dotenv.configure().ignoreIfMissing().systemProperties().load();
+        //        Dotenv.configure().ignoreIfMissing().systemProperties().load();
     }
 
     @Override
@@ -125,7 +123,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
         GlobalOpenTelemetry.resetForTest();
     }
 
-    @SuppressWarnings({"deprecation", "resource"})
+    @SuppressWarnings({ "deprecation", "resource" })
     public static Tracer configureLoggingExporter(String testName) {
         SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(new LoggingSpanExporter()))
@@ -137,7 +135,6 @@ public class AttestationClientTestBase extends TestProxyTestBase {
             .buildAndRegisterGlobal()
             .getTracer(testName);
     }
-
 
     /**
      * Determine the Attestation instance type based on the client URI provided.
@@ -191,9 +188,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
             // In playback mode, we want to disable expiration times, since the tokens in the recordings
             // will almost certainly expire.
             builder.httpClient(interceptorManager.getPlaybackClient())
-                .tokenValidationOptions(new AttestationTokenValidationOptions()
-                    .setValidateExpiresOn(false)
-                    .setValidateNotBefore(false));
+                .tokenValidationOptions(
+                    new AttestationTokenValidationOptions().setValidateExpiresOn(false).setValidateNotBefore(false));
         } else if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
@@ -214,8 +210,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
      */
     AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient,
         String clientUri) {
-        AttestationAdministrationClientBuilder builder = new AttestationAdministrationClientBuilder()
-            .endpoint(clientUri);
+        AttestationAdministrationClientBuilder builder
+            = new AttestationAdministrationClientBuilder().endpoint(clientUri);
 
         if (interceptorManager.isPlaybackMode()) {
             // In playback mode, we want to disable expiration times, since the tokens in the recordings
@@ -227,13 +223,14 @@ public class AttestationClientTestBase extends TestProxyTestBase {
 
         if (!interceptorManager.isPlaybackMode()) {
             // Add a 10-second slack time to account for clock drift between the client and server.
-            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
-                    .setValidationSlack(Duration.ofSeconds(10)))
+            builder
+                .tokenValidationOptions(
+                    new AttestationTokenValidationOptions().setValidationSlack(Duration.ofSeconds(10)))
                 .credential(TestUtil.getIdentityTestCredential(interceptorManager, httpClient));
         } else {
-            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
-                .setValidateExpiresOn(false)
-                .setValidateNotBefore(false))
+            builder
+                .tokenValidationOptions(
+                    new AttestationTokenValidationOptions().setValidateExpiresOn(false).setValidateNotBefore(false))
                 .credential(new MockTokenCredential());
         }
 
@@ -292,7 +289,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
 
     private static String readResource(String resourceName) {
         try (InputStream resource = AttestationClientTestBase.class.getClassLoader().getResourceAsStream(resourceName);
-                BufferedReader reader = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8))) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(resource, StandardCharsets.UTF_8))) {
             // Only read the first line as that will contain the entire Base64 encoded content. It's possible that an
             // IDE or commandline process could have added a newline character to the end of the file.
             return reader.readLine();
@@ -355,13 +352,13 @@ public class AttestationClientTestBase extends TestProxyTestBase {
         generator.setSerialNumber(BigInteger.valueOf(Math.abs(new Random().nextInt())));
         // Valid from now to 1 day from now.
         generator.setNotBefore(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        generator.setNotAfter(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS)));
+        generator.setNotAfter(
+            Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS)));
 
         generator.addExtension(Extension.basicConstraints, false, new BasicConstraints(false));
         return generator.generate(certificateKey.getPrivate());
 
     }
-
 
     /**
      * Returns the location in which the tests are running.
@@ -369,7 +366,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
      * @return returns the location in which the tests are running.
      */
     private static String getLocationShortName() {
-        return TEST_MODE == TestMode.PLAYBACK ? "wus"
+        return TEST_MODE == TestMode.PLAYBACK
+            ? "wus"
             : Configuration.getGlobalConfiguration().get("LOCATION_SHORT_NAME");
     }
 
@@ -391,7 +389,8 @@ public class AttestationClientTestBase extends TestProxyTestBase {
      */
     private static String getAadUrl() {
         return TEST_MODE == TestMode.PLAYBACK
-            ? "https://attestation_aad_url" : Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL");
+            ? "https://attestation_aad_url"
+            : Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL");
     }
 
     /**
@@ -403,8 +402,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
         final String regionShortName = getLocationShortName();
         return getHttpClients().flatMap(httpClient -> Stream.of(
             Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".attest.azure.net"),
-            Arguments.of(httpClient, getIsolatedUrl()),
-            Arguments.of(httpClient, getAadUrl())));
+            Arguments.of(httpClient, getIsolatedUrl()), Arguments.of(httpClient, getAadUrl())));
     }
 
     /**

@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = SeasonsClientBuilder.class, isAsync = true)
 public final class SeasonsAsyncClient {
-    @Generated private final SeasonsImpl serviceClient;
+    @Generated
+    private final SeasonsImpl serviceClient;
 
     /**
      * Initializes an instance of SeasonsAsyncClient class.
@@ -204,8 +205,8 @@ public final class SeasonsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String seasonId, BinaryData season, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String seasonId, BinaryData season,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(seasonId, season, requestOptions);
     }
 

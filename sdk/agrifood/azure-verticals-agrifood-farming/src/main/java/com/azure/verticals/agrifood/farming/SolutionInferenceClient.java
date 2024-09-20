@@ -20,7 +20,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = SolutionInferenceClientBuilder.class)
 public final class SolutionInferenceClient {
-    @Generated private final SolutionInferenceAsyncClient client;
+    @Generated
+    private final SolutionInferenceAsyncClient client;
 
     /**
      * Initializes an instance of SolutionInferenceClient class.
@@ -65,8 +66,8 @@ public final class SolutionInferenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelWithResponse(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelWithResponse(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         return this.client.cancelWithResponse(solutionId, solutionInferenceRequest, requestOptions).block();
     }
 
@@ -103,8 +104,8 @@ public final class SolutionInferenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdate(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdate(String solutionId,
+        BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
         return this.client.beginCreateOrUpdate(solutionId, solutionInferenceRequest, requestOptions).getSyncPoller();
     }
 
@@ -141,8 +142,8 @@ public final class SolutionInferenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> fetchWithResponse(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> fetchWithResponse(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         return this.client.fetchWithResponse(solutionId, solutionInferenceRequest, requestOptions).block();
     }
 }

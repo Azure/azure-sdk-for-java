@@ -11,7 +11,7 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 /**
  * A sample to demonstrate getting a key from Azure Key Vault using GraalVM.
  */
-public class KeyVaultKeysSample {
+public final class KeyVaultKeysSample {
 
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");
 
@@ -27,10 +27,9 @@ public class KeyVaultKeysSample {
             System.err.println("AZURE_KEY_VAULT_URL environment variable is not set - exiting");
         }
 
-        KeyClient keyClient = new KeyClientBuilder()
-                .vaultUrl(AZURE_KEY_VAULT_URL)
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
+        KeyClient keyClient = new KeyClientBuilder().vaultUrl(AZURE_KEY_VAULT_URL)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
 
         System.out.println("Getting key from Key Vault");
         KeyVaultKey key = keyClient.getKey("testkey");
@@ -39,5 +38,8 @@ public class KeyVaultKeysSample {
         System.out.println("\n================================================================");
         System.out.println(" Key Vault Keys Sample Complete");
         System.out.println("================================================================");
+    }
+
+    private KeyVaultKeysSample() {
     }
 }

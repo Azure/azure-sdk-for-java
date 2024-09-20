@@ -20,7 +20,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = ModelInferenceClientBuilder.class)
 public final class ModelInferenceClient {
-    @Generated private final ModelInferenceAsyncClient client;
+    @Generated
+    private final ModelInferenceAsyncClient client;
 
     /**
      * Initializes an instance of ModelInferenceClient class.
@@ -114,8 +115,8 @@ public final class ModelInferenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateBiomassModelJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateBiomassModelJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateBiomassModelJob(jobId, job, requestOptions).getSyncPoller();
     }
 
@@ -248,8 +249,8 @@ public final class ModelInferenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateSensorPlacementModelJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateSensorPlacementModelJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateSensorPlacementModelJob(jobId, job, requestOptions).getSyncPoller();
     }
 
@@ -394,8 +395,8 @@ public final class ModelInferenceClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateSoilMoistureModelJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateSoilMoistureModelJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateSoilMoistureModelJob(jobId, job, requestOptions).getSyncPoller();
     }
 

@@ -10,7 +10,6 @@ public class Parent {
     private String familyName;
     private String firstName;
 
-
     /**
      * The empty constructor to create a parent instance.
      */

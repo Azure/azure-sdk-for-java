@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Immutable;
@@ -9,7 +8,8 @@ import com.azure.security.attestation.models.CertificateModification;
 
 /** The result of a policy certificate modification. */
 @Immutable
-public final class PolicyCertificatesModificationResultImpl implements com.azure.security.attestation.models.PolicyCertificatesModificationResult {
+public final class PolicyCertificatesModificationResultImpl
+    implements com.azure.security.attestation.models.PolicyCertificatesModificationResult {
     /*
      * Hex encoded SHA1 Hash of the binary representation certificate which was
      * added or removed
@@ -40,15 +40,16 @@ public final class PolicyCertificatesModificationResultImpl implements com.azure
         return this.certificateResolution;
     }
 
-    private PolicyCertificatesModificationResultImpl(CertificateModification modification, String certificateThumbprint) {
+    private PolicyCertificatesModificationResultImpl(CertificateModification modification,
+        String certificateThumbprint) {
         this.certificateResolution = modification;
         this.certificateThumbprint = certificateThumbprint;
     }
 
-    public static com.azure.security.attestation.models.PolicyCertificatesModificationResult fromGenerated(PolicyCertificatesModificationResult generated) {
+    public static com.azure.security.attestation.models.PolicyCertificatesModificationResult
+        fromGenerated(PolicyCertificatesModificationResult generated) {
         return new com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResultImpl(
-            generated.getCertificateResolution(),
-            generated.getCertificateThumbprint());
+            generated.getCertificateResolution(), generated.getCertificateThumbprint());
     }
 
 }

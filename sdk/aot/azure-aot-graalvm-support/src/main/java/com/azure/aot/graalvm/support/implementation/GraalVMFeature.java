@@ -60,7 +60,7 @@ public interface GraalVMFeature extends Feature {
 
         if (!missingClasses.isEmpty()) {
             System.out.println("AZURE SDK: Not registering Azure GraalVM support for " + getClass()
-                    + " as not all specified classes were found on classpath. Missing classes are:");
+                + " as not all specified classes were found on classpath. Missing classes are:");
             missingClasses.forEach(cls -> System.out.println("  - " + cls));
         } else {
             System.out.println("AZURE SDK: Registering Azure GraalVM support for " + getClass());
@@ -68,8 +68,7 @@ public interface GraalVMFeature extends Feature {
             dynamicProxies.forEach(interfaces -> GraalVMFeatureUtils.addProxyClass(access, interfaces));
 
             // we also register all other classes as discovered in the exported packages set
-            getClassesForPackage(access, getRootPackage(), true)
-                .sorted()
+            getClassesForPackage(access, getRootPackage(), true).sorted()
                 .map(ClassReflectionAttributes::createWithAllDeclared)   // create ReflectiveClass instances for all, with full API access enabled
                 .filter(reflectiveClass -> !reflectionClasses.contains(reflectiveClass)) // don't overwrite custom rules
                 .forEach(reflectiveClass -> registerClass(access, reflectiveClass));

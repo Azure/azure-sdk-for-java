@@ -27,7 +27,7 @@ import java.util.UUID;
 /**
  * A Key Vault Certificate sample to demonstrate CRUD operations using GraalVM.
  */
-public class KeyVaultCertificatesSample {
+public final class KeyVaultCertificatesSample {
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");
 
     /**
@@ -46,41 +46,41 @@ public class KeyVaultCertificatesSample {
         // Instantiate a certificate client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
-        CertificateClient certificateClient = new CertificateClientBuilder()
-                .vaultUrl(AZURE_KEY_VAULT_URL)
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
+        CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(AZURE_KEY_VAULT_URL)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
         System.out.println("Created Certificate client");
 
         // Let's create a self signed certificate valid for 1 year. if the certificate
         // already exists in the key vault, then a new version of the certificate is created.
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12")
-                .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
-                .setKeyReusable(true)
-                .setKeyType(CertificateKeyType.EC)
-                .setKeyCurveName(CertificateKeyCurveName.P_256)
-                .setValidityInMonths(12);
+            .setSubjectAlternativeNames(new SubjectAlternativeNames().setEmails(Arrays.asList("wow@gmail.com")))
+            .setKeyReusable(true)
+            .setKeyType(CertificateKeyType.EC)
+            .setKeyCurveName(CertificateKeyCurveName.P_256)
+            .setValidityInMonths(12);
         Map<String, String> tags = new HashMap<>();
         tags.put("foo", "bar");
 
         System.out.println("Creating new certificate");
         String certificateName1 = "certificateName2" + UUID.randomUUID();
-        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller =
-                certificateClient.beginCreateCertificate(certificateName1, policy, true, tags);
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller
+            = certificateClient.beginCreateCertificate(certificateName1, policy, true, tags);
         certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         // Let's Get the latest version of the certificate from the key vault.
         System.out.println("Retrieving the new certificate from the key vault");
         KeyVaultCertificate certificate = certificateClient.getCertificate(certificateName1);
-        System.out.printf("Certificate is returned with name %s and secret id %s %n", certificate.getProperties().getName(),
-                certificate.getSecretId());
+        System.out.printf("Certificate is returned with name %s and secret id %s %n",
+            certificate.getProperties().getName(), certificate.getSecretId());
 
         // After some time, we need to disable the certificate temporarily, so we update the enabled status of the certificate.
         // The update method can be used to update the enabled status of the certificate.
         certificate.getProperties().setEnabled(false);
-        KeyVaultCertificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
-        System.out.printf("Certificate's updated enabled status is %s %n", updatedCertificate.getProperties().isEnabled());
-
+        KeyVaultCertificate updatedCertificate
+            = certificateClient.updateCertificateProperties(certificate.getProperties());
+        System.out.printf("Certificate's updated enabled status is %s %n",
+            updatedCertificate.getProperties().isEnabled());
 
         //Let's create a certificate issuer.
         CertificateIssuer issuer = new CertificateIssuer("myIssuer", "Test");
@@ -93,34 +93,36 @@ public class KeyVaultCertificatesSample {
 
         //Let's create a certificate signed by our issuer.
         String certificateName2 = "myCertificate" + UUID.randomUUID();
-        certificateClient.beginCreateCertificate(certificateName2,
-                        new CertificatePolicy("myIssuer", "CN=SelfSignedJavaPkcs12"), true, tags)
-                .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        certificateClient
+            .beginCreateCertificate(certificateName2, new CertificatePolicy("myIssuer", "CN=SelfSignedJavaPkcs12"),
+                true, tags)
+            .waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
 
         // Let's Get the latest version of our certificate from the key vault.
         KeyVaultCertificate myCert = certificateClient.getCertificate(certificateName2);
         System.out.printf("Certificate is returned with name %s and secret id %s %n", myCert.getProperties().getName(),
-                myCert.getSecretId());
+            myCert.getSecretId());
 
         // The certificates and issuers are no longer needed, need to delete it from the key vault.
-        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller =
-                certificateClient.beginDeleteCertificate(certificateName1);
+        SyncPoller<DeletedCertificate, Void> deletedCertificatePoller
+            = certificateClient.beginDeleteCertificate(certificateName1);
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> pollResponse = deletedCertificatePoller.poll();
         System.out.printf("Deleted certificate with name %s and recovery id %s", pollResponse.getValue().getName(),
-                pollResponse.getValue().getRecoveryId());
+            pollResponse.getValue().getRecoveryId());
         deletedCertificatePoller.waitForCompletion();
 
-        SyncPoller<DeletedCertificate, Void> deletedCertPoller =
-                certificateClient.beginDeleteCertificate(certificateName2);
+        SyncPoller<DeletedCertificate, Void> deletedCertPoller
+            = certificateClient.beginDeleteCertificate(certificateName2);
         // Deleted Certificate is accessible as soon as polling beings.
         PollResponse<DeletedCertificate> deletePollResponse = deletedCertPoller.poll();
-        System.out.printf("Deleted certificate with name %s and recovery id %s", deletePollResponse.getValue().getName(),
-                deletePollResponse.getValue().getRecoveryId());
+        System.out.printf("Deleted certificate with name %s and recovery id %s",
+            deletePollResponse.getValue().getName(), deletePollResponse.getValue().getRecoveryId());
         deletedCertPoller.waitForCompletion();
 
         CertificateIssuer deleteCertificateIssuer = certificateClient.deleteIssuer("myIssuer");
-        System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s %n", deleteCertificateIssuer.getName(), deleteCertificateIssuer.getProvider());
+        System.out.printf("Certificate issuer is permanently deleted with name %s and provider is %s %n",
+            deleteCertificateIssuer.getName(), deleteCertificateIssuer.getProvider());
 
         // If the keyvault is soft-delete enabled, then for permanent deletion  deleted certificates need to be purged.
         certificateClient.purgeDeletedCertificate(certificateName1);
@@ -129,5 +131,8 @@ public class KeyVaultCertificatesSample {
         System.out.println("\n================================================================");
         System.out.println(" Key Vault Keys Certificates Complete");
         System.out.println("================================================================");
+    }
+
+    private KeyVaultCertificatesSample() {
     }
 }

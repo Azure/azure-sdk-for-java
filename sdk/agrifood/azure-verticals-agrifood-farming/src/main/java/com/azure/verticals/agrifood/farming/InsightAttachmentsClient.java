@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = InsightAttachmentsClientBuilder.class)
 public final class InsightAttachmentsClient {
-    @Generated private final InsightAttachmentsAsyncClient client;
+    @Generated
+    private final InsightAttachmentsAsyncClient client;
 
     /**
      * Initializes an instance of InsightAttachmentsClient class.
@@ -94,11 +95,10 @@ public final class InsightAttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(
-            String partyId, String modelId, String resourceType, String resourceId, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> listByPartyIdModelIdAndResource(String partyId, String modelId,
+        String resourceType, String resourceId, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                this.client.listByPartyIdModelIdAndResource(
-                        partyId, modelId, resourceType, resourceId, requestOptions));
+            this.client.listByPartyIdModelIdAndResource(partyId, modelId, resourceType, resourceId, requestOptions));
     }
 
     /**
@@ -159,18 +159,12 @@ public final class InsightAttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            BinaryData insightId,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightAttachmentId, BinaryData insightId, RequestOptions requestOptions) {
         return this.client
-                .createOrUpdateWithResponse(
-                        partyId, modelId, resourceType, resourceId, insightAttachmentId, insightId, requestOptions)
-                .block();
+            .createOrUpdateWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, insightId,
+                requestOptions)
+            .block();
     }
 
     /**
@@ -214,16 +208,11 @@ public final class InsightAttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String partyId, String modelId, String resourceType, String resourceId,
+        String insightAttachmentId, RequestOptions requestOptions) {
         return this.client
-                .getWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
-                .block();
+            .getWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
+            .block();
     }
 
     /**
@@ -244,16 +233,11 @@ public final class InsightAttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponse(String partyId, String modelId, String resourceType, String resourceId,
+        String insightAttachmentId, RequestOptions requestOptions) {
         return this.client
-                .deleteWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
-                .block();
+            .deleteWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
+            .block();
     }
 
     /**
@@ -280,15 +264,10 @@ public final class InsightAttachmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> downloadWithResponse(
-            String partyId,
-            String modelId,
-            String resourceType,
-            String resourceId,
-            String insightAttachmentId,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> downloadWithResponse(String partyId, String modelId, String resourceType,
+        String resourceId, String insightAttachmentId, RequestOptions requestOptions) {
         return this.client
-                .downloadWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
-                .block();
+            .downloadWithResponse(partyId, modelId, resourceType, resourceId, insightAttachmentId, requestOptions)
+            .block();
     }
 }

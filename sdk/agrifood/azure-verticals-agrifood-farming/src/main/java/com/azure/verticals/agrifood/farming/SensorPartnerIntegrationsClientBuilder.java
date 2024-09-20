@@ -43,23 +43,26 @@ import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the SensorPartnerIntegrationsClient type. */
 @ServiceClientBuilder(
-        serviceClients = {SensorPartnerIntegrationsClient.class, SensorPartnerIntegrationsAsyncClient.class})
-public final class SensorPartnerIntegrationsClientBuilder
-        implements HttpTrait<SensorPartnerIntegrationsClientBuilder>,
-                ConfigurationTrait<SensorPartnerIntegrationsClientBuilder>,
-                TokenCredentialTrait<SensorPartnerIntegrationsClientBuilder>,
-                EndpointTrait<SensorPartnerIntegrationsClientBuilder> {
-    @Generated private static final String SDK_NAME = "name";
-
-    @Generated private static final String SDK_VERSION = "version";
-
-    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://farmbeats.azure.net/.default"};
+    serviceClients = { SensorPartnerIntegrationsClient.class, SensorPartnerIntegrationsAsyncClient.class })
+public final class SensorPartnerIntegrationsClientBuilder implements HttpTrait<SensorPartnerIntegrationsClientBuilder>,
+    ConfigurationTrait<SensorPartnerIntegrationsClientBuilder>,
+    TokenCredentialTrait<SensorPartnerIntegrationsClientBuilder>,
+    EndpointTrait<SensorPartnerIntegrationsClientBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
     @Generated
-    private static final Map<String, String> PROPERTIES =
-            CoreUtils.getProperties("azure-verticals-agrifood-farming.properties");
+    private static final String SDK_VERSION = "version";
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private static final String[] DEFAULT_SCOPES = new String[] { "https://farmbeats.azure.net/.default" };
+
+    @Generated
+    private static final Map<String, String> PROPERTIES
+        = CoreUtils.getProperties("azure-verticals-agrifood-farming.properties");
+
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the SensorPartnerIntegrationsClientBuilder. */
     @Generated
@@ -70,7 +73,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Generated
@@ -83,7 +87,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Generated
@@ -96,7 +101,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -109,7 +115,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -122,7 +129,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -144,7 +152,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Generated
@@ -157,7 +166,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The TokenCredential used for authentication.
      */
-    @Generated private TokenCredential tokenCredential;
+    @Generated
+    private TokenCredential tokenCredential;
 
     /** {@inheritDoc}. */
     @Generated
@@ -170,7 +180,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The service endpoint
      */
-    @Generated private String endpoint;
+    @Generated
+    private String endpoint;
 
     /** {@inheritDoc}. */
     @Generated
@@ -183,7 +194,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * Service version
      */
-    @Generated private FarmBeatsServiceVersion serviceVersion;
+    @Generated
+    private FarmBeatsServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -200,7 +212,8 @@ public final class SensorPartnerIntegrationsClientBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -222,18 +235,17 @@ public final class SensorPartnerIntegrationsClientBuilder
     @Generated
     private FarmBeatsClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        FarmBeatsServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : FarmBeatsServiceVersion.getLatest();
-        FarmBeatsClientImpl client =
-                new FarmBeatsClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
+        FarmBeatsServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : FarmBeatsServiceVersion.getLatest();
+        FarmBeatsClientImpl client = new FarmBeatsClientImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -248,10 +260,9 @@ public final class SensorPartnerIntegrationsClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -259,18 +270,15 @@ public final class SensorPartnerIntegrationsClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 
@@ -292,6 +300,6 @@ public final class SensorPartnerIntegrationsClientBuilder
     @Generated
     public SensorPartnerIntegrationsClient buildClient() {
         return new SensorPartnerIntegrationsClient(
-                new SensorPartnerIntegrationsAsyncClient(buildInnerClient().getSensorPartnerIntegrations()));
+            new SensorPartnerIntegrationsAsyncClient(buildInnerClient().getSensorPartnerIntegrations()));
     }
 }

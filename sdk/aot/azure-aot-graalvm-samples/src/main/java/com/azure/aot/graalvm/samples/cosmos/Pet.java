@@ -10,6 +10,12 @@ public class Pet {
     private String givenName;
 
     /**
+     * Creates a new instance of {@link Pet}.
+     */
+    public Pet() {
+    }
+
+    /**
      * Returns the name of the pet.
      * @return the name of the pet.
      */

@@ -13,7 +13,13 @@ public class Child {
     private String firstName;
     private String gender;
     private int grade;
-    private Pet[] pets = {};
+    private Pet[] pets = { };
+
+    /**
+     * Creates a new instance of {@link Child}.
+     */
+    public Child() {
+    }
 
     /**
      * Returns the family name.

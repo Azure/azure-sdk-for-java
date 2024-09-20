@@ -20,7 +20,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = ImageProcessingClientBuilder.class)
 public final class ImageProcessingClient {
-    @Generated private final ImageProcessingAsyncClient client;
+    @Generated
+    private final ImageProcessingAsyncClient client;
 
     /**
      * Initializes an instance of ImageProcessingClient class.
@@ -102,8 +103,8 @@ public final class ImageProcessingClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateRasterizeJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateRasterizeJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateRasterizeJob(jobId, job, requestOptions).getSyncPoller();
     }
 

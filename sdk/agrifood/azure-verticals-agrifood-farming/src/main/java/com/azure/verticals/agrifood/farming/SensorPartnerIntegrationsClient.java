@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = SensorPartnerIntegrationsClientBuilder.class)
 public final class SensorPartnerIntegrationsClient {
-    @Generated private final SensorPartnerIntegrationsAsyncClient client;
+    @Generated
+    private final SensorPartnerIntegrationsAsyncClient client;
 
     /**
      * Initializes an instance of SensorPartnerIntegrationsClient class.
@@ -153,15 +154,11 @@ public final class SensorPartnerIntegrationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String sensorPartnerId,
-            String integrationId,
-            BinaryData sensorPartnerIntegrationModel,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String sensorPartnerId, String integrationId,
+        BinaryData sensorPartnerIntegrationModel, RequestOptions requestOptions) {
         return this.client
-                .createOrUpdateWithResponse(
-                        sensorPartnerId, integrationId, sensorPartnerIntegrationModel, requestOptions)
-                .block();
+            .createOrUpdateWithResponse(sensorPartnerId, integrationId, sensorPartnerIntegrationModel, requestOptions)
+            .block();
     }
 
     /**
@@ -200,8 +197,8 @@ public final class SensorPartnerIntegrationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String sensorPartnerId, String integrationId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String sensorPartnerId, String integrationId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(sensorPartnerId, integrationId, requestOptions).block();
     }
 
@@ -219,8 +216,8 @@ public final class SensorPartnerIntegrationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String sensorPartnerId, String integrationId, RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponse(String sensorPartnerId, String integrationId,
+        RequestOptions requestOptions) {
         return this.client.deleteWithResponse(sensorPartnerId, integrationId, requestOptions).block();
     }
 
@@ -249,8 +246,8 @@ public final class SensorPartnerIntegrationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> checkConsentWithResponse(
-            String sensorPartnerId, String integrationId, String key, RequestOptions requestOptions) {
+    public Response<BinaryData> checkConsentWithResponse(String sensorPartnerId, String integrationId, String key,
+        RequestOptions requestOptions) {
         return this.client.checkConsentWithResponse(sensorPartnerId, integrationId, key, requestOptions).block();
     }
 
@@ -277,8 +274,8 @@ public final class SensorPartnerIntegrationsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateConsentLinkWithResponse(
-            String sensorPartnerId, String integrationId, RequestOptions requestOptions) {
+    public Response<BinaryData> generateConsentLinkWithResponse(String sensorPartnerId, String integrationId,
+        RequestOptions requestOptions) {
         return this.client.generateConsentLinkWithResponse(sensorPartnerId, integrationId, requestOptions).block();
     }
 }

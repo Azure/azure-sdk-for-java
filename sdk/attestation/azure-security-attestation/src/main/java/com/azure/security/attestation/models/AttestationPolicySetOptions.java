@@ -22,11 +22,11 @@ public final class AttestationPolicySetOptions {
     private String policy;
     private AttestationSigningKey signer;
 
-
     /**
      * Creates an instance of {@link AttestationPolicySetOptions}
      */
-    public AttestationPolicySetOptions() { }
+    public AttestationPolicySetOptions() {
+    }
 
     /**
      * Sets the options used to validate attestation tokens returned from the service.

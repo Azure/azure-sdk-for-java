@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = CropsClientBuilder.class, isAsync = true)
 public final class CropsAsyncClient {
-    @Generated private final CropsImpl serviceClient;
+    @Generated
+    private final CropsImpl serviceClient;
 
     /**
      * Initializes an instance of CropsAsyncClient class.
@@ -217,8 +218,8 @@ public final class CropsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String cropId, BinaryData crop, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String cropId, BinaryData crop,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(cropId, crop, requestOptions);
     }
 

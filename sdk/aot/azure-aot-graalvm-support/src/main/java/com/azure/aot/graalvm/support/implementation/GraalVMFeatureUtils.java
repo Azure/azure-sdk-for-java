@@ -45,7 +45,8 @@ public final class GraalVMFeatureUtils {
             }
         }
         if (classList.size() == interfaces.length) {
-            ImageSingletons.lookup(DynamicProxyRegistry.class).addProxyClass(classList.toArray(new Class<?>[interfaces.length]));
+            ImageSingletons.lookup(DynamicProxyRegistry.class)
+                .addProxyClass(classList.toArray(new Class<?>[interfaces.length]));
         }
     }
 
@@ -73,7 +74,8 @@ public final class GraalVMFeatureUtils {
         return strings;
     }
 
-    public static void registerClass(final Feature.FeatureAccess access, final ClassReflectionAttributes reflectiveClass) {
+    public static void registerClass(final Feature.FeatureAccess access,
+        final ClassReflectionAttributes reflectiveClass) {
         GraalVMFeatureUtils.findClass(access, reflectiveClass.getName()).ifPresent(cls -> {
             RuntimeReflection.register(cls);
 
@@ -111,9 +113,8 @@ public final class GraalVMFeatureUtils {
         });
     }
 
-    public static Stream<String> getClassesForPackage(final Feature.FeatureAccess access,
-                                                      final String packageName,
-                                                      final boolean recursive) {
+    public static Stream<String> getClassesForPackage(final Feature.FeatureAccess access, final String packageName,
+        final boolean recursive) {
         final ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         final String packagePath = packageName.replace('.', '/');
 
@@ -123,7 +124,8 @@ public final class GraalVMFeatureUtils {
                 final URL url = resources.nextElement();
                 final URLConnection connection = url.openConnection();
                 if (connection instanceof JarURLConnection) {
-                    return findClassesInJar(access, ((JarURLConnection) connection).getJarFile(), packageName, recursive);
+                    return findClassesInJar(access, ((JarURLConnection) connection).getJarFile(), packageName,
+                        recursive);
                 }
             }
         } catch (IOException e) {
@@ -133,10 +135,8 @@ public final class GraalVMFeatureUtils {
         return Stream.empty();
     }
 
-    private static Stream<String> findClassesInJar(final Feature.FeatureAccess access,
-                                                   final JarFile jarFile,
-                                                   final String packageName,
-                                                   final boolean recursive) {
+    private static Stream<String> findClassesInJar(final Feature.FeatureAccess access, final JarFile jarFile,
+        final String packageName, final boolean recursive) {
         final List<String> classNames = new ArrayList<>();
         final Enumeration<JarEntry> entries = jarFile.entries();
 
@@ -154,9 +154,7 @@ public final class GraalVMFeatureUtils {
             }
 
             if (entryName.endsWith(".class")) {
-                String fqcn = entryName
-                    .replace('/', '.')
-                    .replace(".class", "");
+                String fqcn = entryName.replace('/', '.').replace(".class", "");
 
                 if (fqcn.startsWith(packageName)) {
                     classNames.add(fqcn);

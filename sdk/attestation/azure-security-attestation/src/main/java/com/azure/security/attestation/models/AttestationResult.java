@@ -160,7 +160,7 @@ public interface AttestationResult {
 
     /**
      * Get the mrSigner property: The HEX encoded SGX MRSIGNER value for the enclave.
-
+    
      * Represents the HEX encoded MRSIGNER Measure Register. This is the hash of the signer of the
      * code loaded into the enclave.
      *

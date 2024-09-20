@@ -15,7 +15,7 @@ import java.util.Random;
 /**
  * A sample to demonstrate uploading a blob to Azure Blob Storage using GraalVM.
  */
-public class StorageBlobSample {
+public final class StorageBlobSample {
     private static final String AZURE_STORAGE_CONNECTION_STRING = System.getenv("AZURE_STORAGE_CONNECTION_STRING");
     private static final Random RANDOM = new Random();
 
@@ -57,5 +57,8 @@ public class StorageBlobSample {
         System.out.println("\n================================================================");
         System.out.println(" Blob Storage Sample Complete");
         System.out.println("================================================================");
+    }
+
+    private StorageBlobSample() {
     }
 }

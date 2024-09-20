@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = NutrientAnalysesClientBuilder.class, isAsync = true)
 public final class NutrientAnalysesAsyncClient {
-    @Generated private final NutrientAnalysesImpl serviceClient;
+    @Generated
+    private final NutrientAnalysesImpl serviceClient;
 
     /**
      * Initializes an instance of NutrientAnalysesAsyncClient class.
@@ -242,8 +243,8 @@ public final class NutrientAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String nutrientAnalysisId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String nutrientAnalysisId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, nutrientAnalysisId, requestOptions);
     }
 
@@ -335,10 +336,10 @@ public final class NutrientAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String nutrientAnalysisId, BinaryData nutrientAnalysis, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponseAsync(
-                partyId, nutrientAnalysisId, nutrientAnalysis, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String nutrientAnalysisId,
+        BinaryData nutrientAnalysis, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(partyId, nutrientAnalysisId, nutrientAnalysis,
+            requestOptions);
     }
 
     /**
@@ -355,8 +356,8 @@ public final class NutrientAnalysesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponse(
-            String partyId, String nutrientAnalysisId, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponse(String partyId, String nutrientAnalysisId,
+        RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(partyId, nutrientAnalysisId, requestOptions);
     }
 }

@@ -30,11 +30,11 @@ import java.util.stream.Collectors;
 public class AttestationSignerImpl implements AttestationSigner {
     private static final ClientLogger LOGGER = new ClientLogger(AttestationSignerImpl.class);
 
-     /**
-     * Sets the signing certificate.
-     * @param certificates Array of X509Certificate objects.
-     * @return AttestationSigner
-     */
+    /**
+    * Sets the signing certificate.
+    * @param certificates Array of X509Certificate objects.
+    * @return AttestationSigner
+    */
     AttestationSignerImpl setCertificates(final X509Certificate[] certificates) {
         this.certificates = cloneX509CertificateChain(certificates);
         return this;
@@ -83,7 +83,8 @@ public class AttestationSignerImpl implements AttestationSigner {
      *
      * @return Certificate chain used to sign an attestation token.
      */
-    @Override public final List<X509Certificate> getCertificates() {
+    @Override
+    public final List<X509Certificate> getCertificates() {
         return cloneX509CertificateChain(this.certificates.toArray(new X509Certificate[0]));
     }
 
@@ -117,15 +118,11 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @return An attestation signer associated with the specified certificate chain.
      */
     public static AttestationSigner fromCertificateChain(List<Base64> certificateChain) {
-        X509Certificate[] certChain = certificateChain
-            .stream()
+        X509Certificate[] certChain = certificateChain.stream()
             .map(AttestationSignerImpl::certificateFromBase64)
             .toArray(X509Certificate[]::new);
-        return new AttestationSignerImpl()
-            .setCertificates(certChain);
+        return new AttestationSignerImpl().setCertificates(certChain);
     }
-
-
 
     /**
      * Create this signer from a Json Web Key.
@@ -147,13 +144,10 @@ public class AttestationSignerImpl implements AttestationSigner {
     public static AttestationSigner fromJsonWebKey(JsonWebKey jsonWebKey) {
         List<String> certificateChain = jsonWebKey.getX5C();
         if (certificateChain != null) {
-            X509Certificate[] certificateArray =  certificateChain
-                .stream()
+            X509Certificate[] certificateArray = certificateChain.stream()
                 .map(AttestationSignerImpl::certificateFromBase64String)
                 .toArray(X509Certificate[]::new);
-            return new AttestationSignerImpl()
-                .setCertificates(certificateArray)
-                .setKeyId(jsonWebKey.getKid());
+            return new AttestationSignerImpl().setCertificates(certificateArray).setKeyId(jsonWebKey.getKid());
         }
         throw new Error("Could not resolve AttestationSigner from JWK.");
     }
@@ -164,13 +158,8 @@ public class AttestationSignerImpl implements AttestationSigner {
      * @return Array of {@link AttestationSigner}s created from the JWK.
      */
     public static List<AttestationSigner> attestationSignersFromJwks(JsonWebKeySet jwks) {
-        return jwks
-            .getKeys()
-            .stream()
-            .map(AttestationSignerImpl::fromJsonWebKey)
-            .collect(Collectors.toList());
+        return jwks.getKeys().stream().map(AttestationSignerImpl::fromJsonWebKey).collect(Collectors.toList());
     }
-
 
     /**
      * Create an X.509 certificate from a Base64 encoded certificate.

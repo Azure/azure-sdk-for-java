@@ -119,12 +119,10 @@ import static com.azure.core.util.CoreUtils.getApplicationId;
  * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
  */
 @ServiceClientBuilder(
-    serviceClients = {
-        AttestationAdministrationClient.class, AttestationAdministrationAsyncClient.class, })
-public final class AttestationAdministrationClientBuilder
-    implements ConfigurationTrait<AttestationAdministrationClientBuilder>,
-    EndpointTrait<AttestationAdministrationClientBuilder>, HttpTrait<AttestationAdministrationClientBuilder>,
-    TokenCredentialTrait<AttestationAdministrationClientBuilder> {
+    serviceClients = { AttestationAdministrationClient.class, AttestationAdministrationAsyncClient.class, })
+public final class AttestationAdministrationClientBuilder implements
+    ConfigurationTrait<AttestationAdministrationClientBuilder>, EndpointTrait<AttestationAdministrationClientBuilder>,
+    HttpTrait<AttestationAdministrationClientBuilder>, TokenCredentialTrait<AttestationAdministrationClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
@@ -442,8 +440,8 @@ public final class AttestationAdministrationClientBuilder
      * @param tokenValidationOptions - Validation options used when validating JSON Web Tokens returned by the attestation service.
      * @return this {@link AttestationAdministrationClientBuilder}
      */
-    public AttestationAdministrationClientBuilder tokenValidationOptions(
-        AttestationTokenValidationOptions tokenValidationOptions) {
+    public AttestationAdministrationClientBuilder
+        tokenValidationOptions(AttestationTokenValidationOptions tokenValidationOptions) {
         this.tokenValidationOptions = tokenValidationOptions;
         return this;
     }
@@ -455,14 +453,12 @@ public final class AttestationAdministrationClientBuilder
      */
     private AttestationClientImpl buildInnerClient() {
         // Global Env configuration store
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         // Service version
-        AttestationServiceVersion version = serviceVersion != null
-            ? serviceVersion
-            : AttestationServiceVersion.getLatest();
+        AttestationServiceVersion version
+            = serviceVersion != null ? serviceVersion : AttestationServiceVersion.getLatest();
 
         // endpoint cannot be null.
         String endpoint = this.endpoint;
@@ -477,9 +473,8 @@ public final class AttestationAdministrationClientBuilder
 
             // Closest to API goes first, closest to wire goes last.
             final List<HttpPipelinePolicy> policies = new ArrayList<>();
-            policies.add(
-                new UserAgentPolicy(getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME, CLIENT_VERSION,
-                    buildConfiguration));
+            policies.add(new UserAgentPolicy(getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+                CLIENT_VERSION, buildConfiguration));
             policies.add(new RequestIdPolicy());
             policies.add(new AddHeadersFromContextPolicy());
 

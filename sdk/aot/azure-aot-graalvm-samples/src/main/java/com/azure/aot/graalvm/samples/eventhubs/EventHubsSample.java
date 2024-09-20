@@ -14,13 +14,13 @@ import java.util.Arrays;
 /**
  * An Event Hubs sample to demonstrate sending events to Event Hubs using GraalVM.
  */
-public class EventHubsSample {
-    private static final String AZURE_EVENT_HUBS_CONNECTION_STRING =
-            Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_CONNECTION_STRING", "");
-    private static final String AZURE_EVENT_HUBS_NAMESPACE =
-            Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_NAMESPACE", "");
-    private static final String AZURE_EVENT_HUBS_NAME =
-            Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_NAME", "");
+public final class EventHubsSample {
+    private static final String AZURE_EVENT_HUBS_CONNECTION_STRING
+        = Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_CONNECTION_STRING", "");
+    private static final String AZURE_EVENT_HUBS_NAMESPACE
+        = Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_NAMESPACE", "");
+    private static final String AZURE_EVENT_HUBS_NAME
+        = Configuration.getGlobalConfiguration().get("AZURE_EVENT_HUBS_NAME", "");
 
     /**
      * The method to run Event Hubs sample.
@@ -31,10 +31,10 @@ public class EventHubsSample {
         System.out.println("================================================================");
 
         if (AZURE_EVENT_HUBS_CONNECTION_STRING.isEmpty()
-                || (AZURE_EVENT_HUBS_NAMESPACE.isEmpty() && AZURE_EVENT_HUBS_NAME.isEmpty())) {
+            || (AZURE_EVENT_HUBS_NAMESPACE.isEmpty() && AZURE_EVENT_HUBS_NAME.isEmpty())) {
             System.err.println("AZURE_EVENT_HUBS_CONNECTION_STRING environment variable should be set or "
-                    + "AZURE_EVENT_HUBS_NAMESPACE and AZURE_EVENT_HUBS_NAME environment variables should be set to "
-                    + "run this sample.");
+                + "AZURE_EVENT_HUBS_NAMESPACE and AZURE_EVENT_HUBS_NAME environment variables should be set to "
+                + "run this sample.");
             return;
 
         }
@@ -42,7 +42,7 @@ public class EventHubsSample {
 
         if (AZURE_EVENT_HUBS_CONNECTION_STRING.isEmpty()) {
             eventHubClientBuilder.credential(AZURE_EVENT_HUBS_NAMESPACE, AZURE_EVENT_HUBS_NAME,
-                    new DefaultAzureCredentialBuilder().build());
+                new DefaultAzureCredentialBuilder().build());
         } else {
             eventHubClientBuilder.connectionString(AZURE_EVENT_HUBS_CONNECTION_STRING);
         }
@@ -58,5 +58,8 @@ public class EventHubsSample {
         System.out.println("\n================================================================");
         System.out.println(" Event Hubs Sender Sample Complete");
         System.out.println("================================================================");
+    }
+
+    private EventHubsSample() {
     }
 }

@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = WeatherClientBuilder.class)
 public final class WeatherClient {
-    @Generated private final WeatherAsyncClient client;
+    @Generated
+    private final WeatherAsyncClient client;
 
     /**
      * Initializes an instance of WeatherClient class.
@@ -109,15 +110,10 @@ public final class WeatherClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(
-            String partyId,
-            String boundaryId,
-            String extensionId,
-            String weatherDataType,
-            String granularity,
-            RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> list(String partyId, String boundaryId, String extensionId, String weatherDataType,
+        String granularity, RequestOptions requestOptions) {
         return new PagedIterable<>(
-                this.client.list(partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions));
+            this.client.list(partyId, boundaryId, extensionId, weatherDataType, granularity, requestOptions));
     }
 
     /**
@@ -241,8 +237,8 @@ public final class WeatherClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateDataDeleteJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateDataDeleteJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateDataDeleteJob(jobId, job, requestOptions).getSyncPoller();
     }
 
@@ -373,8 +369,8 @@ public final class WeatherClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.client.beginCreateDataIngestionJob(jobId, job, requestOptions).getSyncPoller();
     }
 }

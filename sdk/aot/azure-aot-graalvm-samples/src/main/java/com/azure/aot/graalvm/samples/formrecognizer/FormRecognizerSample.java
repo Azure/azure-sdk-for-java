@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * A sample to demonstrate Form Recognizer's functionality to recognize receipts using GraalVM.
  */
-public class FormRecognizerSample {
+public final class FormRecognizerSample {
     private static final String AZURE_FORM_RECOGNIZER_ENDPOINT = System.getenv("AZURE_FORM_RECOGNIZER_ENDPOINT");
     private static final String AZURE_FORM_RECOGNIZER_KEY = System.getenv("AZURE_FORM_RECOGNIZER_KEY");
 
@@ -37,8 +37,8 @@ public class FormRecognizerSample {
         System.out.println("================================================================");
 
         // Instantiate a client that will be used to call the service.
-        DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
-                .credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_KEY))
+        DocumentAnalysisClient client
+            = new DocumentAnalysisClientBuilder().credential(new AzureKeyCredential(AZURE_FORM_RECOGNIZER_KEY))
                 .endpoint(AZURE_FORM_RECOGNIZER_ENDPOINT)
                 .buildClient();
 
@@ -47,8 +47,8 @@ public class FormRecognizerSample {
         BinaryData imageData = BinaryData.fromStream(resourceAsStream);
         byte[] bytes = imageData.toBytes();
         BinaryData requestContent = BinaryData.fromBytes(bytes);
-        SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller =
-                client.beginAnalyzeDocument("prebuilt-receipt", requestContent);
+        SyncPoller<OperationResult, AnalyzeResult> analyzeReceiptPoller
+            = client.beginAnalyzeDocument("prebuilt-receipt", requestContent);
 
         AnalyzeResult receiptResults = analyzeReceiptPoller.getFinalResult();
 
@@ -60,8 +60,8 @@ public class FormRecognizerSample {
             if (merchantNameField != null) {
                 if (DocumentFieldType.STRING == merchantNameField.getType()) {
                     String merchantName = merchantNameField.getValueAsString();
-                    System.out.printf("Merchant Name: %s, confidence: %.2f%n",
-                            merchantName, merchantNameField.getConfidence());
+                    System.out.printf("Merchant Name: %s, confidence: %.2f%n", merchantName,
+                        merchantNameField.getConfidence());
                 }
             }
 
@@ -69,8 +69,8 @@ public class FormRecognizerSample {
             if (merchantPhoneNumberField != null) {
                 if (DocumentFieldType.PHONE_NUMBER == merchantPhoneNumberField.getType()) {
                     String merchantAddress = merchantPhoneNumberField.getValueAsPhoneNumber();
-                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n",
-                            merchantAddress, merchantPhoneNumberField.getConfidence());
+                    System.out.printf("Merchant Phone number: %s, confidence: %.2f%n", merchantAddress,
+                        merchantPhoneNumberField.getConfidence());
                 }
             }
 
@@ -78,8 +78,8 @@ public class FormRecognizerSample {
             if (merchantAddressField != null) {
                 if (DocumentFieldType.STRING == merchantAddressField.getType()) {
                     String merchantAddress = merchantAddressField.getValueAsString();
-                    System.out.printf("Merchant Address: %s, confidence: %.2f%n",
-                            merchantAddress, merchantAddressField.getConfidence());
+                    System.out.printf("Merchant Address: %s, confidence: %.2f%n", merchantAddress,
+                        merchantAddressField.getConfidence());
                 }
             }
 
@@ -87,8 +87,8 @@ public class FormRecognizerSample {
             if (transactionDateField != null) {
                 if (DocumentFieldType.DATE == transactionDateField.getType()) {
                     LocalDate transactionDate = transactionDateField.getValueAsDate();
-                    System.out.printf("Transaction Date: %s, confidence: %.2f%n",
-                            transactionDate, transactionDateField.getConfidence());
+                    System.out.printf("Transaction Date: %s, confidence: %.2f%n", transactionDate,
+                        transactionDateField.getConfidence());
                 }
             }
 
@@ -98,38 +98,37 @@ public class FormRecognizerSample {
                 if (DocumentFieldType.LIST == receiptItemsField.getType()) {
                     List<DocumentField> receiptItems = receiptItemsField.getValueAsList();
                     receiptItems.stream()
-                            .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
-                            .map(formField -> formField.getValueAsMap())
-                            .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
-                                if ("Name".equals(key)) {
-                                    if (DocumentFieldType.STRING == formField.getType()) {
-                                        String name = formField.getValueAsString();
-                                        System.out.printf("Name: %s, confidence: %.2fs%n",
-                                                name, formField.getConfidence());
-                                    }
+                        .filter(receiptItem -> DocumentFieldType.MAP == receiptItem.getType())
+                        .map(formField -> formField.getValueAsMap())
+                        .forEach(formFieldMap -> formFieldMap.forEach((key, formField) -> {
+                            if ("Name".equals(key)) {
+                                if (DocumentFieldType.STRING == formField.getType()) {
+                                    String name = formField.getValueAsString();
+                                    System.out.printf("Name: %s, confidence: %.2fs%n", name, formField.getConfidence());
                                 }
-                                if ("Quantity".equals(key)) {
-                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                        Double quantity = formField.getValueAsDouble();
-                                        System.out.printf("Quantity: %f, confidence: %.2f%n",
-                                                quantity, formField.getConfidence());
-                                    }
+                            }
+                            if ("Quantity".equals(key)) {
+                                if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                    Double quantity = formField.getValueAsDouble();
+                                    System.out.printf("Quantity: %f, confidence: %.2f%n", quantity,
+                                        formField.getConfidence());
                                 }
-                                if ("Price".equals(key)) {
-                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                        Double price = formField.getValueAsDouble();
-                                        System.out.printf("Price: %f, confidence: %.2f%n",
-                                                price, formField.getConfidence());
-                                    }
+                            }
+                            if ("Price".equals(key)) {
+                                if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                    Double price = formField.getValueAsDouble();
+                                    System.out.printf("Price: %f, confidence: %.2f%n", price,
+                                        formField.getConfidence());
                                 }
-                                if ("TotalPrice".equals(key)) {
-                                    if (DocumentFieldType.DOUBLE == formField.getType()) {
-                                        Double totalPrice = formField.getValueAsDouble();
-                                        System.out.printf("Total Price: %f, confidence: %.2f%n",
-                                                totalPrice, formField.getConfidence());
-                                    }
+                            }
+                            if ("TotalPrice".equals(key)) {
+                                if (DocumentFieldType.DOUBLE == formField.getType()) {
+                                    Double totalPrice = formField.getValueAsDouble();
+                                    System.out.printf("Total Price: %f, confidence: %.2f%n", totalPrice,
+                                        formField.getConfidence());
                                 }
-                            }));
+                            }
+                        }));
                 }
             }
         }
@@ -137,5 +136,8 @@ public class FormRecognizerSample {
         System.out.println("\n================================================================");
         System.out.println(" Form Recognizer Sample Complete");
         System.out.println("================================================================");
+    }
+
+    private FormRecognizerSample() {
     }
 }

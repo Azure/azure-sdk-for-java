@@ -21,7 +21,6 @@ public class TextAnalyticsFeature implements GraalVMFeature {
     @Override
     public Set<String[]> getDynamicProxies() {
         return setsOf(
-            interfaces("com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl$TextAnalyticsClientService")
-        );
+            interfaces("com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl$TextAnalyticsClientService"));
     }
 }

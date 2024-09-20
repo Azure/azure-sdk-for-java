@@ -26,10 +26,9 @@ public class PartiesClientTests extends TestBase {
     private final String defaultEndpoint = "https://REDACTED.farmbeats.azure.net";
 
     private PartiesAsyncClient createPartiesClient() {
-        PartiesClientBuilder builder =
-            new PartiesClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        PartiesClientBuilder builder = new PartiesClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -43,10 +42,9 @@ public class PartiesClientTests extends TestBase {
     }
 
     private BoundariesAsyncClient createBoundariesClient() {
-        BoundariesClientBuilder builder =
-            new BoundariesClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        BoundariesClientBuilder builder = new BoundariesClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -60,10 +58,9 @@ public class PartiesClientTests extends TestBase {
     }
 
     private ScenesAsyncClient createScenesClient() {
-        ScenesClientBuilder builder =
-            new ScenesClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        ScenesClientBuilder builder = new ScenesClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("FARMBEATS_ENDPOINT", defaultEndpoint))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
@@ -89,18 +86,26 @@ public class PartiesClientTests extends TestBase {
     @Test
     public void testSatelliteJob() {
         BoundariesAsyncClient boundariesClient = createBoundariesClient();
-        BinaryData boundary = BinaryData.fromString("{\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[73.70457172393799,20.545385304358106],[73.70457172393799,20.545385304358106],[73.70448589324951,20.542411534243367],[73.70877742767334,20.541688176010233],[73.71023654937744,20.545083911372505],[73.70663166046143,20.546992723579137],[73.70457172393799,20.545385304358106]]]},\"name\":\"string\",\"description\":\"string\"}");
-        Response<BinaryData> response = boundariesClient.createOrUpdateWithResponse("contoso-party", "contoso-boundary", boundary, null).block();
+        BinaryData boundary = BinaryData.fromString(
+            "{\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[73.70457172393799,20.545385304358106],[73.70457172393799,20.545385304358106],[73.70448589324951,20.542411534243367],[73.70877742767334,20.541688176010233],[73.71023654937744,20.545083911372505],[73.70663166046143,20.546992723579137],[73.70457172393799,20.545385304358106]]]},\"name\":\"string\",\"description\":\"string\"}");
+        Response<BinaryData> response
+            = boundariesClient.createOrUpdateWithResponse("contoso-party", "contoso-boundary", boundary, null).block();
         Assertions.assertNotNull(response.getValue());
 
         ScenesAsyncClient scenesClient = createScenesClient();
-        BinaryData satelliteJob = BinaryData.fromString("{\"boundaryId\":\"contoso-boundary\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"partyId\":\"contoso-party\",\"source\":\"Sentinel_2_L2A\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"provider\":\"Microsoft\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10]},\"name\":\"string\",\"description\":\"string\"}");
-        PollResponse<BinaryData> satelliteJobPollResponse = setPlaybackSyncPollerPollInterval(scenesClient.beginCreateSatelliteDataIngestionJob("contoso-job-35864", satelliteJob, null).getSyncPoller()).waitForCompletion();
-        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, satelliteJobPollResponse.getStatus());
+        BinaryData satelliteJob = BinaryData.fromString(
+            "{\"boundaryId\":\"contoso-boundary\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"partyId\":\"contoso-party\",\"source\":\"Sentinel_2_L2A\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"provider\":\"Microsoft\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10]},\"name\":\"string\",\"description\":\"string\"}");
+        PollResponse<BinaryData> satelliteJobPollResponse = setPlaybackSyncPollerPollInterval(
+            scenesClient.beginCreateSatelliteDataIngestionJob("contoso-job-35864", satelliteJob, null).getSyncPoller())
+                .waitForCompletion();
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            satelliteJobPollResponse.getStatus());
 
-        Assertions.assertNotNull(scenesClient.getSatelliteDataIngestionJobDetailsWithResponse("contoso-job-35864", null).block().getValue());
+        Assertions.assertNotNull(
+            scenesClient.getSatelliteDataIngestionJobDetailsWithResponse("contoso-job-35864", null).block().getValue());
 
-        Iterable<BinaryData> scenes = scenesClient.list("Microsoft", "contoso-party", "contoso-boundary", "Sentinel_2_L2A", null).toIterable();
+        Iterable<BinaryData> scenes
+            = scenesClient.list("Microsoft", "contoso-party", "contoso-boundary", "Sentinel_2_L2A", null).toIterable();
         scenes.forEach(scene -> Assertions.assertNotNull(scene));
     }
 }
