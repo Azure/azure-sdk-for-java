@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     static ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredentialTest.class);
@@ -71,6 +72,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
         } catch (ClientAuthenticationException e) {
             LOGGER.verbose("Body: " + e.getResponse().getBodyAsString().block());
             LOGGER.verbose("Status code: " + e.getResponse().getStatusCode());
+            fail();
         }
 
     }
