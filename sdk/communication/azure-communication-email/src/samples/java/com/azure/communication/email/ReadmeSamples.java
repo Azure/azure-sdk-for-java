@@ -140,4 +140,29 @@ public class ReadmeSamples {
         System.out.println("Operation Id: " + response.getValue().getId());
         // END: readme-sample-sendEmailWithAttachment
     }
+
+    public void sendEmailWithInlineAttachment() {
+        EmailClient emailClient = createEmailClientWithConnectionString();
+
+        // BEGIN: readme-sample-sendEmailWithInlineAttachment
+        BinaryData attachmentContent = BinaryData.fromFile(new File("C:/attachment.txt").toPath());
+        EmailAttachment attachment = new EmailAttachment(
+            "inlineimage.jpg",
+            "image/jpeg",
+            attachmentContent
+        ).setContentId("inline_image");
+
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress("<sender-email-address>")
+            .setToRecipients("<recipient-email-address>")
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
+            .setAttachments(attachment);
+
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+        System.out.println("Operation Id: " + response.getValue().getId());
+        // END: readme-sample-sendEmailWithInlineAttachment
+    }
 }

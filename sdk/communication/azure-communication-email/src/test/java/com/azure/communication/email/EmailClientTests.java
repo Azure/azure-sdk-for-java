@@ -84,4 +84,28 @@ public class EmailClientTests extends EmailTestBase {
 
         assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
     }
+
+    @ParameterizedTest
+    @MethodSource("getTestParameters")
+    public void sendEmailWithInlineAttachment(HttpClient httpClient) {
+        emailClient = getEmailClient(httpClient);
+
+        EmailAttachment attachment = new EmailAttachment(
+            "inlineimage.jpg",
+            "image/jpeg",
+            BinaryData.fromString("test")
+        ).setContentId("inline_image");
+
+        EmailMessage message = new EmailMessage()
+            .setSenderAddress(SENDER_ADDRESS)
+            .setToRecipients(RECIPIENT_ADDRESS)
+            .setSubject("test subject")
+            .setBodyHtml("<h1>test message<img src=\"cid:inline_image\"></h1>")
+            .setAttachments(attachment);
+
+        SyncPoller<EmailSendResult, EmailSendResult> poller = emailClient.beginSend(message);
+        PollResponse<EmailSendResult> response = poller.waitForCompletion();
+
+        assertEquals(response.getValue().getStatus(), EmailSendStatus.SUCCEEDED);
+    }
 }
