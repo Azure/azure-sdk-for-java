@@ -28,26 +28,31 @@ stages:
           - pwsh: |
               $currentDate = Get-Date -Format "yyyyMMdd"
               Write-Host "##vso[task.setvariable variable=PatchDate]$currentDate"
+              
               $branchName = "release/patch/$currentDate"
+              Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
               Write-Host "git checkout -b $branchName"
               git checkout -b $branchName
-              Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
+              
               Write-Host "Build.SourceBranch: $(Build.SourceBranch)"
+              Write-Host "git remote -v"
+
             workingDirectory: $(Build.SourcesDirectory)
             displayName: 'Create release branch'
 
-          # Push the release branch to the repo
-          - task: PowerShell@2
-            displayName: 'Push release branch to the repo'
-            inputs:
-              pwsh: true
-              workingDirectory: $(System.DefaultWorkingDirectory)
-              filePath: eng/common/scripts/git-branch-push.ps1
-              arguments: >
-                -PRBranchName $(BaseBranchName)
-                -CommitMsg "none"
-                -GitUrl "https://$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-java.git"
-                -SkipCommit $true
+#          # Push the release branch to the repo
+#          - task: PowerShell@2
+#            displayName: 'Push release branch to the repo'
+#            inputs:
+#              pwsh: true
+#              workingDirectory: $(System.DefaultWorkingDirectory)
+#              filePath: eng/common/scripts/git-branch-push.ps1
+#              arguments: >
+#                -PRBranchName $(BaseBranchName)
+#                -CommitMsg "none"
+#                -GitUrl "https://$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-java.git"
+#                -RemoteName
+#                -SkipCommit $true
 
           # Run the script to generate patches for automatic releases
           - task: PowerShell@2
