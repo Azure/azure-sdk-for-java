@@ -243,7 +243,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
             return deserialized;
         } else {
             throw LOGGER.logExceptionAsError(new SchemaRegistryJsonSchemaException(String.format(
-                "Deserialized JSON object does not match schema. Type: %s%nActual: %s%nDefinition: %s.",
+                "Deserialized JSON object does not match schema. Type: %s, Actual: %s, Definition: %s.",
                 typeReference.getJavaClass(), deserialized, schemaDefinition), null, schemaId));
         }
     }
@@ -309,7 +309,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
                             sink.next(decoded);
                         } else {
                             sink.error(new SchemaRegistryJsonSchemaException(String.format("Deserialized JSON object"
-                                    + "does not match schema. Type: %s%nActual: %s%nDefinition: %s.",
+                                    + "does not match schema. Type: %s, Actual: %s, Definition: %s.",
                                 schemaFullName, decoded, schemaDefinition), null, schemaId));
                         }
                     });
