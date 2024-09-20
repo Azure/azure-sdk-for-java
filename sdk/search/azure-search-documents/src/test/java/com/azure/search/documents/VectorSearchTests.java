@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.models.DistanceScoringFunction;
 import com.azure.search.documents.indexes.models.DistanceScoringParameters;
 import com.azure.search.documents.indexes.models.HnswAlgorithmConfiguration;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.ScalarQuantizationCompression;
 import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
 import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -27,7 +28,6 @@ import com.azure.search.documents.indexes.models.SemanticField;
 import com.azure.search.documents.indexes.models.SemanticPrioritizedFields;
 import com.azure.search.documents.indexes.models.SemanticSearch;
 import com.azure.search.documents.indexes.models.VectorSearch;
-import com.azure.search.documents.indexes.models.VectorSearchCompression;
 import com.azure.search.documents.indexes.models.VectorSearchProfile;
 import com.azure.search.documents.models.QueryAnswer;
 import com.azure.search.documents.models.QueryAnswerType;
@@ -69,6 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Tests Vector search functionality.
  */
+
 @Execution(ExecutionMode.SAME_THREAD)
 public class VectorSearchTests extends SearchTestBase {
     private static void assertKeysEqual(List<SearchResult> results, Function<SearchResult, String> keyAccessor,
@@ -515,6 +516,7 @@ public class VectorSearchTests extends SearchTestBase {
                 .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
                 .setCompressions(new BinaryQuantizationCompression(compressionName).setTruncationDimension(100)));
 
+        SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
         searchIndexClient.createIndex(searchIndex);
 
         indexesToDelete.add(indexName);
@@ -548,7 +550,10 @@ public class VectorSearchTests extends SearchTestBase {
                     .setVectorSearchDimensions(1536)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
-                .setCompressions(new VectorSearchCompression(compressionName).setTruncationDimension(100)));
+                .setProfiles(Collections.singletonList(
+                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
+                .setCompressions(new ScalarQuantizationCompression(compressionName).setTruncationDimension(100)));
 
         SearchIndexAsyncClient searchIndexAsyncClient = getSearchIndexClientBuilder(false).buildAsyncClient();
         searchIndexAsyncClient.createIndex(searchIndex).block();
@@ -622,7 +627,9 @@ public class VectorSearchTests extends SearchTestBase {
                     .setVectorSearchDimensions(5)
                     .setVectorSearchProfileName("my-vector-profile"))
             .setVectorSearch(new VectorSearch()
-                .setAlgorithms()
+                .setProfiles(Collections.singletonList(
+                    new VectorSearchProfile("my-vector-profile", "my-vector-config")))
+                .setAlgorithms(Collections.singletonList(new HnswAlgorithmConfiguration("my-vector-config")))
                 .setCompressions(new BinaryQuantizationCompression(compressionName)));
 
         SearchIndexClient searchIndexClient = getSearchIndexClientBuilder(true).buildClient();
@@ -639,49 +646,26 @@ public class VectorSearchTests extends SearchTestBase {
     @Test
     public void testHybridSearchWithVectorFilterOverride() {
         // create a new index with a vector field
-        String indexName = randomIndexName("hybridsearchwithvectorfilteroverride");
-        SearchIndex searchIndex = new SearchIndex(indexName)
-            .setFields(
-                new SearchField("Id", SearchFieldDataType.STRING)
-                    .setKey(true),
-                new SearchField("Name", SearchFieldDataType.STRING)
-                    .setSearchable(true)
-                    .setFilterable(true),
-                new SearchField("DescriptionVector", SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
-                    .setSearchable(true)
-                    .setHidden(false)
-                    .setVectorSearchDimensions(1536)
-                    .setVectorSearchProfileName("my-vector-profile"));
 
-        searchIndexClient.createIndex(searchIndex);
-        indexesToDelete.add(indexName);
-
-        // Upload data
-        SearchDocument document = new SearchDocument();
-        document.put("Id", "1");
-        document.put("Name", "name");
-        document.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
-
-        SearchClient searchClient = searchIndexClient.getSearchClient(indexName);
-        searchClient.uploadDocuments(Collections.singletonList(document));
-        waitForIndexing();
 
         // create a hybrid search query with a vector search query and a regular search query
         SearchOptions searchOptions = new SearchOptions()
-            .setSearchFields("Name")
-            .setFilter("Name ne 'name'")
-            .setSelect("Id", "Name")
+            .setFilter("Rating ge 3")
+            .setSelect("HotelId", "HotelName", "Rating")
             .setVectorSearchOptions(new VectorSearchOptions()
                 .setQueries(new VectorizedQuery(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION)
-                    .setKNearestNeighborsCount(1)
-                    .setFilterOverride("name eq 'name'")));
+                    .setFields("DescriptionVector")
+                    .setFilterOverride("HotelId eq '1'")));
 
         // run the hybrid search query
-        List<SearchResult> results = searchClient.search("name", searchOptions, Context.NONE)
-            .stream().collect(Collectors.toList());
+        SearchClient searchClient = getSearchClientBuilder(HOTEL_INDEX_NAME, true).buildClient();
+        List<SearchResult> results = searchClient.search("fancy", searchOptions, Context.NONE)
+             .stream().collect(Collectors.toList());
 
         // check that the results are as expected
-        assertKeysEqual(results, r -> (String) r.getDocument(SearchDocument.class).get("Id"), new String[]{"1"});
+        assertEquals(1, results.size());
+        assertEquals("1", results.get(0).getDocument(SearchDocument.class).get("HotelId"));
+
     }
 
 

@@ -461,4 +461,21 @@ directive:
     $["x-ms-enum"].values.push({ "value": "vector", "name": "Vector", description: "Allows the user to further explore their hybrid and vector query results." });
 ```
 
+### Rename Speller to QuerySpellerType
+``` yaml $(java)
+directive:
+  - from: swagger-document
+    where: $.paths["/docs"].get.parameters
+    transform: >
+      $.find(p => p.name === "speller")["x-ms-enum"].name = "QuerySpellerType";
+```
+
+### Rename Speller to QuerySpellerType
+``` yaml $(tag) == 'searchindex'
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.Speller["x-ms-enum"].name = "QuerySpellerType";
+```
 
