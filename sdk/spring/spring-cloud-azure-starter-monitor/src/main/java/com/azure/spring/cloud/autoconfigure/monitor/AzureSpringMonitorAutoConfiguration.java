@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.monitor;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
+import com.azure.monitor.opentelemetry.AzureMonitor;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
@@ -34,33 +34,17 @@ class AzureSpringMonitorAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfiguration.class);
 
-    private static final Function<ConfigProperties, Map<String, String>> OTEL_DISABLE_CONFIG = configProperties -> {
-        Map<String, String> properties = new HashMap<>();
-        properties.put("otel.sdk.disabled", "true");
-        return properties;
-    };
+    private static final AutoConfigurationCustomizerProvider DISABLE_OTEL_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> new HashMap<String, String>(1) {{
+        put("otel.sdk.disabled", "true");
+    }});
 
-    private static final Function<ConfigProperties, Map<String, String>> NO_EXPORT_CONFIG = configProperties -> {
-        Map<String, String> properties = new HashMap<>(3);
-        properties.put("otel.traces.exporter", "none");
-        properties.put("otel.metrics.exporter", "none");
-        properties.put("otel.logs.exporter", "none");
-        return properties;
-    };
+    private static final AutoConfigurationCustomizerProvider NO_EXPORT_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> new HashMap<String, String>(3) {{
+        put("otel.traces.exporter", "none");
+        put("otel.metrics.exporter", "none");
+        put("otel.logs.exporter", "none");
+    }});
 
-    private final String connectionString;
-    private final ObjectProvider<HttpPipeline> httpPipeline;
-
-
-    /**
-     * Create an instance of AzureSpringMonitorConfig
-     *
-     * @param connectionString connection string system property
-     * @param httpPipeline an instance of HttpPipeline
-     */
-    AzureSpringMonitorAutoConfiguration(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<HttpPipeline> httpPipeline) {
-        this.connectionString = connectionString;
-        this.httpPipeline = httpPipeline;
+    {
         if (!isNativeRuntimeExecution()) {
             LOG.warn("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
         }
@@ -81,42 +65,37 @@ class AzureSpringMonitorAutoConfiguration {
     }
 
     @Bean
-    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider() {
-        return new AutoConfigurationCustomizerProvider() {
-            @Override
-            public void customize(AutoConfigurationCustomizer autoConfigurationCustomizer) {
+    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<AzureMonitorExporterBuilder> azureMonitorExporterBuilder) {
 
-                if (!isNativeRuntimeExecution() && applicationInsightsAgentIsAttached()) {
-                    LOG.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
-                        + " You can remove this message by adding the otel.sdk.disabled=true property.");
-                    autoConfigurationCustomizer.addPropertiesCustomizer(OTEL_DISABLE_CONFIG);
-                    return;
-                }
+        if (!isNativeRuntimeExecution() && applicationInsightsAgentIsAttached()) {
+            LOG.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
+                + " You can remove this message by using the otel.sdk.disabled=true property.");
+            return DISABLE_OTEL_CUSTOMER_PROVIDER;
+        }
 
-                if (connectionString == null || connectionString.isEmpty()) {
-                    LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure.");
-                    // If the user does not provide a connection, we disable the export and leave the instrumentation enabled to spot potential failures from
-                    // the instrumentation, in the customer automatic tests for example.
-                    autoConfigurationCustomizer.addPropertiesCustomizer(NO_EXPORT_CONFIG);
-                    return;
-                }
-
-                if (!connectionString.contains("InstrumentationKey=")) {
-                    throw new WrongConnectionStringException();
-                }
-
-                AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = (AutoConfiguredOpenTelemetrySdkBuilder) autoConfigurationCustomizer;
-
-                HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
-                if (providedHttpPipeline != null) {
-                    AzureMonitorExporterOptions exporterOptions = new AzureMonitorExporterOptions().connectionString(connectionString).pipeline(providedHttpPipeline);
-                    AzureMonitorExporter.customize(sdkBuilder, exporterOptions);
-                } else {
-                    AzureMonitorExporter.customize(sdkBuilder, connectionString);
-                }
+        AzureMonitorExporterBuilder providedAzureMonitorExporterBuilder = azureMonitorExporterBuilder.getIfAvailable();
+        if (providedAzureMonitorExporterBuilder != null) {
+            if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null && !connectionString.isEmpty()) {
+                LOG.warn("You have created an AzureMonitorExporterBuilder bean and set the applicationinsights.connection.string property."
+                    + " The applicationinsights.connection.string property is ignored.");
             }
+            // The AzureMonitor class (OpenTelemetry exporter library) is able to use the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable
+            return autoConfigurationCustomizer -> AzureMonitor.customize(autoConfigurationCustomizer, providedAzureMonitorExporterBuilder);
+        }
 
-        };
+        if (connectionString.isEmpty()) {
+            LOG.warn("Unable to find the Application Insights connection string (applicationinsights.connection.string property system property or APPLICATIONINSIGHTS_CONNECTION_STRING environment variable). The telemetry data won't be sent to Azure."
+                + " If you want to disable the spring-cloud-azure-starter-monitor Spring starter and not display this warning, set the otel.sdk.disabled=true property.");
+            // If the user does not provide a connection, we disable the export and leave the instrumentation enabled to spot potential failures from
+            // the instrumentation, with the customer automatic tests for example.
+            return NO_EXPORT_CUSTOMER_PROVIDER;
+        }
+
+        if (!connectionString.contains("InstrumentationKey=")) {
+            throw new WrongConnectionStringException(); // To fail fast, before the OpenTelemetry exporter
+        }
+
+        return autoConfigurationCustomizer -> AzureMonitor.customize(autoConfigurationCustomizer, connectionString);
     }
 
     /**
