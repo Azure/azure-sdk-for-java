@@ -108,7 +108,7 @@ public final class SchemaRegistryJsonSchemaSerializer {
         final T serializedMessage;
         try {
             serializedBytes = BinaryData.fromBytes(jsonSerializer.serializeToBytes(object));
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new SchemaRegistryJsonSchemaException(String.format(
                 "Error encountered serializing object: %s with schemaId '%s'.", object, schemaId), e, schemaId));
         }
