@@ -76,6 +76,7 @@ public class AzurePipelinesCredential implements TokenCredential {
                     HttpRequest request = new HttpRequest(HttpMethod.POST, url);
                     request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
                     request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+                    request.setHeader(HttpHeaderName.fromString("X-TFS-FedAuthRedirect"), "Suppress");
                     try (HttpResponse response = httpPipeline.sendSync(request, Context.NONE)) {
                         String responseBody = response.getBodyAsBinaryData().toString();
                         if (response.getStatusCode() != 200) {
