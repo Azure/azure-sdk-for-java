@@ -125,7 +125,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
         if (WebExceptionUtility.isNetworkFailure(e)) {
+
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
+
             if (clientException != null && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
+
                 if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
                     logger.info("Gateway endpoint not reachable. Will refresh cache and retry. ", e);
                     return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false, true);
@@ -171,9 +175,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 clientException);
         }
 
-        if (clientException != null
-            && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)
-            && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT)) {
+        if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)) {
 
             if (logger.isDebugEnabled()) {
                 logger.debug(
@@ -186,8 +188,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
             return this.shouldRetryOnRequestTimeout(
                 this.isReadRequest,
-                this.request.getNonIdempotentWriteRetriesEnabled()
-            );
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                clientException.getSubStatusCode());
         }
 
         if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR)) {
@@ -381,6 +383,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // 1. For any connection related errors, it will be covered under isWebExceptionRetriable -> which SDK will retry
         // 2. For any server returned 503s, SDK will retry
         // 3. For SDK generated 503, SDK will only retry if the subStatusCode is SERVER_GENERATED_410
+        //
+        // With PPAF enabled, 503 for a write request should be used as a signal to mark the region unavailable for the partition
+        // With PPAF enabled, 503 for a write request should be eligible for cross-region retry too
         if (!isReadRequest
             && !shouldRetryWriteOnServiceUnavailable(
                 nonIdempotentWriteRetriesEnabled,
@@ -420,13 +425,18 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private Mono<ShouldRetryResult> shouldRetryOnRequestTimeout(
         boolean isReadRequest,
-        boolean nonIdempotentWriteRetriesEnabled) {
+        boolean nonIdempotentWriteRetriesEnabled,
+        int subStatusCode) {
 
-        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
-            if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {
-                this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
-                    request,
-                    request.requestContext.locationEndpointToRoute);
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
+
+        if (subStatusCode == HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT) {
+            if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+                if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {
+                    this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
+                        request,
+                        request.requestContext.locationEndpointToRoute);
+                }
             }
         }
 

@@ -114,10 +114,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         PartitionLevelFailoverInfo partitionLevelFailoverInfo
             = this.partitionKeyRangeToLocation.putIfAbsent(partitionKeyRangeWrapper, new PartitionLevelFailoverInfo(failedLocation));
-        List<URI> readLocations = this.globalEndpointManager.getReadEndpoints();
+
+        // Rely on account-level read endpoints for new write region discovery
+        List<URI> accountLevelReadEndpoints = this.globalEndpointManager.getAvailableReadEndpoints();
 
         if (partitionLevelFailoverInfo != null
-            && partitionLevelFailoverInfo.tryMoveToNextLocation(readLocations, failedLocation)) {
+            && partitionLevelFailoverInfo.tryMoveToNextLocation(accountLevelReadEndpoints, failedLocation)) {
             return true;
         }
 
