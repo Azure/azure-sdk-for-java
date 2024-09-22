@@ -7,6 +7,7 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           TestName: 'Kafka_TestContainer_Integration'
+          UseFederatedAuth: false
           EnvVars:
             ACCOUNT_TENANT_ID: '72f988bf-86f1-41af-91ab-2d7cd011db47'
             ACCOUNT_AAD_CLIENT_ID: $(spark-databricks-cosmos-spn-clientId)
@@ -16,7 +17,6 @@ extends:
             COSMOS_ACR_NAME: $(kafka-mcr-name)
           CloudConfig:
             Public:
-              ServiceConnection: azure-sdk-tests
               SubscriptionConfigurations:
                 - $(sub-config-azure-cloud-test-resources)
                 - $(sub-config-cosmos-azure-cloud-test-resources)
