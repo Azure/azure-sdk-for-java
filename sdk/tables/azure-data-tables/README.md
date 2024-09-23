@@ -46,7 +46,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.4.2</version>
+  <version>12.4.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -54,7 +54,6 @@ add the direct dependency to your project as follows.
 ### Prerequisites
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
-  - Here are details about [Java 8 client compatibility with Azure Certificate Authority](https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis).
 - [Azure Subscription][azure_subscription]
 - An existing Azure storage account or Azure Cosmos DB Table API account
 

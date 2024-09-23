@@ -473,6 +473,7 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableItem>> createTableWithResponse(Context context) {
+        context = TableUtils.setContext(context);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         try {
@@ -534,6 +535,8 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> deleteTableWithResponse(Context context) {
+        context = TableUtils.setContext(context);
+
         try {
             return tablesImplementation.getTables().deleteWithResponseAsync(tableName, null, context)
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
@@ -609,6 +612,8 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<Void>> createEntityWithResponse(TableEntity entity, Context context) {
+        context = TableUtils.setContext(context);
+
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -701,6 +706,8 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   Context context) {
+        context = TableUtils.setContext(context);
+
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -857,6 +864,8 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                   boolean ifUnchanged, Context context) {
+        context = TableUtils.setContext(context);
+
         if (entity == null) {
             return monoError(logger, new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -987,6 +996,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                                   Context context) {
+        context = TableUtils.setContext(context);
         eTag = ifUnchanged ? eTag : "*";
 
         if (partitionKey == null || rowKey == null) {
@@ -1107,6 +1117,7 @@ public final class TableAsyncClient {
     private <T extends TableEntity> Mono<PagedResponse<T>> listEntities(String nextPartitionKey, String nextRowKey,
                                                                         Context context, ListEntitiesOptions options,
                                                                         Class<T> resultType) {
+        context = TableUtils.setContext(context);
         String select = null;
 
         if (options.getSelect() != null) {
@@ -1334,6 +1345,8 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableAccessPolicies>> getAccessPoliciesWithResponse(Context context) {
+        context = TableUtils.setContext(context);
+
         try {
             return tablesImplementation.getTables()
                 .getAccessPolicyWithResponseAsync(tableName, null, null, context)
@@ -1432,6 +1445,7 @@ public final class TableAsyncClient {
 
     Mono<Response<Void>> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                        Context context) {
+        context = TableUtils.setContext(context);
         List<SignedIdentifier> signedIdentifiers = null;
 
         /*
@@ -1659,6 +1673,8 @@ public final class TableAsyncClient {
     }
 
     Mono<Response<TableTransactionResult>> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Context context) {
+        Context finalContext = TableUtils.setContext(context);
+
         if (transactionActions.isEmpty()) {
             return monoError(logger,
                 new IllegalArgumentException("A transaction must contain at least one operation."));
@@ -1711,7 +1727,7 @@ public final class TableAsyncClient {
                 .publishOn(Schedulers.boundedElastic())
                 .flatMap(body ->
                     transactionalBatchImplementation.submitTransactionalBatchWithRestResponseAsync(body, null,
-                        context).zipWith(Mono.just(body)))
+                        finalContext).zipWith(Mono.just(body)))
                 .onErrorMap(TableUtils::mapThrowableToTableServiceException)
                 .flatMap(pair -> parseResponse(pair.getT2(), pair.getT1()))
                 .map(response ->
