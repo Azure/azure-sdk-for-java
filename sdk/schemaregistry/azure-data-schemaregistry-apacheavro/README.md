@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.1.21</version>
+  <version>1.1.20</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -51,7 +51,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.3</version>
+    <version>1.10.4</version>
 </dependency>
 ```
 
@@ -153,12 +153,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [event_hubs_namespace]: https://docs.microsoft.com/azure/event-hubs/event-hubs-about
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [product_documentation]: https://aka.ms/schemaregistry
-[specific_record]: https://avro.apache.org/docs/++version++/api/java/org/apache/avro/specific/SpecificRecord.html
-[generic_record]: https://avro.apache.org/docs/++version++/api/java/org/apache/avro/generic/GenericRecord.html
+[specific_record]: https://avro.apache.org/docs/1.5.4/api/java/org/apache/avro/specific/SpecificRecord.html
+[generic_record]: https://avro.apache.org/docs/1.5.4/api/java/org/apache/avro/generic/GenericRecord.html
 [custom_subdomain]: https://docs.microsoft.com/azure/cognitive-services/authentication#create-a-resource-with-a-custom-subdomain
 [register_aad_app]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [aad_grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
