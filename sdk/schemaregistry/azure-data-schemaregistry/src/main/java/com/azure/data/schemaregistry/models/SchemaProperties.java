@@ -24,7 +24,13 @@ public final class SchemaProperties {
     private final int version;
 
     static {
-        SchemaRegistryHelper.setAccessor(SchemaProperties::new);
+        SchemaRegistryHelper.setAccessor(new SchemaRegistryHelper.SchemaRegistryModelsAccessor() {
+            @Override
+            public SchemaProperties getSchemaProperties(String id, SchemaFormat format, String groupName, String name,
+                int version) {
+                return new SchemaProperties(id, format, groupName, name, version);
+            }
+        });
     }
 
     /**
