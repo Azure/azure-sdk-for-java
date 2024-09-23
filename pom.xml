@@ -93,6 +93,7 @@
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
+    <module>sdk/fabric</module>
     <module>sdk/face</module>
     <module>sdk/fluidrelay</module>
     <module>sdk/formrecognizer</module>
