@@ -673,6 +673,11 @@
           "code": "java.method.removed",
           "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
           "justification": "Service changed the property to readOnly."
+        },
+        {
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.developer\\.devcenter\\.models.*",
+          "justification": "Removing Jackson annotations from Azure DevCenter in transition to stream-style."
         }
       ]
     }
