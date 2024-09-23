@@ -15,7 +15,6 @@ public class ConsoleLogger {
 
     /**
      * Prints a header with a new line before and after the message. Use this to create different sections.
-     *
      * @param message Header message to be printed for the section.
      */
     public static void printHeader(String message) {
@@ -24,7 +23,6 @@ public class ConsoleLogger {
 
     /**
      * Prints a message to console. Use this for logging verbose.
-     *
      * @param message Message to be printed
      */
     public static void print(String message) {
@@ -33,7 +31,6 @@ public class ConsoleLogger {
 
     /**
      * Prints a message to console. Use this for logging successful events.
-     *
      * @param message Message to be printed
      */
     public static void printSuccess(String message) {
@@ -42,7 +39,6 @@ public class ConsoleLogger {
 
     /**
      * Prints a message to console. Use this for logging warnings.
-     *
      * @param message Message to be printed
      */
     public static void printWarning(String message) {
@@ -52,7 +48,6 @@ public class ConsoleLogger {
 
     /**
      * Prints a message to console. Use this for logging fatal failures.
-     *
      * @param message Message to be printed
      */
     public static void printFatal(String message) {

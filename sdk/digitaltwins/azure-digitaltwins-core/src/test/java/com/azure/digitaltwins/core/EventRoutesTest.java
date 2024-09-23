@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.digitaltwins.core.models.DigitalTwinsEventRoute;
 import com.azure.digitaltwins.core.models.ListDigitalTwinsEventRoutesOptions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -24,10 +25,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class EventRoutesTest extends EventRoutesTestBase {
 
+    private final ClientLogger logger = new ClientLogger(EventRoutesTest.class);
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
 
         String eventRouteId = testResourceNamer.randomUuid();
@@ -37,7 +40,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
         eventRouteToCreate.setFilter(FILTER);
         client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate);
 
-        sleepIfRunningAgainstService(5000);
+        waitIfLive();
 
         try {
             // GET
@@ -64,8 +67,7 @@ public class EventRoutesTest extends EventRoutesTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient,
-        DigitalTwinsServiceVersion serviceVersion) {
+    public void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
 
@@ -75,15 +77,13 @@ public class EventRoutesTest extends EventRoutesTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient,
-        DigitalTwinsServiceVersion serviceVersion) {
+    public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
         DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter("this is not a valid filter");
 
-        assertRestException(() -> client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate),
-            HttpURLConnection.HTTP_BAD_REQUEST);
+        assertRestException(() -> client.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate), HttpURLConnection.HTTP_BAD_REQUEST);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -103,20 +103,16 @@ public class EventRoutesTest extends EventRoutesTestBase {
         }
 
         // list event routes by page, make sure that all non-final pages have the expected page size
-        ListDigitalTwinsEventRoutesOptions listEventRoutesOptions
-            = (new ListDigitalTwinsEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
-        PagedIterable<DigitalTwinsEventRoute> eventRoutes = client.listEventRoutes(listEventRoutesOptions,
-            Context.NONE);
+        ListDigitalTwinsEventRoutesOptions listEventRoutesOptions = (new ListDigitalTwinsEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
+        PagedIterable<DigitalTwinsEventRoute> eventRoutes = client.listEventRoutes(listEventRoutesOptions, Context.NONE);
         Iterable<PagedResponse<DigitalTwinsEventRoute>> eventRoutePages = eventRoutes.iterableByPage();
         int pageCount = 0;
         for (PagedResponse<DigitalTwinsEventRoute> eventRoutePagedResponse : eventRoutePages) {
             pageCount++;
 
-            // Any page of results with a continuation token should be a non-final page, and should have the exact page
-            // size that we specified above
+            // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
             if (eventRoutePagedResponse.getContinuationToken() != null) {
-                assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size(),
-                    "Unexpected page size for a non-terminal page");
+                assertEquals(expectedPageSize, eventRoutePagedResponse.getValue().size(), "Unexpected page size for a non-terminal page");
             }
         }
 

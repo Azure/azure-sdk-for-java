@@ -5,40 +5,38 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A collection of EventRoute objects.
- */
+/** A collection of EventRoute objects. */
 @Fluent
-public final class EventRouteCollection implements JsonSerializable<EventRouteCollection> {
+public final class EventRouteCollection {
     /*
      * The EventRoute objects.
      */
-    private final List<EventRoute> value;
+    @JsonProperty(value = "value", required = true)
+    private List<EventRoute> value;
 
     /*
      * A URI to retrieve the next page of results.
      */
+    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
      * Creates an instance of EventRouteCollection class.
-     * 
+     *
      * @param value the value value to set.
      */
-    public EventRouteCollection(List<EventRoute> value) {
+    @JsonCreator
+    public EventRouteCollection(@JsonProperty(value = "value", required = true) List<EventRoute> value) {
         this.value = value;
     }
 
     /**
      * Get the value property: The EventRoute objects.
-     * 
+     *
      * @return the value value.
      */
     public List<EventRoute> getValue() {
@@ -47,7 +45,7 @@ public final class EventRouteCollection implements JsonSerializable<EventRouteCo
 
     /**
      * Get the nextLink property: A URI to retrieve the next page of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -56,7 +54,7 @@ public final class EventRouteCollection implements JsonSerializable<EventRouteCo
 
     /**
      * Set the nextLink property: A URI to retrieve the next page of results.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the EventRouteCollection object itself.
      */
@@ -66,50 +64,15 @@ public final class EventRouteCollection implements JsonSerializable<EventRouteCo
     }
 
     /**
-     * {@inheritDoc}
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("nextLink", this.nextLink);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EventRouteCollection from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EventRouteCollection if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EventRouteCollection.
-     */
-    public static EventRouteCollection fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean valueFound = false;
-            List<EventRoute> value = null;
-            String nextLink = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("value".equals(fieldName)) {
-                    value = reader.readArray(reader1 -> EventRoute.fromJson(reader1));
-                    valueFound = true;
-                } else if ("nextLink".equals(fieldName)) {
-                    nextLink = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (valueFound) {
-                EventRouteCollection deserializedEventRouteCollection = new EventRouteCollection(value);
-                deserializedEventRouteCollection.nextLink = nextLink;
-
-                return deserializedEventRouteCollection;
-            }
-            throw new IllegalStateException("Missing required property: value");
-        });
+    public void validate() {
+        if (getValue() == null) {
+            throw new IllegalArgumentException("Missing required property value in model EventRouteCollection");
+        } else {
+            getValue().forEach(e -> e.validate());
+        }
     }
 }
