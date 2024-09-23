@@ -301,8 +301,7 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      */
     public SpanExporter buildSpanExporter() {
         internalBuildAndFreeze();
-        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
-            statsbeatModule);
+        return new AzureMonitorTraceExporter(createSpanDataMapper(), builtTelemetryItemExporter, statsbeatModule);
     }
 
     /**
@@ -315,26 +314,22 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      */
     public LogRecordExporter buildLogRecordExporter() {
         internalBuildAndFreeze();
-        return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
+        return new AzureMonitorLogRecordExporter(new LogDataMapper(true, false, createDefaultsPopulator()),
+            builtTelemetryItemExporter);
     }
 
     void internalBuildAndFreeze() {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
-            statsbeatModule = initStatsbeatModule(configProperties);
+            statsbeatModule = initStatsbeatModule();
             File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
                 "Telemetry will not be stored to disk and retried on sporadic network failures");
             // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
             builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
                 tempDir, LocalStorageStats.noop());
-            startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
+            startStatsbeatModule(statsbeatModule, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
             frozen = true;
         }
-    }
-
-    DefaultConfigProperties getConfigProperties() {
-        return DefaultConfigProperties.create(Collections.emptyMap());
     }
 
     /**
@@ -350,10 +345,8 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      */
     public MetricExporter buildMetricExporter() {
         internalBuildAndFreeze();
-        DefaultConfigProperties configProperties1 = getConfigProperties();
-        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties1),
-            builtTelemetryItemExporter::send);
-        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(configProperties1), true),
+        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(), builtTelemetryItemExporter::send);
+        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(), true),
             builtTelemetryItemExporter);
     }
 
@@ -368,12 +361,12 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
         return StatsbeatConnectionString.create(connectionString, null, null);
     }
 
-    private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
-        return new SpanDataMapper(true, createDefaultsPopulator(configProperties),
-            (event, instrumentationName) -> false, (span, event) -> false);
+    private SpanDataMapper createSpanDataMapper() {
+        return new SpanDataMapper(true, createDefaultsPopulator(), (event, instrumentationName) -> false,
+            (span, event) -> false);
     }
 
-    private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator(ConfigProperties configProperties) {
+    private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator() {
         ConnectionString connectionString = getConnectionString(configProperties);
         ResourceParser resourceParser = new ResourceParser();
         return (builder, resource) -> {
@@ -449,12 +442,11 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
             .build();
     }
 
-    private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
+    private StatsbeatModule initStatsbeatModule() {
         return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
     }
 
-    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties,
-        File tempDir) {
+    private void startStatsbeatModule(StatsbeatModule statsbeatModule, File tempDir) {
         HttpPipeline statsbeatHttpPipeline = createStatsbeatHttpPipeline();
         TelemetryItemExporter statsbeatTelemetryItemExporter
             = AzureMonitorHelper.createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
