@@ -1,6 +1,6 @@
 # Release History
 
-## 1.20.0-beta.3 (Unreleased)
+## 1.20.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.20.0-beta.3 (2024-09-19)
+
+### Breaking Changes
+
+- Experimental checkpointing metrics are no longer reported by this package. They've been moved to `azure-messaging-eventhubs` package.
+  ([#38899](https://github.com/Azure/azure-sdk-for-java/pull/38899))
 
 ## 1.20.0-beta.2 (2024-08-20)
 

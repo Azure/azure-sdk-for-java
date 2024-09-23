@@ -13,6 +13,7 @@
     <module>eng/code-quality-reports</module>
     <module>sdk/advisor</module>
     <module>sdk/agrifood</module>
+    <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
     <module>sdk/aot</module>
@@ -92,6 +93,7 @@
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
+    <module>sdk/fabric</module>
     <module>sdk/face</module>
     <module>sdk/fluidrelay</module>
     <module>sdk/formrecognizer</module>

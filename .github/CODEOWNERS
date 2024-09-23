@@ -64,6 +64,9 @@
 # ServiceLabel: %Advisor
 # ServiceOwners:                                     @mojayara @Prasanna-Padmanabhan
 
+# PRLabel: %AI Model Inference
+/sdk/ai/azure-ai-inference/                          @dargilco @jhakulin @glharper
+
 # ServiceLabel: %AKS
 # ServiceOwners:                                     @Azure/aks-pm
 
@@ -527,7 +530,7 @@
 # ServiceOwners:                                     @minamnmik
 
 # ServiceLabel: %Maps
-# ServiceOwners:                                     @dubiety
+/sdk/maps/                                           @dubiety
 
 # ServiceLabel: %Managed Identity
 # ServiceOwners:                                     @varunkch

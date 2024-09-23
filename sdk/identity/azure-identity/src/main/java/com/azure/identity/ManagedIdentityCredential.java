@@ -8,12 +8,15 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
-import com.azure.identity.implementation.ManagedIdentityParameters;
 import com.azure.identity.implementation.ManagedIdentityType;
+import com.azure.identity.implementation.ManagedIdentityParameters;
+import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.util.LoggingUtil;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -86,7 +89,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
     final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final IdentityClientOptions identityClientOptions;
-
+    private final String managedIdentityId;
     static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
     static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
@@ -101,15 +104,18 @@ public final class ManagedIdentityCredential implements TokenCredential {
      * @param resourceId the resource id of user assigned identity or registered application
      * @param identityClientOptions the options for configuring the identity client.
      */
-    ManagedIdentityCredential(String clientId, String resourceId, IdentityClientOptions identityClientOptions) {
+    ManagedIdentityCredential(String clientId, String resourceId, String objectId, IdentityClientOptions identityClientOptions) {
         IdentityClientBuilder clientBuilder = new IdentityClientBuilder()
             .clientId(clientId)
             .resourceId(resourceId)
+            .objectId(objectId)
             .identityClientOptions(identityClientOptions);
         this.identityClientOptions = identityClientOptions;
 
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
+
+        this.managedIdentityId = fetchManagedIdentityId(clientId, resourceId, objectId);
 
         /*
          * Choose credential based on available environment variables in this order:
@@ -134,7 +140,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.AKS,
                     identityClientOptions, configuration))
                 .build());
-        } else if (configuration.contains(USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI)) {
+        }  else if (configuration.contains(USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI)) {
             if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
                 managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
                     .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
@@ -226,6 +232,19 @@ public final class ManagedIdentityCredential implements TokenCredential {
                     + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
                     + " https://aka.ms/azsdk/java/identity/managedidentitycredential/troubleshoot")));
         }
+
+        if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
+            ManagedIdentitySourceType managedIdentitySourceType = IdentityClient.getManagedIdentitySourceType();
+            if (managedIdentitySourceType.equals(ManagedIdentitySourceType.CLOUD_SHELL)
+                || managedIdentitySourceType.equals(ManagedIdentitySourceType.AZURE_ARC)) {
+                return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
+                    new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                        + "User assigned Managed Identity is not supported in " + managedIdentitySourceType
+                        + ". To use system assigned Managed Identity, remove the configured client id on "
+                        + "the ManagedIdentityCredentialBuilder.")));
+            }
+        }
+
         return managedIdentityServiceCredential.authenticate(request)
             .doOnSuccess(t -> LOGGER.info("Azure Identity => Managed Identity environment: {}",
                     managedIdentityServiceCredential.getEnvironment()))
@@ -253,6 +272,18 @@ public final class ManagedIdentityCredential implements TokenCredential {
             return ManagedIdentityType.AKS;
         } else {
             return ManagedIdentityType.VM;
+        }
+    }
+
+    String fetchManagedIdentityId(String clientId, String resourceId, String objectId) {
+        if (clientId != null) {
+            return clientId;
+        } else if (resourceId != null) {
+            return resourceId;
+        } else if (objectId != null) {
+            return objectId;
+        } else {
+            return null;
         }
     }
 }

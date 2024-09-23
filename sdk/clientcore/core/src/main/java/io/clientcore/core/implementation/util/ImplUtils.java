@@ -11,7 +11,7 @@ import io.clientcore.core.util.configuration.Configuration;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.IllegalCharsetNameException;
@@ -283,43 +283,56 @@ public final class ImplUtils {
     }
 
     /**
-     * Utility method for parsing a {@link URL} into a {@link UrlBuilder}.
+     * Utility method for parsing a {@link URI} into a {@link UriBuilder}.
      *
-     * @param url The URL being parsed.
+     * @param uri The URI being parsed.
      * @param includeQuery Whether the query string should be excluded.
-     * @return The UrlBuilder that represents the parsed URL.
+     * @return The UriBuilder that represents the parsed URI.
      */
-    public static UrlBuilder parseUrl(URL url, boolean includeQuery) {
-        final UrlBuilder result = new UrlBuilder();
+    public static UriBuilder parseUri(URI uri, boolean includeQuery) {
+        final UriBuilder result = new UriBuilder();
 
-        if (url != null) {
-            final String protocol = url.getProtocol();
-            if (protocol != null && !protocol.isEmpty()) {
-                result.setScheme(protocol);
+        if (uri != null) {
+            final String scheme = uri.getScheme();
+            if (scheme != null && !scheme.isEmpty()) {
+                result.setScheme(scheme);
             }
 
-            final String host = url.getHost();
+            final String host = uri.getHost();
             if (host != null && !host.isEmpty()) {
                 result.setHost(host);
             }
 
-            final int port = url.getPort();
+            final int port = uri.getPort();
             if (port != -1) {
                 result.setPort(port);
             }
 
-            final String path = url.getPath();
+            final String path = uri.getPath();
             if (path != null && !path.isEmpty()) {
                 result.setPath(path);
             }
 
-            final String query = url.getQuery();
+            final String query = uri.getQuery();
             if (query != null && !query.isEmpty() && includeQuery) {
                 result.setQuery(query);
             }
         }
 
         return result;
+    }
+
+    public static final class QueryParameterIterable implements Iterable<Map.Entry<String, String>> {
+        private final String queryParameters;
+
+        public QueryParameterIterable(String queryParameters) {
+            this.queryParameters = queryParameters;
+        }
+
+        @Override
+        public Iterator<Map.Entry<String, String>> iterator() {
+            return new QueryParameterIterator(queryParameters);
+        }
     }
 
     public static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
@@ -333,7 +346,7 @@ public final class ImplUtils {
             this.queryParameters = queryParameters;
             this.queryParametersLength = queryParameters.length();
 
-            // If the URL query begins with '?' the first possible start of a query parameter key is the
+            // If the URI query begins with '?' the first possible start of a query parameter key is the
             // second character in the query.
             position = (queryParameters.startsWith("?")) ? 1 : 0;
         }

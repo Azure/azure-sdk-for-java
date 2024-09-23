@@ -3,6 +3,10 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.core.annotation.Fluent;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -12,15 +16,14 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
-import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorSpanExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
@@ -41,11 +44,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGene
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
-import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
-import io.opentelemetry.sdk.metrics.Aggregation;
-import io.opentelemetry.sdk.metrics.InstrumentSelector;
-import io.opentelemetry.sdk.metrics.View;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -53,7 +52,6 @@ import io.opentelemetry.sdk.trace.export.SpanExporter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -64,9 +62,11 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * This class provides a fluent builder API to configure the OpenTelemetry SDK with Azure Monitor Exporters.
+ * Low level API to create OpenTelemetry span, log record and metric exporters for Azure. With OpenTelemetry autoconfiguration ({@link AutoConfiguredOpenTelemetrySdkBuilder}), we recommend using {@link com.azure.monitor.opentelemetry.AzureMonitor}.
  */
-public final class AzureMonitorExporterBuilder {
+@Fluent
+public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<AzureMonitorExporterBuilder>,
+    TokenCredentialTrait<AzureMonitorExporterBuilder>, HttpTrait<AzureMonitorExporterBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
@@ -84,15 +84,12 @@ public final class AzureMonitorExporterBuilder {
     private ConnectionString connectionString;
     private TokenCredential credential;
 
-    // suppress warnings is needed in ApplicationInsights-Java repo, can be removed when upstreaming
-    @SuppressWarnings({ "UnusedVariable", "FieldCanBeLocal" })
-    private AzureMonitorExporterServiceVersion serviceVersion;
-
     private HttpPipeline httpPipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private ClientOptions clientOptions;
+    private RetryOptions retryOptions;
 
     private boolean frozen;
 
@@ -109,28 +106,42 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Sets the HTTP pipeline to use for the service client. If {@code httpPipeline} is set, all other
-     * settings are ignored.
+     * Sets the {@link HttpPipeline} to use for the service client.
      *
-     * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving
-     *                     responses.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public AzureMonitorExporterBuilder httpPipeline(HttpPipeline httpPipeline) {
+    @Override
+    public AzureMonitorExporterBuilder pipeline(HttpPipeline pipeline) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpPipeline cannot be changed after any of the build methods have been called"));
         }
-        this.httpPipeline = httpPipeline;
+        this.httpPipeline = pipeline;
         return this;
     }
 
     /**
-     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient The HTTP client to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    @Override
     public AzureMonitorExporterBuilder httpClient(HttpClient httpClient) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
@@ -141,45 +152,96 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Sets the logging configuration for HTTP requests and responses.
+     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
+     * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
-     * <p>If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP
-     *                       requests/responses.
+     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
+     * and from the service.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
-    public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    @Override
+    public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions logOptions) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpLogOptions cannot be changed after any of the build methods have been called"));
         }
-        this.httpLogOptions = httpLogOptions;
+        this.httpLogOptions = logOptions;
         return this;
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
      *
-     * @param httpPipelinePolicy a policy to be added to the http pipeline.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public AzureMonitorExporterBuilder addHttpPipelinePolicy(HttpPipelinePolicy httpPipelinePolicy) {
+    @Override
+    public AzureMonitorExporterBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpPipelinePolicies cannot be added after any of the build methods have been called"));
+                "httpPipelinePolicy cannot be added after any of the build methods have been called"));
         }
-        httpPipelinePolicies.add(Objects.requireNonNull(httpPipelinePolicy, "'policy' cannot be null."));
+        httpPipelinePolicies.add(Objects.requireNonNull(pipelinePolicy, "'policy' cannot be null."));
         return this;
     }
 
     /**
-     * Sets the client options such as application ID and custom headers to set on a request.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
      *
-     * @param clientOptions The client options.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if an {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    @Override
+    public AzureMonitorExporterBuilder retryOptions(RetryOptions retryOptions) {
+        if (frozen) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "retryOptions cannot be changed after any of the build methods have been called"));
+        }
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @see HttpClientOptions
+     */
+    @Override
     public AzureMonitorExporterBuilder clientOptions(ClientOptions clientOptions) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
@@ -197,6 +259,7 @@ public final class AzureMonitorExporterBuilder {
      * @throws NullPointerException If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
+    @Override
     public AzureMonitorExporterBuilder connectionString(String connectionString) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
@@ -207,26 +270,12 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Sets the Azure Monitor service version.
-     *
-     * @param serviceVersion The Azure Monitor service version.
-     * @return The update {@link AzureMonitorExporterBuilder} object.
-     */
-    public AzureMonitorExporterBuilder serviceVersion(AzureMonitorExporterServiceVersion serviceVersion) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "serviceVersion cannot be changed after any of the build methods have been called"));
-        }
-        this.serviceVersion = serviceVersion;
-        return this;
-    }
-
-    /**
      * Sets the token credential required for authentication with the ingestion endpoint service.
      *
      * @param credential The Azure Identity TokenCredential.
      * @return The updated {@link AzureMonitorExporterBuilder} object.
      */
+    @Override
     public AzureMonitorExporterBuilder credential(TokenCredential credential) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
@@ -237,106 +286,40 @@ public final class AzureMonitorExporterBuilder {
     }
 
     /**
-     * Creates an {@link AzureMonitorTraceExporter} based on the options set in the builder. This
+     * Creates an Azure Monitor span exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link SpanExporter}.
      *
-     * @return An instance of {@link AzureMonitorTraceExporter}.
+     * @param configProperties The OpenTelemetry configuration properties.
+     * @return An instance of {@link SpanExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public SpanExporter buildTraceExporter() {
-        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
-        internalBuildAndFreeze(defaultConfig);
-        // TODO (trask) how to pass along configuration properties?
-        return buildTraceExporter(defaultConfig);
+    public SpanExporter buildSpanExporter(ConfigProperties configProperties) {
+        internalBuildAndFreeze(configProperties);
+        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
+            statsbeatModule);
     }
 
     /**
-     * Creates an {@link AzureMonitorMetricExporter} based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link MetricExporter}.
-     *
-     * <p>When a new {@link MetricExporter} is created, it will automatically start {@link
-     * HeartbeatExporter}.
-     *
-     * @return An instance of {@link AzureMonitorMetricExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    public MetricExporter buildMetricExporter() {
-        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
-        internalBuildAndFreeze(defaultConfig);
-        // TODO (trask) how to pass along configuration properties?
-        return buildMetricExporter(defaultConfig);
-    }
-
-    /**
-     * Creates an {@link AzureMonitorLogRecordExporter} based on the options set in the builder. This
+     * Creates an Azure Monitor log record exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link LogRecordExporter}.
      *
-     * @return An instance of {@link AzureMonitorLogRecordExporter}.
+     * @param configProperties The OpenTelemetry configuration properties.
+     * @return An instance of {@link LogRecordExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public LogRecordExporter buildLogRecordExporter() {
-        ConfigProperties defaultConfig = DefaultConfigProperties.create(Collections.emptyMap());
-        internalBuildAndFreeze(defaultConfig);
-        // TODO (trask) how to pass along configuration properties?
-        return buildLogRecordExporter(defaultConfig);
-    }
-
-    /**
-     * Configures an {@link AutoConfiguredOpenTelemetrySdkBuilder} based on the options set in the builder.
-     *
-     * @param sdkBuilder the {@link AutoConfiguredOpenTelemetrySdkBuilder} in which to install the azure monitor exporters.
-     */
-    public void install(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) {
-        sdkBuilder.addPropertiesSupplier(() -> {
-            Map<String, String> props = new HashMap<>();
-            props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-            props.put("otel.metrics.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-            props.put("otel.logs.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
-            props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
-            return props;
-        });
-        sdkBuilder.addSpanExporterCustomizer((spanExporter, configProperties) -> {
-            if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                internalBuildAndFreeze(configProperties);
-                spanExporter = buildTraceExporter(configProperties);
-            }
-            return spanExporter;
-        });
-        sdkBuilder.addMetricExporterCustomizer((metricExporter, configProperties) -> {
-            if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                internalBuildAndFreeze(configProperties);
-                metricExporter = buildMetricExporter(configProperties);
-            }
-            return metricExporter;
-        });
-        sdkBuilder.addLogRecordExporterCustomizer((logRecordExporter, configProperties) -> {
-            if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                internalBuildAndFreeze(configProperties);
-                logRecordExporter = buildLogRecordExporter(configProperties);
-            }
-            return logRecordExporter;
-        });
-        // TODO (trask)
-        //        sdkBuilder.addTracerProviderCustomizer((sdkTracerProviderBuilder, configProperties) -> {
-        //            QuickPulse quickPulse = QuickPulse.create(getHttpPipeline());
-        //            return sdkTracerProviderBuilder.addSpanProcessor(
-        //                new LiveMetricsSpanProcessor(quickPulse, createSpanDataMapper()));
-        //        });
-        sdkBuilder.addMeterProviderCustomizer((sdkMeterProviderBuilder, config) -> sdkMeterProviderBuilder
-            .registerView(InstrumentSelector.builder().setMeterName("io.opentelemetry.sdk.trace").build(),
-                View.builder().setAggregation(Aggregation.drop()).build())
-            .registerView(InstrumentSelector.builder().setMeterName("io.opentelemetry.sdk.logs").build(),
-                View.builder().setAggregation(Aggregation.drop()).build()));
+    public LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
+        internalBuildAndFreeze(configProperties);
+        return new AzureMonitorLogRecordExporter(
+            new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
     }
 
     // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
     // When a customer call build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) multiple times with a diff ConfigProperties each time,
     // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using the config properties
     // in StatsbeatModule for testing only. We might need to revisit this approach later.
-    private void internalBuildAndFreeze(ConfigProperties configProperties) {
+    void internalBuildAndFreeze(ConfigProperties configProperties) {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
             statsbeatModule = initStatsbeatModule(configProperties);
@@ -350,12 +333,20 @@ public final class AzureMonitorExporterBuilder {
         }
     }
 
-    private SpanExporter buildTraceExporter(ConfigProperties configProperties) {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
-            statsbeatModule);
-    }
-
-    private MetricExporter buildMetricExporter(ConfigProperties configProperties) {
+    /**
+     * Creates an Azure monitor metric exporter based on the options set in the builder. This
+     * exporter is an implementation of OpenTelemetry {@link MetricExporter}.
+     *
+     * <p>When a new {@link MetricExporter} is created, it will automatically start {@link
+     * HeartbeatExporter}.
+     *
+     * @param configProperties The OpenTelemetry configuration properties.
+     * @return An instance of {@link MetricExporter}.
+     * @throws NullPointerException if the connection string is not set on this builder or if the
+     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
+     */
+    public MetricExporter buildMetricExporter(ConfigProperties configProperties) {
+        internalBuildAndFreeze(configProperties);
         HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties),
             builtTelemetryItemExporter::send);
         return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(configProperties), true),
@@ -371,11 +362,6 @@ public final class AzureMonitorExporterBuilder {
 
     private StatsbeatConnectionString getStatsbeatConnectionString() {
         return StatsbeatConnectionString.create(connectionString, null, null);
-    }
-
-    private LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
-        return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
     }
 
     private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
@@ -427,6 +413,10 @@ public final class AzureMonitorExporterBuilder {
                 throw LOGGER.logExceptionAsError(new IllegalStateException(
                     "'clientOptions' is not supported when custom 'httpPipeline' is specified"));
             }
+            if (retryOptions != null) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "'retryOptions' is not supported when custom 'httpPipeline' is specified"));
+            }
             return httpPipeline;
         }
 
@@ -442,6 +432,11 @@ public final class AzureMonitorExporterBuilder {
         if (credential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
         }
+
+        if (retryOptions != null) {
+            policies.add(new RetryPolicy(retryOptions));
+        }
+
         policies.addAll(httpPipelinePolicies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         return new com.azure.core.http.HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))

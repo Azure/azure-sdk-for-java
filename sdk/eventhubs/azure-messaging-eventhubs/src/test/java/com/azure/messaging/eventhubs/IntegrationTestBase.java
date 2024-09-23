@@ -16,6 +16,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +26,6 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,7 +52,11 @@ public abstract class IntegrationTestBase extends TestBase {
     // Tests use timeouts of 20-60 seconds to verify something has happened
     // We need a short try timeout so that if transient issue happens we have a chance to retry it before overall test timeout.
     // This is a good idea to do in any production application as well - no point in waiting too long
-    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3));
+    protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions()
+        .setTryTimeout(Duration.ofSeconds(3))
+        .setDelay(Duration.ofSeconds(1))
+        .setMaxDelay(Duration.ofSeconds(5))
+        .setMaxRetries(10);
 
     protected final ClientLogger logger;
 
@@ -95,11 +99,14 @@ public abstract class IntegrationTestBase extends TestBase {
     }
 
     // These are overridden because we don't use the Interceptor Manager.
+    @AfterEach
     @Override
     public void teardownTest() {
         logger.info("----- {}: Performing test clean-up. -----", testName);
         afterTest();
-        scheduler.dispose();
+        if (scheduler != null) {
+            scheduler.dispose();
+        }
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
 
@@ -210,19 +217,19 @@ public abstract class IntegrationTestBase extends TestBase {
      *
      * @param closeables The closeables to dispose of. If a closeable is {@code null}, it is skipped.
      */
-    protected void dispose(Closeable... closeables) {
+    protected void dispose(AutoCloseable... closeables) {
         if (closeables == null) {
             return;
         }
 
-        for (final Closeable closeable : closeables) {
+        for (final AutoCloseable closeable : closeables) {
             if (closeable == null) {
                 continue;
             }
 
             try {
                 closeable.close();
-            } catch (IOException error) {
+            } catch (Exception error) {
                 logger.error("[{}]: {} didn't close properly.", testName, closeable.getClass().getSimpleName(), error);
             }
         }
@@ -232,11 +239,14 @@ public abstract class IntegrationTestBase extends TestBase {
      * Disposes of registered with {@code toClose} method resources.
      */
     protected void dispose() {
-        dispose(toClose.toArray(new Closeable[0]));
+        // best effort to close resources in a reverse order
+        Collections.reverse(toClose);
+        dispose(toClose.toArray(new AutoCloseable[0]));
         toClose.clear();
     }
 
     private void skipIfNotRecordMode() {
         Assumptions.assumeTrue(getTestMode() != TestMode.PLAYBACK, "Is not in RECORD/LIVE mode.");
     }
+
 }

@@ -45,6 +45,7 @@
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
     <nativeImage.buildArgs>--initialize-at-build-time=com.azure.data.appconfiguration.TestHelper</nativeImage.buildArgs>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
@@ -67,7 +68,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
