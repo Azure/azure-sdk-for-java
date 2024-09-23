@@ -7,13 +7,11 @@ package com.azure.data.schemaregistry.implementation.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/**
- * Exception thrown for an invalid response with Error information.
- */
+/** Exception thrown for an invalid response with Error information. */
 public final class ErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the ErrorException class.
-     * 
+     *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -23,7 +21,7 @@ public final class ErrorException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the ErrorException class.
-     * 
+     *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
@@ -32,9 +30,7 @@ public final class ErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public Error getValue() {
         return (Error) super.getValue();
