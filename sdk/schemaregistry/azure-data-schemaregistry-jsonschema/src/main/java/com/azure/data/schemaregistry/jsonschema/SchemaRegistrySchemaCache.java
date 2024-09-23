@@ -198,7 +198,7 @@ class SchemaRegistrySchemaCache {
         }
 
         if (Objects.isNull(schemaRegistryAsyncClient)) {
-            return monoError(LOGGER, new IllegalStateException("Cannot use async methods if SchemaRegistryAsyncClient "
+            return monoError(LOGGER, new IllegalStateException("Cannot use async methods if SchemaRegistryAsyncClient is not set."
                 + "Set client in SchemaRegistryJsonSchemaSerializer.schemaRegistryClient(SchemaRegistryAsyncClient)."
             ));
         }
