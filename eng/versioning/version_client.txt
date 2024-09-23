@@ -131,7 +131,7 @@ com.azure:azure-health-deidentification;1.0.0;1.0.0-beta.2
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-identity;1.13.3;1.14.0-beta.2
+com.azure:azure-identity;1.13.3;1.14.0-beta.3
 com.azure:azure-identity-extensions;1.1.19;1.2.0-beta.2
 com.azure:azure-identity-broker;1.1.5;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
@@ -149,7 +149,7 @@ com.azure:azure-maps-render;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
-com.azure:azure-messaging-eventgrid;4.24.0;4.25.0-beta.1
+com.azure:azure-messaging-eventgrid;4.25.0;4.26.0-beta.1
 com.azure:azure-messaging-eventgrid-namespaces;1.0.1;1.1.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.18.7;5.19.0-beta.4
@@ -471,6 +471,7 @@ com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0-beta.2;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 io.clientcore:clientcore-parent;1.0.0-beta.1;1.0.0-beta.1
@@ -487,7 +488,6 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-core-experimental;1.0.0-beta.54
 unreleased_com.azure:azure-messaging-servicebus;7.18.0-beta.2
 unreleased_com.azure:azure-messaging-eventhubs;5.19.0-beta.3
 unreleased_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.0-beta.3

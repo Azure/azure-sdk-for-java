@@ -1,6 +1,16 @@
 # Release History
 
-## 1.14.0-beta.2 (2024-09-19)
+## 1.14.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.14.0-beta.2 (2024-09-20)
 
 ### Features Added
 - Added object id support in `ManagedIdentityCredential`. It can be configured via `ManagedIdentityCredentialBuilder`.
