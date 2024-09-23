@@ -3,47 +3,50 @@
 
 package com.azure.communication.rooms;
 
-import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.rooms.implementation.AzureCommunicationRoomServiceImpl;
-import com.azure.communication.rooms.implementation.ParticipantsImpl;
+
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.rooms.implementation.RoomsImpl;
+import com.azure.communication.rooms.implementation.ParticipantsImpl;
+import com.azure.communication.rooms.implementation.converters.ParticipantRoleConverter;
 import com.azure.communication.rooms.implementation.converters.RoomModelConverter;
 import com.azure.communication.rooms.implementation.converters.RoomParticipantConverter;
-import com.azure.communication.rooms.implementation.models.ParticipantProperties;
 import com.azure.communication.rooms.implementation.models.RoomModel;
-import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
+import com.azure.communication.rooms.implementation.models.ParticipantProperties;
 import com.azure.communication.rooms.models.CommunicationRoom;
 import com.azure.communication.rooms.models.CreateRoomOptions;
 import com.azure.communication.rooms.models.RemoveParticipantsResult;
 import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.communication.rooms.models.UpdateRoomOptions;
+import com.azure.communication.rooms.models.AddOrUpdateParticipantsResult;
+import com.azure.communication.rooms.implementation.models.UpdateParticipantsRequest;
+import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
+import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.paging.PageRetriever;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.azure.communication.rooms.implementation.Transforms.convertRoomIdentifiersToMapForRemove;
-import static com.azure.communication.rooms.implementation.Transforms.convertRoomParticipantsToMapForAddOrUpdate;
-import static com.azure.communication.rooms.implementation.Transforms.getCommunicationRoomFromResponse;
-import static com.azure.communication.rooms.implementation.Transforms.getUpdateRequest;
-import static com.azure.communication.rooms.implementation.Transforms.toCreateRoomRequest;
-import static com.azure.communication.rooms.implementation.Transforms.toUpdateRoomRequest;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 
@@ -336,14 +339,19 @@ public final class RoomsAsyncClient {
 
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
 
-            String updateRequest = getUpdateRequest(participantMap);
-            return this.participantsClient
-                .updateAsync(roomId, updateRequest, context)
-                .flatMap((response) -> {
-                    return Mono.just(new AddOrUpdateParticipantsResult());
-                });
+            ObjectMapper mapper = new ObjectMapper();
 
-        } catch (IOException ex) {
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
+
+            return this.participantsClient
+                    .updateAsync(roomId, updateRequest, context)
+                    .flatMap((response) -> {
+                        return Mono.just(new AddOrUpdateParticipantsResult());
+                    });
+
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -372,14 +380,18 @@ public final class RoomsAsyncClient {
 
             Map<String, ParticipantProperties> participantMap = convertRoomParticipantsToMapForAddOrUpdate(participants);
 
-            String updateRequest = getUpdateRequest(participantMap);
+            ObjectMapper mapper = new ObjectMapper();
+
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
 
 
             return this.participantsClient
-                .updateWithResponseAsync(roomId, updateRequest, context)
-                .map(result -> new SimpleResponse<AddOrUpdateParticipantsResult>(
-                    result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
-        } catch (IOException ex) {
+                    .updateWithResponseAsync(roomId, updateRequest, context)
+                    .map(result -> new SimpleResponse<AddOrUpdateParticipantsResult>(
+                            result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -409,13 +421,17 @@ public final class RoomsAsyncClient {
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                     participantsIdentifiers);
 
-            String updateRequest = getUpdateRequest(participantMap);
+            ObjectMapper mapper = new ObjectMapper();
+
+            String updateRequest =  mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
             return this.participantsClient
-                .updateAsync(roomId, updateRequest, context)
-                .flatMap((response) -> {
-                    return Mono.just(new RemoveParticipantsResult());
-                });
-        } catch (IOException ex) {
+                    .updateAsync(roomId, updateRequest, context)
+                    .flatMap((response) -> {
+                        return Mono.just(new RemoveParticipantsResult());
+                    });
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -445,12 +461,16 @@ public final class RoomsAsyncClient {
             Map<String, ParticipantProperties> participantMap = convertRoomIdentifiersToMapForRemove(
                     participantsIdentifiers);
 
-            String updateRequest = getUpdateRequest(participantMap);
+            ObjectMapper mapper = new ObjectMapper();
+
+            String updateRequest = mapper.writeValueAsString(new UpdateParticipantsRequest().setParticipants(participantMap));
+
             return this.participantsClient
-                .updateWithResponseAsync(roomId, updateRequest, context)
-                .map(result -> new SimpleResponse<RemoveParticipantsResult>(
-                    result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
-        } catch (IOException ex) {
+                    .updateWithResponseAsync(roomId, updateRequest, context)
+                    .map(result -> new SimpleResponse<RemoveParticipantsResult>(
+                            result.getRequest(), result.getStatusCode(), result.getHeaders(), null));
+        } catch (JsonProcessingException ex) {
+            ex.printStackTrace();
             return Mono.error(new IllegalArgumentException("Failed to process JSON input", ex));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -505,4 +525,105 @@ public final class RoomsAsyncClient {
 
         return PagedFlux.create(provider);
     }
+
+    private CommunicationRoom getCommunicationRoomFromResponse(RoomModel room) {
+        return new CommunicationRoom(
+                room.getId(),
+                room.getValidFrom(),
+                room.getValidUntil(),
+                room.getCreatedAt(),
+                room.isPstnDialOutEnabled());
+    }
+
+    /**
+     * Translate to create room request.
+     *
+     * @return The create room request.
+     */
+    private CreateRoomRequest toCreateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil,
+            Boolean isPstnDialOutEnabled, Iterable<RoomParticipant> participants) {
+        CreateRoomRequest createRoomRequest = new CreateRoomRequest();
+        if (validFrom != null) {
+            createRoomRequest.setValidFrom(validFrom);
+        }
+
+        if (validUntil != null) {
+            createRoomRequest.setValidUntil(validUntil);
+        }
+
+        createRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
+
+        Map<String, ParticipantProperties> roomParticipants = new HashMap<>();
+
+        if (participants != null) {
+            roomParticipants = convertRoomParticipantsToMapForAddOrUpdate(participants);
+        }
+
+        if (participants != null) {
+            createRoomRequest.setParticipants(roomParticipants);
+        }
+
+        return createRoomRequest;
+    }
+
+    /**
+     * Translate to update room request.
+     *
+     * @return The update room request.
+     */
+    private UpdateRoomRequest toUpdateRoomRequest(OffsetDateTime validFrom, OffsetDateTime validUntil, Boolean isPstnDialOutEnabled) {
+        UpdateRoomRequest updateRoomRequest = new UpdateRoomRequest();
+
+        if (validFrom != null) {
+            updateRoomRequest.setValidFrom(validFrom);
+        }
+
+        if (validUntil != null) {
+            updateRoomRequest.setValidUntil(validUntil);
+        }
+
+        if (isPstnDialOutEnabled != null) {
+            updateRoomRequest.setPstnDialOutEnabled(isPstnDialOutEnabled);
+        }
+
+        return updateRoomRequest;
+    }
+
+    /**
+     * Translate to map for add or update participants.
+     *
+     * @return Map of participants.
+     */
+    private Map<String, ParticipantProperties> convertRoomParticipantsToMapForAddOrUpdate(
+            Iterable<RoomParticipant> participants) {
+        Map<String, ParticipantProperties> participantMap = new HashMap<>();
+
+        if (participants != null) {
+            for (RoomParticipant participant : participants) {
+                participantMap.put(participant.getCommunicationIdentifier().getRawId(),
+                        new ParticipantProperties().setRole(ParticipantRoleConverter.convert(participant.getRole())));
+            }
+        }
+
+        return participantMap;
+    }
+
+    /**
+     * Translate to map for remove participants.
+     *
+     * @return Map of participants.
+     */
+    private Map<String, ParticipantProperties> convertRoomIdentifiersToMapForRemove(
+            Iterable<CommunicationIdentifier> identifiers) {
+        Map<String, ParticipantProperties> participantMap = new HashMap<>();
+
+        if (identifiers != null) {
+            for (CommunicationIdentifier identifier : identifiers) {
+                participantMap.put(identifier.getRawId(), null);
+            }
+        }
+
+        return participantMap;
+    }
+
 }
