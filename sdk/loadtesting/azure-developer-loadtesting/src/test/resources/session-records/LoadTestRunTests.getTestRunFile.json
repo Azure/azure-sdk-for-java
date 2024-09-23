@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.eastus.cnt-prod.loadtesting.azure.com/test-runs/33333333-1234-1234-1234-123456789012/files/sample-JMX-file.jmx?api-version=2022-11-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-developer-loadtesting/1.0.0 (17.0.4; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dfb9d52e-795f-44a2-87bc-0bf6541fedc9"
+    },
+    "Response" : {
+      "content-length" : "382",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "api-supported-versions" : "2021-07-01-preview, 2022-06-01-preview, 2022-11-01",
+      "X-Content-Type-Options" : "nosniff",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "20c4793c-81ee-4d88-aaed-f725561bf09b",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\"url\":\"REDACTED\",\"fileName\":\"sample-JMX-file.jmx\",\"fileType\":\"JMX_FILE\",\"expireDateTime\":\"2022-12-18T19:09:23.2658032\",\"validationStatus\":\"VALIDATION_SUCCESS\"}",
+      "Date" : "Sun, 18 Dec 2022 18:59:23 GMT",
+      "x-ms-correlation-request-id" : "ff6ea3ed-1a20-4773-8ed5-42f955f8c8de",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
