@@ -34,7 +34,7 @@ autorest
 use: '@autorest/java@4.1.22'
 output-folder: ../
 java: true
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/certificates.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a2f6f742d088dcc712e67cb2745d8271eaa370ff/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.5-preview.1/certificates.json
 title: CertificateClient
 namespace: com.azure.security.keyvault.certificates
 models-subpackage: implementation.models
