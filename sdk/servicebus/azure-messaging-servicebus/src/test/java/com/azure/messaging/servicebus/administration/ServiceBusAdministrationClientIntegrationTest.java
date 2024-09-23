@@ -3,16 +3,21 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -39,6 +44,7 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
+import reactor.core.publisher.Mono;
 
 import java.time.Clock;
 import java.time.Duration;
@@ -46,21 +52,24 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
+import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
+import static com.azure.messaging.servicebus.TestUtils.getFullyQualifiedDomainName;
 import static com.azure.messaging.servicebus.TestUtils.getQueueBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getRuleBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getTopicBaseName;
-import static com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClientIntegrationTest.configure;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -69,7 +78,73 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Execution(ExecutionMode.SAME_THREAD)
 public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
-    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
+
+    /**
+     * Test to connect to the service bus with an azure identity TokenCredential.
+     * com.azure.identity.ClientSecretCredential is used in this test.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    @Test
+    void azureIdentityCredentials() {
+        // Arrange
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+        final TokenCredential tokenCredential;
+        if (interceptorManager.isPlaybackMode()) {
+            tokenCredential = request -> Mono.fromCallable(() ->
+                new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5))));
+        } else {
+            tokenCredential = new DefaultAzureCredentialBuilder().build();
+        }
+
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder();
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        final ServiceBusAdministrationClient client = builder
+            .credential(fullyQualifiedDomainName, tokenCredential)
+            .buildClient();
+
+        // Act
+        NamespaceProperties properties = client.getNamespaceProperties();
+
+        // Assert
+        assertNotNull(properties);
+
+        if (!interceptorManager.isPlaybackMode()) {
+            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+            assertEquals(split[0], properties.getName());
+        }
+    }
+
+    /**
+     * Test to connect to the service bus with an azure sas credential.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    @Test
+    void azureSasCredentialsTest() {
+        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+
+        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+        String connectionString = getConnectionString(true);
+        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = sasPattern.matcher(connectionString);
+        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
+        ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .endpoint("https://" + fullyQualifiedDomainName)
+            .credential(new AzureSasCredential(matcher.group(1)))
+            .buildClient();
+        NamespaceProperties np = client.getNamespaceProperties();
+        assertNotNull(np.getName());
+    }
 
     //region Create tests
 
@@ -430,7 +505,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final NamespaceProperties namespaceProperties = client.getNamespaceProperties();
         assertEquals(NamespaceType.MESSAGING, namespaceProperties.getNamespaceType());
         if (!interceptorManager.isPlaybackMode()) {
-            final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
+            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
             assertEquals(split[0], namespaceProperties.getName());
         }
     }
@@ -857,9 +932,26 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     //endregion
 
     private ServiceBusAdministrationClient getClient() {
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=sb://" + getFullyQualifiedDomainName() + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            : TestUtils.getConnectionString(false);
+
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        configure(builder, null, interceptorManager, credentialCached);
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .connectionString(connectionString)
+            .retryOptions(new RetryOptions(new FixedDelayOptions(1, TIMEOUT)));
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_SANITIZERS);
+            interceptorManager.addMatchers(ServiceBusAdministrationAsyncClientIntegrationTest.TEST_PROXY_REQUEST_MATCHERS);
+        }
+
         return builder.buildClient();
     }
 }

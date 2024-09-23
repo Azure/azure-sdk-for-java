@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
@@ -13,14 +14,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxyRequestMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -30,6 +28,7 @@ import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOp
 import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
 import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
 import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.messaging.servicebus.administration.models.NamespaceType;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.RuleProperties;
@@ -40,8 +39,8 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -54,10 +53,12 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
+import static com.azure.messaging.servicebus.TestUtils.getConnectionString;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
 import static com.azure.messaging.servicebus.TestUtils.getSubscriptionBaseName;
@@ -99,27 +100,21 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
     }
 
-    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
-
     public static Stream<Arguments> createHttpClients() {
         return Stream.of(Arguments.of(new NettyAsyncHttpClientBuilder().build()));
     }
 
     /**
-     * Test to connect to the service bus using com.azure.identity.ClientSecretCredential.
-     * <p>
-     * This is a potential test eligible to run in auxiliary tenant with secret auth. The CI Pipeline cannot be enabled
-     * for both Federated Managed Identity auth and Secret auth, the ARM deployment will fail if an attempt is made to
-     * enable two auth types - Exception calling "Invoke" with "0" argument(s): "Cannot process command because of one or
-     * more missing mandatory parameters: testApplicationSecret.". Hence, this test is disabled until auxiliary tenant is
-     * available.
-     * </p>
+     * Test to connect to the service bus with an azure identity TokenCredential.
+     * com.azure.identity.ClientSecretCredential is used in this test.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
      */
     @ParameterizedTest
     @MethodSource("createHttpClients")
-    @Disabled("The CI Pipeline cannot be enabled for both Federated Managed Identity auth and Secret auth")
-    void azureClientSecretCredential(HttpClient httpClient) {
-        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(true);
+    void azureIdentityCredentials(HttpClient httpClient) {
+
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = request -> Mono.fromCallable(() ->
@@ -135,7 +130,8 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         } else if (interceptorManager.isLiveMode()) {
             builder.httpClient(httpClient);
         } else {
-            builder.httpClient(httpClient).addPolicy(interceptorManager.getRecordPolicy());
+            builder.httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy());
         }
 
         final ServiceBusAdministrationAsyncClient client = builder
@@ -145,10 +141,45 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
         StepVerifier.create(client.getNamespaceProperties())
             .assertNext(properties -> {
                 assertNotNull(properties);
+
                 if (!interceptorManager.isPlaybackMode()) {
-                    final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
+                    final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
                     assertEquals(split[0], properties.getName());
                 }
+            })
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+    }
+
+    /**
+     * Test to connect to the service bus with an azure sas credential.
+     * ServiceBusSharedKeyCredential doesn't need a specific test method because other tests below
+     * use connection string, which is converted to a ServiceBusSharedKeyCredential internally.
+     */
+    @Test
+    void azureSasCredentialsTest() {
+        // Arrange
+        assumeTrue(interceptorManager.isLiveMode(), "Azure Identity test is for live test only");
+        final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
+
+        assumeTrue(fullyQualifiedDomainName != null && !fullyQualifiedDomainName.isEmpty(),
+            "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME variable needs to be set when using credentials.");
+
+        String connectionString = getConnectionString(true);
+        Pattern sasPattern = Pattern.compile("SharedAccessSignature=(.*);?", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = sasPattern.matcher(connectionString);
+        assertTrue(matcher.find(), "Couldn't find SAS from connection string");
+
+        ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
+            .endpoint("https://" + fullyQualifiedDomainName)
+            .credential(new AzureSasCredential(matcher.group(1)))
+            .buildAsyncClient();
+
+        // Act & Assert
+        StepVerifier.create(client.getNamespacePropertiesWithResponse())
+            .assertNext(response -> {
+                final NamespaceProperties np = response.getValue();
+                assertNotNull(np.getName());
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
@@ -703,7 +734,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             .assertNext(properties -> {
                 assertEquals(NamespaceType.MESSAGING, properties.getNamespaceType());
                 if (!interceptorManager.isPlaybackMode()) {
-                    final String[] split = TestUtils.getFullyQualifiedDomainName(true).split("\\.", 2);
+                    final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
                     assertEquals(split[0], properties.getName());
                 }
             })
@@ -1181,36 +1212,19 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
-        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        configure(builder, httpClient, interceptorManager, credentialCached);
-        return builder.buildAsyncClient();
-    }
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            : TestUtils.getConnectionString(false);
 
-    static void configure(ServiceBusAdministrationClientBuilder builder,
-        HttpClient httpClient, InterceptorManager interceptorManager, AtomicReference<TokenCredential> credentialCached) {
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .connectionString(connectionString);
+
         if (interceptorManager.isPlaybackMode()) {
-            builder.credential(TestUtils.getFullyQualifiedDomainName(true), new MockTokenCredential());
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isLiveMode()) {
-            final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
-            assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
-            final TokenCredential credential = TestUtils.getPipelineCredential(credentialCached);
-            builder.credential(fullyQualifiedDomainName, credential);
-            if (httpClient != null) {
-                builder.httpClient(httpClient);
-            }
+            builder.httpClient(httpClient);
         } else {
-            // Record Mode.
-            final String connectionString = TestUtils.getConnectionString(false);
-            if (CoreUtils.isNullOrEmpty(connectionString)) {
-                final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName(false);
-                assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedDomainName), "FullyQualifiedDomainName is not set.");
-                final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-                builder.credential(fullyQualifiedDomainName, credential);
-            } else {
-                builder.connectionString(connectionString);
-            }
             builder.httpClient(httpClient).addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -1218,5 +1232,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBa
             interceptorManager.addSanitizers(TEST_PROXY_SANITIZERS);
             interceptorManager.addMatchers(TEST_PROXY_REQUEST_MATCHERS);
         }
+
+        return builder.buildAsyncClient();
     }
 }

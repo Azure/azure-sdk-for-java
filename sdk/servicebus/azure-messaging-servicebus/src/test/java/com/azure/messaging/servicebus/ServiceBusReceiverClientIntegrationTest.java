@@ -855,18 +855,18 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     private void setSender(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled, boolean sharedConnection) {
-        this.sender = toClose(getSenderBuilder(entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient());
+        this.sender = toClose(getSenderBuilder(false, entityType, entityIndex, isSessionEnabled, sharedConnection).buildClient());
     }
 
     private void setReceiver(MessagingEntityType entityType, int entityIndex, boolean isSessionEnabled, boolean sharedConnection) {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.sessionReceiver = toClose(getSessionReceiverBuilder(entityType, entityIndex, sharedConnection, null)
+            this.sessionReceiver = toClose(getSessionReceiverBuilder(false, entityType, entityIndex, sharedConnection, null)
                 .buildClient());
             this.receiver = toClose(this.sessionReceiver.acceptSession(sessionId));
         } else {
-            this.receiver = toClose(getReceiverBuilder(entityType, entityIndex, sharedConnection)
+            this.receiver = toClose(getReceiverBuilder(false, entityType, entityIndex, sharedConnection)
                 .buildClient());
         }
     }
