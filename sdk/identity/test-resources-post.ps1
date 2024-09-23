@@ -46,34 +46,35 @@ az login --service-principal -u $(getVariable('IDENTITY_CLIENT_ID')) -p $(getVar
 az account set --subscription $(getVariable('IDENTITY_SUBSCRIPTION_ID'))
 
 
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azBuildToolsRootPom | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-json/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-xml/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-vertx/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-jdk-httpclient/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azIdentityRootPom | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-common/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml" | Write-Host
-mvn clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-blob/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azBuildToolsRootPom | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-json/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azSerRootPom/azure-xml/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-experimental/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-netty/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-okhttp/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-vertx/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-http-jdk-httpclient/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azCoreRootPom/azure-core-test/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f $azIdentityRootPom | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-common/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-internal-avro/pom.xml" | Write-Host
+mvn -ntp clean install -DskipTests "-Drevapi.skip=true" "-Dcheckstyle.skip=true" "-Dcodesnippet.skip=true" "-Dspotbugs.skip=true" "-Dmaven.javadoc.skip=true" "-Dspotless.check.skip=true" "-Dspotless.apply.skip=true" "-Djacoco.skip=true" -f "$azStorageRootPom/azure-storage-blob/pom.xml" | Write-Host
 
 
-mvn clean install -DskipTests -f $webappRootPom | Write-Host
+mvn -ntp clean install -DskipTests -f $webappRootPom | Write-Host
 az webapp deploy --resource-group $(getVariable('IDENTITY_RESOURCE_GROUP')) --name $(getVariable('IDENTITY_WEBAPP_NAME')) --src-path "$webappRoot/target/identity-test-webapp-1.0.0-beta.1.jar" --type jar
 
 Write-Host "Building Function App"
 
 # build function app
-mvn clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom | Write-Host
+mvn -ntp clean package "-DfunctionAppName=$(getVariable('IDENTITY_FUNCTION_NAME'))" "-DresourceGroup=$(getVariable('IDENTITY_RESOURCE_GROUP'))" "-DappServicePlanName=$(getVariable('IDENTITY_APPSERVICE_NAME'))" -f $funcAppPom | Write-Host
 compress-archive  "$funcAppRoot/target/azure-functions/$(getVariable('IDENTITY_FUNCTION_NAME'))/*" -DestinationPath "$funcAppRoot/target/funcpackage.zip"
 az functionapp deployment source config-zip -g $(getVariable('IDENTITY_RESOURCE_GROUP')) -n $(getVariable('IDENTITY_FUNCTION_NAME')) --src "$funcAppRoot/target/funcpackage.zip"
 
 Write-Host "Building VM App"
 # build VM app
-mvn clean package -f "$vmRoot/pom.xml" | Write-Host
+mvn -ntp clean package -f "$vmRoot/pom.xml" | Write-Host
 
 # Virtual machine setup
 $vmScript = @"
@@ -92,7 +93,7 @@ az storage blob upload --container-name "vmcontainer" --file "$vmRoot/target/ide
 
 if ($IsMacOS -eq $false) {
 
-    mvn clean package -f "$aksRoot/pom.xml" | Write-Host
+    mvn -ntp clean package -f "$aksRoot/pom.xml" | Write-Host
 
     az acr login -n $DeploymentOutputs['IDENTITY_ACR_NAME']
     $loginServer = az acr show -n $DeploymentOutputs['IDENTITY_ACR_NAME'] --query loginServer -o tsv
