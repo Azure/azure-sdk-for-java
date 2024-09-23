@@ -3,33 +3,30 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.chat.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.chat.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Content of a chat message.
  */
 @Fluent
-public final class ChatMessageContent implements JsonSerializable<ChatMessageContent> {
+public final class ChatMessageContent {
 
-    private final String message;
+    @JsonProperty(value = "message")
+    private String message;
 
-    private final String topic;
+    @JsonProperty(value = "topic")
+    private String topic;
 
-    private final Iterable<ChatParticipant> participants;
+    @JsonProperty(value = "participants")
+    private Iterable<ChatParticipant> participants;
 
+    @JsonProperty(value = "attachments")
     private Iterable<ChatAttachment> attachments;
 
-    private final CommunicationIdentifier initiator;
+    @JsonProperty(value = "initiatorCommunicationIdentifier")
+    private CommunicationIdentifier initiator;
 
     /**
      * Constructs a new ChatMessageContent
@@ -109,56 +106,4 @@ public final class ChatMessageContent implements JsonSerializable<ChatMessageCon
         return this.initiator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("message", message);
-        jsonWriter.writeStringField("topic", topic);
-        jsonWriter.writeArrayField("participants", participants, (writer, participant) -> participant.toJson(writer));
-        jsonWriter.writeArrayField("attachments", attachments, (writer, attachment) -> attachment.toJson(writer));
-        // final CommunicationIdentifierModel identifier = CommunicationIdentifierConverter.convert(initiator);
-        // jsonWriter.writeJsonField("initiatorCommunicationIdentifier", identifier);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatMessageContent from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatMessageContent if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ChatMessageContent.
-     */
-    public static ChatMessageContent fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String message = null;
-            String topic = null;
-            List<ChatParticipant> participants = null;
-            List<ChatAttachment> attachments = null;
-            CommunicationIdentifier initiator = null;
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("message".equals(fieldName)) {
-                    message = reader.getString();
-                } else if ("topic".equals(fieldName)) {
-                    topic = reader.getString();
-                } else if ("participants".equals(fieldName)) {
-                    participants = reader.readArray(ChatParticipant::fromJson);
-                } else if ("attachments".equals(fieldName)) {
-                    attachments = reader.readArray(ChatAttachment::fromJson);
-                } else if ("initiatorCommunicationIdentifier".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
-                    initiator = CommunicationIdentifierConverter.convert(identifier);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new ChatMessageContent(message, topic, participants, initiator)
-                .setAttachments(attachments);
-        });
-    }
 }
