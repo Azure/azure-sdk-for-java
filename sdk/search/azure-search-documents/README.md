@@ -75,7 +75,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.7.0</version>
+    <version>11.7.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -549,7 +549,7 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 
 ### Default HTTP Client
 
-By default, a Netty based HTTP client will be used. The [HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients)
+By default, a Netty based HTTP client will be used. The [HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients)
 provides more information on configuring or changing the HTTP client.
 
 ## Next steps
@@ -581,7 +581,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src/samples/
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/search/azure-search-documents/src
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/

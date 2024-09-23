@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.models.GeoPoint;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
@@ -51,6 +52,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -67,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 /**
  * Tests Vector search functionality.
  */
-@Execution(ExecutionMode.SAME_THREAD)
+@Execution(ExecutionMode.CONCURRENT)
 public class VectorSearchTests extends SearchTestBase {
     private static void assertKeysEqual(List<SearchResult> results, Function<SearchResult, String> keyAccessor,
                                         String[] expectedKeys) {
@@ -88,7 +90,7 @@ public class VectorSearchTests extends SearchTestBase {
         searchIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .serviceVersion(SearchServiceVersion.V2023_11_01)
-            .credential(TestHelpers.getTestTokenCredential())
+            .credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY)
             .buildClient();
 
@@ -385,7 +387,6 @@ public class VectorSearchTests extends SearchTestBase {
                 // Update document to add vector field data
                 resultDoc.put("DescriptionVector", VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION);
                 return searchClient.mergeDocuments(Collections.singletonList(resultDoc));
-
             })
             .flatMap(ignored -> {
                 // Equivalent of 'waitForIndexing()' where in PLAYBACK getting the document is called right away,
@@ -393,8 +394,8 @@ public class VectorSearchTests extends SearchTestBase {
                 if (TEST_MODE == TestMode.PLAYBACK) {
                     return searchClient.getDocument("1", SearchDocument.class);
                 } else {
-                    waitForIndexing();
-                    return searchClient.getDocument("1", SearchDocument.class);
+                    return searchClient.getDocument("1", SearchDocument.class)
+                        .delaySubscription(Duration.ofSeconds(2));
                 }
             });
 
@@ -403,7 +404,6 @@ public class VectorSearchTests extends SearchTestBase {
             .assertNext(response -> {
                 assertEquals(document.get("Id"), response.get("Id"));
                 assertEquals(document.get("Name"), response.get("Name"));
-                assertNotNull(response.get("DescriptionVector"));
                 compareFloatListToDeserializedFloatList(VectorSearchEmbeddings.DEFAULT_VECTORIZE_DESCRIPTION,
                     (List<Number>) response.get("DescriptionVector"));
             })
