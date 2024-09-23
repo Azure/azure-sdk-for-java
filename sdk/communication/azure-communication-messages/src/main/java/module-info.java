@@ -8,6 +8,7 @@ module com.azure.communication.messages {
     exports com.azure.communication.messages;
     exports com.azure.communication.messages.models.channels;
     exports com.azure.communication.messages.models;
-    opens com.azure.communication.messages.models.channels to com.azure.core;
-    opens com.azure.communication.messages.models to com.azure.core;
+    opens com.azure.communication.messages.implementation.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.communication.messages.models.channels to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.communication.messages.models to com.azure.core, com.fasterxml.jackson.databind;
 }
