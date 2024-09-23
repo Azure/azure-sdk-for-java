@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -63,6 +64,7 @@ public final class DtmfTone extends ExpandableStringEnum<DtmfTone> {
      * @param name a name to look for.
      * @return the corresponding Tone.
      */
+    @JsonCreator
     public static DtmfTone fromString(String name) {
         return fromString(name, DtmfTone.class);
     }

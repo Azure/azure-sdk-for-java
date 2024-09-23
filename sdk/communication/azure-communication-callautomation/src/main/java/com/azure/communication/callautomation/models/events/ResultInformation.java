@@ -4,35 +4,33 @@
 package com.azure.communication.callautomation.models.events;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResultInformation model. */
 @Immutable
-public final class ResultInformation implements JsonSerializable<ResultInformation> {
+public final class ResultInformation {
     /*
      * The code property.
      */
+    @JsonProperty(value = "code")
     private final Integer code;
 
     /*
      * The subCode property.
      */
+    @JsonProperty(value = "subCode")
     private final Integer subCode;
 
     /*
      * The message property.
      */
+    @JsonProperty(value = "message")
     private final String message;
 
-    private ResultInformation(Integer code, Integer subCode, String message) {
-        this.code = code;
-        this.subCode = subCode;
-        this.message = message;
+    private ResultInformation() {
+        code = null;
+        subCode = null;
+        message = null;
     }
 
     /**
@@ -60,48 +58,5 @@ public final class ResultInformation implements JsonSerializable<ResultInformati
      */
     public String getMessage() {
         return this.message;
-    }
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("code", this.code);
-        jsonWriter.writeNumberField("subCode", this.subCode);
-        jsonWriter.writeStringField("message", this.message);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ResultInformation from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ResultInformation if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ResultInformation.
-     */
-    public static ResultInformation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Integer code = null;
-            Integer subCode = null;
-            String message = null;
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("code".equals(fieldName)) {
-                    code = reader.getNullable(JsonReader::getInt);
-                } else if ("subCode".equals(fieldName)) {
-                    subCode = reader.getNullable(JsonReader::getInt);
-                } else if ("message".equals(fieldName)) {
-                    message = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new ResultInformation(code, subCode, message);
-        });
     }
 }

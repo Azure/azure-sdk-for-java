@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -106,6 +107,7 @@ public final class DtmfToneInternal extends ExpandableStringEnum<DtmfToneInterna
      * @param name a name to look for.
      * @return the corresponding DtmfToneInternal.
      */
+    @JsonCreator
     public static DtmfToneInternal fromString(String name) {
         return fromString(name, DtmfToneInternal.class);
     }

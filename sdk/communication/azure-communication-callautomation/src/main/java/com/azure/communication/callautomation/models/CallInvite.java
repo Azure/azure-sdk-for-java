@@ -7,7 +7,6 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
@@ -54,17 +53,7 @@ public final class CallInvite {
         this.sourceCallerIdNumber = null;
         this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
     }
-    
-    /**
-     * Create a CallInvite object with MicrosoftTeamsAppIdentifier
-     * @param targetIdentity Target's MicrosoftTeamsAppIdentifier
-     */
-    public CallInvite(MicrosoftTeamsAppIdentifier targetIdentity) {
-        this.targetParticipant = targetIdentity;
-        this.sourceCallerIdNumber = null;
-        this.customCallingContext = new CustomCallingContext(null, new HashMap<>());
-    }
-    
+
     /**
      * Get target's CommunicationIdentifier
      * @return target's CommunicationIdentifier
