@@ -1,14 +1,13 @@
 # Release History
 
-## 1.2.0-beta.4 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.16 (2024-08-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.4` to version `1.3.5`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 
 
 ## 1.1.15 (2024-07-26)
@@ -27,7 +26,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.3.3` to version `1.3.4`.
+- Upgraded `azure-communication-common` from `1.3.2` to version `1.3.3`.
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 
 
@@ -37,7 +36,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.3.2` to version `1.3.3`.
+- Upgraded `azure-communication-common` from `1.3.1` to version `1.3.2`.
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 
 
@@ -57,18 +56,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
-- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
-
-
-## 1.2.0-beta.3 (2024-03-15)
-
-### Features Added
-
-- Add support for number lookup
-  - Format only can be returned for no cost
-  - Additional number details can be returned for a cost
 
 
 ## 1.1.10 (2024-02-22)
@@ -79,15 +67,6 @@
 
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 - Upgraded `azure-communication-common` from `1.2.14` to version `1.3.0`.
-
-
-## 1.2.0-beta.2 (2024-01-30)
-
-### Features Added
-
-- Added support for API version `2023-10-01-preview`, This gives us functionality for Do Not Resell Consent Changes.
-- Users will now be able to purchase from countries like `IT`, `AT`, `FR`, `NO`, `PT`. They can do so by agreeing not to resell phone numbers by setting consentToNotResellNumbers to true.
-- Added support for 10DLC changes.
 
 
 ## 1.1.9 (2023-12-04)
@@ -129,11 +108,6 @@
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
 
-## 1.2.0-beta.1 (2023-09-07)
-
-### Features Added
-- Number Lookup API public preview
-- API version `2023-05-01-preview` is the default
 
 ## 1.1.5 (2023-08-18)
 

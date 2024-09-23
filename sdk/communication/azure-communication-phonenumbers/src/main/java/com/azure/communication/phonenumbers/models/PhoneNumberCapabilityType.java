@@ -5,56 +5,35 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Capability value for calling.
- */
+/** Defines values for PhoneNumberCapabilityType. */
 public final class PhoneNumberCapabilityType extends ExpandableStringEnum<PhoneNumberCapabilityType> {
-    /**
-     * Static value none for PhoneNumberCapabilityType.
-     */
+    /** Static value none for PhoneNumberCapabilityType. */
     public static final PhoneNumberCapabilityType NONE = fromString("none");
 
-    /**
-     * Static value inbound for PhoneNumberCapabilityType.
-     */
+    /** Static value inbound for PhoneNumberCapabilityType. */
     public static final PhoneNumberCapabilityType INBOUND = fromString("inbound");
 
-    /**
-     * Static value outbound for PhoneNumberCapabilityType.
-     */
+    /** Static value outbound for PhoneNumberCapabilityType. */
     public static final PhoneNumberCapabilityType OUTBOUND = fromString("outbound");
 
-    /**
-     * Static value inbound+outbound for PhoneNumberCapabilityType.
-     */
+    /** Static value inbound+outbound for PhoneNumberCapabilityType. */
     public static final PhoneNumberCapabilityType INBOUND_OUTBOUND = fromString("inbound+outbound");
 
     /**
-     * Creates a new instance of PhoneNumberCapabilityType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public PhoneNumberCapabilityType() {
-    }
-
-    /**
      * Creates or finds a PhoneNumberCapabilityType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PhoneNumberCapabilityType.
      */
+    @JsonCreator
     public static PhoneNumberCapabilityType fromString(String name) {
         return fromString(name, PhoneNumberCapabilityType.class);
     }
 
-    /**
-     * Gets known PhoneNumberCapabilityType values.
-     * 
-     * @return known PhoneNumberCapabilityType values.
-     */
+    /** @return known PhoneNumberCapabilityType values. */
     public static Collection<PhoneNumberCapabilityType> values() {
         return values(PhoneNumberCapabilityType.class);
     }
