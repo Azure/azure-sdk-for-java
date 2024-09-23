@@ -9,12 +9,10 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link PartitionPump}.
@@ -49,13 +47,12 @@ public class PartitionPumpTest {
         // Arrange
         final String partitionId = "1";
         final PartitionPump partitionPump = new PartitionPump(partitionId, consumerAsyncClient, scheduler);
-        when(scheduler.disposeGracefully()).thenReturn(Mono.empty());
 
         // Act
         partitionPump.close();
 
         // Assert
-        verify(scheduler).disposeGracefully();
+        verify(scheduler).dispose();
         verify(consumerAsyncClient).close();
     }
 

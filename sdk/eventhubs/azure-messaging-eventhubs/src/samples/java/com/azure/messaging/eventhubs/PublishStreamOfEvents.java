@@ -7,9 +7,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -50,14 +51,14 @@ public class PublishStreamOfEvents {
             Duration.ofSeconds(1), batchOptions);
 
         // This represents a stream of events that we want to publish.
-        final Sinks.Many<EventData> events = Sinks.many().multicast().onBackpressureBuffer();
+        final DirectProcessor<EventData> events = DirectProcessor.create();
 
         System.out.println("Publishing events...");
-        publisher.publish(events.asFlux()).subscribe(unused -> System.out.println("Completed."),
+        publisher.publish(events).subscribe(unused -> System.out.println("Completed."),
             error -> System.err.println("Error sending events: " + error),
             () -> System.out.println("Completed sending events."));
 
-        emitEvents(events);
+        emitEvents(events.sink());
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete.
@@ -74,9 +75,9 @@ public class PublishStreamOfEvents {
      * Helper function that emits 50 events. The interval between each event is randomly selected between 0 - 250ms and
      * is a random substring of the lorem ipsum text.
      *
-     * @param events Sink for generated events.
+     * @param sink Sink for generated events.
      */
-    private static void emitEvents(Sinks.Many<EventData> events) {
+    private static void emitEvents(FluxSink<EventData> sink) {
         final String contents = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do "
             + "eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis "
             + "nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure "
@@ -98,10 +99,10 @@ public class PublishStreamOfEvents {
             final EventData event = new EventData(contents.substring(0, endIndex));
             event.getProperties().put(EVENT_NUMBER, String.valueOf(i));
 
-            events.emitNext(event, Sinks.EmitFailureHandler.FAIL_FAST);
+            sink.next(event);
         }
 
-        events.emitComplete(Sinks.EmitFailureHandler.FAIL_FAST);
+        sink.complete();
     }
 
     /**

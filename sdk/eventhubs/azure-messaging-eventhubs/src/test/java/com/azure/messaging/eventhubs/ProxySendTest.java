@@ -79,11 +79,10 @@ class ProxySendTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        builder = createBuilder()
+        builder = new EventHubClientBuilder()
             .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .eventHubName(TestUtils.getEventHubName())
-            .fullyQualifiedNamespace(TestUtils.getFullyQualifiedDomainName());
+            .connectionString(TestUtils.getConnectionString());
     }
 
     /**
@@ -101,7 +100,7 @@ class ProxySendTest extends IntegrationTestBase {
         assertNotNull(information, "Should receive partition information.");
 
         final EventPosition position = EventPosition.fromSequenceNumber(information.getLastEnqueuedSequenceNumber());
-        final EventHubConsumerAsyncClient consumer = toClose(createBuilder()
+        final EventHubConsumerAsyncClient consumer = toClose(builder
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildAsyncConsumerClient());
 

@@ -13,7 +13,6 @@ import com.azure.core.amqp.implementation.StringUtil;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
-import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationScope;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
@@ -575,11 +574,13 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     return;
                 }
 
-                InstrumentationScope scope = instrumentation.startAsyncConsume(message, partitionId);
+                Exception exception = null;
+                com.azure.core.util.Context span = instrumentation.asyncConsume("EventHubs.consume", message, partitionId, com.azure.core.util.Context.NONE);
+                AutoCloseable scope = instrumentation.getTracer().makeSpanCurrent(span);
                 try {
                     subscriber.onNext(message);
                 } catch (Exception e) {
-                    scope.setError(e);
+                    exception = e;
                     logger.atError()
                         .addKeyValue(LINK_NAME_KEY, currentLinkName)
                         .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -588,7 +589,7 @@ public class AmqpReceiveLinkProcessor extends FluxProcessor<AmqpReceiveLink, Mes
                     throw logger.logExceptionAsError(Exceptions.propagate(
                         Operators.onOperatorError(upstream, e, message, subscriber.currentContext())));
                 } finally {
-                    scope.close();
+                    instrumentation.getTracer().endSpan(exception, span, scope);
                 }
 
                 numberEmitted++;
