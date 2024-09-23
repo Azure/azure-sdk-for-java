@@ -7,10 +7,7 @@ package com.azure.ai.translation.text.generated;
 import com.azure.ai.translation.text.TextTranslationClient;
 import com.azure.ai.translation.text.TextTranslationClientBuilder;
 import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
-import com.azure.ai.translation.text.models.LanguageScope;
 import com.azure.core.util.Configuration;
-
-import java.util.Arrays;
 
 public class GetsTheSetOfLanguagesCurrentlySupportedByOtherOperationsOfTheTranslator {
     public static void main(String[] args) {
@@ -18,9 +15,8 @@ public class GetsTheSetOfLanguagesCurrentlySupportedByOtherOperationsOfTheTransl
             = new TextTranslationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.getsupportedlanguages.getsthesetoflanguagescurrentlysupportedbyotheroperationsofthetranslator
-        GetSupportedLanguagesResult response = textTranslationClient.getSupportedLanguages(
-            Arrays.asList(LanguageScope.TRANSLATION, LanguageScope.TRANSLITERATION, LanguageScope.DICTIONARY), "en",
-            "fpnhruttllvc");
+        GetSupportedLanguagesResult response = textTranslationClient.getSupportedLanguages("kayfnugjec",
+            "translation,transliteration,dictionary", "en", "fpnhruttllvc");
         // END:com.azure.ai.translation.text.generated.getsupportedlanguages.getsthesetoflanguagescurrentlysupportedbyotheroperationsofthetranslator
     }
 }

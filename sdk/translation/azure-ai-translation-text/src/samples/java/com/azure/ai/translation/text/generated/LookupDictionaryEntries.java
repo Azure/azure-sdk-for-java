@@ -7,8 +7,8 @@ package com.azure.ai.translation.text.generated;
 import com.azure.ai.translation.text.TextTranslationClient;
 import com.azure.ai.translation.text.TextTranslationClientBuilder;
 import com.azure.ai.translation.text.models.DictionaryLookupItem;
+import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.core.util.Configuration;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class LookupDictionaryEntries {
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.lookupdictionaryentries.lookupdictionaryentries
         List<DictionaryLookupItem> response = textTranslationClient.lookupDictionaryEntries("en", "es",
-            Arrays.asList("fly"));
+            Arrays.asList(new InputTextItem("fly")), "yqst");
         // END:com.azure.ai.translation.text.generated.lookupdictionaryentries.lookupdictionaryentries
     }
 }

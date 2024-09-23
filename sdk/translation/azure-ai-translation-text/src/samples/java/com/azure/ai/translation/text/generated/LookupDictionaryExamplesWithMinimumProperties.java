@@ -9,7 +9,6 @@ import com.azure.ai.translation.text.TextTranslationClientBuilder;
 import com.azure.ai.translation.text.models.DictionaryExampleItem;
 import com.azure.ai.translation.text.models.DictionaryExampleTextItem;
 import com.azure.core.util.Configuration;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class LookupDictionaryExamplesWithMinimumProperties {
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.lookupdictionaryexamples.lookupdictionaryexampleswithminimumproperties
         List<DictionaryExampleItem> response = textTranslationClient.lookupDictionaryExamples("en", "es",
-            Arrays.asList(new DictionaryExampleTextItem("fly", "volar")));
+            Arrays.asList(new DictionaryExampleTextItem("fly", "volar")), null);
         // END:com.azure.ai.translation.text.generated.lookupdictionaryexamples.lookupdictionaryexampleswithminimumproperties
     }
 }

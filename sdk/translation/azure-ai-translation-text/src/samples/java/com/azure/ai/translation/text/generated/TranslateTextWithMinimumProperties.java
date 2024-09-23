@@ -6,10 +6,9 @@ package com.azure.ai.translation.text.generated;
 
 import com.azure.ai.translation.text.TextTranslationClient;
 import com.azure.ai.translation.text.TextTranslationClientBuilder;
-import com.azure.ai.translation.text.models.TranslateOptions;
+import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.core.util.Configuration;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,8 +18,9 @@ public class TranslateTextWithMinimumProperties {
             = new TextTranslationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.translate.translatetextwithminimumproperties
-        List<TranslatedTextItem> response = textTranslationClient.translate(Arrays.asList("This is a test."),
-            new TranslateOptions().setTargetLanguages(Arrays.asList("fmlxpuepn")));
+        List<TranslatedTextItem> response = textTranslationClient.translate(Arrays.asList("fmlxpuepn"),
+            Arrays.asList(new InputTextItem("This is a test.")), null, null, null, null, null, null, null, null, null,
+            null, null, null);
         // END:com.azure.ai.translation.text.generated.translate.translatetextwithminimumproperties
     }
 }

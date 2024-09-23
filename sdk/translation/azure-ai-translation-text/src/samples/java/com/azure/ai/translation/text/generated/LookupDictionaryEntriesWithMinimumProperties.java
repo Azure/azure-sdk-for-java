@@ -7,8 +7,8 @@ package com.azure.ai.translation.text.generated;
 import com.azure.ai.translation.text.TextTranslationClient;
 import com.azure.ai.translation.text.TextTranslationClientBuilder;
 import com.azure.ai.translation.text.models.DictionaryLookupItem;
+import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.core.util.Configuration;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,8 +18,8 @@ public class LookupDictionaryEntriesWithMinimumProperties {
             = new TextTranslationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.lookupdictionaryentries.lookupdictionaryentrieswithminimumproperties
-        List<DictionaryLookupItem> response = textTranslationClient.lookupDictionaryEntries("en", "es",
-            Arrays.asList("fly"));
+        List<DictionaryLookupItem> response
+            = textTranslationClient.lookupDictionaryEntries("en", "es", Arrays.asList(new InputTextItem("fly")), null);
         // END:com.azure.ai.translation.text.generated.lookupdictionaryentries.lookupdictionaryentrieswithminimumproperties
     }
 }

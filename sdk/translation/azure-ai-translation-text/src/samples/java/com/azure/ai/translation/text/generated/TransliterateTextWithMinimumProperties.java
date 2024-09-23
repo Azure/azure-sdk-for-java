@@ -6,9 +6,9 @@ package com.azure.ai.translation.text.generated;
 
 import com.azure.ai.translation.text.TextTranslationClient;
 import com.azure.ai.translation.text.TextTranslationClientBuilder;
+import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import com.azure.core.util.Configuration;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class TransliterateTextWithMinimumProperties {
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.transliterate.transliteratetextwithminimumproperties
         List<TransliteratedText> response = textTranslationClient.transliterate("zh-Hans", "Hans", "Latn",
-            Arrays.asList("这是个测试。"));
+            Arrays.asList(new InputTextItem("这是个测试。")), null);
         // END:com.azure.ai.translation.text.generated.transliterate.transliteratetextwithminimumproperties
     }
 }

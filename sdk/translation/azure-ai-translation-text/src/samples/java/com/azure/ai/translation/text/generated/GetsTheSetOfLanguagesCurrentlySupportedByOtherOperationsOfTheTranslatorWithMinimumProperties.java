@@ -15,7 +15,7 @@ public class GetsTheSetOfLanguagesCurrentlySupportedByOtherOperationsOfTheTransl
             = new TextTranslationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.getsupportedlanguages.getsthesetoflanguagescurrentlysupportedbyotheroperationsofthetranslatorwithminimumproperties
-        GetSupportedLanguagesResult response = textTranslationClient.getSupportedLanguages(null, null, null);
+        GetSupportedLanguagesResult response = textTranslationClient.getSupportedLanguages(null, null, null, null);
         // END:com.azure.ai.translation.text.generated.getsupportedlanguages.getsthesetoflanguagescurrentlysupportedbyotheroperationsofthetranslatorwithminimumproperties
     }
 }

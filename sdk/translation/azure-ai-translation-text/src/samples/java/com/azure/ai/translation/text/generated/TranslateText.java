@@ -6,13 +6,12 @@ package com.azure.ai.translation.text.generated;
 
 import com.azure.ai.translation.text.TextTranslationClient;
 import com.azure.ai.translation.text.TextTranslationClientBuilder;
+import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
-import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.core.util.Configuration;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,20 +21,9 @@ public class TranslateText {
             = new TextTranslationClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.translate.translatetext
-        List<TranslatedTextItem> response = textTranslationClient.translate(Arrays.asList("This is a test."),
-            new TranslateOptions().setTargetLanguages(Arrays.asList("cs"))
-                .setClientTraceId("ndbkaatzsnoetqkiehappoza")
-                .setSourceLanguage("en")
-                .setTextType(TextType.PLAIN)
-                .setCategory("custom")
-                .setProfanityAction(ProfanityAction.NO_ACTION)
-                .setProfanityMarker(ProfanityMarker.ASTERISK)
-                .setIncludeAlignment(true)
-                .setIncludeSentenceLength(true)
-                .setSuggestedSourceLanguage("en")
-                .setSourceLanguageScript("Latn")
-                .setTargetLanguageScript("Latn")
-                .setAllowFallback(true));
+        List<TranslatedTextItem> response = textTranslationClient.translate(Arrays.asList("cs"),
+            Arrays.asList(new InputTextItem("This is a test.")), "ndbkaatzsnoetqkiehappoza", "en", TextType.PLAIN,
+            "custom", ProfanityAction.NO_ACTION, ProfanityMarker.ASTERISK, true, true, "en", "Latn", "Latn", true);
         // END:com.azure.ai.translation.text.generated.translate.translatetext
     }
 }

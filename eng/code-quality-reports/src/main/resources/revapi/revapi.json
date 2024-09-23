@@ -676,8 +676,9 @@
         },
         {
           "ignore": true,
+          "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.developer\\.devcenter\\.models.*",
+          "old": ".*? com\\.azure\\.developer\\.devcenter\\.models\\.*",
           "justification": "Removing Jackson annotations from Azure DevCenter in transition to stream-style."
         }
       ]

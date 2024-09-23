@@ -7,8 +7,8 @@ package com.azure.ai.translation.text.generated;
 import com.azure.ai.translation.text.TextTranslationClient;
 import com.azure.ai.translation.text.TextTranslationClientBuilder;
 import com.azure.ai.translation.text.models.BreakSentenceItem;
+import com.azure.ai.translation.text.models.InputTextItem;
 import com.azure.core.util.Configuration;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class FindSentenceBoundaries {
                 .buildClient();
         // BEGIN:com.azure.ai.translation.text.generated.findsentenceboundaries.findsentenceboundaries
         List<BreakSentenceItem> response = textTranslationClient.findSentenceBoundaries(
-            Arrays.asList("How are you? I am fine. What did you do today?"), "en", "Latn");
+            Arrays.asList(new InputTextItem("How are you? I am fine. What did you do today?")), "svun", "en", "Latn");
         // END:com.azure.ai.translation.text.generated.findsentenceboundaries.findsentenceboundaries
     }
 }
