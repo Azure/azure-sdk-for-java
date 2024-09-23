@@ -388,7 +388,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
-            <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+            <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
             <executions>
               <execution>
                 <id>02-shade</id>
@@ -400,7 +400,7 @@
                   <relocations>
                     <relocation>
                       <pattern>com.azure</pattern>
-                      <shadedPattern>${shadingPrefix}.com.azure</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_azure</shadedPattern>
                       <excludes>
                         <exclude>com.azure.cosmos.spark.*</exclude>
                         <exclude>com.azure.cosmos.spark.diagnostics.*</exclude>
@@ -411,99 +411,99 @@
                     </relocation>
                     <relocation>
                       <pattern>scala.compat.java8</pattern>
-                      <shadedPattern>${shadingPrefix}.scala.compat.java8</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.scala_compat_java8</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>scala.concurrent.java8</pattern>
-                      <shadedPattern>${shadingPrefix}.scala.concurrent.java8</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.scala_concurrent_java8</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>io.netty</pattern>
-                      <shadedPattern>${shadingPrefixNetty}.io.netty</shadedPattern>
+                      <shadedPattern>${shadingPrefixNetty}.io_netty</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.codehaus</pattern>
-                      <shadedPattern>${shadingPrefix}.org.codehaus</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.org_codehaus</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.fasterxml</pattern>
-                      <shadedPattern>${shadingPrefix}.com.fasterxml</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_fasterxml</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.ctc.wstx</pattern>
-                      <shadedPattern>${shadingPrefix}.com.ctc.wstx</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_ctc_wstx</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.codahale.metrics</pattern>
-                      <shadedPattern>${shadingPrefix}.com.codahale.metrics</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_codahale_metrics</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.thoughtworks.paranamer</pattern>
-                      <shadedPattern>${shadingPrefix}.com.thoughtworks.paranamer</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_thoughtworks_paranamer</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>io.micrometer</pattern>
-                      <shadedPattern>${shadingPrefix}.io.micrometer</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.io_micrometer</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.HdrHistogram</pattern>
-                      <shadedPattern>${shadingPrefix}.org.HdrHistogram</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.org_HdrHistogram</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.LatencyUtils</pattern>
-                      <shadedPattern>${shadingPrefix}.org.LatencyUtils</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.org_LatencyUtils</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.reactivestreams</pattern>
-                      <shadedPattern>${shadingPrefix}.org.reactivestreams</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.org_reactivestreams</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>reactor</pattern>
-                      <shadedPattern>${shadingPrefix}.reactor</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.reactor_</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>javax.activation</pattern>
-                      <shadedPattern>${shadingPrefix}.javax.activation</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.javax_activation</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.microsoft.azure</pattern>
-                      <shadedPattern>${shadingPrefix}.com.microsoft.azure</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_microsoft_azure</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.microsoft.applicationinsights</pattern>
-                      <shadedPattern>${shadingPrefix}.com.microsoft.applicationinsights</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_microsoft_applicationinsights</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.google</pattern>
-                      <shadedPattern>${shadingPrefix}.com.google</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_google</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.azure.resourcemanager</pattern>
-                      <shadedPattern>${shadingPrefix}.com.azure.resourcemanager</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_azure_resourcemanager</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.microsoft.aad</pattern>
-                      <shadedPattern>${shadingPrefix}.com.microsoft.aad</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_microsoft_aad</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.nimbusds</pattern>
-                      <shadedPattern>${shadingPrefix}.com.nimbusds</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_nimbusds</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>com.sun.jna</pattern>
-                      <shadedPattern>${shadingPrefix}.com.sun.jna</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.com_sun_jna</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>net.minidev</pattern>
-                      <shadedPattern>${shadingPrefix}.net.minidev</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.net_minidev</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>org.objectweb</pattern>
-                      <shadedPattern>${shadingPrefix}.org.objectweb</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.org_objectweb</shadedPattern>
                     </relocation>
                     <relocation>
                       <pattern>net.jcip</pattern>
-                      <shadedPattern>${shadingPrefix}.net.jcip</shadedPattern>
+                      <shadedPattern>${shadingPrefix}.net_jcip</shadedPattern>
                     </relocation>
                   </relocations>
                   <filters>

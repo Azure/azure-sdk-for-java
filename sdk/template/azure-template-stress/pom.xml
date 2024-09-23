@@ -108,7 +108,7 @@
         <!-- we need shade plugin to merge MANIFEST-INF properly into the uber jar-->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
         <execution>
         <phase>package</phase>
