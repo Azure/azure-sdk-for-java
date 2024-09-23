@@ -877,7 +877,7 @@ public class EventProcessorClientBuilder implements
         final EventHubClientBuilder builder = copyOptions(eventHubClientBuilder);
 
         return new EventProcessorClient(builder, getPartitionProcessorSupplier(), checkpointStore,
-            processError, eventHubClientBuilder.createTracer(), eventHubClientBuilder.createMeter(), processorOptions);
+            processError, eventHubClientBuilder.createTracer(), processorOptions);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {
