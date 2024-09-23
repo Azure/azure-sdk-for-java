@@ -72,7 +72,7 @@ public class MongoClusterManagerTests extends TestBase {
 
     @Test
     @LiveOnly
-    public void test() {
+    public void testCreateMongoCluster() {
         MongoCluster mongoCluster = null;
         String clusterName = "cluster" + randomPadding();
         try {
@@ -110,7 +110,6 @@ public class MongoClusterManagerTests extends TestBase {
             }
         }
     }
-
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
