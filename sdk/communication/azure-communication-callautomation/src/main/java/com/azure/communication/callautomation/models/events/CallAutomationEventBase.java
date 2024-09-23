@@ -3,33 +3,33 @@
 
 package com.azure.communication.callautomation.models.events;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The base event interface. */
-public abstract class CallAutomationEventBase implements JsonSerializable<CallAutomationEventBase> {
+public abstract class CallAutomationEventBase {
     /*
      * Call connection ID.
      */
-    private String callConnectionId;
+    @JsonProperty(value = "callConnectionId")
+    private final String callConnectionId;
 
     /*
      * Server call ID.
      */
-    private String serverCallId;
+    @JsonProperty(value = "serverCallId")
+    private final String serverCallId;
 
     /*
      * Correlation ID for event to call correlation.
      */
-    private String correlationId;
+    @JsonProperty(value = "correlationId")
+    private final String correlationId;
 
     /*
      * Operation context
      */
-    private String operationContext;
+    @JsonProperty(value = "operationContext")
+    private final String operationContext;
 
     CallAutomationEventBase() {
         this.serverCallId = null;
@@ -72,32 +72,5 @@ public abstract class CallAutomationEventBase implements JsonSerializable<CallAu
      */
     public String getOperationContext() {
         return this.operationContext;
-    }
-
-    void writeFields(JsonWriter writer) throws IOException {
-        writer.writeStringField("callConnectionId", this.callConnectionId);
-        writer.writeStringField("serverCallId", this.serverCallId);
-        writer.writeStringField("correlationId", this.correlationId);
-        writer.writeStringField("operationContext", this.operationContext);
-    }
-
-    boolean readField(String fieldName, JsonReader reader) throws IOException {
-        if ("callConnectionId".equals(fieldName)) {
-            this.callConnectionId = reader.getString();
-            return true;
-        }
-        if ("serverCallId".equals(fieldName)) {
-            this.serverCallId = reader.getString();
-            return true;
-        }
-        if ("correlationId".equals(fieldName)) {
-            this.correlationId = reader.getString();
-            return true;
-        }
-        if ("operationContext".equals(fieldName)) {
-            this.operationContext = reader.getString();
-            return true;
-        }
-        return false;
     }
 }
