@@ -5,7 +5,6 @@ package com.azure.security.confidentialledger;
 
 import java.io.IOException;
 
-import com.azure.core.http.HttpHeaderName;
 import org.junit.jupiter.api.Assertions;
 
 import com.azure.core.http.rest.RequestOptions;
@@ -35,7 +34,7 @@ public class PostLedgerEntrySample {
         JsonNode responseBodyJson = null;
 
         try {
-
+            
             responseBodyJson = objectMapper.readTree(parsedResponse.toBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,14 +44,12 @@ public class PostLedgerEntrySample {
         String collectionId = responseBodyJson.get("collectionId").asText();
 
         // you can use the transaction id to get the transaction status
-        String transactionId = response.getHeaders()
-            .get(HttpHeaderName.fromString("x-ms-ccf-transaction-id"))
-            .getValue();
+        String transactionId = response.getHeaders().get("x-ms-ccf-transaction-id").getValue();
 
         requestOptions = new RequestOptions();
         // the transactionId can be retrieved after posting to a ledger (see PostLedgerEntry.java)
         Response<BinaryData> transactionResponse = confidentialLedgerClient.getTransactionStatusWithResponse(transactionId, requestOptions);
-
+    
         JsonNode transactionResponseBodyJson = null;
 
         try {
