@@ -216,21 +216,22 @@ public final class LogsIngestionClient implements AutoCloseable {
         Objects.requireNonNull(streamName, "'streamName' cannot be null.");
         Objects.requireNonNull(logs, "'logs' cannot be null.");
 
-        Consumer<LogsUploadError> uploadLogsErrorConsumer
-            = options == null ? null : options.getLogsUploadErrorConsumer();
+        Consumer<LogsUploadError> uploadLogsErrorConsumer = options == null
+            ? null
+            : options.getLogsUploadErrorConsumer();
 
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.addHeader(HttpHeaderName.CONTENT_ENCODING, GZIP);
         requestOptions.setContext(context);
 
-        Stream<UploadLogsResponseHolder> responses
-            = new Batcher(options, logs).toStream().map(r -> uploadToService(ruleId, streamName, requestOptions, r));
+        Stream<UploadLogsResponseHolder> responses = new Batcher(options, logs).toStream()
+            .map(r -> uploadToService(ruleId, streamName, requestOptions, r));
 
         responses = submit(responses, getConcurrency(options)).filter(response -> response.getException() != null);
 
         if (uploadLogsErrorConsumer != null) {
-            responses.forEach(response -> uploadLogsErrorConsumer
-                .accept(new LogsUploadError(response.getException(), response.getRequest().getLogs())));
+            responses.forEach(response -> uploadLogsErrorConsumer.accept(
+                new LogsUploadError(response.getException(), response.getRequest().getLogs())));
             return;
         }
 
