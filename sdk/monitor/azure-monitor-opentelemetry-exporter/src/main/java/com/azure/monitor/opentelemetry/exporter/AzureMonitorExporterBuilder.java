@@ -64,7 +64,6 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 /**
  * Low level API to create OpenTelemetry span, log record and metric exporters for Azure. With OpenTelemetry autoconfiguration ({@link AutoConfiguredOpenTelemetrySdkBuilder}), we recommend using {@link com.azure.monitor.opentelemetry.AzureMonitor}.
  */
-@Fluent
 public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<AzureMonitorExporterBuilder>,
     TokenCredentialTrait<AzureMonitorExporterBuilder>, HttpTrait<AzureMonitorExporterBuilder> {
 
