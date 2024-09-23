@@ -14,7 +14,6 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import io.opentelemetry.api.trace.Span;
@@ -54,7 +53,8 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             });
             return next.process();
         };
-        Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
+        Tracer tracer
+            = OpenTelemetrySdkTestFeature.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
         EventHubProducerAsyncClient producer
             = new EventHubClientBuilder().connectionString(CONNECTION_STRING).buildAsyncProducerClient();
         Span span = tracer.spanBuilder(spanName).startSpan();
@@ -97,7 +97,8 @@ public class EventHubsExporterIntegrationTest extends MonitorExporterClientTestB
             });
             return next.process();
         };
-        Tracer tracer = TestUtils.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
+        Tracer tracer
+            = OpenTelemetrySdkTestFeature.createOpenTelemetrySdk(getHttpPipeline(validationPolicy)).getTracer("Sample");
 
         CountDownLatch partitionOwned = new CountDownLatch(1);
         CountDownLatch eventCountDown = new CountDownLatch(1);

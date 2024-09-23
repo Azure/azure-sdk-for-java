@@ -8,7 +8,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageDat
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.RemoteDependencyData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -48,7 +47,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         CountDownLatch countDownLatch = new CountDownLatch(numberOfSpans);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
         HttpPipeline httpPipeline = getHttpPipeline(customValidationPolicy);
-        OpenTelemetry openTelemetry = TestUtils.createOpenTelemetrySdk(httpPipeline, getConfiguration());
+        OpenTelemetry openTelemetry
+            = OpenTelemetrySdkTestFeature.createOpenTelemetrySdk(httpPipeline, getConfiguration());
 
         // generate spans
         for (int i = 0; i < numberOfSpans; i++) {
@@ -76,8 +76,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry
-            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdkTestFeature
+            .createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate a metric
         generateMetric(openTelemetry);
@@ -98,8 +98,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetry openTelemetry
-            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+        OpenTelemetry openTelemetry = OpenTelemetrySdkTestFeature
+            .createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate a log
         generateLog(openTelemetry);
@@ -125,8 +125,8 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(3);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry
-            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdkTestFeature
+            .createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy), getConfiguration());
 
         // generate telemetry
         generateSpan(openTelemetry);

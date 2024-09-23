@@ -14,7 +14,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.MockHttpResponse;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.TestUtils;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -53,9 +52,9 @@ public class AzureMonitorStatsbeatTest {
         // create the OpenTelemetry SDK
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetry
-            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, HttpClient.createDefault()),
-                getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdkTestFeature.createOpenTelemetrySdk(
+            getHttpPipeline(customValidationPolicy, HttpClient.createDefault()), getStatsbeatConfiguration(),
+            STATSBEAT_CONNECTION_STRING);
 
         // generate a metric
         generateMetric(openTelemetry);
@@ -96,9 +95,9 @@ public class AzureMonitorStatsbeatTest {
         // create OpenTelemetrySdk
         CountDownLatch countDownLatch = new CountDownLatch(1);
         CustomValidationPolicy customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-        OpenTelemetrySdk openTelemetrySdk
-            = TestUtils.createOpenTelemetrySdk(getHttpPipeline(customValidationPolicy, mockedHttpClient),
-                getStatsbeatConfiguration(), STATSBEAT_CONNECTION_STRING);
+        OpenTelemetrySdk openTelemetrySdk = OpenTelemetrySdkTestFeature.createOpenTelemetrySdk(
+            getHttpPipeline(customValidationPolicy, mockedHttpClient), getStatsbeatConfiguration(),
+            STATSBEAT_CONNECTION_STRING);
 
         generateMetric(openTelemetrySdk);
 

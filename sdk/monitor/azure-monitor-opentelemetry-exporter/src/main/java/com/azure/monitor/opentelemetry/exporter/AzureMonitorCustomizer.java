@@ -61,19 +61,19 @@ public final class AzureMonitorCustomizer {
         });
         autoConfigurationCustomizer.addSpanExporterCustomizer((spanExporter, configProperties) -> {
             if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                spanExporter = azureMonitorExporterBuilder.buildSpanExporter(configProperties);
+                spanExporter = azureMonitorExporterBuilder.buildSpanExporter();
             }
             return spanExporter;
         });
         autoConfigurationCustomizer.addMetricExporterCustomizer((metricExporter, configProperties) -> {
             if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                metricExporter = azureMonitorExporterBuilder.buildMetricExporter(configProperties);
+                metricExporter = azureMonitorExporterBuilder.buildMetricExporter();
             }
             return metricExporter;
         });
         autoConfigurationCustomizer.addLogRecordExporterCustomizer((logRecordExporter, configProperties) -> {
             if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                logRecordExporter = azureMonitorExporterBuilder.buildLogRecordExporter(configProperties);
+                logRecordExporter = azureMonitorExporterBuilder.buildLogRecordExporter();
             }
             return logRecordExporter;
         });

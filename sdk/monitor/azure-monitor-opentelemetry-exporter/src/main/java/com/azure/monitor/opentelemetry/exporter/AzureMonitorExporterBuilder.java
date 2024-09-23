@@ -43,6 +43,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGene
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
+import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
 import io.opentelemetry.sdk.resources.Resource;
@@ -79,6 +80,8 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
     private static final Map<String, String> PROPERTIES
         = CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
 
+    private final ConfigProperties configProperties;
+
     private ConnectionString connectionString;
     private TokenCredential credential;
 
@@ -101,6 +104,11 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
      */
     public AzureMonitorExporterBuilder() {
+        this.configProperties = DefaultConfigProperties.create(Collections.emptyMap());
+    }
+
+    AzureMonitorExporterBuilder(Map<String, String> testConfiguration) {
+        this.configProperties = DefaultConfigProperties.create(testConfiguration);
     }
 
     /**
@@ -287,13 +295,12 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * Creates an Azure Monitor span exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link SpanExporter}.
      *
-     * @param configProperties The OpenTelemetry configuration properties.
      * @return An instance of {@link SpanExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public SpanExporter buildSpanExporter(ConfigProperties configProperties) {
-        internalBuildAndFreeze(configProperties);
+    public SpanExporter buildSpanExporter() {
+        internalBuildAndFreeze();
         return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
             statsbeatModule);
     }
@@ -302,22 +309,17 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * Creates an Azure Monitor log record exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link LogRecordExporter}.
      *
-     * @param configProperties The OpenTelemetry configuration properties.
      * @return An instance of {@link LogRecordExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
-        internalBuildAndFreeze(configProperties);
+    public LogRecordExporter buildLogRecordExporter() {
+        internalBuildAndFreeze();
         return new AzureMonitorLogRecordExporter(
             new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
     }
 
-    // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
-    // When a customer call build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) multiple times with a diff ConfigProperties each time,
-    // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using the config properties
-    // in StatsbeatModule for testing only. We might need to revisit this approach later.
-    void internalBuildAndFreeze(ConfigProperties configProperties) {
+    void internalBuildAndFreeze() {
         if (!frozen) {
             HttpPipeline httpPipeline = createHttpPipeline();
             statsbeatModule = initStatsbeatModule(configProperties);
@@ -331,6 +333,10 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
         }
     }
 
+    DefaultConfigProperties getConfigProperties() {
+        return DefaultConfigProperties.create(Collections.emptyMap());
+    }
+
     /**
      * Creates an Azure monitor metric exporter based on the options set in the builder. This
      * exporter is an implementation of OpenTelemetry {@link MetricExporter}.
@@ -338,16 +344,16 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * <p>When a new {@link MetricExporter} is created, it will automatically start {@link
      * HeartbeatExporter}.
      *
-     * @param configProperties The OpenTelemetry configuration properties.
      * @return An instance of {@link MetricExporter}.
      * @throws NullPointerException if the connection string is not set on this builder or if the
      * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
      */
-    public MetricExporter buildMetricExporter(ConfigProperties configProperties) {
-        internalBuildAndFreeze(configProperties);
-        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties),
+    public MetricExporter buildMetricExporter() {
+        internalBuildAndFreeze();
+        DefaultConfigProperties configProperties1 = getConfigProperties();
+        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties1),
             builtTelemetryItemExporter::send);
-        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(configProperties), true),
+        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(configProperties1), true),
             builtTelemetryItemExporter);
     }
 
