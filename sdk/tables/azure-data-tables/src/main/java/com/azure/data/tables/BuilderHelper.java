@@ -25,10 +25,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
 import com.azure.data.tables.implementation.CosmosPatchTransformPolicy;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.data.tables.implementation.StorageAuthenticationSettings;
@@ -50,8 +47,6 @@ final class BuilderHelper {
     private static final String CLIENT_NAME = PROPERTIES.getOrDefault("name", "UnknownName");
     private static final String CLIENT_VERSION = PROPERTIES.getOrDefault("version", "UnknownVersion");
     private static final String COSMOS_ENDPOINT_SUFFIX = "cosmos.azure.com";
-    private static final String TABLES_TRACING_NAMESPACE_VALUE = "Microsoft.Tables";
-
     public static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     static HttpPipeline buildPipeline(AzureNamedKeyCredential azureNamedKeyCredential,
@@ -134,7 +129,6 @@ final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .tracer(createTracer(clientOptions))
             .clientOptions(localClientOptions)
             .build();
     }
@@ -208,12 +202,5 @@ final class BuilderHelper {
                 "Only one form of authentication should be used. The authentication forms present are: "
                     + usedCredentialsStringBuilder + "."));
         }
-    }
-
-
-    private static Tracer createTracer(ClientOptions clientOptions) {
-        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
-        return TracerProvider.getDefaultProvider()
-            .createTracer(CLIENT_NAME, CLIENT_VERSION, TABLES_TRACING_NAMESPACE_VALUE, tracingOptions);
     }
 }
