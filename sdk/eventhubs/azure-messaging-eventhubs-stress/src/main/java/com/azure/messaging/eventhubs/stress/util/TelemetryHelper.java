@@ -8,7 +8,7 @@ import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.monitor.opentelemetry.AzureMonitor;
+import com.azure.monitor.opentelemetry.AzureMonitorCustomizer;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -96,7 +96,7 @@ public class TelemetryHelper {
         }
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitor.customize(sdkBuilder, applicationInsightsConnectionString);
+        AzureMonitorCustomizer.customize(sdkBuilder, applicationInsightsConnectionString);
 
         String instanceId = System.getenv("CONTAINER_NAME");
         OpenTelemetry otel = sdkBuilder

@@ -5,7 +5,7 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.monitor.opentelemetry.AzureMonitor;
+import com.azure.monitor.opentelemetry.AzureMonitorCustomizer;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
@@ -40,7 +40,7 @@ public class AppConfigurationAzureMonitorExporterSample {
     private static Tracer configureAzureMonitorExporter() {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitor.customize(sdkBuilder, "{connection-string}");
+        AzureMonitorCustomizer.customize(sdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 

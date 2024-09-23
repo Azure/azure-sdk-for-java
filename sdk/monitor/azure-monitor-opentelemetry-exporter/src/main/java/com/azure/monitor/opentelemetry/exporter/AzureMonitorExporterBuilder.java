@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
@@ -24,6 +23,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.AzureMonitorCustomizer;
 import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.MetricDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.NoopTracer;
@@ -62,7 +62,7 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * Low level API to create OpenTelemetry span, log record and metric exporters for Azure. With OpenTelemetry autoconfiguration ({@link AutoConfiguredOpenTelemetrySdkBuilder}), we recommend using {@link com.azure.monitor.opentelemetry.AzureMonitor}.
+ * Low level API to create OpenTelemetry span, log record and metric exporters for Azure. With OpenTelemetry autoconfiguration ({@link AutoConfiguredOpenTelemetrySdkBuilder}), we recommend using {@link AzureMonitorCustomizer}.
  */
 public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<AzureMonitorExporterBuilder>,
     TokenCredentialTrait<AzureMonitorExporterBuilder>, HttpTrait<AzureMonitorExporterBuilder> {

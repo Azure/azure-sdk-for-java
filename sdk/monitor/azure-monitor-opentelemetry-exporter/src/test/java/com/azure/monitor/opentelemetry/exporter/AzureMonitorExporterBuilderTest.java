@@ -3,7 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.monitor.opentelemetry.AzureMonitor;
+import com.azure.monitor.opentelemetry.AzureMonitorCustomizer;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +23,7 @@ public class AzureMonitorExporterBuilderTest {
         Class<T> exceptionExpected) {
         Assertions.assertThrows(exceptionExpected, () -> {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-            AzureMonitor.customize(sdkBuilder, connectionString);
+            AzureMonitorCustomizer.customize(sdkBuilder, connectionString);
             sdkBuilder.build();
         });
     }
