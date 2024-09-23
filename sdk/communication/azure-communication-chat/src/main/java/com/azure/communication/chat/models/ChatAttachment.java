@@ -4,18 +4,12 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 
 /**
  * An attachment in a chat message.
  */
 @Fluent
-public final class ChatAttachment implements JsonSerializable<ChatAttachment> {
+public final class ChatAttachment {
     /**
      * Id of the attachment
      */
@@ -130,58 +124,5 @@ public final class ChatAttachment implements JsonSerializable<ChatAttachment> {
     public ChatAttachment setPreviewUrl(String previewUrl) {
         this.previewUrl = previewUrl;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", id);
-        jsonWriter.writeStringField("attachmentType", attachmentType != null ? attachmentType.toString() : null);
-        jsonWriter.writeStringField("name", name);
-        jsonWriter.writeStringField("url", url);
-        jsonWriter.writeStringField("previewUrl", previewUrl);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatAttachment from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatAttachment if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ChatAttachment.
-     */
-    public static ChatAttachment fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            ChatAttachmentType attachmentType = null;
-            String name = null;
-            String url = null;
-            String previewUrl = null;
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("attachmentType".equals(fieldName)) {
-                    attachmentType = ChatAttachmentType.fromString(reader.getString());
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("url".equals(fieldName)) {
-                    url = reader.getString();
-                } else if ("previewUrl".equals(fieldName)) {
-                    previewUrl = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new ChatAttachment(id, attachmentType)
-                .setName(name)
-                .setUrl(url)
-                .setPreviewUrl(previewUrl);
-        });
     }
 }

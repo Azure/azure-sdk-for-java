@@ -3,29 +3,28 @@
 
 package com.azure.communication.chat;
 
-import com.azure.communication.chat.implementation.ChatOptionsProvider;
-import com.azure.communication.chat.models.ChatThreadItem;
-import com.azure.communication.chat.models.CreateChatThreadOptions;
-import com.azure.communication.chat.models.CreateChatThreadResult;
-import com.azure.communication.chat.models.ListChatThreadsOptions;
-import com.azure.communication.common.CommunicationUserIdentifier;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.azure.core.test.annotation.LiveOnly;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.models.CommunicationTokenScope;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.chat.implementation.ChatOptionsProvider;
+import com.azure.communication.chat.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -103,6 +102,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteChatThread(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThreadSync");
@@ -117,6 +117,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @LiveOnly // Remove after azure-core-test 1.26.0-beta.1 is released.
     public void canDeleteChatThreadWithResponse(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "canDeleteChatThreadWithResponseSync");
@@ -131,7 +132,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canListChatThreads(HttpClient httpClient) {
+    public void canListChatThreads(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canListChatThreadsSync");
         CreateChatThreadOptions threadRequest1 = ChatOptionsProvider.createThreadOptions(
@@ -141,7 +142,7 @@ public class ChatClientTest extends ChatClientTestBase {
         client.createChatThread(threadRequest1);
         client.createChatThread(threadRequest2);
 
-        sleepIfRunningAgainstService(500);
+        Thread.sleep(500);
 
         // Action & Assert
         PagedIterable<ChatThreadItem> threadsResponse = client.listChatThreads();
@@ -158,7 +159,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void canListChatThreadsWithMaxPageSize(HttpClient httpClient) {
+    public void canListChatThreadsWithMaxPageSize(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canListChatThreadsWithMaxPageSizeSync");
         CreateChatThreadOptions threadRequest1 = ChatOptionsProvider.createThreadOptions(
@@ -168,7 +169,7 @@ public class ChatClientTest extends ChatClientTestBase {
         client.createChatThread(threadRequest1);
         client.createChatThread(threadRequest2);
 
-        sleepIfRunningAgainstService(500);
+        Thread.sleep(500);
 
         ListChatThreadsOptions options = new ListChatThreadsOptions();
         options.setMaxPageSize(10);
