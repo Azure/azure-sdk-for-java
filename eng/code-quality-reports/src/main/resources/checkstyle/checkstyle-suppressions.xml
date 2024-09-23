@@ -125,7 +125,7 @@
             files="com.azure.containers.containerregistry.ContainerRegistryContentClient.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.azure.monitor.opentelemetry.AzureMonitorCustomizer.java"/>
+            files="com.azure.monitor.opentelemetry.exporter.AzureMonitorCustomizer.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder"/>

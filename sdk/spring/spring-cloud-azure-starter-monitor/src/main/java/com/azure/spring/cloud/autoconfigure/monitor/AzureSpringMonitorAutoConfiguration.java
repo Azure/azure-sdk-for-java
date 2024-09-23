@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.monitor;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.monitor.opentelemetry.AzureMonitorCustomizer;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorCustomizer;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
