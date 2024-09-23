@@ -5,71 +5,60 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
 import com.azure.core.models.GeoPosition;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The message template's location value information.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("location")
 @Fluent
 public final class MessageTemplateLocation extends MessageTemplateValue {
-
-    /*
-     * The type discriminator describing a template parameter type.
-     */
-    @Generated
-    private MessageTemplateValueKind kind = MessageTemplateValueKind.LOCATION;
 
     /*
      * The [Optional] name of the location.
      */
     @Generated
+    @JsonProperty(value = "locationName")
     private String locationName;
 
     /*
      * The [Optional] address of the location.
      */
     @Generated
+    @JsonProperty(value = "address")
     private String address;
 
     /*
      * The latitude of the location.
      */
     @Generated
-    private final double latitude;
+    @JsonProperty(value = "latitude")
+    private double latitude;
 
     /*
      * The longitude of the location.
      */
     @Generated
-    private final double longitude;
+    @JsonProperty(value = "longitude")
+    private double longitude;
 
     /**
      * Creates an instance of MessageTemplateLocation class.
      *
      * @param refValue the refValue value to set.
-     * @param latitude the latitude value to set.
-     * @param longitude the longitude value to set.
+     * @param geoPosition the geoPosition value to set.
      */
     @Generated
-    private MessageTemplateLocation(String refValue, double latitude, double longitude) {
+    @JsonCreator
+    public MessageTemplateLocation(@JsonProperty(value = "name") String refValue, GeoPosition geoPosition) {
         super(refValue);
-        this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-    /**
-     * Get the kind property: The type discriminator describing a template parameter type.
-     *
-     * @return the kind value.
-     */
-    @Generated
-    @Override
-    public MessageTemplateValueKind getKind() {
-        return this.kind;
+        this.latitude = geoPosition.getLatitude();
+        this.longitude = geoPosition.getLongitude();
     }
 
     /**
@@ -114,80 +103,6 @@ public final class MessageTemplateLocation extends MessageTemplateValue {
     public MessageTemplateLocation setAddress(String address) {
         this.address = address;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", getRefValue());
-        jsonWriter.writeDoubleField("latitude", this.latitude);
-        jsonWriter.writeDoubleField("longitude", this.longitude);
-        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("locationName", this.locationName);
-        jsonWriter.writeStringField("address", this.address);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of MessageTemplateLocation from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of MessageTemplateLocation if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the MessageTemplateLocation.
-     */
-    @Generated
-    public static MessageTemplateLocation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String refValue = null;
-            double latitude = 0.0;
-            double longitude = 0.0;
-            MessageTemplateValueKind kind = MessageTemplateValueKind.LOCATION;
-            String locationName = null;
-            String address = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    refValue = reader.getString();
-                } else if ("latitude".equals(fieldName)) {
-                    latitude = reader.getDouble();
-                } else if ("longitude".equals(fieldName)) {
-                    longitude = reader.getDouble();
-                } else if ("kind".equals(fieldName)) {
-                    kind = MessageTemplateValueKind.fromString(reader.getString());
-                } else if ("locationName".equals(fieldName)) {
-                    locationName = reader.getString();
-                } else if ("address".equals(fieldName)) {
-                    address = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            MessageTemplateLocation deserializedMessageTemplateLocation
-                = new MessageTemplateLocation(refValue, latitude, longitude);
-            deserializedMessageTemplateLocation.kind = kind;
-            deserializedMessageTemplateLocation.locationName = locationName;
-            deserializedMessageTemplateLocation.address = address;
-            return deserializedMessageTemplateLocation;
-        });
-    }
-
-    /**
-     * Creates an instance of MessageTemplateLocation class.
-     *
-     * @param refValue the refValue value to set.
-     * @param geoPosition the geoPosition value to set.
-     */
-    public MessageTemplateLocation(String refValue, GeoPosition geoPosition) {
-        super(refValue);
-        this.latitude = geoPosition.getLatitude();
-        this.longitude = geoPosition.getLongitude();
     }
 
     /**

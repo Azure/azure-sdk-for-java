@@ -5,24 +5,22 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Result of the send message operation.
  */
 @Immutable
-public final class SendMessageResult implements JsonSerializable<SendMessageResult> {
+public final class SendMessageResult {
 
     /*
      * Receipts of the send message operation.
      */
     @Generated
-    private final List<MessageReceipt> receipts;
+    @JsonProperty(value = "receipts")
+    private List<MessageReceipt> receipts;
 
     /**
      * Creates an instance of SendMessageResult class.
@@ -30,7 +28,8 @@ public final class SendMessageResult implements JsonSerializable<SendMessageResu
      * @param receipts the receipts value to set.
      */
     @Generated
-    private SendMessageResult(List<MessageReceipt> receipts) {
+    @JsonCreator
+    private SendMessageResult(@JsonProperty(value = "receipts") List<MessageReceipt> receipts) {
         this.receipts = receipts;
     }
 
@@ -42,42 +41,5 @@ public final class SendMessageResult implements JsonSerializable<SendMessageResu
     @Generated
     public List<MessageReceipt> getReceipts() {
         return this.receipts;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("receipts", this.receipts, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SendMessageResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SendMessageResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SendMessageResult.
-     */
-    @Generated
-    public static SendMessageResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<MessageReceipt> receipts = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("receipts".equals(fieldName)) {
-                    receipts = reader.readArray(reader1 -> MessageReceipt.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new SendMessageResult(receipts);
-        });
     }
 }
