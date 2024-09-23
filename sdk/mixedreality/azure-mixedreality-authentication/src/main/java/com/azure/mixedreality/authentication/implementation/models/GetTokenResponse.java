@@ -28,11 +28,7 @@ public final class GetTokenResponse extends ResponseBase<GetTokenHeaders, StsTok
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * Gets the deserialized response body.
-     *
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public StsTokenResponseMessage getValue() {
         return super.getValue();
