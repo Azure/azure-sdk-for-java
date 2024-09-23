@@ -14,9 +14,8 @@ import java.util.List;
  */
 @Fluent
 public final class MapStaticImageOptions {
-    private RasterTileFormat format;
+    private TilesetId tilesetId;
     private StaticMapLayer layer;
-    private MapImageStyle style;
     private Integer zoom;
     private GeoPosition center;
     private GeoBoundingBox boundingBox;
@@ -28,29 +27,29 @@ public final class MapStaticImageOptions {
     private List<String> path;
 
     /**
+     * Gets tilesetId
+     *
+     * @return tilesetId
+     */
+    public TilesetId getTilesetId() {
+        return tilesetId;
+    }
+
+    /**
+     * Set tileset id
+     *
+     * @param tilesetId tileset id
+     * @return a reference to this {@code MapStaticImageOptions}
+     */
+    public MapStaticImageOptions setTilesetId(TilesetId tilesetId) {
+        this.tilesetId = tilesetId;
+        return this;
+    }
+
+    /**
      * Creates an instance of {@link MapStaticImageOptions}.
      */
     public MapStaticImageOptions() {
-    }
-
-    /**
-     * Gets raster tile format
-     *
-     * @return the {@code RasterTileFormat}
-     */
-    public RasterTileFormat getRasterTileFormat() {
-        return format;
-    }
-
-    /**
-     * Sets reaster tile format
-     *
-     * @param rasterTileFormat the {@code RasterTileFormat}
-     * @return a reference to this {@code MapStaticImageOptions}
-     */
-    public MapStaticImageOptions setRasterTileFormat(RasterTileFormat rasterTileFormat) {
-        this.format = rasterTileFormat;
-        return this;
     }
 
     /**
@@ -70,26 +69,6 @@ public final class MapStaticImageOptions {
      */
     public MapStaticImageOptions setStaticMapLayer(StaticMapLayer staticMapLayer) {
         this.layer = staticMapLayer;
-        return this;
-    }
-
-    /**
-     * gets map image style
-     *
-     * @return the desired map style
-     */
-    public MapImageStyle getMapImageStyle() {
-        return style;
-    }
-
-    /**
-     * Sets map image style
-     *
-     * @param mapImageStyle the desired map style
-     * @return a reference to this {@code MapStaticImageOptions}
-     */
-    public MapStaticImageOptions setMapImageStyle(MapImageStyle mapImageStyle) {
-        this.style = mapImageStyle;
         return this;
     }
 

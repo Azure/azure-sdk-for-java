@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-render</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>2.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -73,7 +73,7 @@ See [Authentication][authenticate] for more options.
 See [API design][design] for general introduction on design and key concepts on Azure Management Libraries.
 
 ## Examples
-Get Map Tile
+### Get Map Tile
 ```java com.azure.maps.render.sync.get_map_tile
 System.out.println("Get Map Tile");
 MapTileOptions mapTileOptions = new MapTileOptions();
@@ -82,14 +82,14 @@ mapTileOptions.setTileIndex(new TileIndex().setX(10).setY(22).setZ(6));
 client.getMapTile(mapTileOptions);
 ```
 
-Get Map Tileset
+### Get Map Tileset
 ```java com.azure.maps.render.sync.get_map_tileset
 System.out.println("Get Map Tileset");
 new TilesetId();
 client.getMapTileset(TilesetId.MICROSOFT_BASE);
 ```
 
-Get Map Attribution
+### Get Map Attribution
 ```java com.azure.maps.render.sync.get_map_attribution
 System.out.println("Get Map Attribution");
 GeoBoundingBox bounds = new GeoBoundingBox(-122.414162, 47.57949, -122.247157, 47.668372);
@@ -97,36 +97,35 @@ new TilesetId();
 client.getMapAttribution(TilesetId.MICROSOFT_BASE, 6, bounds);
 ```
 
-Get Copyright Caption
+### Get Copyright Caption
 ```java com.azure.maps.render.sync.get_copyright_caption
 System.out.println("Get Copyright Caption");
 client.getCopyrightCaption();
 ```
 
-Get Map Static Image
+### Get Map Static Image
 ```java com.azure.maps.render.sync.get_map_static_image
 System.out.println("Get Map Static Image");
 GeoBoundingBox bbox = new GeoBoundingBox(1.355233, 42.982261, 24.980233, 56.526017);
 new StaticMapLayer();
 new RasterTileFormat();
 MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions().setStaticMapLayer(StaticMapLayer.BASIC)
-    .setMapImageStyle(MapImageStyle.MAIN).setZoom(2)
-    .setBoundingBox(bbox).setRasterTileFormat(RasterTileFormat.PNG);
+    .setBoundingBox(bbox);
 client.getMapStaticImage(mapStaticImageOptions).toStream();
 ```
 
-Get Copyright From Bounding Box
+### Get Copyright From Bounding Box
 ```java com.azure.maps.render.sync.get_copyright_from_bounding_box
 GeoBoundingBox boundingBox = new GeoBoundingBox(52.41064, 4.84228, 52.41072, 4.84239);
 client.getCopyrightFromBoundingBox(boundingBox, true);
 ```
 
-Get Copyright For Tile
+### Get Copyright For Tile
 ```java com.azure.maps.render.sync.get_copyright_for_tile
 client.getCopyrightForTile(new TileIndex().setX(9).setY(22).setZ(6), true);
 ```
 
-Get Copyright For World
+### Get Copyright For World
 ```java com.azure.maps.render.sync.get_copyright_for_world
 client.getCopyrightForWorld(true);
 ```

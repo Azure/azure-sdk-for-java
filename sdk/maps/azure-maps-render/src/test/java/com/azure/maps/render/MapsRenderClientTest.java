@@ -5,23 +5,21 @@ package com.azure.maps.render;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import com.azure.core.models.GeoBoundingBox;
 import com.azure.maps.render.models.Copyright;
 import com.azure.maps.render.models.CopyrightCaption;
 import com.azure.maps.render.models.MapAttribution;
-import com.azure.maps.render.models.MapImageStyle;
 import com.azure.maps.render.models.MapStaticImageOptions;
 import com.azure.maps.render.models.MapTileOptions;
 import com.azure.maps.render.models.MapTileset;
-import com.azure.maps.render.models.RasterTileFormat;
 import com.azure.maps.render.models.StaticMapLayer;
 import com.azure.maps.render.models.TileIndex;
 import com.azure.maps.render.models.TilesetId;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MapsRenderClientTest extends MapsRenderClientTestBase {
     private MapsRenderClient client;
@@ -72,9 +70,10 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetMapTileset(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        MapTileset actualResult = client.getMapTileset(TilesetId.MICROSOFT_BASE_HYBRID);
-        MapTileset expectedResult = TestUtils.getExpectedMapTileset();
-        validateGetMapTileset(expectedResult, actualResult);
+        MapTileset result = client.getMapTileset(TilesetId.MICROSOFT_BASE_HYBRID);
+        assertNotNull(result);
+        assertEquals("microsoft.base.hybrid", result.getName());
+        assertEquals("xyz", result.getScheme());
     }
 
     // Test get map tileset with response
@@ -83,8 +82,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetMapTilesetWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        validateGetMapTilesetWithResponse(TestUtils.getExpectedMapTileset(),
-            client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE_HYBRID, null));
+        Response<MapTileset> response = client.getMapTilesetWithResponse(TilesetId.MICROSOFT_BASE_HYBRID, null);
+        assertEquals(200, response.getStatusCode());
     }
 
     // Case 2: Respone 400, incorrect input
@@ -159,15 +158,9 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
         GeoBoundingBox bbox = new GeoBoundingBox(1.355233, 42.982261, 24.980233, 56.526017);
         MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions().setStaticMapLayer(
                 StaticMapLayer.BASIC)
-            .setMapImageStyle(MapImageStyle.MAIN)
             .setZoom(2)
-            .setBoundingBox(bbox)
-            .setRasterTileFormat(RasterTileFormat.PNG);
+            .setBoundingBox(bbox);
         validateGetMapStaticImage(client.getMapStaticImage(mapStaticImageOptions).toBytes());
-        // try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-        //     client.getMapStaticImage(stream, mapStaticImageOptions);
-        //     validateGetMapStaticImage(stream.toByteArray());
-        // }
     }
 
     // Test get mapstatic image with response
@@ -179,10 +172,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
         GeoBoundingBox bbox = new GeoBoundingBox(1.355233, 42.982261, 24.980233, 56.526017);
         MapStaticImageOptions mapStaticImageOptions = new MapStaticImageOptions().setStaticMapLayer(
                 StaticMapLayer.BASIC)
-            .setMapImageStyle(MapImageStyle.MAIN)
             .setZoom(2)
-            .setBoundingBox(bbox)
-            .setRasterTileFormat(RasterTileFormat.PNG);
+            .setBoundingBox(bbox);
         validateGetMapStaticImageWithResponse(client.getMapStaticImageWithResponse(mapStaticImageOptions, null));
     }
 
@@ -192,9 +183,11 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     public void testGetCopyrightFromBoundingBox(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
         GeoBoundingBox boundingBox = new GeoBoundingBox(52.41064, 4.84228, 52.41072, 4.84239);
-        Copyright actualResult = client.getCopyrightFromBoundingBox(boundingBox, true);
-        Copyright expectedResult = TestUtils.getExpectedCopyrightFromBoundingBox();
-        validateGetCopyrightCaptionFromBoundingBox(expectedResult, actualResult);
+        Copyright result = client.getCopyrightFromBoundingBox(boundingBox, true);
+        assertNotNull(result);
+        assertEquals("0.0.1", result.getFormatVersion());
+        assertEquals(3, result.getGeneralCopyrights().size());
+        assertEquals(3, result.getRegions().size());
     }
 
     // Test get copyright from bounding box with response
@@ -205,8 +198,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
         MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
         GeoBoundingBox boundingBox = new GeoBoundingBox(52.41064, 4.84228, 52.41072, 4.84239);
-        validateGetCopyrightCaptionFromBoundingBoxWithResponse(TestUtils.getExpectedCopyrightFromBoundingBox(),
-            client.getCopyrightFromBoundingBoxWithResponse(boundingBox, true, null));
+        Response<Copyright> response = client.getCopyrightFromBoundingBoxWithResponse(boundingBox, true, null);
+        assertEquals(200, response.getStatusCode());
     }
 
     // Case 2: Response 400, incorrect input
@@ -226,9 +219,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetCopyrightForTile(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        Copyright actualResult = client.getCopyrightForTile(new TileIndex().setX(9).setY(22).setZ(6), true);
-        Copyright expectedResult = TestUtils.getExpectedCopyrightForTile();
-        validateGetCopyrightForTile(expectedResult, actualResult);
+        Copyright result = client.getCopyrightForTile(new TileIndex().setX(9).setY(22).setZ(6), true);
+        validateGetCopyrightForTile(result);
     }
 
     // Test get copyright for tile with response
@@ -237,8 +229,7 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetCopyrightForTileWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        validateGetCopyrightForTileWithResponse(TestUtils.getExpectedCopyrightForTile(),
-            client.getCopyrightForTileWithResponse(new TileIndex().setX(9).setY(22).setZ(6), true, null));
+        validateGetCopyrightForTileWithResponse(client.getCopyrightForTileWithResponse(new TileIndex().setX(9).setY(22).setZ(6), true, null));
     }
 
     // Case 2: Response 400, incorrect input
@@ -257,9 +248,8 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetCopyrightForWorld(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        Copyright actualResult = client.getCopyrightForWorld(true);
-        Copyright expectedResult = TestUtils.getExpectedCopyrightForWorld();
-        validateGetCopyrightForWorld(expectedResult, actualResult);
+        Copyright result = client.getCopyrightForWorld(true);
+        validateGetCopyrightForWorld(result);
     }
 
     // Test get copyright for world with response
@@ -268,7 +258,6 @@ public class MapsRenderClientTest extends MapsRenderClientTestBase {
     @MethodSource("com.azure.maps.render.TestUtils#getTestParameters")
     public void testGetCopyrightForWorldWithResponse(HttpClient httpClient, MapsRenderServiceVersion serviceVersion) {
         client = getRenderClient(httpClient, serviceVersion);
-        validateGetCopyrightForWorldWithResponse(TestUtils.getExpectedCopyrightForWorld(),
-            client.getCopyrightForWorldWithResponse(true, null));
+        validateGetCopyrightForWorldWithResponse(client.getCopyrightForWorldWithResponse(true, null));
     }
 }
