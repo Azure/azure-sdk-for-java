@@ -923,6 +923,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void operationsThrowAfterClientIsClosed(
         Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -968,6 +969,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void operationsThrowAfterClientIsClosedAsync(
         Function<SearchIndexingBufferedAsyncSender<Map<String, Object>>, Mono<Void>> operation) {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -999,6 +1001,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrow() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -1012,6 +1015,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrowAsync() {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -1453,6 +1457,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSent() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .addPolicy((context, next) -> {
                 requestCount.incrementAndGet();
                 return next.process();
@@ -1474,6 +1479,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSentAsync() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .addPolicy((context, next) -> {
                 requestCount.incrementAndGet();
                 return next.process();
