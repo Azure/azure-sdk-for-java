@@ -41,6 +41,7 @@ import com.azure.ai.translation.text.models.TranslateOptions;
  */
 @ServiceClient(builder = TextTranslationClientBuilder.class, isAsync = true)
 public final class TextTranslationAsyncClient {
+    private static final HttpHeaderName X_CLIENTTRACEID = HttpHeaderName.fromString("X-ClientTraceId");
 
     @Generated
     private final TextTranslationClientImpl serviceClient;
@@ -115,7 +116,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -123,9 +124,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -192,7 +193,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -200,9 +201,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -258,7 +259,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -266,9 +267,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -309,7 +310,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -317,9 +318,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -377,7 +378,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -386,9 +387,9 @@ public final class TextTranslationAsyncClient {
      *     }
      * ]
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * [
      *      (Required){
@@ -492,7 +493,7 @@ public final class TextTranslationAsyncClient {
         // Generated convenience method for translateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (clientTraceId != null) {
-            requestOptions.setHeader(HttpHeaderName.fromString("X-ClientTraceId"), clientTraceId);
+            requestOptions.setHeader(X_CLIENTTRACEID, clientTraceId);
         }
         if (sourceLanguage != null) {
             requestOptions.addQueryParam("from", sourceLanguage, false);
@@ -605,8 +606,7 @@ public final class TextTranslationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TranslatedTextItem> translate(String targetLanguage, String text) {
         return translate(targetLanguage, Arrays.asList(text))
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
+            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0));
     }
 
     /**
@@ -629,8 +629,7 @@ public final class TextTranslationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TranslatedTextItem> translate(String text, TranslateOptions translateOptions) {
         return translate(Arrays.asList(text), translateOptions)
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
+            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0));
     }
 
     /**
@@ -752,8 +751,7 @@ public final class TextTranslationAsyncClient {
     public Mono<TransliteratedText> transliterate(String language, String sourceLanguageScript,
         String targetLanguageScript, String text) {
         return transliterate(language, sourceLanguageScript, targetLanguageScript, Arrays.asList(text))
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
+            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0));
     }
 
     /**
@@ -836,8 +834,7 @@ public final class TextTranslationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BreakSentenceItem> findSentenceBoundaries(String text, String language, String script) {
         return findSentenceBoundaries(Arrays.asList(text), language, script)
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
+            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0));
     }
 
     /**
@@ -899,8 +896,7 @@ public final class TextTranslationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BreakSentenceItem> findSentenceBoundaries(String text) {
         return findSentenceBoundaries(Arrays.asList(text))
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
+            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0));
     }
 
     /**
@@ -978,8 +974,7 @@ public final class TextTranslationAsyncClient {
     public Mono<DictionaryLookupItem> lookupDictionaryEntries(String sourceLanguage, String targetLanguage,
         String text) {
         return lookupDictionaryEntries(sourceLanguage, targetLanguage, Arrays.asList(text))
-            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0))
-            .defaultIfEmpty(null);
+            .map(translatedTextItems -> translatedTextItems.isEmpty() ? null : translatedTextItems.get(0));
     }
 
     /**
@@ -1067,7 +1062,7 @@ public final class TextTranslationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     translation (Optional): {
@@ -1235,13 +1230,13 @@ public final class TextTranslationAsyncClient {
         if (scopes == null) {
             return null;
         }
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (LanguageScope scope : scopes) {
-            if (!result.isEmpty()) {
-                result += ",";
+            if (result.length() > 0) {
+                result.append(",");
             }
-            result += scope.toString();
+            result.append(scope.toString());
         }
-        return result;
+        return result.toString();
     }
 }
