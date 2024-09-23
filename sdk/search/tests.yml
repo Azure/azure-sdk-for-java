@@ -11,10 +11,8 @@ extends:
       Preview:
         SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
         ServiceConnection: azure-sdk-tests-preview
-        ServiceConnection: azure-sdk-tests
         SubscriptionConfigurationFilePaths:
           - eng/common/TestResources/sub-config/AzurePreviewMsft.json
-        Location: eastus
       UsGov:
         ServiceConnection: usgov_azure-sdk-tests
         SubscriptionConfigurationFilePaths:
