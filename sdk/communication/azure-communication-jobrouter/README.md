@@ -51,7 +51,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-jobrouter</artifactId>
-    <version>2.0.0</version>
+    <version>1.1.7</version>
 </dependency>
 ```
 
@@ -245,7 +245,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-jobrouter/src
-[router_concepts]: https://learn.microsoft.com/azure/communication-services/concepts/router/concepts
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [package]: https://search.maven.org/artifact/com.azure/azure-communication-jobrouter
 [api_documentation]: https://aka.ms/java-docs
