@@ -902,6 +902,7 @@
 /eng/versioning/external_dependencies.txt                     @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
 /.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
 /.github/workflows/                                           @Azure/azure-sdk-eng
+/.config/1espt/                                               @benbp @weshaggard
 
 # Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt
@@ -913,5 +914,3 @@
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors
-
-/.config/1espt/                                               @benbp @weshaggard
