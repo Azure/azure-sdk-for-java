@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-contentsafety</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
