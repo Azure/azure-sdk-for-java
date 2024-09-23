@@ -5,13 +5,14 @@ extends:
   parameters:
     UseFederatedAuth: true
     ServiceDirectory: search
-    SupportedClouds: 'Public,UsGov,China'
+    SupportedClouds: 'Preview,UsGov,China'
     TimeoutInMinutes: 60
     CloudConfig:
-      Public:
+      Preview:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
         ServiceConnection: azure-sdk-tests
         SubscriptionConfigurationFilePaths:
-          - eng/common/TestResources/sub-config/AzurePublicMsft.json
+          - eng/common/TestResources/sub-config/AzurePreviewMsft.json
         Location: eastus
       UsGov:
         ServiceConnection: usgov_azure-sdk-tests
