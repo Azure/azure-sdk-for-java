@@ -5,56 +5,35 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Status of operation.
- */
+/** Defines values for PhoneNumberOperationStatus. */
 public final class PhoneNumberOperationStatus extends ExpandableStringEnum<PhoneNumberOperationStatus> {
-    /**
-     * Static value notStarted for PhoneNumberOperationStatus.
-     */
+    /** Static value notStarted for PhoneNumberOperationStatus. */
     public static final PhoneNumberOperationStatus NOT_STARTED = fromString("notStarted");
 
-    /**
-     * Static value running for PhoneNumberOperationStatus.
-     */
+    /** Static value running for PhoneNumberOperationStatus. */
     public static final PhoneNumberOperationStatus RUNNING = fromString("running");
 
-    /**
-     * Static value succeeded for PhoneNumberOperationStatus.
-     */
+    /** Static value succeeded for PhoneNumberOperationStatus. */
     public static final PhoneNumberOperationStatus SUCCEEDED = fromString("succeeded");
 
-    /**
-     * Static value failed for PhoneNumberOperationStatus.
-     */
+    /** Static value failed for PhoneNumberOperationStatus. */
     public static final PhoneNumberOperationStatus FAILED = fromString("failed");
 
     /**
-     * Creates a new instance of PhoneNumberOperationStatus value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public PhoneNumberOperationStatus() {
-    }
-
-    /**
      * Creates or finds a PhoneNumberOperationStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PhoneNumberOperationStatus.
      */
+    @JsonCreator
     public static PhoneNumberOperationStatus fromString(String name) {
         return fromString(name, PhoneNumberOperationStatus.class);
     }
 
-    /**
-     * Gets known PhoneNumberOperationStatus values.
-     * 
-     * @return known PhoneNumberOperationStatus values.
-     */
+    /** @return known PhoneNumberOperationStatus values. */
     public static Collection<PhoneNumberOperationStatus> values() {
         return values(PhoneNumberOperationStatus.class);
     }

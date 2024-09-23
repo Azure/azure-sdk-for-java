@@ -5,57 +5,36 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The type of operation, e.g. Search.
- */
+/** Defines values for PhoneNumberOperationType. */
 public final class PhoneNumberOperationType extends ExpandableStringEnum<PhoneNumberOperationType> {
-    /**
-     * Static value purchase for PhoneNumberOperationType.
-     */
+    /** Static value purchase for PhoneNumberOperationType. */
     public static final PhoneNumberOperationType PURCHASE = fromString("purchase");
 
-    /**
-     * Static value releasePhoneNumber for PhoneNumberOperationType.
-     */
+    /** Static value releasePhoneNumber for PhoneNumberOperationType. */
     public static final PhoneNumberOperationType RELEASE_PHONE_NUMBER = fromString("releasePhoneNumber");
 
-    /**
-     * Static value search for PhoneNumberOperationType.
-     */
+    /** Static value search for PhoneNumberOperationType. */
     public static final PhoneNumberOperationType SEARCH = fromString("search");
 
-    /**
-     * Static value updatePhoneNumberCapabilities for PhoneNumberOperationType.
-     */
-    public static final PhoneNumberOperationType UPDATE_PHONE_NUMBER_CAPABILITIES
-        = fromString("updatePhoneNumberCapabilities");
-
-    /**
-     * Creates a new instance of PhoneNumberOperationType value.
-     * 
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public PhoneNumberOperationType() {
-    }
+    /** Static value updatePhoneNumberCapabilities for PhoneNumberOperationType. */
+    public static final PhoneNumberOperationType UPDATE_PHONE_NUMBER_CAPABILITIES =
+            fromString("updatePhoneNumberCapabilities");
 
     /**
      * Creates or finds a PhoneNumberOperationType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding PhoneNumberOperationType.
      */
+    @JsonCreator
     public static PhoneNumberOperationType fromString(String name) {
         return fromString(name, PhoneNumberOperationType.class);
     }
 
-    /**
-     * Gets known PhoneNumberOperationType values.
-     * 
-     * @return known PhoneNumberOperationType values.
-     */
+    /** @return known PhoneNumberOperationType values. */
     public static Collection<PhoneNumberOperationType> values() {
         return values(PhoneNumberOperationType.class);
     }
