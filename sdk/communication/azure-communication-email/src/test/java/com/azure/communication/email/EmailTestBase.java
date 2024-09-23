@@ -5,19 +5,20 @@ package com.azure.communication.email;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Stream;
 
 
-public class EmailTestBase extends TestProxyTestBase {
+public class EmailTestBase extends TestBase {
+    protected static final TestMode TEST_MODE = initializeTestMode();
+
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING_EMAIL", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
@@ -43,22 +44,27 @@ public class EmailTestBase extends TestProxyTestBase {
         EmailClientBuilder emailClientBuilder = new EmailClientBuilder()
             .connectionString(CONNECTION_STRING)
             .httpClient(getHttpClientOrUsePlayback(httpClient));
-        if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
-                .setComparingBodies(false)));
-        }
+
         if (getTestMode() == TestMode.RECORD) {
             HttpPipelinePolicy recordPolicy = interceptorManager.getRecordPolicy();
             emailClientBuilder.addPolicy(recordPolicy);
         }
 
-        if (!interceptorManager.isLiveMode()) {
-            // Remove `operation-location` sanitizers from list of common sanitizers
-            interceptorManager.removeSanitizers("AZSDK2030");
-        }
-
         return emailClientBuilder;
+    }
+
+    private static TestMode initializeTestMode() {
+        String azureTestMode = Configuration.getGlobalConfiguration().get("AZURE_TEST_MODE");
+        if (azureTestMode != null) {
+            System.out.println("azureTestMode: " + azureTestMode);
+            try {
+                return TestMode.valueOf(azureTestMode.toUpperCase(Locale.US));
+            } catch (IllegalArgumentException var3) {
+                return TestMode.PLAYBACK;
+            }
+        } else {
+            return TestMode.PLAYBACK;
+        }
     }
 
     static Stream<Arguments> getTestParameters() {
