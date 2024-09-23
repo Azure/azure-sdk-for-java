@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
 import com.nimbusds.jwt.JWT;
@@ -81,7 +82,7 @@ public class TokenGenerationTest extends TestProxyTestBase {
         WebPubSubServiceClientBuilder webPubSubServiceClientBuilder = new WebPubSubServiceClientBuilder()
             .endpoint(endpoint)
             .httpClient(HttpClient.createDefault())
-            .credential(TestUtils.getIdentityTestCredential(interceptorManager))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .hub(TestUtils.HUB_NAME);
 
         WebPubSubServiceClient client = webPubSubServiceClientBuilder.buildClient();
