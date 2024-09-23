@@ -26,12 +26,21 @@ public interface TracerProvider {
     Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options);
 
     /**
-     *  Creates tracer provider instance.
-     * <p>
+     * Creates tracer provider instance.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.core.util.tracing.TracerProvider#create-tracer -->
      * <pre>
-     * Tracer tracer = TracerProvider.getDefaultProvider&#40;&#41;.createTracer&#40;&quot;azure-storage-blobs&quot;, &quot;12.20.0&quot;,
-     *     &quot;Microsoft.Storage&quot;, clientOptions.getTracingOptions&#40;&#41;&#41;;
+     *
+     * SdkTelemetryOptions sdkTelemetryOptions = new SdkTelemetryOptions&#40;&#41;
+     *     .setSdkName&#40;&quot;azure-storage-blobs&quot;&#41;
+     *     .setSdkVersion&#40;&quot;12.20.0&quot;&#41;
+     *     .setResourceProviderNamespace&#40;&quot;Microsoft.Storage&quot;&#41;
+     *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.23.1&quot;&#41;;
+     *
+     * Tracer tracer = TracerProvider.getDefaultProvider&#40;&#41;
+     *     .createTracer&#40;sdkTelemetryOptions, clientOptions.getTracingOptions&#40;&#41;&#41;;
      * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
      *     .tracer&#40;tracer&#41;
      *     .clientOptions&#40;clientOptions&#41;

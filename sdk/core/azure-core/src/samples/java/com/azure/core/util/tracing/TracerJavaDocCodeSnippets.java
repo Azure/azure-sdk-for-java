@@ -230,7 +230,8 @@ public class TracerJavaDocCodeSnippets {
             .setResourceProviderNamespace("Microsoft.Storage")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.23.1");
 
-        Tracer tracer = TracerProvider.getDefaultProvider().createTracer(sdkTelemetryOptions, clientOptions.getTracingOptions());
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(sdkTelemetryOptions, clientOptions.getTracingOptions());
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .tracer(tracer)
             .clientOptions(clientOptions)
