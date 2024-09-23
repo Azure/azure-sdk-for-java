@@ -21,9 +21,19 @@ public final class SharesDeleteHeaders {
     private String xMsVersion;
 
     /*
+     * The x-ms-share-usage-bytes property.
+     */
+    private Long xMsShareUsageBytes;
+
+    /*
      * The x-ms-request-id property.
      */
     private String xMsRequestId;
+
+    /*
+     * The x-ms-share-snapshot-usage-bytes property.
+     */
+    private Long xMsShareSnapshotUsageBytes;
 
     /*
      * The Date property.
@@ -31,6 +41,11 @@ public final class SharesDeleteHeaders {
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_SHARE_USAGE_BYTES = HttpHeaderName.fromString("x-ms-share-usage-bytes");
+
+    private static final HttpHeaderName X_MS_SHARE_SNAPSHOT_USAGE_BYTES
+        = HttpHeaderName.fromString("x-ms-share-snapshot-usage-bytes");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -40,7 +55,15 @@ public final class SharesDeleteHeaders {
      */
     public SharesDeleteHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsShareUsageBytes = rawHeaders.getValue(X_MS_SHARE_USAGE_BYTES);
+        if (xMsShareUsageBytes != null) {
+            this.xMsShareUsageBytes = Long.parseLong(xMsShareUsageBytes);
+        }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        String xMsShareSnapshotUsageBytes = rawHeaders.getValue(X_MS_SHARE_SNAPSHOT_USAGE_BYTES);
+        if (xMsShareSnapshotUsageBytes != null) {
+            this.xMsShareSnapshotUsageBytes = Long.parseLong(xMsShareSnapshotUsageBytes);
+        }
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
@@ -68,6 +91,26 @@ public final class SharesDeleteHeaders {
     }
 
     /**
+     * Get the xMsShareUsageBytes property: The x-ms-share-usage-bytes property.
+     * 
+     * @return the xMsShareUsageBytes value.
+     */
+    public Long getXMsShareUsageBytes() {
+        return this.xMsShareUsageBytes;
+    }
+
+    /**
+     * Set the xMsShareUsageBytes property: The x-ms-share-usage-bytes property.
+     * 
+     * @param xMsShareUsageBytes the xMsShareUsageBytes value to set.
+     * @return the SharesDeleteHeaders object itself.
+     */
+    public SharesDeleteHeaders setXMsShareUsageBytes(Long xMsShareUsageBytes) {
+        this.xMsShareUsageBytes = xMsShareUsageBytes;
+        return this;
+    }
+
+    /**
      * Get the xMsRequestId property: The x-ms-request-id property.
      * 
      * @return the xMsRequestId value.
@@ -84,6 +127,26 @@ public final class SharesDeleteHeaders {
      */
     public SharesDeleteHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareSnapshotUsageBytes property: The x-ms-share-snapshot-usage-bytes property.
+     * 
+     * @return the xMsShareSnapshotUsageBytes value.
+     */
+    public Long getXMsShareSnapshotUsageBytes() {
+        return this.xMsShareSnapshotUsageBytes;
+    }
+
+    /**
+     * Set the xMsShareSnapshotUsageBytes property: The x-ms-share-snapshot-usage-bytes property.
+     * 
+     * @param xMsShareSnapshotUsageBytes the xMsShareSnapshotUsageBytes value to set.
+     * @return the SharesDeleteHeaders object itself.
+     */
+    public SharesDeleteHeaders setXMsShareSnapshotUsageBytes(Long xMsShareSnapshotUsageBytes) {
+        this.xMsShareSnapshotUsageBytes = xMsShareSnapshotUsageBytes;
         return this;
     }
 

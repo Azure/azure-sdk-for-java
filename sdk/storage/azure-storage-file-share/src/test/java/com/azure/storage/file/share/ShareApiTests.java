@@ -4,6 +4,7 @@
 package com.azure.storage.file.share;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
@@ -1468,5 +1469,43 @@ public class ShareApiTests extends FileShareTestBase {
         assertTrue(response.isPaidBurstingEnabled());
         assertEquals(5000L, response.getPaidBurstingMaxIops());
         assertEquals(1000L, response.getPaidBurstingMaxBandwidthMibps());
+    }
+
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @Test
+    public void createShareProvisionedV2() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setProvisionedMaxIops(501L)
+            .setProvisionedMaxBandwidthMibps(126L);
+
+        HttpHeaders response = primaryFileServiceClient.getShareClient(shareName)
+            .createWithResponse(options, null, null).getHeaders();
+
+        assertEquals("501", response.get(X_MS_SHARE_PROVISIONED_IOPS).getValue());
+        assertEquals("126", response.get(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS).getValue());
+    }
+
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @Test
+    public void setAndGetPropertiesShareProvisionedV2() {
+        ShareClient client = primaryFileServiceClient.getShareClient(shareName);
+        client.create();
+
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
+            .setProvisionedMaxIops(501L)
+            .setProvisionedMaxBandwidthMibps(126L);
+
+        client.setPropertiesWithResponse(options, null, null);
+
+        ShareProperties response = client.getProperties();
+
+        assertEquals(501, response.getProvisionedIops());
+        assertEquals(126, response.getProvisionedBandwidthMiBps());
+        assertNotNull(response.getIncludedBurstIops());
+        assertNotNull(response.getMaxBurstCreditsForIops());
+        assertNotNull(response.getNextAllowedProvisionedIopsDowngradeTime());
+        assertNotNull(response.getNextAllowedProvisionedBandwidthDowngradeTime());
     }
 }
