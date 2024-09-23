@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.1 (Unreleased)
+## 11.8.0-beta.1 (2024-09-23)
 
 ### Features Added
 
@@ -9,10 +9,6 @@
 - `SplitSkill` now supports tokenization.
 - `VectorQuery` now supports `filterOverride` which allow for vector queries to override the broader SearchRequest.filter to allow for vector queries to have more specific configurations
 - `DocumentDebugInfo` is extended with vector scores for the result.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 
