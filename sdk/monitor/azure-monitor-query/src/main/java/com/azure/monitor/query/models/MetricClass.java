@@ -26,8 +26,7 @@ public final class MetricClass extends ExpandableStringEnum<MetricClass> {
     /**
      * Creates an instance of MetricClass.
      */
-    public MetricClass() {
-    }
+    public MetricClass() { }
 
     /**
      * Creates or finds a MetricClass from its string representation.

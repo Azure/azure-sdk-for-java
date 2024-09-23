@@ -46,37 +46,37 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
 
     private static Stream<Arguments> getFilterPredicate() {
         return Arrays.asList(
-            Arguments.of(AggregationType.AVERAGE,
-                (Predicate<MetricValue>) metricValue -> metricValue.getAverage() != null
-                    && metricValue.getCount() == null
-                    && metricValue.getTotal() == null
-                    && metricValue.getMinimum() == null
-                    && metricValue.getMaximum() == null),
-            Arguments.of(AggregationType.COUNT,
-                (Predicate<MetricValue>) metricValue -> metricValue.getCount() != null
-                    && metricValue.getAverage() == null
-                    && metricValue.getTotal() == null
-                    && metricValue.getMinimum() == null
-                    && metricValue.getMaximum() == null),
-            Arguments.of(AggregationType.TOTAL,
-                (Predicate<MetricValue>) metricValue -> metricValue.getTotal() != null
-                    && metricValue.getCount() == null
-                    && metricValue.getAverage() == null
-                    && metricValue.getMinimum() == null
-                    && metricValue.getMaximum() == null),
-            Arguments.of(AggregationType.MINIMUM,
-                (Predicate<MetricValue>) metricValue -> metricValue.getMinimum() != null
-                    && metricValue.getCount() == null
-                    && metricValue.getTotal() == null
-                    && metricValue.getAverage() == null
-                    && metricValue.getMaximum() == null),
-            Arguments.of(AggregationType.MAXIMUM,
-                (Predicate<MetricValue>) metricValue -> metricValue.getMaximum() != null
-                    && metricValue.getCount() == null
-                    && metricValue.getTotal() == null
-                    && metricValue.getMinimum() == null
-                    && metricValue.getAverage() == null))
-            .stream();
+                Arguments.of(AggregationType.AVERAGE,
+                        (Predicate<MetricValue>) metricValue -> metricValue.getAverage() != null
+                                && metricValue.getCount() == null
+                                && metricValue.getTotal() == null
+                                && metricValue.getMinimum() == null
+                                && metricValue.getMaximum() == null),
+                Arguments.of(AggregationType.COUNT,
+                        (Predicate<MetricValue>) metricValue -> metricValue.getCount() != null
+                                && metricValue.getAverage() == null
+                                && metricValue.getTotal() == null
+                                && metricValue.getMinimum() == null
+                                && metricValue.getMaximum() == null),
+                Arguments.of(AggregationType.TOTAL,
+                        (Predicate<MetricValue>) metricValue -> metricValue.getTotal() != null
+                                && metricValue.getCount() == null
+                                && metricValue.getAverage() == null
+                                && metricValue.getMinimum() == null
+                                && metricValue.getMaximum() == null),
+                Arguments.of(AggregationType.MINIMUM,
+                        (Predicate<MetricValue>) metricValue -> metricValue.getMinimum() != null
+                                && metricValue.getCount() == null
+                                && metricValue.getTotal() == null
+                                && metricValue.getAverage() == null
+                                && metricValue.getMaximum() == null),
+                Arguments.of(AggregationType.MAXIMUM,
+                        (Predicate<MetricValue>) metricValue -> metricValue.getMaximum() != null
+                                && metricValue.getCount() == null
+                                && metricValue.getTotal() == null
+                                && metricValue.getMinimum() == null
+                                && metricValue.getAverage() == null)
+        ).stream();
     }
 
     @BeforeEach
@@ -84,95 +84,142 @@ public class MetricsQueryAsyncClientTest extends TestProxyTestBase {
         resourceUri = getMetricResourceUri(interceptorManager.isPlaybackMode());
         TokenCredential credential = TestUtil.getTestTokenCredential(interceptorManager);
 
-        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder().credential(credential);
+        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder()
+            .credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+            clientBuilder
+                    .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder
+                .addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getMetricEndpoint());
         }
-        this.client = clientBuilder.buildAsyncClient();
+        this.client = clientBuilder
+                .buildAsyncClient();
     }
 
     private HttpClient getAssertingHttpClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient).assertAsync()
-            .skipRequest((request, context) -> false)
-            .build();
+        return new AssertingHttpClientBuilder(httpClient)
+                .assertAsync()
+                .skipRequest((request, context) -> false)
+                .build();
     }
 
     @Test
     public void testMetricsQuery() {
-        StepVerifier
-            .create(client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
-                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
-                    .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
-                    .setGranularity(Duration.ofHours(1))
-                    .setTop(100)
-                    .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
-                        AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
-                Context.NONE))
-            .assertNext(response -> {
-                MetricsQueryResult metricsQueryResult = response.getValue();
-                List<MetricResult> metrics = metricsQueryResult.getMetrics();
+        StepVerifier.create(client
+                        .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                                new MetricsQueryOptions()
+                                        .setMetricNamespace("Microsoft.EventHub/namespaces")
+                                        .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
+                                        .setGranularity(Duration.ofHours(1))
+                                        .setTop(100)
+                                        .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
+                                                AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
+                                Context.NONE))
+                .assertNext(response -> {
+                    MetricsQueryResult metricsQueryResult = response.getValue();
+                    List<MetricResult> metrics = metricsQueryResult.getMetrics();
 
-                assertEquals(1, metrics.size());
-                MetricResult successfulCallsMetric = metrics.get(0);
-                assertEquals("SuccessfulRequests", successfulCallsMetric.getMetricName());
-                assertEquals("Microsoft.Insights/metrics", successfulCallsMetric.getResourceType());
-                assertEquals(1, successfulCallsMetric.getTimeSeries().size());
+                    assertEquals(1, metrics.size());
+                    MetricResult successfulCallsMetric = metrics.get(0);
+                    assertEquals("SuccessfulRequests", successfulCallsMetric.getMetricName());
+                    assertEquals("Microsoft.Insights/metrics", successfulCallsMetric.getResourceType());
+                    assertEquals(1, successfulCallsMetric.getTimeSeries().size());
 
-                Assertions.assertTrue(successfulCallsMetric.getTimeSeries()
-                    .stream()
-                    .flatMap(timeSeriesElement -> timeSeriesElement.getValues().stream())
-                    .anyMatch(metricsValue -> Double.compare(0.0, metricsValue.getCount()) == 0));
-            })
-            .verifyComplete();
+                    Assertions.assertTrue(successfulCallsMetric.getTimeSeries()
+                            .stream()
+                            .flatMap(timeSeriesElement -> timeSeriesElement.getValues().stream())
+                            .anyMatch(metricsValue -> Double.compare(0.0, metricsValue.getCount()) == 0));
+                })
+                .verifyComplete();
+
 
     }
 
     @ParameterizedTest
     @MethodSource("getFilterPredicate")
     public void testAggregation(AggregationType aggregationType, Predicate<MetricValue> metricValuePredicate) {
-        StepVerifier.create(client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
-            new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
-                .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
-                .setGranularity(Duration.ofHours(1))
-                .setTop(100)
-                .setAggregations(Arrays.asList(aggregationType)),
-            Context.NONE)).assertNext(metricsResponse -> {
-                MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
-                List<MetricResult> metrics = metricsQueryResult.getMetrics();
-                List<MetricValue> metricValues = metrics.stream()
-                    .flatMap(result -> result.getTimeSeries().stream())
-                    .flatMap(tsElement -> tsElement.getValues().stream())
-                    .filter(metricValuePredicate)
-                    .collect(Collectors.toList());
-                assertTrue(metricValues.size() > 0);
-            }).verifyComplete();
+        StepVerifier.create(client
+                        .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                                new MetricsQueryOptions()
+                                        .setMetricNamespace("Microsoft.EventHub/namespaces")
+                                        .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
+                                        .setGranularity(Duration.ofHours(1))
+                                        .setTop(100)
+                                        .setAggregations(Arrays.asList(aggregationType)),
+                                Context.NONE))
+                .assertNext(metricsResponse -> {
+                    MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
+                    List<MetricResult> metrics = metricsQueryResult.getMetrics();
+                    List<MetricValue> metricValues = metrics.stream()
+                            .flatMap(result -> result.getTimeSeries().stream())
+                            .flatMap(tsElement -> tsElement.getValues().stream())
+                            .filter(metricValuePredicate)
+                            .collect(Collectors.toList());
+                    assertTrue(metricValues.size() > 0);
+                })
+                .verifyComplete();
     }
 
     @Test
     public void testMetricsDefinition() {
-        List<String> knownMetricsDefinitions = Arrays.asList("SuccessfulRequests", "ServerErrors", "UserErrors",
-            "QuotaExceededErrors", "ThrottledRequests", "IncomingRequests", "IncomingMessages", "OutgoingMessages",
-            "IncomingBytes", "OutgoingBytes", "ActiveConnections", "ConnectionsOpened", "ConnectionsClosed",
-            "CaptureBacklog", "CapturedMessages", "CapturedBytes", "Size", "INREQS", "SUCCREQ", "FAILREQ", "SVRBSY",
-            "INTERR", "MISCERR", "INMSGS", "EHINMSGS", "OUTMSGS", "EHOUTMSGS", "EHINMBS", "EHINBYTES", "EHOUTMBS",
-            "EHOUTBYTES", "EHABL", "EHAMSGS", "EHAMBS");
+        List<String> knownMetricsDefinitions = Arrays.asList(
+            "SuccessfulRequests",
+            "ServerErrors",
+            "UserErrors",
+            "QuotaExceededErrors",
+            "ThrottledRequests",
+            "IncomingRequests",
+            "IncomingMessages",
+            "OutgoingMessages",
+            "IncomingBytes",
+            "OutgoingBytes",
+            "ActiveConnections",
+            "ConnectionsOpened",
+            "ConnectionsClosed",
+            "CaptureBacklog",
+            "CapturedMessages",
+            "CapturedBytes",
+            "Size",
+            "INREQS",
+            "SUCCREQ",
+            "FAILREQ",
+            "SVRBSY",
+            "INTERR",
+            "MISCERR",
+            "INMSGS",
+            "EHINMSGS",
+            "OUTMSGS",
+            "EHOUTMSGS",
+            "EHINMBS",
+            "EHINBYTES",
+            "EHOUTMBS",
+            "EHOUTBYTES",
+            "EHABL",
+            "EHAMSGS",
+            "EHAMBS"
+        );
 
-        StepVerifier.create(client.listMetricDefinitions(resourceUri).collectList()).assertNext(metricDefinitions -> {
-            List<String> metricsDefinitionNames
-                = metricDefinitions.stream().map(MetricDefinition::getName).collect(Collectors.toList());
+        StepVerifier.create(client
+                        .listMetricDefinitions(resourceUri)
+                        .collectList())
+                .assertNext(metricDefinitions -> {
+                    List<String> metricsDefinitionNames = metricDefinitions.stream()
+                        .map(MetricDefinition::getName)
+                        .collect(Collectors.toList());
 
-            assertTrue(metricsDefinitionNames.containsAll(knownMetricsDefinitions));
-        }).verifyComplete();
+                    assertTrue(metricsDefinitionNames
+                            .containsAll(knownMetricsDefinitions));
+                })
+                .verifyComplete();
     }
 
     @Test
     public void testMetricsNamespaces() {
         StepVerifier.create(client.listMetricNamespaces(resourceUri, null).collectList())
-            .assertNext(namespaces -> assertEquals(1, namespaces.size()))
-            .verifyComplete();
+                .assertNext(namespaces -> assertEquals(1, namespaces.size()))
+                .verifyComplete();
     }
 }
