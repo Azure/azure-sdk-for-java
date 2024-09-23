@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.isNullOrEmpty;
+import static io.clientcore.http.okhttp3.implementation.DefaultAuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
+import static io.clientcore.http.okhttp3.implementation.DefaultAuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static io.clientcore.http.okhttp3.implementation.DefaultAuthorizationChallengeHandler.isNullOrEmpty;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
@@ -59,11 +59,20 @@ public final class ProxyAuthenticator implements Authenticator {
     /**
      * Constructs a {@link ProxyAuthenticator} which handles authenticating against proxy servers.
      *
+     * @param challengeHandler Authorization challenge handler.
+     */
+    public ProxyAuthenticator(AuthorizationChallengeHandler challengeHandler) {
+        this.challengeHandler = challengeHandler;
+    }
+
+    /**
+     * Constructs a {@link ProxyAuthenticator} which handles authenticating against proxy servers.
+     *
      * @param username Username used in authentication challenges.
      * @param password Password used in authentication challenges.
      */
     public ProxyAuthenticator(String username, String password) {
-        this.challengeHandler = new AuthorizationChallengeHandler(username, password);
+        this.challengeHandler = new DefaultAuthorizationChallengeHandler(username, password);
     }
 
     /**
@@ -166,10 +175,10 @@ public final class ProxyAuthenticator implements Authenticator {
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
 
             if (!isNullOrEmpty(proxyAuthenticationInfoHeader)) {
-                Map<String, String> authenticationInfoPieces = AuthorizationChallengeHandler
-                    .parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
-                Map<String, String> authorizationPieces = AuthorizationChallengeHandler
-                    .parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
+                Map<String, String> authenticationInfoPieces
+                    = DefaultAuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
+                Map<String, String> authorizationPieces
+                    = DefaultAuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
 
                 /*
                  * If the authentication info response contains a cnonce or nc value it MUST match the value sent in the

@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
+import static io.clientcore.http.okhttp3.implementation.DefaultAuthorizationChallengeHandler.PROXY_AUTHORIZATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -180,7 +180,7 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthorizationChallengeHandler
+        String nonce = DefaultAuthorizationChallengeHandler
             .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
             .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
@@ -202,7 +202,7 @@ public class ProxyAuthenticatorTests {
         assertNotNull(authenticateRequest);
         assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
 
-        String cnonce = AuthorizationChallengeHandler
+        String cnonce = DefaultAuthorizationChallengeHandler
             .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
             .get("cnonce");
 
@@ -218,7 +218,7 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthorizationChallengeHandler
+        String nonce = DefaultAuthorizationChallengeHandler
             .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
             .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
@@ -278,7 +278,7 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthorizationChallengeHandler
+        String nonce = DefaultAuthorizationChallengeHandler
             .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
             .get("nonce");
         assertEquals(UPDATED_NONCE, nonce);
