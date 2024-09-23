@@ -6,26 +6,21 @@ package com.azure.digitaltwins.core.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.JsonPatchDocument;
 import com.azure.core.util.Context;
-import com.azure.digitaltwins.core.DigitalTwinsAsyncClient;
-import com.azure.digitaltwins.core.DigitalTwinsClient;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The optional parameters for
- * {@link DigitalTwinsClient#updateRelationshipWithResponse(String, String, JsonPatchDocument, UpdateRelationshipOptions, Context)} and
- * {@link DigitalTwinsAsyncClient#updateRelationshipWithResponse(String, String, JsonPatchDocument, UpdateRelationshipOptions)}
+ * {@link com.azure.digitaltwins.core.DigitalTwinsClient#updateRelationshipWithResponse(String, String, JsonPatchDocument, UpdateRelationshipOptions, Context)} and
+ * {@link com.azure.digitaltwins.core.DigitalTwinsAsyncClient#updateRelationshipWithResponse(String, String, JsonPatchDocument, UpdateRelationshipOptions)}
  */
 @Fluent
 public final class UpdateRelationshipOptions {
     /*
-     * Only perform the operation if the entity's etag matches one of the etags provided or * is provided.
+     * Only perform the operation if the entity's etag matches one of the etags
+     * provided or * is provided.
      */
+    @JsonProperty(value = "If-Match")
     private String ifMatch;
-
-    /**
-     * Creates a new instance of {@link UpdateRelationshipOptions}.
-     */
-    public UpdateRelationshipOptions() {
-    }
 
     /**
      * Get the ifMatch property: Only perform the operation if the entity's etag matches one of the etags provided or *
