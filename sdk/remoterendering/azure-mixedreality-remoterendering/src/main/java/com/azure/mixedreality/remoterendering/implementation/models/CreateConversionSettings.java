@@ -4,80 +4,37 @@
 
 package com.azure.mixedreality.remoterendering.implementation.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Request to start a conversion.
- */
-@Immutable
-public final class CreateConversionSettings implements JsonSerializable<CreateConversionSettings> {
+/** Request to start a conversion. */
+@Fluent
+public final class CreateConversionSettings {
     /*
-     * Conversion settings describe the origin of input files and destination of output files.
+     * Conversion settings describe the origin of input files and destination
+     * of output files.
      */
-    private final ConversionSettings settings;
+    @JsonProperty(value = "settings", required = true)
+    private ConversionSettings settings;
 
     /**
      * Creates an instance of CreateConversionSettings class.
-     * 
+     *
      * @param settings the settings value to set.
      */
-    public CreateConversionSettings(ConversionSettings settings) {
+    @JsonCreator
+    public CreateConversionSettings(@JsonProperty(value = "settings", required = true) ConversionSettings settings) {
         this.settings = settings;
     }
 
     /**
      * Get the settings property: Conversion settings describe the origin of input files and destination of output
      * files.
-     * 
+     *
      * @return the settings value.
      */
     public ConversionSettings getSettings() {
         return this.settings;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("settings", this.settings);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CreateConversionSettings from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateConversionSettings if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateConversionSettings.
-     */
-    public static CreateConversionSettings fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean settingsFound = false;
-            ConversionSettings settings = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("settings".equals(fieldName)) {
-                    settings = ConversionSettings.fromJson(reader);
-                    settingsFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (settingsFound) {
-                return new CreateConversionSettings(settings);
-            }
-            throw new IllegalStateException("Missing required property: settings");
-        });
     }
 }
