@@ -72,6 +72,7 @@ stages:
           - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
             parameters:
               BaseBranchName: refs/heads/$(BaseBranchName)
+              PROwner: Azure
               PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
               CommitMsg: "Patch release preparation $(PatchDate)"
               PRTitle: "Prepare patch release $(PatchDate)"
