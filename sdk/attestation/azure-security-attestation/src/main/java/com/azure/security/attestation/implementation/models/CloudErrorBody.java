@@ -5,37 +5,29 @@
 package com.azure.security.attestation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An error response from Attestation.
- */
+/** An error response from Attestation. */
 @Fluent
-public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
+public final class CloudErrorBody {
     /*
-     * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
+     * An identifier for the error. Codes are invariant and are intended to be
+     * consumed programmatically.
      */
+    @JsonProperty(value = "code")
     private String code;
 
     /*
-     * A message describing the error, intended to be suitable for displaying in a user interface.
+     * A message describing the error, intended to be suitable for displaying
+     * in a user interface.
      */
+    @JsonProperty(value = "message")
     private String message;
-
-    /**
-     * Creates an instance of CloudErrorBody class.
-     */
-    public CloudErrorBody() {
-    }
 
     /**
      * Get the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -45,7 +37,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
     /**
      * Set the code property: An identifier for the error. Codes are invariant and are intended to be consumed
      * programmatically.
-     * 
+     *
      * @param code the code value to set.
      * @return the CloudErrorBody object itself.
      */
@@ -57,7 +49,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
     /**
      * Get the message property: A message describing the error, intended to be suitable for displaying in a user
      * interface.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -67,7 +59,7 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
     /**
      * Set the message property: A message describing the error, intended to be suitable for displaying in a user
      * interface.
-     * 
+     *
      * @param message the message value to set.
      * @return the CloudErrorBody object itself.
      */
@@ -78,45 +70,8 @@ public final class CloudErrorBody implements JsonSerializable<CloudErrorBody> {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeStringField("message", this.message);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CloudErrorBody from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CloudErrorBody if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CloudErrorBody.
-     */
-    public static CloudErrorBody fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CloudErrorBody deserializedCloudErrorBody = new CloudErrorBody();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("code".equals(fieldName)) {
-                    deserializedCloudErrorBody.code = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    deserializedCloudErrorBody.message = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCloudErrorBody;
-        });
-    }
+    public void validate() {}
 }

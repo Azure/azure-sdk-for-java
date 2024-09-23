@@ -7,44 +7,32 @@ package com.azure.security.attestation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Attestation request for Trusted Platform Module (TPM) attestation.
- */
+/** Attestation request for Trusted Platform Module (TPM) attestation. */
 @Fluent
-public final class TpmAttestationRequest implements JsonSerializable<TpmAttestationRequest> {
+public final class TpmAttestationRequest {
     /*
      * Protocol data containing artifacts for attestation.
      */
+    @JsonProperty(value = "data")
     private Base64Url data;
 
     /**
-     * Creates an instance of TpmAttestationRequest class.
-     */
-    public TpmAttestationRequest() {
-    }
-
-    /**
      * Get the data property: Protocol data containing artifacts for attestation.
-     * 
+     *
      * @return the data value.
      */
     public byte[] getData() {
         if (this.data == null) {
-            return null;
+            return new byte[0];
         }
         return this.data.decodedBytes();
     }
 
     /**
      * Set the data property: Protocol data containing artifacts for attestation.
-     * 
+     *
      * @param data the data value to set.
      * @return the TpmAttestationRequest object itself.
      */
@@ -59,43 +47,8 @@ public final class TpmAttestationRequest implements JsonSerializable<TpmAttestat
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("data", Objects.toString(this.data, null));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TpmAttestationRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TpmAttestationRequest if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the TpmAttestationRequest.
-     */
-    public static TpmAttestationRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TpmAttestationRequest deserializedTpmAttestationRequest = new TpmAttestationRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("data".equals(fieldName)) {
-                    deserializedTpmAttestationRequest.data
-                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTpmAttestationRequest;
-        });
-    }
+    public void validate() {}
 }
