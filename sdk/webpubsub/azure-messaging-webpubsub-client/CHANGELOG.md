@@ -1,19 +1,12 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-- Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
-  more serialization frameworks than just Jackson.
-
-### Breaking Changes
-
-- Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
-
-### Bugs Fixed
+## 1.0.6 (2024-08-24)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
 
 
 ## 1.0.5 (2024-07-26)
