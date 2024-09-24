@@ -40,9 +40,12 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollingContext;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -64,6 +67,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
+    // Please see https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
+    // for more information on Azure resource provider namespaces.
+    private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
 
     private static final String DEFAULT_SCOPE = "/.default";
     private static final String FORM_RECOGNIZER_PROPERTIES = "azure-ai-formrecognizer.properties";
@@ -346,9 +352,14 @@ public final class Utility {
 
         httpPipelinePolicies.add(new HttpLoggingPolicy(buildLogOptions));
 
+        TracingOptions tracingOptions = clientOptions == null ? null : clientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, COGNITIVE_TRACING_NAMESPACE_VALUE, tracingOptions);
+
         return new HttpPipelineBuilder()
             .clientOptions(buildClientOptions)
             .httpClient(httpClient)
+            .tracer(tracer)
             .policies(httpPipelinePolicies.toArray(new HttpPipelinePolicy[0]))
             .build();
     }

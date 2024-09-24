@@ -1,17 +1,11 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.1 (2024-08-14)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-- An `EmailMessage` with null recipient addresses can no longer be sent.
-
-### Other Changes
-
+- Consumers can now provide a value for the `ContentId` property when sending emails with attachments.
+  This allows consumers to reference attachments in the email body using the `cid` scheme. The `ContentId` property can be set on the `EmailAttachment` object.
 
 ## 1.0.15 (2024-07-26)
 
