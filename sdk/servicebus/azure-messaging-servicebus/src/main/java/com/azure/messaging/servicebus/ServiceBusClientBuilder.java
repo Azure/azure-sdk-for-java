@@ -2465,7 +2465,9 @@ public final class ServiceBusClientBuilder implements
 
         /**
          * Max concurrent messages that this processor should process. By default, this is set to 1.
-         *
+         * <p>
+         * The processor will use a shared global thread pool to deliver messages.
+         * </p>
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
          * @return The updated {@link ServiceBusProcessorClientBuilder} object.
          * @throws IllegalArgumentException if the {@code maxConcurrentCalls} is set to a value less than 1.
@@ -2476,6 +2478,23 @@ public final class ServiceBusClientBuilder implements
                     new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
             }
             processorClientOptions.setMaxConcurrentCalls(maxConcurrentCalls);
+            return this;
+        }
+
+        /**
+         * Max concurrent messages that this processor should process. By default, this is set to 1.
+         *
+         * @param maxConcurrentCalls max concurrent messages that this processor should process.
+         * @param useDedicatedThreadPool if {@code true} the processor will use an exclusive thread pool to deliver messages.
+         * @return The updated {@link ServiceBusProcessorClientBuilder} object.
+         * @throws IllegalArgumentException if the {@code maxConcurrentCalls} is set to a value less than 1.
+         */
+        public ServiceBusProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls, boolean useDedicatedThreadPool) {
+            if (maxConcurrentCalls < 1) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("'maxConcurrentCalls' cannot be less than 1"));
+            }
+            processorClientOptions.setUseDedicatedThreadPool(useDedicatedThreadPool);
             return this;
         }
 

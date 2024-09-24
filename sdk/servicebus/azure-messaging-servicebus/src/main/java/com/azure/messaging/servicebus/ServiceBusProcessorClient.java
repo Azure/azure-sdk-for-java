@@ -272,7 +272,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         if (this.processorOptions.isV2()) {
             final int concurrency = this.processorOptions.getMaxConcurrentCalls();
             final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
-            this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency, enableAutoDisposition);
+            final boolean useDedicatedThreadPool = this.processorOptions.isDedicatedThreadPool();
+            this.processorV2 = new ServiceBusProcessor(receiverBuilder, processMessage, processError, concurrency, useDedicatedThreadPool, enableAutoDisposition);
             this.tracer = null;
         } else {
             this.processorV2 = null;

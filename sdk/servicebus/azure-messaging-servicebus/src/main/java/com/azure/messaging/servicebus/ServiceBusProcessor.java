@@ -29,6 +29,7 @@ final class ServiceBusProcessor {
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
     private final int concurrency;
+    private final boolean useDedicatedThreadPool;
     private final Boolean enableAutoDisposition;
     private boolean isRunning;
     private RollingMessagePump rollingMessagePump;
@@ -40,17 +41,19 @@ final class ServiceBusProcessor {
      * @param processMessage The consumer to invoke for each message.
      * @param processError The consumer to report the errors.
      * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel.
+     * @param useDedicatedThreadPool Indicates if a dedicated scheduler with lifetime same as each {@link MessagePump} should be used to pump messages.
      * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
      */
     ServiceBusProcessor(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-        int concurrency, boolean enableAutoDisposition) {
+        int concurrency, boolean useDedicatedThreadPool, boolean enableAutoDisposition) {
         this.kind = Kind.NON_SESSION;
         this.nonSessionBuilder = builder;
         this.sessionBuilder = null;
         this.processError = processError;
         this.processMessage = processMessage;
         this.concurrency = concurrency;
+        this.useDedicatedThreadPool = useDedicatedThreadPool;
         this.enableAutoDisposition = enableAutoDisposition;
 
         synchronized (lock) {
@@ -75,6 +78,7 @@ final class ServiceBusProcessor {
         this.processError = processError;
         this.processMessage = processMessage;
         this.concurrency = concurrency;
+        this.useDedicatedThreadPool = true; // The session processor always uses exclusive thread pool per session.
         this.enableAutoDisposition = null;
 
         synchronized (lock) {
@@ -91,7 +95,7 @@ final class ServiceBusProcessor {
             isRunning = true;
             if (kind == Kind.NON_SESSION) {
                 rollingMessagePump = new RollingMessagePump(nonSessionBuilder,
-                    processMessage, processError, concurrency, enableAutoDisposition);
+                    processMessage, processError, concurrency, useDedicatedThreadPool, enableAutoDisposition);
             } else {
                 rollingMessagePump = new RollingMessagePump(sessionBuilder,
                     processMessage, processError, concurrency);
@@ -145,6 +149,7 @@ final class ServiceBusProcessor {
         private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder nonSessionBuilder;
         private final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder sessionBuilder;
         private final int concurrency;
+        private final boolean useDedicatedThreadPool;
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final Boolean enableAutoDisposition;
@@ -160,16 +165,18 @@ final class ServiceBusProcessor {
          * @param processMessage The consumer to invoke for each message.
          * @param processError The consumer to report the errors.
          * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel.
+         * @param useDedicatedThreadPool Indicates if a dedicated thread pool with lifetime same as each {@link MessagePump} should be used to pump messages.
          * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
          */
         RollingMessagePump(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-            int concurrency, boolean enableAutoDisposition) {
+            int concurrency, boolean useDedicatedThreadPool, boolean enableAutoDisposition) {
             this.logger = new ClientLogger(RollingMessagePump.class);
             this.kind = Kind.NON_SESSION;
             this.nonSessionBuilder = builder;
             this.sessionBuilder = null;
             this.concurrency = concurrency;
+            this.useDedicatedThreadPool = useDedicatedThreadPool;
             this.processError = processError;
             this.processMessage = processMessage;
             this.enableAutoDisposition = enableAutoDisposition;
@@ -197,6 +204,7 @@ final class ServiceBusProcessor {
             this.processError = processError;
             this.processMessage = processMessage;
             this.concurrency = concurrencyPerSession;
+            this.useDedicatedThreadPool = true; // The session processor always uses exclusive thread pool per session.
             this.enableAutoDisposition = null;
         }
 
@@ -228,7 +236,7 @@ final class ServiceBusProcessor {
                     client -> {
                         clientIdentifier.set(client.getIdentifier());
                         final MessagePump pump = new MessagePump(client,
-                            processMessage, processError, concurrency, enableAutoDisposition);
+                            processMessage, processError, concurrency, useDedicatedThreadPool, enableAutoDisposition);
                         return pump.begin();
                     },
                     client -> {
