@@ -31,7 +31,7 @@ public class TracerProviderTests {
         assertThrows(NullPointerException.class, () -> TracerProvider.getDefaultProvider().createTracer(null, null));
 
         assertThrows(NullPointerException.class,
-            () -> TracerProvider.getDefaultProvider().createTracer(new LibraryTelemetryOptions(), null));
+            () -> TracerProvider.getDefaultProvider().createTracer(new LibraryTelemetryOptions(null), null));
     }
 
     @Test

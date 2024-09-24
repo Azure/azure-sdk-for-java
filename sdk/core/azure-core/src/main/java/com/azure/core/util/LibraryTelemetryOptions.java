@@ -7,32 +7,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.TracerProvider;
 
+import java.util.Objects;
+
 /**
  * The options to configure library-specific information on {@link TracerProvider}
  * and {@link MeterProvider}.
  */
 @Fluent
 public final class LibraryTelemetryOptions {
-    private String libraryName;
+    private final String libraryName;
     private String libraryVersion;
     private String rpNamespace;
     private String schemaUrl;
 
     /**
      * Creates an instance of {@link LibraryTelemetryOptions}.
-     */
-    public LibraryTelemetryOptions() {
-    }
-
-    /**
-     * Sets the client library name.
      *
      * @param libraryName The client library name.
-     * @return The updated {@link LibraryTelemetryOptions} object.
      */
-    public LibraryTelemetryOptions setLibraryName(String libraryName) {
-        this.libraryName = libraryName;
-        return this;
+    public LibraryTelemetryOptions(String libraryName) {
+        this.libraryName = Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
     }
 
     /**

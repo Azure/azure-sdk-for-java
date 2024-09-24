@@ -31,7 +31,7 @@ public class OpenTelemetryMeterProviderTests {
         assertThrows(NullPointerException.class, () -> MeterProvider.getDefaultProvider().createMeter(null, null));
 
         assertThrows(NullPointerException.class,
-            () -> MeterProvider.getDefaultProvider().createMeter(new LibraryTelemetryOptions(), null));
+            () -> MeterProvider.getDefaultProvider().createMeter(new LibraryTelemetryOptions(null), null));
     }
 
     @Test

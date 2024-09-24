@@ -36,7 +36,7 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
         final LibraryTelemetryOptions libraryOptions
-            = new LibraryTelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
+            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion);
         return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }
 
@@ -127,7 +127,6 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
     @Override
     public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
-        Objects.requireNonNull(libraryOptions.getLibraryName(), "'libraryOptions.getLibraryName()' cannot be null.");
 
         return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }

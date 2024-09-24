@@ -27,7 +27,7 @@ public class AmqpPropagationFormatUtilTest {
     private static final SdkTracerProvider TRACER_PROVIDER = SdkTracerProvider.builder().build();
     private static final OpenTelemetry OPEN_TELEMETRY
         = OpenTelemetrySdk.builder().setTracerProvider(TRACER_PROVIDER).build();
-    private static final Tracer TRACER = new OpenTelemetryTracer(new LibraryTelemetryOptions().setLibraryName("test"),
+    private static final Tracer TRACER = new OpenTelemetryTracer(new LibraryTelemetryOptions("test"),
         new OpenTelemetryTracingOptions().setOpenTelemetry(OPEN_TELEMETRY));
 
     @Test

@@ -125,7 +125,7 @@ public class OpenTelemetryTracerTest {
         tracingContext
             = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan));
         openTelemetryTracer = new OpenTelemetryTracer(
-            new LibraryTelemetryOptions().setLibraryName("test").setResourceProviderNamespace(AZ_NAMESPACE_VALUE),
+            new LibraryTelemetryOptions("test").setResourceProviderNamespace(AZ_NAMESPACE_VALUE),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
     }
 
@@ -224,7 +224,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void fallbackToAzNamespaceFromContext() {
         // Arrange
-        OpenTelemetryTracer noAzTracer = new OpenTelemetryTracer(new LibraryTelemetryOptions().setLibraryName("test"),
+        OpenTelemetryTracer noAzTracer = new OpenTelemetryTracer(new LibraryTelemetryOptions("test"),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
 
         // Act

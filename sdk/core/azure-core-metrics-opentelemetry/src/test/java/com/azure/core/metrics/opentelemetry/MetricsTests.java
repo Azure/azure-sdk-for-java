@@ -371,9 +371,9 @@ public class MetricsTests {
 
     @Test
     public void sdkOptions() {
-        LibraryTelemetryOptions sdkOptions = new LibraryTelemetryOptions().setLibraryName("az.sdk-name")
-            .setLibraryVersion("1.0.0-beta.1")
-            .setSchemaUrl("https://aka.ms/az/sdk/schema:1.42.0");
+        LibraryTelemetryOptions sdkOptions
+            = new LibraryTelemetryOptions("az.sdk-name").setLibraryVersion("1.0.0-beta.1")
+                .setSchemaUrl("https://aka.ms/az/sdk/schema:1.42.0");
         InstrumentationScopeInfo expectedInstrumentationScope = InstrumentationScopeInfo
             .create(sdkOptions.getLibraryName(), sdkOptions.getLibraryVersion(), sdkOptions.getSchemaUrl());
 

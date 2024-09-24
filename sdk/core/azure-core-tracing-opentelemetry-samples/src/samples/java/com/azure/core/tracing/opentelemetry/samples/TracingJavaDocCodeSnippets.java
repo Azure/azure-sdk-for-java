@@ -143,8 +143,7 @@ public class TracingJavaDocCodeSnippets {
         private static final TracerProvider DEFAULT_PROVIDER = TracerProvider.getDefaultProvider();
         private final com.azure.core.util.tracing.Tracer tracer;
         AzureClient(String endpoint, ClientOptions options) {
-            LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions()
-                .setLibraryName("azure-sample")
+            LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("azure-sample")
                 .setLibraryVersion("12.20.0")
                 .setResourceProviderNamespace("Microsoft.Sample")
                 .setSchemaUrl("https://opentelemetry.io/schemas/1.23.1");

@@ -33,8 +33,7 @@ public interface TracerProvider {
      * <!-- src_embed com.azure.core.util.tracing.TracerProvider#create-tracer -->
      * <pre>
      *
-     * LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions&#40;&#41;
-     *     .setLibraryName&#40;&quot;azure-storage-blobs&quot;&#41;
+     * LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions&#40;&quot;azure-storage-blobs&quot;&#41;
      *     .setLibraryVersion&#40;&quot;12.20.0&quot;&#41;
      *     .setResourceProviderNamespace&#40;&quot;Microsoft.Storage&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.23.1&quot;&#41;;

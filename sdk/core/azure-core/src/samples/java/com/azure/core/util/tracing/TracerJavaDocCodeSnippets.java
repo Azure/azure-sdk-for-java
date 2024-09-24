@@ -224,8 +224,7 @@ public class TracerJavaDocCodeSnippets {
         ClientOptions clientOptions = new HttpClientOptions();
         // BEGIN: com.azure.core.util.tracing.TracerProvider#create-tracer
 
-        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions()
-            .setLibraryName("azure-storage-blobs")
+        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("azure-storage-blobs")
             .setLibraryVersion("12.20.0")
             .setResourceProviderNamespace("Microsoft.Storage")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.23.1");

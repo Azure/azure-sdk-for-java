@@ -193,8 +193,7 @@ public class MetricsJavaDocCodeSnippets {
         private final DoubleHistogram callDuration;
         private final TelemetryAttributes attributes;
         AzureClient(String endpoint, ClientOptions options) {
-            LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions()
-                .setLibraryName("azure-samples")
+            LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("azure-samples")
                 .setLibraryVersion("1.0.0")
                 .setResourceProviderNamespace("Microsoft.Sample")
                 .setSchemaUrl("https://opentelemetry.io/schemas/1.23.1");

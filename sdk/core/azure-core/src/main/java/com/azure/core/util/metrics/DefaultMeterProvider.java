@@ -35,8 +35,7 @@ final class DefaultMeterProvider implements MeterProvider {
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        LibraryTelemetryOptions sdkOptions
-            = new LibraryTelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
+        LibraryTelemetryOptions sdkOptions = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion);
 
         return createMeter(sdkOptions, options);
     }
@@ -44,7 +43,6 @@ final class DefaultMeterProvider implements MeterProvider {
     @Override
     public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
-        Objects.requireNonNull(libraryOptions.getLibraryName(), "'libraryOptions.getLibraryName()' cannot be null.");
 
         final MetricsOptions finalOptions = applicationOptions != null ? applicationOptions : DEFAULT_OPTIONS;
 

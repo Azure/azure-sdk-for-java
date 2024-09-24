@@ -77,7 +77,7 @@ public class OpenTelemetryTracingBenchmark {
 
     private static Tracer configureTracer(boolean enabled) {
         if (!enabled) {
-            return new OpenTelemetryTracer(new LibraryTelemetryOptions().setLibraryName("benchmark"),
+            return new OpenTelemetryTracer(new LibraryTelemetryOptions("benchmark"),
                 new OpenTelemetryTracingOptions().setEnabled(false));
         }
 
@@ -87,7 +87,7 @@ public class OpenTelemetryTracingBenchmark {
             .build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(provider).build();
-        return new OpenTelemetryTracer(new LibraryTelemetryOptions().setLibraryName("benchmark"),
+        return new OpenTelemetryTracer(new LibraryTelemetryOptions("benchmark"),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
     }
 

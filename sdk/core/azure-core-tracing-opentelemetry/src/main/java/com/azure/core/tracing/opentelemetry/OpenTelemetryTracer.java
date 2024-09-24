@@ -93,7 +93,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      */
     public OpenTelemetryTracer() {
-        this(new LibraryTelemetryOptions().setLibraryName("azure-core"), null);
+        this(new LibraryTelemetryOptions("azure-core"), null);
     }
 
     /**

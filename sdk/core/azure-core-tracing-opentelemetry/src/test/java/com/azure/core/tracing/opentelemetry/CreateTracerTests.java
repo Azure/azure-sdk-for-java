@@ -99,8 +99,7 @@ public class CreateTracerTests {
     public void defaultSchemaVersion() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(new LibraryTelemetryOptions().setLibraryName("test"), options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer(new LibraryTelemetryOptions("test"), options);
 
         Context span = tracer.start("test", Context.NONE);
         tracer.end(null, null, span);
@@ -141,8 +140,7 @@ public class CreateTracerTests {
     public void testSdkOptions() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions().setLibraryName("test")
-            .setLibraryVersion("1.2.3-beta.45")
+        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions("test").setLibraryVersion("1.2.3-beta.45")
             .setResourceProviderNamespace("namespace")
             .setSchemaUrl("https://aka.ms/az/sdk/schema:1.42.0");
 

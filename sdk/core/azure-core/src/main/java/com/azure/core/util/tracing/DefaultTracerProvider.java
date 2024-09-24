@@ -51,9 +51,9 @@ final class DefaultTracerProvider implements TracerProvider {
         TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions().setLibraryName(libraryName)
-            .setLibraryVersion(libraryVersion)
-            .setResourceProviderNamespace(azNamespace);
+        final LibraryTelemetryOptions libraryOptions
+            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion)
+                .setResourceProviderNamespace(azNamespace);
 
         return createTracer(libraryOptions, applicationOptions);
     }
@@ -61,8 +61,6 @@ final class DefaultTracerProvider implements TracerProvider {
     @Override
     public Tracer createTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
-        Objects.requireNonNull(libraryOptions.getLibraryName(),
-            "'libraryOptions.getLibraryName()' name cannot be null.");
 
         final TracingOptions finalOptions = applicationOptions != null ? applicationOptions : DEFAULT_OPTIONS;
 
