@@ -33,7 +33,7 @@ public interface TracerProvider {
      * <!-- src_embed com.azure.core.util.tracing.TracerProvider#create-tracer -->
      * <pre>
      *
-     * TelemetryOptions libraryOptions = new TelemetryOptions&#40;&#41;
+     * LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions&#40;&#41;
      *     .setLibraryName&#40;&quot;azure-storage-blobs&quot;&#41;
      *     .setLibraryVersion&#40;&quot;12.20.0&quot;&#41;
      *     .setResourceProviderNamespace&#40;&quot;Microsoft.Storage&quot;&#41;

@@ -89,7 +89,8 @@ public class OpenTelemetryHttpPolicyTests {
     private static final String EXPECTED_URL_REDACTED = "https://httpbin.org/hello?n=REDACTED&api-version=1.2.3";
     private static final String ORIGINAL_URL_NO_QUERY = "https://httpbin.org/hello";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
-    private static final LibraryTelemetryOptions DEFAULT_TELEMETRY_OPTIONS = new LibraryTelemetryOptions().setLibraryName("test");
+    private static final LibraryTelemetryOptions DEFAULT_TELEMETRY_OPTIONS
+        = new LibraryTelemetryOptions().setLibraryName("test");
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private OpenTelemetry openTelemetry;
