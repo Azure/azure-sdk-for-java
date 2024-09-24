@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Settings for the operating system disk of the virtual machine.
  */
 @Fluent
-public final class OSDisk {
+public final class OSDisk implements JsonSerializable<OSDisk> {
     /*
      * Specifies the ephemeral Disk Settings for the operating system disk used by the virtual machine.
      */
-    @JsonProperty(value = "ephemeralOSDiskSettings")
     private DiffDiskSettings ephemeralOSDiskSettings;
 
     /*
      * The type of caching to enable for the disk.
      */
-    @JsonProperty(value = "caching")
     private CachingType caching;
 
     /*
      * The managedDisk property.
      */
-    @JsonProperty(value = "managedDisk")
     private ManagedDisk managedDisk;
 
     /*
      * The initial disk size in GB when creating new OS disk.
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
-    @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /**
@@ -131,8 +130,8 @@ public final class OSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @return the writeAcceleratorEnabled value.
      */
@@ -141,8 +140,8 @@ public final class OSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
-     * the disk.
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
      * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the OSDisk object itself.
@@ -164,5 +163,53 @@ public final class OSDisk {
         if (managedDisk() != null) {
             managedDisk().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ephemeralOSDiskSettings", this.ephemeralOSDiskSettings);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSDisk if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the OSDisk.
+     */
+    public static OSDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSDisk deserializedOSDisk = new OSDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ephemeralOSDiskSettings".equals(fieldName)) {
+                    deserializedOSDisk.ephemeralOSDiskSettings = DiffDiskSettings.fromJson(reader);
+                } else if ("caching".equals(fieldName)) {
+                    deserializedOSDisk.caching = CachingType.fromString(reader.getString());
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedOSDisk.managedDisk = ManagedDisk.fromJson(reader);
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedOSDisk.writeAcceleratorEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSDisk;
+        });
     }
 }

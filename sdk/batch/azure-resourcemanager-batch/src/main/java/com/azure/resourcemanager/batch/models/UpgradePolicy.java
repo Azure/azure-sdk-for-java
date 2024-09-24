@@ -6,33 +6,34 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes an upgrade policy - automatic, manual, or rolling.
  */
 @Fluent
-public final class UpgradePolicy {
+public final class UpgradePolicy implements JsonSerializable<UpgradePolicy> {
     /*
      * Specifies the mode of an upgrade to virtual machines in the scale set.<br /><br /> Possible values are:<br /><br
-     * /> **Manual** - You control the application of updates to virtual machines in the scale set. You do this by
-     * using the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are
-     * automatically updated at the same time.<br /><br /> **Rolling** - Scale set performs updates in batches with an
-     * optional pause time in between.
+     * /> **Manual** - You control the application of updates to virtual machines in the scale set. You do this by using
+     * the manualUpgrade action.<br /><br /> **Automatic** - All virtual machines in the scale set are automatically
+     * updated at the same time.<br /><br /> **Rolling** - Scale set performs updates in batches with an optional pause
+     * time in between.
      */
-    @JsonProperty(value = "mode", required = true)
     private UpgradeMode mode;
 
     /*
      * The configuration parameters used for performing automatic OS upgrade.
      */
-    @JsonProperty(value = "automaticOSUpgradePolicy")
     private AutomaticOSUpgradePolicy automaticOSUpgradePolicy;
 
     /*
-     * This property is only supported on Pools with the virtualMachineConfiguration property.
+     * The configuration parameters used while performing a rolling upgrade.
      */
-    @JsonProperty(value = "rollingUpgradePolicy")
     private RollingUpgradePolicy rollingUpgradePolicy;
 
     /**
@@ -43,10 +44,10 @@ public final class UpgradePolicy {
 
     /**
      * Get the mode property: Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br
-     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to
-     * virtual machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt;
-     * **Automatic** - All virtual machines in the scale set are automatically updated at the same time.&lt;br
-     * /&gt;&lt;br /&gt; **Rolling** - Scale set performs updates in batches with an optional pause time in between.
+     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to virtual
+     * machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt; **Automatic** -
+     * All virtual machines in the scale set are automatically updated at the same time.&lt;br /&gt;&lt;br /&gt;
+     * **Rolling** - Scale set performs updates in batches with an optional pause time in between.
      * 
      * @return the mode value.
      */
@@ -56,10 +57,10 @@ public final class UpgradePolicy {
 
     /**
      * Set the mode property: Specifies the mode of an upgrade to virtual machines in the scale set.&lt;br /&gt;&lt;br
-     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to
-     * virtual machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt;
-     * **Automatic** - All virtual machines in the scale set are automatically updated at the same time.&lt;br
-     * /&gt;&lt;br /&gt; **Rolling** - Scale set performs updates in batches with an optional pause time in between.
+     * /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **Manual** - You control the application of updates to virtual
+     * machines in the scale set. You do this by using the manualUpgrade action.&lt;br /&gt;&lt;br /&gt; **Automatic** -
+     * All virtual machines in the scale set are automatically updated at the same time.&lt;br /&gt;&lt;br /&gt;
+     * **Rolling** - Scale set performs updates in batches with an optional pause time in between.
      * 
      * @param mode the mode value to set.
      * @return the UpgradePolicy object itself.
@@ -70,8 +71,7 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Get the automaticOSUpgradePolicy property: The configuration parameters used for performing automatic OS
-     * upgrade.
+     * Get the automaticOSUpgradePolicy property: The configuration parameters used for performing automatic OS upgrade.
      * 
      * @return the automaticOSUpgradePolicy value.
      */
@@ -80,8 +80,7 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Set the automaticOSUpgradePolicy property: The configuration parameters used for performing automatic OS
-     * upgrade.
+     * Set the automaticOSUpgradePolicy property: The configuration parameters used for performing automatic OS upgrade.
      * 
      * @param automaticOSUpgradePolicy the automaticOSUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.
@@ -92,8 +91,7 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Get the rollingUpgradePolicy property: This property is only supported on Pools with the
-     * virtualMachineConfiguration property.
+     * Get the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
      * 
      * @return the rollingUpgradePolicy value.
      */
@@ -102,8 +100,7 @@ public final class UpgradePolicy {
     }
 
     /**
-     * Set the rollingUpgradePolicy property: This property is only supported on Pools with the
-     * virtualMachineConfiguration property.
+     * Set the rollingUpgradePolicy property: The configuration parameters used while performing a rolling upgrade.
      * 
      * @param rollingUpgradePolicy the rollingUpgradePolicy value to set.
      * @return the UpgradePolicy object itself.
@@ -120,8 +117,8 @@ public final class UpgradePolicy {
      */
     public void validate() {
         if (mode() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property mode in model UpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property mode in model UpgradePolicy"));
         }
         if (automaticOSUpgradePolicy() != null) {
             automaticOSUpgradePolicy().validate();
@@ -132,4 +129,47 @@ public final class UpgradePolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UpgradePolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeJsonField("automaticOSUpgradePolicy", this.automaticOSUpgradePolicy);
+        jsonWriter.writeJsonField("rollingUpgradePolicy", this.rollingUpgradePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradePolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UpgradePolicy.
+     */
+    public static UpgradePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradePolicy deserializedUpgradePolicy = new UpgradePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mode".equals(fieldName)) {
+                    deserializedUpgradePolicy.mode = UpgradeMode.fromString(reader.getString());
+                } else if ("automaticOSUpgradePolicy".equals(fieldName)) {
+                    deserializedUpgradePolicy.automaticOSUpgradePolicy = AutomaticOSUpgradePolicy.fromJson(reader);
+                } else if ("rollingUpgradePolicy".equals(fieldName)) {
+                    deserializedUpgradePolicy.rollingUpgradePolicy = RollingUpgradePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradePolicy;
+        });
+    }
 }

@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The storage account type for use in creating data disks or OS disk.
  */
@@ -41,7 +38,6 @@ public enum StorageAccountType {
      * @param value the serialized value to parse.
      * @return the parsed StorageAccountType object, or null if unable to parse.
      */
-    @JsonCreator
     public static StorageAccountType fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum StorageAccountType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;
