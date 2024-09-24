@@ -664,8 +664,10 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
         String resourceGroupName, String accountName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner parameters, String ifMatch, Context context) {
-        return this.beginUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch,
-            context).getSyncPoller();
+        return this
+            .beginUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch,
+                context)
+            .getSyncPoller();
     }
 
     /**
@@ -688,7 +690,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String accountName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, String ifMatch) {
         return beginUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -710,7 +713,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters) {
         final String ifMatch = null;
         return beginUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionName, parameters, ifMatch)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1024,9 +1028,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1054,9 +1056,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
