@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
@@ -77,7 +78,9 @@ public class VirtualMachineMockTests {
         // just to mitigate npe, no actual use here
         environment.put("microsoftGraphResourceId", mockServer.baseUrl());
         AzureProfile mockProfile = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(), new AzureEnvironment(environment));
-        ComputeManager computeManager = ComputeManager.authenticate(new HttpPipelineBuilder().build(), mockProfile);
+        ComputeManager computeManager = ComputeManager.authenticate(new HttpPipelineBuilder()
+            .httpClient(new NettyAsyncHttpClientBuilder().build()).build(),
+            mockProfile);
         return computeManager;
     }
 

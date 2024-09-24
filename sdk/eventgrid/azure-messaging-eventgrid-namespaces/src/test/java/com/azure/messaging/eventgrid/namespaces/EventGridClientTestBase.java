@@ -51,13 +51,10 @@ public class EventGridClientTestBase extends TestProxyTestBase {
     protected void makeBuilders(boolean sync) {
         receiverBuilder = buildReceiverClientBuilder();
         senderBuilder = buildSenderClientBuilder();
-        if (interceptorManager.isPlaybackMode()) {
-            receiverBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), sync));
-            senderBuilder.httpClient(buildAssertingClient(interceptorManager.getPlaybackClient(), sync));
-        } else { // both record and live will use these clients
-            receiverBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), sync));
-            senderBuilder.httpClient(buildAssertingClient(HttpClient.createDefault(), sync));
-        }
+        receiverBuilder.httpClient(buildAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst()
+            .orElse(null)), sync));
+        senderBuilder.httpClient(buildAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst()
+            .orElse(null)), sync));
 
         if (interceptorManager.isRecordMode()) {
             receiverBuilder.addPolicy(interceptorManager.getRecordPolicy()).retryPolicy(new RetryPolicy());
@@ -82,7 +79,8 @@ public class EventGridClientTestBase extends TestProxyTestBase {
     }
 
     EventGridReceiverClientBuilder buildReceiverClientBuilder() {
-        return new EventGridReceiverClientBuilder().httpClient(HttpClient.createDefault())
+        return new EventGridReceiverClientBuilder()
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions())
             .subscriptionName(EVENT_SUBSCRIPTION_NAME)
             .topicName(TOPIC_NAME)
@@ -90,7 +88,8 @@ public class EventGridClientTestBase extends TestProxyTestBase {
     }
 
     EventGridSenderClientBuilder buildSenderClientBuilder() {
-        return new EventGridSenderClientBuilder().httpClient(HttpClient.createDefault())
+        return new EventGridSenderClientBuilder()
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions())
             .topicName(TOPIC_NAME)
             .endpoint(getTopicEndpoint(EVENTGRID_ENDPOINT));
