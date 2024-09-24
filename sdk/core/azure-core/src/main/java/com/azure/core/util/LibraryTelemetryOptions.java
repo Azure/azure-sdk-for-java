@@ -10,7 +10,7 @@ import com.azure.core.util.tracing.TracerProvider;
  * The options to configure library-specific information on {@link TracerProvider}
  */
 @Fluent
-public class LibraryTelemetryOptions {
+public final class LibraryTelemetryOptions {
     private String libraryName;
     private String libraryVersion;
     private String rpNamespace;
