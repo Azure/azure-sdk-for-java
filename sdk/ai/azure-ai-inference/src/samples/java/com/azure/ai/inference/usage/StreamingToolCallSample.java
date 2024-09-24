@@ -31,8 +31,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import java.util.List;
 
-public final class ToolCallSample {
-     /**
+public final class StreamingToolCallSample {
+     /**`
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
