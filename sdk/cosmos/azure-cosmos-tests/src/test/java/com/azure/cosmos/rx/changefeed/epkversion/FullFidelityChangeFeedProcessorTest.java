@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
 import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.ThroughputControlGroupConfigBuilder;
@@ -1911,13 +1912,12 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
         String leaseToken = changeFeedProcessorContext.getLeaseToken();
         assertThat(leaseToken).isNotNull();
 
-        CosmosDiagnostics diagnostics = changeFeedProcessorContext.getDiagnostics();
-        assertThat(diagnostics).isNotNull();
-        String diagnosticsString = diagnostics.toString();
+        CosmosDiagnosticsContext diagnosticsContext = changeFeedProcessorContext.getDiagnostics();
+        assertThat(diagnosticsContext).isNotNull();
         // Validate a few basic diagnostics properties
-        assertThat(diagnosticsString).contains("\"connectionMode\":\"GATEWAY\"");
-        assertThat(diagnosticsString).contains("gatewayStatisticsList");
-        assertThat(diagnosticsString).contains("\"operationType\":\"ReadFeed\"");
+        assertThat(diagnosticsContext.getResourceType()).isEqualTo("Document");
+        assertThat(diagnosticsContext.getOperationType()).isEqualTo("ReadFeed");
+        assertThat(diagnosticsContext.getAccountName()).isEqualTo(hostName);
     }
 
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityChangeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {
