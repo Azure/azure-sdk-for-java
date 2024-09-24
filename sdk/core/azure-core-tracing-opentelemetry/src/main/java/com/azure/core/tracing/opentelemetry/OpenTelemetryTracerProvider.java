@@ -53,6 +53,9 @@ public final class OpenTelemetryTracerProvider implements TracerProvider {
      */
     @Override
     public Tracer createTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+        Objects.requireNonNull(libraryOptions.getLibraryName(), "'libraryOptions.getLibraryName()' cannot be null.");
+
         return new OpenTelemetryTracer(libraryOptions, applicationOptions);
     }
 }

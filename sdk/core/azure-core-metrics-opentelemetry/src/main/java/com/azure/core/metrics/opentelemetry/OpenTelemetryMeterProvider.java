@@ -127,6 +127,8 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
     @Override
     public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+        Objects.requireNonNull(libraryOptions.getLibraryName(), "'libraryOptions.getLibraryName()' cannot be null.");
+
         return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }
 }

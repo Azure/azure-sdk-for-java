@@ -4,10 +4,12 @@
 package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.metrics.MeterProvider;
 import com.azure.core.util.tracing.TracerProvider;
 
 /**
  * The options to configure library-specific information on {@link TracerProvider}
+ * and {@link MeterProvider}.
  */
 @Fluent
 public final class LibraryTelemetryOptions {
