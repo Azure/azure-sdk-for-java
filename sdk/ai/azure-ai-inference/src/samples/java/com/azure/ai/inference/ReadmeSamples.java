@@ -12,6 +12,8 @@ import com.azure.ai.inference.models.ChatRequestAssistantMessage;
 import com.azure.ai.inference.models.ChatRequestSystemMessage;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.ai.inference.models.ChatResponseMessage;
+import com.azure.ai.inference.models.EmbeddingItem;
+import com.azure.ai.inference.models.EmbeddingsResult;
 import com.azure.ai.inference.models.StreamingChatResponseMessageUpdate;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -104,6 +106,23 @@ public final class ReadmeSamples {
 
     public void getEmbedding() {
         // BEGIN: readme-sample-getEmbedding
+        EmbeddingsClient client = new EmbeddingsClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new AzureKeyCredential("{key}"))
+            .buildClient();
+
+        List<String> promptList = new ArrayList<>();
+        String prompt = "Tell me 3 jokes about trains";
+        promptList.add(prompt);
+
+        EmbeddingsResult embeddings = client.embed(promptList);
+
+        for (EmbeddingItem item : embeddings.getData()) {
+            System.out.printf("Index: %d.%n", item.getIndex());
+            for (Float embedding : item.getEmbeddingList()) {
+                System.out.printf("%f;", embedding);
+            }
+        }
         // END: readme-sample-getEmbedding
     }
 
