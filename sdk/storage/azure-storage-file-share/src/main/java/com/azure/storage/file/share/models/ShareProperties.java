@@ -766,7 +766,7 @@ public final class ShareProperties implements XmlSerializable<ShareProperties> {
     }
 
     /**
-     * Set the nextAllowedProvisionedBandwidthDowngradeTime property.
+     * Get the nextAllowedProvisionedBandwidthDowngradeTime property.
      * Only applicable to provisioned v2 storage accounts.
      * The time the share can be downgraded to lower provisioned bandwidth.
      *
