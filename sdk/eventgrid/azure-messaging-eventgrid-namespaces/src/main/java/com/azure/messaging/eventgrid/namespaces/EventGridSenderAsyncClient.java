@@ -13,6 +13,7 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridSenderClientImpl;
 import java.util.List;
@@ -138,9 +139,28 @@ public final class EventGridSenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(CloudEvent event) {
-        // Generated convenience method for sendWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions).then();
+    }
+
+    /**
+     * Publish a single Cloud Event to a namespace topic.
+     *
+     * @param event Single Cloud Event being published.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendWithResponse(CloudEvent event, RequestOptions requestOptions) {
+        return sendWithResponse(topicName, BinaryData.fromObject(event), requestOptions).map(response -> {
+            return new SimpleResponse<>(response, null);
+        });
     }
 
     /**
@@ -157,9 +177,28 @@ public final class EventGridSenderAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(List<CloudEvent> events) {
-        // Generated convenience method for sendEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).then();
+    }
+
+    /**
+     * Publish a batch of Cloud Events to a namespace topic.
+     *
+     * @param events Array of Cloud Events being published.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the Publish operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendWithResponse(List<CloudEvent> events, RequestOptions requestOptions) {
+        return sendEventsWithResponse(topicName, BinaryData.fromObject(events), requestOptions).map(response -> {
+            return new SimpleResponse<>(response, null);
+        });
     }
 
     /**

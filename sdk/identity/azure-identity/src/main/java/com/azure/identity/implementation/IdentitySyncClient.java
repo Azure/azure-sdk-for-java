@@ -76,11 +76,11 @@ public class IdentitySyncClient extends IdentityClientBase {
      * @param options the options configuring the client.
      */
     IdentitySyncClient(String tenantId, String clientId, String clientSecret, String certificatePath,
-                       String clientAssertionFilePath, String resourceId, Supplier<String> clientAssertionSupplier,
+                       String clientAssertionFilePath, String resourceId, String objectId, Supplier<String> clientAssertionSupplier,
                        Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                        byte[] certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                        Duration clientAssertionTimeout, IdentityClientOptions options) {
-        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, clientAssertionSupplier,
+        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, objectId, clientAssertionSupplier,
             clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword, isSharedTokenCacheCredential,
             clientAssertionTimeout, options);
 

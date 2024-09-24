@@ -109,6 +109,7 @@ public class IdentityClient extends IdentityClientBase {
                    String certificatePath,
                    String clientAssertionFilePath,
                    String resourceId,
+                   String objectId,
                    Supplier<String> clientAssertionSupplier,
                    Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                    byte[] certificate,
@@ -116,7 +117,7 @@ public class IdentityClient extends IdentityClientBase {
                    boolean isSharedTokenCacheCredential,
                    Duration clientAssertionTimeout,
                    IdentityClientOptions options) {
-        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId,
+        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, objectId,
             clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword,
             isSharedTokenCacheCredential, clientAssertionTimeout, options);
 
@@ -1034,6 +1035,12 @@ public class IdentityClient extends IdentityClientBase {
                 payload.append(urlEncode(resourceId));
             }
 
+            if (objectId != null) {
+                LOGGER.warning("User-assigned managed identities are not supported in the Service Fabric environment.");
+                payload.append("&object_id=");
+                payload.append(urlEncode(objectId));
+            }
+
             try {
                 URL url = getUrl(payload.toString());
                 connection = (HttpsURLConnection) url.openConnection();
@@ -1120,6 +1127,16 @@ public class IdentityClient extends IdentityClientBase {
                 payload.append("&mi_res_id=");
                 payload.append(urlEncode(resourceId));
             }
+
+            if (objectId != null) {
+                if (endpointVersion.equals(MSI_ENDPOINT_VERSION) && headerValue == null) {
+                    // This is the Cloud Shell case. If a clientId is specified, warn the user.
+                    LOGGER.warning("User-assigned managed identities are not supported in the Cloud Shell environment.");
+                }
+                payload.append("&object_id=");
+                payload.append(urlEncode(objectId));
+            }
+
             try {
                 URL url = getUrl(payload.toString());
                 connection = (HttpURLConnection) url.openConnection();
@@ -1168,6 +1185,10 @@ public class IdentityClient extends IdentityClientBase {
             if (resourceId != null) {
                 payload.append("&mi_res_id=");
                 payload.append(urlEncode(resourceId));
+            }
+            if (objectId != null) {
+                payload.append("&object_Id=");
+                payload.append(urlEncode(objectId));
             }
         } catch (IOException exception) {
             return Mono.error(exception);

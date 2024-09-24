@@ -22,7 +22,7 @@ public final class FirewallRulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"auu\",\"endIpAddress\":\"mjmvxieduugidyjr\"},\"id\":\"byao\",\"name\":\"v\",\"type\":\"xc\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"startIpAddress\":\"nvudwtiukb\",\"endIpAddress\":\"dng\"},\"id\":\"ocipazyxoeg\",\"name\":\"kgjn\",\"type\":\"iucgygevqzn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class FirewallRulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         FirewallRule response = manager.firewallRules()
-            .define("yokacspkw")
-            .withExistingMongoCluster("watkpnpulexxb", "zwtruwiqzbqjvsov")
-            .withProperties(new FirewallRuleProperties().withStartIpAddress("obpxjmflbvvn").withEndIpAddress("hrk"))
+            .define("eggzfb")
+            .withExistingMongoCluster("onpc", "hocohslkev")
+            .withProperties(new FirewallRuleProperties().withStartIpAddress("vfaxkffeiith").withEndIpAddress("vmezy"))
             .create();
 
-        Assertions.assertEquals("auu", response.properties().startIpAddress());
-        Assertions.assertEquals("mjmvxieduugidyjr", response.properties().endIpAddress());
+        Assertions.assertEquals("nvudwtiukb", response.properties().startIpAddress());
+        Assertions.assertEquals("dng", response.properties().endIpAddress());
     }
 }

@@ -923,6 +923,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void operationsThrowAfterClientIsClosed(
         Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -968,6 +969,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void operationsThrowAfterClientIsClosedAsync(
         Function<SearchIndexingBufferedAsyncSender<Map<String, Object>>, Mono<Void>> operation) {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -999,6 +1001,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrow() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -1012,6 +1015,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrowAsync() {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .bufferedSender(HOTEL_DOCUMENT_TYPE)
             .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
             .autoFlush(false)
@@ -1099,22 +1103,18 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        batchingClient.flush()
-            .doFinally(ignored -> {
-                firstFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
-            })
-            .subscribe();
+        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+            firstFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
 
         Thread.sleep(10); // Give the first operation a chance to start
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        batchingClient.flush()
-            .doFinally(ignored -> {
-                secondFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
-            })
-            .subscribe();
+        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+            secondFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
 
         countDownLatch.await();
         assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get(),
@@ -1199,23 +1199,21 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        batchingClient.flush()
-            .doFinally(ignored -> {
-                firstFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
-            })
-            .subscribe();
+        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+            firstFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        batchingClient.close()
-            .doFinally(ignored -> {
-                secondFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
-            })
-            .subscribe();
+        Mono.using(() -> 1, ignored -> batchingClient.close(), ignored -> {
+            secondFlushCompletionTime.set(System.nanoTime());
+            countDownLatch.countDown();
+        }).subscribe();
 
         countDownLatch.await();
-        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get(),
+            () -> "Expected first flush attempt to complete before second flush attempt. First flush finished at "
+                + firstFlushCompletionTime.get() + ", second flush finished at " + secondFlushCompletionTime.get());
     }
 
     @Test
@@ -1459,6 +1457,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSent() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .addPolicy((context, next) -> {
                 requestCount.incrementAndGet();
                 return next.process();
@@ -1480,6 +1479,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSentAsync() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .addPolicy((context, next) -> {
                 requestCount.incrementAndGet();
                 return next.process();

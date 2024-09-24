@@ -25,6 +25,12 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
     private String storageId;
 
     /*
+     * Optional field to filter network traffic logs based on SrcIP, SrcPort, DstIP, DstPort, Protocol, Encryption,
+     * Direction and Action. If not specified, all network traffic will be logged.
+     */
+    private String enabledFilteringCriteria;
+
+    /*
      * Flag to enable/disable flow logging.
      */
     private boolean enabled;
@@ -62,6 +68,28 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
      */
     public FlowLogProperties withStorageId(String storageId) {
         this.storageId = storageId;
+        return this;
+    }
+
+    /**
+     * Get the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     * 
+     * @return the enabledFilteringCriteria value.
+     */
+    public String enabledFilteringCriteria() {
+        return this.enabledFilteringCriteria;
+    }
+
+    /**
+     * Set the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     * 
+     * @param enabledFilteringCriteria the enabledFilteringCriteria value to set.
+     * @return the FlowLogProperties object itself.
+     */
+    public FlowLogProperties withEnabledFilteringCriteria(String enabledFilteringCriteria) {
+        this.enabledFilteringCriteria = enabledFilteringCriteria;
         return this;
     }
 
@@ -153,6 +181,7 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("storageId", this.storageId);
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("enabledFilteringCriteria", this.enabledFilteringCriteria);
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         jsonWriter.writeJsonField("format", this.format);
         return jsonWriter.writeEndObject();
@@ -178,6 +207,8 @@ public final class FlowLogProperties implements JsonSerializable<FlowLogProperti
                     deserializedFlowLogProperties.storageId = reader.getString();
                 } else if ("enabled".equals(fieldName)) {
                     deserializedFlowLogProperties.enabled = reader.getBoolean();
+                } else if ("enabledFilteringCriteria".equals(fieldName)) {
+                    deserializedFlowLogProperties.enabledFilteringCriteria = reader.getString();
                 } else if ("retentionPolicy".equals(fieldName)) {
                     deserializedFlowLogProperties.retentionPolicy = RetentionPolicyParameters.fromJson(reader);
                 } else if ("format".equals(fieldName)) {

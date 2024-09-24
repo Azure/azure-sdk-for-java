@@ -312,7 +312,6 @@ public final class ApplicationRule extends FirewallPolicyRule {
      */
     @Override
     public void validate() {
-        super.validate();
         if (protocols() != null) {
             protocols().forEach(e -> e.validate());
         }

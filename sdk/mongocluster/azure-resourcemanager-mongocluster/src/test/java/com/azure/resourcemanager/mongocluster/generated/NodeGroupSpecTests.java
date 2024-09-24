@@ -13,27 +13,27 @@ public final class NodeGroupSpecTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NodeGroupSpec model = BinaryData.fromString(
-            "{\"sku\":\"b\",\"diskSizeGB\":7532718659837556043,\"enableHa\":false,\"kind\":\"Shard\",\"nodeCount\":920256064}")
+            "{\"sku\":\"s\",\"diskSizeGB\":5540769191797474022,\"enableHa\":false,\"kind\":\"Shard\",\"nodeCount\":1707664619}")
             .toObject(NodeGroupSpec.class);
-        Assertions.assertEquals("b", model.sku());
-        Assertions.assertEquals(7532718659837556043L, model.diskSizeGB());
+        Assertions.assertEquals("s", model.sku());
+        Assertions.assertEquals(5540769191797474022L, model.diskSizeGB());
         Assertions.assertEquals(false, model.enableHa());
         Assertions.assertEquals(NodeKind.SHARD, model.kind());
-        Assertions.assertEquals(920256064, model.nodeCount());
+        Assertions.assertEquals(1707664619, model.nodeCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeGroupSpec model = new NodeGroupSpec().withSku("b")
-            .withDiskSizeGB(7532718659837556043L)
+        NodeGroupSpec model = new NodeGroupSpec().withSku("s")
+            .withDiskSizeGB(5540769191797474022L)
             .withEnableHa(false)
             .withKind(NodeKind.SHARD)
-            .withNodeCount(920256064);
+            .withNodeCount(1707664619);
         model = BinaryData.fromObject(model).toObject(NodeGroupSpec.class);
-        Assertions.assertEquals("b", model.sku());
-        Assertions.assertEquals(7532718659837556043L, model.diskSizeGB());
+        Assertions.assertEquals("s", model.sku());
+        Assertions.assertEquals(5540769191797474022L, model.diskSizeGB());
         Assertions.assertEquals(false, model.enableHa());
         Assertions.assertEquals(NodeKind.SHARD, model.kind());
-        Assertions.assertEquals(920256064, model.nodeCount());
+        Assertions.assertEquals(1707664619, model.nodeCount());
     }
 }

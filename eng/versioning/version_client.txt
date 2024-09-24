@@ -40,8 +40,9 @@ com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
 com.azure:azure-ai-contentsafety;1.0.6;1.1.0-beta.1
 com.azure:azure-ai-documentintelligence;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-ai-formrecognizer;4.1.10;4.1.10
+com.azure:azure-ai-formrecognizer;4.1.11;4.2.0-beta.1
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
+com.azure:azure-ai-inference;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-metricsadvisor;1.2.1;1.3.0-beta.1
 com.azure:azure-ai-metricsadvisor-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-openai;1.0.0-beta.11;1.0.0-beta.12
@@ -70,10 +71,10 @@ com.azure:azure-code-customization-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-callautomation;1.2.4;1.3.0-beta.1
 com.azure:azure-communication-callingserver;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-communication-chat;1.5.4;1.6.0-beta.1
-com.azure:azure-communication-common;1.3.6;1.4.0-beta.1
+com.azure:azure-communication-common;1.3.7;1.4.0-beta.1
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.16;1.1.0-beta.1
-com.azure:azure-communication-identity;1.5.8;1.6.0-beta.1
+com.azure:azure-communication-identity;1.6.0;1.7.0-beta.1
 com.azure:azure-communication-jobrouter;1.1.7;2.0.0-beta.1
 com.azure:azure-communication-messages;1.0.6;1.1.0-beta.1
 com.azure:azure-communication-phonenumbers;1.1.16;1.2.0-beta.4
@@ -97,7 +98,7 @@ com.azure:azure-core-serializer-avro-apache;1.0.0-beta.49;1.0.0-beta.50
 com.azure:azure-core-serializer-avro-jackson;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-core-serializer-json-gson;1.3.1;1.4.0-beta.1
 com.azure:azure-core-serializer-json-jackson;1.5.1;1.6.0-beta.1
-com.azure:azure-core-test;1.26.2;1.27.0-beta.2
+com.azure:azure-core-test;1.27.0-beta.1;1.27.0-beta.2
 com.azure:azure-core-tracing-opentelemetry;1.0.0-beta.49;1.0.0-beta.50
 com.azure:azure-core-tracing-opentelemetry-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-version-tests;1.0.0-beta.1;1.0.0-beta.1
@@ -130,7 +131,7 @@ com.azure:azure-health-deidentification;1.0.0;1.0.0-beta.2
 com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-identity;1.13.3;1.14.0-beta.2
+com.azure:azure-identity;1.13.3;1.14.0-beta.3
 com.azure:azure-identity-extensions;1.1.19;1.2.0-beta.2
 com.azure:azure-identity-broker;1.1.5;1.2.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
@@ -144,15 +145,15 @@ com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-weather;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-timezone;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-geolocation;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-maps-render;1.0.0-beta.2;1.0.0-beta.3
+com.azure:azure-maps-render;1.0.0-beta.2;2.0.0-beta.1
 com.azure:azure-maps-route;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-media-videoanalyzer-edge;1.0.0-beta.6;1.0.0-beta.7
-com.azure:azure-messaging-eventgrid;4.24.0;4.25.0-beta.1
+com.azure:azure-messaging-eventgrid;4.25.0;4.26.0-beta.1
 com.azure:azure-messaging-eventgrid-namespaces;1.0.1;1.1.0-beta.1
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-messaging-eventhubs;5.18.7;5.19.0-beta.3
-com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.19.7;1.20.0-beta.3
+com.azure:azure-messaging-eventhubs;5.18.7;5.19.0-beta.4
+com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.19.7;1.20.0-beta.4
 com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
@@ -172,7 +173,7 @@ com.azure:azure-monitor-query;1.5.1;1.6.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.7.1;11.8.0-beta.1
+com.azure:azure-search-documents;11.7.1;11.8.0-beta.2
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.27;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.23;1.1.0-beta.1
@@ -186,17 +187,17 @@ com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
 com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-blob;12.27.1;12.28.0-beta.2
-com.azure:azure-storage-blob-batch;12.23.1;12.24.0-beta.2
-com.azure:azure-storage-blob-changefeed;12.0.0-beta.24;12.0.0-beta.25
-com.azure:azure-storage-blob-cryptography;12.26.1;12.27.0-beta.2
-com.azure:azure-storage-blob-nio;12.0.0-beta.25;12.0.0-beta.26
-com.azure:azure-storage-common;12.26.1;12.27.0-beta.2
-com.azure:azure-storage-file-share;12.23.1;12.24.0-beta.2
-com.azure:azure-storage-file-datalake;12.20.1;12.21.0-beta.2
-com.azure:azure-storage-internal-avro;12.12.1;12.13.0-beta.2
+com.azure:azure-storage-blob;12.28.0;12.29.0-beta.1
+com.azure:azure-storage-blob-batch;12.24.0;12.25.0-beta.1
+com.azure:azure-storage-blob-changefeed;12.0.0-beta.25;12.0.0-beta.26
+com.azure:azure-storage-blob-cryptography;12.27.0;12.28.0-beta.1
+com.azure:azure-storage-blob-nio;12.0.0-beta.26;12.0.0-beta.27
+com.azure:azure-storage-common;12.27.0;12.28.0-beta.1
+com.azure:azure-storage-file-share;12.24.0;12.25.0-beta.1
+com.azure:azure-storage-file-datalake;12.21.0;12.22.0-beta.1
+com.azure:azure-storage-internal-avro;12.13.0;12.14.0-beta.1
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-queue;12.22.1;12.23.0-beta.2
+com.azure:azure-storage-queue;12.23.0;12.24.0-beta.1
 com.azure:azure-template-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-template-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-verticals-agrifood-farming;1.0.0-beta.3;1.0.0-beta.4
@@ -273,7 +274,7 @@ com.azure.resourcemanager:azure-resourcemanager-compute;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-containerservice;2.42.0;2.43.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cosmos;2.42.0;2.43.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-dns;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.42.0;2.43.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-keyvault;2.42.0;2.43.0-beta.1
@@ -465,11 +466,12 @@ com.azure.resourcemanager:azure-resourcemanager-edgezones;1.0.0-beta.1;1.0.0-bet
 com.azure.resourcemanager:azure-resourcemanager-devopsinfrastructure;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-oracledatabase;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-informaticadatamanagement;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-mongocluster;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-computefleet;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-servicefabricmanagedclusters;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthdataaiservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-redhatopenshift;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-fabric;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 io.clientcore:clientcore-parent;1.0.0-beta.1;1.0.0-beta.1
@@ -486,10 +488,11 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # note: The unreleased dependencies will not be manipulated with the automatic PR creation code.
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
-unreleased_com.azure:azure-core-experimental;1.0.0-beta.54
 unreleased_com.azure:azure-messaging-servicebus;7.18.0-beta.2
 unreleased_com.azure:azure-messaging-eventhubs;5.19.0-beta.3
 unreleased_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.0-beta.3
+
+unreleased_com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.29
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid

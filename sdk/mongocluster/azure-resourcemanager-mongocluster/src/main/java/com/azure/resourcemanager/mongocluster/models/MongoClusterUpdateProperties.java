@@ -42,6 +42,11 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
      */
     private List<NodeGroupSpec> nodeGroupSpecs;
 
+    /*
+     * List of private endpoint connections.
+     */
+    private List<PreviewFeature> previewFeatures;
+
     /**
      * Creates an instance of MongoClusterUpdateProperties class.
      */
@@ -151,6 +156,26 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
     }
 
     /**
+     * Get the previewFeatures property: List of private endpoint connections.
+     * 
+     * @return the previewFeatures value.
+     */
+    public List<PreviewFeature> previewFeatures() {
+        return this.previewFeatures;
+    }
+
+    /**
+     * Set the previewFeatures property: List of private endpoint connections.
+     * 
+     * @param previewFeatures the previewFeatures value to set.
+     * @return the MongoClusterUpdateProperties object itself.
+     */
+    public MongoClusterUpdateProperties withPreviewFeatures(List<PreviewFeature> previewFeatures) {
+        this.previewFeatures = previewFeatures;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -174,6 +199,8 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
             this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
         jsonWriter.writeArrayField("nodeGroupSpecs", this.nodeGroupSpecs,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("previewFeatures", this.previewFeatures,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         return jsonWriter.writeEndObject();
     }
 
@@ -204,6 +231,10 @@ public final class MongoClusterUpdateProperties implements JsonSerializable<Mong
                 } else if ("nodeGroupSpecs".equals(fieldName)) {
                     List<NodeGroupSpec> nodeGroupSpecs = reader.readArray(reader1 -> NodeGroupSpec.fromJson(reader1));
                     deserializedMongoClusterUpdateProperties.nodeGroupSpecs = nodeGroupSpecs;
+                } else if ("previewFeatures".equals(fieldName)) {
+                    List<PreviewFeature> previewFeatures
+                        = reader.readArray(reader1 -> PreviewFeature.fromString(reader1.getString()));
+                    deserializedMongoClusterUpdateProperties.previewFeatures = previewFeatures;
                 } else {
                     reader.skipChildren();
                 }

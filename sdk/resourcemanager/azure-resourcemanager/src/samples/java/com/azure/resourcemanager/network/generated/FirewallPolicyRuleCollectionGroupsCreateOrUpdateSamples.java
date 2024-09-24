@@ -25,7 +25,7 @@ import java.util.Arrays;
  */
 public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupPut.json
      */
     /**
@@ -54,7 +54,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithWebCategoriesPut.json
      */
     /**
@@ -85,7 +85,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyNatRuleCollectionGroupPut.json
      */
     /**
@@ -119,7 +119,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithIpGroupsPut.json
      */
     /**
@@ -150,7 +150,7 @@ public final class FirewallPolicyRuleCollectionGroupsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * FirewallPolicyRuleCollectionGroupWithHttpHeadersToInsert.json
      */
     /**

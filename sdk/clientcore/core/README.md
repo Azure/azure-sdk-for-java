@@ -243,7 +243,7 @@ logging to be enabled. The following table explains what logging is enabled for 
 | `HttpLogDetailLevel` value            | Logging enabled                                                                                  |
 |---------------------------------------|--------------------------------------------------------------------------------------------------|
 | `HttpLogDetailLevel.NONE`             | No HTTP request or response logging                                                              |
-| `HttpLogDetailLevel.BASIC`            | HTTP request method, response status code, and request and response URL                          |
+| `HttpLogDetailLevel.BASIC`            | HTTP request method, response status code, and request and response URI                          |
 | `HttpLogDetailLevel.HEADERS`          | All of `HttpLogDetailLevel.BASIC` and request and response headers if the log level is `verbose` |
 | `HttpLogDetailLevel.BODY`             | All of `HttpLogDetailLevel.BASIC` and request and response body if it's under 10KB in size       |
 | `HttpLogDetailLevel.BODY_AND_HEADERS` | All of `HttpLogDetailLevel.HEADERS` and `HttpLogDetailLevel.BODY`                                |
