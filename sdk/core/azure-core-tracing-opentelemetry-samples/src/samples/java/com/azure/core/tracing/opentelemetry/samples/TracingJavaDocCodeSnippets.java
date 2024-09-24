@@ -7,7 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.TracerProvider;
 import io.opentelemetry.api.OpenTelemetry;
@@ -143,7 +143,7 @@ public class TracingJavaDocCodeSnippets {
         private static final TracerProvider DEFAULT_PROVIDER = TracerProvider.getDefaultProvider();
         private final com.azure.core.util.tracing.Tracer tracer;
         AzureClient(String endpoint, ClientOptions options) {
-            TelemetryOptions libraryOptions = new TelemetryOptions()
+            LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions()
                 .setLibraryName("azure-sample")
                 .setLibraryVersion("12.20.0")
                 .setResourceProviderNamespace("Microsoft.Sample")

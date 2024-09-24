@@ -4,7 +4,7 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 
@@ -35,9 +35,9 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
     @Override
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
-        final TelemetryOptions telemetryOptions
-            = new TelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
-        return new OpenTelemetryMeter(telemetryOptions, applicationOptions);
+        final LibraryTelemetryOptions libraryOptions
+            = new LibraryTelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
+        return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }
 
     /**
@@ -125,7 +125,7 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * @return a meter instance.
      */
     @Override
-    public Meter createMeter(TelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+    public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
         return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }

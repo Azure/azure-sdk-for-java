@@ -10,7 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 
 import java.time.Instant;
@@ -224,7 +224,7 @@ public class TracerJavaDocCodeSnippets {
         ClientOptions clientOptions = new HttpClientOptions();
         // BEGIN: com.azure.core.util.tracing.TracerProvider#create-tracer
 
-        TelemetryOptions libraryOptions = new TelemetryOptions()
+        LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions()
             .setLibraryName("azure-storage-blobs")
             .setLibraryVersion("12.20.0")
             .setResourceProviderNamespace("Microsoft.Storage")

@@ -19,7 +19,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -89,7 +89,7 @@ public class OpenTelemetryHttpPolicyTests {
     private static final String EXPECTED_URL_REDACTED = "https://httpbin.org/hello?n=REDACTED&api-version=1.2.3";
     private static final String ORIGINAL_URL_NO_QUERY = "https://httpbin.org/hello";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
-    private static final TelemetryOptions DEFAULT_TELEMETRY_OPTIONS = new TelemetryOptions().setLibraryName("test");
+    private static final LibraryTelemetryOptions DEFAULT_TELEMETRY_OPTIONS = new LibraryTelemetryOptions().setLibraryName("test");
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private OpenTelemetry openTelemetry;

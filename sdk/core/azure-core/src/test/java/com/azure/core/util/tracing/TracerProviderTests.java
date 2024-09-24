@@ -5,7 +5,7 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TestConfigurationSource;
 import com.azure.core.util.TracingOptions;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class TracerProviderTests {
         assertThrows(NullPointerException.class, () -> TracerProvider.getDefaultProvider().createTracer(null, null));
 
         assertThrows(NullPointerException.class,
-            () -> TracerProvider.getDefaultProvider().createTracer(new TelemetryOptions(), null));
+            () -> TracerProvider.getDefaultProvider().createTracer(new LibraryTelemetryOptions(), null));
     }
 
     @Test

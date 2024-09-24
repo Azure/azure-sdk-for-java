@@ -6,7 +6,7 @@ package com.azure.core.util.metrics;
 import com.azure.core.implementation.util.Providers;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -35,14 +35,14 @@ final class DefaultMeterProvider implements MeterProvider {
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        TelemetryOptions sdkOptions
-            = new TelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
+        LibraryTelemetryOptions sdkOptions
+            = new LibraryTelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
 
         return createMeter(sdkOptions, options);
     }
 
     @Override
-    public Meter createMeter(TelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+    public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
         Objects.requireNonNull(libraryOptions.getLibraryName(), "'libraryOptions.getLibraryName()' cannot be null.");
 

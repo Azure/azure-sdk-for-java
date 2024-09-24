@@ -3,7 +3,7 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 
 /**
@@ -52,7 +52,7 @@ public interface TracerProvider {
      * @param options Tracing options configured by the application.
      * @return a tracer instance.
      */
-    default Tracer createTracer(TelemetryOptions libraryOptions, TracingOptions options) {
+    default Tracer createTracer(LibraryTelemetryOptions libraryOptions, TracingOptions options) {
         return createTracer(libraryOptions.getLibraryName(), libraryOptions.getLibraryVersion(),
             libraryOptions.getResourceProviderNamespace(), options);
     }

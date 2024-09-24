@@ -10,25 +10,25 @@ import com.azure.core.util.tracing.TracerProvider;
  * The options to configure library-specific information on {@link TracerProvider}
  */
 @Fluent
-public class TelemetryOptions {
+public class LibraryTelemetryOptions {
     private String libraryName;
     private String libraryVersion;
     private String rpNamespace;
     private String schemaUrl;
 
     /**
-     * Creates an instance of {@link TelemetryOptions}.
+     * Creates an instance of {@link LibraryTelemetryOptions}.
      */
-    public TelemetryOptions() {
+    public LibraryTelemetryOptions() {
     }
 
     /**
      * Sets the client library name.
      *
      * @param libraryName The client library name.
-     * @return The updated {@link TelemetryOptions} object.
+     * @return The updated {@link LibraryTelemetryOptions} object.
      */
-    public TelemetryOptions setLibraryName(String libraryName) {
+    public LibraryTelemetryOptions setLibraryName(String libraryName) {
         this.libraryName = libraryName;
         return this;
     }
@@ -37,9 +37,9 @@ public class TelemetryOptions {
      * Sets the client library version.
      *
      * @param libraryVersion The client library version.
-     * @return The updated {@link TelemetryOptions} object.
+     * @return The updated {@link LibraryTelemetryOptions} object.
      */
-    public TelemetryOptions setLibraryVersion(String libraryVersion) {
+    public LibraryTelemetryOptions setLibraryVersion(String libraryVersion) {
         this.libraryVersion = libraryVersion;
         return this;
     }
@@ -48,9 +48,9 @@ public class TelemetryOptions {
      * Sets the Azure namespace.
      *
      * @param rpNamespace The Azure Resource Provider namespace client library communicates with.
-     * @return The updated {@link TelemetryOptions} object.
+     * @return The updated {@link LibraryTelemetryOptions} object.
      */
-    public TelemetryOptions setResourceProviderNamespace(String rpNamespace) {
+    public LibraryTelemetryOptions setResourceProviderNamespace(String rpNamespace) {
         this.rpNamespace = rpNamespace;
         return this;
     }
@@ -60,9 +60,9 @@ public class TelemetryOptions {
      * the library emits.
      *
      * @param schemaUrl The schema URL.
-     * @return The updated {@link TelemetryOptions} object.
+     * @return The updated {@link LibraryTelemetryOptions} object.
      */
-    public TelemetryOptions setSchemaUrl(String schemaUrl) {
+    public LibraryTelemetryOptions setSchemaUrl(String schemaUrl) {
         this.schemaUrl = schemaUrl;
         return this;
     }

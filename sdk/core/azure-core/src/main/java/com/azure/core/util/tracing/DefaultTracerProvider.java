@@ -4,7 +4,7 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.implementation.util.Providers;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -51,7 +51,7 @@ final class DefaultTracerProvider implements TracerProvider {
         TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final TelemetryOptions libraryOptions = new TelemetryOptions().setLibraryName(libraryName)
+        final LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions().setLibraryName(libraryName)
             .setLibraryVersion(libraryVersion)
             .setResourceProviderNamespace(azNamespace);
 
@@ -59,7 +59,7 @@ final class DefaultTracerProvider implements TracerProvider {
     }
 
     @Override
-    public Tracer createTracer(TelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+    public Tracer createTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
         Objects.requireNonNull(libraryOptions.getLibraryName(),
             "'libraryOptions.getLibraryName()' name cannot be null.");

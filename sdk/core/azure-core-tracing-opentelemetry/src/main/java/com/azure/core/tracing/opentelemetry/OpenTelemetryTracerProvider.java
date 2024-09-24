@@ -3,7 +3,7 @@
 
 package com.azure.core.tracing.opentelemetry;
 
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
@@ -38,7 +38,7 @@ public final class OpenTelemetryTracerProvider implements TracerProvider {
         TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final TelemetryOptions libraryOptions = new TelemetryOptions().setLibraryName(libraryName)
+        final LibraryTelemetryOptions libraryOptions = new LibraryTelemetryOptions().setLibraryName(libraryName)
             .setLibraryVersion(libraryVersion)
             .setResourceProviderNamespace(azNamespace);
         return new OpenTelemetryTracer(libraryOptions, applicationOptions);
@@ -52,7 +52,7 @@ public final class OpenTelemetryTracerProvider implements TracerProvider {
      * @return a tracer instance.
      */
     @Override
-    public Tracer createTracer(TelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+    public Tracer createTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
         return new OpenTelemetryTracer(libraryOptions, applicationOptions);
     }
 }

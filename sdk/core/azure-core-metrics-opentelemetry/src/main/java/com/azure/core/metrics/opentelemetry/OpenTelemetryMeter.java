@@ -7,7 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.TelemetryAttributes;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongGauge;
@@ -29,7 +29,7 @@ class OpenTelemetryMeter implements Meter {
     private final io.opentelemetry.api.metrics.Meter meter;
     private final boolean isEnabled;
 
-    OpenTelemetryMeter(TelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+    OpenTelemetryMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         MeterProvider otelProvider = GlobalOpenTelemetry.getMeterProvider();
         if (applicationOptions != null
             && applicationOptions.isEnabled()

@@ -5,7 +5,7 @@ package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.TelemetryOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.StartSpanOptions;
@@ -93,7 +93,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      */
     public OpenTelemetryTracer() {
-        this(new TelemetryOptions().setLibraryName("azure-core"), null);
+        this(new LibraryTelemetryOptions().setLibraryName("azure-core"), null);
     }
 
     /**
@@ -101,7 +101,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@link GlobalOpenTelemetry#getTracer(String)}
      *
      */
-    OpenTelemetryTracer(TelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+    OpenTelemetryTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
 
         TracerProvider otelProvider = getTracerProvider(applicationOptions);
         this.isEnabled
