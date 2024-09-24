@@ -5,8 +5,8 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.SdkTelemetryOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongGauge;
@@ -371,11 +371,11 @@ public class MetricsTests {
 
     @Test
     public void sdkOptions() {
-        SdkTelemetryOptions sdkOptions = new SdkTelemetryOptions().setSdkName("az.sdk-name")
-            .setSdkVersion("1.0.0-beta.1")
+        TelemetryOptions sdkOptions = new TelemetryOptions().setLibraryName("az.sdk-name")
+            .setLibraryVersion("1.0.0-beta.1")
             .setSchemaUrl("https://aka.ms/az/sdk/schema:1.42.0");
-        InstrumentationScopeInfo expectedInstrumentationScope = InstrumentationScopeInfo.create(sdkOptions.getSdkName(),
-            sdkOptions.getSdkVersion(), sdkOptions.getSchemaUrl());
+        InstrumentationScopeInfo expectedInstrumentationScope = InstrumentationScopeInfo
+            .create(sdkOptions.getLibraryName(), sdkOptions.getLibraryVersion(), sdkOptions.getSchemaUrl());
 
         Meter meter = MeterProvider.getDefaultProvider()
             .createMeter(sdkOptions, new OpenTelemetryMetricsOptions().setOpenTelemetry(openTelemetry));

@@ -5,7 +5,7 @@ package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class OpenTelemetryMeterProviderTests {
         assertThrows(NullPointerException.class, () -> MeterProvider.getDefaultProvider().createMeter(null, null));
 
         assertThrows(NullPointerException.class,
-            () -> MeterProvider.getDefaultProvider().createMeter(new SdkTelemetryOptions(), null));
+            () -> MeterProvider.getDefaultProvider().createMeter(new TelemetryOptions(), null));
     }
 
     @Test

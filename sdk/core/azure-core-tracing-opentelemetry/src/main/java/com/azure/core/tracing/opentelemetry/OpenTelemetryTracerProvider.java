@@ -3,7 +3,7 @@
 
 package com.azure.core.tracing.opentelemetry;
 
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
@@ -38,21 +38,21 @@ public final class OpenTelemetryTracerProvider implements TracerProvider {
         TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final SdkTelemetryOptions sdkOptions = new SdkTelemetryOptions().setSdkName(libraryName)
-            .setSdkVersion(libraryVersion)
+        final TelemetryOptions libraryOptions = new TelemetryOptions().setLibraryName(libraryName)
+            .setLibraryVersion(libraryVersion)
             .setResourceProviderNamespace(azNamespace);
-        return new OpenTelemetryTracer(sdkOptions, applicationOptions);
+        return new OpenTelemetryTracer(libraryOptions, applicationOptions);
     }
 
     /**
      * Creates OpenTelemetry-based implementation of {@link Tracer}
      *
-     * @param sdkOptions Library-specific tracing options.
+     * @param libraryOptions Library-specific telemetry options.
      * @param applicationOptions Tracing options configured by the application.
      * @return a tracer instance.
      */
     @Override
-    public Tracer createTracer(SdkTelemetryOptions sdkOptions, TracingOptions applicationOptions) {
-        return new OpenTelemetryTracer(sdkOptions, applicationOptions);
+    public Tracer createTracer(TelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+        return new OpenTelemetryTracer(libraryOptions, applicationOptions);
     }
 }

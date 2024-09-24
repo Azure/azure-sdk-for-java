@@ -4,7 +4,7 @@
 package com.azure.core.util.metrics;
 
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 
 /**
  * Resolves and provides {@link Meter} implementation.
@@ -35,12 +35,12 @@ public interface MeterProvider {
     /**
      * Creates meter instance.
      *
-     * @param sdkOptions Azure SDK telemetry options.
+     * @param libraryOptions Azure SDK telemetry options.
      * @param applicationOptions instance of {@link MetricsOptions} provided by the application.
      * @return a meter instance.
      */
-    default Meter createMeter(SdkTelemetryOptions sdkOptions, MetricsOptions applicationOptions) {
-        return createMeter(sdkOptions.getSdkName(), sdkOptions.getSdkVersion(), applicationOptions);
+    default Meter createMeter(TelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+        return createMeter(libraryOptions.getLibraryName(), libraryOptions.getLibraryVersion(), applicationOptions);
     }
 
     /**

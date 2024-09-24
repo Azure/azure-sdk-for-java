@@ -4,7 +4,7 @@
 package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import io.opentelemetry.api.OpenTelemetry;
@@ -100,7 +100,7 @@ public class CreateTracerTests {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         Tracer tracer
-            = TracerProvider.getDefaultProvider().createTracer(new SdkTelemetryOptions().setSdkName("test"), options);
+            = TracerProvider.getDefaultProvider().createTracer(new TelemetryOptions().setLibraryName("test"), options);
 
         Context span = tracer.start("test", Context.NONE);
         tracer.end(null, null, span);
@@ -141,12 +141,12 @@ public class CreateTracerTests {
     public void testSdkOptions() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        SdkTelemetryOptions sdkOptions = new SdkTelemetryOptions().setSdkName("test")
-            .setSdkVersion("1.2.3-beta.45")
+        TelemetryOptions libraryOptions = new TelemetryOptions().setLibraryName("test")
+            .setLibraryVersion("1.2.3-beta.45")
             .setResourceProviderNamespace("namespace")
             .setSchemaUrl("https://aka.ms/az/sdk/schema:1.42.0");
 
-        Tracer tracer = TracerProvider.getDefaultProvider().createTracer(sdkOptions, options);
+        Tracer tracer = TracerProvider.getDefaultProvider().createTracer(libraryOptions, options);
 
         Context span = tracer.start("test", Context.NONE);
         ReadableSpan readableSpan = getReadableSpan(span);

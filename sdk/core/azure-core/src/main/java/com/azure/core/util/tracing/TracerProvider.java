@@ -3,7 +3,7 @@
 
 package com.azure.core.util.tracing;
 
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.TracingOptions;
 
 /**
@@ -33,14 +33,14 @@ public interface TracerProvider {
      * <!-- src_embed com.azure.core.util.tracing.TracerProvider#create-tracer -->
      * <pre>
      *
-     * SdkTelemetryOptions sdkTelemetryOptions = new SdkTelemetryOptions&#40;&#41;
-     *     .setSdkName&#40;&quot;azure-storage-blobs&quot;&#41;
-     *     .setSdkVersion&#40;&quot;12.20.0&quot;&#41;
+     * TelemetryOptions libraryOptions = new TelemetryOptions&#40;&#41;
+     *     .setLibraryName&#40;&quot;azure-storage-blobs&quot;&#41;
+     *     .setLibraryVersion&#40;&quot;12.20.0&quot;&#41;
      *     .setResourceProviderNamespace&#40;&quot;Microsoft.Storage&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.23.1&quot;&#41;;
      *
      * Tracer tracer = TracerProvider.getDefaultProvider&#40;&#41;
-     *     .createTracer&#40;sdkTelemetryOptions, clientOptions.getTracingOptions&#40;&#41;&#41;;
+     *     .createTracer&#40;libraryOptions, clientOptions.getTracingOptions&#40;&#41;&#41;;
      * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
      *     .tracer&#40;tracer&#41;
      *     .clientOptions&#40;clientOptions&#41;
@@ -48,13 +48,13 @@ public interface TracerProvider {
      * </pre>
      * <!-- end com.azure.core.util.tracing.TracerProvider#create-tracer -->
      *
-     * @param providerOptions Library-specific tracing options.
+     * @param libraryOptions Library-specific telemetry options.
      * @param options Tracing options configured by the application.
      * @return a tracer instance.
      */
-    default Tracer createTracer(SdkTelemetryOptions providerOptions, TracingOptions options) {
-        return createTracer(providerOptions.getSdkName(), providerOptions.getSdkVersion(),
-            providerOptions.getResourceProviderNamespace(), options);
+    default Tracer createTracer(TelemetryOptions libraryOptions, TracingOptions options) {
+        return createTracer(libraryOptions.getLibraryName(), libraryOptions.getLibraryVersion(),
+            libraryOptions.getResourceProviderNamespace(), options);
     }
 
     /**

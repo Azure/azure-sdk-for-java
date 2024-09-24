@@ -7,7 +7,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.TracerProvider;
 import io.opentelemetry.api.OpenTelemetry;
@@ -143,13 +143,13 @@ public class TracingJavaDocCodeSnippets {
         private static final TracerProvider DEFAULT_PROVIDER = TracerProvider.getDefaultProvider();
         private final com.azure.core.util.tracing.Tracer tracer;
         AzureClient(String endpoint, ClientOptions options) {
-            SdkTelemetryOptions sdkTelemetryOptions = new SdkTelemetryOptions()
-                .setSdkName("azure-sample")
-                .setSdkVersion("12.20.0")
-                .setSdkVersion("Microsoft.Sample")
+            TelemetryOptions libraryOptions = new TelemetryOptions()
+                .setLibraryName("azure-sample")
+                .setLibraryVersion("12.20.0")
+                .setResourceProviderNamespace("Microsoft.Sample")
                 .setSchemaUrl("https://opentelemetry.io/schemas/1.23.1");
 
-            tracer = DEFAULT_PROVIDER.createTracer(sdkTelemetryOptions, options == null ? null : options.getTracingOptions());
+            tracer = DEFAULT_PROVIDER.createTracer(libraryOptions, options == null ? null : options.getTracingOptions());
         }
 
         public String methodCall(String request) {

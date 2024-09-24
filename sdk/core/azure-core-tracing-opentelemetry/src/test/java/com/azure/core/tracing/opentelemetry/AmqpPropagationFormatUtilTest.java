@@ -3,7 +3,7 @@
 package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.tracing.Tracer;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
@@ -27,7 +27,7 @@ public class AmqpPropagationFormatUtilTest {
     private static final SdkTracerProvider TRACER_PROVIDER = SdkTracerProvider.builder().build();
     private static final OpenTelemetry OPEN_TELEMETRY
         = OpenTelemetrySdk.builder().setTracerProvider(TRACER_PROVIDER).build();
-    private static final Tracer TRACER = new OpenTelemetryTracer(new SdkTelemetryOptions().setSdkName("test"),
+    private static final Tracer TRACER = new OpenTelemetryTracer(new TelemetryOptions().setLibraryName("test"),
         new OpenTelemetryTracingOptions().setOpenTelemetry(OPEN_TELEMETRY));
 
     @Test

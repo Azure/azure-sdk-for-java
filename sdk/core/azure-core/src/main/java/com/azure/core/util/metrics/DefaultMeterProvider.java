@@ -5,8 +5,8 @@ package com.azure.core.util.metrics;
 
 import com.azure.core.implementation.util.Providers;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.SdkTelemetryOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.TelemetryOptions;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -35,20 +35,20 @@ final class DefaultMeterProvider implements MeterProvider {
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        SdkTelemetryOptions sdkOptions
-            = new SdkTelemetryOptions().setSdkName(libraryName).setSdkVersion(libraryVersion);
+        TelemetryOptions sdkOptions
+            = new TelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
 
         return createMeter(sdkOptions, options);
     }
 
     @Override
-    public Meter createMeter(SdkTelemetryOptions sdkOptions, MetricsOptions applicationOptions) {
-        Objects.requireNonNull(sdkOptions, "'sdkOptions' cannot be null.");
-        Objects.requireNonNull(sdkOptions.getSdkName(), "'sdkOptions.getSdkName()' cannot be null.");
+    public Meter createMeter(TelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+        Objects.requireNonNull(libraryOptions.getLibraryName(), "'libraryOptions.getLibraryName()' cannot be null.");
 
         final MetricsOptions finalOptions = applicationOptions != null ? applicationOptions : DEFAULT_OPTIONS;
 
-        return METER_PROVIDER.create(provider -> provider.createMeter(sdkOptions, finalOptions), NoopMeter.INSTANCE,
+        return METER_PROVIDER.create(provider -> provider.createMeter(libraryOptions, finalOptions), NoopMeter.INSTANCE,
             finalOptions.getMeterProvider());
     }
 

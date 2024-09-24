@@ -10,37 +10,37 @@ import com.azure.core.util.tracing.TracerProvider;
  * The options to configure library-specific information on {@link TracerProvider}
  */
 @Fluent
-public class SdkTelemetryOptions {
-    private String sdkName;
-    private String sdkVersion;
+public class TelemetryOptions {
+    private String libraryName;
+    private String libraryVersion;
     private String rpNamespace;
     private String schemaUrl;
 
     /**
-     * Creates an instance of {@link SdkTelemetryOptions}.
+     * Creates an instance of {@link TelemetryOptions}.
      */
-    public SdkTelemetryOptions() {
+    public TelemetryOptions() {
     }
 
     /**
      * Sets the client library name.
      *
-     * @param sdkName The client library name.
-     * @return The updated {@link SdkTelemetryOptions} object.
+     * @param libraryName The client library name.
+     * @return The updated {@link TelemetryOptions} object.
      */
-    public SdkTelemetryOptions setSdkName(String sdkName) {
-        this.sdkName = sdkName;
+    public TelemetryOptions setLibraryName(String libraryName) {
+        this.libraryName = libraryName;
         return this;
     }
 
     /**
      * Sets the client library version.
      *
-     * @param sdkVersion The client library version.
-     * @return The updated {@link SdkTelemetryOptions} object.
+     * @param libraryVersion The client library version.
+     * @return The updated {@link TelemetryOptions} object.
      */
-    public SdkTelemetryOptions setSdkVersion(String sdkVersion) {
-        this.sdkVersion = sdkVersion;
+    public TelemetryOptions setLibraryVersion(String libraryVersion) {
+        this.libraryVersion = libraryVersion;
         return this;
     }
 
@@ -48,9 +48,9 @@ public class SdkTelemetryOptions {
      * Sets the Azure namespace.
      *
      * @param rpNamespace The Azure Resource Provider namespace client library communicates with.
-     * @return The updated {@link SdkTelemetryOptions} object.
+     * @return The updated {@link TelemetryOptions} object.
      */
-    public SdkTelemetryOptions setResourceProviderNamespace(String rpNamespace) {
+    public TelemetryOptions setResourceProviderNamespace(String rpNamespace) {
         this.rpNamespace = rpNamespace;
         return this;
     }
@@ -60,9 +60,9 @@ public class SdkTelemetryOptions {
      * the library emits.
      *
      * @param schemaUrl The schema URL.
-     * @return The updated {@link SdkTelemetryOptions} object.
+     * @return The updated {@link TelemetryOptions} object.
      */
-    public SdkTelemetryOptions setSchemaUrl(String schemaUrl) {
+    public TelemetryOptions setSchemaUrl(String schemaUrl) {
         this.schemaUrl = schemaUrl;
         return this;
     }
@@ -72,8 +72,8 @@ public class SdkTelemetryOptions {
      *
      * @return The client library name.
      */
-    public String getSdkName() {
-        return sdkName;
+    public String getLibraryName() {
+        return libraryName;
     }
 
     /**
@@ -81,8 +81,8 @@ public class SdkTelemetryOptions {
      *
      * @return The client library version.
      */
-    public String getSdkVersion() {
-        return sdkVersion;
+    public String getLibraryVersion() {
+        return libraryVersion;
     }
 
     /**

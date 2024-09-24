@@ -4,7 +4,7 @@
 package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.TracingLink;
 import io.opentelemetry.api.OpenTelemetry;
@@ -125,7 +125,7 @@ public class OpenTelemetryTracerTest {
         tracingContext
             = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan));
         openTelemetryTracer = new OpenTelemetryTracer(
-            new SdkTelemetryOptions().setSdkName("test").setResourceProviderNamespace(AZ_NAMESPACE_VALUE),
+            new TelemetryOptions().setLibraryName("test").setResourceProviderNamespace(AZ_NAMESPACE_VALUE),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
     }
 
@@ -224,7 +224,7 @@ public class OpenTelemetryTracerTest {
     @Test
     public void fallbackToAzNamespaceFromContext() {
         // Arrange
-        OpenTelemetryTracer noAzTracer = new OpenTelemetryTracer(new SdkTelemetryOptions().setSdkName("test"),
+        OpenTelemetryTracer noAzTracer = new OpenTelemetryTracer(new TelemetryOptions().setLibraryName("test"),
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
 
         // Act

@@ -6,8 +6,8 @@ package com.azure.core.metrics.opentelemetry;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.SdkTelemetryOptions;
 import com.azure.core.util.TelemetryAttributes;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.LongGauge;
@@ -29,7 +29,7 @@ class OpenTelemetryMeter implements Meter {
     private final io.opentelemetry.api.metrics.Meter meter;
     private final boolean isEnabled;
 
-    OpenTelemetryMeter(SdkTelemetryOptions sdkOptions, MetricsOptions applicationOptions) {
+    OpenTelemetryMeter(TelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
         MeterProvider otelProvider = GlobalOpenTelemetry.getMeterProvider();
         if (applicationOptions != null
             && applicationOptions.isEnabled()
@@ -40,9 +40,9 @@ class OpenTelemetryMeter implements Meter {
 
         this.isEnabled
             = (applicationOptions == null || applicationOptions.isEnabled()) && otelProvider != MeterProvider.noop();
-        this.meter = otelProvider.meterBuilder(sdkOptions.getSdkName())
-            .setInstrumentationVersion(sdkOptions.getSdkVersion())
-            .setSchemaUrl(sdkOptions.getSchemaUrl())
+        this.meter = otelProvider.meterBuilder(libraryOptions.getLibraryName())
+            .setInstrumentationVersion(libraryOptions.getLibraryVersion())
+            .setSchemaUrl(libraryOptions.getSchemaUrl())
             .build();
     }
 

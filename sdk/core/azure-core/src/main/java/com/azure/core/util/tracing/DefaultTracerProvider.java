@@ -4,7 +4,7 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.implementation.util.Providers;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
@@ -51,22 +51,23 @@ final class DefaultTracerProvider implements TracerProvider {
         TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        final SdkTelemetryOptions sdkOptions = new SdkTelemetryOptions().setSdkName(libraryName)
-            .setSdkVersion(libraryVersion)
+        final TelemetryOptions libraryOptions = new TelemetryOptions().setLibraryName(libraryName)
+            .setLibraryVersion(libraryVersion)
             .setResourceProviderNamespace(azNamespace);
 
-        return createTracer(sdkOptions, applicationOptions);
+        return createTracer(libraryOptions, applicationOptions);
     }
 
     @Override
-    public Tracer createTracer(SdkTelemetryOptions sdkOptions, TracingOptions applicationOptions) {
-        Objects.requireNonNull(sdkOptions, "'sdkOptions' cannot be null.");
-        Objects.requireNonNull(sdkOptions.getSdkName(), "'sdkOptions.getSdkName()' name cannot be null.");
+    public Tracer createTracer(TelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+        Objects.requireNonNull(libraryOptions.getLibraryName(),
+            "'libraryOptions.getLibraryName()' name cannot be null.");
 
         final TracingOptions finalOptions = applicationOptions != null ? applicationOptions : DEFAULT_OPTIONS;
 
         if (finalOptions.isEnabled()) {
-            return TRACER_PROVIDERS.create((provider) -> provider.createTracer(sdkOptions, finalOptions),
+            return TRACER_PROVIDERS.create((provider) -> provider.createTracer(libraryOptions, finalOptions),
                 FALLBACK_TRACER, finalOptions.getTracerProvider());
         }
 

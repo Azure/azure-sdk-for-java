@@ -4,7 +4,7 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.MetricsOptions;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 
@@ -35,9 +35,9 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
     @Override
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
-        final SdkTelemetryOptions sdkOptions
-            = new SdkTelemetryOptions().setSdkName(libraryName).setSdkVersion(libraryVersion);
-        return new OpenTelemetryMeter(sdkOptions, applicationOptions);
+        final TelemetryOptions telemetryOptions
+            = new TelemetryOptions().setLibraryName(libraryName).setLibraryVersion(libraryVersion);
+        return new OpenTelemetryMeter(telemetryOptions, applicationOptions);
     }
 
     /**
@@ -120,13 +120,13 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * </pre>
      * <!-- end com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom -->
      *
-     * @param sdkOptions Azure SDK telemetry options.
+     * @param libraryOptions Library-specific telemetry options.
      * @param applicationOptions instance of {@link MetricsOptions} provided by the application.
      * @return a meter instance.
      */
     @Override
-    public Meter createMeter(SdkTelemetryOptions sdkOptions, MetricsOptions applicationOptions) {
-        Objects.requireNonNull(sdkOptions, "'sdkOptions' cannot be null.");
-        return new OpenTelemetryMeter(sdkOptions, applicationOptions);
+    public Meter createMeter(TelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+        return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }
 }

@@ -5,7 +5,7 @@ package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.SdkTelemetryOptions;
+import com.azure.core.util.TelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.StartSpanOptions;
@@ -93,7 +93,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      */
     public OpenTelemetryTracer() {
-        this(new SdkTelemetryOptions().setSdkName("azure-core"), null);
+        this(new TelemetryOptions().setLibraryName("azure-core"), null);
     }
 
     /**
@@ -101,15 +101,15 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@link GlobalOpenTelemetry#getTracer(String)}
      *
      */
-    OpenTelemetryTracer(SdkTelemetryOptions sdkOptions, TracingOptions applicationOptions) {
+    OpenTelemetryTracer(TelemetryOptions libraryOptions, TracingOptions applicationOptions) {
 
         TracerProvider otelProvider = getTracerProvider(applicationOptions);
         this.isEnabled
             = (applicationOptions == null || applicationOptions.isEnabled()) && otelProvider != TracerProvider.noop();
-        this.azNamespace = sdkOptions.getResourceProviderNamespace();
-        this.tracer = otelProvider.tracerBuilder(sdkOptions.getSdkName())
-            .setInstrumentationVersion(sdkOptions.getSdkVersion())
-            .setSchemaUrl(sdkOptions.getSchemaUrl() != null ? sdkOptions.getSchemaUrl() : DEFAULT_SCHEMA_URL)
+        this.azNamespace = libraryOptions.getResourceProviderNamespace();
+        this.tracer = otelProvider.tracerBuilder(libraryOptions.getLibraryName())
+            .setInstrumentationVersion(libraryOptions.getLibraryVersion())
+            .setSchemaUrl(libraryOptions.getSchemaUrl() != null ? libraryOptions.getSchemaUrl() : DEFAULT_SCHEMA_URL)
             .build();
     }
 
