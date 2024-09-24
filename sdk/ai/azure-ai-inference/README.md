@@ -168,6 +168,14 @@ for (EmbeddingItem item : embeddings.getData()) {
 ```
 For a complete sample example, see sample [Embedding][sample_get_embedding].
 
+### Function calls
+
+For a complete sample example, see sample [Function Calls][sample_function_calls].
+
+### Streaming function calls
+
+For a complete sample example, see sample [Streaming Function Calls][sample_streaming_function_calls].
+
 ### Service API versions
 
 The client library targets the latest service API version by default.
@@ -224,6 +232,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/BasicChatSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/StreamingChatSample.java 
 [sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/TextEmbeddingsSample.java
+[sample_function_calls]: https://aka.ms/azsdk/azure-ai-inference/java/toolCallSample
+[sample_streaming_function_calls]: https://aka.ms/azsdk/azure-ai-inference/java/streamingToolCallSample
 [chat_completions_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/main/java/com/azure/ai/inference/ChatCompletionsAsyncClient.java
 [chat_completions_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/main/java/com/azure/ai/inference/ChatCompletionsClientBuilder.java
 [chat_completions_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/main/java/com/azure/ai/inference/ChatCompletionsClient.java
