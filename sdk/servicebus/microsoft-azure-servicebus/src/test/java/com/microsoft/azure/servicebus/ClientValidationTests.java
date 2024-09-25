@@ -20,7 +20,7 @@ import org.junit.Assert;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-public class ClientValidationTests extends TestBase {
+public class ClientValidationTests extends TestProxyTestBase {
 
     private static final String ENTITY_NAME_PREFIX = "ClientValidationTests";
 

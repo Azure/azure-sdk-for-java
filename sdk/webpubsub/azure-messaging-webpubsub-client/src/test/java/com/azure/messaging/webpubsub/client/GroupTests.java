@@ -6,7 +6,7 @@ package com.azure.messaging.webpubsub.client;
 import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Test;
 
-public class GroupTests extends TestBase {
+public class GroupTests extends TestProxyTestBase {
 
     private static final String GROUP = "group";
 

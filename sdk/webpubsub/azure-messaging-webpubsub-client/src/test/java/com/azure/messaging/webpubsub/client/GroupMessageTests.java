@@ -24,7 +24,7 @@ import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-public class GroupMessageTests extends TestBase {
+public class GroupMessageTests extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(GroupMessageTests.class);
 
     private static final String HELLO = "hello";

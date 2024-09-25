@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
@@ -22,7 +22,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
-public class PartiesClientTests extends TestBase {
+public class PartiesClientTests extends TestProxyTestBase {
     private final String defaultEndpoint = "https://REDACTED.farmbeats.azure.net";
 
     private PartiesAsyncClient createPartiesClient() {

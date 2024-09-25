@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.test.junitextensions;
 
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
