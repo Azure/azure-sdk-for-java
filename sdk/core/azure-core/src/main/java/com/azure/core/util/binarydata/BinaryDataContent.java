@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.util;
+package com.azure.core.util.binarydata;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,11 +23,15 @@ import java.nio.channels.WritableByteChannel;
  * An abstract internal representation of the content stored in {@link BinaryData}.
  */
 public abstract class BinaryDataContent {
-    public static final int STREAM_READ_SIZE = 8192;
-
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     static final String TOO_LARGE_FOR_BYTE_ARRAY
         = "The content length is too large for a byte array. Content length is: ";
+
+    /**
+     * Creates a new instance of {@link BinaryDataContent}.
+     */
+    public BinaryDataContent() {
+    }
 
     /**
      * Gets the length of the {@link BinaryDataContent} if it can be calculated.
@@ -137,6 +142,22 @@ public abstract class BinaryDataContent {
      * @throws NullPointerException If {@code channel} is null.
      */
     public abstract Mono<Void> writeTo(AsynchronousByteChannel channel);
+
+    /**
+     * Writes the contents of this {@link BinaryDataContent} to the given {@link JsonWriter}.
+     * <p>
+     * This method does not close or flush the {@link JsonWriter}.
+     * <p>
+     * The contents of this {@link BinaryDataContent} will be written without buffering. If the underlying data source
+     * isn't {@link #isReplayable()}, after this method is called the {@link BinaryDataContent} will be consumed and
+     * can't be read again. If it needs to be read again, use {@link #toReplayableContent()} to create a replayable
+     * copy.
+     *
+     * @param jsonWriter The {@link JsonWriter} to write the contents of this {@link BinaryDataContent} to as JSON.
+     * @throws NullPointerException If {@code jsonWriter} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public abstract void writeTo(JsonWriter jsonWriter) throws IOException;
 
     /**
      * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including

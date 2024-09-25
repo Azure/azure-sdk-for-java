@@ -3,22 +3,23 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.ByteBufferContent;
-import com.azure.core.implementation.util.FileContent;
-import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.ListByteBufferContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.ByteArrayContent;
+import com.azure.core.util.binarydata.ByteBufferContent;
+import com.azure.core.util.binarydata.FileContent;
+import com.azure.core.util.binarydata.FluxByteBufferContent;
+import com.azure.core.util.binarydata.InputStreamContent;
+import com.azure.core.util.binarydata.ListByteBufferContent;
+import com.azure.core.util.binarydata.SerializableContent;
+import com.azure.core.util.binarydata.StringContent;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProvider;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +39,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -181,22 +181,34 @@ public final class BinaryData {
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final BinaryDataContent content;
 
-    BinaryData(BinaryDataContent content) {
+    /**
+     * Creates an instance of {@link BinaryData} based on the given {@link BinaryDataContent}.
+     * <p>
+     * It is generally preferable to use the static factory methods provided to create instances of {@link BinaryData},
+     * but this constructor allows for custom implementations of {@link BinaryDataContent} to back this
+     * {@link BinaryData} for highly customized scenarios.
+     *
+     * @param content The {@link BinaryDataContent} that will be the content of this {@link BinaryData}.
+     * @throws NullPointerException If {@code content} is null.
+     */
+    public BinaryData(BinaryDataContent content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 
-    static {
-        BinaryDataHelper.setAccessor(new BinaryDataHelper.BinaryDataAccessor() {
-            @Override
-            public BinaryData createBinaryData(BinaryDataContent content) {
-                return new BinaryData(content);
-            }
-
-            @Override
-            public BinaryDataContent getContent(BinaryData binaryData) {
-                return binaryData.content;
-            }
-        });
+    /**
+     * Gets the {@link BinaryDataContent} that is the content of this {@link BinaryData}.
+     * <p>
+     * Any modifications to the {@link BinaryDataContent} returned will be visible within this {@link BinaryData}. For
+     * example, if the returned {@link BinaryDataContent} is consumed and wasn't {@link #isReplayable()}, this
+     * {@link BinaryData} will be fully consumed and won't be replayable. Method calls on {@link BinaryDataContent}
+     * which return a new instance won't be visible in this class, so making a {@link BinaryDataContent} replayable
+     * won't result in this {@link BinaryData} being replayable, and may result in this {@link BinaryData} not being
+     * consumable.
+     *
+     * @return The {@link BinaryDataContent} that is the content of this {@link BinaryData}.
+     */
+    public BinaryDataContent getContent() {
+        return content;
     }
 
     /**
@@ -759,7 +771,7 @@ public final class BinaryData {
      * @throws NullPointerException If {@code file} is null.
      */
     public static BinaryData fromFile(Path file) {
-        return fromFile(file, STREAM_READ_SIZE);
+        return fromFile(file, IOUtils.DEFAULT_BUFFER_SIZE);
     }
 
     /**
@@ -817,7 +829,7 @@ public final class BinaryData {
      * @throws UncheckedIOException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, Long position, Long length) {
-        return new BinaryData(new FileContent(file, STREAM_READ_SIZE, position, length));
+        return new BinaryData(new FileContent(file, IOUtils.DEFAULT_BUFFER_SIZE, position, length));
     }
 
     /**
@@ -1474,6 +1486,23 @@ public final class BinaryData {
      */
     public Mono<Void> writeTo(AsynchronousByteChannel channel) {
         return content.writeTo(channel);
+    }
+
+    /**
+     * Writes the contents of this {@link BinaryData} to the given {@link JsonWriter}.
+     * <p>
+     * This method does not close or flush the {@link JsonWriter}.
+     * <p>
+     * The contents of this {@link BinaryData} will be written without buffering. If the underlying data source ins't
+     * {@link #isReplayable()}, after this method is called the {@link BinaryData} will be consumed and can't be read
+     * again. If it needs to be read again, use {@link #toReplayableBinaryData()} to create a replayable copy.
+     *
+     * @param jsonWriter The {@link JsonWriter} to write the contents of this {@link BinaryData} to as JSON.
+     * @throws NullPointerException If {@code jsonWriter} is null.
+     * @throws IOException If an I/O error occurs.
+     */
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        content.writeTo(jsonWriter);
     }
 
     /**

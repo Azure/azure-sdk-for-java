@@ -12,17 +12,16 @@ import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
 import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.http.vertx.implementation.VertxUtils;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.HttpUtils;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.ByteArrayContent;
+import com.azure.core.util.binarydata.ByteBufferContent;
+import com.azure.core.util.binarydata.SerializableContent;
+import com.azure.core.util.binarydata.StringContent;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Future;
@@ -183,7 +182,7 @@ class VertxAsyncHttpClient implements HttpClient {
         if (body == null) {
             vertxRequest.send().onFailure(promise::fail);
         } else {
-            BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+            BinaryDataContent bodyContent = body.getContent();
             if (bodyContent instanceof ByteArrayContent
                 || bodyContent instanceof ByteBufferContent
                 || bodyContent instanceof StringContent

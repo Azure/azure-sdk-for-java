@@ -3,7 +3,7 @@
 
 package com.azure.core.util.mocking;
 
-import com.azure.core.implementation.util.FileContent;
+import com.azure.core.util.binarydata.FileContent;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

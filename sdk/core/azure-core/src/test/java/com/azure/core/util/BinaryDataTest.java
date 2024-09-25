@@ -3,12 +3,12 @@
 
 package com.azure.core.util;
 
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FileContent;
-import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
-import com.azure.core.implementation.util.MyFileContent;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.FileContent;
+import com.azure.core.util.binarydata.FluxByteBufferContent;
+import com.azure.core.util.binarydata.MyFileContent;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.mocking.MockAsynchronousFileChannel;
 import com.azure.core.util.mocking.MockFile;
@@ -68,7 +68,6 @@ import java.util.stream.Stream;
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static com.azure.core.CoreTestUtils.fillArray;
 import static com.azure.core.CoreTestUtils.readStream;
-import static com.azure.core.implementation.util.BinaryDataContent.STREAM_READ_SIZE;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -198,7 +197,7 @@ public class BinaryDataTest {
     @Test
     public void createFromLargeStreamAndReadAsFlux() {
         // Arrange
-        final byte[] expected = String.join("", Collections.nCopies(STREAM_READ_SIZE * 100, "A"))
+        final byte[] expected = String.join("", Collections.nCopies(IOUtils.DEFAULT_BUFFER_SIZE * 100, "A"))
             .concat("A")
             .getBytes(StandardCharsets.UTF_8);
 
@@ -209,7 +208,7 @@ public class BinaryDataTest {
         StepVerifier.create(data.toFluxByteBuffer())
             // the inputstream should be broken down into a series of byte buffers, each of max CHUNK_SIZE
             // assert first chunk is equal to CHUNK_SIZE and is a string of repeating A's
-            .assertNext(bb -> assertEquals(String.join("", Collections.nCopies(STREAM_READ_SIZE, "A")),
+            .assertNext(bb -> assertEquals(String.join("", Collections.nCopies(IOUtils.DEFAULT_BUFFER_SIZE, "A")),
                 StandardCharsets.UTF_8.decode(bb).toString()))
             // skip 99 chunks
             .expectNextCount(99)
@@ -513,7 +512,7 @@ public class BinaryDataTest {
             }
         };
 
-        BinaryData binaryData = BinaryDataHelper.createBinaryData(fileContent);
+        BinaryData binaryData = new BinaryData(fileContent);
         StepVerifier.create(binaryData.toFluxByteBuffer())
             .thenConsumeWhile(Objects::nonNull)
             .verifyErrorMatches(t -> t instanceof IOException && t.getMessage().equals("kaboom"));
@@ -543,7 +542,7 @@ public class BinaryDataTest {
             }
         };
 
-        BinaryData binaryData = BinaryDataHelper.createBinaryData(fileContent);
+        BinaryData binaryData = new BinaryData(fileContent);
         StepVerifier.create(binaryData.toFluxByteBuffer())
             .thenConsumeWhile(Objects::nonNull)
             .verifyErrorMatches(t -> t instanceof IOException && t.getMessage().equals("kaboom"));

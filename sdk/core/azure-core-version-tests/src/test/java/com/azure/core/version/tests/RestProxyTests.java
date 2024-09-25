@@ -23,11 +23,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.http.rest.RestProxyUtils;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.binarydata.BinaryDataContent;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -165,14 +164,14 @@ public class RestProxyTests {
     public void doesNotChangeBinaryDataContentType(BinaryData data, long contentLength) {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
-        Class<? extends BinaryDataContent> expectedContentClazz = BinaryDataHelper.getContent(data).getClass();
+        Class<? extends BinaryDataContent> expectedContentClazz = data.getContent().getClass();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength).block();
         assertEquals(200, response.getStatusCode());
 
         Class<? extends BinaryDataContent> actualContentClazz
-            = BinaryDataHelper.getContent(client.getLastHttpRequest().getBodyAsBinaryData()).getClass();
+            = client.getLastHttpRequest().getBodyAsBinaryData().getContent().getClass();
         assertEquals(expectedContentClazz, actualContentClazz);
     }
 

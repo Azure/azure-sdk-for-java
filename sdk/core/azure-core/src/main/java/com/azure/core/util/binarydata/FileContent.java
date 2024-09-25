@@ -1,12 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.util;
+package com.azure.core.util.binarydata;
 
+import com.azure.core.implementation.util.SliceInputStream;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -54,9 +56,8 @@ public class FileContent extends BinaryDataContent {
      * @param position Position, or offset, within the path where reading begins.
      * @param length Total number of bytes to be read from the path.
      * @throws NullPointerException if {@code file} is null.
-     * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero.
-     * @throws IllegalArgumentException if {@code position} is less than zero.
-     * @throws IllegalArgumentException if {@code length} is less than zero.
+     * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero,
+     * {@code position} is less than zero, or {@code length} is less than zero.
      * @throws UncheckedIOException if file doesn't exist.
      */
     public FileContent(Path file, int chunkSize, Long position, Long length) {
@@ -224,6 +225,13 @@ public class FileContent extends BinaryDataContent {
         }
 
         return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null.");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     /**

@@ -4,8 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.ImplUtils;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FluxByteBufferContent;
+import com.azure.core.util.binarydata.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -84,7 +83,7 @@ public class HttpRequest {
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
-        setBody(BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body)));
+        setBody(new BinaryData(new FluxByteBufferContent(body)));
     }
 
     /**
@@ -259,7 +258,7 @@ public class HttpRequest {
      */
     public HttpRequest setBody(Flux<ByteBuffer> content) {
         if (content != null) {
-            this.body = BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
+            this.body = new BinaryData(new FluxByteBufferContent(content));
         } else {
             this.body = null;
         }

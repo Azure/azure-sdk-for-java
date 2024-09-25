@@ -16,18 +16,16 @@ import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.http.UrlSanitizer;
 import com.azure.core.implementation.jackson.ObjectMapperShim;
 import com.azure.core.implementation.logging.LoggingKeys;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.HttpHeadersAccessHelper;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.ByteArrayContent;
+import com.azure.core.util.binarydata.ByteBufferContent;
+import com.azure.core.util.binarydata.InputStreamContent;
+import com.azure.core.util.binarydata.SerializableContent;
+import com.azure.core.util.binarydata.StringContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -284,8 +282,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void logBody(HttpRequest request, int contentLength, LoggingEventBuilder logBuilder, ClientLogger logger,
         String contentType) {
-        BinaryData data = request.getBodyAsBinaryData();
-        BinaryDataContent content = BinaryDataHelper.getContent(data);
+        BinaryDataContent content = request.getBodyAsBinaryData().getContent();
 
         if (content instanceof StringContent
             || content instanceof ByteBufferContent

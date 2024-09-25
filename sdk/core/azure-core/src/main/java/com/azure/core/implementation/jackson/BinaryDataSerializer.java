@@ -3,9 +3,8 @@
 
 package com.azure.core.implementation.jackson;
 
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.binarydata.BinaryDataContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -37,7 +36,7 @@ final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
             return;
         }
 
-        BinaryDataContent content = BinaryDataHelper.getContent(value);
+        BinaryDataContent content = value.getContent();
         switch (content.getContentType()) {
             case BINARY:
                 gen.writeBinary(content.toBytes());

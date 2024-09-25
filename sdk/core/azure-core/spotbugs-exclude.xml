@@ -103,13 +103,13 @@
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY"/>
     <Or>
-      <Class name="com.azure.core.implementation.util.ByteBufferContent"/>
-      <Class name="com.azure.core.implementation.util.FileContent"/>
-      <Class name="com.azure.core.implementation.util.FluxByteBufferContent"/>
-      <Class name="com.azure.core.implementation.util.InputStreamContent"/>
-      <Class name="com.azure.core.implementation.util.ListByteBufferContent"/>
-      <Class name="com.azure.core.implementation.util.SerializableContent"/>
-      <Class name="com.azure.core.implementation.util.StringContent"/>
+      <Class name="com.azure.core.util.binarydata.ByteBufferContent"/>
+      <Class name="com.azure.core.util.binarydata.FileContent"/>
+      <Class name="com.azure.core.util.binarydata.FluxByteBufferContent"/>
+      <Class name="com.azure.core.util.binarydata.InputStreamContent"/>
+      <Class name="com.azure.core.util.binarydata.ListByteBufferContent"/>
+      <Class name="com.azure.core.util.binarydata.SerializableContent"/>
+      <Class name="com.azure.core.util.binarydata.StringContent"/>
     </Or>
     <Field name="bytes"/>
   </Match>
@@ -276,7 +276,7 @@
         <Method name="toByteArray"/>
       </And>
       <And>
-        <Class name="com.azure.core.implementation.util.ByteArrayContent"/>
+        <Class name="com.azure.core.util.binarydata.ByteArrayContent"/>
         <Method name="toBytes"/>
       </And>
       <And>
@@ -376,6 +376,10 @@
           <Method name="getThrowable"/>
           <Method name="getRetriedThrowables"/>
         </Or>
+      </And>
+      <And>
+        <Class name="com.azure.core.util.BinaryData"/>
+        <Method name="getContent"/>
       </And>
     </Or>
   </Match>

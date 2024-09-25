@@ -1,15 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation.util;
+package com.azure.core.util.binarydata;
 
 import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.ImplUtils;
+import com.azure.core.implementation.util.IterableOfByteBuffersInputStream;
+import com.azure.core.implementation.util.StreamUtil;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -115,7 +118,7 @@ public final class InputStreamContent extends BinaryDataContent {
         if (bufferedContent != null) {
             return Flux.fromIterable(bufferedContent).map(ByteBuffer::asReadOnlyBuffer);
         } else {
-            return FluxUtil.toFluxByteBuffer(this.content.get(), STREAM_READ_SIZE);
+            return FluxUtil.toFluxByteBuffer(this.content.get(), IOUtils.DEFAULT_BUFFER_SIZE);
         }
     }
 
@@ -145,6 +148,13 @@ public final class InputStreamContent extends BinaryDataContent {
         }
 
         return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) throws IOException {
+        Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null.");
+
+        jsonWriter.writeBinary(toBytes());
     }
 
     @Override
@@ -218,7 +228,7 @@ public final class InputStreamContent extends BinaryDataContent {
                 ? new AccessibleByteArrayOutputStream()
                 : new AccessibleByteArrayOutputStream(length.intValue());
             int nRead;
-            byte[] data = new byte[STREAM_READ_SIZE];
+            byte[] data = new byte[IOUtils.DEFAULT_BUFFER_SIZE];
             InputStream inputStream = this.content.get();
             while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
                 dataOutputBuffer.write(data, 0, nRead);

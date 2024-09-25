@@ -4,11 +4,10 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.BufferedHttpResponse;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.binarydata.FluxByteBufferContent;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -107,14 +106,13 @@ public abstract class HttpResponse implements Closeable {
         String contentLength = getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
         Flux<ByteBuffer> body = getBody();
         if (CoreUtils.isNullOrEmpty(contentLength)) {
-            return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
+            return new BinaryData(new FluxByteBufferContent(body));
         } else {
             try {
-                return BinaryDataHelper
-                    .createBinaryData(new FluxByteBufferContent(body, Long.parseLong(contentLength)));
+                return new BinaryData(new FluxByteBufferContent(body, Long.parseLong(contentLength)));
             } catch (NumberFormatException ignored) {
                 // Using Content-Length is speculative, so if it's not a number, we'll just return the stream.
-                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
+                return new BinaryData(new FluxByteBufferContent(body));
             }
         }
     }

@@ -65,6 +65,11 @@ module com.azure.core {
     opens com.azure.core.implementation.http.rest to com.fasterxml.jackson.databind;
     opens com.azure.core.http.rest to com.fasterxml.jackson.databind;
 
+    exports com.azure.core.util.binarydata to com.azure.core.http.jdk.httpclient, com.azure.core.http.okhttp,
+        com.azure.core.http.vertx, com.azure.core.serializer.json.jackson, com.azure.http.netty;
+
+    opens com.azure.core.util.binarydata to com.fasterxml.jackson.databind;
+
     // Service Provider Interfaces
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.policy.BeforeRetryPolicyProvider;

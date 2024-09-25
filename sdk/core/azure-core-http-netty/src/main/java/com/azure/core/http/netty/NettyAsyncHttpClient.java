@@ -11,18 +11,17 @@ import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.http.netty.implementation.NettyUtility;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.HttpUtils;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.ByteArrayContent;
+import com.azure.core.util.binarydata.FileContent;
+import com.azure.core.util.binarydata.InputStreamContent;
+import com.azure.core.util.binarydata.SerializableContent;
+import com.azure.core.util.binarydata.StringContent;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -226,7 +225,7 @@ class NettyAsyncHttpClient implements HttpClient {
             }
             BinaryData body = restRequest.getBodyAsBinaryData();
             if (body != null) {
-                BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+                BinaryDataContent bodyContent = body.getContent();
                 if (bodyContent instanceof ByteArrayContent) {
                     // This is marginally more performant than reactorNettyOutbound.sendByteArray which
                     // adds extra operators to achieve same result.

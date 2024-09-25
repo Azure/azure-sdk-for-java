@@ -3,7 +3,7 @@
 
 package com.azure.core.http.okhttp.implementation;
 
-import com.azure.core.implementation.util.BinaryDataContent;
+import com.azure.core.util.binarydata.BinaryDataContent;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;

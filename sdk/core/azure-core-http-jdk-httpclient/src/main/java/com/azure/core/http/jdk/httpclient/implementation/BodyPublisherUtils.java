@@ -4,17 +4,16 @@
 package com.azure.core.http.jdk.httpclient.implementation;
 
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.FileContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.ByteArrayContent;
+import com.azure.core.util.binarydata.FileContent;
+import com.azure.core.util.binarydata.InputStreamContent;
+import com.azure.core.util.binarydata.SerializableContent;
+import com.azure.core.util.binarydata.StringContent;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Flux;
 
@@ -51,7 +50,7 @@ public final class BodyPublisherUtils {
         }
 
         HttpRequest.BodyPublisher publisher;
-        BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
+        BinaryDataContent bodyContent = body.getContent();
         Flux<ByteBuffer> fluxBody;
         if (bodyContent instanceof ByteArrayContent
             || bodyContent instanceof StringContent

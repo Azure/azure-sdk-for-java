@@ -18,14 +18,13 @@ import com.azure.core.http.okhttp.implementation.OkHttpFluxRequestBody;
 import com.azure.core.http.okhttp.implementation.OkHttpProgressReportingRequestBody;
 import com.azure.core.http.okhttp.implementation.PerCallTimeoutCall;
 import com.azure.core.http.okhttp.implementation.ResponseTimeoutListenerFactory;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.FluxByteBufferContent;
 import com.azure.core.util.logging.ClientLogger;
 import okhttp3.Call;
 import okhttp3.EventListener;
@@ -232,7 +231,7 @@ class OkHttpAsyncHttpClient implements HttpClient {
         String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
-        BinaryDataContent content = BinaryDataHelper.getContent(bodyContent);
+        BinaryDataContent content = bodyContent.getContent();
 
         long effectiveContentLength = getRequestContentLength(content, headers);
         if (content instanceof FluxByteBufferContent) {

@@ -35,11 +35,15 @@ import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
 public final class IOUtils {
 
     private static final ClientLogger LOGGER = new ClientLogger(IOUtils.class);
-    private static final int DEFAULT_BUFFER_SIZE = 8192;
     private static final int SIXTY_FOUR_KB = 64 * 1024;
     private static final int THIRTY_TWO_KB = 32 * 1024;
     private static final int MB = 1024 * 1024;
     private static final int GB = 1024 * MB;
+
+    /**
+     * Default buffer size used in many IO reading and writing operations.
+     */
+    public static final int DEFAULT_BUFFER_SIZE = 8192;
 
     /**
      * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.

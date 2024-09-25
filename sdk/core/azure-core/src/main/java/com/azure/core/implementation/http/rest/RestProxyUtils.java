@@ -13,13 +13,12 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.implementation.util.BinaryDataContent;
-import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.InputStreamContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.binarydata.BinaryDataContent;
+import com.azure.core.util.binarydata.FluxByteBufferContent;
+import com.azure.core.util.binarydata.InputStreamContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -60,7 +59,7 @@ public final class RestProxyUtils {
         }
 
         return Mono.fromCallable(() -> {
-            BinaryDataContent content = BinaryDataHelper.getContent(body);
+            BinaryDataContent content = body.getContent();
             long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
             if (content instanceof InputStreamContent) {
                 InputStream validatingInputStream = new LengthValidatingInputStream(content.toStream(), expectedLength);
@@ -136,7 +135,7 @@ public final class RestProxyUtils {
 
         final long expectedLength = Long.parseLong(request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
         Long length = binaryData.getLength();
-        BinaryDataContent bdc = BinaryDataHelper.getContent(binaryData);
+        BinaryDataContent bdc = binaryData.getContent();
         if (bdc instanceof FluxByteBufferContent) {
             throw new IllegalStateException("Flux Byte Buffer is not supported in Synchronous Rest Proxy.");
         } else if (bdc instanceof InputStreamContent) {
