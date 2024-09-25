@@ -3,6 +3,7 @@ parameters:
   MaxParallel: 10
   SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
   BuildParallelization: '2C'
+  ArtifactsList: "com.azure:azure-messaging-servicebus,com.azure:azure-messaging-eventhubs"
 
 jobs:
   - job: 'compatibility_test_${{ parameters.OSName }}'
@@ -27,11 +28,14 @@ jobs:
             - 'sdk/servicebus'
             - 'sdk/eventhubs'
       - task: PythonScript@0
-        displayName: 'Generate FromSource POM and directories for sparse checkout'
+        displayName: 'Generate FromSource POM for unreleased dependencies'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--artifacts-list $(ArtifactsList) --additional-modules-list $(AdditionalModulesList)'
+          arguments: '--artifacts-list $(parameters.ArtifactsList)'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
+#      - script: |
+#          python ./eng/scripts/generate_from_source_pom.py --pl com.azure:azure-messaging-servicebus,com.azure:azure-messaging-eventhubs
+#        displayName: 'Generate FromSource POM for unreleased dependencies'
       - task: Maven@4
         displayName: 'Build for From Source run'
         inputs:
