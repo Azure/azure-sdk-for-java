@@ -32,8 +32,7 @@
  *
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
- * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
  *
@@ -71,8 +70,7 @@
  *
  * <!-- src_embed com.azure.identity.credential.azureclicredential.construct -->
  * <pre>
- * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential azureCliCredential = new AzureCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azureclicredential.construct -->
  *
@@ -143,8 +141,7 @@
  *
  * <!-- src_embed com.azure.identity.credential.managedidentitycredential.construct -->
  * <pre>
- * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.managedidentitycredential.construct -->
  *
@@ -218,8 +215,7 @@
  *
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
  * <pre>
- * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientSecret&#40;clientSecret&#41;
  *     .build&#40;&#41;;
@@ -286,9 +282,8 @@
  *
  * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
  * <pre>
- * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
- *     .redirectUrl&#40;&quot;http:&#47;&#47;localhost:8765&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.redirectUrl&#40;
+ *     &quot;http:&#47;&#47;localhost:8765&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
  *

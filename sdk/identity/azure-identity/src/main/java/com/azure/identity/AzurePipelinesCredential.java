@@ -38,8 +38,7 @@ import java.net.URL;
  * &#47;&#47; You may choose another name for this variable.
  *
  * String systemAccessToken = System.getenv&#40;&quot;SYSTEM_ACCESSTOKEN&quot;&#41;;
- * AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder&#40;&#41;
- *     .clientId&#40;clientId&#41;
+ * AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder&#40;&#41;.clientId&#40;clientId&#41;
  *     .tenantId&#40;tenantId&#41;
  *     .serviceConnectionId&#40;serviceConnectionId&#41;
  *     .systemAccessToken&#40;systemAccessToken&#41;

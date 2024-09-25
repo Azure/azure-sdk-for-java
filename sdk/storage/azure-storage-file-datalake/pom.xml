@@ -109,8 +109,8 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <groupId>com.fasterxml.jackson.dataformat</groupId>
-          <artifactId>jackson-dataformats-xml</artifactId>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
         </exclusion>
       </exclusions>
     </dependency>

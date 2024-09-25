@@ -229,7 +229,7 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-03-01-preview";
+        this.apiVersion = "2024-03-01";
         this.operations = new OperationsClientImpl(this);
         this.standbyVirtualMachinePools = new StandbyVirtualMachinePoolsClientImpl(this);
         this.standbyVirtualMachines = new StandbyVirtualMachinesClientImpl(this);
