@@ -119,6 +119,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
                     .withRootUsername("Foo12")
                     .withSsh(sshPublicKey())
                     .withVirtualMachinePublicIp()
+                    .withCapacity(3L)
                     .create();
 
             // create standby virtual machine pool
@@ -136,7 +137,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
             // @embedmeEnd
             standbyVirtualMachinePool.refresh();
             Assertions.assertEquals(poolName, standbyVirtualMachinePool.name());
-            Assertions.assertTrue(standbyPoolManager.standbyContainerGroupPools().listByResourceGroup(resourceGroupName).stream().count() > 0);
+            Assertions.assertTrue(standbyPoolManager.standbyVirtualMachinePools().listByResourceGroup(resourceGroupName).stream().count() > 0);
         } finally {
             if (standbyVirtualMachinePool != null) {
                 standbyPoolManager.standbyVirtualMachinePools().deleteById(standbyVirtualMachinePool.id());
