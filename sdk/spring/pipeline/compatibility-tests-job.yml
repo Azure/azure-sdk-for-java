@@ -47,8 +47,8 @@ jobs:
           javaHomeOption: 'Path'
           jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
           publishJUnitResults: false
-        env: ${{ parameters.TestEnvVars }}
-        condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+#        env: ${{ parameters.TestEnvVars }}
+#        condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'
