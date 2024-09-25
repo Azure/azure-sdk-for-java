@@ -58,13 +58,6 @@ class SpringMonitorTest {
                 .pipeline(getHttpPipeline(customValidationPolicy));
         }
 
-        //@Bean
-        HttpPipeline httpPipeline() {
-            countDownLatch = new CountDownLatch(2);
-            customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-            return getHttpPipeline(customValidationPolicy);
-        }
-
         HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy) {
             return new HttpPipelineBuilder()
                 .httpClient(HttpClient.createDefault())
