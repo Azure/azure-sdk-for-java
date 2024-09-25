@@ -919,10 +919,9 @@ class EventHubConsumerAsyncClientTest {
             = new EventHubConsumerAsyncClient(HOSTNAME, EVENT_HUB_NAME, connectionProcessor, messageSerializer,
                 CONSUMER_GROUP, PREFETCH, false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
 
-        final EventHubProperties ehProperties
-            = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[] { "0" });
-        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0", 1L, 2L,
-            OffsetDateTime.now().toString(), Instant.now(), false);
+        final EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false, 2, 5);
         EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
 
         AtomicInteger tryCount = new AtomicInteger();
@@ -957,6 +956,8 @@ class EventHubConsumerAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
 
         assertEquals(3, tryCount.get());
+
+        managementNode.close();
     }
 
     private void assertPartition(String partitionId, PartitionEvent event) {

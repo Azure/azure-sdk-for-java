@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ProtonSessionWrapper;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
@@ -64,16 +65,18 @@ public class EventHubReactorSessionTest {
     private AutoCloseable closeable;
 
     @BeforeEach
-    public  void beforeEach() {
+    public void beforeEach() {
         closeable = MockitoAnnotations.openMocks(this);
 
         when(amqpConnection.getShutdownSignals()).thenReturn(Flux.never());
         when(sessionHandler.getConnectionId()).thenReturn("Test-connection-id");
         when(sessionHandler.getEndpointStates()).thenReturn(Flux.never());
 
-        reactorSession = new EventHubReactorSession(amqpConnection, session, sessionHandler, SESSION_NAME,
-            reactorProvider, handlerProvider, linkProvider, Mono.fromSupplier(() -> claimsBasedSecurityNode),
-            tokenManagerProvider, RETRY_OPTIONS, messageSerializer);
+        ProtonSessionWrapper wrapper = new ProtonSessionWrapper(session, sessionHandler, reactorProvider);
+
+        reactorSession = new EventHubReactorSession(amqpConnection, wrapper, handlerProvider, linkProvider,
+            Mono.fromSupplier(() -> claimsBasedSecurityNode), tokenManagerProvider, RETRY_OPTIONS, messageSerializer,
+            false);
     }
 
     @AfterEach

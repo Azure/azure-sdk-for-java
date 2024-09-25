@@ -7,14 +7,14 @@ import com.azure.core.amqp.AmqpMessageConstant;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.util.Context;
 import com.azure.messaging.eventhubs.implementation.instrumentation.OperationName;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import io.opentelemetry.api.common.Attributes;
@@ -42,6 +42,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -59,11 +60,9 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
 import static com.azure.core.amqp.ProxyOptions.PROXY_AUTHENTICATION_TYPE;
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.ERROR_TYPE;
-import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_CONSUMER_GROUP_NAME;
+import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_DESTINATION_PARTITION_ID;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_NAME;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_OPERATION_TYPE;
@@ -71,8 +70,10 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.MESSAGING_SYSTEM_VALUE;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.SERVER_ADDRESS;
 import static com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentationUtils.getOperationType;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Contains helper methods for working with AMQP messages
@@ -173,7 +174,7 @@ public final class TestUtils {
      * the application properties. Useful for helping filter messages.
      */
     static Message getMessage(byte[] contents, String messageTrackingValue, Map<String, String> additionalProperties) {
-        final Message message = getMessage(contents, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
+        final Message message = getMessage(contents, messageTrackingValue, SEQUENCE_NUMBER, OFFSET, Date.from(ENQUEUED_TIME));
 
         Map<Symbol, Object> value = message.getMessageAnnotations().getValue();
         value.put(Symbol.getSymbol(OTHER_SYSTEM_PROPERTY), OTHER_SYSTEM_PROPERTY_VALUE);
@@ -403,16 +404,15 @@ public final class TestUtils {
         }
     }
 
-    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset, long sequenceNumber,
-        Instant enqueuedTime) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offset);
+    public static EventData createEventData(AmqpAnnotatedMessage amqpAnnotatedMessage, long offset,
+        long sequenceNumber, Instant enqueuedTime) {
+
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
 
-        SystemProperties systemProperties
-            = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null);
+        SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offset, enqueuedTime, sequenceNumber, null, 1);
         return new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
     }
 
