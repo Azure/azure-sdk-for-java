@@ -93,6 +93,7 @@ public class SearchServiceCustomizations extends Customization {
         customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
         customizeAzureOpenAIModelName(publicCustomization.getClass("AzureOpenAIModelName"));
         // customizeSearchError(implCustomization.getClass("SearchError"));
+        customizeSplitSkillEncoderModelName(publicCustomization.getClass("SplitSkillEncoderModelName"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));
@@ -654,6 +655,15 @@ public class SearchServiceCustomizations extends Customization {
             clazz.getFieldByName("TEXT_EMBEDDING_ADA002").get().getVariable(0).setName("TEXT_EMBEDDING_ADA_002");
             clazz.getFieldByName("TEXT_EMBEDDING3LARGE").get().getVariable(0).setName("TEXT_EMBEDDING_3_LARGE");
             clazz.getFieldByName("TEXT_EMBEDDING3SMALL").get().getVariable(0).setName("TEXT_EMBEDDING_3_SMALL");
+        });
+    }
+
+    private static void customizeSplitSkillEncoderModelName(ClassCustomization classCustomization) {
+        customizeAst(classCustomization, clazz -> {
+            clazz.getFieldByName("R50KBASE").get().getVariable(0).setName("R_50K_BASE");
+            clazz.getFieldByName("P50KBASE").get().getVariable(0).setName("P_50K_BASE");
+            clazz.getFieldByName("P50KEDIT").get().getVariable(0).setName("P_50K_EDIT");
+            clazz.getFieldByName("CL100KBASE").get().getVariable(0).setName("CL_100K_BASE");
         });
     }
 

@@ -35,22 +35,26 @@ public final class PrivateEndpointConnectionListResultTests {
                         .asList(
                             new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                                 .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING).withDescription("bh")
+                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                                    .withDescription("bh")
                                     .withActionsRequired("frlh"))
                                 .withGroupIds(Arrays.asList("bkyvp", "ca", "uzbpzkafku", "b")),
                             new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                                 .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING).withDescription("elmqk")
+                                    .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
+                                    .withDescription("elmqk")
                                     .withActionsRequired("ahvljuaha"))
                                 .withGroupIds(Arrays.asList("c", "hmdua", "aex")),
                             new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                                 .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
                                     .withStatus(PrivateEndpointServiceConnectionStatus.FAILED)
-                                    .withDescription("ourqhakau").withActionsRequired("shsfwxosowzxcu"))
+                                    .withDescription("ourqhakau")
+                                    .withActionsRequired("shsfwxosowzxcu"))
                                 .withGroupIds(Arrays.asList("jooxdjebw", "ucww", "vo", "bvmeuecivy")),
                             new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                                 .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                                    .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED).withDescription("fbkp")
+                                    .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                                    .withDescription("fbkp")
                                     .withActionsRequired("gklwn"))
                                 .withGroupIds(Arrays.asList("jdauwhvy", "wzbtdhxu", "znbmpowuwprzq"))));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionListResult.class);

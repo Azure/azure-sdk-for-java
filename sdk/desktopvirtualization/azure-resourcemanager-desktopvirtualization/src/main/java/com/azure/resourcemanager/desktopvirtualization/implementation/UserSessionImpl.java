@@ -16,8 +16,7 @@ public final class UserSessionImpl implements UserSession {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    UserSessionImpl(
-        UserSessionInner innerObject,
+    UserSessionImpl(UserSessionInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

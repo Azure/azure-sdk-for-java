@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-/** Samples for ApplicationGroups List. */
+/**
+ * Samples for ApplicationGroups List.
+ */
 public final class ApplicationGroupsListSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/ApplicationGroup_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * ApplicationGroup_ListBySubscription.json
      */
     /**
      * Sample code: ApplicationGroup_List.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
-    public static void applicationGroupList(
-        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
+    public static void
+        applicationGroupList(com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
         manager.applicationGroups().list("applicationGroupType eq 'RailApplication'", com.azure.core.util.Context.NONE);
     }
 }

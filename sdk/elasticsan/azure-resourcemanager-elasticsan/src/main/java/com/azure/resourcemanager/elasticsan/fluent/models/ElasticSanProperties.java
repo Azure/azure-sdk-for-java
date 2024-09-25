@@ -6,88 +6,80 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Elastic San response properties.
  */
 @Fluent
-public final class ElasticSanProperties {
+public final class ElasticSanProperties implements JsonSerializable<ElasticSanProperties> {
     /*
      * resource sku
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
      * Logical zone for Elastic San resource; example: ["1"].
      */
-    @JsonProperty(value = "availabilityZones")
     private List<String> availabilityZones;
 
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Base size of the Elastic San appliance in TiB.
      */
-    @JsonProperty(value = "baseSizeTiB", required = true)
     private long baseSizeTiB;
 
     /*
      * Extended size of the Elastic San appliance in TiB.
      */
-    @JsonProperty(value = "extendedCapacitySizeTiB", required = true)
     private long extendedCapacitySizeTiB;
 
     /*
      * Total size of the provisioned Volumes in GiB.
      */
-    @JsonProperty(value = "totalVolumeSizeGiB", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalVolumeSizeGiB;
 
     /*
      * Total number of volume groups in this Elastic San appliance.
      */
-    @JsonProperty(value = "volumeGroupCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long volumeGroupCount;
 
     /*
      * Total Provisioned IOPS of the Elastic San appliance.
      */
-    @JsonProperty(value = "totalIops", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalIops;
 
     /*
      * Total Provisioned MBps Elastic San appliance.
      */
-    @JsonProperty(value = "totalMBps", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalMBps;
 
     /*
      * Total size of the Elastic San appliance in TB.
      */
-    @JsonProperty(value = "totalSizeTiB", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalSizeTiB;
 
     /*
      * The list of Private Endpoint Connections.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Allow or disallow public network access to ElasticSan. Value is optional but if passed in, must be 'Enabled' or
      * 'Disabled'.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /**
@@ -268,8 +260,8 @@ public final class ElasticSanProperties {
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model ElasticSanProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model ElasticSanProperties"));
         } else {
             sku().validate();
         }
@@ -279,4 +271,74 @@ public final class ElasticSanProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ElasticSanProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeLongField("baseSizeTiB", this.baseSizeTiB);
+        jsonWriter.writeLongField("extendedCapacitySizeTiB", this.extendedCapacitySizeTiB);
+        jsonWriter.writeArrayField("availabilityZones", this.availabilityZones,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticSanProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticSanProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ElasticSanProperties.
+     */
+    public static ElasticSanProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticSanProperties deserializedElasticSanProperties = new ElasticSanProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedElasticSanProperties.sku = Sku.fromJson(reader);
+                } else if ("baseSizeTiB".equals(fieldName)) {
+                    deserializedElasticSanProperties.baseSizeTiB = reader.getLong();
+                } else if ("extendedCapacitySizeTiB".equals(fieldName)) {
+                    deserializedElasticSanProperties.extendedCapacitySizeTiB = reader.getLong();
+                } else if ("availabilityZones".equals(fieldName)) {
+                    List<String> availabilityZones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedElasticSanProperties.availabilityZones = availabilityZones;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedElasticSanProperties.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("totalVolumeSizeGiB".equals(fieldName)) {
+                    deserializedElasticSanProperties.totalVolumeSizeGiB = reader.getNullable(JsonReader::getLong);
+                } else if ("volumeGroupCount".equals(fieldName)) {
+                    deserializedElasticSanProperties.volumeGroupCount = reader.getNullable(JsonReader::getLong);
+                } else if ("totalIops".equals(fieldName)) {
+                    deserializedElasticSanProperties.totalIops = reader.getNullable(JsonReader::getLong);
+                } else if ("totalMBps".equals(fieldName)) {
+                    deserializedElasticSanProperties.totalMBps = reader.getNullable(JsonReader::getLong);
+                } else if ("totalSizeTiB".equals(fieldName)) {
+                    deserializedElasticSanProperties.totalSizeTiB = reader.getNullable(JsonReader::getLong);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedElasticSanProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedElasticSanProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticSanProperties;
+        });
+    }
 }

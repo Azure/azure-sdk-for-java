@@ -29,6 +29,7 @@ import com.azure.resourcemanager.mongocluster.fluent.MongoClustersClient;
 import com.azure.resourcemanager.mongocluster.fluent.OperationsClient;
 import com.azure.resourcemanager.mongocluster.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.mongocluster.fluent.PrivateLinksClient;
+import com.azure.resourcemanager.mongocluster.fluent.ReplicasClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -198,6 +199,20 @@ public final class DocumentDBClientImpl implements DocumentDBClient {
     }
 
     /**
+     * The ReplicasClient object to access its operations.
+     */
+    private final ReplicasClient replicas;
+
+    /**
+     * Gets the ReplicasClient object to access its operations.
+     * 
+     * @return the ReplicasClient object.
+     */
+    public ReplicasClient getReplicas() {
+        return this.replicas;
+    }
+
+    /**
      * Initializes an instance of DocumentDBClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -214,12 +229,13 @@ public final class DocumentDBClientImpl implements DocumentDBClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-03-01-preview";
+        this.apiVersion = "2024-06-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.mongoClusters = new MongoClustersClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinks = new PrivateLinksClientImpl(this);
+        this.replicas = new ReplicasClientImpl(this);
     }
 
     /**
