@@ -134,7 +134,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * @param content the BinaryData content value to set.
      * @param toolCallId the toolCallId value to set.
      */
-    public ChatRequestToolMessage(BinaryData content, String toolCallId) {
+    private ChatRequestToolMessage(BinaryData content, String toolCallId) {
         this.content = content;
         this.toolCallId = toolCallId;
         this.stringContent = null;

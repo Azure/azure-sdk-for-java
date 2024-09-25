@@ -147,7 +147,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
      *
      * @param content the BinaryData content value to set.
      */
-    public ChatRequestSystemMessage(BinaryData content) {
+    private ChatRequestSystemMessage(BinaryData content) {
         this.content = content;
         this.stringContent = null;
         this.chatMessageContentItem = null;

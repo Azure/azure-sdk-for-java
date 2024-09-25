@@ -225,7 +225,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      *
      * @param content the Binary content value to set.
      */
-    public ChatRequestAssistantMessage(BinaryData content) {
+    private ChatRequestAssistantMessage(BinaryData content) {
         this.content = content;
         this.stringContent = null;
         this.chatMessageContentItem = null;
