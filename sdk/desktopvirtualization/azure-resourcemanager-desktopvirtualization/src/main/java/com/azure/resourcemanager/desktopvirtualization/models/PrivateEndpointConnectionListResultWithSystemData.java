@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.PrivateEndpointConnectionWithSystemDataInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of private endpoint connection associated with the specified storage account. */
+/**
+ * List of private endpoint connection associated with the specified storage account.
+ */
 @Fluent
-public final class PrivateEndpointConnectionListResultWithSystemData {
+public final class PrivateEndpointConnectionListResultWithSystemData
+    implements JsonSerializable<PrivateEndpointConnectionListResultWithSystemData> {
     /*
      * Array of private endpoint connections
      */
-    @JsonProperty(value = "value")
     private List<PrivateEndpointConnectionWithSystemDataInner> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PrivateEndpointConnectionListResultWithSystemData class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionListResultWithSystemData class.
+     */
     public PrivateEndpointConnectionListResultWithSystemData() {
     }
 
     /**
      * Get the value property: Array of private endpoint connections.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionWithSystemDataInner> value() {
@@ -39,19 +46,19 @@ public final class PrivateEndpointConnectionListResultWithSystemData {
 
     /**
      * Set the value property: Array of private endpoint connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResultWithSystemData object itself.
      */
-    public PrivateEndpointConnectionListResultWithSystemData withValue(
-        List<PrivateEndpointConnectionWithSystemDataInner> value) {
+    public PrivateEndpointConnectionListResultWithSystemData
+        withValue(List<PrivateEndpointConnectionWithSystemDataInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,12 +67,53 @@ public final class PrivateEndpointConnectionListResultWithSystemData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionListResultWithSystemData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionListResultWithSystemData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionListResultWithSystemData.
+     */
+    public static PrivateEndpointConnectionListResultWithSystemData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionListResultWithSystemData deserializedPrivateEndpointConnectionListResultWithSystemData
+                = new PrivateEndpointConnectionListResultWithSystemData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PrivateEndpointConnectionWithSystemDataInner> value
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionWithSystemDataInner.fromJson(reader1));
+                    deserializedPrivateEndpointConnectionListResultWithSystemData.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionListResultWithSystemData.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionListResultWithSystemData;
+        });
     }
 }
