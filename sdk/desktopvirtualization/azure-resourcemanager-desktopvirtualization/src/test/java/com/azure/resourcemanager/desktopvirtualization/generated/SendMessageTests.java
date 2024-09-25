@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class SendMessageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SendMessage model =
-            BinaryData
-                .fromString("{\"messageTitle\":\"srdvetn\",\"messageBody\":\"dtutnwldu\"}")
-                .toObject(SendMessage.class);
-        Assertions.assertEquals("srdvetn", model.messageTitle());
-        Assertions.assertEquals("dtutnwldu", model.messageBody());
+        SendMessage model = BinaryData.fromString("{\"messageTitle\":\"dhgbjkvre\",\"messageBody\":\"eamurvzmlo\"}")
+            .toObject(SendMessage.class);
+        Assertions.assertEquals("dhgbjkvre", model.messageTitle());
+        Assertions.assertEquals("eamurvzmlo", model.messageBody());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SendMessage model = new SendMessage().withMessageTitle("srdvetn").withMessageBody("dtutnwldu");
+        SendMessage model = new SendMessage().withMessageTitle("dhgbjkvre").withMessageBody("eamurvzmlo");
         model = BinaryData.fromObject(model).toObject(SendMessage.class);
-        Assertions.assertEquals("srdvetn", model.messageTitle());
-        Assertions.assertEquals("dtutnwldu", model.messageBody());
+        Assertions.assertEquals("dhgbjkvre", model.messageTitle());
+        Assertions.assertEquals("eamurvzmlo", model.messageBody());
     }
 }

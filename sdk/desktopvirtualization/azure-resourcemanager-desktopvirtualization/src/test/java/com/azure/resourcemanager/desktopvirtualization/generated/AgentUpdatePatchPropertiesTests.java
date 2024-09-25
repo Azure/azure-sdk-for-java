@@ -15,39 +15,31 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentUpdatePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentUpdatePatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Scheduled\",\"useSessionHostLocalTime\":false,\"maintenanceWindowTimeZone\":\"lzywemhzrncsdtc\",\"maintenanceWindows\":[{\"hour\":2121256273,\"dayOfWeek\":\"Thursday\"},{\"hour\":1674447280,\"dayOfWeek\":\"Thursday\"}]}")
-                .toObject(AgentUpdatePatchProperties.class);
-        Assertions.assertEquals(SessionHostComponentUpdateType.SCHEDULED, model.type());
+        AgentUpdatePatchProperties model = BinaryData.fromString(
+            "{\"type\":\"Default\",\"useSessionHostLocalTime\":false,\"maintenanceWindowTimeZone\":\"exmk\",\"maintenanceWindows\":[{\"hour\":1054348500,\"dayOfWeek\":\"Monday\"},{\"hour\":1964594423,\"dayOfWeek\":\"Wednesday\"},{\"hour\":471536025,\"dayOfWeek\":\"Wednesday\"}]}")
+            .toObject(AgentUpdatePatchProperties.class);
+        Assertions.assertEquals(SessionHostComponentUpdateType.DEFAULT, model.type());
         Assertions.assertEquals(false, model.useSessionHostLocalTime());
-        Assertions.assertEquals("lzywemhzrncsdtc", model.maintenanceWindowTimeZone());
-        Assertions.assertEquals(2121256273, model.maintenanceWindows().get(0).hour());
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.maintenanceWindows().get(0).dayOfWeek());
+        Assertions.assertEquals("exmk", model.maintenanceWindowTimeZone());
+        Assertions.assertEquals(1054348500, model.maintenanceWindows().get(0).hour());
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.maintenanceWindows().get(0).dayOfWeek());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentUpdatePatchProperties model =
-            new AgentUpdatePatchProperties()
-                .withType(SessionHostComponentUpdateType.SCHEDULED)
+        AgentUpdatePatchProperties model
+            = new AgentUpdatePatchProperties().withType(SessionHostComponentUpdateType.DEFAULT)
                 .withUseSessionHostLocalTime(false)
-                .withMaintenanceWindowTimeZone("lzywemhzrncsdtc")
-                .withMaintenanceWindows(
-                    Arrays
-                        .asList(
-                            new MaintenanceWindowPatchProperties()
-                                .withHour(2121256273)
-                                .withDayOfWeek(DayOfWeek.THURSDAY),
-                            new MaintenanceWindowPatchProperties()
-                                .withHour(1674447280)
-                                .withDayOfWeek(DayOfWeek.THURSDAY)));
+                .withMaintenanceWindowTimeZone("exmk")
+                .withMaintenanceWindows(Arrays.asList(
+                    new MaintenanceWindowPatchProperties().withHour(1054348500).withDayOfWeek(DayOfWeek.MONDAY),
+                    new MaintenanceWindowPatchProperties().withHour(1964594423).withDayOfWeek(DayOfWeek.WEDNESDAY),
+                    new MaintenanceWindowPatchProperties().withHour(471536025).withDayOfWeek(DayOfWeek.WEDNESDAY)));
         model = BinaryData.fromObject(model).toObject(AgentUpdatePatchProperties.class);
-        Assertions.assertEquals(SessionHostComponentUpdateType.SCHEDULED, model.type());
+        Assertions.assertEquals(SessionHostComponentUpdateType.DEFAULT, model.type());
         Assertions.assertEquals(false, model.useSessionHostLocalTime());
-        Assertions.assertEquals("lzywemhzrncsdtc", model.maintenanceWindowTimeZone());
-        Assertions.assertEquals(2121256273, model.maintenanceWindows().get(0).hour());
-        Assertions.assertEquals(DayOfWeek.THURSDAY, model.maintenanceWindows().get(0).dayOfWeek());
+        Assertions.assertEquals("exmk", model.maintenanceWindowTimeZone());
+        Assertions.assertEquals(1054348500, model.maintenanceWindows().get(0).hour());
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.maintenanceWindows().get(0).dayOfWeek());
     }
 }

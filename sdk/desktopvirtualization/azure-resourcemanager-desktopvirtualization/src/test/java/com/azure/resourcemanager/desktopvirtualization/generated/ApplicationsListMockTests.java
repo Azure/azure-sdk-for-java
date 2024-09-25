@@ -6,77 +6,46 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
 import com.azure.resourcemanager.desktopvirtualization.models.Application;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ApplicationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"objectId\":\"sg\",\"description\":\"iuemvanbwzohmnr\",\"friendlyName\":\"bsojk\",\"filePath\":\"nhmdptysprqs\",\"msixPackageFamilyName\":\"zxojpslsv\",\"msixPackageApplicationId\":\"pli\",\"applicationType\":\"MsixApplication\",\"commandLineSetting\":\"DoNotAllow\",\"commandLineArguments\":\"oyxqvapcohhou\",\"showInPortal\":false,\"iconPath\":\"oj\",\"iconIndex\":137725853,\"iconHash\":\"rzdcgdzbenribcaw\"},\"id\":\"qd\",\"name\":\"tjwfljhznamtua\",\"type\":\"mzwcjjncqt\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"objectId\":\"bidyv\",\"description\":\"owx\",\"friendlyName\":\"piudeugfsxzecpa\",\"filePath\":\"kufykhvu\",\"msixPackageFamilyName\":\"epmrut\",\"msixPackageApplicationId\":\"abaobnslujdjltym\",\"applicationType\":\"MsixApplication\",\"commandLineSetting\":\"DoNotAllow\",\"commandLineArguments\":\"ihywartspph\",\"showInPortal\":true,\"iconPath\":\"ykxdssjpemmuc\",\"iconIndex\":115970163,\"iconHash\":\"kkflrmymyincqlhr\"},\"id\":\"wslmiiiovgqcg\",\"name\":\"uugqk\",\"type\":\"totiowlxteqdptjg\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DesktopVirtualizationManager manager = DesktopVirtualizationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Application> response = manager.applications()
+            .list("xcptsoqfyiaseqc", "krtt", 1347123491, false, 1599400117, com.azure.core.util.Context.NONE);
 
-        DesktopVirtualizationManager manager =
-            DesktopVirtualizationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Application> response =
-            manager
-                .applications()
-                .list("zujksrlsmdes", "plpvm", 536619974, true, 1460091990, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("owx", response.iterator().next().description());
-        Assertions.assertEquals("piudeugfsxzecpa", response.iterator().next().friendlyName());
-        Assertions.assertEquals("kufykhvu", response.iterator().next().filePath());
-        Assertions.assertEquals("epmrut", response.iterator().next().msixPackageFamilyName());
-        Assertions.assertEquals("abaobnslujdjltym", response.iterator().next().msixPackageApplicationId());
+        Assertions.assertEquals("iuemvanbwzohmnr", response.iterator().next().description());
+        Assertions.assertEquals("bsojk", response.iterator().next().friendlyName());
+        Assertions.assertEquals("nhmdptysprqs", response.iterator().next().filePath());
+        Assertions.assertEquals("zxojpslsv", response.iterator().next().msixPackageFamilyName());
+        Assertions.assertEquals("pli", response.iterator().next().msixPackageApplicationId());
         Assertions.assertEquals(RemoteApplicationType.MSIX_APPLICATION, response.iterator().next().applicationType());
         Assertions.assertEquals(CommandLineSetting.DO_NOT_ALLOW, response.iterator().next().commandLineSetting());
-        Assertions.assertEquals("ihywartspph", response.iterator().next().commandLineArguments());
-        Assertions.assertEquals(true, response.iterator().next().showInPortal());
-        Assertions.assertEquals("ykxdssjpemmuc", response.iterator().next().iconPath());
-        Assertions.assertEquals(115970163, response.iterator().next().iconIndex());
+        Assertions.assertEquals("oyxqvapcohhou", response.iterator().next().commandLineArguments());
+        Assertions.assertEquals(false, response.iterator().next().showInPortal());
+        Assertions.assertEquals("oj", response.iterator().next().iconPath());
+        Assertions.assertEquals(137725853, response.iterator().next().iconIndex());
     }
 }

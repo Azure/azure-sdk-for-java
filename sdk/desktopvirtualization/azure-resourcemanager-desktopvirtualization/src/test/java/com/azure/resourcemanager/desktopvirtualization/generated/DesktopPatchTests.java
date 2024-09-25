@@ -13,24 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class DesktopPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DesktopPatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"gdknnqv\":\"u\"},\"properties\":{\"description\":\"nqntorudsgsahm\",\"friendlyName\":\"c\"}}")
-                .toObject(DesktopPatch.class);
-        Assertions.assertEquals("u", model.tags().get("gdknnqv"));
-        Assertions.assertEquals("nqntorudsgsahm", model.description());
-        Assertions.assertEquals("c", model.friendlyName());
+        DesktopPatch model = BinaryData.fromString(
+            "{\"tags\":{\"sbzkf\":\"uem\",\"dxrbuukzcle\":\"beyvpnqicvinvkjj\",\"fn\":\"yhmlwpaztzp\"},\"properties\":{\"description\":\"wyfzqwhxxbuyqa\",\"friendlyName\":\"feqztppriol\"}}")
+            .toObject(DesktopPatch.class);
+        Assertions.assertEquals("uem", model.tags().get("sbzkf"));
+        Assertions.assertEquals("wyfzqwhxxbuyqa", model.description());
+        Assertions.assertEquals("feqztppriol", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DesktopPatch model =
-            new DesktopPatch().withTags(mapOf("gdknnqv", "u")).withDescription("nqntorudsgsahm").withFriendlyName("c");
+        DesktopPatch model
+            = new DesktopPatch().withTags(mapOf("sbzkf", "uem", "dxrbuukzcle", "beyvpnqicvinvkjj", "fn", "yhmlwpaztzp"))
+                .withDescription("wyfzqwhxxbuyqa")
+                .withFriendlyName("feqztppriol");
         model = BinaryData.fromObject(model).toObject(DesktopPatch.class);
-        Assertions.assertEquals("u", model.tags().get("gdknnqv"));
-        Assertions.assertEquals("nqntorudsgsahm", model.description());
-        Assertions.assertEquals("c", model.friendlyName());
+        Assertions.assertEquals("uem", model.tags().get("sbzkf"));
+        Assertions.assertEquals("wyfzqwhxxbuyqa", model.description());
+        Assertions.assertEquals("feqztppriol", model.friendlyName());
     }
 
     // Use "Map.of" if available

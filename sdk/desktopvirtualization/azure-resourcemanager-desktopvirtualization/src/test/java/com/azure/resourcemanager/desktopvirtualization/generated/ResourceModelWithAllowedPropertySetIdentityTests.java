@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceModelWithAllowedPropertySetIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceModelWithAllowedPropertySetIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"uvfqawrlyxwj\",\"tenantId\":\"prbnwbxgjvtbv\",\"type\":\"SystemAssigned\"}")
-                .toObject(ResourceModelWithAllowedPropertySetIdentity.class);
+        ResourceModelWithAllowedPropertySetIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"b42f0b73-54cb-4b9b-b456-86179d5350ce\",\"tenantId\":\"716b4aed-7682-468d-94e1-c77157a20f23\",\"type\":\"SystemAssigned\"}")
+            .toObject(ResourceModelWithAllowedPropertySetIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceModelWithAllowedPropertySetIdentity model =
-            new ResourceModelWithAllowedPropertySetIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
+        ResourceModelWithAllowedPropertySetIdentity model
+            = new ResourceModelWithAllowedPropertySetIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(ResourceModelWithAllowedPropertySetIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

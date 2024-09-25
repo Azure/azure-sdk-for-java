@@ -15,96 +15,83 @@ import org.junit.jupiter.api.Assertions;
 public final class ExpandMsixImagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExpandMsixImageProperties model =
-            BinaryData
-                .fromString(
-                    "{\"packageAlias\":\"klf\",\"imagePath\":\"dgfcwqmp\",\"packageName\":\"aqxzhemjyho\",\"packageFamilyName\":\"jswtwkozzwc\",\"packageFullName\":\"kb\",\"displayName\":\"pfajnjwltlwtjj\",\"packageRelativePath\":\"ktalhsnvkcdmxz\",\"isRegularRegistration\":false,\"isActive\":true,\"packageDependencies\":[{\"dependencyName\":\"wiaaomylweaz\",\"publisher\":\"cse\",\"minVersion\":\"wwnpj\"},{\"dependencyName\":\"fz\",\"publisher\":\"pchwa\",\"minVersion\":\"bousn\"},{\"dependencyName\":\"pgfewetwlyx\",\"publisher\":\"cxy\",\"minVersion\":\"hdjhlimmbcx\"}],\"version\":\"bcporxvxcjzhqizx\",\"lastUpdated\":\"2021-11-25T06:23:01Z\",\"packageApplications\":[{\"appId\":\"scjavftju\",\"description\":\"qaz\",\"appUserModelID\":\"tgguwpijrajcivmm\",\"friendlyName\":\"f\",\"iconImageName\":\"iwrxgkn\"},{\"appId\":\"inzqodfvpgs\",\"description\":\"xgsg\",\"appUserModelID\":\"fgzdjtxvz\",\"friendlyName\":\"bqvgaqv\",\"iconImageName\":\"a\"}]}")
-                .toObject(ExpandMsixImageProperties.class);
-        Assertions.assertEquals("klf", model.packageAlias());
-        Assertions.assertEquals("dgfcwqmp", model.imagePath());
-        Assertions.assertEquals("aqxzhemjyho", model.packageName());
-        Assertions.assertEquals("jswtwkozzwc", model.packageFamilyName());
-        Assertions.assertEquals("kb", model.packageFullName());
-        Assertions.assertEquals("pfajnjwltlwtjj", model.displayName());
-        Assertions.assertEquals("ktalhsnvkcdmxz", model.packageRelativePath());
-        Assertions.assertEquals(false, model.isRegularRegistration());
-        Assertions.assertEquals(true, model.isActive());
-        Assertions.assertEquals("wiaaomylweaz", model.packageDependencies().get(0).dependencyName());
-        Assertions.assertEquals("cse", model.packageDependencies().get(0).publisher());
-        Assertions.assertEquals("wwnpj", model.packageDependencies().get(0).minVersion());
-        Assertions.assertEquals("bcporxvxcjzhqizx", model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T06:23:01Z"), model.lastUpdated());
-        Assertions.assertEquals("scjavftju", model.packageApplications().get(0).appId());
-        Assertions.assertEquals("qaz", model.packageApplications().get(0).description());
-        Assertions.assertEquals("tgguwpijrajcivmm", model.packageApplications().get(0).appUserModelId());
-        Assertions.assertEquals("f", model.packageApplications().get(0).friendlyName());
-        Assertions.assertEquals("iwrxgkn", model.packageApplications().get(0).iconImageName());
+        ExpandMsixImageProperties model = BinaryData.fromString(
+            "{\"packageAlias\":\"kgfmocwahpq\",\"imagePath\":\"tjeaahhvjhh\",\"packageName\":\"kzyb\",\"packageFamilyName\":\"jid\",\"packageFullName\":\"syxkyxvxevblb\",\"displayName\":\"dnlj\",\"packageRelativePath\":\"geuaulx\",\"isRegularRegistration\":true,\"isActive\":false,\"packageDependencies\":[{\"dependencyName\":\"ppxynenls\",\"publisher\":\"eizzgwk\",\"minVersion\":\"srmffeycxcktpiym\"},{\"dependencyName\":\"teeammxqiekkkzd\",\"publisher\":\"tkgdojbmxva\",\"minVersion\":\"efdeesve\"},{\"dependencyName\":\"ijpxtx\",\"publisher\":\"wprtu\",\"minVersion\":\"sawddjibabxvi\"}],\"version\":\"tvtzeexavoxtfg\",\"lastUpdated\":\"2021-10-13T21:26:08Z\",\"packageApplications\":[{\"appId\":\"qbw\",\"description\":\"pqtgsfjac\",\"appUserModelID\":\"lhhxudbxvodhtnsi\",\"friendlyName\":\"dhzmmesckdlp\",\"iconImageName\":\"zrcxfailcfxwmdbo\"}],\"certificateName\":\"sftufqobrjlna\",\"certificateExpiry\":\"2021-08-15T07:12:12Z\"}")
+            .toObject(ExpandMsixImageProperties.class);
+        Assertions.assertEquals("kgfmocwahpq", model.packageAlias());
+        Assertions.assertEquals("tjeaahhvjhh", model.imagePath());
+        Assertions.assertEquals("kzyb", model.packageName());
+        Assertions.assertEquals("jid", model.packageFamilyName());
+        Assertions.assertEquals("syxkyxvxevblb", model.packageFullName());
+        Assertions.assertEquals("dnlj", model.displayName());
+        Assertions.assertEquals("geuaulx", model.packageRelativePath());
+        Assertions.assertEquals(true, model.isRegularRegistration());
+        Assertions.assertEquals(false, model.isActive());
+        Assertions.assertEquals("ppxynenls", model.packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("eizzgwk", model.packageDependencies().get(0).publisher());
+        Assertions.assertEquals("srmffeycxcktpiym", model.packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("tvtzeexavoxtfg", model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T21:26:08Z"), model.lastUpdated());
+        Assertions.assertEquals("qbw", model.packageApplications().get(0).appId());
+        Assertions.assertEquals("pqtgsfjac", model.packageApplications().get(0).description());
+        Assertions.assertEquals("lhhxudbxvodhtnsi", model.packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("dhzmmesckdlp", model.packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.packageApplications().get(0).iconImageName());
+        Assertions.assertEquals("sftufqobrjlna", model.certificateName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T07:12:12Z"), model.certificateExpiry());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExpandMsixImageProperties model =
-            new ExpandMsixImageProperties()
-                .withPackageAlias("klf")
-                .withImagePath("dgfcwqmp")
-                .withPackageName("aqxzhemjyho")
-                .withPackageFamilyName("jswtwkozzwc")
-                .withPackageFullName("kb")
-                .withDisplayName("pfajnjwltlwtjj")
-                .withPackageRelativePath("ktalhsnvkcdmxz")
-                .withIsRegularRegistration(false)
-                .withIsActive(true)
-                .withPackageDependencies(
-                    Arrays
-                        .asList(
-                            new MsixPackageDependencies()
-                                .withDependencyName("wiaaomylweaz")
-                                .withPublisher("cse")
-                                .withMinVersion("wwnpj"),
-                            new MsixPackageDependencies()
-                                .withDependencyName("fz")
-                                .withPublisher("pchwa")
-                                .withMinVersion("bousn"),
-                            new MsixPackageDependencies()
-                                .withDependencyName("pgfewetwlyx")
-                                .withPublisher("cxy")
-                                .withMinVersion("hdjhlimmbcx")))
-                .withVersion("bcporxvxcjzhqizx")
-                .withLastUpdated(OffsetDateTime.parse("2021-11-25T06:23:01Z"))
-                .withPackageApplications(
-                    Arrays
-                        .asList(
-                            new MsixPackageApplications()
-                                .withAppId("scjavftju")
-                                .withDescription("qaz")
-                                .withAppUserModelId("tgguwpijrajcivmm")
-                                .withFriendlyName("f")
-                                .withIconImageName("iwrxgkn"),
-                            new MsixPackageApplications()
-                                .withAppId("inzqodfvpgs")
-                                .withDescription("xgsg")
-                                .withAppUserModelId("fgzdjtxvz")
-                                .withFriendlyName("bqvgaqv")
-                                .withIconImageName("a")));
+        ExpandMsixImageProperties model = new ExpandMsixImageProperties().withPackageAlias("kgfmocwahpq")
+            .withImagePath("tjeaahhvjhh")
+            .withPackageName("kzyb")
+            .withPackageFamilyName("jid")
+            .withPackageFullName("syxkyxvxevblb")
+            .withDisplayName("dnlj")
+            .withPackageRelativePath("geuaulx")
+            .withIsRegularRegistration(true)
+            .withIsActive(false)
+            .withPackageDependencies(Arrays.asList(
+                new MsixPackageDependencies().withDependencyName("ppxynenls")
+                    .withPublisher("eizzgwk")
+                    .withMinVersion("srmffeycxcktpiym"),
+                new MsixPackageDependencies().withDependencyName("teeammxqiekkkzd")
+                    .withPublisher("tkgdojbmxva")
+                    .withMinVersion("efdeesve"),
+                new MsixPackageDependencies().withDependencyName("ijpxtx")
+                    .withPublisher("wprtu")
+                    .withMinVersion("sawddjibabxvi")))
+            .withVersion("tvtzeexavoxtfg")
+            .withLastUpdated(OffsetDateTime.parse("2021-10-13T21:26:08Z"))
+            .withPackageApplications(Arrays.asList(new MsixPackageApplications().withAppId("qbw")
+                .withDescription("pqtgsfjac")
+                .withAppUserModelId("lhhxudbxvodhtnsi")
+                .withFriendlyName("dhzmmesckdlp")
+                .withIconImageName("zrcxfailcfxwmdbo")))
+            .withCertificateName("sftufqobrjlna")
+            .withCertificateExpiry(OffsetDateTime.parse("2021-08-15T07:12:12Z"));
         model = BinaryData.fromObject(model).toObject(ExpandMsixImageProperties.class);
-        Assertions.assertEquals("klf", model.packageAlias());
-        Assertions.assertEquals("dgfcwqmp", model.imagePath());
-        Assertions.assertEquals("aqxzhemjyho", model.packageName());
-        Assertions.assertEquals("jswtwkozzwc", model.packageFamilyName());
-        Assertions.assertEquals("kb", model.packageFullName());
-        Assertions.assertEquals("pfajnjwltlwtjj", model.displayName());
-        Assertions.assertEquals("ktalhsnvkcdmxz", model.packageRelativePath());
-        Assertions.assertEquals(false, model.isRegularRegistration());
-        Assertions.assertEquals(true, model.isActive());
-        Assertions.assertEquals("wiaaomylweaz", model.packageDependencies().get(0).dependencyName());
-        Assertions.assertEquals("cse", model.packageDependencies().get(0).publisher());
-        Assertions.assertEquals("wwnpj", model.packageDependencies().get(0).minVersion());
-        Assertions.assertEquals("bcporxvxcjzhqizx", model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T06:23:01Z"), model.lastUpdated());
-        Assertions.assertEquals("scjavftju", model.packageApplications().get(0).appId());
-        Assertions.assertEquals("qaz", model.packageApplications().get(0).description());
-        Assertions.assertEquals("tgguwpijrajcivmm", model.packageApplications().get(0).appUserModelId());
-        Assertions.assertEquals("f", model.packageApplications().get(0).friendlyName());
-        Assertions.assertEquals("iwrxgkn", model.packageApplications().get(0).iconImageName());
+        Assertions.assertEquals("kgfmocwahpq", model.packageAlias());
+        Assertions.assertEquals("tjeaahhvjhh", model.imagePath());
+        Assertions.assertEquals("kzyb", model.packageName());
+        Assertions.assertEquals("jid", model.packageFamilyName());
+        Assertions.assertEquals("syxkyxvxevblb", model.packageFullName());
+        Assertions.assertEquals("dnlj", model.displayName());
+        Assertions.assertEquals("geuaulx", model.packageRelativePath());
+        Assertions.assertEquals(true, model.isRegularRegistration());
+        Assertions.assertEquals(false, model.isActive());
+        Assertions.assertEquals("ppxynenls", model.packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("eizzgwk", model.packageDependencies().get(0).publisher());
+        Assertions.assertEquals("srmffeycxcktpiym", model.packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("tvtzeexavoxtfg", model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-13T21:26:08Z"), model.lastUpdated());
+        Assertions.assertEquals("qbw", model.packageApplications().get(0).appId());
+        Assertions.assertEquals("pqtgsfjac", model.packageApplications().get(0).description());
+        Assertions.assertEquals("lhhxudbxvodhtnsi", model.packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("dhzmmesckdlp", model.packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.packageApplications().get(0).iconImageName());
+        Assertions.assertEquals("sftufqobrjlna", model.certificateName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T07:12:12Z"), model.certificateExpiry());
     }
 }

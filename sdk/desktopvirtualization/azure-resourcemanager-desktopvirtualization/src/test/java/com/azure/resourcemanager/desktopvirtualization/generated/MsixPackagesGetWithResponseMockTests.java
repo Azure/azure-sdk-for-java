@@ -6,81 +6,50 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackage;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class MsixPackagesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"imagePath\":\"mmwllc\",\"packageName\":\"srsxaptefh\",\"packageFamilyName\":\"cgjokjljnhvlq\",\"displayName\":\"ek\",\"packageRelativePath\":\"eksnbksdqhjvyk\",\"isRegularRegistration\":false,\"isActive\":false,\"packageDependencies\":[{\"dependencyName\":\"ustcpoq\",\"publisher\":\"vnwqjwgo\",\"minVersion\":\"lejjjkxy\"}],\"version\":\"fdb\",\"lastUpdated\":\"2020-12-26T15:14:09Z\",\"packageApplications\":[{\"appId\":\"nsvk\",\"description\":\"kjtjknsx\",\"appUserModelID\":\"us\",\"friendlyName\":\"dpkupnqrmgjf\",\"iconImageName\":\"kuwxeoiojfizfavk\"},{\"appId\":\"bcyaykmmfzs\",\"description\":\"wxrzxmdewsrsxkrp\",\"appUserModelID\":\"jazejwwviyoyp\",\"friendlyName\":\"hbrnnhjx\",\"iconImageName\":\"wjh\"},{\"appId\":\"wetp\",\"description\":\"ycyqiqyhgfsetzl\",\"appUserModelID\":\"bsfledynojpziu\",\"friendlyName\":\"bzkkd\",\"iconImageName\":\"hqsycljselp\"}]},\"id\":\"fvafh\",\"name\":\"by\",\"type\":\"ccbevxrhyzdf\"}";
 
-        String responseStr =
-            "{\"properties\":{\"imagePath\":\"vsqxfxjelgcmpzqj\",\"packageName\":\"hqxu\",\"packageFamilyName\":\"vcacoyv\",\"displayName\":\"bsizus\",\"packageRelativePath\":\"zlbscmnlziji\",\"isRegularRegistration\":true,\"isActive\":true,\"packageDependencies\":[{\"dependencyName\":\"lnwyvqkxr\",\"publisher\":\"lniylylyfwxz\",\"minVersion\":\"gqztwhghmupgx\"},{\"dependencyName\":\"tcdxabbujftaben\",\"publisher\":\"klqpx\",\"minVersion\":\"cafeddw\"},{\"dependencyName\":\"lzafwxu\",\"publisher\":\"nhgookrtalvnbw\",\"minVersion\":\"bemeluclvd\"},{\"dependencyName\":\"ukyrdnqodxahh\",\"publisher\":\"qfaqnvzoqg\",\"minVersion\":\"pem\"}],\"version\":\"gavsczuejd\",\"lastUpdated\":\"2021-07-06T15:50:57Z\",\"packageApplications\":[{\"appId\":\"h\",\"description\":\"homewjjstliu\",\"appUserModelID\":\"awmo\",\"friendlyName\":\"ancz\",\"iconImageName\":\"odrrslblxyd\"},{\"appId\":\"vvbxiwkgfbqljnq\",\"description\":\"ychocokulehu\",\"appUserModelID\":\"lrqff\",\"friendlyName\":\"eyu\",\"iconImageName\":\"phyjdxravj\"},{\"appId\":\"rxmrgchbapx\",\"description\":\"y\",\"appUserModelID\":\"j\",\"friendlyName\":\"ajb\",\"iconImageName\":\"cgduusio\"}]},\"id\":\"lev\",\"name\":\"mclujyxkyxlzgs\",\"type\":\"gkzz\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DesktopVirtualizationManager manager = DesktopVirtualizationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MsixPackage response = manager.msixPackages()
+            .getWithResponse("dorvvmqfloy", "bdgwumgxdgd", "pabgdexjddvjsaqw", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        DesktopVirtualizationManager manager =
-            DesktopVirtualizationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MsixPackage response =
-            manager
-                .msixPackages()
-                .getWithResponse("xpjb", "ypsjoq", "jenkyh", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("vsqxfxjelgcmpzqj", response.imagePath());
-        Assertions.assertEquals("hqxu", response.packageName());
-        Assertions.assertEquals("vcacoyv", response.packageFamilyName());
-        Assertions.assertEquals("bsizus", response.displayName());
-        Assertions.assertEquals("zlbscmnlziji", response.packageRelativePath());
-        Assertions.assertEquals(true, response.isRegularRegistration());
-        Assertions.assertEquals(true, response.isActive());
-        Assertions.assertEquals("lnwyvqkxr", response.packageDependencies().get(0).dependencyName());
-        Assertions.assertEquals("lniylylyfwxz", response.packageDependencies().get(0).publisher());
-        Assertions.assertEquals("gqztwhghmupgx", response.packageDependencies().get(0).minVersion());
-        Assertions.assertEquals("gavsczuejd", response.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-06T15:50:57Z"), response.lastUpdated());
-        Assertions.assertEquals("h", response.packageApplications().get(0).appId());
-        Assertions.assertEquals("homewjjstliu", response.packageApplications().get(0).description());
-        Assertions.assertEquals("awmo", response.packageApplications().get(0).appUserModelId());
-        Assertions.assertEquals("ancz", response.packageApplications().get(0).friendlyName());
-        Assertions.assertEquals("odrrslblxyd", response.packageApplications().get(0).iconImageName());
+        Assertions.assertEquals("mmwllc", response.imagePath());
+        Assertions.assertEquals("srsxaptefh", response.packageName());
+        Assertions.assertEquals("cgjokjljnhvlq", response.packageFamilyName());
+        Assertions.assertEquals("ek", response.displayName());
+        Assertions.assertEquals("eksnbksdqhjvyk", response.packageRelativePath());
+        Assertions.assertEquals(false, response.isRegularRegistration());
+        Assertions.assertEquals(false, response.isActive());
+        Assertions.assertEquals("ustcpoq", response.packageDependencies().get(0).dependencyName());
+        Assertions.assertEquals("vnwqjwgo", response.packageDependencies().get(0).publisher());
+        Assertions.assertEquals("lejjjkxy", response.packageDependencies().get(0).minVersion());
+        Assertions.assertEquals("fdb", response.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-26T15:14:09Z"), response.lastUpdated());
+        Assertions.assertEquals("nsvk", response.packageApplications().get(0).appId());
+        Assertions.assertEquals("kjtjknsx", response.packageApplications().get(0).description());
+        Assertions.assertEquals("us", response.packageApplications().get(0).appUserModelId());
+        Assertions.assertEquals("dpkupnqrmgjf", response.packageApplications().get(0).friendlyName());
+        Assertions.assertEquals("kuwxeoiojfizfavk", response.packageApplications().get(0).iconImageName());
     }
 }

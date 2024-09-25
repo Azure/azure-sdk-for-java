@@ -5,15 +5,56 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.UUID;
 
-/** The ResourceModelWithAllowedPropertySetIdentity model. */
+/**
+ * The ResourceModelWithAllowedPropertySetIdentity model.
+ */
 @Fluent
 public final class ResourceModelWithAllowedPropertySetIdentity extends Identity {
-    /** Creates an instance of ResourceModelWithAllowedPropertySetIdentity class. */
+    /*
+     * The tenant ID of resource. The value must be an UUID.
+     */
+    private UUID tenantId;
+
+    /*
+     * The principal ID of resource identity. The value must be an UUID.
+     */
+    private UUID principalId;
+
+    /**
+     * Creates an instance of ResourceModelWithAllowedPropertySetIdentity class.
+     */
     public ResourceModelWithAllowedPropertySetIdentity() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the tenantId property: The tenant ID of resource. The value must be an UUID.
+     * 
+     * @return the tenantId value.
+     */
+    @Override
+    public UUID tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the principalId property: The principal ID of resource identity. The value must be an UUID.
+     * 
+     * @return the principalId value.
+     */
+    @Override
+    public UUID principalId() {
+        return this.principalId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySetIdentity withType(ResourceIdentityType type) {
         super.withType(type);
@@ -22,11 +63,54 @@ public final class ResourceModelWithAllowedPropertySetIdentity extends Identity 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceModelWithAllowedPropertySetIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceModelWithAllowedPropertySetIdentity if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceModelWithAllowedPropertySetIdentity.
+     */
+    public static ResourceModelWithAllowedPropertySetIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceModelWithAllowedPropertySetIdentity deserializedResourceModelWithAllowedPropertySetIdentity
+                = new ResourceModelWithAllowedPropertySetIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetIdentity
+                        .withType(ResourceIdentityType.fromString(reader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceModelWithAllowedPropertySetIdentity;
+        });
     }
 }

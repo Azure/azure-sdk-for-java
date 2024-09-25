@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"objectId\":\"xzxtheo\",\"description\":\"si\",\"friendlyName\":\"evcciqihnhun\",\"applicationGroupReferences\":[\"jzrnf\",\"gxg\",\"spemvtzfk\",\"fublj\"],\"cloudPcResource\":true,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"qjhqjbas\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"jqul\",\"actionsRequired\":\"sntnbybkzgcw\"},\"provisioningState\":\"Deleting\"},\"id\":\"lxxwrljdouskc\",\"name\":\"vkocrcjdkwtn\",\"type\":\"xbnjbiksq\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"sainqpjwnzl\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"ppeebvmgxsab\",\"actionsRequired\":\"qduujitcjczdz\"},\"provisioningState\":\"Creating\"},\"id\":\"dhkrwpdappdsbdk\",\"name\":\"wrwjfeu\",\"type\":\"nhutjeltmrldhugj\"}]}")
-                .toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("si", model.description());
-        Assertions.assertEquals("evcciqihnhun", model.friendlyName());
-        Assertions.assertEquals("jzrnf", model.applicationGroupReferences().get(0));
+        WorkspaceProperties model = BinaryData.fromString(
+            "{\"objectId\":\"ayhuy\",\"description\":\"kpode\",\"friendlyName\":\"oginuvamiheognar\",\"applicationGroupReferences\":[\"theotusiv\"],\"cloudPcResource\":false,\"publicNetworkAccess\":\"Disabled\",\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[\"hungbwjzrnf\",\"gxg\"],\"privateEndpoint\":{\"id\":\"emv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ufubl\",\"actionsRequired\":\"fxqeof\"},\"provisioningState\":\"Succeeded\"},\"id\":\"jhqjbasvmsmjqul\",\"name\":\"gsntnbybkzgcwr\",\"type\":\"clxxwrljdo\"}]}")
+            .toObject(WorkspaceProperties.class);
+        Assertions.assertEquals("kpode", model.description());
+        Assertions.assertEquals("oginuvamiheognar", model.friendlyName());
+        Assertions.assertEquals("theotusiv", model.applicationGroupReferences().get(0));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceProperties model =
-            new WorkspaceProperties()
-                .withDescription("si")
-                .withFriendlyName("evcciqihnhun")
-                .withApplicationGroupReferences(Arrays.asList("jzrnf", "gxg", "spemvtzfk", "fublj"))
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        WorkspaceProperties model = new WorkspaceProperties().withDescription("kpode")
+            .withFriendlyName("oginuvamiheognar")
+            .withApplicationGroupReferences(Arrays.asList("theotusiv"))
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("si", model.description());
-        Assertions.assertEquals("evcciqihnhun", model.friendlyName());
-        Assertions.assertEquals("jzrnf", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals("kpode", model.description());
+        Assertions.assertEquals("oginuvamiheognar", model.friendlyName());
+        Assertions.assertEquals("theotusiv", model.applicationGroupReferences().get(0));
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 }

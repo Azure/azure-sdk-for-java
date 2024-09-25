@@ -22,22 +22,18 @@ public final class DesktopsImpl implements Desktops {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    public DesktopsImpl(
-        DesktopsClient innerClient,
+    public DesktopsImpl(DesktopsClient innerClient,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Desktop> getWithResponse(
-        String resourceGroupName, String applicationGroupName, String desktopName, Context context) {
-        Response<DesktopInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, applicationGroupName, desktopName, context);
+    public Response<Desktop> getWithResponse(String resourceGroupName, String applicationGroupName, String desktopName,
+        Context context) {
+        Response<DesktopInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, applicationGroupName, desktopName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DesktopImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,21 +49,12 @@ public final class DesktopsImpl implements Desktops {
         }
     }
 
-    public Response<Desktop> updateWithResponse(
-        String resourceGroupName,
-        String applicationGroupName,
-        String desktopName,
-        DesktopPatch desktop,
-        Context context) {
-        Response<DesktopInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, applicationGroupName, desktopName, desktop, context);
+    public Response<Desktop> updateWithResponse(String resourceGroupName, String applicationGroupName,
+        String desktopName, DesktopPatch desktop, Context context) {
+        Response<DesktopInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, applicationGroupName, desktopName, desktop, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DesktopImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -85,21 +72,14 @@ public final class DesktopsImpl implements Desktops {
 
     public PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName) {
         PagedIterable<DesktopInner> inner = this.serviceClient().list(resourceGroupName, applicationGroupName);
-        return Utils.mapPage(inner, inner1 -> new DesktopImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DesktopImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Desktop> list(
-        String resourceGroupName,
-        String applicationGroupName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
-        PagedIterable<DesktopInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, context);
-        return Utils.mapPage(inner, inner1 -> new DesktopImpl(inner1, this.manager()));
+    public PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<DesktopInner> inner = this.serviceClient()
+            .list(resourceGroupName, applicationGroupName, pageSize, isDescending, initialSkip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DesktopImpl(inner1, this.manager()));
     }
 
     private DesktopsClient serviceClient() {

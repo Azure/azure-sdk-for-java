@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspacePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspacePatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"rzafbljjgpbtoqcj\",\"friendlyName\":\"ljavbqid\",\"applicationGroupReferences\":[\"jzyulpk\",\"dj\"],\"publicNetworkAccess\":\"Enabled\"}")
-                .toObject(WorkspacePatchProperties.class);
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.description());
-        Assertions.assertEquals("ljavbqid", model.friendlyName());
-        Assertions.assertEquals("jzyulpk", model.applicationGroupReferences().get(0));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        WorkspacePatchProperties model = BinaryData.fromString(
+            "{\"description\":\"dsoifiyipj\",\"friendlyName\":\"qwpgrjbzn\",\"applicationGroupReferences\":[\"jxvsnbyxqabn\",\"ocpcy\",\"hurzafblj\"],\"publicNetworkAccess\":\"Disabled\"}")
+            .toObject(WorkspacePatchProperties.class);
+        Assertions.assertEquals("dsoifiyipj", model.description());
+        Assertions.assertEquals("qwpgrjbzn", model.friendlyName());
+        Assertions.assertEquals("jxvsnbyxqabn", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspacePatchProperties model =
-            new WorkspacePatchProperties()
-                .withDescription("rzafbljjgpbtoqcj")
-                .withFriendlyName("ljavbqid")
-                .withApplicationGroupReferences(Arrays.asList("jzyulpk", "dj"))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        WorkspacePatchProperties model = new WorkspacePatchProperties().withDescription("dsoifiyipj")
+            .withFriendlyName("qwpgrjbzn")
+            .withApplicationGroupReferences(Arrays.asList("jxvsnbyxqabn", "ocpcy", "hurzafblj"))
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(WorkspacePatchProperties.class);
-        Assertions.assertEquals("rzafbljjgpbtoqcj", model.description());
-        Assertions.assertEquals("ljavbqid", model.friendlyName());
-        Assertions.assertEquals("jzyulpk", model.applicationGroupReferences().get(0));
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
+        Assertions.assertEquals("dsoifiyipj", model.description());
+        Assertions.assertEquals("qwpgrjbzn", model.friendlyName());
+        Assertions.assertEquals("jxvsnbyxqabn", model.applicationGroupReferences().get(0));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 }

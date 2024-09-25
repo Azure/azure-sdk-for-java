@@ -13,42 +13,39 @@ import org.junit.jupiter.api.Assertions;
 public final class StartMenuItemListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StartMenuItemList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"appAlias\":\"pdggkzzlvm\",\"filePath\":\"paxmodfvuefywsb\",\"commandLineArguments\":\"vmwy\",\"iconPath\":\"fouyf\",\"iconIndex\":938616277},\"id\":\"kcpwiy\",\"name\":\"vqtmnub\",\"type\":\"xkp\"},{\"properties\":{\"appAlias\":\"mond\",\"filePath\":\"quxvypomgkop\",\"commandLineArguments\":\"hojvpajqgxysmocm\",\"iconPath\":\"fqvm\",\"iconIndex\":1181340997},\"id\":\"oz\",\"name\":\"pvhelxprg\",\"type\":\"yat\"}],\"nextLink\":\"ckcb\"}")
-                .toObject(StartMenuItemList.class);
-        Assertions.assertEquals("pdggkzzlvm", model.value().get(0).appAlias());
-        Assertions.assertEquals("paxmodfvuefywsb", model.value().get(0).filePath());
-        Assertions.assertEquals("vmwy", model.value().get(0).commandLineArguments());
-        Assertions.assertEquals("fouyf", model.value().get(0).iconPath());
-        Assertions.assertEquals(938616277, model.value().get(0).iconIndex());
+        StartMenuItemList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"appAlias\":\"ksmond\",\"filePath\":\"quxvypomgkop\",\"commandLineArguments\":\"hojvpajqgxysmocm\",\"iconPath\":\"fqvm\",\"iconIndex\":1181340997},\"id\":\"zapvhelx\",\"name\":\"rgly\",\"type\":\"tddckcb\"},{\"properties\":{\"appAlias\":\"jrjxgciqibrhosx\",\"filePath\":\"qrhzoymibmrqyib\",\"commandLineArguments\":\"wfluszdt\",\"iconPath\":\"rkwofyyvoqa\",\"iconIndex\":848769798},\"id\":\"xpbtgiwbwo\",\"name\":\"nwashrtd\",\"type\":\"kcnqxwbpo\"},{\"properties\":{\"appAlias\":\"pi\",\"filePath\":\"waasip\",\"commandLineArguments\":\"iobyu\",\"iconPath\":\"rpqlp\",\"iconIndex\":1285990077},\"id\":\"iuqgbdbutauv\",\"name\":\"btkuwhh\",\"type\":\"hykojoxafnndlpic\"}],\"nextLink\":\"o\"}")
+            .toObject(StartMenuItemList.class);
+        Assertions.assertEquals("ksmond", model.value().get(0).appAlias());
+        Assertions.assertEquals("quxvypomgkop", model.value().get(0).filePath());
+        Assertions.assertEquals("hojvpajqgxysmocm", model.value().get(0).commandLineArguments());
+        Assertions.assertEquals("fqvm", model.value().get(0).iconPath());
+        Assertions.assertEquals(1181340997, model.value().get(0).iconIndex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StartMenuItemList model =
-            new StartMenuItemList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new StartMenuItemInner()
-                                .withAppAlias("pdggkzzlvm")
-                                .withFilePath("paxmodfvuefywsb")
-                                .withCommandLineArguments("vmwy")
-                                .withIconPath("fouyf")
-                                .withIconIndex(938616277),
-                            new StartMenuItemInner()
-                                .withAppAlias("mond")
-                                .withFilePath("quxvypomgkop")
-                                .withCommandLineArguments("hojvpajqgxysmocm")
-                                .withIconPath("fqvm")
-                                .withIconIndex(1181340997)));
+        StartMenuItemList model = new StartMenuItemList().withValue(Arrays.asList(
+            new StartMenuItemInner().withAppAlias("ksmond")
+                .withFilePath("quxvypomgkop")
+                .withCommandLineArguments("hojvpajqgxysmocm")
+                .withIconPath("fqvm")
+                .withIconIndex(1181340997),
+            new StartMenuItemInner().withAppAlias("jrjxgciqibrhosx")
+                .withFilePath("qrhzoymibmrqyib")
+                .withCommandLineArguments("wfluszdt")
+                .withIconPath("rkwofyyvoqa")
+                .withIconIndex(848769798),
+            new StartMenuItemInner().withAppAlias("pi")
+                .withFilePath("waasip")
+                .withCommandLineArguments("iobyu")
+                .withIconPath("rpqlp")
+                .withIconIndex(1285990077)));
         model = BinaryData.fromObject(model).toObject(StartMenuItemList.class);
-        Assertions.assertEquals("pdggkzzlvm", model.value().get(0).appAlias());
-        Assertions.assertEquals("paxmodfvuefywsb", model.value().get(0).filePath());
-        Assertions.assertEquals("vmwy", model.value().get(0).commandLineArguments());
-        Assertions.assertEquals("fouyf", model.value().get(0).iconPath());
-        Assertions.assertEquals(938616277, model.value().get(0).iconIndex());
+        Assertions.assertEquals("ksmond", model.value().get(0).appAlias());
+        Assertions.assertEquals("quxvypomgkop", model.value().get(0).filePath());
+        Assertions.assertEquals("hojvpajqgxysmocm", model.value().get(0).commandLineArguments());
+        Assertions.assertEquals("fqvm", model.value().get(0).iconPath());
+        Assertions.assertEquals(1181340997, model.value().get(0).iconIndex());
     }
 }

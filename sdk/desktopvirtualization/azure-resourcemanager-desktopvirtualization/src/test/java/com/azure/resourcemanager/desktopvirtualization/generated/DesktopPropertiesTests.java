@@ -11,20 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DesktopPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DesktopProperties model =
-            BinaryData
-                .fromString(
-                    "{\"objectId\":\"glsbjjc\",\"description\":\"vxb\",\"friendlyName\":\"vudutncor\",\"iconHash\":\"lxqtvcofudfl\"}")
-                .toObject(DesktopProperties.class);
-        Assertions.assertEquals("vxb", model.description());
-        Assertions.assertEquals("vudutncor", model.friendlyName());
+        DesktopProperties model = BinaryData.fromString(
+            "{\"objectId\":\"kggkfpa\",\"description\":\"owpulpq\",\"friendlyName\":\"ylsyxkqjnsje\",\"iconHash\":\"tiagx\"}")
+            .toObject(DesktopProperties.class);
+        Assertions.assertEquals("owpulpq", model.description());
+        Assertions.assertEquals("ylsyxkqjnsje", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DesktopProperties model = new DesktopProperties().withDescription("vxb").withFriendlyName("vudutncor");
+        DesktopProperties model = new DesktopProperties().withDescription("owpulpq").withFriendlyName("ylsyxkqjnsje");
         model = BinaryData.fromObject(model).toObject(DesktopProperties.class);
-        Assertions.assertEquals("vxb", model.description());
-        Assertions.assertEquals("vudutncor", model.friendlyName());
+        Assertions.assertEquals("owpulpq", model.description());
+        Assertions.assertEquals("ylsyxkqjnsje", model.friendlyName());
     }
 }

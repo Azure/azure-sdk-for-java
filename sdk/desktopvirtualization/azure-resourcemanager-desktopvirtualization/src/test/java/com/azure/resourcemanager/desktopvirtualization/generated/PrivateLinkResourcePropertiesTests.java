@@ -12,19 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"bxetqgtzxdpn\",\"requiredMembers\":[\"qwxrjfeallnw\"],\"requiredZoneNames\":[\"isnjampmngnz\",\"c\"]}")
-                .toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("isnjampmngnz", model.requiredZoneNames().get(0));
+        PrivateLinkResourceProperties model = BinaryData.fromString(
+            "{\"groupId\":\"zdmohctbqvu\",\"requiredMembers\":[\"dndnvow\"],\"requiredZoneNames\":[\"jugwdkcglhsl\",\"zj\",\"yggdtjixh\",\"kuofqweykhme\"]}")
+            .toObject(PrivateLinkResourceProperties.class);
+        Assertions.assertEquals("jugwdkcglhsl", model.requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkResourceProperties model =
-            new PrivateLinkResourceProperties().withRequiredZoneNames(Arrays.asList("isnjampmngnz", "c"));
+        PrivateLinkResourceProperties model = new PrivateLinkResourceProperties()
+            .withRequiredZoneNames(Arrays.asList("jugwdkcglhsl", "zj", "yggdtjixh", "kuofqweykhme"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("isnjampmngnz", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("jugwdkcglhsl", model.requiredZoneNames().get(0));
     }
 }

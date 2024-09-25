@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SessionHostPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SessionHostPatch model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"allowNewSession\":false,\"assignedUser\":\"zywkb\",\"friendlyName\":\"ryuzh\"},\"id\":\"hkjoqr\",\"name\":\"qqaatjinrvgou\",\"type\":\"mfiibfggj\"}")
-                .toObject(SessionHostPatch.class);
-        Assertions.assertEquals(false, model.allowNewSession());
-        Assertions.assertEquals("zywkb", model.assignedUser());
-        Assertions.assertEquals("ryuzh", model.friendlyName());
+        SessionHostPatch model = BinaryData.fromString(
+            "{\"properties\":{\"allowNewSession\":true,\"assignedUser\":\"cyajguqf\",\"friendlyName\":\"ygz\"},\"id\":\"dnkfx\",\"name\":\"semdwzrmu\",\"type\":\"apfcqdpsq\"}")
+            .toObject(SessionHostPatch.class);
+        Assertions.assertEquals(true, model.allowNewSession());
+        Assertions.assertEquals("cyajguqf", model.assignedUser());
+        Assertions.assertEquals("ygz", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SessionHostPatch model =
-            new SessionHostPatch().withAllowNewSession(false).withAssignedUser("zywkb").withFriendlyName("ryuzh");
+        SessionHostPatch model
+            = new SessionHostPatch().withAllowNewSession(true).withAssignedUser("cyajguqf").withFriendlyName("ygz");
         model = BinaryData.fromObject(model).toObject(SessionHostPatch.class);
-        Assertions.assertEquals(false, model.allowNewSession());
-        Assertions.assertEquals("zywkb", model.assignedUser());
-        Assertions.assertEquals("ryuzh", model.friendlyName());
+        Assertions.assertEquals(true, model.allowNewSession());
+        Assertions.assertEquals("cyajguqf", model.assignedUser());
+        Assertions.assertEquals("ygz", model.friendlyName());
     }
 }

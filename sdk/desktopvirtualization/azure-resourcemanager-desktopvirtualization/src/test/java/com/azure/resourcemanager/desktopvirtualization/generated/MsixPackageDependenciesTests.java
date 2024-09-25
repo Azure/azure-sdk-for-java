@@ -11,26 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class MsixPackageDependenciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MsixPackageDependencies model =
-            BinaryData
-                .fromString(
-                    "{\"dependencyName\":\"yklyhpluodpvruud\",\"publisher\":\"zibt\",\"minVersion\":\"stgktst\"}")
-                .toObject(MsixPackageDependencies.class);
-        Assertions.assertEquals("yklyhpluodpvruud", model.dependencyName());
-        Assertions.assertEquals("zibt", model.publisher());
-        Assertions.assertEquals("stgktst", model.minVersion());
+        MsixPackageDependencies model = BinaryData
+            .fromString(
+                "{\"dependencyName\":\"zzbtdcqvpniyujvi\",\"publisher\":\"wdsh\",\"minVersion\":\"snrbgyefrymsgao\"}")
+            .toObject(MsixPackageDependencies.class);
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.dependencyName());
+        Assertions.assertEquals("wdsh", model.publisher());
+        Assertions.assertEquals("snrbgyefrymsgao", model.minVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MsixPackageDependencies model =
-            new MsixPackageDependencies()
-                .withDependencyName("yklyhpluodpvruud")
-                .withPublisher("zibt")
-                .withMinVersion("stgktst");
+        MsixPackageDependencies model = new MsixPackageDependencies().withDependencyName("zzbtdcqvpniyujvi")
+            .withPublisher("wdsh")
+            .withMinVersion("snrbgyefrymsgao");
         model = BinaryData.fromObject(model).toObject(MsixPackageDependencies.class);
-        Assertions.assertEquals("yklyhpluodpvruud", model.dependencyName());
-        Assertions.assertEquals("zibt", model.publisher());
-        Assertions.assertEquals("stgktst", model.minVersion());
+        Assertions.assertEquals("zzbtdcqvpniyujvi", model.dependencyName());
+        Assertions.assertEquals("wdsh", model.publisher());
+        Assertions.assertEquals("snrbgyefrymsgao", model.minVersion());
     }
 }

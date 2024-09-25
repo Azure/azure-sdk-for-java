@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class StartMenuItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StartMenuItemProperties model =
-            BinaryData
-                .fromString(
-                    "{\"appAlias\":\"cnqxwbpokulpi\",\"filePath\":\"waasip\",\"commandLineArguments\":\"iobyu\",\"iconPath\":\"rpqlp\",\"iconIndex\":1285990077}")
-                .toObject(StartMenuItemProperties.class);
-        Assertions.assertEquals("cnqxwbpokulpi", model.appAlias());
-        Assertions.assertEquals("waasip", model.filePath());
-        Assertions.assertEquals("iobyu", model.commandLineArguments());
-        Assertions.assertEquals("rpqlp", model.iconPath());
-        Assertions.assertEquals(1285990077, model.iconIndex());
+        StartMenuItemProperties model = BinaryData.fromString(
+            "{\"appAlias\":\"fqka\",\"filePath\":\"wiipfpub\",\"commandLineArguments\":\"bwwift\",\"iconPath\":\"qkvpuvksgplsakn\",\"iconIndex\":792282663}")
+            .toObject(StartMenuItemProperties.class);
+        Assertions.assertEquals("fqka", model.appAlias());
+        Assertions.assertEquals("wiipfpub", model.filePath());
+        Assertions.assertEquals("bwwift", model.commandLineArguments());
+        Assertions.assertEquals("qkvpuvksgplsakn", model.iconPath());
+        Assertions.assertEquals(792282663, model.iconIndex());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StartMenuItemProperties model =
-            new StartMenuItemProperties()
-                .withAppAlias("cnqxwbpokulpi")
-                .withFilePath("waasip")
-                .withCommandLineArguments("iobyu")
-                .withIconPath("rpqlp")
-                .withIconIndex(1285990077);
+        StartMenuItemProperties model = new StartMenuItemProperties().withAppAlias("fqka")
+            .withFilePath("wiipfpub")
+            .withCommandLineArguments("bwwift")
+            .withIconPath("qkvpuvksgplsakn")
+            .withIconIndex(792282663);
         model = BinaryData.fromObject(model).toObject(StartMenuItemProperties.class);
-        Assertions.assertEquals("cnqxwbpokulpi", model.appAlias());
-        Assertions.assertEquals("waasip", model.filePath());
-        Assertions.assertEquals("iobyu", model.commandLineArguments());
-        Assertions.assertEquals("rpqlp", model.iconPath());
-        Assertions.assertEquals(1285990077, model.iconIndex());
+        Assertions.assertEquals("fqka", model.appAlias());
+        Assertions.assertEquals("wiipfpub", model.filePath());
+        Assertions.assertEquals("bwwift", model.commandLineArguments());
+        Assertions.assertEquals("qkvpuvksgplsakn", model.iconPath());
+        Assertions.assertEquals(792282663, model.iconIndex());
     }
 }

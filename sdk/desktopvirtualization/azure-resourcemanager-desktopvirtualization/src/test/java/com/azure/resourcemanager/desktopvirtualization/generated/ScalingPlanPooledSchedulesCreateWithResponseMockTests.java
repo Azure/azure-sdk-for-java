@@ -6,112 +6,80 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
 import com.azure.resourcemanager.desktopvirtualization.models.DayOfWeek;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedule;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostLoadBalancingAlgorithm;
 import com.azure.resourcemanager.desktopvirtualization.models.StopHostsWhen;
 import com.azure.resourcemanager.desktopvirtualization.models.Time;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ScalingPlanPooledSchedulesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"daysOfWeek\":[\"Thursday\"],\"rampUpStartTime\":{\"hour\":1468160039,\"minute\":1632066505},\"rampUpLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampUpMinimumHostsPct\":966764042,\"rampUpCapacityThresholdPct\":771556133,\"peakStartTime\":{\"hour\":1743083802,\"minute\":761308188},\"peakLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownStartTime\":{\"hour\":1990405862,\"minute\":1925288663},\"rampDownLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownMinimumHostsPct\":807094173,\"rampDownCapacityThresholdPct\":1845774986,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroSessions\",\"rampDownWaitTimeMinutes\":982791914,\"rampDownNotificationMessage\":\"bjpsfxsfuztlvtm\",\"offPeakStartTime\":{\"hour\":175189485,\"minute\":1490631232},\"offPeakLoadBalancingAlgorithm\":\"BreadthFirst\"},\"id\":\"qlvh\",\"name\":\"koveof\",\"type\":\"zrvjfnmjmvlwyzgi\"}";
 
-        String responseStr =
-            "{\"properties\":{\"daysOfWeek\":[\"Monday\",\"Sunday\"],\"rampUpStartTime\":{\"hour\":1533653283,\"minute\":1984178161},\"rampUpLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampUpMinimumHostsPct\":830964876,\"rampUpCapacityThresholdPct\":1152619521,\"peakStartTime\":{\"hour\":1614916869,\"minute\":1479987429},\"peakLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownStartTime\":{\"hour\":915914475,\"minute\":875433562},\"rampDownLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownMinimumHostsPct\":817459269,\"rampDownCapacityThresholdPct\":449882255,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroActiveSessions\",\"rampDownWaitTimeMinutes\":689120218,\"rampDownNotificationMessage\":\"rsxypruuu\",\"offPeakStartTime\":{\"hour\":694984034,\"minute\":1409089319},\"offPeakLoadBalancingAlgorithm\":\"BreadthFirst\"},\"id\":\"szizoyuelyetndnb\",\"name\":\"qyggagfl\",\"type\":\"lgmtrwahzjmucf\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DesktopVirtualizationManager manager = DesktopVirtualizationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ScalingPlanPooledSchedule response = manager.scalingPlanPooledSchedules()
+            .define("lpxuzzjgnrefq")
+            .withExistingScalingPlan("dnigrfihot", "e")
+            .withDaysOfWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.FRIDAY, DayOfWeek.FRIDAY, DayOfWeek.THURSDAY))
+            .withRampUpStartTime(new Time().withHour(773254967).withMinute(1642476072))
+            .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+            .withRampUpMinimumHostsPct(595468584)
+            .withRampUpCapacityThresholdPct(376876153)
+            .withPeakStartTime(new Time().withHour(143556698).withMinute(1733569114))
+            .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+            .withRampDownStartTime(new Time().withHour(587303890).withMinute(1946832159))
+            .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+            .withRampDownMinimumHostsPct(1216566407)
+            .withRampDownCapacityThresholdPct(1983000193)
+            .withRampDownForceLogoffUsers(false)
+            .withRampDownStopHostsWhen(StopHostsWhen.ZERO_SESSIONS)
+            .withRampDownWaitTimeMinutes(334230788)
+            .withRampDownNotificationMessage("sipi")
+            .withOffPeakStartTime(new Time().withHour(1379010451).withMinute(1553413277))
+            .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+            .create();
 
-        DesktopVirtualizationManager manager =
-            DesktopVirtualizationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ScalingPlanPooledSchedule response =
-            manager
-                .scalingPlanPooledSchedules()
-                .define("n")
-                .withExistingScalingPlan("wkffdjkt", "ysidfvclgl")
-                .withDaysOfWeek(
-                    Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.SATURDAY, DayOfWeek.THURSDAY, DayOfWeek.TUESDAY))
-                .withRampUpStartTime(new Time().withHour(1043687593).withMinute(939102144))
-                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                .withRampUpMinimumHostsPct(1112160542)
-                .withRampUpCapacityThresholdPct(1510144840)
-                .withPeakStartTime(new Time().withHour(869245621).withMinute(1717573357))
-                .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                .withRampDownStartTime(new Time().withHour(1168191195).withMinute(1139641337))
-                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                .withRampDownMinimumHostsPct(312700114)
-                .withRampDownCapacityThresholdPct(972711473)
-                .withRampDownForceLogoffUsers(false)
-                .withRampDownStopHostsWhen(StopHostsWhen.ZERO_SESSIONS)
-                .withRampDownWaitTimeMinutes(846546082)
-                .withRampDownNotificationMessage("tvwkpqhjpenu")
-                .withOffPeakStartTime(new Time().withHour(1710915481).withMinute(1781943414))
-                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                .create();
-
-        Assertions.assertEquals(DayOfWeek.MONDAY, response.daysOfWeek().get(0));
-        Assertions.assertEquals(1533653283, response.rampUpStartTime().hour());
-        Assertions.assertEquals(1984178161, response.rampUpStartTime().minute());
-        Assertions
-            .assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST, response.rampUpLoadBalancingAlgorithm());
-        Assertions.assertEquals(830964876, response.rampUpMinimumHostsPct());
-        Assertions.assertEquals(1152619521, response.rampUpCapacityThresholdPct());
-        Assertions.assertEquals(1614916869, response.peakStartTime().hour());
-        Assertions.assertEquals(1479987429, response.peakStartTime().minute());
-        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST, response.peakLoadBalancingAlgorithm());
-        Assertions.assertEquals(915914475, response.rampDownStartTime().hour());
-        Assertions.assertEquals(875433562, response.rampDownStartTime().minute());
-        Assertions
-            .assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, response.rampDownLoadBalancingAlgorithm());
-        Assertions.assertEquals(817459269, response.rampDownMinimumHostsPct());
-        Assertions.assertEquals(449882255, response.rampDownCapacityThresholdPct());
+        Assertions.assertEquals(DayOfWeek.THURSDAY, response.daysOfWeek().get(0));
+        Assertions.assertEquals(1468160039, response.rampUpStartTime().hour());
+        Assertions.assertEquals(1632066505, response.rampUpStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            response.rampUpLoadBalancingAlgorithm());
+        Assertions.assertEquals(966764042, response.rampUpMinimumHostsPct());
+        Assertions.assertEquals(771556133, response.rampUpCapacityThresholdPct());
+        Assertions.assertEquals(1743083802, response.peakStartTime().hour());
+        Assertions.assertEquals(761308188, response.peakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, response.peakLoadBalancingAlgorithm());
+        Assertions.assertEquals(1990405862, response.rampDownStartTime().hour());
+        Assertions.assertEquals(1925288663, response.rampDownStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            response.rampDownLoadBalancingAlgorithm());
+        Assertions.assertEquals(807094173, response.rampDownMinimumHostsPct());
+        Assertions.assertEquals(1845774986, response.rampDownCapacityThresholdPct());
         Assertions.assertEquals(false, response.rampDownForceLogoffUsers());
-        Assertions.assertEquals(StopHostsWhen.ZERO_ACTIVE_SESSIONS, response.rampDownStopHostsWhen());
-        Assertions.assertEquals(689120218, response.rampDownWaitTimeMinutes());
-        Assertions.assertEquals("rsxypruuu", response.rampDownNotificationMessage());
-        Assertions.assertEquals(694984034, response.offPeakStartTime().hour());
-        Assertions.assertEquals(1409089319, response.offPeakStartTime().minute());
-        Assertions
-            .assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST, response.offPeakLoadBalancingAlgorithm());
+        Assertions.assertEquals(StopHostsWhen.ZERO_SESSIONS, response.rampDownStopHostsWhen());
+        Assertions.assertEquals(982791914, response.rampDownWaitTimeMinutes());
+        Assertions.assertEquals("bjpsfxsfuztlvtm", response.rampDownNotificationMessage());
+        Assertions.assertEquals(175189485, response.offPeakStartTime().hour());
+        Assertions.assertEquals(1490631232, response.offPeakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            response.offPeakLoadBalancingAlgorithm());
     }
 }

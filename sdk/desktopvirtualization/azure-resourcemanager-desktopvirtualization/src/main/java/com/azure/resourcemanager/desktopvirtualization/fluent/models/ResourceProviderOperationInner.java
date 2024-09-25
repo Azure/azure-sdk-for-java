@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.OperationProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceProviderOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Supported operation of this resource provider. */
+/**
+ * Supported operation of this resource provider.
+ */
 @Fluent
-public final class ResourceProviderOperationInner {
+public final class ResourceProviderOperationInner implements JsonSerializable<ResourceProviderOperationInner> {
     /*
      * Operation name, in format of {provider}/{resource}/{operation}
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Display metadata associated with the operation.
      */
-    @JsonProperty(value = "display")
     private ResourceProviderOperationDisplay display;
 
     /*
      * Is a data action.
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /*
      * Properties of the operation
      */
-    @JsonProperty(value = "properties")
     private OperationProperties properties;
 
-    /** Creates an instance of ResourceProviderOperationInner class. */
+    /**
+     * Creates an instance of ResourceProviderOperationInner class.
+     */
     public ResourceProviderOperationInner() {
     }
 
     /**
      * Get the name property: Operation name, in format of {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +55,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Set the name property: Operation name, in format of {provider}/{resource}/{operation}.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceProviderOperationInner object itself.
      */
@@ -62,7 +66,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Get the display property: Display metadata associated with the operation.
-     *
+     * 
      * @return the display value.
      */
     public ResourceProviderOperationDisplay display() {
@@ -71,7 +75,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Set the display property: Display metadata associated with the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the ResourceProviderOperationInner object itself.
      */
@@ -82,7 +86,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Get the isDataAction property: Is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -91,7 +95,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Set the isDataAction property: Is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the ResourceProviderOperationInner object itself.
      */
@@ -102,7 +106,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Get the properties property: Properties of the operation.
-     *
+     * 
      * @return the properties value.
      */
     public OperationProperties properties() {
@@ -111,7 +115,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Set the properties property: Properties of the operation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ResourceProviderOperationInner object itself.
      */
@@ -122,7 +126,7 @@ public final class ResourceProviderOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -132,5 +136,53 @@ public final class ResourceProviderOperationInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderOperationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderOperationInner.
+     */
+    public static ResourceProviderOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderOperationInner deserializedResourceProviderOperationInner
+                = new ResourceProviderOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceProviderOperationInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedResourceProviderOperationInner.display
+                        = ResourceProviderOperationDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedResourceProviderOperationInner.isDataAction
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedResourceProviderOperationInner.properties = OperationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderOperationInner;
+        });
     }
 }
