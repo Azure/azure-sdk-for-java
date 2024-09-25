@@ -131,16 +131,26 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.apache.qpid</groupId>
-      <artifactId>qpid-jms-client</artifactId>
-      <version>2.0.0</version> <!-- {x-version-update;springboot3_org.apache.qpid:qpid-jms-client;external_dependency} -->
-      <optional>true</optional>
-    </dependency>
-    <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
       <version>3.1.6</version> <!-- {x-version-update;springboot3_org.messaginghub:pooled-jms;external_dependency} -->
       <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-servicebus-jms</artifactId>
+      <version>2.0.0</version> <!-- {x-version-update;com.azure:azure-servicebus-jms;external_dependency} -->
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-identity</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!-- Azure SDKs-->
@@ -525,6 +535,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.azure:azure-servicebus-jms:[2.0.0]</include> <!-- {x-include-update;com.azure:azure-servicebus-jms;external_dependency} -->
                 <include>com.mysql:mysql-connector-j:[8.3.0]</include> <!-- {x-include-update;springboot3_com.mysql:mysql-connector-j;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.17.2]</include> <!-- {x-include-update;springboot3_com.fasterxml.jackson.core:jackson-core;external_dependency} -->
