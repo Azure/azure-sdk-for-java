@@ -167,8 +167,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
                         content = BinaryData.fromObject(
                             reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
-                    } else if (reader.currentToken() == JsonToken.NULL) {
-                        content = null;
                     } else {
                         throw new IllegalStateException("Unexpected 'content' type found when deserializing"
                             + " ChatRequestUserMessage JSON object: " + reader.currentToken());
