@@ -63,6 +63,7 @@ import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
+import static com.azure.storage.blob.implementation.util.ModelHelper.wrapTimeoutServiceCallWithExceptionMapping;
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 import java.util.function.Consumer;
 
@@ -445,9 +446,9 @@ public final class BlobServiceClient {
         // Set up the include types based on the details provided in the options
         List<ListBlobContainersIncludeType> include = ModelHelper.toIncludeTypes(details);
 
-        Callable<PagedResponse<BlobContainerItem>> operation = () ->
+        Callable<PagedResponse<BlobContainerItem>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
             this.azureBlobStorage.getServices().listBlobContainersSegmentSinglePage(prefix, marker, maxResultsPerPage,
-                include, null, null, Context.NONE);
+                include, null, null, Context.NONE));
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 
