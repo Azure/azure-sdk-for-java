@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
-public class ProxySelectorTests extends TestProxyTestBase {
+public class ProxySelectorTests extends TestBase {
     @Ignore
     @Test
     public void proxySelectorConnectFailedInvokeTest() throws Exception {

@@ -15,7 +15,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-@LiveOnly
+// Package marked to be deprecated
+@LiveOnly()
 public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")

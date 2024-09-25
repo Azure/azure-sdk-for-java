@@ -29,7 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doThrow;
 
-@LiveOnly
+// Package marked to be deprecated
+@LiveOnly()
 public class DownloadContentLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest

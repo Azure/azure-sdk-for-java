@@ -78,7 +78,7 @@ public final class AzureMethodSourceArgumentsProvider
         // If the TEST_MODE is PLAYBACK or HttpClients are being ignored don't use HttpClients.
         List<HttpClient> httpClientsToUse = Collections.singletonList(null);
         if (!useHttpClientPermutation && TEST_MODE != TestMode.PLAYBACK) {
-            httpClientsToUse = TestProxyTestBase.getHttpClients().collect(Collectors.toList());
+            httpClientsToUse = TestBase.getHttpClients().collect(Collectors.toList());
         }
 
         boolean testAllServiceVersions

@@ -55,7 +55,7 @@ public class LookupTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupClass() {
-        TestProxyTestProxyTestBase.setupClass();
+        TestProxyTestBase.setupClass();
 
         if (TEST_MODE == TestMode.PLAYBACK) {
             return;

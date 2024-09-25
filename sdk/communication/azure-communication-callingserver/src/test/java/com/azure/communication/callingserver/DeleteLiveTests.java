@@ -17,7 +17,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@LiveOnly
+// Package marked to be deprecated
+@LiveOnly()
 public class DeleteLiveTests extends CallAutomationLiveTestBase {
 
     @ParameterizedTest

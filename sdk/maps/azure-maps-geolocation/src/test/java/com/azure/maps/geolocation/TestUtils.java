@@ -23,7 +23,7 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        return TestProxyTestProxyTestBase.getHttpClients()
+        return TestProxyTestBase.getHttpClients()
             .flatMap(httpClient -> Arrays.stream(GeolocationServiceVersion.values())
                 .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }

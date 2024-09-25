@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-public class EventTests extends TestProxyTestBase {
+public class EventTests extends TestBase {
 
     private static final String EVENT_NAME = "event";
     private static final BinaryData HELLO = BinaryData.fromString("text");

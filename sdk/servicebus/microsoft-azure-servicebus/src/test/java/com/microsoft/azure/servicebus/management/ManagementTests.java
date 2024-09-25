@@ -63,7 +63,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class ManagementTests extends TestProxyTestBase {
+public class ManagementTests extends TestBase {
 
     private ManagementClientAsync managementClientAsync;
 

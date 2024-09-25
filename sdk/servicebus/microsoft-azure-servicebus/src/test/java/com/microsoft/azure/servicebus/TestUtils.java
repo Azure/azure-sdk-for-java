@@ -18,7 +18,7 @@ import com.microsoft.azure.servicebus.primitives.Util;
 
 import junit.framework.AssertionFailedError;
 
-public class TestUtils extends TestProxyTestBase {
+public class TestUtils extends TestBase {
 
     private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_CONNECTION_STRING";
     public static final String FIRST_SUBSCRIPTION_NAME = "subscription1";

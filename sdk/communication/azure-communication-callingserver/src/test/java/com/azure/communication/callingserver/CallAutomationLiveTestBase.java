@@ -27,7 +27,8 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@LiveOnly
+// Package marked to be deprecated
+@LiveOnly()
 public class CallAutomationLiveTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(CallAutomationLiveTestBase.class);
 

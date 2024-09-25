@@ -10,6 +10,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -22,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 
+// Package marked to be deprecated
+@LiveOnly()
 public class PartiesClientTests extends TestProxyTestBase {
     private final String defaultEndpoint = "https://REDACTED.farmbeats.azure.net";
 

@@ -3,7 +3,7 @@
 
 package com.microsoft.azure.servicebus;
 
-public abstract class Tests extends TestProxyTestBase {
+public abstract class Tests extends TestBase {
     public abstract String getEntityNamePrefix();
 
     public abstract boolean isEntityQueue();
