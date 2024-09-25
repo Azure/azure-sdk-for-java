@@ -240,7 +240,7 @@ public void createManagedIdentityCredentialWithResourceId() {
 ```
 
 ```java
-public void createManagedIdentityCredentialWithObject() {
+public void createManagedIdentityCredentialWithObjectId() {
     ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
         .objectId("<USER-ASSIGNED MANAGED IDENTITY OBJECT ID>") // only required for user-assigned
         .build();
