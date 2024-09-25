@@ -20,10 +20,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+
+import static java.util.Collections.singletonMap;
 
 /**
  * Auto-configuration for Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
@@ -35,7 +36,7 @@ class AzureSpringMonitorAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfiguration.class);
 
-    private static final AutoConfigurationCustomizerProvider DISABLE_OTEL_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> Collections.singletonMap("otel.sdk.disabled", "true"));
+    private static final AutoConfigurationCustomizerProvider DISABLE_OTEL_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> singletonMap("otel.sdk.disabled", "true"));
 
     private static final AutoConfigurationCustomizerProvider NO_EXPORT_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> new HashMap<String, String>(3) {{
         put("otel.traces.exporter", "none");
