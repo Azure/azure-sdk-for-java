@@ -1,16 +1,125 @@
 # Release History
 
-## 1.0.0-beta.1 (2024-09-25)
+## 1.0.0-beta.2 (2024-09-25)
 
 - Azure Resource Manager Standby Pool client library for Java. This package contains Microsoft Azure SDK for Standby Pool Management SDK. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
+* `implementation.models.PagedOperation` was removed
 
-### Other Changes
+### Features Added
+
+* `implementation.models.StandbyContainerGroupPoolRuntimeViewResourceListResult` was added
+
+* `models.StandbyContainerGroupPoolRuntimeViewResource` was added
+
+* `models.StandbyContainerGroupPoolRuntimeViews` was added
+
+* `implementation.models.OperationListResult` was added
+
+* `models.VirtualMachineInstanceCountSummary` was added
+
+* `models.StandbyVirtualMachinePoolRuntimeViews` was added
+
+* `models.StandbyVirtualMachinePoolRuntimeViewResourceProperties` was added
+
+* `models.ContainerGroupInstanceCountSummary` was added
+
+* `models.PoolResourceStateCount` was added
+
+* `implementation.models.StandbyVirtualMachinePoolRuntimeViewResourceListResult` was added
+
+* `models.StandbyVirtualMachinePoolRuntimeViewResource` was added
+
+* `models.StandbyContainerGroupPoolRuntimeViewResourceProperties` was added
+
+#### `models.StandbyVirtualMachinePoolElasticityProfile` was modified
+
+* `minReadyCapacity()` was added
+* `withMinReadyCapacity(java.lang.Long)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StandbyContainerGroupPoolResourceProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `implementation.models.StandbyVirtualMachineResourceListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `implementation.models.StandbyContainerGroupPoolResourceListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `StandbyPoolManager` was modified
+
+* `standbyVirtualMachinePoolRuntimeViews()` was added
+* `standbyContainerGroupPoolRuntimeViews()` was added
+
+#### `models.StandbyVirtualMachinePoolResourceUpdateProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StandbyVirtualMachineResourceProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StandbyVirtualMachinePoolResourceProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ContainerGroupProperties` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `implementation.models.StandbyVirtualMachinePoolResourceListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StandbyContainerGroupPoolResourceUpdateProperties` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StandbyContainerGroupPoolResourceUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Subnet` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StandbyVirtualMachinePoolResourceUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StandbyContainerGroupPoolElasticityProfile` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ContainerGroupProfile` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
 
 ## 1.0.0-beta.1 (2024-04-25)
 
