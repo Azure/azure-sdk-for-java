@@ -4,6 +4,7 @@
 package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
@@ -51,5 +52,21 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
 
         // Act & Assert
         assertNotNull(credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default")));
+    }
+
+    @Test
+    @LiveOnly
+    public void noRedirectOnFailure() {
+        AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder()
+            .clientId(clientId)
+            .tenantId(tenantId)
+            .serviceConnectionId(serviceConnectionId)
+            .systemAccessToken("InvalidToken")
+            .build();
+
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+            .expectErrorMatches(throwable ->
+                ((ClientAuthenticationException) throwable.getCause()).getResponse().getStatusCode() == 401
+            ).verify();
     }
 }
