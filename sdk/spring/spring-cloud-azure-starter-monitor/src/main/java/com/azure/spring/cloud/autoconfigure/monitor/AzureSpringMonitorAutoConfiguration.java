@@ -65,7 +65,7 @@ class AzureSpringMonitorAutoConfiguration {
     }
 
     @Bean
-    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider(@Value("${applicationinsights.connection.string:}") String connectionString, ObjectProvider<AzureMonitorExporterBuilder> azureMonitorExporterBuilder) {
+    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider(@Value("${applicationinsights.connection.string:#{null}}") String connectionString, ObjectProvider<AzureMonitorExporterBuilder> azureMonitorExporterBuilder) {
 
         if (!isNativeRuntimeExecution() && applicationInsightsAgentIsAttached()) {
             LOG.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
@@ -75,16 +75,16 @@ class AzureSpringMonitorAutoConfiguration {
 
         AzureMonitorExporterBuilder providedAzureMonitorExporterBuilder = azureMonitorExporterBuilder.getIfAvailable();
         if (providedAzureMonitorExporterBuilder != null) {
-            if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null && System.getProperty("applicationinsights.connection.string") == null && !connectionString.isEmpty()) {
+            if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null && System.getProperty("applicationinsights.connection.string") == null && (connectionString != null && !connectionString.isEmpty())) {
                 LOG.warn("You have created an AzureMonitorExporterBuilder bean and set the applicationinsights.connection.string property in a .properties or .yml file."
                     + " This property is ignored.");
             }
-            // The AzureMonitor class (OpenTelemetry exporter library) is able to use the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable
+            // The AzureMonitor class (OpenTelemetry exporter library) is able to use the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable or the applicationinsights.connection.string JVM property
             return autoConfigurationCustomizer -> AzureMonitor.customize(autoConfigurationCustomizer, providedAzureMonitorExporterBuilder);
         }
 
-        if (connectionString.isEmpty()) {
-            LOG.warn("Unable to find the Application Insights connection string (applicationinsights.connection.string property system property or APPLICATIONINSIGHTS_CONNECTION_STRING environment variable). The telemetry data won't be sent to Azure."
+        if (connectionString == null || connectionString.isEmpty()) {
+            LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure."
                 + " If you want to disable the spring-cloud-azure-starter-monitor Spring starter and not display this warning, set the otel.sdk.disabled=true property.");
             // If the user does not provide a connection, we disable the export and leave the instrumentation enabled to spot potential failures from
             // the instrumentation, with the customer automatic tests for example.
