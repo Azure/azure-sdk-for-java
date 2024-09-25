@@ -29,6 +29,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -609,14 +610,18 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void queryChangeFeed(String[] changedOptions) {
+
+        CosmosAsyncClient client = getClientBuilder().preferredRegions(Arrays.asList("East US 2")).buildAsyncClient();
+        CosmosAsyncContainer newContainer = getSharedMultiPartitionCosmosContainer(client);
+
         int numInserted = 20;
         for (int i = 0; i < numInserted; i++) {
             String id = UUID.randomUUID().toString();
-            container.createItem(getDocumentDefinition(id)).block();
+            newContainer.createItem(getDocumentDefinition(id)).block();
         }
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromBeginning(FeedRange.forFullRange());
-        Iterator<FeedResponse<InternalObjectNode>> responseIterator = container.queryChangeFeed(options, InternalObjectNode.class).byPage()
+        Iterator<FeedResponse<InternalObjectNode>> responseIterator = newContainer.queryChangeFeed(options, InternalObjectNode.class).byPage()
             .toIterable().iterator();
         String continuationToken = "";
         while (responseIterator.hasNext()) {
@@ -631,12 +636,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         for (int i = 0; i < numInserted; i++) {
             String id = UUID.randomUUID().toString();
-            container.createItem(getDocumentDefinition(id)).block();
+            newContainer.createItem(getDocumentDefinition(id)).block();
         }
 
         options = CosmosChangeFeedRequestOptions
             .createForProcessingFromContinuation(continuationToken);
-        responseIterator = container.queryChangeFeed(options, InternalObjectNode.class).byPage()
+        responseIterator = newContainer.queryChangeFeed(options, InternalObjectNode.class).byPage()
             .toIterable().iterator();
         int totalResults = 0;
         while (responseIterator.hasNext()) {
@@ -646,6 +651,46 @@ public class OperationPoliciesTest extends TestSuiteBase {
             validateOptions(changedOptions, response, true, false);
         }
         assertThat(totalResults).isEqualTo(numInserted);
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void queryRegression() {
+        CosmosAsyncClient client = getClientBuilder().preferredRegions(Arrays.asList("East US 2")).buildAsyncClient();
+        CosmosAsyncDatabase newDatabase = client.getDatabase("RxJava.SDKTest.SharedDatabase_20240925T184757_cVk");
+        CosmosAsyncContainer newContainer = newDatabase.getContainer("637f83c5-944b-41ed-a7f1-8b079d9329f4");
+
+        String query = "SELECT * FROM C";
+
+        CosmosPagedFlux<InternalObjectNode> pagedFlux
+            = newContainer.queryItems(query, InternalObjectNode.class);
+
+        pagedFlux
+            .byPage()
+            .flatMap(internalObjectNodeFeedResponse -> {
+                logger.info("Response : {}", internalObjectNodeFeedResponse.getResults().get(0).getId());
+                logger.info("Response size : {}", internalObjectNodeFeedResponse.getResults().size());
+                return Flux.just(internalObjectNodeFeedResponse);
+            })
+            .blockLast();
+    }
+
+    @Test(groups = { "fast" }, timeOut = TIMEOUT)
+    public void queryChangeFeedRegression() {
+        CosmosAsyncClient client = getClientBuilder().preferredRegions(Arrays.asList("East US 2")).buildAsyncClient();
+        CosmosAsyncDatabase newDatabase = client.getDatabase("RxJava.SDKTest.SharedDatabase_20240925T184757_cVk");
+        CosmosAsyncContainer newContainer = newDatabase.getContainer("637f83c5-944b-41ed-a7f1-8b079d9329f4");
+
+        CosmosPagedFlux<InternalObjectNode> pagedFlux
+            = newContainer.queryChangeFeed(CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange()), InternalObjectNode.class);
+
+        pagedFlux
+            .byPage()
+            .flatMap(internalObjectNodeFeedResponse -> {
+                logger.info("Response : {}", internalObjectNodeFeedResponse.getResults().get(0).getId());
+                logger.info("Response size : {}", internalObjectNodeFeedResponse.getResults().size());
+                return Flux.just(internalObjectNodeFeedResponse);
+            })
+            .blockLast();
     }
 
     private InternalObjectNode getDocumentDefinition(String documentId) {
