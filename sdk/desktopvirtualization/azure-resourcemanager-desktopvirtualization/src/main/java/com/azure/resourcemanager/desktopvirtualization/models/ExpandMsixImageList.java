@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ExpandMsixImageInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ExpandMsixImageList
- *
- * <p>List of MSIX package properties retrieved from MSIX Image expansion.
+ * 
+ * List of MSIX package properties retrieved from MSIX Image expansion.
  */
 @Fluent
-public final class ExpandMsixImageList {
+public final class ExpandMsixImageList implements JsonSerializable<ExpandMsixImageList> {
     /*
      * List of MSIX package properties from give MSIX Image.
      */
-    @JsonProperty(value = "value")
     private List<ExpandMsixImageInner> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ExpandMsixImageList class. */
+    /**
+     * Creates an instance of ExpandMsixImageList class.
+     */
     public ExpandMsixImageList() {
     }
 
     /**
      * Get the value property: List of MSIX package properties from give MSIX Image.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpandMsixImageInner> value() {
@@ -43,7 +47,7 @@ public final class ExpandMsixImageList {
 
     /**
      * Set the value property: List of MSIX package properties from give MSIX Image.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpandMsixImageList object itself.
      */
@@ -54,7 +58,7 @@ public final class ExpandMsixImageList {
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,12 +67,52 @@ public final class ExpandMsixImageList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpandMsixImageList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpandMsixImageList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpandMsixImageList.
+     */
+    public static ExpandMsixImageList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpandMsixImageList deserializedExpandMsixImageList = new ExpandMsixImageList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ExpandMsixImageInner> value
+                        = reader.readArray(reader1 -> ExpandMsixImageInner.fromJson(reader1));
+                    deserializedExpandMsixImageList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedExpandMsixImageList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpandMsixImageList;
+        });
     }
 }
