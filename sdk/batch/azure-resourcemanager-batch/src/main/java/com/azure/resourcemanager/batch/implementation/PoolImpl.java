@@ -48,12 +48,21 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         return this.innerModel().type();
     }
 
-    public BatchPoolIdentity identity() {
-        return this.innerModel().identity();
-    }
-
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public BatchPoolIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public String displayName() {
@@ -238,14 +247,20 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool create() {
-        this.innerObject = serviceManager.serviceClient().getPools().createWithResponse(resourceGroupName, accountName,
-            poolName, this.innerModel(), createIfMatch, createIfNoneMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createWithResponse(resourceGroupName, accountName, poolName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Pool create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools().createWithResponse(resourceGroupName, accountName,
-            poolName, this.innerModel(), createIfMatch, createIfNoneMatch, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .createWithResponse(resourceGroupName, accountName, poolName, this.innerModel(), createIfMatch,
+                createIfNoneMatch, context)
+            .getValue();
         return this;
     }
 
@@ -263,13 +278,17 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool apply() {
-        this.innerObject = serviceManager.serviceClient().getPools().updateWithResponse(resourceGroupName, accountName,
-            poolName, this.innerModel(), updateIfMatch, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .updateWithResponse(resourceGroupName, accountName, poolName, this.innerModel(), updateIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Pool apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools()
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
             .updateWithResponse(resourceGroupName, accountName, poolName, this.innerModel(), updateIfMatch, context)
             .getValue();
         return this;
@@ -284,14 +303,18 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
     }
 
     public Pool refresh() {
-        this.innerObject = serviceManager.serviceClient().getPools()
-            .getWithResponse(resourceGroupName, accountName, poolName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, accountName, poolName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Pool refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPools()
-            .getWithResponse(resourceGroupName, accountName, poolName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPools()
+            .getWithResponse(resourceGroupName, accountName, poolName, context)
+            .getValue();
         return this;
     }
 
@@ -309,6 +332,11 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public Pool stopResize() {
         return serviceManager.pools().stopResize(resourceGroupName, accountName, poolName);
+    }
+
+    public PoolImpl withTags(Map<String, String> tags) {
+        this.innerModel().withTags(tags);
+        return this;
     }
 
     public PoolImpl withIdentity(BatchPoolIdentity identity) {

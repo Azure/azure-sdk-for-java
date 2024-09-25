@@ -6,48 +6,41 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information used to connect to an Azure Fileshare.
  */
 @Fluent
-public final class AzureFileShareConfiguration {
+public final class AzureFileShareConfiguration implements JsonSerializable<AzureFileShareConfiguration> {
     /*
      * The Azure Storage account name.
      */
-    @JsonProperty(value = "accountName", required = true)
     private String accountName;
 
     /*
-     * The Azure Files URL.
-     * 
      * This is of the form 'https://{account}.file.core.windows.net/'.
      */
-    @JsonProperty(value = "azureFileUrl", required = true)
     private String azureFileUrl;
 
     /*
      * The Azure Storage account key.
      */
-    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /*
-     * The relative path on the compute node where the file system will be mounted
-     * 
      * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
      * environment variable.
      */
-    @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /*
-     * Additional command line options to pass to the mount command.
-     * 
      * These are 'net use' options in Windows and 'mount' options in Linux.
      */
-    @JsonProperty(value = "mountOptions")
     private String mountOptions;
 
     /**
@@ -77,9 +70,7 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Get the azureFileUrl property: The Azure Files URL.
-     * 
-     * This is of the form 'https://{account}.file.core.windows.net/'.
+     * Get the azureFileUrl property: This is of the form 'https://{account}.file.core.windows.net/'.
      * 
      * @return the azureFileUrl value.
      */
@@ -88,9 +79,7 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Set the azureFileUrl property: The Azure Files URL.
-     * 
-     * This is of the form 'https://{account}.file.core.windows.net/'.
+     * Set the azureFileUrl property: This is of the form 'https://{account}.file.core.windows.net/'.
      * 
      * @param azureFileUrl the azureFileUrl value to set.
      * @return the AzureFileShareConfiguration object itself.
@@ -121,10 +110,8 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Get the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * 
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     * Get the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
+     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      * 
      * @return the relativeMountPath value.
      */
@@ -133,10 +120,8 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Set the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     * 
-     * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
-     * environment variable.
+     * Set the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
+     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
      * 
      * @param relativeMountPath the relativeMountPath value to set.
      * @return the AzureFileShareConfiguration object itself.
@@ -147,9 +132,7 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Get the mountOptions property: Additional command line options to pass to the mount command.
-     * 
-     * These are 'net use' options in Windows and 'mount' options in Linux.
+     * Get the mountOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
      * 
      * @return the mountOptions value.
      */
@@ -158,9 +141,7 @@ public final class AzureFileShareConfiguration {
     }
 
     /**
-     * Set the mountOptions property: Additional command line options to pass to the mount command.
-     * 
-     * These are 'net use' options in Windows and 'mount' options in Linux.
+     * Set the mountOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
      * 
      * @param mountOptions the mountOptions value to set.
      * @return the AzureFileShareConfiguration object itself.
@@ -177,22 +158,75 @@ public final class AzureFileShareConfiguration {
      */
     public void validate() {
         if (accountName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property accountName in model AzureFileShareConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountName in model AzureFileShareConfiguration"));
         }
         if (azureFileUrl() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property azureFileUrl in model AzureFileShareConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property azureFileUrl in model AzureFileShareConfiguration"));
         }
         if (accountKey() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property accountKey in model AzureFileShareConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accountKey in model AzureFileShareConfiguration"));
         }
         if (relativeMountPath() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property relativeMountPath in model AzureFileShareConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relativeMountPath in model AzureFileShareConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureFileShareConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("azureFileUrl", this.azureFileUrl);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("relativeMountPath", this.relativeMountPath);
+        jsonWriter.writeStringField("mountOptions", this.mountOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureFileShareConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureFileShareConfiguration if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureFileShareConfiguration.
+     */
+    public static AzureFileShareConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureFileShareConfiguration deserializedAzureFileShareConfiguration = new AzureFileShareConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedAzureFileShareConfiguration.accountName = reader.getString();
+                } else if ("azureFileUrl".equals(fieldName)) {
+                    deserializedAzureFileShareConfiguration.azureFileUrl = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedAzureFileShareConfiguration.accountKey = reader.getString();
+                } else if ("relativeMountPath".equals(fieldName)) {
+                    deserializedAzureFileShareConfiguration.relativeMountPath = reader.getString();
+                } else if ("mountOptions".equals(fieldName)) {
+                    deserializedAzureFileShareConfiguration.mountOptions = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureFileShareConfiguration;
+        });
+    }
 }

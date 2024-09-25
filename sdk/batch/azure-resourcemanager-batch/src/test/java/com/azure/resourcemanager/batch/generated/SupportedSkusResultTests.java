@@ -13,14 +13,13 @@ public final class SupportedSkusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SupportedSkusResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"urzafb\",\"familyName\":\"j\",\"capabilities\":[{\"name\":\"oq\",\"value\":\"mkljavb\"},{\"name\":\"dtqajzyulpkudj\",\"value\":\"lkhbz\"},{\"name\":\"epgzgqexz\",\"value\":\"c\"},{\"name\":\"c\",\"value\":\"ierhhbcsglummaj\"}],\"batchSupportEndOfLife\":\"2021-08-25T02:16:19Z\"},{\"name\":\"dxob\",\"familyName\":\"dxkqpx\",\"capabilities\":[{\"name\":\"ionpimexg\",\"value\":\"xgcp\"},{\"name\":\"gmaajrm\",\"value\":\"jwzrl\"},{\"name\":\"mcl\",\"value\":\"ijcoejctb\"},{\"name\":\"qsqsy\",\"value\":\"kbfkg\"}],\"batchSupportEndOfLife\":\"2021-04-20T10:26:18Z\"},{\"name\":\"exxppofmxaxcfjp\",\"familyName\":\"dtocj\",\"capabilities\":[{\"name\":\"pmouexhdz\",\"value\":\"bqe\"},{\"name\":\"nxqbzvddn\",\"value\":\"ndei\"}],\"batchSupportEndOfLife\":\"2021-07-03T11:10:37Z\"},{\"name\":\"npzaoq\",\"familyName\":\"hrhcffcyddglmjth\",\"capabilities\":[{\"name\":\"pyeicxm\",\"value\":\"iwqvhkh\"}],\"batchSupportEndOfLife\":\"2021-04-08T23:48:15Z\"}],\"nextLink\":\"gdtopbobjogh\"}")
+            "{\"value\":[{\"name\":\"m\",\"familyName\":\"hrzayvvtpgvdf\",\"capabilities\":[{\"name\":\"kftutqxlngxlefg\",\"value\":\"nxkrx\"},{\"name\":\"mi\",\"value\":\"thz\"},{\"name\":\"qdrabhjybigehoqf\",\"value\":\"wska\"},{\"name\":\"ktzlcuiywg\",\"value\":\"wgndrvynhzgpp\"}],\"batchSupportEndOfLife\":\"2021-11-30T12:13:07Z\"}],\"nextLink\":\"yncocpecfvmmcoo\"}")
             .toObject(SupportedSkusResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedSkusResult model = new SupportedSkusResult().withValue(Arrays.asList(new SupportedSkuInner(),
-            new SupportedSkuInner(), new SupportedSkuInner(), new SupportedSkuInner()));
+        SupportedSkusResult model = new SupportedSkusResult().withValue(Arrays.asList(new SupportedSkuInner()));
         model = BinaryData.fromObject(model).toObject(SupportedSkusResult.class);
     }
 }
