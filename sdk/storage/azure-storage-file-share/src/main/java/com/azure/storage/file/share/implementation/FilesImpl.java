@@ -1677,40 +1677,40 @@ public final class FilesImpl {
         String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String leaseId,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
-        final String fileTypeConstant = "file";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String fileTypeConstant = "file";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.createSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
                 timeout, this.client.getVersion(), fileContentLength, fileTypeConstant, contentType, contentEncoding,
                 contentLanguage, cacheControl, contentMd5Converted, contentDisposition, metadata, filePermission,
@@ -1803,40 +1803,40 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
-        final String fileTypeConstant = "file";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String fileTypeConstant = "file";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), fileContentLength,
                 fileTypeConstant, contentType, contentEncoding, contentLanguage, cacheControl, contentMd5Converted,
@@ -2034,8 +2034,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesDownloadHeaders, InputStream> downloadWithResponse(String shareName, String fileName,
         Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.downloadSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
                 timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2093,8 +2093,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> downloadNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.downloadNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2288,8 +2288,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesGetPropertiesHeaders, Void> getPropertiesWithResponse(String shareName, String fileName,
         String sharesnapshot, Integer timeout, String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(), leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2341,8 +2341,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String shareName, String fileName,
         String sharesnapshot, Integer timeout, String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), sharesnapshot, timeout, this.client.getVersion(), leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2512,8 +2512,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesDeleteHeaders, Void> deleteWithResponse(String shareName, String fileName, Integer timeout,
         String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
                 timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -2557,8 +2557,8 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         String leaseId, Context context) {
-        final String accept = "application/xml";
         try {
+            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
                 this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), leaseId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -3023,40 +3023,40 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.setHttpHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
                 cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
@@ -3149,40 +3149,40 @@ public final class FilesImpl {
         FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
         String fileLastWriteTime, String fileChangeTime, String leaseId, ShareFileHttpHeaders shareFileHttpHeaders,
         Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String cacheControlInternal = null;
-        if (shareFileHttpHeaders != null) {
-            cacheControlInternal = shareFileHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        byte[] contentMd5Internal = null;
-        if (shareFileHttpHeaders != null) {
-            contentMd5Internal = shareFileHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentEncodingInternal = shareFileHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentLanguageInternal = shareFileHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String cacheControlInternal = null;
+            if (shareFileHttpHeaders != null) {
+                cacheControlInternal = shareFileHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            byte[] contentMd5Internal = null;
+            if (shareFileHttpHeaders != null) {
+                contentMd5Internal = shareFileHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentDispositionInternal = shareFileHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
             return service.setHttpHeadersNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), fileContentLength, contentType, contentEncoding, contentLanguage,
                 cacheControl, contentMd5Converted, contentDisposition, filePermission, filePermissionFormat,
@@ -3765,10 +3765,10 @@ public final class FilesImpl {
     public ResponseBase<FilesUploadRangeHeaders, Void> uploadRangeWithResponse(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
         String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         try {
+            final String comp = "range";
+            final String accept = "application/xml";
+            String contentMD5Converted = Base64Util.encodeToString(contentMD5);
             return service.uploadRangeSync(this.client.getUrl(), shareName, fileName, comp, timeout, range,
                 fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
                 fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
@@ -3852,10 +3852,10 @@ public final class FilesImpl {
     public Response<Void> uploadRangeNoCustomHeadersWithResponse(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
         FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
-        final String comp = "range";
-        final String accept = "application/xml";
-        String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         try {
+            final String comp = "range";
+            final String accept = "application/xml";
+            String contentMD5Converted = Base64Util.encodeToString(contentMD5);
             return service.uploadRangeNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
                 fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
@@ -4040,9 +4040,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesSetMetadataHeaders, Void> setMetadataWithResponse(String shareName, String fileName,
         Integer timeout, Map<String, String> metadata, String leaseId, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataSync(this.client.getUrl(), shareName, fileName, comp, timeout, metadata,
                 this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
                 accept, context);
@@ -4090,9 +4090,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         Map<String, String> metadata, String leaseId, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 metadata, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4323,10 +4323,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesAcquireLeaseHeaders, Void> acquireLeaseWithResponse(String shareName, String fileName,
         Integer timeout, Integer duration, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String accept = "application/xml";
             return service.acquireLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, duration,
                 proposedLeaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4386,10 +4386,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> acquireLeaseNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         Integer duration, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String accept = "application/xml";
             return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, duration, proposedLeaseId, this.client.getVersion(), requestId,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -4585,10 +4585,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesReleaseLeaseHeaders, Void> releaseLeaseWithResponse(String shareName, String fileName,
         String leaseId, Integer timeout, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String accept = "application/xml";
             return service.releaseLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, leaseId,
                 this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4637,10 +4637,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseNoCustomHeadersWithResponse(String shareName, String fileName, String leaseId,
         Integer timeout, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String accept = "application/xml";
             return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4857,10 +4857,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesChangeLeaseHeaders, Void> changeLeaseWithResponse(String shareName, String fileName,
         String leaseId, Integer timeout, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String accept = "application/xml";
             return service.changeLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, leaseId,
                 proposedLeaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4916,10 +4916,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> changeLeaseNoCustomHeadersWithResponse(String shareName, String fileName, String leaseId,
         Integer timeout, String proposedLeaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String accept = "application/xml";
             return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, leaseId, proposedLeaseId, this.client.getVersion(), requestId,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), accept, context);
@@ -5115,10 +5115,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesBreakLeaseHeaders, Void> breakLeaseWithResponse(String shareName, String fileName,
         Integer timeout, String leaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String accept = "application/xml";
             return service.breakLeaseSync(this.client.getUrl(), shareName, fileName, comp, action, timeout, leaseId,
                 this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -5167,10 +5167,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> breakLeaseNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
         String leaseId, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String accept = "application/xml";
             return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, action,
                 timeout, leaseId, this.client.getVersion(), requestId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -5546,23 +5546,23 @@ public final class FilesImpl {
         byte[] sourceContentCrc64, String leaseId, String copySourceAuthorization,
         FileLastWrittenMode fileLastWrittenMode, SourceModifiedAccessConditions sourceModifiedAccessConditions,
         Context context) {
-        final String comp = "range";
-        final String fileRangeWriteFromUrl = "update";
-        final String accept = "application/xml";
-        byte[] sourceIfMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
-        }
-        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
-        byte[] sourceIfNoneMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
-        }
-        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
-        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
-        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
-        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
         try {
+            final String comp = "range";
+            final String fileRangeWriteFromUrl = "update";
+            final String accept = "application/xml";
+            byte[] sourceIfMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
+            }
+            byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
+            byte[] sourceIfNoneMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
+            }
+            byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
+            String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
+            String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
+            String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
             return service.uploadRangeFromURLSync(this.client.getUrl(), shareName, fileName, comp, timeout, range,
                 copySource, sourceRange, fileRangeWriteFromUrl, contentLength, sourceContentCrc64Converted,
                 sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted, this.client.getVersion(), leaseId,
@@ -5648,23 +5648,23 @@ public final class FilesImpl {
         String copySource, long contentLength, Integer timeout, String sourceRange, byte[] sourceContentCrc64,
         String leaseId, String copySourceAuthorization, FileLastWrittenMode fileLastWrittenMode,
         SourceModifiedAccessConditions sourceModifiedAccessConditions, Context context) {
-        final String comp = "range";
-        final String fileRangeWriteFromUrl = "update";
-        final String accept = "application/xml";
-        byte[] sourceIfMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
-        }
-        byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
-        byte[] sourceIfNoneMatchCrc64Internal = null;
-        if (sourceModifiedAccessConditions != null) {
-            sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
-        }
-        byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
-        String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
-        String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
-        String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
         try {
+            final String comp = "range";
+            final String fileRangeWriteFromUrl = "update";
+            final String accept = "application/xml";
+            byte[] sourceIfMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfMatchCrc64();
+            }
+            byte[] sourceIfMatchCrc64 = sourceIfMatchCrc64Internal;
+            byte[] sourceIfNoneMatchCrc64Internal = null;
+            if (sourceModifiedAccessConditions != null) {
+                sourceIfNoneMatchCrc64Internal = sourceModifiedAccessConditions.getSourceIfNoneMatchCrc64();
+            }
+            byte[] sourceIfNoneMatchCrc64 = sourceIfNoneMatchCrc64Internal;
+            String sourceContentCrc64Converted = Base64Util.encodeToString(sourceContentCrc64);
+            String sourceIfMatchCrc64Converted = Base64Util.encodeToString(sourceIfMatchCrc64);
+            String sourceIfNoneMatchCrc64Converted = Base64Util.encodeToString(sourceIfNoneMatchCrc64);
             return service.uploadRangeFromURLNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 timeout, range, copySource, sourceRange, fileRangeWriteFromUrl, contentLength,
                 sourceContentCrc64Converted, sourceIfMatchCrc64Converted, sourceIfNoneMatchCrc64Converted,
@@ -5923,9 +5923,9 @@ public final class FilesImpl {
     public ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> getRangeListWithResponse(String shareName,
         String fileName, String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, Context context) {
-        final String comp = "rangelist";
-        final String accept = "application/xml";
         try {
+            final String comp = "rangelist";
+            final String accept = "application/xml";
             return service.getRangeListSync(this.client.getUrl(), shareName, fileName, comp, sharesnapshot,
                 prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), supportRename, accept, context);
@@ -5998,9 +5998,9 @@ public final class FilesImpl {
     public Response<ShareFileRangeList> getRangeListNoCustomHeadersWithResponse(String shareName, String fileName,
         String sharesnapshot, String prevsharesnapshot, Integer timeout, String range, String leaseId,
         Boolean supportRename, Context context) {
-        final String comp = "rangelist";
-        final String accept = "application/xml";
         try {
+            final String comp = "rangelist";
+            final String accept = "application/xml";
             return service.getRangeListNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 sharesnapshot, prevsharesnapshot, timeout, this.client.getVersion(), range, leaseId,
                 this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), supportRename, accept, context);
@@ -6429,43 +6429,43 @@ public final class FilesImpl {
     public ResponseBase<FilesStartCopyHeaders, Void> startCopyWithResponse(String shareName, String fileName,
         String copySource, Integer timeout, Map<String, String> metadata, String filePermission,
         String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
-        final String accept = "application/xml";
-        PermissionCopyModeType filePermissionCopyModeInternal = null;
-        if (copyFileSmbInfo != null) {
-            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-        }
-        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-        Boolean ignoreReadOnlyInternal = null;
-        if (copyFileSmbInfo != null) {
-            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-        }
-        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        Boolean setArchiveAttributeInternal = null;
-        if (copyFileSmbInfo != null) {
-            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-        }
-        Boolean setArchiveAttribute = setArchiveAttributeInternal;
         try {
+            final String accept = "application/xml";
+            PermissionCopyModeType filePermissionCopyModeInternal = null;
+            if (copyFileSmbInfo != null) {
+                filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
+            }
+            PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
+            Boolean ignoreReadOnlyInternal = null;
+            if (copyFileSmbInfo != null) {
+                ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
+            }
+            Boolean ignoreReadOnly = ignoreReadOnlyInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            Boolean setArchiveAttributeInternal = null;
+            if (copyFileSmbInfo != null) {
+                setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
+            }
+            Boolean setArchiveAttribute = setArchiveAttributeInternal;
             return service.startCopySync(this.client.getUrl(), shareName, fileName, timeout, this.client.getVersion(),
                 metadata, copySource, filePermission, filePermissionKey, filePermissionCopyMode, ignoreReadOnly,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, setArchiveAttribute, leaseId,
@@ -6544,43 +6544,43 @@ public final class FilesImpl {
     public Response<Void> startCopyNoCustomHeadersWithResponse(String shareName, String fileName, String copySource,
         Integer timeout, Map<String, String> metadata, String filePermission, String filePermissionKey, String leaseId,
         CopyFileSmbInfo copyFileSmbInfo, Context context) {
-        final String accept = "application/xml";
-        PermissionCopyModeType filePermissionCopyModeInternal = null;
-        if (copyFileSmbInfo != null) {
-            filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
-        }
-        PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
-        Boolean ignoreReadOnlyInternal = null;
-        if (copyFileSmbInfo != null) {
-            ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
-        }
-        Boolean ignoreReadOnly = ignoreReadOnlyInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        Boolean setArchiveAttributeInternal = null;
-        if (copyFileSmbInfo != null) {
-            setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
-        }
-        Boolean setArchiveAttribute = setArchiveAttributeInternal;
         try {
+            final String accept = "application/xml";
+            PermissionCopyModeType filePermissionCopyModeInternal = null;
+            if (copyFileSmbInfo != null) {
+                filePermissionCopyModeInternal = copyFileSmbInfo.getFilePermissionCopyMode();
+            }
+            PermissionCopyModeType filePermissionCopyMode = filePermissionCopyModeInternal;
+            Boolean ignoreReadOnlyInternal = null;
+            if (copyFileSmbInfo != null) {
+                ignoreReadOnlyInternal = copyFileSmbInfo.isIgnoreReadOnly();
+            }
+            Boolean ignoreReadOnly = ignoreReadOnlyInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            Boolean setArchiveAttributeInternal = null;
+            if (copyFileSmbInfo != null) {
+                setArchiveAttributeInternal = copyFileSmbInfo.isSetArchiveAttribute();
+            }
+            Boolean setArchiveAttribute = setArchiveAttributeInternal;
             return service.startCopyNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, timeout,
                 this.client.getVersion(), metadata, copySource, filePermission, filePermissionKey,
                 filePermissionCopyMode, ignoreReadOnly, fileAttributes, fileCreationTime, fileLastWriteTime,
@@ -6771,10 +6771,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesAbortCopyHeaders, Void> abortCopyWithResponse(String shareName, String fileName,
         String copyId, Integer timeout, String leaseId, Context context) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         try {
+            final String comp = "copy";
+            final String copyActionAbortConstant = "abort";
+            final String accept = "application/xml";
             return service.abortCopySync(this.client.getUrl(), shareName, fileName, comp, copyId, timeout,
                 copyActionAbortConstant, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -6821,10 +6821,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyNoCustomHeadersWithResponse(String shareName, String fileName, String copyId,
         Integer timeout, String leaseId, Context context) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         try {
+            final String comp = "copy";
+            final String copyActionAbortConstant = "abort";
+            final String accept = "application/xml";
             return service.abortCopyNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, copyId,
                 timeout, copyActionAbortConstant, this.client.getVersion(), leaseId, this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7052,9 +7052,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesListHandlesHeaders, ListHandlesResponse> listHandlesWithResponse(String shareName,
         String fileName, String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
-        final String comp = "listhandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "listhandles";
+            final String accept = "application/xml";
             return service.listHandlesSync(this.client.getUrl(), shareName, fileName, comp, marker, maxresults, timeout,
                 sharesnapshot, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7120,9 +7120,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListHandlesResponse> listHandlesNoCustomHeadersWithResponse(String shareName, String fileName,
         String marker, Integer maxresults, Integer timeout, String sharesnapshot, Context context) {
-        final String comp = "listhandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "listhandles";
+            final String accept = "application/xml";
             return service.listHandlesNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, marker,
                 maxresults, timeout, sharesnapshot, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7349,9 +7349,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesForceCloseHandlesHeaders, Void> forceCloseHandlesWithResponse(String shareName,
         String fileName, String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
-        final String comp = "forceclosehandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "forceclosehandles";
+            final String accept = "application/xml";
             return service.forceCloseHandlesSync(this.client.getUrl(), shareName, fileName, comp, timeout, marker,
                 sharesnapshot, handleId, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7411,9 +7411,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> forceCloseHandlesNoCustomHeadersWithResponse(String shareName, String fileName,
         String handleId, Integer timeout, String marker, String sharesnapshot, Context context) {
-        final String comp = "forceclosehandles";
-        final String accept = "application/xml";
         try {
+            final String comp = "forceclosehandles";
+            final String accept = "application/xml";
             return service.forceCloseHandlesNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp,
                 timeout, marker, sharesnapshot, handleId, this.client.getVersion(), this.client.isAllowTrailingDot(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -7939,44 +7939,44 @@ public final class FilesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
-        final String comp = "rename";
-        final String accept = "application/xml";
-        String sourceLeaseIdInternal = null;
-        if (sourceLeaseAccessConditions != null) {
-            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-        }
-        String sourceLeaseId = sourceLeaseIdInternal;
-        String destinationLeaseIdInternal = null;
-        if (destinationLeaseAccessConditions != null) {
-            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-        }
-        String destinationLeaseId = destinationLeaseIdInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
         try {
+            final String comp = "rename";
+            final String accept = "application/xml";
+            String sourceLeaseIdInternal = null;
+            if (sourceLeaseAccessConditions != null) {
+                sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+            }
+            String sourceLeaseId = sourceLeaseIdInternal;
+            String destinationLeaseIdInternal = null;
+            if (destinationLeaseAccessConditions != null) {
+                destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+            }
+            String destinationLeaseId = destinationLeaseIdInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
             return service.renameSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
@@ -8081,44 +8081,44 @@ public final class FilesImpl {
         SourceLeaseAccessConditions sourceLeaseAccessConditions,
         DestinationLeaseAccessConditions destinationLeaseAccessConditions, CopyFileSmbInfo copyFileSmbInfo,
         ShareFileHttpHeaders shareFileHttpHeaders, Context context) {
-        final String comp = "rename";
-        final String accept = "application/xml";
-        String sourceLeaseIdInternal = null;
-        if (sourceLeaseAccessConditions != null) {
-            sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
-        }
-        String sourceLeaseId = sourceLeaseIdInternal;
-        String destinationLeaseIdInternal = null;
-        if (destinationLeaseAccessConditions != null) {
-            destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
-        }
-        String destinationLeaseId = destinationLeaseIdInternal;
-        String fileAttributesInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
-        }
-        String fileAttributes = fileAttributesInternal;
-        String fileCreationTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
-        }
-        String fileCreationTime = fileCreationTimeInternal;
-        String fileLastWriteTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
-        }
-        String fileLastWriteTime = fileLastWriteTimeInternal;
-        String fileChangeTimeInternal = null;
-        if (copyFileSmbInfo != null) {
-            fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
-        }
-        String fileChangeTime = fileChangeTimeInternal;
-        String contentTypeInternal = null;
-        if (shareFileHttpHeaders != null) {
-            contentTypeInternal = shareFileHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
         try {
+            final String comp = "rename";
+            final String accept = "application/xml";
+            String sourceLeaseIdInternal = null;
+            if (sourceLeaseAccessConditions != null) {
+                sourceLeaseIdInternal = sourceLeaseAccessConditions.getSourceLeaseId();
+            }
+            String sourceLeaseId = sourceLeaseIdInternal;
+            String destinationLeaseIdInternal = null;
+            if (destinationLeaseAccessConditions != null) {
+                destinationLeaseIdInternal = destinationLeaseAccessConditions.getDestinationLeaseId();
+            }
+            String destinationLeaseId = destinationLeaseIdInternal;
+            String fileAttributesInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileAttributesInternal = copyFileSmbInfo.getFileAttributes();
+            }
+            String fileAttributes = fileAttributesInternal;
+            String fileCreationTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileCreationTimeInternal = copyFileSmbInfo.getFileCreationTime();
+            }
+            String fileCreationTime = fileCreationTimeInternal;
+            String fileLastWriteTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileLastWriteTimeInternal = copyFileSmbInfo.getFileLastWriteTime();
+            }
+            String fileLastWriteTime = fileLastWriteTimeInternal;
+            String fileChangeTimeInternal = null;
+            if (copyFileSmbInfo != null) {
+                fileChangeTimeInternal = copyFileSmbInfo.getFileChangeTime();
+            }
+            String fileChangeTime = fileChangeTimeInternal;
+            String contentTypeInternal = null;
+            if (shareFileHttpHeaders != null) {
+                contentTypeInternal = shareFileHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
             return service.renameNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 this.client.getVersion(), renameSource, replaceIfExists, ignoreReadOnly, sourceLeaseId,
                 destinationLeaseId, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, filePermission,
