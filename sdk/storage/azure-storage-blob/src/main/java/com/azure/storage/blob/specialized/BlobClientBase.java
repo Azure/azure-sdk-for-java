@@ -878,7 +878,7 @@ public class BlobClientBase {
         };
 
         Function<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>> pollOperation = (pollingContext) ->
-            onPoll(pollingContext.getLatestResponse(), destinationRequestConditions);
+            onPoll(pollingContext.getLatestResponse());
 
         BiFunction<PollingContext<BlobCopyInfo>, PollResponse<BlobCopyInfo>, BlobCopyInfo> cancelOperation =
             (pollingContext, firstResponse) -> {
@@ -901,8 +901,7 @@ public class BlobClientBase {
     }
 
 
-    private PollResponse<BlobCopyInfo> onPoll(PollResponse<BlobCopyInfo> pollResponse,
-        BlobRequestConditions requestConditions) {
+    private PollResponse<BlobCopyInfo> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
         if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
             || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
             return pollResponse;
@@ -915,11 +914,10 @@ public class BlobClientBase {
         }
 
         try {
-            Response<BlobProperties> response = getPropertiesWithResponse(requestConditions, null, null);
-            BlobProperties value = response.getValue();
-            final CopyStatusType status = value.getCopyStatus();
-            final BlobCopyInfo result = new BlobCopyInfo(value.getCopySource(), value.getCopyId(), status,
-                value.getETag(), value.getCopyCompletionTime(), value.getCopyStatusDescription(), value.getVersionId());
+            BlobProperties properties = getProperties();
+            final CopyStatusType status = properties.getCopyStatus();
+            final BlobCopyInfo result = new BlobCopyInfo(properties.getCopySource(), properties.getCopyId(), status,
+                properties.getETag(), properties.getCopyCompletionTime(), properties.getCopyStatusDescription(), properties.getVersionId());
 
             LongRunningOperationStatus operationStatus = ModelHelper.mapStatusToLongRunningOperationStatus(status);
             return new PollResponse<>(operationStatus, result);

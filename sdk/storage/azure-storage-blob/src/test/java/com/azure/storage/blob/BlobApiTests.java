@@ -61,7 +61,6 @@ import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
@@ -2133,9 +2132,8 @@ public class BlobApiTests extends BlobTestBase {
             .setIfUnmodifiedSince(unmodified)
             .setTagsConditions(tags);
 
-        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(
-            bu2.beginCopy(bc.getBlobUrl(), null, null, null, null, bac,
-                null));
+        SyncPoller<BlobCopyInfo, Void> poller = setPlaybackSyncPollerPollInterval(bu2.beginCopy(bc.getBlobUrl(), null,
+            null, null, null, bac, null));
         PollResponse<BlobCopyInfo> response = poller.waitForCompletion();
 
         assertNotNull(response);
