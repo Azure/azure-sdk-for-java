@@ -6,13 +6,9 @@
 
 ### Features Added
 
-* `implementation.models.StandbyContainerGroupPoolRuntimeViewResourceListResult` was added
-
 * `models.StandbyContainerGroupPoolRuntimeViewResource` was added
 
 * `models.StandbyContainerGroupPoolRuntimeViews` was added
-
-* `implementation.models.OperationListResult` was added
 
 * `models.VirtualMachineInstanceCountSummary` was added
 
@@ -23,8 +19,6 @@
 * `models.ContainerGroupInstanceCountSummary` was added
 
 * `models.PoolResourceStateCount` was added
-
-* `implementation.models.StandbyVirtualMachinePoolRuntimeViewResourceListResult` was added
 
 * `models.StandbyVirtualMachinePoolRuntimeViewResource` was added
 
@@ -38,16 +32,6 @@
 * `minReadyCapacity()` was added
 
 #### `models.StandbyContainerGroupPoolResourceProperties` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `implementation.models.StandbyVirtualMachineResourceListResult` was modified
-
-* `toJson(com.azure.json.JsonWriter)` was added
-* `fromJson(com.azure.json.JsonReader)` was added
-
-#### `implementation.models.StandbyContainerGroupPoolResourceListResult` was modified
 
 * `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
@@ -76,11 +60,6 @@
 
 * `toJson(com.azure.json.JsonWriter)` was added
 * `fromJson(com.azure.json.JsonReader)` was added
-
-#### `implementation.models.StandbyVirtualMachinePoolResourceListResult` was modified
-
-* `fromJson(com.azure.json.JsonReader)` was added
-* `toJson(com.azure.json.JsonWriter)` was added
 
 #### `models.StandbyContainerGroupPoolResourceUpdateProperties` was modified
 
