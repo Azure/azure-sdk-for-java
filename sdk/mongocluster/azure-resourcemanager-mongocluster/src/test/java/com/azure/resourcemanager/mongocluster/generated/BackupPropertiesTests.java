@@ -5,17 +5,18 @@
 package com.azure.resourcemanager.mongocluster.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.mongocluster.models.PrivateEndpoint;
+import com.azure.resourcemanager.mongocluster.models.BackupProperties;
 
-public final class PrivateEndpointTests {
+public final class BackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"fxxypininmayhuy\"}").toObject(PrivateEndpoint.class);
+        BackupProperties model
+            = BinaryData.fromString("{\"earliestRestoreTime\":\"prozvcputegjvwmf\"}").toObject(BackupProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpoint model = new PrivateEndpoint();
-        model = BinaryData.fromObject(model).toObject(PrivateEndpoint.class);
+        BackupProperties model = new BackupProperties();
+        model = BinaryData.fromObject(model).toObject(BackupProperties.class);
     }
 }
