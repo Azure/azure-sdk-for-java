@@ -807,63 +807,79 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     public void testVersionBlobImmutabilityExpiry() {
         BlockBlobItem blobItemV1 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
         BlockBlobItem blobItemV2 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-        vlwContainer.listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null).forEach(blobItem -> {
-            System.out.println(blobItem.getName());
-            System.out.println(blobItem.getVersionId());
-        });
+
         BlobClient oldBlob = vlwBlob.getVersionClient(blobItemV1.getVersionId());
         BlobClient newBlob = vlwBlob.getVersionClient(blobItemV2.getVersionId());
-        OffsetDateTime time1 = OffsetDateTime.now().plusDays(3);
-        OffsetDateTime time2 = OffsetDateTime.now().plusDays(4);
+
+        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
+
         BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
         BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
         oldBlob.setImmutabilityPolicy(policy1);
         newBlob.setImmutabilityPolicy(policy2);
-        assertEquals(policy1.getExpiryTime(), oldBlob.getProperties().getImmutabilityPolicy().getExpiryTime()); // this is failing, showing getExpiryTime() as same as policy2
-        assertEquals(policy2.getExpiryTime(), newBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
+
+        assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+            oldBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
+        assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+            newBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
+
+        //cleanup
+        oldBlob.deleteImmutabilityPolicy();
+        oldBlob.delete();
     }
 
     @Test
     public void testImmutabilitySnapshot() {
-        vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         BlobClientBase snapshotBlob = vlwBlob.createSnapshot();
 
-        OffsetDateTime time1 = OffsetDateTime.now().plusDays(3);
-        OffsetDateTime time2 = OffsetDateTime.now().plusDays(4);
+        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
         BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
         BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
+
         vlwBlob.setImmutabilityPolicy(policy1);
         snapshotBlob.setImmutabilityPolicy(policy2);
-        assertEquals(policy1.getExpiryTime(), vlwBlob.getProperties().getImmutabilityPolicy().getExpiryTime()); // this is failing, showing getExpiryTime() as same as policy2
-        assertEquals(policy2.getExpiryTime(), snapshotBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
+
+        assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+            vlwBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
+        assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+            snapshotBlob.getProperties().getImmutabilityPolicy().getExpiryTime());
+
+        //cleanup
+        snapshotBlob.deleteImmutabilityPolicy();
+        snapshotBlob.delete();
     }
 
     @Test
     public void testLegalHoldVersion() {
-        BlockBlobItem blobItemV1 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
+        BlockBlobItem blobItemV1 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
         BlockBlobItem blobItemV2 = vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-        vlwContainer.listBlobs(new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveVersions(true)), null)
-            .forEach(blobItem -> {
-                System.out.println(blobItem.getName());
-                System.out.println(blobItem.getVersionId());
-            });
+
         BlobClient oldBlob = vlwBlob.getVersionClient(blobItemV1.getVersionId());
         BlobClient newBlob = vlwBlob.getVersionClient(blobItemV2.getVersionId());
 
         BlobLegalHoldResult result1 = oldBlob.setLegalHold(true);
         assertTrue(result1.hasLegalHold());
+
         assertTrue(oldBlob.getProperties().hasLegalHold());
-        assertFalse(newBlob.getProperties().hasLegalHold()); // this should be false but isn't, as the legal hold is set on the old blob
+        assertNull(newBlob.getProperties().hasLegalHold());
+
+        //cleanup
+        oldBlob.setLegalHold(false);
+        oldBlob.delete();
     }
 
     @Test
     public void testLegalHoldSnapshot() {
-        vlwBlob.getBlockBlobClient().upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());
         BlobClientBase snapshotBlob = vlwBlob.createSnapshot();
-        System.out.println(snapshotBlob.getSnapshotId());
 
         BlobLegalHoldResult result1 = vlwBlob.setLegalHold(true);
         assertTrue(result1.hasLegalHold());
-        assertNull(snapshotBlob.getProperties().hasLegalHold()); // should be null as snapshotBlob doesn't have legal hold set, and this passes
+        assertNull(snapshotBlob.getProperties().hasLegalHold());
+
+        //cleanup
+        snapshotBlob.setLegalHold(false);
+        snapshotBlob.delete();
     }
 }

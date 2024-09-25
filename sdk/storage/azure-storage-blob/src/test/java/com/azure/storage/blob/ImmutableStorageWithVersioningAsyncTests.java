@@ -32,10 +32,12 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
+import com.azure.storage.blob.models.BlobLegalHoldResult;
 import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.ListBlobsOptions;
@@ -52,6 +54,7 @@ import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -761,6 +764,107 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
 
         StepVerifier.create(client.setLegalHold(false))
             .assertNext(r -> assertFalse(r.hasLegalHold()))
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testVersionBlobImmutabilityExpiry() {
+        Mono<Void> response = Mono.zip(vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true),
+            vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true))
+            .flatMap(tuple -> {
+                BlobAsyncClient oldBlob = vlwBlob.getVersionClient(tuple.getT1().getVersionId());
+                BlobAsyncClient newBlob = vlwBlob.getVersionClient(tuple.getT2().getVersionId());
+
+                OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+                OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
+                BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
+                BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
+
+                return oldBlob.setImmutabilityPolicy(policy1)
+                    .then(newBlob.setImmutabilityPolicy(policy2))
+                    .then(Mono.zip(oldBlob.getProperties(), newBlob.getProperties()))
+                    .flatMap(propTuple -> {
+                        assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                            propTuple.getT1().getImmutabilityPolicy().getExpiryTime());
+                        assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                            propTuple.getT2().getImmutabilityPolicy().getExpiryTime());
+                        //cleanup
+                        return oldBlob.deleteImmutabilityPolicy().then(oldBlob.delete());
+                    });
+            });
+
+        StepVerifier.create(response)
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testImmutabilitySnapshot() {
+        Mono<Void> response = vlwBlob.createSnapshot().flatMap(snapshotBlob -> {
+            OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+            OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
+            BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
+            BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
+
+            return vlwBlob.setImmutabilityPolicy(policy1)
+                .then(snapshotBlob.setImmutabilityPolicy(policy2))
+                .then(Mono.zip(vlwBlob.getProperties(), snapshotBlob.getProperties()))
+                .flatMap(propTuple -> {
+                    assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                        propTuple.getT1().getImmutabilityPolicy().getExpiryTime());
+                    assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                        propTuple.getT2().getImmutabilityPolicy().getExpiryTime());
+                    //cleanup
+                    return snapshotBlob.deleteImmutabilityPolicy().then(snapshotBlob.delete());
+                });
+        });
+
+        StepVerifier.create(response)
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testLegalHoldVersion() {
+        Mono<Void> response = Mono.zip(vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true),
+                vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true))
+            .flatMap(tuple -> {
+                BlobAsyncClient oldBlob = vlwBlob.getVersionClient(tuple.getT1().getVersionId());
+                BlobAsyncClient newBlob = vlwBlob.getVersionClient(tuple.getT2().getVersionId());
+
+                return oldBlob.setLegalHold(true).flatMap(r -> {
+                    assertTrue(r.hasLegalHold());
+                    return Mono.empty();
+                }).then(oldBlob.getProperties()).flatMap(r -> {
+                    assertTrue(r.hasLegalHold());
+                    return Mono.empty();
+                }).then(newBlob.getProperties()).flatMap(r -> {
+                    assertNull(r.hasLegalHold());
+                    return Mono.empty();
+                }).then(oldBlob.setLegalHold(false)).then(oldBlob.delete());
+            });
+
+        StepVerifier.create(response)
+            .verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testLegalHoldSnapshot() {
+        Mono<Void> response = vlwBlob.createSnapshot().flatMap(snapshotBlob ->
+            vlwBlob.setLegalHold(true)
+                .flatMap(r -> {
+                    assertTrue(r.hasLegalHold());
+                    return snapshotBlob.getProperties()
+                        .flatMap(props -> {
+                            assertNull(props.hasLegalHold());
+                            //cleanup
+                            return snapshotBlob.setLegalHold(false).then(snapshotBlob.delete());
+                        });
+                }));
+
+        StepVerifier.create(response)
             .verifyComplete();
     }
 
