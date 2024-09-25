@@ -293,18 +293,6 @@
       </resource>
     </resources>
 
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-      <testResource>
-        <directory>${project.parent.relativePath}</directory>
-        <includes>
-          <include>simplelogger.properties</include>
-        </includes>
-      </testResource>
-    </testResources>
-
     <plugins>
       <!-- This plugin checks dependencies for android API level compatibility -->
       <plugin>
@@ -925,6 +913,11 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
@@ -969,6 +962,11 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
