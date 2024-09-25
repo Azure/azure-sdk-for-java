@@ -23,9 +23,9 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.mongocluster.fluent.DocumentDBClient;
-import com.azure.resourcemanager.mongocluster.implementation.DocumentDBClientBuilder;
+import com.azure.resourcemanager.mongocluster.fluent.MongoClusterManagementClient;
 import com.azure.resourcemanager.mongocluster.implementation.FirewallRulesImpl;
+import com.azure.resourcemanager.mongocluster.implementation.MongoClusterManagementClientBuilder;
 import com.azure.resourcemanager.mongocluster.implementation.MongoClustersImpl;
 import com.azure.resourcemanager.mongocluster.implementation.OperationsImpl;
 import com.azure.resourcemanager.mongocluster.implementation.PrivateEndpointConnectionsImpl;
@@ -62,12 +62,12 @@ public final class MongoClusterManager {
 
     private Replicas replicas;
 
-    private final DocumentDBClient clientObject;
+    private final MongoClusterManagementClient clientObject;
 
     private MongoClusterManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new DocumentDBClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new MongoClusterManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -346,12 +346,12 @@ public final class MongoClusterManager {
     }
 
     /**
-     * Gets wrapped service client DocumentDBClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets wrapped service client MongoClusterManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client DocumentDBClient.
+     * @return Wrapped service client MongoClusterManagementClient.
      */
-    public DocumentDBClient serviceClient() {
+    public MongoClusterManagementClient serviceClient() {
         return this.clientObject;
     }
 }
