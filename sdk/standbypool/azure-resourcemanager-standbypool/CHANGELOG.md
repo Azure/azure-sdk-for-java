@@ -4,10 +4,6 @@
 
 - Azure Resource Manager Standby Pool client library for Java. This package contains Microsoft Azure SDK for Standby Pool Management SDK. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
-### Breaking Changes
-
-* `implementation.models.PagedOperation` was removed
-
 ### Features Added
 
 * `implementation.models.StandbyContainerGroupPoolRuntimeViewResourceListResult` was added
