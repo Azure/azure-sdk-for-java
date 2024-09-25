@@ -1,5 +1,6 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.PropertyCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.github.javaparser.StaticJavaParser;
@@ -23,6 +24,7 @@ import com.github.javaparser.javadoc.description.JavadocDescription;
 import org.slf4j.Logger;
 
 import java.time.Duration;
+import java.lang.String;
 
 /**
  * This class contains the customization code to customize the AutoRest generated code for App Configuration.
@@ -57,7 +59,8 @@ public class JobRouterSdkCustomization extends Customization {
         classCustomizationForScoringRuleOptions
             .getMethod("setIsBatchScoringEnabled")
             .rename("setBatchScoringEnabled");
-
+        
+        customizeRouterRule(models.getClass("RouterRule"));
         customizeRouterWorkerSelector(models.getClass("RouterWorkerSelector"));
         customizeReclassifyExceptionAction(models.getClass("ReclassifyExceptionAction"));
         customizeWaitTimeExceptionTrigger(models.getClass("WaitTimeExceptionTrigger"));
@@ -529,5 +532,12 @@ public class JobRouterSdkCustomization extends Customization {
         }
 
         return constructorIndex;
+    }
+
+    private static void customizeRouterRule(ClassCustomization classCustomization){
+
+        // rename kind to type specific kind and update the getter and setter
+        PropertyCustomization kind = classCustomization.getProperty("kind");
+        kind.rename("routerRuleKind");
     }
 }
