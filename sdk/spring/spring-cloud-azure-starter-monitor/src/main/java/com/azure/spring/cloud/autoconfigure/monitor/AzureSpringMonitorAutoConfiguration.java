@@ -75,9 +75,9 @@ class AzureSpringMonitorAutoConfiguration {
 
         AzureMonitorExporterBuilder providedAzureMonitorExporterBuilder = azureMonitorExporterBuilder.getIfAvailable();
         if (providedAzureMonitorExporterBuilder != null) {
-            if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null && !connectionString.isEmpty()) {
-                LOG.warn("You have created an AzureMonitorExporterBuilder bean and set the applicationinsights.connection.string property."
-                    + " The applicationinsights.connection.string property is ignored.");
+            if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null && System.getProperty("applicationinsights.connection.string") == null && !connectionString.isEmpty()) {
+                LOG.warn("You have created an AzureMonitorExporterBuilder bean and set the applicationinsights.connection.string property in a .properties or .yml file."
+                    + " This property is ignored.");
             }
             // The AzureMonitor class (OpenTelemetry exporter library) is able to use the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable
             return autoConfigurationCustomizer -> AzureMonitor.customize(autoConfigurationCustomizer, providedAzureMonitorExporterBuilder);
