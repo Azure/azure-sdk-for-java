@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -158,6 +159,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
         final ConfigurationClient client = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .addPolicy(new TimeoutPolicy(Duration.ofMillis(1)))
+            .httpClient(request -> Mono.delay(Duration.ofMillis(100)).thenReturn(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertThrows(RuntimeException.class, () -> client.setConfigurationSetting(key, null, value));
@@ -254,7 +256,8 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
                 .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
                 .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                    assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT)
+                        .contains("aNewApplication"));
                     return Mono.just(new MockHttpResponse(httpRequest, 400));
                 })
                 .buildClient();
@@ -269,7 +272,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             .clientOptions(new ClientOptions().setHeaders(Collections.singleton(new Header("User-Agent", "custom"))))
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
@@ -280,7 +283,8 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     @DoNotRecord
     public void getEndpointAtClientInstance() {
         ConfigurationClientBuilder configurationClientBuilder
-            = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING);
+            = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)));
         final ConfigurationClient client = configurationClientBuilder.buildClient();
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
         assertEquals("https://localhost:8080", client.getEndpoint());

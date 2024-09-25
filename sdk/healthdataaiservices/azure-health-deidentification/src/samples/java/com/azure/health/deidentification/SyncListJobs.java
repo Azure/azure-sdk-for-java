@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.models.*;
+import com.azure.health.deidentification.models.DeidentificationJob;
 
 import java.time.Instant;
 
