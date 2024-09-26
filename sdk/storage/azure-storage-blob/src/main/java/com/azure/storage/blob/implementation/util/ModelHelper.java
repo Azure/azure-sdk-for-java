@@ -696,16 +696,6 @@ public final class ModelHelper {
         return new BlobStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
     }
 
-    public static <T> Callable<T> wrapTimeoutServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
-        return () -> {
-            try {
-                return serviceCall.get();
-            } catch (BlobStorageExceptionInternal internal) {
-                throw mapToBlobStorageException(internal);
-            }
-        };
-    }
-
     private ModelHelper() {
     }
 }
