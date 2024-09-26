@@ -21,6 +21,8 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormat;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
@@ -247,6 +249,28 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-35-turbo-1106", getChatMessages());
     }
 
+    void getChatCompletionsStructuredOutputInResponseFormatRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o",
+            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+                .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+                    new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather")
+                        .setStrict(true)
+                        .setDescription("Fetches the weather in the given location")
+                        .setSchema(BinaryData.fromObject(new Parameters()))))
+        );
+    }
+
+    void getChatCompletionsStructuredOutputInResponseFormatRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o-2024-08-06",
+            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+                .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+                    new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather")
+                        .setStrict(true)
+                        .setDescription("Fetches the weather in the given location")
+                        .setSchema(BinaryData.fromObject(new Parameters()))))
+        );
+    }
+
     void getChatCompletionsWithResponseRunner(Function<String,
             Function<List<ChatRequestMessage>, Consumer<RequestOptions>>> testRunner) {
         testRunner.apply("gpt-35-turbo-1106").apply(getChatMessages()).accept(getRequestOption());
@@ -350,6 +374,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-35-turbo-1106", getChatCompletionsOptionWithToolCall());
     }
 
+    void getChatWithToolCallStructuredOutputRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o", getChatCompletionsOptionWithToolCallStrict());
+    }
+
+    void getChatWithToolCallStructuredOutputRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        testRunner.accept("gpt-4o-2024-08-06", getChatCompletionsOptionWithToolCallStrict());
+    }
     void textToSpeechRunner(BiConsumer<String, SpeechGenerationOptions> testRunner) {
         testRunner.accept("tts", getSpeechGenerationOptions());
     }
@@ -425,6 +456,17 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
         ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
                 getFutureTemperatureFunctionDefinition());
+        chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
+
+        return chatCompletionsOptions;
+    }
+
+    private ChatCompletionsOptions getChatCompletionsOptionWithToolCallStrict() {
+        List<ChatRequestMessage> chatRequestMessages = getChatRequestMessagesForToolCall();
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatRequestMessages);
+        ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
+            getFutureTemperatureFunctionDefinition().setStrict(true));
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
         return chatCompletionsOptions;
@@ -767,6 +809,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
                 assertNotNull(retrievedDocument.getContent());
                 assertFalse(CoreUtils.isNullOrEmpty(retrievedDocument.getSearchQueries()));
                 assertNotNull(retrievedDocument.getFilterReason());
+                Double rerankScore = retrievedDocument.getRerankScore();
+                if (rerankScore != null) {
+                    assertTrue(rerankScore >= 0);
+                }
             }
         }
     }
