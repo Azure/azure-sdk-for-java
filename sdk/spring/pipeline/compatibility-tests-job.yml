@@ -3,7 +3,7 @@ parameters:
   MaxParallel: 10
   SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
   BuildParallelization: '2C'
-#  ArtifactsList: "com.azure:azure-messaging-servicebus,com.azure:azure-messaging-eventhubs"
+  ArtifactsList: "com.azure:azure-spring-data-cosmos,com.azure.spring:spring-cloud-azure-core,com.azure.spring:spring-cloud-azure-docker-compose,com.azure.spring:spring-cloud-azure-service,com.azure.spring:spring-cloud-azure-resourcemanager,com.azure.spring:spring-messaging-azure,com.azure.spring:spring-messaging-azure-eventhubs,com.azure.spring:spring-messaging-azure-servicebus,com.azure.spring:spring-messaging-azure-storage-queue,com.azure.spring:spring-integration-azure-core,com.azure.spring:spring-integration-azure-eventhubs,com.azure.spring:spring-integration-azure-servicebus,com.azure.spring:spring-integration-azure-storage-queue,com.azure.spring:spring-cloud-azure-autoconfigure,com.azure.spring:spring-cloud-azure-actuator,com.azure.spring:spring-cloud-azure-actuator-autoconfigure,com.azure.spring:spring-cloud-azure-starter,com.azure.spring:spring-cloud-azure-starter-actuator,com.azure.spring:spring-cloud-azure-starter-active-directory,com.azure.spring:spring-cloud-azure-starter-active-directory-b2c,com.azure.spring:spring-cloud-azure-starter-appconfiguration,com.azure.spring:spring-cloud-azure-starter-cosmos,com.azure.spring:spring-cloud-azure-starter-data-cosmos,com.azure.spring:spring-cloud-azure-starter-data-redis-lettuce,com.azure.spring:spring-cloud-azure-starter-eventhubs,com.azure.spring:spring-cloud-azure-starter-eventgrid,com.azure.spring:spring-cloud-azure-starter-keyvault,com.azure.spring:spring-cloud-azure-starter-keyvault-certificates,com.azure.spring:spring-cloud-azure-starter-keyvault-secrets,com.azure.spring:spring-cloud-azure-starter-servicebus,com.azure.spring:spring-cloud-azure-starter-servicebus-jms,com.azure.spring:spring-cloud-azure-starter-storage,com.azure.spring:spring-cloud-azure-starter-storage-blob,com.azure.spring:spring-cloud-azure-starter-storage-file-share,com.azure.spring:spring-cloud-azure-starter-storage-queue,com.azure.spring:spring-cloud-azure-starter-integration-eventhubs,com.azure.spring:spring-cloud-azure-starter-integration-servicebus,com.azure.spring:spring-cloud-azure-starter-integration-storage-queue,com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core,com.azure.spring:spring-cloud-azure-stream-binder-servicebus,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs-core,com.azure.spring:spring-cloud-azure-starter-stream-eventhubs,com.azure.spring:spring-cloud-azure-starter-stream-servicebus,com.azure.spring:spring-cloud-azure-starter-jdbc-mysql,com.azure.spring:spring-cloud-azure-starter-jdbc-postgresql,com.azure.spring:spring-cloud-azure-testcontainers,com.azure.spring:spring-cloud-azure-appconfiguration-config,com.azure.spring:spring-cloud-azure-appconfiguration-config-web,com.azure.spring:spring-cloud-azure-feature-management,com.azure.spring:spring-cloud-azure-feature-management-web,com.azure.spring:spring-cloud-azure-starter-appconfiguration-config"
 
 jobs:
   - job: 'compatibility_test_${{ parameters.OSName }}'
@@ -27,15 +27,15 @@ jobs:
             - 'sdk/jdbc'
             - 'sdk/servicebus'
             - 'sdk/eventhubs'
-#      - task: PythonScript@0
-#        displayName: 'Generate FromSource POM for unreleased dependencies'
-#        inputs:
-#          scriptPath: 'eng/scripts/generate_from_source_pom.py'
-#          arguments: '--artifacts-list $(parameters.ArtifactsList)'
-#          workingDirectory: '$(System.DefaultWorkingDirectory)'
-      - script: |
-          python ./eng/scripts/generate_from_source_pom.py --al com.azure:azure-messaging-servicebus,com.azure:azure-messaging-eventhubs
+      - task: PythonScript@0
         displayName: 'Generate FromSource POM for unreleased dependencies'
+        inputs:
+          scriptPath: 'eng/scripts/generate_from_source_pom.py'
+          arguments: '--artifacts-list $(parameters.ArtifactsList)'
+          workingDirectory: '$(System.DefaultWorkingDirectory)'
+#      - script: |
+#          python ./eng/scripts/generate_from_source_pom.py --al com.azure:azure-messaging-servicebus,com.azure:azure-messaging-eventhubs
+#        displayName: 'Generate FromSource POM for unreleased dependencies'
       - task: Maven@4
         displayName: 'Build for From Source run'
         inputs:
