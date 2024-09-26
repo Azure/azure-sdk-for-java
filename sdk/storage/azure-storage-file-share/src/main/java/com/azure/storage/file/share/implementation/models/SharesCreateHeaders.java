@@ -38,7 +38,7 @@ public final class SharesCreateHeaders {
     /*
      * The x-ms-share-quota property.
      */
-    private Integer xMsShareQuota;
+    private Long xMsShareQuota;
 
     /*
      * The ETag property.
@@ -95,7 +95,7 @@ public final class SharesCreateHeaders {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         String xMsShareQuota = rawHeaders.getValue(X_MS_SHARE_QUOTA);
         if (xMsShareQuota != null) {
-            this.xMsShareQuota = Integer.parseInt(xMsShareQuota);
+            this.xMsShareQuota = Long.parseLong(xMsShareQuota);
         }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
@@ -194,7 +194,7 @@ public final class SharesCreateHeaders {
      * 
      * @return the xMsShareQuota value.
      */
-    public Integer getXMsShareQuota() {
+    public Long getXMsShareQuota() {
         return this.xMsShareQuota;
     }
 
@@ -204,7 +204,7 @@ public final class SharesCreateHeaders {
      * @param xMsShareQuota the xMsShareQuota value to set.
      * @return the SharesCreateHeaders object itself.
      */
-    public SharesCreateHeaders setXMsShareQuota(Integer xMsShareQuota) {
+    public SharesCreateHeaders setXMsShareQuota(Long xMsShareQuota) {
         this.xMsShareQuota = xMsShareQuota;
         return this;
     }

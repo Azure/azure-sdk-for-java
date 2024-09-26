@@ -18,7 +18,7 @@ public final class SharesSetPropertiesHeaders {
     /*
      * The x-ms-share-provisioned-iops property.
      */
-    private Integer xMsShareProvisionedIops;
+    private Long xMsShareProvisionedIops;
 
     /*
      * The x-ms-share-included-burst-iops property.
@@ -58,12 +58,12 @@ public final class SharesSetPropertiesHeaders {
     /*
      * The x-ms-share-provisioned-bandwidth-mibps property.
      */
-    private Integer xMsShareProvisionedBandwidthMibps;
+    private Long xMsShareProvisionedBandwidthMibps;
 
     /*
      * The x-ms-share-quota property.
      */
-    private Integer xMsShareQuota;
+    private Long xMsShareQuota;
 
     /*
      * The ETag property.
@@ -114,7 +114,7 @@ public final class SharesSetPropertiesHeaders {
     public SharesSetPropertiesHeaders(HttpHeaders rawHeaders) {
         String xMsShareProvisionedIops = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_IOPS);
         if (xMsShareProvisionedIops != null) {
-            this.xMsShareProvisionedIops = Integer.parseInt(xMsShareProvisionedIops);
+            this.xMsShareProvisionedIops = Long.parseLong(xMsShareProvisionedIops);
         }
         String xMsShareIncludedBurstIops = rawHeaders.getValue(X_MS_SHARE_INCLUDED_BURST_IOPS);
         if (xMsShareIncludedBurstIops != null) {
@@ -147,11 +147,11 @@ public final class SharesSetPropertiesHeaders {
         }
         String xMsShareProvisionedBandwidthMibps = rawHeaders.getValue(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS);
         if (xMsShareProvisionedBandwidthMibps != null) {
-            this.xMsShareProvisionedBandwidthMibps = Integer.parseInt(xMsShareProvisionedBandwidthMibps);
+            this.xMsShareProvisionedBandwidthMibps = Long.parseLong(xMsShareProvisionedBandwidthMibps);
         }
         String xMsShareQuota = rawHeaders.getValue(X_MS_SHARE_QUOTA);
         if (xMsShareQuota != null) {
-            this.xMsShareQuota = Integer.parseInt(xMsShareQuota);
+            this.xMsShareQuota = Long.parseLong(xMsShareQuota);
         }
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
@@ -167,7 +167,7 @@ public final class SharesSetPropertiesHeaders {
      * 
      * @return the xMsShareProvisionedIops value.
      */
-    public Integer getXMsShareProvisionedIops() {
+    public Long getXMsShareProvisionedIops() {
         return this.xMsShareProvisionedIops;
     }
 
@@ -177,7 +177,7 @@ public final class SharesSetPropertiesHeaders {
      * @param xMsShareProvisionedIops the xMsShareProvisionedIops value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
-    public SharesSetPropertiesHeaders setXMsShareProvisionedIops(Integer xMsShareProvisionedIops) {
+    public SharesSetPropertiesHeaders setXMsShareProvisionedIops(Long xMsShareProvisionedIops) {
         this.xMsShareProvisionedIops = xMsShareProvisionedIops;
         return this;
     }
@@ -365,7 +365,7 @@ public final class SharesSetPropertiesHeaders {
      * 
      * @return the xMsShareProvisionedBandwidthMibps value.
      */
-    public Integer getXMsShareProvisionedBandwidthMibps() {
+    public Long getXMsShareProvisionedBandwidthMibps() {
         return this.xMsShareProvisionedBandwidthMibps;
     }
 
@@ -375,7 +375,7 @@ public final class SharesSetPropertiesHeaders {
      * @param xMsShareProvisionedBandwidthMibps the xMsShareProvisionedBandwidthMibps value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
-    public SharesSetPropertiesHeaders setXMsShareProvisionedBandwidthMibps(Integer xMsShareProvisionedBandwidthMibps) {
+    public SharesSetPropertiesHeaders setXMsShareProvisionedBandwidthMibps(Long xMsShareProvisionedBandwidthMibps) {
         this.xMsShareProvisionedBandwidthMibps = xMsShareProvisionedBandwidthMibps;
         return this;
     }
@@ -385,7 +385,7 @@ public final class SharesSetPropertiesHeaders {
      * 
      * @return the xMsShareQuota value.
      */
-    public Integer getXMsShareQuota() {
+    public Long getXMsShareQuota() {
         return this.xMsShareQuota;
     }
 
@@ -395,7 +395,7 @@ public final class SharesSetPropertiesHeaders {
      * @param xMsShareQuota the xMsShareQuota value to set.
      * @return the SharesSetPropertiesHeaders object itself.
      */
-    public SharesSetPropertiesHeaders setXMsShareQuota(Integer xMsShareQuota) {
+    public SharesSetPropertiesHeaders setXMsShareQuota(Long xMsShareQuota) {
         this.xMsShareQuota = xMsShareQuota;
         return this;
     }
