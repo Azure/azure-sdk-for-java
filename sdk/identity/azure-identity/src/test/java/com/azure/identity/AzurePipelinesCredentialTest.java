@@ -67,7 +67,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
         AzurePipelinesCredential credential = getInvalidCredential();
         StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .expectErrorMatches(throwable ->
-                ((ClientAuthenticationException) throwable.getCause()).getResponse().getStatusCode() == 401
+                ((ClientAuthenticationException) throwable).getResponse().getStatusCode() == 401
             ).verify();
     }
 
