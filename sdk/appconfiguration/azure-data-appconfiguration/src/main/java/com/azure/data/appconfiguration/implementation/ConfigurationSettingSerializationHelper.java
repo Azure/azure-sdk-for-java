@@ -40,7 +40,7 @@ public final class ConfigurationSettingSerializationHelper {
         // so it is better to use another JSON generator to constructor the value as JSON string, flush into the
         // StringWriter.
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             jsonWriter.writeStartObject();
             jsonWriter.writeStringField(URI, setting.getSecretId());
             jsonWriter.writeEndObject();
@@ -64,7 +64,7 @@ public final class ConfigurationSettingSerializationHelper {
         // so it is better to use another JSON generator to constructor the value as JSON string, flush into the
         // StringWriter.
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             jsonWriter.writeStartObject();
 
             jsonWriter.writeStringField(ID, setting.getFeatureId());

@@ -10,6 +10,18 @@
 
 ### Other Changes
 
+## 1.15.4 (2024-09-12)
+
+### Bugs Fixed
+
+- Fixed a bug where logging the Netty versions could throw an exception when `SecurityManager` is present. ([#41484](https://github.com/Azure/azure-sdk-for-java/pull/41484))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
 ## 1.15.3 (2024-07-31)
 
 ### Other Changes

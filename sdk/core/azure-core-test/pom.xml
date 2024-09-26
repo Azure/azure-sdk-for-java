@@ -13,7 +13,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
   <packaging>jar</packaging>
-  <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
+  <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;current} -->
 
   <name>Microsoft Azure Java Core Test Library</name>
   <description>This package contains core test types for Azure Java clients.</description>
@@ -72,15 +72,34 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.52.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.53.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
+    <!-- Azure HTTP client implementation dependencies -->
+    <!-- Downstream libraries no longer need to add test dependencies on these libraries to run tests against different implementations. -->
     <dependency>
-      <groupId>com.fasterxml.jackson.dataformat</groupId>
-      <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-jdk-httpclient</artifactId>
+      <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.16.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-okhttp</artifactId>
+      <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-vertx</artifactId>
+      <version>1.0.0-beta.22</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;current} -->
     </dependency>
 
+    <!-- Common external testing dependencies -->
+    <!-- Downstream libraries no longer need to add test dependencies on these libraries. -->
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
@@ -88,65 +107,33 @@
     </dependency>
 
     <dependency>
-      <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty-http</artifactId>
-      <version>1.0.45</version>  <!-- {x-version-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
-      <version>1.26.0</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-servlet</artifactId>
-      <version>9.4.54.v20240208</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
-    </dependency>
-
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
     </dependency>
-
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
     </dependency>
 
+    <!-- Used to unpack the tar.gz files of Test Proxy server -->
+    <!-- This used to be org.apache.commons:commons-compress but it was replaced with org.apache.ant:ant -->
+    <!-- This was done as ant has fewer transitive dependencies, meaning there is less chance of conflicts with other libraries. -->
     <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.10.14</version>  <!-- {x-version-update;org.apache.ant:ant;external_dependency} -->
     </dependency>
   </dependencies>
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in azure-core-http-netty -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>test-jar</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -155,15 +142,12 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.projectreactor:reactor-test:[3.4.38]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
-                <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.17.2]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty-http:[1.0.45]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty-http;external_dependency} -->
                 <!-- special allowance for azure-core-test as it is not a shipping library: -->
                 <include>org.junit.jupiter:junit-jupiter-api:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+                <include>org.junit.jupiter:junit-jupiter-engine:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
                 <include>org.junit.jupiter:junit-jupiter-params:[5.9.3]</include> <!-- {x-include-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-                <include>org.apache.commons:commons-compress:[1.26.0]</include> <!-- {x-include-update;org.apache.commons:commons-compress;external_dependency} -->
-                <include>org.eclipse.jetty:jetty-server:[9.4.54.v20240208]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-server;external_dependency} -->
-                <include>org.eclipse.jetty:jetty-servlet:[9.4.54.v20240208]</include> <!-- {x-include-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+                <include>io.projectreactor:reactor-test:[3.4.38]</include> <!-- {x-include-update;io.projectreactor:reactor-test;external_dependency} -->
+                <include>org.apache.ant:ant:[1.10.14]</include> <!-- {x-include-update;org.apache.ant:ant;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

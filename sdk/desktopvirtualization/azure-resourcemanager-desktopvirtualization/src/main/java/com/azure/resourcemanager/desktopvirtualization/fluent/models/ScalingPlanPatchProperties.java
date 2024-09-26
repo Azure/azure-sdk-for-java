@@ -5,57 +5,59 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingHostPoolReference;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingSchedule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Scaling plan properties. */
+/**
+ * Scaling plan properties.
+ */
 @Fluent
-public final class ScalingPlanPatchProperties {
+public final class ScalingPlanPatchProperties implements JsonSerializable<ScalingPlanPatchProperties> {
     /*
      * Description of scaling plan.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * User friendly name of scaling plan.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * Timezone of the scaling plan.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Exclusion tag for scaling plan.
      */
-    @JsonProperty(value = "exclusionTag")
     private String exclusionTag;
 
     /*
      * List of ScalingSchedule definitions.
      */
-    @JsonProperty(value = "schedules")
     private List<ScalingSchedule> schedules;
 
     /*
      * List of ScalingHostPoolReference definitions.
      */
-    @JsonProperty(value = "hostPoolReferences")
     private List<ScalingHostPoolReference> hostPoolReferences;
 
-    /** Creates an instance of ScalingPlanPatchProperties class. */
+    /**
+     * Creates an instance of ScalingPlanPatchProperties class.
+     */
     public ScalingPlanPatchProperties() {
     }
 
     /**
      * Get the description property: Description of scaling plan.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,7 +66,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Set the description property: Description of scaling plan.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScalingPlanPatchProperties object itself.
      */
@@ -75,7 +77,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Get the friendlyName property: User friendly name of scaling plan.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -84,7 +86,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Set the friendlyName property: User friendly name of scaling plan.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ScalingPlanPatchProperties object itself.
      */
@@ -95,7 +97,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Get the timeZone property: Timezone of the scaling plan.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -104,7 +106,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Set the timeZone property: Timezone of the scaling plan.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScalingPlanPatchProperties object itself.
      */
@@ -115,7 +117,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Get the exclusionTag property: Exclusion tag for scaling plan.
-     *
+     * 
      * @return the exclusionTag value.
      */
     public String exclusionTag() {
@@ -124,7 +126,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Set the exclusionTag property: Exclusion tag for scaling plan.
-     *
+     * 
      * @param exclusionTag the exclusionTag value to set.
      * @return the ScalingPlanPatchProperties object itself.
      */
@@ -135,7 +137,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Get the schedules property: List of ScalingSchedule definitions.
-     *
+     * 
      * @return the schedules value.
      */
     public List<ScalingSchedule> schedules() {
@@ -144,7 +146,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Set the schedules property: List of ScalingSchedule definitions.
-     *
+     * 
      * @param schedules the schedules value to set.
      * @return the ScalingPlanPatchProperties object itself.
      */
@@ -155,7 +157,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Get the hostPoolReferences property: List of ScalingHostPoolReference definitions.
-     *
+     * 
      * @return the hostPoolReferences value.
      */
     public List<ScalingHostPoolReference> hostPoolReferences() {
@@ -164,7 +166,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Set the hostPoolReferences property: List of ScalingHostPoolReference definitions.
-     *
+     * 
      * @param hostPoolReferences the hostPoolReferences value to set.
      * @return the ScalingPlanPatchProperties object itself.
      */
@@ -175,7 +177,7 @@ public final class ScalingPlanPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -185,5 +187,60 @@ public final class ScalingPlanPatchProperties {
         if (hostPoolReferences() != null) {
             hostPoolReferences().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeStringField("exclusionTag", this.exclusionTag);
+        jsonWriter.writeArrayField("schedules", this.schedules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("hostPoolReferences", this.hostPoolReferences,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScalingPlanPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScalingPlanPatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScalingPlanPatchProperties.
+     */
+    public static ScalingPlanPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScalingPlanPatchProperties deserializedScalingPlanPatchProperties = new ScalingPlanPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedScalingPlanPatchProperties.description = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedScalingPlanPatchProperties.friendlyName = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedScalingPlanPatchProperties.timeZone = reader.getString();
+                } else if ("exclusionTag".equals(fieldName)) {
+                    deserializedScalingPlanPatchProperties.exclusionTag = reader.getString();
+                } else if ("schedules".equals(fieldName)) {
+                    List<ScalingSchedule> schedules = reader.readArray(reader1 -> ScalingSchedule.fromJson(reader1));
+                    deserializedScalingPlanPatchProperties.schedules = schedules;
+                } else if ("hostPoolReferences".equals(fieldName)) {
+                    List<ScalingHostPoolReference> hostPoolReferences
+                        = reader.readArray(reader1 -> ScalingHostPoolReference.fromJson(reader1));
+                    deserializedScalingPlanPatchProperties.hostPoolReferences = hostPoolReferences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScalingPlanPatchProperties;
+        });
     }
 }

@@ -4,93 +4,61 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.AgreementInner;
-import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of Agreement. */
+/**
+ * An immutable client-side representation of Agreement.
+ */
 public interface Agreement {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the agreementLink property: The URL to download the agreement.
-     *
-     * @return the agreementLink value.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    String agreementLink();
+    Map<String, String> tags();
 
     /**
-     * Gets the category property: The category of the agreement signed by a customer.
-     *
-     * @return the category value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    Category category();
+    SystemData systemData();
 
     /**
-     * Gets the acceptanceMode property: The mode of acceptance for an agreement.
-     *
-     * @return the acceptanceMode value.
+     * Gets the properties property: An agreement.
+     * 
+     * @return the properties value.
      */
-    AcceptanceMode acceptanceMode();
-
-    /**
-     * Gets the billingProfileInfo property: The list of billing profiles associated with agreement and present only for
-     * specific agreements.
-     *
-     * @return the billingProfileInfo value.
-     */
-    BillingProfileInfo billingProfileInfo();
-
-    /**
-     * Gets the effectiveDate property: The date from which the agreement is effective.
-     *
-     * @return the effectiveDate value.
-     */
-    OffsetDateTime effectiveDate();
-
-    /**
-     * Gets the expirationDate property: The date when the agreement expires.
-     *
-     * @return the expirationDate value.
-     */
-    OffsetDateTime expirationDate();
-
-    /**
-     * Gets the participants property: The list of participants that participates in acceptance of an agreement.
-     *
-     * @return the participants value.
-     */
-    List<Participants> participants();
-
-    /**
-     * Gets the status property: The current status of the agreement.
-     *
-     * @return the status value.
-     */
-    String status();
+    AgreementProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.AgreementInner object.
-     *
+     * 
      * @return the inner object.
      */
     AgreementInner innerModel();

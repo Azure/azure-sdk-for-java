@@ -546,6 +546,48 @@ public interface NetworkManagementClient {
     AdminRulesClient getAdminRules();
 
     /**
+     * Gets the SecurityUserConfigurationsClient object to access its operations.
+     * 
+     * @return the SecurityUserConfigurationsClient object.
+     */
+    SecurityUserConfigurationsClient getSecurityUserConfigurations();
+
+    /**
+     * Gets the SecurityUserRuleCollectionsClient object to access its operations.
+     * 
+     * @return the SecurityUserRuleCollectionsClient object.
+     */
+    SecurityUserRuleCollectionsClient getSecurityUserRuleCollections();
+
+    /**
+     * Gets the SecurityUserRulesClient object to access its operations.
+     * 
+     * @return the SecurityUserRulesClient object.
+     */
+    SecurityUserRulesClient getSecurityUserRules();
+
+    /**
+     * Gets the NetworkManagerRoutingConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkManagerRoutingConfigurationsClient object.
+     */
+    NetworkManagerRoutingConfigurationsClient getNetworkManagerRoutingConfigurations();
+
+    /**
+     * Gets the RoutingRuleCollectionsClient object to access its operations.
+     * 
+     * @return the RoutingRuleCollectionsClient object.
+     */
+    RoutingRuleCollectionsClient getRoutingRuleCollections();
+
+    /**
+     * Gets the RoutingRulesClient object to access its operations.
+     * 
+     * @return the RoutingRulesClient object.
+     */
+    RoutingRulesClient getRoutingRules();
+
+    /**
      * Gets the NetworkProfilesClient object to access its operations.
      * 
      * @return the NetworkProfilesClient object.

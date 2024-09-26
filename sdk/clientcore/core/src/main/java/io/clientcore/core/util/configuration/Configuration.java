@@ -36,12 +36,12 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 public class Configuration {
     // Default properties - these are what we read from the environment
     /**
-     * URL of the proxy for HTTP connections.
+     * URI of the proxy for HTTP connections.
      */
     public static final String PROPERTY_HTTP_PROXY = "HTTP_PROXY";
 
     /**
-     * URL of the proxy for HTTPS connections.
+     * URI of the proxy for HTTPS connections.
      */
     public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
 

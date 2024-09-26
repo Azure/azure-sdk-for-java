@@ -23,7 +23,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -93,11 +92,21 @@ public final class EmailAsyncClient {
         if (message.getAttachments() != null) {
             attachmentsImpl = new ArrayList<>();
             for (EmailAttachment attachment: message.getAttachments()) {
-                attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(
+                com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
+
+                attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
                     attachment.getName(),
                     attachment.getContentType(),
-                    Base64.getEncoder().encodeToString(attachment.getContent().toBytes())
-                ));
+                    attachment.getContentInBase64()
+                );
+
+                String contentId = attachment.getContentId();
+
+                if (contentId != null) {
+                    attachmentImpl.setContentId(contentId);
+                }
+
+                attachmentsImpl.add(attachmentImpl);
             }
         }
 

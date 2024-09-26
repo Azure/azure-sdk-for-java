@@ -42,6 +42,7 @@ public class CryptographyClientBuilderTest {
             .keyIdentifier(keyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(cryptographyClient);
@@ -53,6 +54,7 @@ public class CryptographyClientBuilderTest {
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
             .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(cryptographyClient);
@@ -66,6 +68,7 @@ public class CryptographyClientBuilderTest {
             .keyIdentifier(versionlessKeyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(cryptographyClient);
@@ -79,6 +82,7 @@ public class CryptographyClientBuilderTest {
             .keyIdentifier(keyIdentifierWithPort)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(cryptographyClient);
@@ -92,6 +96,7 @@ public class CryptographyClientBuilderTest {
             .keyIdentifier(keyIdentifier)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(cryptographyAsyncClient);
@@ -103,6 +108,7 @@ public class CryptographyClientBuilderTest {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier(keyIdentifier)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(cryptographyAsyncClient);
@@ -115,6 +121,7 @@ public class CryptographyClientBuilderTest {
         CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder()
             .keyIdentifier(versionlessKeyIdentifier)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(cryptographyAsyncClient);
@@ -188,6 +195,7 @@ public class CryptographyClientBuilderTest {
             .credential(new TestUtils.TestCredential())
             .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient());
     }
 
@@ -200,6 +208,7 @@ public class CryptographyClientBuilderTest {
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
         HttpPipeline pipeline = cryptographyAsyncClient.getHttpPipeline();
         int retryPolicyPosition = -1, perCallPolicyPosition = -1, perRetryPolicyPosition = -1;

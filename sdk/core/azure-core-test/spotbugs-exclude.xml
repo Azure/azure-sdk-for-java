@@ -29,13 +29,13 @@
       </And>
       <And>
         <Or>
-          <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson" />
-          <Class name="com.azure.core.test.implementation.entities.HttpBinJson" />
+          <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson" />
+          <Class name="com.azure.core.test.implementation.models.HttpBinJson" />
         </Or>
         <Method name="headers" />
       </And>
       <And>
-        <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson$Form" />
+        <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson$Form" />
         <Method name="toppings" />
       </And>
       <And>
@@ -93,13 +93,13 @@
       </And>
       <And>
         <Or>
-          <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson" />
-          <Class name="com.azure.core.test.implementation.entities.HttpBinJson" />
+          <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson" />
+          <Class name="com.azure.core.test.implementation.models.HttpBinJson" />
         </Or>
         <Method name="headers" />
       </And>
       <And>
-        <Class name="com.azure.core.test.implementation.entities.HttpBinFormDataJson$Form" />
+        <Class name="com.azure.core.test.implementation.models.HttpBinFormDataJson$Form" />
         <Method name="toppings" />
       </And>
       <And>
@@ -162,7 +162,7 @@
     <Class name="com.azure.core.test.http.MockHttpClient" />
     <Method name="send" />
   </Match>
-
+  
   <Match>
     <Bug pattern="MC_OVERRIDABLE_METHOD_CALL_IN_CONSTRUCTOR" />
     <Class name="com.azure.core.test.http.TestProxyTestServer" />
@@ -172,11 +172,6 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider" />
     <Method name="getServiceVersions" />
-  </Match>
-
-  <Match>
-    <Bug pattern="SE_BAD_FIELD,SE_NO_SERIALVERSIONID" />
-    <Class name="com.azure.core.test.http.LocalTestServer$AzureTestHttpServlet" />
   </Match>
 
   <Match>

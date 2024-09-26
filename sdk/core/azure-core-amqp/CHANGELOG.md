@@ -4,9 +4,17 @@
 
 ### Features Added
 
-- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, removing the dependency on AmqpChannelProcessor. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
-
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.9.9 (2024-09-12)
+
+### Features Added
+
+- Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, removing the dependency on AmqpChannelProcessor. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
 
 ### Bugs Fixed
 
@@ -14,6 +22,10 @@
 - Fixes thread unsafe operation in AMQP session by introducing ReactorSessionCache. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 2.9.8 (2024-07-31)
 

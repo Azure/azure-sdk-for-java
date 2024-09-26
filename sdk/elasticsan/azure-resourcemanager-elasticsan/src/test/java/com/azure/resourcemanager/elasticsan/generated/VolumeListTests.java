@@ -31,19 +31,23 @@ public final class VolumeListTests {
             new VolumeInner()
                 .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT)
                     .withSourceId("qpuedckzywbiex"))
-                .withSizeGiB(3417143419332668399L).withManagedBy(new ManagedByInfo().withResourceId("jancu")),
+                .withSizeGiB(3417143419332668399L)
+                .withManagedBy(new ManagedByInfo().withResourceId("jancu")),
             new VolumeInner()
                 .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_RESTORE_POINT)
                     .withSourceId("pzxbz"))
-                .withSizeGiB(4599278762686577783L).withManagedBy(new ManagedByInfo().withResourceId("qukkfp")),
+                .withSizeGiB(4599278762686577783L)
+                .withManagedBy(new ManagedByInfo().withResourceId("qukkfp")),
             new VolumeInner()
                 .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_SNAPSHOT)
                     .withSourceId("bckhsmtxpsi"))
-                .withSizeGiB(2486313553409967959L).withManagedBy(new ManagedByInfo().withResourceId("otogtwrupqs")),
+                .withSizeGiB(2486313553409967959L)
+                .withManagedBy(new ManagedByInfo().withResourceId("otogtwrupqs")),
             new VolumeInner()
                 .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT)
                     .withSourceId("tkphywpnvjtoqn"))
-                .withSizeGiB(4139812271767683575L).withManagedBy(new ManagedByInfo().withResourceId("pmueefjzwfqk"))));
+                .withSizeGiB(4139812271767683575L)
+                .withManagedBy(new ManagedByInfo().withResourceId("pmueefjzwfqk"))));
         model = BinaryData.fromObject(model).toObject(VolumeList.class);
         Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.value().get(0).creationData().createSource());
         Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).creationData().sourceId());

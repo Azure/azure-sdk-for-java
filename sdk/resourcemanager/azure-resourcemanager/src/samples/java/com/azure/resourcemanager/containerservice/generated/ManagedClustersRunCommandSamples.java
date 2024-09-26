@@ -12,7 +12,7 @@ import com.azure.resourcemanager.containerservice.models.RunCommandRequest;
 public final class ManagedClustersRunCommandSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * RunCommandRequest.json
      */
     /**

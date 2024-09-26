@@ -11,6 +11,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -23,29 +24,44 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.billing.fluent.TransactionsClient;
+import com.azure.resourcemanager.billing.fluent.models.DocumentDownloadResultInner;
 import com.azure.resourcemanager.billing.fluent.models.TransactionInner;
+import com.azure.resourcemanager.billing.fluent.models.TransactionSummaryInner;
 import com.azure.resourcemanager.billing.models.TransactionListResult;
+import com.azure.resourcemanager.billing.models.TransactionType;
+import java.nio.ByteBuffer;
+import java.time.LocalDate;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TransactionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TransactionsClient.
+ */
 public final class TransactionsClientImpl implements TransactionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TransactionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final BillingManagementClientImpl client;
 
     /**
      * Initializes an instance of TransactionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TransactionsClientImpl(BillingManagementClientImpl client) {
-        this.service =
-            RestProxy.create(TransactionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TransactionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,47 +72,1068 @@ public final class TransactionsClientImpl implements TransactionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
     public interface TransactionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/transactions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TransactionListResult>> listByInvoice(
-            @HostParam("$host") String endpoint,
+        Mono<Response<TransactionListResult>> listByCustomer(@HostParam("$host") String endpoint,
             @PathParam("billingAccountName") String billingAccountName,
-            @PathParam("invoiceName") String invoiceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("billingProfileName") String billingProfileName, @PathParam("customerName") String customerName,
+            @QueryParam("periodStartDate") LocalDate periodStartDate,
+            @QueryParam("periodEndDate") LocalDate periodEndDate, @QueryParam("type") TransactionType type,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @QueryParam("orderBy") String orderBy, @QueryParam("top") Long top, @QueryParam("skip") Long skip,
+            @QueryParam("count") Boolean count, @QueryParam("search") String search,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{invoiceSectionName}/transactions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TransactionListResult>> listByInvoiceSection(@HostParam("$host") String endpoint,
+            @PathParam("billingAccountName") String billingAccountName,
+            @PathParam("billingProfileName") String billingProfileName,
+            @PathParam("invoiceSectionName") String invoiceSectionName,
+            @QueryParam("periodStartDate") LocalDate periodStartDate,
+            @QueryParam("periodEndDate") LocalDate periodEndDate, @QueryParam("type") TransactionType type,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @QueryParam("orderBy") String orderBy, @QueryParam("top") Long top, @QueryParam("skip") Long skip,
+            @QueryParam("count") Boolean count, @QueryParam("search") String search,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/transactions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TransactionListResult>> listByBillingProfile(@HostParam("$host") String endpoint,
+            @PathParam("billingAccountName") String billingAccountName,
+            @PathParam("billingProfileName") String billingProfileName,
+            @QueryParam("periodStartDate") LocalDate periodStartDate,
+            @QueryParam("periodEndDate") LocalDate periodEndDate, @QueryParam("type") TransactionType type,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @QueryParam("orderBy") String orderBy, @QueryParam("top") Long top, @QueryParam("skip") Long skip,
+            @QueryParam("count") Boolean count, @QueryParam("search") String search,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TransactionListResult>> listByInvoice(@HostParam("$host") String endpoint,
+            @PathParam("billingAccountName") String billingAccountName, @PathParam("invoiceName") String invoiceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @QueryParam("orderBy") String orderBy, @QueryParam("top") Long top, @QueryParam("skip") Long skip,
+            @QueryParam("count") Boolean count, @QueryParam("search") String search,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactionsDownload")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> transactionsDownloadByInvoice(@HostParam("$host") String endpoint,
+            @PathParam("billingAccountName") String billingAccountName, @PathParam("invoiceName") String invoiceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/invoices/{invoiceName}/transactionSummary")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TransactionSummaryInner>> getTransactionSummaryByInvoice(@HostParam("$host") String endpoint,
+            @PathParam("billingAccountName") String billingAccountName, @PathParam("invoiceName") String invoiceName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("filter") String filter,
+            @QueryParam("search") String search, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TransactionListResult>> listByCustomerNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TransactionListResult>> listByInvoiceSectionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TransactionListResult>> listByBillingProfileNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TransactionListResult>> listByInvoiceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByCustomerSinglePageAsync(String billingAccountName,
+        String billingProfileName, String customerName, LocalDate periodStartDate, LocalDate periodEndDate,
+        TransactionType type, String filter, String orderBy, Long top, Long skip, Boolean count, String search) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (billingProfileName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingProfileName is required and cannot be null."));
+        }
+        if (customerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter customerName is required and cannot be null."));
+        }
+        if (periodStartDate == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter periodStartDate is required and cannot be null."));
+        }
+        if (periodEndDate == null) {
+            return Mono.error(new IllegalArgumentException("Parameter periodEndDate is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByCustomer(this.client.getEndpoint(), billingAccountName,
+                billingProfileName, customerName, periodStartDate, periodEndDate, type, this.client.getApiVersion(),
+                filter, orderBy, top, skip, count, search, accept, context))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByCustomerSinglePageAsync(String billingAccountName,
+        String billingProfileName, String customerName, LocalDate periodStartDate, LocalDate periodEndDate,
+        TransactionType type, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (billingProfileName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingProfileName is required and cannot be null."));
+        }
+        if (customerName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter customerName is required and cannot be null."));
+        }
+        if (periodStartDate == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter periodStartDate is required and cannot be null."));
+        }
+        if (periodEndDate == null) {
+            return Mono.error(new IllegalArgumentException("Parameter periodEndDate is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByCustomer(this.client.getEndpoint(), billingAccountName, billingProfileName, customerName,
+                periodStartDate, periodEndDate, type, this.client.getApiVersion(), filter, orderBy, top, skip, count,
+                search, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByCustomerAsync(String billingAccountName, String billingProfileName,
+        String customerName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search) {
+        return new PagedFlux<>(
+            () -> listByCustomerSinglePageAsync(billingAccountName, billingProfileName, customerName, periodStartDate,
+                periodEndDate, type, filter, orderBy, top, skip, count, search),
+            nextLink -> listByCustomerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByCustomerAsync(String billingAccountName, String billingProfileName,
+        String customerName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedFlux<>(
+            () -> listByCustomerSinglePageAsync(billingAccountName, billingProfileName, customerName, periodStartDate,
+                periodEndDate, type, filter, orderBy, top, skip, count, search),
+            nextLink -> listByCustomerNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByCustomerAsync(String billingAccountName, String billingProfileName,
+        String customerName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedFlux<>(
+            () -> listByCustomerSinglePageAsync(billingAccountName, billingProfileName, customerName, periodStartDate,
+                periodEndDate, type, filter, orderBy, top, skip, count, search, context),
+            nextLink -> listByCustomerNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransactionInner> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedIterable<>(listByCustomerAsync(billingAccountName, billingProfileName, customerName,
+            periodStartDate, periodEndDate, type, filter, orderBy, top, skip, count, search));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by customer id for given start date and end date. Transactions include
+     * purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and do not
+     * include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransactionInner> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedIterable<>(listByCustomerAsync(billingAccountName, billingProfileName, customerName,
+            periodStartDate, periodEndDate, type, filter, orderBy, top, skip, count, search, context));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByInvoiceSectionSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate,
+        TransactionType type, String filter, String orderBy, Long top, Long skip, Boolean count, String search) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (billingProfileName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingProfileName is required and cannot be null."));
+        }
+        if (invoiceSectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null."));
+        }
+        if (periodStartDate == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter periodStartDate is required and cannot be null."));
+        }
+        if (periodEndDate == null) {
+            return Mono.error(new IllegalArgumentException("Parameter periodEndDate is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByInvoiceSection(this.client.getEndpoint(), billingAccountName,
+                billingProfileName, invoiceSectionName, periodStartDate, periodEndDate, type,
+                this.client.getApiVersion(), filter, orderBy, top, skip, count, search, accept, context))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByInvoiceSectionSinglePageAsync(String billingAccountName,
+        String billingProfileName, String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate,
+        TransactionType type, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (billingProfileName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingProfileName is required and cannot be null."));
+        }
+        if (invoiceSectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter invoiceSectionName is required and cannot be null."));
+        }
+        if (periodStartDate == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter periodStartDate is required and cannot be null."));
+        }
+        if (periodEndDate == null) {
+            return Mono.error(new IllegalArgumentException("Parameter periodEndDate is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByInvoiceSection(this.client.getEndpoint(), billingAccountName, billingProfileName, invoiceSectionName,
+                periodStartDate, periodEndDate, type, this.client.getApiVersion(), filter, orderBy, top, skip, count,
+                search, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByInvoiceSectionAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search) {
+        return new PagedFlux<>(
+            () -> listByInvoiceSectionSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName,
+                periodStartDate, periodEndDate, type, filter, orderBy, top, skip, count, search),
+            nextLink -> listByInvoiceSectionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByInvoiceSectionAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedFlux<>(
+            () -> listByInvoiceSectionSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName,
+                periodStartDate, periodEndDate, type, filter, orderBy, top, skip, count, search),
+            nextLink -> listByInvoiceSectionNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByInvoiceSectionAsync(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedFlux<>(
+            () -> listByInvoiceSectionSinglePageAsync(billingAccountName, billingProfileName, invoiceSectionName,
+                periodStartDate, periodEndDate, type, filter, orderBy, top, skip, count, search, context),
+            nextLink -> listByInvoiceSectionNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransactionInner> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedIterable<>(listByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName,
+            periodStartDate, periodEndDate, type, filter, orderBy, top, skip, count, search));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by invoice section name for given start date and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransactionInner> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedIterable<>(listByInvoiceSectionAsync(billingAccountName, billingProfileName, invoiceSectionName,
+            periodStartDate, periodEndDate, type, filter, orderBy, top, skip, count, search, context));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByBillingProfileSinglePageAsync(String billingAccountName,
+        String billingProfileName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (billingProfileName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingProfileName is required and cannot be null."));
+        }
+        if (periodStartDate == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter periodStartDate is required and cannot be null."));
+        }
+        if (periodEndDate == null) {
+            return Mono.error(new IllegalArgumentException("Parameter periodEndDate is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByBillingProfile(this.client.getEndpoint(), billingAccountName,
+                billingProfileName, periodStartDate, periodEndDate, type, this.client.getApiVersion(), filter, orderBy,
+                top, skip, count, search, accept, context))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByBillingProfileSinglePageAsync(String billingAccountName,
+        String billingProfileName, LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (billingProfileName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingProfileName is required and cannot be null."));
+        }
+        if (periodStartDate == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter periodStartDate is required and cannot be null."));
+        }
+        if (periodEndDate == null) {
+            return Mono.error(new IllegalArgumentException("Parameter periodEndDate is required and cannot be null."));
+        }
+        if (type == null) {
+            return Mono.error(new IllegalArgumentException("Parameter type is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByBillingProfile(this.client.getEndpoint(), billingAccountName, billingProfileName, periodStartDate,
+                periodEndDate, type, this.client.getApiVersion(), filter, orderBy, top, skip, count, search, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByBillingProfileAsync(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search) {
+        return new PagedFlux<>(
+            () -> listByBillingProfileSinglePageAsync(billingAccountName, billingProfileName, periodStartDate,
+                periodEndDate, type, filter, orderBy, top, skip, count, search),
+            nextLink -> listByBillingProfileNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByBillingProfileAsync(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedFlux<>(
+            () -> listByBillingProfileSinglePageAsync(billingAccountName, billingProfileName, periodStartDate,
+                periodEndDate, type, filter, orderBy, top, skip, count, search),
+            nextLink -> listByBillingProfileNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByBillingProfileAsync(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedFlux<>(
+            () -> listByBillingProfileSinglePageAsync(billingAccountName, billingProfileName, periodStartDate,
+                periodEndDate, type, filter, orderBy, top, skip, count, search, context),
+            nextLink -> listByBillingProfileNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransactionInner> listByBillingProfile(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type) {
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedIterable<>(listByBillingProfileAsync(billingAccountName, billingProfileName, periodStartDate,
+            periodEndDate, type, filter, orderBy, top, skip, count, search));
+    }
+
+    /**
+     * Lists the billed or unbilled transactions by billing profile name for given start and end date. Transactions
+     * include purchases, refunds and Azure usage charges. Unbilled transactions are listed under pending invoice Id and
+     * do not include tax. Tax is added to the amount once an invoice is generated.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param periodStartDate The start date to fetch the transactions. The date should be specified in MM-DD-YYYY
+     * format.
+     * @param periodEndDate The end date to fetch the transactions. The date should be specified in MM-DD-YYYY format.
+     * @param type The type of transaction.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransactionInner> listByBillingProfile(String billingAccountName, String billingProfileName,
+        LocalDate periodStartDate, LocalDate periodEndDate, TransactionType type, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedIterable<>(listByBillingProfileAsync(billingAccountName, billingProfileName, periodStartDate,
+            periodEndDate, type, filter, orderBy, top, skip, count, search, context));
     }
 
     /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TransactionInner>> listByInvoiceSinglePageAsync(
-        String billingAccountName, String invoiceName) {
+    private Mono<PagedResponse<TransactionInner>> listByInvoiceSinglePageAsync(String billingAccountName,
+        String invoiceName, String filter, String orderBy, Long top, Long skip, Boolean count, String search) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -105,45 +1142,45 @@ public final class TransactionsClientImpl implements TransactionsClient {
         if (invoiceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter invoiceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByInvoice(
-                            this.client.getEndpoint(), billingAccountName, invoiceName, apiVersion, accept, context))
-            .<PagedResponse<TransactionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByInvoice(this.client.getEndpoint(), billingAccountName, invoiceName,
+                this.client.getApiVersion(), filter, orderBy, top, skip, count, search, accept, context))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TransactionInner>> listByInvoiceSinglePageAsync(
-        String billingAccountName, String invoiceName, Context context) {
+    private Mono<PagedResponse<TransactionInner>> listByInvoiceSinglePageAsync(String billingAccountName,
+        String invoiceName, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountName == null) {
             return Mono
@@ -152,99 +1189,667 @@ public final class TransactionsClientImpl implements TransactionsClient {
         if (invoiceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter invoiceName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByInvoice(this.client.getEndpoint(), billingAccountName, invoiceName, apiVersion, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByInvoice(this.client.getEndpoint(), billingAccountName, invoiceName, this.client.getApiVersion(),
+                filter, orderBy, top, skip, count, search, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<TransactionInner> listByInvoiceAsync(String billingAccountName, String invoiceName, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search) {
+        return new PagedFlux<>(() -> listByInvoiceSinglePageAsync(billingAccountName, invoiceName, filter, orderBy, top,
+            skip, count, search), nextLink -> listByInvoiceNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions as paginated response with {@link PagedFlux}.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TransactionInner> listByInvoiceAsync(String billingAccountName, String invoiceName) {
-        return new PagedFlux<>(
-            () -> listByInvoiceSinglePageAsync(billingAccountName, invoiceName),
-            nextLink -> listByInvoiceNextSinglePageAsync(nextLink));
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedFlux<>(() -> listByInvoiceSinglePageAsync(billingAccountName, invoiceName, filter, orderBy, top,
+            skip, count, search), nextLink -> listByInvoiceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions as paginated response with {@link PagedFlux}.
+     * @return a container for a list of resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TransactionInner> listByInvoiceAsync(
-        String billingAccountName, String invoiceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByInvoiceSinglePageAsync(billingAccountName, invoiceName, context),
-            nextLink -> listByInvoiceNextSinglePageAsync(nextLink, context));
+    private PagedFlux<TransactionInner> listByInvoiceAsync(String billingAccountName, String invoiceName, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedFlux<>(() -> listByInvoiceSinglePageAsync(billingAccountName, invoiceName, filter, orderBy, top,
+            skip, count, search, context), nextLink -> listByInvoiceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TransactionInner> listByInvoice(String billingAccountName, String invoiceName) {
-        return new PagedIterable<>(listByInvoiceAsync(billingAccountName, invoiceName));
+        final String filter = null;
+        final String orderBy = null;
+        final Long top = null;
+        final Long skip = null;
+        final Boolean count = null;
+        final String search = null;
+        return new PagedIterable<>(
+            listByInvoiceAsync(billingAccountName, invoiceName, filter, orderBy, top, skip, count, search));
     }
 
     /**
      * Lists the transactions for an invoice. Transactions include purchases, refunds and Azure usage charges.
-     *
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<TransactionInner> listByInvoice(String billingAccountName, String invoiceName, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context) {
+        return new PagedIterable<>(
+            listByInvoiceAsync(billingAccountName, invoiceName, filter, orderBy, top, skip, count, search, context));
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a URL to download the transactions document for an invoice along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> transactionsDownloadByInvoiceWithResponseAsync(String billingAccountName,
+        String invoiceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (invoiceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter invoiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.transactionsDownloadByInvoice(this.client.getEndpoint(), billingAccountName,
+                invoiceName, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param invoiceName The ID that uniquely identifies an invoice.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions as paginated response with {@link PagedIterable}.
+     * @return a URL to download the transactions document for an invoice along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TransactionInner> listByInvoice(
-        String billingAccountName, String invoiceName, Context context) {
-        return new PagedIterable<>(listByInvoiceAsync(billingAccountName, invoiceName, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> transactionsDownloadByInvoiceWithResponseAsync(String billingAccountName,
+        String invoiceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (invoiceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter invoiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.transactionsDownloadByInvoice(this.client.getEndpoint(), billingAccountName, invoiceName,
+            this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a URL to download the transactions document for an invoice.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DocumentDownloadResultInner>, DocumentDownloadResultInner>
+        beginTransactionsDownloadByInvoiceAsync(String billingAccountName, String invoiceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = transactionsDownloadByInvoiceWithResponseAsync(billingAccountName, invoiceName);
+        return this.client.<DocumentDownloadResultInner, DocumentDownloadResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DocumentDownloadResultInner.class, DocumentDownloadResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a URL to download the transactions document for an invoice.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DocumentDownloadResultInner>, DocumentDownloadResultInner>
+        beginTransactionsDownloadByInvoiceAsync(String billingAccountName, String invoiceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = transactionsDownloadByInvoiceWithResponseAsync(billingAccountName, invoiceName, context);
+        return this.client.<DocumentDownloadResultInner, DocumentDownloadResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DocumentDownloadResultInner.class, DocumentDownloadResultInner.class,
+            context);
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a URL to download the transactions document for an invoice.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DocumentDownloadResultInner>, DocumentDownloadResultInner>
+        beginTransactionsDownloadByInvoice(String billingAccountName, String invoiceName) {
+        return this.beginTransactionsDownloadByInvoiceAsync(billingAccountName, invoiceName).getSyncPoller();
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a URL to download the transactions document for an invoice.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DocumentDownloadResultInner>, DocumentDownloadResultInner>
+        beginTransactionsDownloadByInvoice(String billingAccountName, String invoiceName, Context context) {
+        return this.beginTransactionsDownloadByInvoiceAsync(billingAccountName, invoiceName, context).getSyncPoller();
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a URL to download the transactions document for an invoice on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DocumentDownloadResultInner> transactionsDownloadByInvoiceAsync(String billingAccountName,
+        String invoiceName) {
+        return beginTransactionsDownloadByInvoiceAsync(billingAccountName, invoiceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a URL to download the transactions document for an invoice on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DocumentDownloadResultInner> transactionsDownloadByInvoiceAsync(String billingAccountName,
+        String invoiceName, Context context) {
+        return beginTransactionsDownloadByInvoiceAsync(billingAccountName, invoiceName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a URL to download the transactions document for an invoice.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentDownloadResultInner transactionsDownloadByInvoice(String billingAccountName, String invoiceName) {
+        return transactionsDownloadByInvoiceAsync(billingAccountName, invoiceName).block();
+    }
+
+    /**
+     * Gets a URL to download the transactions document for an invoice. The operation is supported for billing accounts
+     * with agreement type Enterprise Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a URL to download the transactions document for an invoice.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentDownloadResultInner transactionsDownloadByInvoice(String billingAccountName, String invoiceName,
+        Context context) {
+        return transactionsDownloadByInvoiceAsync(billingAccountName, invoiceName, context).block();
+    }
+
+    /**
+     * Gets the transaction summary for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @param search The search query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the transaction summary for an invoice along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TransactionSummaryInner>> getTransactionSummaryByInvoiceWithResponseAsync(
+        String billingAccountName, String invoiceName, String filter, String search) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (invoiceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter invoiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getTransactionSummaryByInvoice(this.client.getEndpoint(),
+                billingAccountName, invoiceName, this.client.getApiVersion(), filter, search, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the transaction summary for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @param search The search query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the transaction summary for an invoice along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TransactionSummaryInner>> getTransactionSummaryByInvoiceWithResponseAsync(
+        String billingAccountName, String invoiceName, String filter, String search, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (billingAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter billingAccountName is required and cannot be null."));
+        }
+        if (invoiceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter invoiceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getTransactionSummaryByInvoice(this.client.getEndpoint(), billingAccountName, invoiceName,
+            this.client.getApiVersion(), filter, search, accept, context);
+    }
+
+    /**
+     * Gets the transaction summary for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the transaction summary for an invoice on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<TransactionSummaryInner> getTransactionSummaryByInvoiceAsync(String billingAccountName,
+        String invoiceName) {
+        final String filter = null;
+        final String search = null;
+        return getTransactionSummaryByInvoiceWithResponseAsync(billingAccountName, invoiceName, filter, search)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the transaction summary for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @param filter The filter query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @param search The search query option allows clients to filter the line items that are aggregated to create the
+     * line item summary.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the transaction summary for an invoice along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TransactionSummaryInner> getTransactionSummaryByInvoiceWithResponse(String billingAccountName,
+        String invoiceName, String filter, String search, Context context) {
+        return getTransactionSummaryByInvoiceWithResponseAsync(billingAccountName, invoiceName, filter, search, context)
+            .block();
+    }
+
+    /**
+     * Gets the transaction summary for an invoice. Transactions include purchases, refunds and Azure usage charges.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param invoiceName The ID that uniquely identifies an invoice.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the transaction summary for an invoice.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TransactionSummaryInner getTransactionSummaryByInvoice(String billingAccountName, String invoiceName) {
+        final String filter = null;
+        final String search = null;
+        return getTransactionSummaryByInvoiceWithResponse(billingAccountName, invoiceName, filter, search, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByCustomerNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByCustomerNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByCustomerNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByCustomerNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByInvoiceSectionNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listByInvoiceSectionNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByInvoiceSectionNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByInvoiceSectionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByBillingProfileNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listByBillingProfileNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<TransactionInner>> listByBillingProfileNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByBillingProfileNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransactionInner>> listByInvoiceNextSinglePageAsync(String nextLink) {
@@ -252,36 +1857,27 @@ public final class TransactionsClientImpl implements TransactionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByInvoiceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TransactionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TransactionInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of transactions along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return a container for a list of resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TransactionInner>> listByInvoiceNextSinglePageAsync(String nextLink, Context context) {
@@ -289,23 +1885,13 @@ public final class TransactionsClientImpl implements TransactionsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByInvoiceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByInvoiceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

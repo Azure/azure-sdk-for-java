@@ -13,6 +13,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.implementation.util.HttpUtils;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.SharedExecutorService;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -34,7 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -42,8 +43,9 @@ import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.LONG_BODY
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.RETURN_HEADERS_AS_IS_PATH;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SHORT_BODY;
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.TIMEOUT;
-import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
+import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
@@ -148,7 +150,7 @@ public class VertxAsyncHttpClientTests {
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
-            com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);
+            assertArraysEqual(LONG_BODY, response);
             return true;
         }).expectComplete().verify(Duration.ofSeconds(60));
     }
@@ -157,24 +159,21 @@ public class VertxAsyncHttpClientTests {
     public void testConcurrentRequestsSync() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new VertxAsyncHttpClientProvider().createInstance();
+        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
+                try (HttpResponse response = doRequestSync(client, "/long")) {
+                    byte[] body = response.getBodyAsBinaryData().toBytes();
+                    assertArraysEqual(LONG_BODY, body);
+                    return null;
+                }
+            });
+        }
 
-        ForkJoinPool pool = new ForkJoinPool();
-        try {
-            List<Callable<Void>> requests = new ArrayList<>(numRequests);
-            for (int i = 0; i < numRequests; i++) {
-                requests.add(() -> {
-                    try (HttpResponse response = doRequestSync(client, "/long")) {
-                        byte[] body = response.getBodyAsBinaryData().toBytes();
-                        com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, body);
-                        return null;
-                    }
-                });
-            }
-
-            pool.invokeAll(requests);
-        } finally {
-            pool.shutdown();
-            assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
+        List<Future<Void>> futures = SharedExecutorService.getInstance().invokeAll(requests, 60, TimeUnit.SECONDS);
+        for (Future<Void> future : futures) {
+            assertTrue(future.isDone());
+            assertDoesNotThrow(() -> future.get());
         }
     }
 

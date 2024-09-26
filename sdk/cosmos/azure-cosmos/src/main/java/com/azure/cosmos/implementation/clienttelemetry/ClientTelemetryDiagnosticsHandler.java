@@ -16,6 +16,8 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 
+import java.lang.ref.WeakReference;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnosticsHandler {
@@ -25,7 +27,7 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.getCosmosClientTelemetryConfigAccessor();
 
     private final CosmosClientTelemetryConfig config;
-    private ClientTelemetry telemetry;
+    private WeakReference<ClientTelemetry> telemetryRef;
     private boolean isInitialized;
 
     public ClientTelemetryDiagnosticsHandler(CosmosClientTelemetryConfig config) {
@@ -41,7 +43,7 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
 
         ClientTelemetry telemetryFromConfig = clientTelemetryConfigAccessor.getClientTelemetry(config);
         checkNotNull(telemetryFromConfig, "Argument 'telemetryFromConfig' must not be null.");
-        this.telemetry = telemetryFromConfig;
+        this.telemetryRef = new WeakReference<>(telemetryFromConfig);
         this.isInitialized = true;
     }
 
@@ -51,11 +53,17 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
 
         this.ensureInitialized();
 
+        ClientTelemetry clientTelemetrySnapshot = this.telemetryRef.get();
+        if (clientTelemetrySnapshot == null) {
+            return;
+        }
+
         OperationType operationType = ctxAccessor.getOperationType(diagnosticsContext);
         ResourceType resourceType = ctxAccessor.getResourceType(diagnosticsContext);
 
         for (CosmosDiagnostics diagnostics: diagnosticsContext.getDiagnostics()) {
             fillClientTelemetry(
+                clientTelemetrySnapshot,
                 diagnostics,
                 diagnosticsContext.getStatusCode(),
                 diagnosticsContext.getMaxResponsePayloadSizeInBytes(),
@@ -69,7 +77,8 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
         }
     }
 
-    private void fillClientTelemetry(CosmosDiagnostics cosmosDiagnostics,
+    private static void fillClientTelemetry(ClientTelemetry clientTelemetrySnapshot,
+                                     CosmosDiagnostics cosmosDiagnostics,
                                      int statusCode,
                                      Integer objectSize,
                                      String containerId,
@@ -78,13 +87,14 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
                                      ResourceType resourceType,
                                      ConsistencyLevel consistencyLevel,
                                      float requestCharge) {
+        checkNotNull(clientTelemetrySnapshot, "Argument 'clientTelemetrySnapshot' must not be NULL.");
         ReportPayload reportPayloadLatency = createReportPayload(cosmosDiagnostics,
             statusCode, objectSize, containerId, databaseId
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_LATENCY_NAME,
             ClientTelemetry.REQUEST_LATENCY_UNIT);
 
 
-        ConcurrentDoubleHistogram latencyHistogram = this.telemetry
+        ConcurrentDoubleHistogram latencyHistogram = clientTelemetrySnapshot
             .getClientTelemetryInfo()
             .getOperationInfoMap()
             .get(reportPayloadLatency);
@@ -101,26 +111,26 @@ public final class ClientTelemetryDiagnosticsHandler implements CosmosDiagnostic
 
                 latencyHistogram.setAutoResize(true);
                 ClientTelemetry.recordValue(latencyHistogram, cosmosDiagnostics.getDuration().toMillis());
-                telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
+                clientTelemetrySnapshot.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
             }
         }
 
         ReportPayload reportPayloadRequestCharge = createReportPayload(cosmosDiagnostics,
             statusCode, objectSize, containerId, databaseId
             , operationType, resourceType, consistencyLevel, ClientTelemetry.REQUEST_CHARGE_NAME, ClientTelemetry.REQUEST_CHARGE_UNIT);
-        ConcurrentDoubleHistogram requestChargeHistogram = telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge);
+        ConcurrentDoubleHistogram requestChargeHistogram = clientTelemetrySnapshot.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadRequestCharge);
         if (requestChargeHistogram != null) {
             ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
         } else {
             requestChargeHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_CHARGE_MAX, ClientTelemetry.REQUEST_CHARGE_PRECISION);
             requestChargeHistogram.setAutoResize(true);
             ClientTelemetry.recordValue(requestChargeHistogram, requestCharge);
-            telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
+            clientTelemetrySnapshot.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadRequestCharge,
                 requestChargeHistogram);
         }
     }
 
-    private ReportPayload createReportPayload(CosmosDiagnostics cosmosDiagnostics,
+    private static ReportPayload createReportPayload(CosmosDiagnostics cosmosDiagnostics,
                                               int statusCode,
                                               Integer objectSize,
                                               String containerId,

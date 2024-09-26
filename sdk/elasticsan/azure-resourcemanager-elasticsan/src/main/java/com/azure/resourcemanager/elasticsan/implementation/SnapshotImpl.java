@@ -78,14 +78,16 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot create() {
-        this.innerObject = serviceManager.serviceClient().getVolumeSnapshots().create(resourceGroupName, elasticSanName,
-            volumeGroupName, snapshotName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeSnapshots()
+            .create(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Snapshot create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeSnapshots().create(resourceGroupName, elasticSanName,
-            volumeGroupName, snapshotName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeSnapshots()
+            .create(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, this.innerModel(), context);
         return this;
     }
 
@@ -96,14 +98,18 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
     }
 
     public Snapshot refresh() {
-        this.innerObject = serviceManager.serviceClient().getVolumeSnapshots()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeSnapshots()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Snapshot refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getVolumeSnapshots()
-            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVolumeSnapshots()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, context)
+            .getValue();
         return this;
     }
 

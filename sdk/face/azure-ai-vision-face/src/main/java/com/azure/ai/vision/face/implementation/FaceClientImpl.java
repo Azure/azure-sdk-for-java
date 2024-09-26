@@ -257,50 +257,93 @@ public final class FaceClientImpl {
             @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData groupRequest,
             RequestOptions requestOptions, Context context);
+
+        @Post("/findsimilars")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> findSimilarFromLargeFaceList(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData findSimilarFromLargeFaceListRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/findsimilars")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> findSimilarFromLargeFaceListSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData findSimilarFromLargeFaceListRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/identify")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> identifyFromLargePersonGroup(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData identifyFromLargePersonGroupRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/identify")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> identifyFromLargePersonGroupSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData identifyFromLargePersonGroupRequest,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/verify")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> verifyFromLargePersonGroup(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData verifyFromLargePersonGroupRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/verify")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> verifyFromLargePersonGroupSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData verifyFromLargePersonGroupRequest, RequestOptions requestOptions,
+            Context context);
     }
 
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      * 
-     * &gt; [!IMPORTANT]
-     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
-     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
-     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
-     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
-     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
-     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     * 
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
+     * details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
      * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * value is 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64
+     * pixels) and rotated face orientations. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
      * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
      * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
      * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
@@ -450,45 +493,16 @@ public final class FaceClientImpl {
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      * 
-     * &gt; [!IMPORTANT]
-     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
-     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
-     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
-     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
-     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
-     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     * 
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-url for more
+     * details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
      * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * value is 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64
+     * pixels) and rotated face orientations. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
      * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
      * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
      * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
@@ -638,45 +652,15 @@ public final class FaceClientImpl {
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      * 
-     * &gt; [!IMPORTANT]
-     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
-     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
-     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
-     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
-     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
-     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     * 
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect for more details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
      * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * value is 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64
+     * pixels) and rotated face orientations. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
      * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
      * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
      * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
@@ -824,45 +808,15 @@ public final class FaceClientImpl {
     /**
      * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
      * 
-     * &gt; [!IMPORTANT]
-     * &gt; Microsoft has retired or limited facial recognition capabilities that can be used to try to infer emotional
-     * states and identity attributes which, if misused, can subject people to stereotyping, discrimination or unfair
-     * denial of services. The retired capabilities are emotion and gender. The limited capabilities are age, smile,
-     * facial hair, hair and makeup. Email Azure Face API &lt;azureface&#064;microsoft.com&gt; if you have a responsible
-     * use case that would benefit from the use of any of the limited capabilities. Read more about this decision
-     * https://azure.microsoft.com/blog/responsible-ai-investments-and-safeguards-for-facial-recognition/.
-     * 
-     * *
-     * * No image will be stored. Only the extracted face feature(s) will be stored on server. The faceId is an
-     * identifier of the face feature and will be used in "Identify", "Verify", and "Find Similar". The stored face
-     * features will expire and be deleted at the time specified by faceIdTimeToLive after the original detection call.
-     * * Optional parameters include faceId, landmarks, and attributes. Attributes include headPose, glasses, occlusion,
-     * accessories, blur, exposure, noise, mask, and qualityForRecognition. Some of the results returned for specific
-     * attributes may not be highly accurate.
-     * * JPEG, PNG, GIF (the first frame), and BMP format are supported. The allowed image file size is from 1KB to 6MB.
-     * * The minimum detectable face size is 36x36 pixels in an image no larger than 1920x1080 pixels. Images with
-     * dimensions higher than 1920x1080 pixels will need a proportionally larger minimum face size.
-     * * Up to 100 faces can be returned for an image. Faces are ranked by face rectangle size from large to small.
-     * * For optimal results when querying "Identify", "Verify", and "Find Similar" ('returnFaceId' is true), please use
-     * faces that are: frontal, clear, and with a minimum size of 200x200 pixels (100 pixels between eyes).
-     * * Different 'detectionModel' values can be provided. To use and compare different detection models, please refer
-     * to https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-detection-model
-     * * 'detection_02': Face attributes and landmarks are disabled if you choose this detection model.
-     * * 'detection_03': Face attributes (mask, blur, and headPose) and landmarks are supported if you choose this
-     * detection model.
-     * * Different 'recognitionModel' values are provided. If follow-up operations like "Verify", "Identify", "Find
-     * Similar" are needed, please specify the recognition model with 'recognitionModel' parameter. The default value
-     * for 'recognitionModel' is 'recognition_01', if latest model needed, please explicitly specify the model you need
-     * in this parameter. Once specified, the detected faceIds will be associated with the specified recognition model.
-     * More details, please refer to
-     * https://learn.microsoft.com/azure/ai-services/computer-vision/how-to/specify-recognition-model.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect for more details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
      * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
-     * value is 'detection_01'. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * value is 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64
+     * pixels) and rotated face orientations. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
      * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
      * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
      * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
@@ -1010,16 +964,8 @@ public final class FaceClientImpl {
      * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
      * faces created by Detect.
      * 
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     * 
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     * 
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target faceId array.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
+     * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1066,16 +1012,8 @@ public final class FaceClientImpl {
      * Given query face's faceId, to search the similar-looking faces from a faceId array. A faceId array contains the
      * faces created by Detect.
      * 
-     * Depending on the input the returned similar faces list contains faceIds or persistedFaceIds ranked by similarity.
-     * 
-     * Find similar has two working modes, "matchPerson" and "matchFace". "matchPerson" is the default mode that it
-     * tries to find faces of the same person as possible by using internal same-person thresholds. It is useful to find
-     * a known person's other photos. Note that an empty list will be returned if no faces pass the internal thresholds.
-     * "matchFace" mode ignores same-person thresholds and returns ranked similar faces anyway, even the similarity is
-     * low. It can be used in the cases like searching celebrity-looking faces.
-     * 
-     * The 'recognitionModel' associated with the query faceId should be the same as the 'recognitionModel' used by the
-     * target faceId array.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar for more
+     * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1120,13 +1058,8 @@ public final class FaceClientImpl {
     /**
      * Verify whether two faces belong to a same person.
      * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the both faces should be the same.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-face-to-face for
+     * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1166,13 +1099,8 @@ public final class FaceClientImpl {
     /**
      * Verify whether two faces belong to a same person.
      * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Higher face image quality means better identification precision. Please consider high-quality faces:
-     * frontal, clear, and face size is 200x200 pixels (100 pixels between eyes) or bigger.
-     * &gt; * For the scenarios that are sensitive to accuracy please make your own judgment.
-     * &gt; * The 'recognitionModel' associated with the both faces should be the same.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-face-to-face for
+     * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1211,16 +1139,7 @@ public final class FaceClientImpl {
     /**
      * Divide candidate faces into groups based on face similarity.
      * 
-     * &gt;
-     * *
-     * * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have
-     * similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice
-     * that faces belonging to a same person might be split into several groups in the result.
-     * * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original
-     * faces. The messyGroup will not appear in the result if all faces found their counterparts.
-     * * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try "Verify Face To Face" when you
-     * only have 2 candidate faces.
-     * * The 'recognitionModel' associated with the query faces' faceIds should be the same.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1266,16 +1185,7 @@ public final class FaceClientImpl {
     /**
      * Divide candidate faces into groups based on face similarity.
      * 
-     * &gt;
-     * *
-     * * The output is one or more disjointed face groups and a messyGroup. A face group contains faces that have
-     * similar looking, often of the same person. Face groups are ranked by group size, i.e. number of faces. Notice
-     * that faces belonging to a same person might be split into several groups in the result.
-     * * MessyGroup is a special face group containing faces that cannot find any similar counterpart face from original
-     * faces. The messyGroup will not appear in the result if all faces found their counterparts.
-     * * Group API needs at least 2 candidate faces and 1000 at most. We suggest to try "Verify Face To Face" when you
-     * only have 2 candidate faces.
-     * * The 'recognitionModel' associated with the query faces' faceIds should be the same.
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/group for more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>{@code
@@ -1315,5 +1225,288 @@ public final class FaceClientImpl {
         final String accept = "application/json";
         return service.groupSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
             groupRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
+     * created by Create Large Face List.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar-from-large-face-list for more
+     * details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     faceId: String (Required)
+     *     maxNumOfCandidatesReturned: Integer (Optional)
+     *     mode: String(matchPerson/matchFace) (Optional)
+     *     largeFaceListId: String (Required)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * [
+     *      (Required){
+     *         confidence: double (Required)
+     *         faceId: String (Optional)
+     *         persistedFaceId: String (Optional)
+     *     }
+     * ]
+     * }</pre>
+     * 
+     * @param findSimilarFromLargeFaceListRequest The findSimilarFromLargeFaceListRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> findSimilarFromLargeFaceListWithResponseAsync(
+        BinaryData findSimilarFromLargeFaceListRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.findSimilarFromLargeFaceList(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, accept, findSimilarFromLargeFaceListRequest, requestOptions, context));
+    }
+
+    /**
+     * Given query face's faceId, to search the similar-looking faces from a Large Face List. A 'largeFaceListId' is
+     * created by Create Large Face List.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/find-similar-from-large-face-list for more
+     * details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     faceId: String (Required)
+     *     maxNumOfCandidatesReturned: Integer (Optional)
+     *     mode: String(matchPerson/matchFace) (Optional)
+     *     largeFaceListId: String (Required)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * [
+     *      (Required){
+     *         confidence: double (Required)
+     *         faceId: String (Optional)
+     *         persistedFaceId: String (Optional)
+     *     }
+     * ]
+     * }</pre>
+     * 
+     * @param findSimilarFromLargeFaceListRequest The findSimilarFromLargeFaceListRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> findSimilarFromLargeFaceListWithResponse(BinaryData findSimilarFromLargeFaceListRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.findSimilarFromLargeFaceListSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, findSimilarFromLargeFaceListRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
+     * 
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/identify-from-person-group
+     * for more details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     faceIds (Required): [
+     *         String (Required)
+     *     ]
+     *     largePersonGroupId: String (Required)
+     *     maxNumOfCandidatesReturned: Integer (Optional)
+     *     confidenceThreshold: Double (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * [
+     *      (Required){
+     *         faceId: String (Required)
+     *         candidates (Required): [
+     *              (Required){
+     *                 personId: String (Required)
+     *                 confidence: double (Required)
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     * 
+     * @param identifyFromLargePersonGroupRequest The identifyFromLargePersonGroupRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> identifyFromLargePersonGroupWithResponseAsync(
+        BinaryData identifyFromLargePersonGroupRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.identifyFromLargePersonGroup(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, accept, identifyFromLargePersonGroupRequest, requestOptions, context));
+    }
+
+    /**
+     * 1-to-many identification to find the closest matches of the specific query person face from a Large Person Group.
+     * 
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-recognition-operations/identify-from-person-group
+     * for more details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     faceIds (Required): [
+     *         String (Required)
+     *     ]
+     *     largePersonGroupId: String (Required)
+     *     maxNumOfCandidatesReturned: Integer (Optional)
+     *     confidenceThreshold: Double (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * [
+     *      (Required){
+     *         faceId: String (Required)
+     *         candidates (Required): [
+     *              (Required){
+     *                 personId: String (Required)
+     *                 confidence: double (Required)
+     *             }
+     *         ]
+     *     }
+     * ]
+     * }</pre>
+     * 
+     * @param identifyFromLargePersonGroupRequest The identifyFromLargePersonGroupRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> identifyFromLargePersonGroupWithResponse(BinaryData identifyFromLargePersonGroupRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.identifyFromLargePersonGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, identifyFromLargePersonGroupRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Verify whether a face belongs to a person in a Large Person Group.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-from-large-person-group for more
+     * details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     faceId: String (Required)
+     *     largePersonGroupId: String (Required)
+     *     personId: String (Required)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     isIdentical: boolean (Required)
+     *     confidence: double (Required)
+     * }
+     * }</pre>
+     * 
+     * @param verifyFromLargePersonGroupRequest The verifyFromLargePersonGroupRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return verify result along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> verifyFromLargePersonGroupWithResponseAsync(
+        BinaryData verifyFromLargePersonGroupRequest, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.verifyFromLargePersonGroup(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, accept, verifyFromLargePersonGroupRequest, requestOptions, context));
+    }
+
+    /**
+     * Verify whether a face belongs to a person in a Large Person Group.
+     * 
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/face-recognition-operations/verify-from-large-person-group for more
+     * details.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     faceId: String (Required)
+     *     largePersonGroupId: String (Required)
+     *     personId: String (Required)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     isIdentical: boolean (Required)
+     *     confidence: double (Required)
+     * }
+     * }</pre>
+     * 
+     * @param verifyFromLargePersonGroupRequest The verifyFromLargePersonGroupRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return verify result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> verifyFromLargePersonGroupWithResponse(BinaryData verifyFromLargePersonGroupRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.verifyFromLargePersonGroupSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, verifyFromLargePersonGroupRequest, requestOptions, Context.NONE);
     }
 }

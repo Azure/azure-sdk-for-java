@@ -117,29 +117,25 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, applicationGroupName, applicationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdateWithResponse(resourceGroupName, applicationGroupName, applicationName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Application create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, applicationGroupName, applicationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .createOrUpdateWithResponse(resourceGroupName, applicationGroupName, applicationName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    ApplicationImpl(
-        String name, com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
+    ApplicationImpl(String name,
+        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = new ApplicationInner();
         this.serviceManager = serviceManager;
         this.applicationName = name;
@@ -151,54 +147,44 @@ public final class ApplicationImpl implements Application, Application.Definitio
     }
 
     public Application apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .updateWithResponse(
-                    resourceGroupName, applicationGroupName, applicationName, updateApplication, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .updateWithResponse(resourceGroupName, applicationGroupName, applicationName, updateApplication,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Application apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .updateWithResponse(
-                    resourceGroupName, applicationGroupName, applicationName, updateApplication, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .updateWithResponse(resourceGroupName, applicationGroupName, applicationName, updateApplication, context)
+            .getValue();
         return this;
     }
 
-    ApplicationImpl(
-        ApplicationInner innerObject,
+    ApplicationImpl(ApplicationInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.applicationGroupName = Utils.getValueFromIdByName(innerObject.id(), "applicationGroups");
-        this.applicationName = Utils.getValueFromIdByName(innerObject.id(), "applications");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.applicationGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationGroups");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
     }
 
     public Application refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .getWithResponse(resourceGroupName, applicationGroupName, applicationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, applicationGroupName, applicationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Application refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplications()
-                .getWithResponse(resourceGroupName, applicationGroupName, applicationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApplications()
+            .getWithResponse(resourceGroupName, applicationGroupName, applicationName, context)
+            .getValue();
         return this;
     }
 

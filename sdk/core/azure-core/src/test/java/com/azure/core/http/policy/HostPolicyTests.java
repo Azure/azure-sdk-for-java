@@ -12,6 +12,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.clients.NoOpHttpClient;
 import com.azure.core.util.Context;
+import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
@@ -46,8 +47,8 @@ public class HostPolicyTests {
         return new HttpRequest(HttpMethod.GET, createUrl(url));
     }
 
-    private HttpResponse sendRequest(HttpPipeline pipeline, HttpRequest httpRequest) {
-        return pipeline.send(httpRequest).block();
+    private Mono<HttpResponse> sendRequest(HttpPipeline pipeline, HttpRequest httpRequest) {
+        return pipeline.send(httpRequest);
     }
 
     private HttpResponse sendRequestSync(HttpPipeline pipeline, HttpRequest httpRequest) {

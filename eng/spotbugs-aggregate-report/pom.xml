@@ -92,7 +92,7 @@
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-batch</artifactId>
-          <version>11.2.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
+          <version>11.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-batch;current} -->
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
@@ -109,14 +109,6 @@
           <artifactId>azure-eventhubs-extensions</artifactId>
           <version>3.4.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs-extensions;current} -->
         </dependency>
-        <!-- Storage is excluded from Spotbugs report as it collides with the storage library
-             dependency in eventhubs code. This issue is under investigation.
-              Issue Link: https://github.com/Azure/azure-sdk-for-java/issues/3096 -->
-        <!--dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-storage-blob</artifactId>
-            <version>11.0.2</version> {x-version-update;com.microsoft.azure:azure-storage-blob;current}
-        </dependency-->
         <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-servicebus</artifactId>

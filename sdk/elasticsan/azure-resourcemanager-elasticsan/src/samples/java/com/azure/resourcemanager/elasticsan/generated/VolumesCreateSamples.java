@@ -13,7 +13,7 @@ import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
  */
 public final class VolumesCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * Volumes_Create_MaximumSet_Gen.json
      */
     /**
@@ -22,15 +22,18 @@ public final class VolumesCreateSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumesCreateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumes().define("volumename")
-            .withExistingVolumegroup("resourcegroupname", "elasticsanname", "volumegroupname").withSizeGiB(9L)
+        manager.volumes()
+            .define("volumename")
+            .withExistingVolumegroup("resourcegroupname", "elasticsanname", "volumegroupname")
+            .withSizeGiB(9L)
             .withCreationData(
                 new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("ARM Id of Resource"))
-            .withManagedBy(new ManagedByInfo().withResourceId("mtkeip")).create();
+            .withManagedBy(new ManagedByInfo().withResourceId("mtkeip"))
+            .create();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * Volumes_Create_MinimumSet_Gen.json
      */
     /**
@@ -39,7 +42,10 @@ public final class VolumesCreateSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumesCreateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumes().define("volumename")
-            .withExistingVolumegroup("resourcegroupname", "elasticsanname", "volumegroupname").withSizeGiB(9L).create();
+        manager.volumes()
+            .define("volumename")
+            .withExistingVolumegroup("resourcegroupname", "elasticsanname", "volumegroupname")
+            .withSizeGiB(9L)
+            .create();
     }
 }

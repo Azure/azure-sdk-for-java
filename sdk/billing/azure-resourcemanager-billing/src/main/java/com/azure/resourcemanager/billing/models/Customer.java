@@ -4,70 +4,61 @@
 
 package com.azure.resourcemanager.billing.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.CustomerInner;
-import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of Customer. */
+/**
+ * An immutable client-side representation of Customer.
+ */
 public interface Customer {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the billingProfileId property: The ID of the billing profile for the invoice section.
-     *
-     * @return the billingProfileId value.
+     * Gets the tags property: Dictionary of metadata associated with the resource. It may not be populated for all
+     * resource types. Maximum key/value length supported of 256 characters. Keys/value should not empty value nor null.
+     * Keys can not contain &lt; &gt; % &amp; \ ? /.
+     * 
+     * @return the tags value.
      */
-    String billingProfileId();
+    Map<String, String> tags();
 
     /**
-     * Gets the billingProfileDisplayName property: The name of the billing profile for the invoice section.
-     *
-     * @return the billingProfileDisplayName value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    String billingProfileDisplayName();
+    SystemData systemData();
 
     /**
-     * Gets the displayName property: The name of the customer.
-     *
-     * @return the displayName value.
+     * Gets the properties property: A partner's customer.
+     * 
+     * @return the properties value.
      */
-    String displayName();
-
-    /**
-     * Gets the enabledAzurePlans property: Azure plans enabled for the customer.
-     *
-     * @return the enabledAzurePlans value.
-     */
-    List<AzurePlan> enabledAzurePlans();
-
-    /**
-     * Gets the resellers property: The list of resellers for which an Azure plan is enabled for the customer.
-     *
-     * @return the resellers value.
-     */
-    List<Reseller> resellers();
+    CustomerProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.billing.fluent.models.CustomerInner object.
-     *
+     * 
      * @return the inner object.
      */
     CustomerInner innerModel();

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.containerservice.generated;
 public final class MaintenanceConfigurationsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * MaintenanceConfigurationsDelete.json
      */
     /**
@@ -28,7 +28,7 @@ public final class MaintenanceConfigurationsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * MaintenanceConfigurationsDelete_MaintenanceWindow.json
      */
     /**
