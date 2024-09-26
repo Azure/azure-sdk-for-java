@@ -435,8 +435,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
-                encryptionScope, finalContext)
+                options.isLegalHold(), null, null, null,
+                options.getHeaders(), getCustomerProvidedKey(), encryptionScope, finalContext)
                 .map(rb -> {
                     BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
                     BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -756,8 +756,8 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         Objects.requireNonNull(data.getLength(), "data must have defined length");
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlockBlobs().stageBlockNoCustomHeadersWithResponseAsync(containerName, blobName,
-            base64BlockId, data.getLength(), data, contentMd5, null, null, leaseId, null, getCustomerProvidedKey(),
-            encryptionScope, context);
+            base64BlockId, data.getLength(), data, contentMd5, null, null, leaseId,
+            null, null, null, getCustomerProvidedKey(), encryptionScope, context);
     }
 
     /**
