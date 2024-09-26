@@ -4,7 +4,6 @@ package com.azure.security.keyvault.administration.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -160,20 +159,6 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             String authority = getRequestAuthority(request);
             Map<String, String> challengeAttributes =
                 extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
-
-            String error = challengeAttributes.get("error");
-            String claims = null;
-
-            if (error != null) {
-                LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
-
-                String base64Claims = challengeAttributes.get("claims");
-
-                if (error.equalsIgnoreCase("insufficient_claims") && base64Claims != null) {
-                    claims = new String(Base64Util.decodeString(base64Claims));
-                }
-            }
-
             String scope = challengeAttributes.get("resource");
 
             if (scope != null) {
@@ -225,10 +210,20 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 .addScopes(this.challenge.getScopes())
                 .setTenantId(this.challenge.getTenantId());
 
-            if (claims != null) {
-                tokenRequestContext
-                    .setCaeEnabled(true)
-                    .setClaims(claims);
+            String error = challengeAttributes.get("error");
+
+            if (error != null) {
+                LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
+
+                if ("insufficient_claims".equalsIgnoreCase(error)) {
+                    String claims = challengeAttributes.get("claims");
+
+                    if (claims != null) {
+                        tokenRequestContext
+                            .setCaeEnabled(true)
+                            .setClaims(new String(Base64Util.decodeString(claims)));
+                    }
+                }
             }
 
             return setAuthorizationHeader(context, tokenRequestContext)
@@ -287,20 +282,6 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         String authority = getRequestAuthority(request);
         Map<String, String> challengeAttributes =
             extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
-
-        String error = challengeAttributes.get("error");
-        String claims = null;
-
-        if (error != null) {
-            LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
-
-            String base64Claims = challengeAttributes.get("claims");
-
-            if (error.equalsIgnoreCase("insufficient_claims") && base64Claims != null) {
-                claims = new String(Base64Util.decodeString(base64Claims));
-            }
-        }
-
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -352,10 +333,20 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             .addScopes(this.challenge.getScopes())
             .setTenantId(this.challenge.getTenantId());
 
-        if (claims != null) {
-            tokenRequestContext
-                .setCaeEnabled(true)
-                .setClaims(claims);
+        String error = challengeAttributes.get("error");
+
+        if (error != null) {
+            LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
+
+            if ("insufficient_claims".equalsIgnoreCase(error)) {
+                String claims = challengeAttributes.get("claims");
+
+                if (claims != null) {
+                    tokenRequestContext
+                        .setCaeEnabled(true)
+                        .setClaims(new String(Base64Util.decodeString(claims)));
+                }
+            }
         }
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
@@ -372,19 +363,10 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
         return authorizeRequest(context).then(Mono.defer(next::process)).flatMap(httpResponse -> {
-            String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+            String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
 
             if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                return authorizeRequestOnChallenge(context, httpResponse).flatMap(authorized -> {
-                    if (authorized) {
-                        // The body needs to be closed or read to the end to release the connection.
-                        httpResponse.close();
-
-                        return nextPolicy.process();
-                    } else {
-                        return Mono.just(httpResponse);
-                    }
-                });
+                return handleChallenge(context, httpResponse, nextPolicy);
             }
 
             return Mono.just(httpResponse);
@@ -398,56 +380,81 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme."));
         }
 
-        HttpPipelineNextSyncPolicy firstClone = next.clone();
+        HttpPipelineNextSyncPolicy nextPolicy = next.clone();
 
         authorizeRequestSync(context);
 
-        HttpResponse firstResponse = next.processSync();
-        String firstAuthHeader = firstResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+        HttpResponse httpResponse = next.processSync();
+        String authHeader = httpResponse.getHeaderValue(WWW_AUTHENTICATE);
 
-        if (firstResponse.getStatusCode() == 401 && firstAuthHeader != null) {
-            if (authorizeRequestOnChallengeSync(context, firstResponse)) {
-                // The body needs to be closed or read to the end to release the connection.
-                firstResponse.close();
-
-                HttpPipelineNextSyncPolicy secondClone = firstClone.clone();
-                HttpResponse secondResponse = firstClone.processSync();
-                String secondAuthHeader = secondResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-
-                if (secondResponse.getStatusCode() == 401
-                    && secondAuthHeader != null
-                    // We should only retry if the first challenge does not have an 'insufficient claims' error.
-                    && !firstAuthHeader.contains("insufficient_claims")) {
-
-                    if (authorizeRequestOnChallengeSync(context, secondResponse)) {
-                        // The body needs to be closed or read to the end to release the connection.
-                        secondResponse.close();
-
-                        return secondClone.processSync();
-                    } else {
-                        return secondResponse;
-                    }
-                } else {
-                    return secondResponse;
-                }
-            } else {
-                return firstResponse;
-            }
+        if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+            return handleChallengeSync(context, httpResponse, nextPolicy);
         }
 
-        return firstResponse;
+        return httpResponse;
     }
 
-    private HttpResponse handleChallenge(HttpPipelineCallContext context, HttpResponse httpResponse,
-                                         HttpPipelineNextSyncPolicy nextPolicy) {
+    private Mono<HttpResponse> handleChallenge(HttpPipelineCallContext context, HttpResponse httpResponse,
+        HttpPipelineNextPolicy next) {
+        return authorizeRequestOnChallenge(context, httpResponse).flatMap(authorized -> {
+            if (authorized) {
+                // The body needs to be closed or read to the end to release the connection.
+                httpResponse.close();
+
+                HttpPipelineNextPolicy nextPolicy = next.clone();
+
+                return next.process().flatMap(newResponse -> {
+                    String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
+
+                    if (newResponse.getStatusCode() == 401 && authHeader != null
+                        && !(isClaimsPresent(httpResponse) && isClaimsPresent(newResponse))) {
+
+                        return handleChallenge(context, newResponse, nextPolicy);
+                    } else {
+                        return Mono.just(newResponse);
+                    }
+                });
+            }
+
+            return Mono.just(httpResponse);
+        });
+    }
+
+    private HttpResponse handleChallengeSync(HttpPipelineCallContext context, HttpResponse httpResponse,
+        HttpPipelineNextSyncPolicy next) {
         if (authorizeRequestOnChallengeSync(context, httpResponse)) {
             // The body needs to be closed or read to the end to release the connection.
             httpResponse.close();
 
-            return nextPolicy.processSync();
-        } else {
-            return httpResponse;
+            HttpPipelineNextSyncPolicy nextPolicy = next.clone();
+            HttpResponse newResponse = next.processSync();
+            String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
+
+            if (newResponse.getStatusCode() == 401 && authHeader != null
+                && !(isClaimsPresent(httpResponse) && isClaimsPresent(newResponse))) {
+
+                return handleChallengeSync(context, newResponse, nextPolicy);
+            }
+
+            return newResponse;
         }
+
+        return httpResponse;
+    }
+
+    private boolean isClaimsPresent(HttpResponse httpResponse) {
+        Map<String, String> challengeAttributes =
+            extractChallengeAttributes(httpResponse.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+
+        String error = challengeAttributes.get("error");
+
+        if (error != null) {
+            String base64Claims = challengeAttributes.get("claims");
+
+            return "insufficient_claims".equalsIgnoreCase(error) && base64Claims != null;
+        }
+
+        return false;
     }
 
     private static class ChallengeParameters {
