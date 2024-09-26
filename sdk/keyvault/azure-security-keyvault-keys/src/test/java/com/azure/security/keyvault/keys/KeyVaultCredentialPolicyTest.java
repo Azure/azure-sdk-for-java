@@ -43,6 +43,11 @@ public class KeyVaultCredentialPolicyTest {
     private static final String AUTHENTICATE_HEADER =
         "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd022db57\", "
             + "resource=\"https://vault.azure.net\"";
+
+    private static final String AUTHENTICATE_HEADER_WITH_CLAIMS =
+        "Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", "
+            + "error=\"insufficient_claims\", "
+            + "claims=\"eyJhY2Nlc3NfdG9rZW4iOnsiYWNycyI6eyJlc3NlbnRpYWwiOnRydWUsInZhbHVlIjoiY3AxIn19fQ==\"";
     private static final String BEARER = "Bearer";
     private static final String BODY = "this is a sample body";
     private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(() ->
@@ -50,6 +55,7 @@ public class KeyVaultCredentialPolicyTest {
     private BasicAuthenticationCredential credential;
     private HttpResponse unauthorizedHttpResponseWithHeader;
     private HttpResponse unauthorizedHttpResponseWithoutHeader;
+    private HttpResponse unauthorizedHttpResponseWithoutHeaderAndClaims;
     private HttpPipelineCallContext callContext;
     private HttpPipelineCallContext differentScopeContext;
     private HttpPipelineCallContext testContext;
@@ -83,22 +89,26 @@ public class KeyVaultCredentialPolicyTest {
         Context bodyFluxContextContext = new Context("KeyVaultCredentialPolicyStashedBody", BODY_FLUX)
             .addData("KeyVaultCredentialPolicyStashedContentLength", "21");
 
+        MockHttpResponse unauthorizedResponseWithoutHeader = new MockHttpResponse(
+            new HttpRequest(HttpMethod.GET, "https://azure.com"), 500);
+
         MockHttpResponse unauthorizedResponseWithHeader = new MockHttpResponse(
             new HttpRequest(HttpMethod.GET, "https://azure.com"), 500,
             new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE, AUTHENTICATE_HEADER));
 
-        MockHttpResponse unauthorizedResponseWithoutHeader = new MockHttpResponse(
-            new HttpRequest(HttpMethod.GET, "https://azure.com"), 500);
+        MockHttpResponse unauthorizedResponseWithHeaderAndClaims = new MockHttpResponse(
+            new HttpRequest(HttpMethod.GET, "https://azure.com"), 500,
+            new HttpHeaders().set(HttpHeaderName.WWW_AUTHENTICATE, AUTHENTICATE_HEADER_WITH_CLAIMS));
 
         this.unauthorizedHttpResponseWithHeader = unauthorizedResponseWithHeader;
         this.unauthorizedHttpResponseWithoutHeader = unauthorizedResponseWithoutHeader;
+        this.unauthorizedHttpResponseWithoutHeaderAndClaims = unauthorizedResponseWithHeaderAndClaims;
         this.callContext = createCallContext(request, Context.NONE);
         this.differentScopeContext = createCallContext(requestWithDifferentScope, Context.NONE);
         this.credential = new BasicAuthenticationCredential("user", "fakePasswordPlaceholder");
         this.testContext = createCallContext(request, Context.NONE);
         this.bodyContext = createCallContext(request, bodyContextContext);
         this.bodyFluxContext = createCallContext(request, bodyFluxContextContext);
-
     }
 
     @AfterEach
@@ -127,10 +137,53 @@ public class KeyVaultCredentialPolicyTest {
     public void onAuthorizeRequestChallengeCachePresent() {
         KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
 
+        StepVerifier.create(onChallenge(policy, this.callContext, unauthorizedHttpResponseWithHeader) // Challenge cache created
+                .then(policy.authorizeRequest(this.testContext))) // Challenge cache used
+            .verifyComplete();
+
+        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        assertFalse(tokenValue.isEmpty());
+        assertTrue(tokenValue.startsWith(BEARER));
+    }
+
+    @Test
+    public void onAuthorizeRequestChallengeCachePresentSync() {
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
+
         // Challenge cache created
-        onChallenge(policy, this.callContext, unauthorizedHttpResponseWithHeader).block();
+        onChallengeSync(policy, this.callContext, unauthorizedHttpResponseWithHeader);
         // Challenge cache used
-        policy.authorizeRequest(this.testContext).block();
+        policy.authorizeRequestSync(this.testContext);
+
+        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        assertFalse(tokenValue.isEmpty());
+        assertTrue(tokenValue.startsWith(BEARER));
+    }
+
+    @Test
+    public void onAuthorizeRequestChallengeCachePresentWithClaims() {
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
+
+        StepVerifier.create(onChallenge(policy, this.callContext, unauthorizedHttpResponseWithHeader) // Challenge cache created
+                .then(onChallenge(policy, this.callContext, unauthorizedHttpResponseWithHeader)) // Challenge with claims received
+                .then(policy.authorizeRequest(this.testContext))) // Challenge cache used
+            .verifyComplete();
+
+        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        assertFalse(tokenValue.isEmpty());
+        assertTrue(tokenValue.startsWith(BEARER));
+    }
+
+    @Test
+    public void onAuthorizeRequestChallengeCachePresentWithClaimsSync() {
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
+
+        // Challenge cache created
+        onChallengeSync(policy, this.callContext, unauthorizedHttpResponseWithHeader);
+        // Challenge with claims received
+        onChallengeSync(policy, this.callContext, unauthorizedHttpResponseWithoutHeaderAndClaims);
+        // Challenge cache used alongside claims
+        policy.authorizeRequestSync(this.testContext);
 
         String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
         assertFalse(tokenValue.isEmpty());
@@ -211,20 +264,6 @@ public class KeyVaultCredentialPolicyTest {
         );
 
         assertTrue(onChallenge);
-    }
-
-    @Test
-    public void onAuthorizeRequestChallengeCachePresentSync() {
-        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(this.credential, false);
-
-        // Challenge cache created
-        onChallengeSync(policy, this.callContext, unauthorizedHttpResponseWithHeader);
-        // Challenge cache used
-        policy.authorizeRequestSync(this.testContext);
-
-        String tokenValue = this.testContext.getHttpRequest().getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
-        assertFalse(tokenValue.isEmpty());
-        assertTrue(tokenValue.startsWith(BEARER));
     }
 
     private Mono<Boolean> onChallenge(KeyVaultCredentialPolicy policy, HttpPipelineCallContext callContext,
