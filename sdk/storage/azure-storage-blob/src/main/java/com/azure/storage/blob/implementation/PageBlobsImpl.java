@@ -1509,66 +1509,66 @@ public final class PageBlobsImpl {
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, BlobHttpHeaders blobHttpHeaders,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String blobType = "PageBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String blobType = "PageBlob";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.createSync(this.client.getUrl(), containerName, blob, blobType, timeout, contentLength, tier,
                 contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl, metadata, leaseId,
                 contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
@@ -1684,66 +1684,66 @@ public final class PageBlobsImpl {
         String ifNoneMatch, String ifTags, Long blobSequenceNumber, String requestId, String blobTagsString,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String blobType = "PageBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String blobType = "PageBlob";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
                 contentLength, tier, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl,
                 metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
@@ -2657,36 +2657,36 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "page";
-        final String pageWrite = "update";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "page";
+            final String pageWrite = "update";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.uploadPagesSync(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
@@ -2789,36 +2789,36 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         Context context) {
-        final String comp = "page";
-        final String pageWrite = "update";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "page";
+            final String pageWrite = "update";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.uploadPagesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, pageWrite,
                 contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, range,
                 leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
@@ -3264,34 +3264,34 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "page";
-        final String pageWrite = "clear";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "page";
+            final String pageWrite = "clear";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.clearPagesSync(this.client.getUrl(), containerName, blob, comp, pageWrite, contentLength,
                 timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
@@ -3384,34 +3384,34 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "page";
-        final String pageWrite = "clear";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "page";
+            final String pageWrite = "clear";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.clearPagesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, pageWrite,
                 contentLength, timeout, range, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 encryptionScope, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
@@ -4017,40 +4017,40 @@ public final class PageBlobsImpl {
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
         String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "page";
-        final String pageWrite = "update";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         try {
+            final String comp = "page";
+            final String pageWrite = "update";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+            String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
             return service.uploadPagesFromURLSync(this.client.getUrl(), containerName, blob, comp, pageWrite, sourceUrl,
                 sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, contentLength, timeout, range,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
@@ -4183,40 +4183,40 @@ public final class PageBlobsImpl {
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
         String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "page";
-        final String pageWrite = "update";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         try {
+            final String comp = "page";
+            final String pageWrite = "update";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+            String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
             return service.uploadPagesFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 pageWrite, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted,
                 contentLength, timeout, range, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
@@ -4603,13 +4603,13 @@ public final class PageBlobsImpl {
         String blob, String snapshot, Integer timeout, String range, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String marker, Integer maxresults, Context context) {
-        final String comp = "pagelist";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "pagelist";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPageRangesSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, range,
                 leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, marker, maxresults, accept, context);
@@ -4715,13 +4715,13 @@ public final class PageBlobsImpl {
         String snapshot, Integer timeout, String range, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         String marker, Integer maxresults, Context context) {
-        final String comp = "pagelist";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "pagelist";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPageRangesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
                 timeout, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
                 ifTags, this.client.getVersion(), requestId, marker, maxresults, accept, context);
@@ -5166,13 +5166,13 @@ public final class PageBlobsImpl {
         String blob, String snapshot, Integer timeout, String prevsnapshot, String prevSnapshotUrl, String range,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, String marker, Integer maxresults, Context context) {
-        final String comp = "pagelist";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "pagelist";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPageRangesDiffSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout,
                 prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, marker, maxresults, accept, context);
@@ -5295,13 +5295,13 @@ public final class PageBlobsImpl {
         String snapshot, Integer timeout, String prevsnapshot, String prevSnapshotUrl, String range, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String marker, Integer maxresults, Context context) {
-        final String comp = "pagelist";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "pagelist";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPageRangesDiffNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 snapshot, timeout, prevsnapshot, prevSnapshotUrl, range, leaseId, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, marker,
@@ -5686,33 +5686,33 @@ public final class PageBlobsImpl {
         long blobContentLength, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.resizeSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(),
@@ -5789,33 +5789,33 @@ public final class PageBlobsImpl {
         Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.resizeNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, blobContentLength, this.client.getVersion(),
@@ -6125,13 +6125,13 @@ public final class PageBlobsImpl {
         String containerName, String blob, SequenceNumberActionType sequenceNumberAction, Integer timeout,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, Long blobSequenceNumber, String requestId, Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.updateSequenceNumberSync(this.client.getUrl(), containerName, blob, comp, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 sequenceNumberAction, blobSequenceNumber, this.client.getVersion(), requestId, accept, context);
@@ -6209,13 +6209,13 @@ public final class PageBlobsImpl {
         SequenceNumberActionType sequenceNumberAction, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, Long blobSequenceNumber,
         String requestId, Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.updateSequenceNumberNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 sequenceNumberAction, blobSequenceNumber, this.client.getVersion(), requestId, accept, context);
@@ -6518,13 +6518,13 @@ public final class PageBlobsImpl {
         String blob, String copySource, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         Context context) {
-        final String comp = "incrementalcopy";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "incrementalcopy";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.copyIncrementalSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource,
                 this.client.getVersion(), requestId, accept, context);
@@ -6601,13 +6601,13 @@ public final class PageBlobsImpl {
     public Response<Void> copyIncrementalNoCustomHeadersWithResponse(String containerName, String blob,
         String copySource, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "incrementalcopy";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "incrementalcopy";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.copyIncrementalNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, copySource,
                 this.client.getVersion(), requestId, accept, context);

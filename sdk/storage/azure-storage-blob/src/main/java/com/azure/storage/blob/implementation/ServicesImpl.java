@@ -610,10 +610,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesSetPropertiesHeaders, Void> setPropertiesWithResponse(
         BlobServiceProperties blobServiceProperties, Integer timeout, String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, blobServiceProperties, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -659,10 +659,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(BlobServiceProperties blobServiceProperties,
         Integer timeout, String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, blobServiceProperties, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -844,10 +844,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetPropertiesHeaders, BlobServiceProperties> getPropertiesWithResponse(Integer timeout,
         String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -898,10 +898,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobServiceProperties> getPropertiesNoCustomHeadersWithResponse(Integer timeout, String requestId,
         Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1076,10 +1076,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetStatisticsHeaders, BlobServiceStatistics> getStatisticsWithResponse(Integer timeout,
         String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "stats";
+            final String accept = "application/xml";
             return service.getStatisticsSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1128,10 +1128,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobServiceStatistics> getStatisticsNoCustomHeadersWithResponse(Integer timeout, String requestId,
         Context context) {
-        final String restype = "service";
-        final String comp = "stats";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "stats";
+            final String accept = "application/xml";
             return service.getStatisticsNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1497,18 +1497,18 @@ public final class ServicesImpl {
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
         String requestId) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
-            ? null
-            : listBlobContainersIncludeType.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> res
-            = service.listBlobContainersSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults,
-                listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId, accept,
-                Context.NONE);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
+                ? null
+                : listBlobContainersIncludeType.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> res
+                = service.listBlobContainersSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults,
+                    listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId, accept,
+                    Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1547,17 +1547,18 @@ public final class ServicesImpl {
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout,
         String requestId, Context context) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
-            ? null
-            : listBlobContainersIncludeType.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> res
-            = service.listBlobContainersSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults,
-                listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId, accept, context);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
+                ? null
+                : listBlobContainersIncludeType.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            ResponseBase<ServicesListBlobContainersSegmentHeaders, BlobContainersSegment> res
+                = service.listBlobContainersSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults,
+                    listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId, accept,
+                    context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1667,17 +1668,17 @@ public final class ServicesImpl {
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNoCustomHeadersSinglePage(String prefix,
         String marker, Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
         Integer timeout, String requestId) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
-            ? null
-            : listBlobContainersIncludeType.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<BlobContainersSegment> res = service.listBlobContainersSegmentNoCustomHeadersSync(this.client.getUrl(),
-            comp, prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(),
-            requestId, accept, Context.NONE);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
+                ? null
+                : listBlobContainersIncludeType.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            Response<BlobContainersSegment> res = service.listBlobContainersSegmentNoCustomHeadersSync(
+                this.client.getUrl(), comp, prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout,
+                this.client.getVersion(), requestId, accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), null);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1716,17 +1717,17 @@ public final class ServicesImpl {
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNoCustomHeadersSinglePage(String prefix,
         String marker, Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType,
         Integer timeout, String requestId, Context context) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
-            ? null
-            : listBlobContainersIncludeType.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<BlobContainersSegment> res = service.listBlobContainersSegmentNoCustomHeadersSync(this.client.getUrl(),
-            comp, prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(),
-            requestId, accept, context);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String listBlobContainersIncludeTypeConverted = (listBlobContainersIncludeType == null)
+                ? null
+                : listBlobContainersIncludeType.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            Response<BlobContainersSegment> res = service.listBlobContainersSegmentNoCustomHeadersSync(
+                this.client.getUrl(), comp, prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout,
+                this.client.getVersion(), requestId, accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), null);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1982,10 +1983,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetUserDelegationKeyHeaders, UserDelegationKey>
         getUserDelegationKeyWithResponse(KeyInfo keyInfo, Integer timeout, String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "userdelegationkey";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "userdelegationkey";
+            final String accept = "application/xml";
             return service.getUserDelegationKeySync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, keyInfo, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2036,10 +2037,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyNoCustomHeadersWithResponse(KeyInfo keyInfo, Integer timeout,
         String requestId, Context context) {
-        final String restype = "service";
-        final String comp = "userdelegationkey";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "userdelegationkey";
+            final String accept = "application/xml";
             return service.getUserDelegationKeyNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), requestId, keyInfo, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2162,10 +2163,10 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetAccountInfoHeaders, Void> getAccountInfoWithResponse(Context context) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "account";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getAccountInfoSync(this.client.getUrl(), restype, comp, this.client.getVersion(), accept,
                 context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2195,10 +2196,10 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoNoCustomHeadersWithResponse(Context context) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "account";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), restype, comp,
                 this.client.getVersion(), accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2559,9 +2560,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesSubmitBatchHeaders, InputStream> submitBatchWithResponse(long contentLength,
         String multipartContentType, BinaryData body, Integer timeout, String requestId, Context context) {
-        final String comp = "batch";
-        final String accept = "application/xml";
         try {
+            final String comp = "batch";
+            final String accept = "application/xml";
             return service.submitBatchSync(this.client.getUrl(), comp, contentLength, multipartContentType, timeout,
                 this.client.getVersion(), requestId, body, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2618,9 +2619,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> submitBatchNoCustomHeadersWithResponse(long contentLength, String multipartContentType,
         BinaryData body, Integer timeout, String requestId, Context context) {
-        final String comp = "batch";
-        final String accept = "application/xml";
         try {
+            final String comp = "batch";
+            final String accept = "application/xml";
             return service.submitBatchNoCustomHeadersSync(this.client.getUrl(), comp, contentLength,
                 multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2912,14 +2913,14 @@ public final class ServicesImpl {
     public ResponseBase<ServicesFilterBlobsHeaders, FilterBlobSegment> filterBlobsWithResponse(Integer timeout,
         String requestId, String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include,
         Context context) {
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String comp = "blobs";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.filterBlobsSync(this.client.getUrl(), comp, timeout, this.client.getVersion(), requestId,
                 where, marker, maxresults, includeConverted, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2996,14 +2997,14 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FilterBlobSegment> filterBlobsNoCustomHeadersWithResponse(Integer timeout, String requestId,
         String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include, Context context) {
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String comp = "blobs";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.filterBlobsNoCustomHeadersSync(this.client.getUrl(), comp, timeout, this.client.getVersion(),
                 requestId, where, marker, maxresults, includeConverted, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3128,11 +3129,11 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(String nextLink, String requestId) {
-        final String accept = "application/xml";
-        ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment> res
-            = service.listBlobContainersSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
-                requestId, accept, Context.NONE);
         try {
+            final String accept = "application/xml";
+            ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment> res
+                = service.listBlobContainersSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                    requestId, accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3157,11 +3158,11 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextSinglePage(String nextLink, String requestId,
         Context context) {
-        final String accept = "application/xml";
-        ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment> res
-            = service.listBlobContainersSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
-                requestId, accept, context);
         try {
+            final String accept = "application/xml";
+            ResponseBase<ServicesListBlobContainersSegmentNextHeaders, BlobContainersSegment> res
+                = service.listBlobContainersSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                    requestId, accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3185,10 +3186,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextNoCustomHeadersSinglePage(String nextLink,
         String requestId) {
-        final String accept = "application/xml";
-        Response<BlobContainersSegment> res = service.listBlobContainersSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), requestId, accept, Context.NONE);
         try {
+            final String accept = "application/xml";
+            Response<BlobContainersSegment> res = service.listBlobContainersSegmentNextNoCustomHeadersSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), requestId, accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), null);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3213,10 +3214,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<BlobContainerItem> listBlobContainersSegmentNextNoCustomHeadersSinglePage(String nextLink,
         String requestId, Context context) {
-        final String accept = "application/xml";
-        Response<BlobContainersSegment> res = service.listBlobContainersSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), requestId, accept, context);
         try {
+            final String accept = "application/xml";
+            Response<BlobContainersSegment> res = service.listBlobContainersSegmentNextNoCustomHeadersSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), requestId, accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getBlobContainerItems(), res.getValue().getNextMarker(), null);
         } catch (BlobStorageExceptionInternal internalException) {

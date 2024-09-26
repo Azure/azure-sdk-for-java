@@ -2062,68 +2062,68 @@ public final class BlockBlobsImpl {
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, byte[] transactionalContentCrc64,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String blobType = "BlockBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String blobType = "BlockBlob";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.uploadSync(this.client.getUrl(), containerName, blob, blobType, timeout,
                 transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
                 contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
@@ -2245,68 +2245,68 @@ public final class BlockBlobsImpl {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         byte[] transactionalContentCrc64, BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String blobType = "BlockBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String blobType = "BlockBlob";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.uploadNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType, timeout,
                 transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
                 contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
@@ -3105,70 +3105,70 @@ public final class BlockBlobsImpl {
         String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5, String blobTagsString,
         Boolean copySourceBlobProperties, String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String blobType = "BlockBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         try {
+            final String blobType = "BlockBlob";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
             return service.putBlobFromUrlSync(this.client.getUrl(), containerName, blob, blobType, timeout,
                 transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
                 contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
@@ -3321,70 +3321,70 @@ public final class BlockBlobsImpl {
         String sourceIfNoneMatch, String sourceIfTags, String requestId, byte[] sourceContentMD5, String blobTagsString,
         Boolean copySourceBlobProperties, String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags,
         BlobHttpHeaders blobHttpHeaders, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String blobType = "BlockBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
         try {
+            final String blobType = "BlockBlob";
+            final String accept = "application/xml";
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
             return service.putBlobFromUrlNoCustomHeadersSync(this.client.getUrl(), containerName, blob, blobType,
                 timeout, transactionalContentMD5Converted, contentLength, contentType, contentEncoding, contentLanguage,
                 contentMd5Converted, cacheControl, metadata, leaseId, contentDisposition, encryptionKey,
@@ -4071,31 +4071,31 @@ public final class BlockBlobsImpl {
         String blockId, long contentLength, BinaryData body, byte[] transactionalContentMD5,
         byte[] transactionalContentCrc64, Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "block";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String comp = "block";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.stageBlockSync(this.client.getUrl(), containerName, blob, comp, blockId, contentLength,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId, encryptionKey,
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(), requestId, body,
@@ -4168,31 +4168,31 @@ public final class BlockBlobsImpl {
         long contentLength, BinaryData body, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
         Integer timeout, String leaseId, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
         Context context) {
-        final String comp = "block";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String comp = "block";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.stageBlockNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, blockId,
                 contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, timeout, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, this.client.getVersion(),
@@ -4663,35 +4663,35 @@ public final class BlockBlobsImpl {
         byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId,
         String copySourceAuthorization, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "block";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         try {
+            final String comp = "block";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+            String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
             return service.stageBlockFromURLSync(this.client.getUrl(), containerName, blob, comp, blockId,
                 contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
@@ -4792,35 +4792,35 @@ public final class BlockBlobsImpl {
         byte[] sourceContentcrc64, Integer timeout, String leaseId, OffsetDateTime sourceIfModifiedSince,
         OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, String requestId,
         String copySourceAuthorization, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "block";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         try {
+            final String comp = "block";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+            String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
             return service.stageBlockFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 blockId, contentLength, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted,
                 timeout, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId,
@@ -5508,68 +5508,68 @@ public final class BlockBlobsImpl {
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, BlobHttpHeaders blobHttpHeaders,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "blocklist";
-        final String accept = "application/xml";
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String comp = "blocklist";
+            final String accept = "application/xml";
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.commitBlockListSync(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
                 contentType, contentEncoding, contentLanguage, contentMd5Converted, transactionalContentMD5Converted,
                 transactionalContentCrc64Converted, metadata, leaseId, contentDisposition, encryptionKey,
@@ -5693,68 +5693,68 @@ public final class BlockBlobsImpl {
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, BlobHttpHeaders blobHttpHeaders,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "blocklist";
-        final String accept = "application/xml";
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String comp = "blocklist";
+            final String accept = "application/xml";
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.commitBlockListNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 cacheControl, contentType, contentEncoding, contentLanguage, contentMd5Converted,
                 transactionalContentMD5Converted, transactionalContentCrc64Converted, metadata, leaseId,
@@ -5999,9 +5999,9 @@ public final class BlockBlobsImpl {
     public ResponseBase<BlockBlobsGetBlockListHeaders, BlockList> getBlockListWithResponse(String containerName,
         String blob, BlockListType listType, String snapshot, Integer timeout, String leaseId, String ifTags,
         String requestId, Context context) {
-        final String comp = "blocklist";
-        final String accept = "application/xml";
         try {
+            final String comp = "blocklist";
+            final String accept = "application/xml";
             return service.getBlockListSync(this.client.getUrl(), containerName, blob, comp, snapshot, listType,
                 timeout, leaseId, ifTags, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -6071,9 +6071,9 @@ public final class BlockBlobsImpl {
     public Response<BlockList> getBlockListNoCustomHeadersWithResponse(String containerName, String blob,
         BlockListType listType, String snapshot, Integer timeout, String leaseId, String ifTags, String requestId,
         Context context) {
-        final String comp = "blocklist";
-        final String accept = "application/xml";
         try {
+            final String comp = "blocklist";
+            final String accept = "application/xml";
             return service.getBlockListNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
                 listType, timeout, leaseId, ifTags, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {

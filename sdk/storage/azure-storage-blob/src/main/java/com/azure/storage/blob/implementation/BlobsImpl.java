@@ -1945,27 +1945,27 @@ public final class BlobsImpl {
         String snapshot, String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
         Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.downloadSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, range,
                 leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
@@ -2067,27 +2067,27 @@ public final class BlobsImpl {
         String versionId, Integer timeout, String range, String leaseId, Boolean rangeGetContentMD5,
         Boolean rangeGetContentCRC64, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, Context context) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.downloadNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
                 timeout, range, leaseId, rangeGetContentMD5, rangeGetContentCRC64, encryptionKey, encryptionKeySha256,
                 encryptionAlgorithm, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
@@ -2475,27 +2475,27 @@ public final class BlobsImpl {
         String snapshot, String versionId, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, Context context) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPropertiesSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout,
                 leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
@@ -2580,27 +2580,27 @@ public final class BlobsImpl {
         String versionId, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, Context context) {
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot,
                 versionId, timeout, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
@@ -3045,12 +3045,12 @@ public final class BlobsImpl {
         String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, BlobDeleteType blobDeleteType, Context context) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteSync(this.client.getUrl(), containerName, blob, snapshot, versionId, timeout, leaseId,
                 deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, blobDeleteType, accept, context);
@@ -3169,12 +3169,12 @@ public final class BlobsImpl {
         String versionId, Integer timeout, String leaseId, DeleteSnapshotsOptionType deleteSnapshots,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, BlobDeleteType blobDeleteType, Context context) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), containerName, blob, snapshot, versionId,
                 timeout, leaseId, deleteSnapshots, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobDeleteType, accept, context);
@@ -3354,9 +3354,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsUndeleteHeaders, Void> undeleteWithResponse(String containerName, String blob,
         Integer timeout, String requestId, Context context) {
-        final String comp = "undelete";
-        final String accept = "application/xml";
         try {
+            final String comp = "undelete";
+            final String accept = "application/xml";
             return service.undeleteSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3402,9 +3402,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> undeleteNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         String requestId, Context context) {
-        final String comp = "undelete";
-        final String accept = "application/xml";
         try {
+            final String comp = "undelete";
+            final String accept = "application/xml";
             return service.undeleteNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3598,9 +3598,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsSetExpiryHeaders, Void> setExpiryWithResponse(String containerName, String blob,
         BlobExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
-        final String comp = "expiry";
-        final String accept = "application/xml";
         try {
+            final String comp = "expiry";
+            final String accept = "application/xml";
             return service.setExpirySync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3651,9 +3651,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setExpiryNoCustomHeadersWithResponse(String containerName, String blob,
         BlobExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
-        final String comp = "expiry";
-        final String accept = "application/xml";
         try {
+            final String comp = "expiry";
+            final String accept = "application/xml";
             return service.setExpiryNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, expiryOptions, expiresOn, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -4056,44 +4056,44 @@ public final class BlobsImpl {
         Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, BlobHttpHeaders blobHttpHeaders,
         Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setHttpHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout, cacheControl,
                 contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition, this.client.getVersion(),
@@ -4163,44 +4163,44 @@ public final class BlobsImpl {
     public Response<Void> setHttpHeadersNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, BlobHttpHeaders blobHttpHeaders, Context context) {
-        final String comp = "properties";
-        final String accept = "application/xml";
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "properties";
+            final String accept = "application/xml";
+            String cacheControlInternal = null;
+            if (blobHttpHeaders != null) {
+                cacheControlInternal = blobHttpHeaders.getCacheControl();
+            }
+            String cacheControl = cacheControlInternal;
+            String contentTypeInternal = null;
+            if (blobHttpHeaders != null) {
+                contentTypeInternal = blobHttpHeaders.getContentType();
+            }
+            String contentType = contentTypeInternal;
+            byte[] contentMd5Internal = null;
+            if (blobHttpHeaders != null) {
+                contentMd5Internal = blobHttpHeaders.getContentMd5();
+            }
+            byte[] contentMd5 = contentMd5Internal;
+            String contentEncodingInternal = null;
+            if (blobHttpHeaders != null) {
+                contentEncodingInternal = blobHttpHeaders.getContentEncoding();
+            }
+            String contentEncoding = contentEncodingInternal;
+            String contentLanguageInternal = null;
+            if (blobHttpHeaders != null) {
+                contentLanguageInternal = blobHttpHeaders.getContentLanguage();
+            }
+            String contentLanguage = contentLanguageInternal;
+            String contentDispositionInternal = null;
+            if (blobHttpHeaders != null) {
+                contentDispositionInternal = blobHttpHeaders.getContentDisposition();
+            }
+            String contentDisposition = contentDispositionInternal;
+            String contentMd5Converted = Base64Util.encodeToString(contentMd5);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setHttpHeadersNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 cacheControl, contentType, contentMd5Converted, contentEncoding, contentLanguage, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, contentDisposition,
@@ -4439,13 +4439,13 @@ public final class BlobsImpl {
     public ResponseBase<BlobsSetImmutabilityPolicyHeaders, Void> setImmutabilityPolicyWithResponse(String containerName,
         String blob, Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
-        final String comp = "immutabilityPolicies";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String comp = "immutabilityPolicies";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.setImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, ifUnmodifiedSinceConverted, immutabilityPolicyExpiryConverted,
                 immutabilityPolicyMode, accept, context);
@@ -4504,13 +4504,13 @@ public final class BlobsImpl {
     public Response<Void> setImmutabilityPolicyNoCustomHeadersWithResponse(String containerName, String blob,
         Integer timeout, String requestId, OffsetDateTime ifUnmodifiedSince, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Context context) {
-        final String comp = "immutabilityPolicies";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String comp = "immutabilityPolicies";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.setImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, ifUnmodifiedSinceConverted,
                 immutabilityPolicyExpiryConverted, immutabilityPolicyMode, accept, context);
@@ -4691,9 +4691,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsDeleteImmutabilityPolicyHeaders, Void> deleteImmutabilityPolicyWithResponse(
         String containerName, String blob, Integer timeout, String requestId, Context context) {
-        final String comp = "immutabilityPolicies";
-        final String accept = "application/xml";
         try {
+            final String comp = "immutabilityPolicies";
+            final String accept = "application/xml";
             return service.deleteImmutabilityPolicySync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -4739,9 +4739,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteImmutabilityPolicyNoCustomHeadersWithResponse(String containerName, String blob,
         Integer timeout, String requestId, Context context) {
-        final String comp = "immutabilityPolicies";
-        final String accept = "application/xml";
         try {
+            final String comp = "immutabilityPolicies";
+            final String accept = "application/xml";
             return service.deleteImmutabilityPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 timeout, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -4928,9 +4928,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsSetLegalHoldHeaders, Void> setLegalHoldWithResponse(String containerName, String blob,
         boolean legalHold, Integer timeout, String requestId, Context context) {
-        final String comp = "legalhold";
-        final String accept = "application/xml";
         try {
+            final String comp = "legalhold";
+            final String accept = "application/xml";
             return service.setLegalHoldSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, legalHold, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -4978,9 +4978,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setLegalHoldNoCustomHeadersWithResponse(String containerName, String blob, boolean legalHold,
         Integer timeout, String requestId, Context context) {
-        final String comp = "legalhold";
-        final String accept = "application/xml";
         try {
+            final String comp = "legalhold";
+            final String accept = "application/xml";
             return service.setLegalHoldNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, legalHold, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -5398,33 +5398,33 @@ public final class BlobsImpl {
         Integer timeout, Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setMetadataSync(this.client.getUrl(), containerName, blob, comp, timeout, metadata, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept,
@@ -5511,33 +5511,33 @@ public final class BlobsImpl {
         Map<String, String> metadata, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "metadata";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 metadata, leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
@@ -5846,14 +5846,14 @@ public final class BlobsImpl {
         Integer timeout, Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.acquireLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, duration,
                 proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context);
@@ -5930,14 +5930,14 @@ public final class BlobsImpl {
     public Response<Void> acquireLeaseNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context);
@@ -6207,14 +6207,14 @@ public final class BlobsImpl {
     public ResponseBase<BlobsReleaseLeaseHeaders, Void> releaseLeaseWithResponse(String containerName, String blob,
         String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.releaseLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context);
@@ -6281,14 +6281,14 @@ public final class BlobsImpl {
     public Response<Void> releaseLeaseNoCustomHeadersWithResponse(String containerName, String blob, String leaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context);
@@ -6558,14 +6558,14 @@ public final class BlobsImpl {
     public ResponseBase<BlobsRenewLeaseHeaders, Void> renewLeaseWithResponse(String containerName, String blob,
         String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "renew";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.renewLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context);
@@ -6632,14 +6632,14 @@ public final class BlobsImpl {
     public Response<Void> renewLeaseNoCustomHeadersWithResponse(String containerName, String blob, String leaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "renew";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context);
@@ -6933,14 +6933,14 @@ public final class BlobsImpl {
         String leaseId, String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.changeLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, leaseId,
                 proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context);
@@ -7013,14 +7013,14 @@ public final class BlobsImpl {
     public Response<Void> changeLeaseNoCustomHeadersWithResponse(String containerName, String blob, String leaseId,
         String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
                 ifNoneMatch, ifTags, this.client.getVersion(), requestId, accept, context);
@@ -7326,14 +7326,14 @@ public final class BlobsImpl {
     public ResponseBase<BlobsBreakLeaseHeaders, Void> breakLeaseWithResponse(String containerName, String blob,
         Integer timeout, Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.breakLeaseSync(this.client.getUrl(), containerName, blob, comp, action, timeout, breakPeriod,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 this.client.getVersion(), requestId, accept, context);
@@ -7410,14 +7410,14 @@ public final class BlobsImpl {
     public Response<Void> breakLeaseNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, action,
                 timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch,
                 ifTags, this.client.getVersion(), requestId, accept, context);
@@ -7830,33 +7830,33 @@ public final class BlobsImpl {
         Integer timeout, Map<String, String> metadata, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String leaseId, String requestId, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "snapshot";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "snapshot";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.createSnapshotSync(this.client.getUrl(), containerName, blob, comp, timeout, metadata,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId, this.client.getVersion(), requestId,
@@ -7941,33 +7941,33 @@ public final class BlobsImpl {
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, String leaseId, String requestId, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam, Context context) {
-        final String comp = "snapshot";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "snapshot";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.createSnapshotNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 metadata, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, leaseId,
@@ -8459,18 +8459,18 @@ public final class BlobsImpl {
         String ifTags, String leaseId, String requestId, String blobTagsString, Boolean sealBlob,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         Context context) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String accept = "application/xml";
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.startCopyFromURLSync(this.client.getUrl(), containerName, blob, timeout, metadata, tier,
                 rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
                 sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
@@ -8596,18 +8596,18 @@ public final class BlobsImpl {
         String ifTags, String leaseId, String requestId, String blobTagsString, Boolean sealBlob,
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         Context context) {
-        final String accept = "application/xml";
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String accept = "application/xml";
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.startCopyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, timeout,
                 metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
                 sourceIfMatch, sourceIfNoneMatch, sourceIfTags, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
@@ -9164,25 +9164,25 @@ public final class BlobsImpl {
         String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, String copySourceAuthorization,
         BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam, Context context) {
-        final String xMsRequiresSync = "true";
-        final String accept = "application/xml";
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String xMsRequiresSync = "true";
+            final String accept = "application/xml";
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.copyFromURLSync(this.client.getUrl(), containerName, blob, xMsRequiresSync, timeout,
                 metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch,
                 sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
@@ -9318,25 +9318,25 @@ public final class BlobsImpl {
         OffsetDateTime immutabilityPolicyExpiry, BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold,
         String copySourceAuthorization, BlobCopySourceTagsMode copySourceTags, EncryptionScope encryptionScopeParam,
         Context context) {
-        final String xMsRequiresSync = "true";
-        final String accept = "application/xml";
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         try {
+            final String xMsRequiresSync = "true";
+            final String accept = "application/xml";
+            String encryptionScopeInternal = null;
+            if (encryptionScopeParam != null) {
+                encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
+            }
+            String encryptionScope = encryptionScopeInternal;
+            DateTimeRfc1123 sourceIfModifiedSinceConverted
+                = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
+            DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
+                = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
+            DateTimeRfc1123 immutabilityPolicyExpiryConverted
+                = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
             return service.copyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, xMsRequiresSync,
                 timeout, metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
                 sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
@@ -9545,10 +9545,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsAbortCopyFromURLHeaders, Void> abortCopyFromURLWithResponse(String containerName,
         String blob, String copyId, Integer timeout, String leaseId, String requestId, Context context) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         try {
+            final String comp = "copy";
+            final String copyActionAbortConstant = "abort";
+            final String accept = "application/xml";
             return service.abortCopyFromURLSync(this.client.getUrl(), containerName, blob, comp,
                 copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(), requestId, accept,
                 context);
@@ -9602,10 +9602,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> abortCopyFromURLNoCustomHeadersWithResponse(String containerName, String blob, String copyId,
         Integer timeout, String leaseId, String requestId, Context context) {
-        final String comp = "copy";
-        final String copyActionAbortConstant = "abort";
-        final String accept = "application/xml";
         try {
+            final String comp = "copy";
+            final String copyActionAbortConstant = "abort";
+            final String accept = "application/xml";
             return service.abortCopyFromURLNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 copyActionAbortConstant, copyId, timeout, leaseId, this.client.getVersion(), requestId, accept,
                 context);
@@ -9888,9 +9888,9 @@ public final class BlobsImpl {
     public ResponseBase<BlobsSetTierHeaders, Void> setTierWithResponse(String containerName, String blob,
         AccessTier tier, String snapshot, String versionId, Integer timeout, RehydratePriority rehydratePriority,
         String requestId, String leaseId, String ifTags, Context context) {
-        final String comp = "tier";
-        final String accept = "application/xml";
         try {
+            final String comp = "tier";
+            final String accept = "application/xml";
             return service.setTierSync(this.client.getUrl(), containerName, blob, comp, snapshot, versionId, timeout,
                 tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -9965,9 +9965,9 @@ public final class BlobsImpl {
     public Response<Void> setTierNoCustomHeadersWithResponse(String containerName, String blob, AccessTier tier,
         String snapshot, String versionId, Integer timeout, RehydratePriority rehydratePriority, String requestId,
         String leaseId, String ifTags, Context context) {
-        final String comp = "tier";
-        final String accept = "application/xml";
         try {
+            final String comp = "tier";
+            final String accept = "application/xml";
             return service.setTierNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot,
                 versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, ifTags,
                 accept, context);
@@ -10114,10 +10114,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<BlobsGetAccountInfoHeaders, Void> getAccountInfoWithResponse(String containerName, String blob,
         Context context) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "account";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getAccountInfoSync(this.client.getUrl(), containerName, blob, restype, comp,
                 this.client.getVersion(), accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -10153,10 +10153,10 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getAccountInfoNoCustomHeadersWithResponse(String containerName, String blob,
         Context context) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "account";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, blob, restype, comp,
                 this.client.getVersion(), accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -10532,28 +10532,28 @@ public final class BlobsImpl {
         String snapshot, Integer timeout, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags, String requestId,
         QueryRequest queryRequest, CpkInfo cpkInfo, Context context) {
-        final String comp = "query";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "query";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.querySync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout, leaseId,
                 encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
@@ -10640,28 +10640,28 @@ public final class BlobsImpl {
         Integer timeout, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, String ifTags, String requestId, QueryRequest queryRequest, CpkInfo cpkInfo,
         Context context) {
-        final String comp = "query";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "query";
+            final String accept = "application/xml";
+            String encryptionKeyInternal = null;
+            if (cpkInfo != null) {
+                encryptionKeyInternal = cpkInfo.getEncryptionKey();
+            }
+            String encryptionKey = encryptionKeyInternal;
+            String encryptionKeySha256Internal = null;
+            if (cpkInfo != null) {
+                encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
+            }
+            String encryptionKeySha256 = encryptionKeySha256Internal;
+            EncryptionAlgorithmType encryptionAlgorithmInternal = null;
+            if (cpkInfo != null) {
+                encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
+            }
+            EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.queryNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, snapshot, timeout,
                 leaseId, encryptionKey, encryptionKeySha256, encryptionAlgorithm, ifModifiedSinceConverted,
                 ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, this.client.getVersion(), requestId,
@@ -10902,9 +10902,9 @@ public final class BlobsImpl {
     public ResponseBase<BlobsGetTagsHeaders, BlobTags> getTagsWithResponse(String containerName, String blob,
         Integer timeout, String requestId, String snapshot, String versionId, String ifTags, String leaseId,
         Context context) {
-        final String comp = "tags";
-        final String accept = "application/xml";
         try {
+            final String comp = "tags";
+            final String accept = "application/xml";
             return service.getTagsSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -10973,9 +10973,9 @@ public final class BlobsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobTags> getTagsNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         String requestId, String snapshot, String versionId, String ifTags, String leaseId, Context context) {
-        final String comp = "tags";
-        final String accept = "application/xml";
         try {
+            final String comp = "tags";
+            final String accept = "application/xml";
             return service.getTagsNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp, timeout,
                 this.client.getVersion(), requestId, snapshot, versionId, ifTags, leaseId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -11225,11 +11225,11 @@ public final class BlobsImpl {
     public ResponseBase<BlobsSetTagsHeaders, Void> setTagsWithResponse(String containerName, String blob,
         Integer timeout, String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64,
         String requestId, String ifTags, String leaseId, BlobTags tags, Context context) {
-        final String comp = "tags";
-        final String accept = "application/xml";
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String comp = "tags";
+            final String accept = "application/xml";
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.setTagsSync(this.client.getUrl(), containerName, blob, comp, this.client.getVersion(),
                 timeout, versionId, transactionalContentMD5Converted, transactionalContentCrc64Converted, requestId,
                 ifTags, leaseId, tags, accept, context);
@@ -11294,11 +11294,11 @@ public final class BlobsImpl {
     public Response<Void> setTagsNoCustomHeadersWithResponse(String containerName, String blob, Integer timeout,
         String versionId, byte[] transactionalContentMD5, byte[] transactionalContentCrc64, String requestId,
         String ifTags, String leaseId, BlobTags tags, Context context) {
-        final String comp = "tags";
-        final String accept = "application/xml";
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
         try {
+            final String comp = "tags";
+            final String accept = "application/xml";
+            String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
+            String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
             return service.setTagsNoCustomHeadersSync(this.client.getUrl(), containerName, blob, comp,
                 this.client.getVersion(), timeout, versionId, transactionalContentMD5Converted,
                 transactionalContentCrc64Converted, requestId, ifTags, leaseId, tags, accept, context);
