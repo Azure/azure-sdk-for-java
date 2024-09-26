@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the DocumentDBClientImpl type.
+ * A builder for creating a new instance of the MongoClusterManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { DocumentDBClientImpl.class })
-public final class DocumentDBClientBuilder {
+@ServiceClientBuilder(serviceClients = { MongoClusterManagementClientImpl.class })
+public final class MongoClusterManagementClientBuilder {
     /*
      * Service host
      */
@@ -28,9 +28,9 @@ public final class DocumentDBClientBuilder {
      * Sets Service host.
      * 
      * @param endpoint the endpoint value.
-     * @return the DocumentDBClientBuilder.
+     * @return the MongoClusterManagementClientBuilder.
      */
-    public DocumentDBClientBuilder endpoint(String endpoint) {
+    public MongoClusterManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -44,9 +44,9 @@ public final class DocumentDBClientBuilder {
      * Sets The ID of the target subscription. The value must be an UUID.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the DocumentDBClientBuilder.
+     * @return the MongoClusterManagementClientBuilder.
      */
-    public DocumentDBClientBuilder subscriptionId(String subscriptionId) {
+    public MongoClusterManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -60,9 +60,9 @@ public final class DocumentDBClientBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the DocumentDBClientBuilder.
+     * @return the MongoClusterManagementClientBuilder.
      */
-    public DocumentDBClientBuilder environment(AzureEnvironment environment) {
+    public MongoClusterManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class DocumentDBClientBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the DocumentDBClientBuilder.
+     * @return the MongoClusterManagementClientBuilder.
      */
-    public DocumentDBClientBuilder pipeline(HttpPipeline pipeline) {
+    public MongoClusterManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class DocumentDBClientBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the DocumentDBClientBuilder.
+     * @return the MongoClusterManagementClientBuilder.
      */
-    public DocumentDBClientBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public MongoClusterManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class DocumentDBClientBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the DocumentDBClientBuilder.
+     * @return the MongoClusterManagementClientBuilder.
      */
-    public DocumentDBClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public MongoClusterManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of DocumentDBClientImpl with the provided parameters.
+     * Builds an instance of MongoClusterManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of DocumentDBClientImpl.
+     * @return an instance of MongoClusterManagementClientImpl.
      */
-    public DocumentDBClientImpl buildClient() {
+    public MongoClusterManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,8 +131,8 @@ public final class DocumentDBClientBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        DocumentDBClientImpl client = new DocumentDBClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
+        MongoClusterManagementClientImpl client = new MongoClusterManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }

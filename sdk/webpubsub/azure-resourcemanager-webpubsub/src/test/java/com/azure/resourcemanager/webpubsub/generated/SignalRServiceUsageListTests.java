@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRServiceUsageListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRServiceUsageList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"ndnvo\",\"currentValue\":4292877192766299113,\"limit\":3293446474919179561,\"name\":{\"value\":\"kcglhslaz\",\"localizedValue\":\"yggdtjixh\"},\"unit\":\"uofqwe\"}],\"nextLink\":\"hmenevfyexfwhybc\"}")
-                .toObject(SignalRServiceUsageList.class);
+        SignalRServiceUsageList model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"ndnvo\",\"currentValue\":4292877192766299113,\"limit\":3293446474919179561,\"name\":{\"value\":\"kcglhslaz\",\"localizedValue\":\"yggdtjixh\"},\"unit\":\"uofqwe\"}],\"nextLink\":\"hmenevfyexfwhybc\"}")
+            .toObject(SignalRServiceUsageList.class);
         Assertions.assertEquals("ndnvo", model.value().get(0).id());
         Assertions.assertEquals(4292877192766299113L, model.value().get(0).currentValue());
         Assertions.assertEquals(3293446474919179561L, model.value().get(0).limit());
@@ -30,21 +28,12 @@ public final class SignalRServiceUsageListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SignalRServiceUsageList model =
-            new SignalRServiceUsageList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SignalRServiceUsageInner()
-                                .withId("ndnvo")
-                                .withCurrentValue(4292877192766299113L)
-                                .withLimit(3293446474919179561L)
-                                .withName(
-                                    new SignalRServiceUsageName()
-                                        .withValue("kcglhslaz")
-                                        .withLocalizedValue("yggdtjixh"))
-                                .withUnit("uofqwe")))
-                .withNextLink("hmenevfyexfwhybc");
+        SignalRServiceUsageList model
+            = new SignalRServiceUsageList().withValue(Arrays.asList(new SignalRServiceUsageInner().withId("ndnvo")
+                .withCurrentValue(4292877192766299113L)
+                .withLimit(3293446474919179561L)
+                .withName(new SignalRServiceUsageName().withValue("kcglhslaz").withLocalizedValue("yggdtjixh"))
+                .withUnit("uofqwe"))).withNextLink("hmenevfyexfwhybc");
         model = BinaryData.fromObject(model).toObject(SignalRServiceUsageList.class);
         Assertions.assertEquals("ndnvo", model.value().get(0).id());
         Assertions.assertEquals(4292877192766299113L, model.value().get(0).currentValue());

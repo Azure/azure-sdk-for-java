@@ -6,6 +6,7 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of PrivateEndpointConnection.
@@ -40,6 +41,13 @@ public interface PrivateEndpointConnection {
     String etag();
 
     /**
+     * Gets the tags property: The tags of the resource.
+     * 
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the private endpoint connection.
      * 
      * @return the provisioningState value.
@@ -54,9 +62,7 @@ public interface PrivateEndpointConnection {
     PrivateEndpoint privateEndpoint();
 
     /**
-     * Gets the groupIds property: The group id of the private endpoint connection.
-     * 
-     * The value has one and only one group id.
+     * Gets the groupIds property: The value has one and only one group id.
      * 
      * @return the groupIds value.
      */

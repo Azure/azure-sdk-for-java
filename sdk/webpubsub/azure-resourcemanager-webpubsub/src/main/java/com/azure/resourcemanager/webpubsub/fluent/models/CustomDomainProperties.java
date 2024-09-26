@@ -6,38 +6,43 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of a custom domain. */
+/**
+ * Properties of a custom domain.
+ */
 @Fluent
-public final class CustomDomainProperties {
+public final class CustomDomainProperties implements JsonSerializable<CustomDomainProperties> {
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The custom domain name.
      */
-    @JsonProperty(value = "domainName", required = true)
     private String domainName;
 
     /*
      * Reference to a resource.
      */
-    @JsonProperty(value = "customCertificate", required = true)
     private ResourceReference customCertificate;
 
-    /** Creates an instance of CustomDomainProperties class. */
+    /**
+     * Creates an instance of CustomDomainProperties class.
+     */
     public CustomDomainProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -46,7 +51,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the domainName property: The custom domain name.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -55,7 +60,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the domainName property: The custom domain name.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -66,7 +71,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the customCertificate property: Reference to a resource.
-     *
+     * 
      * @return the customCertificate value.
      */
     public ResourceReference customCertificate() {
@@ -75,7 +80,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the customCertificate property: Reference to a resource.
-     *
+     * 
      * @param customCertificate the customCertificate value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -86,25 +91,66 @@ public final class CustomDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domainName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainName in model CustomDomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property domainName in model CustomDomainProperties"));
         }
         if (customCertificate() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customCertificate in model CustomDomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customCertificate in model CustomDomainProperties"));
         } else {
             customCertificate().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomDomainProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("domainName", this.domainName);
+        jsonWriter.writeJsonField("customCertificate", this.customCertificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDomainProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDomainProperties.
+     */
+    public static CustomDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDomainProperties deserializedCustomDomainProperties = new CustomDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("domainName".equals(fieldName)) {
+                    deserializedCustomDomainProperties.domainName = reader.getString();
+                } else if ("customCertificate".equals(fieldName)) {
+                    deserializedCustomDomainProperties.customCertificate = ResourceReference.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCustomDomainProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDomainProperties;
+        });
+    }
 }
