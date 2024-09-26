@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class BatchAccountGetDetectorSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/DetectorGet.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/DetectorGet.json
      */
     /**
      * Sample code: GetDetector.
@@ -18,7 +18,8 @@ public final class BatchAccountGetDetectorSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void getDetector(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.batchAccounts().getDetectorWithResponse("default-azurebatch-japaneast", "sampleacct", "poolsAndNodes",
-            com.azure.core.util.Context.NONE);
+        manager.batchAccounts()
+            .getDetectorWithResponse("default-azurebatch-japaneast", "sampleacct", "poolsAndNodes",
+                com.azure.core.util.Context.NONE);
     }
 }

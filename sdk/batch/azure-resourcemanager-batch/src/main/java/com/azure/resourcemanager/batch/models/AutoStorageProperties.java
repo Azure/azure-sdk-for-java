@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Contains information about the auto-storage account associated with a Batch account.
@@ -17,7 +22,6 @@ public final class AutoStorageProperties extends AutoStorageBaseProperties {
     /*
      * The UTC time at which storage keys were last synchronized with the Batch account.
      */
-    @JsonProperty(value = "lastKeySync", required = true)
     private OffsetDateTime lastKeySync;
 
     /**
@@ -80,12 +84,71 @@ public final class AutoStorageProperties extends AutoStorageBaseProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (lastKeySync() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property lastKeySync in model AutoStorageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property lastKeySync in model AutoStorageProperties"));
+        }
+        if (storageAccountId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property storageAccountId in model AutoStorageProperties"));
+        }
+        if (nodeIdentityReference() != null) {
+            nodeIdentityReference().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoStorageProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("storageAccountId", storageAccountId());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeJsonField("nodeIdentityReference", nodeIdentityReference());
+        jsonWriter.writeStringField("lastKeySync",
+            this.lastKeySync == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastKeySync));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoStorageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoStorageProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoStorageProperties.
+     */
+    public static AutoStorageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoStorageProperties deserializedAutoStorageProperties = new AutoStorageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageAccountId".equals(fieldName)) {
+                    deserializedAutoStorageProperties.withStorageAccountId(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedAutoStorageProperties
+                        .withAuthenticationMode(AutoStorageAuthenticationMode.fromString(reader.getString()));
+                } else if ("nodeIdentityReference".equals(fieldName)) {
+                    deserializedAutoStorageProperties
+                        .withNodeIdentityReference(ComputeNodeIdentityReference.fromJson(reader));
+                } else if ("lastKeySync".equals(fieldName)) {
+                    deserializedAutoStorageProperties.lastKeySync = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoStorageProperties;
+        });
+    }
 }
