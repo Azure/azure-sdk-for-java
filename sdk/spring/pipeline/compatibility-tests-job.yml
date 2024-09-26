@@ -25,14 +25,14 @@ jobs:
       - name: AdditionalModulesJson
         value: '${{ convertToJson(parameters.AdditionalModules) }}'
     steps:
-      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-        parameters:
-          Paths:
-            - '**/*.xml'
-            - '**/*.md'
-            - '.vscode/cspell.json'
-            - '!sdk/**/test-recordings/*'
-            - '!sdk/**/session-records/*'
+#      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+#        parameters:
+#          Paths:
+#            - '**/*.xml'
+#            - '**/*.md'
+#            - '.vscode/cspell.json'
+#            - '!sdk/**/test-recordings/*'
+#            - '!sdk/**/session-records/*'
       - template: ../../../eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build'
