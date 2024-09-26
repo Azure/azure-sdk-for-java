@@ -6,6 +6,8 @@ package io.clientcore.http.jdk.httpclient;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.util.configuration.Configuration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
 import java.net.ProxySelector;
 import java.util.Optional;
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests {@link JdkHttpClientProvider}.
  */
+@DisabledForJreRange(max = JRE.JAVA_11)
 public class JdkHttpClientProviderTests {
     @Test
     public void testGetSharedInstance() {
