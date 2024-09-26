@@ -386,7 +386,7 @@ public final class DataLakePathClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
                 : parts.getBlobContainerName();
-            this.pathName = parts.getBlobName() == null ? this.pathName : Utility.urlEncode(parts.getBlobName());
+            this.pathName = parts.getBlobName() == null ? this.pathName : parts.getBlobName();
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
