@@ -67,6 +67,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-http-netty</artifactId>
+      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-communication-common</artifactId>
       <version>1.3.7</version> <!-- {x-version-update;com.azure:azure-communication-common;dependency} -->
     </dependency>
@@ -88,44 +93,5 @@
       <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.4</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.jacoco</groupId>
-        <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.12</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <id>coverage-report</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>report</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <include>com.azure:*</include>
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

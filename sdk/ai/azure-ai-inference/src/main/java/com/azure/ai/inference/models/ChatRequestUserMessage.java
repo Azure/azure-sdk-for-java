@@ -48,8 +48,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content the string content value to set.
      */
     public ChatRequestUserMessage(String content) {
-        String contentString = String.format("\"%s\"", content);
-        this.content = BinaryData.fromString(contentString);
+        this.content = BinaryData.fromObject(content);
     }
 
     /**
