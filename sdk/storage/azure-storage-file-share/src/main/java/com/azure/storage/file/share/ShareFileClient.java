@@ -767,7 +767,7 @@ public class ShareFileClient {
             (pollingContext) -> {
                 ResponseBase<FilesStartCopyHeaders, Void> response = azureFileStorageClient.getFiles()
                     .startCopyWithResponse(shareName, filePath, copySource, null, options.getMetadata(),
-                        options.getFilePermission(), tempSmbProperties.getFilePermissionKey(),
+                        options.getFilePermission(), null, tempSmbProperties.getFilePermissionKey(),
                         finalRequestConditions.getLeaseId(), copyFileSmbInfo, null);
 
                 FilesStartCopyHeaders headers = response.getDeserializedHeaders();
@@ -2383,7 +2383,8 @@ public class ShareFileClient {
         Context finalContext = context == null ? Context.NONE : context;
         Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = () -> this.azureFileStorageClient.getFiles()
             .uploadRangeWithResponse(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR, 0L, null,
-                null, finalRequestConditions.getLeaseId(), null, null, finalContext);
+                null, finalRequestConditions.getLeaseId(), null, null,
+                null, null, finalContext);
 
         return ModelHelper.transformUploadResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
