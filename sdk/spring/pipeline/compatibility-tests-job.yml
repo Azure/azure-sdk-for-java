@@ -20,13 +20,11 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
-            - 'sdk/spring'
-            - 'sdk/parents/azure-client-sdk-parent'
-            - 'sdk/boms/spring-cloud-azure-dependencies'
-            - 'sdk/parents/azure-client-sdk-parent'
-            - 'sdk/jdbc'
-            - 'sdk/servicebus'
-            - 'sdk/eventhubs'
+            - '**/*.xml'
+            - '**/*.md'
+            - '.vscode/cspell.json'
+            - '!sdk/**/test-recordings/*'
+            - '!sdk/**/session-records/*'
       - template: ../../../eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build'
@@ -56,6 +54,16 @@ jobs:
           publishJUnitResults: false
 #        env: ${{ parameters.TestEnvVars }}
 #        condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
+      - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        parameters:
+          Paths:
+            - 'sdk/spring'
+            - 'sdk/parents/azure-client-sdk-parent'
+            - 'sdk/boms/spring-cloud-azure-dependencies'
+            - 'sdk/parents/azure-client-sdk-parent'
+            - 'sdk/jdbc'
+            - 'sdk/servicebus'
+            - 'sdk/eventhubs'
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'
