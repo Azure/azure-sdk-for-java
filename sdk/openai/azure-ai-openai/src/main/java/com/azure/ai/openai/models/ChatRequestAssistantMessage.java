@@ -252,4 +252,32 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
         this.stringContent = null;
         this.chatMessageContentItem = content;
     }
+
+    /*
+     * The refusal message by the assistant.
+     */
+    @Generated
+    private String refusal;
+
+    /**
+     * Get the refusal property: The refusal message by the assistant.
+     *
+     * @return the refusal value.
+     */
+    @Generated
+    public String getRefusal() {
+        return this.refusal;
+    }
+
+    /**
+     * Set the refusal property: The refusal message by the assistant.
+     *
+     * @param refusal the refusal value to set.
+     * @return the ChatRequestAssistantMessage object itself.
+     */
+    @Generated
+    public ChatRequestAssistantMessage setRefusal(String refusal) {
+        this.refusal = refusal;
+        return this;
+    }
 }

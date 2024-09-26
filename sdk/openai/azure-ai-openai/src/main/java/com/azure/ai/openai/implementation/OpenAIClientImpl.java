@@ -553,6 +553,92 @@ public final class OpenAIClientImpl {
         Response<BinaryData> cancelBatchSync(@HostParam("endpoint") String endpoint,
             @PathParam("batchId") String batchId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
+
+        @Post("/uploads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createUpload(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+
+        @Post("/uploads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createUploadSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData requestBody, RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/uploads/{upload_id}/parts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> addUploadPart(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/uploads/{upload_id}/parts")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> addUploadPartSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("content-type") String contentType, @PathParam("upload_id") String uploadId,
+            @HeaderParam("Accept") String accept, @BodyParam("multipart/form-data") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/complete")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> completeUpload(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/complete")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> completeUploadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData requestBody,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> cancelUpload(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Post("/uploads/{upload_id}/cancel")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> cancelUploadSync(@HostParam("endpoint") String endpoint,
+            @PathParam("upload_id") String uploadId, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -915,6 +1001,7 @@ public final class OpenAIClientImpl {
      *     best_of: Integer (Optional)
      *     stream: Boolean (Optional)
      *     model: String (Optional)
+     *     seed: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -1009,6 +1096,7 @@ public final class OpenAIClientImpl {
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *     }
+     *     system_fingerprint: String (Optional)
      * }
      * }</pre>
      * 
@@ -1066,6 +1154,7 @@ public final class OpenAIClientImpl {
      *     best_of: Integer (Optional)
      *     stream: Boolean (Optional)
      *     model: String (Optional)
+     *     seed: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -1160,6 +1249,7 @@ public final class OpenAIClientImpl {
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *     }
+     *     system_fingerprint: String (Optional)
      * }
      * }</pre>
      * 
@@ -1969,6 +2059,7 @@ public final class OpenAIClientImpl {
      *                 double (Required)
      *             ]
      *             index: int (Required)
+     *             object: String (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -2030,6 +2121,7 @@ public final class OpenAIClientImpl {
      *                 double (Required)
      *             ]
      *             index: int (Required)
+     *             object: String (Required)
      *         }
      *     ]
      *     usage (Required): {
@@ -2924,5 +3016,421 @@ public final class OpenAIClientImpl {
     public Response<BinaryData> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.cancelBatchSync(this.getEndpoint(), batchId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Creates an intermediate Upload object that you can add Parts to. Currently, an Upload can accept at most 8 GB in
+     * total and expires after an hour after you create it.
+     * 
+     * Once you complete the Upload, we will create a File object that contains all the parts you uploaded. This File is
+     * usable in the rest of our platform as a regular File object.
+     * 
+     * For certain purposes, the correct mime_type must be specified. Please refer to documentation for the supported
+     * MIME types for your use case.
+     * 
+     * For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a
+     * File.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     filename: String (Required)
+     *     purpose: String(assistants/batch/fine-tune/vision) (Required)
+     *     bytes: int (Required)
+     *     mime_type: String (Required)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param requestBody The request body for the operation options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> createUploadWithResponseAsync(BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.createUpload(this.getEndpoint(), contentType, accept,
+            requestBody, requestOptions, context));
+    }
+
+    /**
+     * Creates an intermediate Upload object that you can add Parts to. Currently, an Upload can accept at most 8 GB in
+     * total and expires after an hour after you create it.
+     * 
+     * Once you complete the Upload, we will create a File object that contains all the parts you uploaded. This File is
+     * usable in the rest of our platform as a regular File object.
+     * 
+     * For certain purposes, the correct mime_type must be specified. Please refer to documentation for the supported
+     * MIME types for your use case.
+     * 
+     * For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a
+     * File.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     filename: String (Required)
+     *     purpose: String(assistants/batch/fine-tune/vision) (Required)
+     *     bytes: int (Required)
+     *     mime_type: String (Required)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param requestBody The request body for the operation options.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.createUploadSync(this.getEndpoint(), contentType, accept, requestBody, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Adds a Part to an Upload object. A Part represents a chunk of bytes from the file you are trying to upload.
+     * 
+     * Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+     * 
+     * It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you
+     * complete the Upload.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     upload_id: String (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body data payload for the operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> addUploadPartWithResponseAsync(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.addUploadPart(this.getEndpoint(), contentType, uploadId, accept,
+            requestBody, requestOptions, context));
+    }
+
+    /**
+     * Adds a Part to an Upload object. A Part represents a chunk of bytes from the file you are trying to upload.
+     * 
+     * Each Part can be at most 64 MB, and you can add Parts until you hit the Upload maximum of 8 GB.
+     * 
+     * It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you
+     * complete the Upload.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     upload_id: String (Required)
+     *     object: String (Required)
+     * }
+     * }</pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body data payload for the operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "multipart/form-data";
+        final String accept = "application/json";
+        return service.addUploadPartSync(this.getEndpoint(), contentType, uploadId, accept, requestBody, requestOptions,
+            Context.NONE);
+    }
+
+    /**
+     * Completes the Upload.
+     * 
+     * Within the returned Upload object, there is a nested File object that is ready to use in the rest of the
+     * platform.
+     * 
+     * You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+     * 
+     * The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the
+     * Upload object. No Parts may be added after an Upload is completed.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     part_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     md5: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body for the completion operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> completeUploadWithResponseAsync(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.completeUpload(this.getEndpoint(), uploadId, contentType, accept,
+            requestBody, requestOptions, context));
+    }
+
+    /**
+     * Completes the Upload.
+     * 
+     * Within the returned Upload object, there is a nested File object that is ready to use in the rest of the
+     * platform.
+     * 
+     * You can specify the order of the Parts by passing in an ordered list of the Part IDs.
+     * 
+     * The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the
+     * Upload object. No Parts may be added after an Upload is completed.
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     part_ids (Required): [
+     *         String (Required)
+     *     ]
+     *     md5: String (Optional)
+     * }
+     * }</pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestBody The request body for the completion operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> completeUploadWithResponse(String uploadId, BinaryData requestBody,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.completeUploadSync(this.getEndpoint(), uploadId, contentType, accept, requestBody,
+            requestOptions, Context.NONE);
+    }
+
+    /**
+     * Cancels the Upload. No Parts may be added after an Upload is cancelled.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> cancelUploadWithResponseAsync(String uploadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.cancelUpload(this.getEndpoint(), uploadId, accept, requestOptions, context));
+    }
+
+    /**
+     * Cancels the Upload. No Parts may be added after an Upload is cancelled.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Required)
+     *     created_at: long (Required)
+     *     filename: String (Required)
+     *     bytes: long (Required)
+     *     purpose: String (Required)
+     *     status: String(pending/completed/cancelled/expired) (Required)
+     *     expires_at: long (Required)
+     *     object: String(upload) (Optional)
+     *     file (Optional): {
+     *         object: String (Required)
+     *         id: String (Required)
+     *         bytes: int (Required)
+     *         filename: String (Required)
+     *         created_at: long (Required)
+     *         purpose: String(fine-tune/fine-tune-results/assistants/assistants_output/batch/batch_output/vision) (Required)
+     *         status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
+     *         status_details: String (Optional)
+     *     }
+     * }
+     * }</pre>
+     * 
+     * @param uploadId The ID of the upload associated with this operation.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> cancelUploadWithResponse(String uploadId, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.cancelUploadSync(this.getEndpoint(), uploadId, accept, requestOptions, Context.NONE);
     }
 }
