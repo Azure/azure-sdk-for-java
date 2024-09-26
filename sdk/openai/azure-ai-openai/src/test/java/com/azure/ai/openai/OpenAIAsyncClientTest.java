@@ -1018,16 +1018,16 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                         return client.getChatCompletions(modelId, getChatCompletionsOptionWithToolCallFollowUp(
                             functionToolCall, ""));
                     })).assertNext(followUpChatCompletions -> {
-                assertNotNull(followUpChatCompletions);
-                assertNotNull(followUpChatCompletions.getChoices());
-                ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
-                assertNotNull(followUpChatChoice);
-                assertNotNull(followUpChatChoice.getMessage());
-                String content = followUpChatChoice.getMessage().getContent();
-                assertFalse(content == null || content.isEmpty());
-                assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
-                assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
-            }).verifyComplete();
+                        assertNotNull(followUpChatCompletions);
+                        assertNotNull(followUpChatCompletions.getChoices());
+                        ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
+                        assertNotNull(followUpChatChoice);
+                        assertNotNull(followUpChatChoice.getMessage());
+                        String content = followUpChatChoice.getMessage().getContent();
+                        assertFalse(content == null || content.isEmpty());
+                        assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+                        assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+                    }).verifyComplete();
         }));
     }
 
