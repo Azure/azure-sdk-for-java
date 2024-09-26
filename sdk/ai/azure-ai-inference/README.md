@@ -145,6 +145,18 @@ client.completeStream(new ChatCompletionsOptions(chatMessages))
 
 To compute tokens in streaming chat completions, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
+### Chat with image URL
+
+```java readme-sample-chatWithImageUrl
+```
+For a complete sample example, see sample [Image URL][sample_chat_with_image_url].
+
+### Chat with image file
+
+```java readme-sample-chatWithImageFile
+```
+For a complete sample example, see sample [Image File][sample_chat_with_image_file].
+
 ### Text embeddings
 
 ```java readme-sample-getEmbedding
@@ -232,6 +244,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/BasicChatSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/StreamingChatSample.java 
 [sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/TextEmbeddingsSample.java
+[sample_chat_with_image_url]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/ImageUrlChatSample.java
+[sample_chat_with_image_file]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/samples/java/com/azure/ai/inference/usage/ImageFileChatSample.java
 [sample_function_calls]: https://aka.ms/azsdk/azure-ai-inference/java/toolCallSample
 [sample_streaming_function_calls]: https://aka.ms/azsdk/azure-ai-inference/java/streamingToolCallSample
 [chat_completions_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/ai/azure-ai-inference/src/main/java/com/azure/ai/inference/ChatCompletionsAsyncClient.java

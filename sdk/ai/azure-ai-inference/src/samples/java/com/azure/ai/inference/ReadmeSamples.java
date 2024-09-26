@@ -126,6 +126,16 @@ public final class ReadmeSamples {
         // END: readme-sample-getEmbedding
     }
 
+    public void chatWithImageFile() {
+        // BEGIN: readme-sample-chatWithImageFile
+        // END: readme-sample-chatWithImageFile
+    }
+
+    public void chatWithImageUrl() {
+        // BEGIN: readme-sample-chatWithImageUrl
+        // END: readme-sample-chatWithImageUrl
+    }
+
     public void enableHttpLogging() {
         // BEGIN: readme-sample-enablehttplogging
         ChatCompletionsClient chatCompletionsClient = new ChatCompletionsClientBuilder()
