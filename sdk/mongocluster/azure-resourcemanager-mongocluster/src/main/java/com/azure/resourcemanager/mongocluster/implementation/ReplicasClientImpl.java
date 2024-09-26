@@ -42,24 +42,24 @@ public final class ReplicasClientImpl implements ReplicasClient {
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicasClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ReplicasClientImpl(DocumentDBClientImpl client) {
+    ReplicasClientImpl(MongoClusterManagementClientImpl client) {
         this.service = RestProxy.create(ReplicasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientReplicas to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for MongoClusterManagementClientReplicas to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientRepl")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface ReplicasService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/replicas")

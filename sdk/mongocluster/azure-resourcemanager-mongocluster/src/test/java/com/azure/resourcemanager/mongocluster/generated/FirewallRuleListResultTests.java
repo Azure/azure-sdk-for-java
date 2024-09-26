@@ -12,10 +12,10 @@ public final class FirewallRuleListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FirewallRuleListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"startIpAddress\":\"wyqkgfgibm\",\"endIpAddress\":\"dgak\"},\"id\":\"s\",\"name\":\"xybz\",\"type\":\"qedqytbciqfoufl\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"zsm\",\"endIpAddress\":\"dmgloug\"},\"id\":\"kwtmutduqktapspw\",\"name\":\"cuertu\",\"type\":\"kdosvqw\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"gbbjfddgmbmbe\",\"endIpAddress\":\"ppbhtqqrolfp\"},\"id\":\"s\",\"name\":\"lgbquxig\",\"type\":\"yjgzjaoyfhrtxiln\"},{\"properties\":{\"provisioningState\":\"Updating\",\"startIpAddress\":\"jysvl\",\"endIpAddress\":\"juvf\"},\"id\":\"wrlyxwjkcprb\",\"name\":\"wbxgjvt\",\"type\":\"vpys\"}],\"nextLink\":\"dnrujqguhmuouqfp\"}")
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"startIpAddress\":\"kdosvqw\",\"endIpAddress\":\"bmdg\"},\"id\":\"jfddgmbmbe\",\"name\":\"ppbhtqqrolfp\",\"type\":\"psalgbqux\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"jgzjaoyfhrtx\",\"endIpAddress\":\"lnerkujysvleju\"},\"id\":\"qawrlyxwj\",\"name\":\"cpr\",\"type\":\"nwbxgjvtbvpyssz\"},{\"properties\":{\"provisioningState\":\"Failed\",\"startIpAddress\":\"jq\",\"endIpAddress\":\"uhmuouqfprwzwbn\"},\"id\":\"itnwuizgazxufi\",\"name\":\"uckyf\",\"type\":\"hr\"}],\"nextLink\":\"dfvzwdzuhty\"}")
             .toObject(FirewallRuleListResult.class);
-        Assertions.assertEquals("wyqkgfgibm", model.value().get(0).properties().startIpAddress());
-        Assertions.assertEquals("dgak", model.value().get(0).properties().endIpAddress());
-        Assertions.assertEquals("dnrujqguhmuouqfp", model.nextLink());
+        Assertions.assertEquals("kdosvqw", model.value().get(0).properties().startIpAddress());
+        Assertions.assertEquals("bmdg", model.value().get(0).properties().endIpAddress());
+        Assertions.assertEquals("dfvzwdzuhty", model.nextLink());
     }
 }

@@ -13,23 +13,22 @@ public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model = BinaryData
-            .fromString(
-                "{\"status\":\"Rejected\",\"description\":\"olthqtrgqjbp\",\"actionsRequired\":\"fsinzgvfcjrwzoxx\"}")
+            .fromString("{\"status\":\"Approved\",\"description\":\"odepoogin\",\"actionsRequired\":\"amiheognarxz\"}")
             .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("olthqtrgqjbp", model.description());
-        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("odepoogin", model.description());
+        Assertions.assertEquals("amiheognarxz", model.actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
-            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                .withDescription("olthqtrgqjbp")
-                .withActionsRequired("fsinzgvfcjrwzoxx");
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                .withDescription("odepoogin")
+                .withActionsRequired("amiheognarxz");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
-        Assertions.assertEquals("olthqtrgqjbp", model.description());
-        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("odepoogin", model.description());
+        Assertions.assertEquals("amiheognarxz", model.actionsRequired());
     }
 }
