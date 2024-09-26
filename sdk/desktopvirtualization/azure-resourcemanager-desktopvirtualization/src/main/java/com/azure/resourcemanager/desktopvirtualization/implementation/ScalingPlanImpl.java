@@ -152,27 +152,23 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlan create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlans()
-                .createWithResponse(resourceGroupName, scalingPlanName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlans()
+            .createWithResponse(resourceGroupName, scalingPlanName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlan create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlans()
-                .createWithResponse(resourceGroupName, scalingPlanName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlans()
+            .createWithResponse(resourceGroupName, scalingPlanName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ScalingPlanImpl(
-        String name, com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
+    ScalingPlanImpl(String name,
+        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = new ScalingPlanInner();
         this.serviceManager = serviceManager;
         this.scalingPlanName = name;
@@ -184,51 +180,42 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
     }
 
     public ScalingPlan apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlans()
-                .updateWithResponse(resourceGroupName, scalingPlanName, updateScalingPlan, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlans()
+            .updateWithResponse(resourceGroupName, scalingPlanName, updateScalingPlan, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlan apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlans()
-                .updateWithResponse(resourceGroupName, scalingPlanName, updateScalingPlan, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlans()
+            .updateWithResponse(resourceGroupName, scalingPlanName, updateScalingPlan, context)
+            .getValue();
         return this;
     }
 
-    ScalingPlanImpl(
-        ScalingPlanInner innerObject,
+    ScalingPlanImpl(ScalingPlanInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.scalingPlanName = Utils.getValueFromIdByName(innerObject.id(), "scalingPlans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.scalingPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scalingPlans");
     }
 
     public ScalingPlan refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlans()
-                .getByResourceGroupWithResponse(resourceGroupName, scalingPlanName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlans()
+            .getByResourceGroupWithResponse(resourceGroupName, scalingPlanName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlan refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlans()
-                .getByResourceGroupWithResponse(resourceGroupName, scalingPlanName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlans()
+            .getByResourceGroupWithResponse(resourceGroupName, scalingPlanName, context)
+            .getValue();
         return this;
     }
 

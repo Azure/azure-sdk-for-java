@@ -415,7 +415,6 @@ public final class TableServiceClient {
     }
 
     Response<TableClient> createTableWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         return new SimpleResponse<>(implementation.getTables()
@@ -481,7 +480,6 @@ public final class TableServiceClient {
     }
 
     Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
         return new SimpleResponse<>(implementation.getTables()
@@ -559,7 +557,6 @@ public final class TableServiceClient {
     }
 
     Response<Void> deleteTableWithResponse(String tableName, Context context) {
-        context = TableUtils.setContext(context, true);
         return new SimpleResponse<>(
             implementation.getTables().deleteWithResponse(tableName, null, context), null);
     }
@@ -637,7 +634,6 @@ public final class TableServiceClient {
     }
 
     private PagedResponse<TableItem> listTables(String nextTableName, Context context, ListTablesOptions options) {
-        context = TableUtils.setContext(context, true);
         QueryOptions queryOptions = new QueryOptions()
             .setFilter(options.getFilter())
             .setTop(options.getTop())
@@ -723,7 +719,6 @@ public final class TableServiceClient {
     }
 
     Response<TableServiceProperties> getPropertiesWithResponse(Context context) {
-        context = TableUtils.setContext(context, true);
         Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
             this.implementation.getServices().getPropertiesWithResponse(null, null, context);
         return new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue()));
@@ -819,7 +814,6 @@ public final class TableServiceClient {
     }
 
     Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
-        context = TableUtils.setContext(context, true);
         return new SimpleResponse<>(this.implementation.getServices()
             .setPropertiesWithResponse(TableUtils.toImplTableServiceProperties(tableServiceProperties), null,
                 null, context), null);
@@ -886,7 +880,6 @@ public final class TableServiceClient {
 
 
     Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
-        context = TableUtils.setContext(context, true);
         Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
             null, null, context);
         return new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue()));

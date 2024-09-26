@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class MsixImageUriTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MsixImageUri model = BinaryData.fromString("{\"uri\":\"zb\"}").toObject(MsixImageUri.class);
-        Assertions.assertEquals("zb", model.uri());
+        MsixImageUri model = BinaryData.fromString("{\"uri\":\"hvnh\"}").toObject(MsixImageUri.class);
+        Assertions.assertEquals("hvnh", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MsixImageUri model = new MsixImageUri().withUri("zb");
+        MsixImageUri model = new MsixImageUri().withUri("hvnh");
         model = BinaryData.fromObject(model).toObject(MsixImageUri.class);
-        Assertions.assertEquals("zb", model.uri());
+        Assertions.assertEquals("hvnh", model.uri());
     }
 }

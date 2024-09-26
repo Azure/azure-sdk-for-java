@@ -511,6 +511,7 @@ springboot3_org.springframework.boot:spring-boot-starter-actuator;3.3.3
 springboot3_org.springframework.boot:spring-boot-starter-integration;3.3.3
 springboot3_org.springframework.boot:spring-boot-starter-parent;3.3.3
 springboot3_org.springframework.boot:spring-boot-starter-test;3.3.3
+springboot3_org.springframework.boot:spring-boot-starter-data-jdbc;3.3.3
 springboot3_org.springframework.boot:spring-boot-starter-web;3.3.3
 springboot3_org.springframework.boot:spring-boot-starter;3.3.3
 springboot3_org.springframework.boot:spring-boot-test;3.3.3

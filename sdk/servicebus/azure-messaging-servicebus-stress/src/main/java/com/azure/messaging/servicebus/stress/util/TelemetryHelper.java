@@ -7,7 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusException;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.AzureMonitor;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
@@ -75,9 +75,7 @@ public class TelemetryHelper {
         }
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder()
-                .connectionString(applicationInsightsConnectionString)
-                .install(sdkBuilder);
+            AzureMonitor.customize(sdkBuilder, applicationInsightsConnectionString);
         }
 
         String instanceId = System.getenv("CONTAINER_NAME");

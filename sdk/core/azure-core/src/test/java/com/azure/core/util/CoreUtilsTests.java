@@ -6,9 +6,7 @@ package com.azure.core.util;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.logging.ClientLogger;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -31,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
@@ -61,18 +58,6 @@ public class CoreUtilsTests {
 
     private static final String TIMEOUT_PROPERTY_NAME = "TIMEOUT_PROPERTY_NAME";
     private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
-
-    private static ExecutorService executorService;
-
-    @BeforeAll
-    public static void setupClass() {
-        executorService = Executors.newCachedThreadPool();
-    }
-
-    @AfterAll
-    public static void teardownClass() {
-        executorService.shutdownNow();
-    }
 
     @Test
     public void findFirstOfTypeEmptyArgs() {
@@ -500,7 +485,7 @@ public class CoreUtilsTests {
     public void futureCompletesBeforeTimeout() {
         try {
             AtomicBoolean completed = new AtomicBoolean(false);
-            Future<?> future = executorService.submit(() -> {
+            Future<?> future = SharedExecutorService.getInstance().submit(() -> {
                 Thread.sleep(10);
                 completed.set(true);
                 return null;
@@ -518,7 +503,7 @@ public class CoreUtilsTests {
     public void futureTimesOutAndIsCancelled() {
         try {
             AtomicBoolean completed = new AtomicBoolean(false);
-            Future<?> future = executorService.submit(() -> {
+            Future<?> future = SharedExecutorService.getInstance().submit(() -> {
                 Thread.sleep(5000);
                 completed.set(true);
                 return null;
