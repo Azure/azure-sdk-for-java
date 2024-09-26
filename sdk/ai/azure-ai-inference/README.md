@@ -148,12 +148,40 @@ To compute tokens in streaming chat completions, see sample [Streaming Chat Comp
 ### Chat with image URL
 
 ```java readme-sample-chatWithImageUrl
+List<ChatMessageContentItem> contentItems = new ArrayList<>();
+contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+contentItems.add(new ChatMessageImageContentItem(
+    new ChatMessageImageUrl("<URL>")));
+
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+
+for (ChatChoice choice : completions.getChoices()) {
+    System.out.printf("%s.%n", choice.getMessage().getContent());
+}
 ```
 For a complete sample example, see sample [Image URL][sample_chat_with_image_url].
 
 ### Chat with image file
 
 ```java readme-sample-chatWithImageFile
+Path testFilePath = Paths.get("<path-to-image-file>");
+List<ChatMessageContentItem> contentItems = new ArrayList<>();
+contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+contentItems.add(new ChatMessageImageContentItem(testFilePath, "<image-format>"));
+
+List<ChatRequestMessage> chatMessages = new ArrayList<>();
+chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+
+for (ChatChoice choice : completions.getChoices()) {
+    System.out.printf("%s.%n", choice.getMessage().getContent());
+}
 ```
 For a complete sample example, see sample [Image File][sample_chat_with_image_file].
 

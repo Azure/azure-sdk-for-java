@@ -7,6 +7,10 @@ package com.azure.ai.inference;
 import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatMessageContentItem;
+import com.azure.ai.inference.models.ChatMessageImageContentItem;
+import com.azure.ai.inference.models.ChatMessageImageUrl;
+import com.azure.ai.inference.models.ChatMessageTextContentItem;
 import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestAssistantMessage;
 import com.azure.ai.inference.models.ChatRequestSystemMessage;
@@ -25,6 +29,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,11 +134,39 @@ public final class ReadmeSamples {
 
     public void chatWithImageFile() {
         // BEGIN: readme-sample-chatWithImageFile
+        Path testFilePath = Paths.get("<path-to-image-file>");
+        List<ChatMessageContentItem> contentItems = new ArrayList<>();
+        contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+        contentItems.add(new ChatMessageImageContentItem(testFilePath, "<image-format>"));
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+        ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+
+        for (ChatChoice choice : completions.getChoices()) {
+            System.out.printf("%s.%n", choice.getMessage().getContent());
+        }
         // END: readme-sample-chatWithImageFile
     }
 
     public void chatWithImageUrl() {
         // BEGIN: readme-sample-chatWithImageUrl
+        List<ChatMessageContentItem> contentItems = new ArrayList<>();
+        contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+        contentItems.add(new ChatMessageImageContentItem(
+            new ChatMessageImageUrl("<URL>")));
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+        ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+
+        for (ChatChoice choice : completions.getChoices()) {
+            System.out.printf("%s.%n", choice.getMessage().getContent());
+        }
         // END: readme-sample-chatWithImageUrl
     }
 
