@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Get.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_Get.json
      */
     /**
      * Sample code: Fleets_Get.

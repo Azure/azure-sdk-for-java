@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationGetHttpsEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationGetHttpsEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"accessModes\":[\"iwkuofos\",\"ghsauuimjmvxied\",\"ugidyjrr\",\"byao\"],\"location\":\"e\",\"destinationPort\":981492544,\"publicPort\":635298433,\"privateIPAddress\":\"clhocohsl\",\"subDomainSuffix\":\"vleggzfbuhfmvfax\",\"disableGatewayAuth\":true}")
-                .toObject(ApplicationGetHttpsEndpoint.class);
+        ApplicationGetHttpsEndpoint model = BinaryData.fromString(
+            "{\"accessModes\":[\"iwkuofos\",\"ghsauuimjmvxied\",\"ugidyjrr\",\"byao\"],\"location\":\"e\",\"destinationPort\":981492544,\"publicPort\":635298433,\"privateIPAddress\":\"clhocohsl\",\"subDomainSuffix\":\"vleggzfbuhfmvfax\",\"disableGatewayAuth\":true}")
+            .toObject(ApplicationGetHttpsEndpoint.class);
         Assertions.assertEquals("iwkuofos", model.accessModes().get(0));
         Assertions.assertEquals(981492544, model.destinationPort());
         Assertions.assertEquals("clhocohsl", model.privateIpAddress());
@@ -26,13 +24,12 @@ public final class ApplicationGetHttpsEndpointTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationGetHttpsEndpoint model =
-            new ApplicationGetHttpsEndpoint()
-                .withAccessModes(Arrays.asList("iwkuofos", "ghsauuimjmvxied", "ugidyjrr", "byao"))
-                .withDestinationPort(981492544)
-                .withPrivateIpAddress("clhocohsl")
-                .withSubDomainSuffix("vleggzfbuhfmvfax")
-                .withDisableGatewayAuth(true);
+        ApplicationGetHttpsEndpoint model = new ApplicationGetHttpsEndpoint()
+            .withAccessModes(Arrays.asList("iwkuofos", "ghsauuimjmvxied", "ugidyjrr", "byao"))
+            .withDestinationPort(981492544)
+            .withPrivateIpAddress("clhocohsl")
+            .withSubDomainSuffix("vleggzfbuhfmvfax")
+            .withDisableGatewayAuth(true);
         model = BinaryData.fromObject(model).toObject(ApplicationGetHttpsEndpoint.class);
         Assertions.assertEquals("iwkuofos", model.accessModes().get(0));
         Assertions.assertEquals(981492544, model.destinationPort());

@@ -27,22 +27,28 @@ import com.azure.resourcemanager.sql.fluent.SqlAgentsClient;
 import com.azure.resourcemanager.sql.fluent.models.SqlAgentConfigurationInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlAgentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlAgentsClient.
+ */
 public final class SqlAgentsClientImpl implements SqlAgentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlAgentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlAgentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlAgentsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SqlAgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SqlAgentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,58 +59,46 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientS")
     public interface SqlAgentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/sqlAgent/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/sqlAgent/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlAgentConfigurationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SqlAgentConfigurationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/sqlAgent/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/sqlAgent/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SqlAgentConfigurationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SqlAgentConfigurationInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlAgentConfigurationInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlAgentConfigurationInner parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Gets current instance sql agent configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current instance sql agent configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return current instance sql agent configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlAgentConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName) {
+    public Mono<Response<SqlAgentConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -115,48 +109,35 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets current instance sql agent configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return current instance sql agent configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return current instance sql agent configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlAgentConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    private Mono<Response<SqlAgentConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,29 +148,20 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets current instance sql agent configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -204,9 +176,9 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
 
     /**
      * Gets current instance sql agent configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,16 +187,16 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
      * @return current instance sql agent configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlAgentConfigurationInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    public Response<SqlAgentConfigurationInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, context).block();
     }
 
     /**
      * Gets current instance sql agent configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -238,25 +210,23 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
 
     /**
      * Puts new sql agent configuration to instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters A recoverable managed database resource.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a recoverable managed database resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SqlAgentConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, SqlAgentConfigurationInner parameters) {
+    public Mono<Response<SqlAgentConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, SqlAgentConfigurationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -267,10 +237,8 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -280,42 +248,31 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                    this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Puts new sql agent configuration to instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters A recoverable managed database resource.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable managed database resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a recoverable managed database resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SqlAgentConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, SqlAgentConfigurationInner parameters, Context context) {
+    private Mono<Response<SqlAgentConfigurationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, SqlAgentConfigurationInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -326,10 +283,8 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -338,44 +293,36 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Puts new sql agent configuration to instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters A recoverable managed database resource.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a recoverable managed database resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SqlAgentConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String managedInstanceName, SqlAgentConfigurationInner parameters) {
+    public Mono<SqlAgentConfigurationInner> createOrUpdateAsync(String resourceGroupName, String managedInstanceName,
+        SqlAgentConfigurationInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Puts new sql agent configuration to instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters A recoverable managed database resource.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -383,26 +330,26 @@ public final class SqlAgentsClientImpl implements SqlAgentsClient {
      * @return a recoverable managed database resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SqlAgentConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName, String managedInstanceName, SqlAgentConfigurationInner parameters, Context context) {
+    public Response<SqlAgentConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String managedInstanceName, SqlAgentConfigurationInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, managedInstanceName, parameters, context).block();
     }
 
     /**
      * Puts new sql agent configuration to instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
-     * @param parameters A recoverable managed database resource.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a recoverable managed database resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlAgentConfigurationInner createOrUpdate(
-        String resourceGroupName, String managedInstanceName, SqlAgentConfigurationInner parameters) {
+    public SqlAgentConfigurationInner createOrUpdate(String resourceGroupName, String managedInstanceName,
+        SqlAgentConfigurationInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, managedInstanceName, parameters, Context.NONE).getValue();
     }
 }

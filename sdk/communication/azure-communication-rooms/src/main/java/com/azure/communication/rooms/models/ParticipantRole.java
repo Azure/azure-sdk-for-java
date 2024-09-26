@@ -5,7 +5,7 @@
 package com.azure.communication.rooms.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for ParticipantRole. */
@@ -25,7 +25,6 @@ public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole>
      * @param name a name to look for.
      * @return the corresponding ParticipantRole.
      */
-    @JsonCreator
     public static ParticipantRole fromString(String name) {
         return fromString(name, ParticipantRole.class);
     }

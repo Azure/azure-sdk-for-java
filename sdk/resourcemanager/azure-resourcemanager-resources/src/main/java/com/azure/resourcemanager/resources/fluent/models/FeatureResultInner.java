@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.FeatureProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Previewed feature information.
  */
 @Fluent
-public final class FeatureResultInner {
+public final class FeatureResultInner implements JsonSerializable<FeatureResultInner> {
     /*
      * The name of the feature.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Properties of the previewed feature.
      */
-    @JsonProperty(value = "properties")
     private FeatureProperties properties;
 
     /*
      * The resource ID of the feature.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The resource type of the feature.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /**
@@ -132,5 +132,50 @@ public final class FeatureResultInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FeatureResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FeatureResultInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FeatureResultInner.
+     */
+    public static FeatureResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FeatureResultInner deserializedFeatureResultInner = new FeatureResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFeatureResultInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFeatureResultInner.properties = FeatureProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedFeatureResultInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFeatureResultInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFeatureResultInner;
+        });
     }
 }

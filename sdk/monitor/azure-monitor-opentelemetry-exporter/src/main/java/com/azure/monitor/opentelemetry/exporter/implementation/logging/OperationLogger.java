@@ -61,8 +61,7 @@ public class OperationLogger {
 
     // failureMessage should have low cardinality
     @SuppressWarnings("try")
-    public void recordFailure(
-        String failureMessage, @Nullable Throwable exception, AzureMonitorMsgId msgId) {
+    public void recordFailure(String failureMessage, @Nullable Throwable exception, AzureMonitorMsgId msgId) {
         try (MDC.MDCCloseable ignored = msgId.makeActive()) {
             recordFailure(failureMessage, exception);
         }

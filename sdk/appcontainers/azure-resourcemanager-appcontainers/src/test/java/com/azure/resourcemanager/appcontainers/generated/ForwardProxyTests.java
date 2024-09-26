@@ -13,21 +13,21 @@ public final class ForwardProxyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ForwardProxy model = BinaryData.fromString(
-            "{\"convention\":\"Custom\",\"customHostHeaderName\":\"yfsoppu\",\"customProtoHeaderName\":\"esnzwde\"}")
+            "{\"convention\":\"Standard\",\"customHostHeaderName\":\"whdsoifiyip\",\"customProtoHeaderName\":\"sqwpgrjb\"}")
             .toObject(ForwardProxy.class);
-        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.convention());
-        Assertions.assertEquals("yfsoppu", model.customHostHeaderName());
-        Assertions.assertEquals("esnzwde", model.customProtoHeaderName());
+        Assertions.assertEquals(ForwardProxyConvention.STANDARD, model.convention());
+        Assertions.assertEquals("whdsoifiyip", model.customHostHeaderName());
+        Assertions.assertEquals("sqwpgrjb", model.customProtoHeaderName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForwardProxy model = new ForwardProxy().withConvention(ForwardProxyConvention.CUSTOM)
-            .withCustomHostHeaderName("yfsoppu")
-            .withCustomProtoHeaderName("esnzwde");
+        ForwardProxy model = new ForwardProxy().withConvention(ForwardProxyConvention.STANDARD)
+            .withCustomHostHeaderName("whdsoifiyip")
+            .withCustomProtoHeaderName("sqwpgrjb");
         model = BinaryData.fromObject(model).toObject(ForwardProxy.class);
-        Assertions.assertEquals(ForwardProxyConvention.CUSTOM, model.convention());
-        Assertions.assertEquals("yfsoppu", model.customHostHeaderName());
-        Assertions.assertEquals("esnzwde", model.customProtoHeaderName());
+        Assertions.assertEquals(ForwardProxyConvention.STANDARD, model.convention());
+        Assertions.assertEquals("whdsoifiyip", model.customHostHeaderName());
+        Assertions.assertEquals("sqwpgrjb", model.customProtoHeaderName());
     }
 }

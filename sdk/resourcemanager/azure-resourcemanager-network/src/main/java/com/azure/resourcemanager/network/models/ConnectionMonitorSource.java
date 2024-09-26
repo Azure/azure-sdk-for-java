@@ -6,23 +6,25 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the source of connection monitor.
  */
 @Fluent
-public final class ConnectionMonitorSource {
+public final class ConnectionMonitorSource implements JsonSerializable<ConnectionMonitorSource> {
     /*
      * The ID of the resource used as the source by connection monitor.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
      * The source port used by connection monitor.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /**
@@ -85,4 +87,44 @@ public final class ConnectionMonitorSource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeNumberField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorSource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorSource.
+     */
+    public static ConnectionMonitorSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorSource deserializedConnectionMonitorSource = new ConnectionMonitorSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedConnectionMonitorSource.resourceId = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedConnectionMonitorSource.port = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorSource;
+        });
+    }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class SshEncryptionTypes extends ExpandableStringEnum<SshEncryption
      * @param name a name to look for.
      * @return the corresponding SshEncryptionTypes.
      */
-    @JsonCreator
     public static SshEncryptionTypes fromString(String name) {
         return fromString(name, SshEncryptionTypes.class);
     }

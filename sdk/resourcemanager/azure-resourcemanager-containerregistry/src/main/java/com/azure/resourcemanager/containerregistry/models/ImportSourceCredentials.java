@@ -6,23 +6,25 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ImportSourceCredentials model.
  */
 @Fluent
-public final class ImportSourceCredentials {
+public final class ImportSourceCredentials implements JsonSerializable<ImportSourceCredentials> {
     /*
      * The username to authenticate with the source registry.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * The password used to authenticate with the source registry.
      */
-    @JsonProperty(value = "password", required = true)
     private String password;
 
     /**
@@ -78,10 +80,51 @@ public final class ImportSourceCredentials {
      */
     public void validate() {
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property password in model ImportSourceCredentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model ImportSourceCredentials"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ImportSourceCredentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("username", this.username);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportSourceCredentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportSourceCredentials if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImportSourceCredentials.
+     */
+    public static ImportSourceCredentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportSourceCredentials deserializedImportSourceCredentials = new ImportSourceCredentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("password".equals(fieldName)) {
+                    deserializedImportSourceCredentials.password = reader.getString();
+                } else if ("username".equals(fieldName)) {
+                    deserializedImportSourceCredentials.username = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportSourceCredentials;
+        });
+    }
 }

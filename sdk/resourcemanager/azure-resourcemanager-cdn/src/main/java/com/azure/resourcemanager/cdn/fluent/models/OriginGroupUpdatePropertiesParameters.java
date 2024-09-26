@@ -5,41 +5,41 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.ResponseBasedOriginErrorDetectionParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The JSON object that contains the properties of the origin group.
  */
 @Fluent
-public class OriginGroupUpdatePropertiesParameters {
+public class OriginGroupUpdatePropertiesParameters implements JsonSerializable<OriginGroupUpdatePropertiesParameters> {
     /*
      * Health probe settings to the origin that is used to determine the health of the origin.
      */
-    @JsonProperty(value = "healthProbeSettings")
     private HealthProbeParameters healthProbeSettings;
 
     /*
      * The source of the content being delivered via CDN within given origin group.
      */
-    @JsonProperty(value = "origins")
     private List<ResourceReference> origins;
 
     /*
      * Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new
      * endpoint is added. Default is 10 mins. This property is currently not supported.
      */
-    @JsonProperty(value = "trafficRestorationTimeToHealedOrNewEndpointsInMinutes")
     private Integer trafficRestorationTimeToHealedOrNewEndpointsInMinutes;
 
     /*
      * The JSON object that contains the properties to determine origin health using real requests/responses. This
      * property is currently not supported.
      */
-    @JsonProperty(value = "responseBasedOriginErrorDetectionSettings")
     private ResponseBasedOriginErrorDetectionParameters responseBasedOriginErrorDetectionSettings;
 
     /**
@@ -49,8 +49,8 @@ public class OriginGroupUpdatePropertiesParameters {
     }
 
     /**
-     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Get the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @return the healthProbeSettings value.
      */
@@ -59,8 +59,8 @@ public class OriginGroupUpdatePropertiesParameters {
     }
 
     /**
-     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health
-     * of the origin.
+     * Set the healthProbeSettings property: Health probe settings to the origin that is used to determine the health of
+     * the origin.
      * 
      * @param healthProbeSettings the healthProbeSettings value to set.
      * @return the OriginGroupUpdatePropertiesParameters object itself.
@@ -155,5 +155,57 @@ public class OriginGroupUpdatePropertiesParameters {
         if (responseBasedOriginErrorDetectionSettings() != null) {
             responseBasedOriginErrorDetectionSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("healthProbeSettings", this.healthProbeSettings);
+        jsonWriter.writeArrayField("origins", this.origins, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("trafficRestorationTimeToHealedOrNewEndpointsInMinutes",
+            this.trafficRestorationTimeToHealedOrNewEndpointsInMinutes);
+        jsonWriter.writeJsonField("responseBasedOriginErrorDetectionSettings",
+            this.responseBasedOriginErrorDetectionSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OriginGroupUpdatePropertiesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OriginGroupUpdatePropertiesParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OriginGroupUpdatePropertiesParameters.
+     */
+    public static OriginGroupUpdatePropertiesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OriginGroupUpdatePropertiesParameters deserializedOriginGroupUpdatePropertiesParameters
+                = new OriginGroupUpdatePropertiesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthProbeSettings".equals(fieldName)) {
+                    deserializedOriginGroupUpdatePropertiesParameters.healthProbeSettings
+                        = HealthProbeParameters.fromJson(reader);
+                } else if ("origins".equals(fieldName)) {
+                    List<ResourceReference> origins = reader.readArray(reader1 -> ResourceReference.fromJson(reader1));
+                    deserializedOriginGroupUpdatePropertiesParameters.origins = origins;
+                } else if ("trafficRestorationTimeToHealedOrNewEndpointsInMinutes".equals(fieldName)) {
+                    deserializedOriginGroupUpdatePropertiesParameters.trafficRestorationTimeToHealedOrNewEndpointsInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("responseBasedOriginErrorDetectionSettings".equals(fieldName)) {
+                    deserializedOriginGroupUpdatePropertiesParameters.responseBasedOriginErrorDetectionSettings
+                        = ResponseBasedOriginErrorDetectionParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOriginGroupUpdatePropertiesParameters;
+        });
     }
 }

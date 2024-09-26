@@ -6,15 +6,17 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
 import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -22,24 +24,20 @@ import java.util.Map;
  * Parameters that define the operation to create a connection monitor.
  */
 @Fluent
-public final class ConnectionMonitorInner {
+public final class ConnectionMonitorInner implements JsonSerializable<ConnectionMonitorInner> {
     /*
      * Connection monitor location.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Connection monitor tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Properties of the connection monitor.
      */
-    @JsonProperty(value = "properties", required = true)
     private ConnectionMonitorParameters innerProperties = new ConnectionMonitorParameters();
 
     /**
@@ -50,7 +48,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the location property: Connection monitor location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +57,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the location property: Connection monitor location.
-     *
+     * 
      * @param location the location value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -70,7 +68,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the tags property: Connection monitor tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -79,7 +77,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the tags property: Connection monitor tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -90,7 +88,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the innerProperties property: Properties of the connection monitor.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectionMonitorParameters innerProperties() {
@@ -99,7 +97,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the source property: Describes the source of connection monitor.
-     *
+     * 
      * @return the source value.
      */
     public ConnectionMonitorSource source() {
@@ -108,7 +106,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the source property: Describes the source of connection monitor.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -122,7 +120,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the destination property: Describes the destination of connection monitor.
-     *
+     * 
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
@@ -131,7 +129,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the destination property: Describes the destination of connection monitor.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -145,7 +143,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
+     * 
      * @return the autoStart value.
      */
     public Boolean autoStart() {
@@ -154,7 +152,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the autoStart property: Determines if the connection monitor will start automatically once created.
-     *
+     * 
      * @param autoStart the autoStart value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -168,7 +166,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
+     * 
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
@@ -177,7 +175,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
-     *
+     * 
      * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -191,7 +189,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the endpoints property: List of connection monitor endpoints.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<ConnectionMonitorEndpoint> endpoints() {
@@ -200,7 +198,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the endpoints property: List of connection monitor endpoints.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -214,7 +212,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the testConfigurations property: List of connection monitor test configurations.
-     *
+     * 
      * @return the testConfigurations value.
      */
     public List<ConnectionMonitorTestConfiguration> testConfigurations() {
@@ -223,7 +221,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the testConfigurations property: List of connection monitor test configurations.
-     *
+     * 
      * @param testConfigurations the testConfigurations value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -237,7 +235,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the testGroups property: List of connection monitor test groups.
-     *
+     * 
      * @return the testGroups value.
      */
     public List<ConnectionMonitorTestGroup> testGroups() {
@@ -246,7 +244,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the testGroups property: List of connection monitor test groups.
-     *
+     * 
      * @param testGroups the testGroups value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -260,7 +258,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the outputs property: List of connection monitor outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public List<ConnectionMonitorOutput> outputs() {
@@ -269,7 +267,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the outputs property: List of connection monitor outputs.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -283,7 +281,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the notes property: Optional notes to be associated with the connection monitor.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -292,7 +290,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the notes property: Optional notes to be associated with the connection monitor.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -306,7 +304,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -320,4 +318,48 @@ public final class ConnectionMonitorInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorInner.
+     */
+    public static ConnectionMonitorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorInner deserializedConnectionMonitorInner = new ConnectionMonitorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedConnectionMonitorInner.innerProperties = ConnectionMonitorParameters.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedConnectionMonitorInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConnectionMonitorInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorInner;
+        });
+    }
 }

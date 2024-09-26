@@ -20,6 +20,7 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import static com.azure.storage.common.implementation.SasImplUtils.formatQueryParameterDate;
 import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQueryParameter;
@@ -115,6 +116,20 @@ public class ShareSasImplUtil {
      * @return A String representing the Sas
      */
     public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
+        return generateSas(storageSharedKeyCredentials, null, context);
+    }
+
+    /**
+     * Generates a Sas signed with a {@link StorageSharedKeyCredential}
+     *
+     * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     * @return A String representing the Sas
+     */
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials,
+        Consumer<String> stringToSignHandler, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
@@ -124,6 +139,10 @@ public class ShareSasImplUtil {
         final String stringToSign = stringToSign(canonicalName);
         StorageImplUtils.logStringToSign(LOGGER, stringToSign, context);
         final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
+
+        if (stringToSignHandler != null) {
+            stringToSignHandler.accept(stringToSign);
+        }
 
         return encode(signature);
     }

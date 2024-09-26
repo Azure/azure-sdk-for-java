@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Trusted Root certificates properties for tls.
  */
 @Fluent
-public final class FirewallPolicyCertificateAuthority {
+public final class FirewallPolicyCertificateAuthority implements JsonSerializable<FirewallPolicyCertificateAuthority> {
     /*
      * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
      */
-    @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
 
     /*
      * Name of the CA certificate.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
@@ -78,5 +80,45 @@ public final class FirewallPolicyCertificateAuthority {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultSecretId", this.keyVaultSecretId);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicyCertificateAuthority from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicyCertificateAuthority if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicyCertificateAuthority.
+     */
+    public static FirewallPolicyCertificateAuthority fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicyCertificateAuthority deserializedFirewallPolicyCertificateAuthority
+                = new FirewallPolicyCertificateAuthority();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultSecretId".equals(fieldName)) {
+                    deserializedFirewallPolicyCertificateAuthority.keyVaultSecretId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFirewallPolicyCertificateAuthority.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicyCertificateAuthority;
+        });
     }
 }

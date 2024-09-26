@@ -2,13 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.implementation;
 
+import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetExtension;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -65,10 +67,10 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public String publicSettingsAsJsonString() {
-        ObjectMapper mapper = new ObjectMapper();
         try {
-            return mapper.writeValueAsString(this.publicSettings());
-        } catch (JsonProcessingException jex) {
+            return SerializerFactory.createDefaultManagementSerializerAdapter()
+                .serialize(this.publicSettings(), SerializerEncoding.JSON);
+        } catch (IOException jex) {
             return null;
         }
     }

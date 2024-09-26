@@ -9,7 +9,9 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class StaticSitesGetLinkedBackendForBuildSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetLinkedBackendForStaticSiteBuild.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetLinkedBackendForStaticSiteBuild.
+     * json
      */
     /**
      * Sample code: Get details of the linked backend registered with a static site build by name.

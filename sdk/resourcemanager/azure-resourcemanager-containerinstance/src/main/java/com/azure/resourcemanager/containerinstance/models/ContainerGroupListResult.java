@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The container group list response that contains the container group properties. */
+/**
+ * The container group list response that contains the container group properties.
+ */
 @Fluent
-public final class ContainerGroupListResult {
+public final class ContainerGroupListResult implements JsonSerializable<ContainerGroupListResult> {
     /*
      * The list of container groups.
      */
-    @JsonProperty(value = "value")
     private List<ContainerGroupInner> value;
 
     /*
      * The URI to fetch the next page of container groups.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ContainerGroupListResult class. */
+    /**
+     * Creates an instance of ContainerGroupListResult class.
+     */
     public ContainerGroupListResult() {
     }
 
     /**
      * Get the value property: The list of container groups.
-     *
+     * 
      * @return the value value.
      */
     public List<ContainerGroupInner> value() {
@@ -39,7 +45,7 @@ public final class ContainerGroupListResult {
 
     /**
      * Set the value property: The list of container groups.
-     *
+     * 
      * @param value the value value to set.
      * @return the ContainerGroupListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ContainerGroupListResult {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of container groups.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ContainerGroupListResult {
 
     /**
      * Set the nextLink property: The URI to fetch the next page of container groups.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ContainerGroupListResult object itself.
      */
@@ -70,12 +76,53 @@ public final class ContainerGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerGroupListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerGroupListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerGroupListResult.
+     */
+    public static ContainerGroupListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerGroupListResult deserializedContainerGroupListResult = new ContainerGroupListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ContainerGroupInner> value
+                        = reader.readArray(reader1 -> ContainerGroupInner.fromJson(reader1));
+                    deserializedContainerGroupListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedContainerGroupListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerGroupListResult;
+        });
     }
 }

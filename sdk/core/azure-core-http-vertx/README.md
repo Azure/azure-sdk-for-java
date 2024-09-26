@@ -17,7 +17,7 @@ Azure Core Vert.x HTTP client is a plugin for the `azure-core` HTTP client API.
   <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-vertx</artifactId>
-    <version>1.0.0-beta.19</version>
+    <version>1.0.0-beta.21</version>
   </dependency>
 </dependencies>
 ```
@@ -82,7 +82,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- Links -->
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 

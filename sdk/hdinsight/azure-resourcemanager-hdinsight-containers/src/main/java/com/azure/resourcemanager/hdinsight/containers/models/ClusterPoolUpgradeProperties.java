@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of upgrading cluster pool.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "upgradeType",
-    defaultImpl = ClusterPoolUpgradeProperties.class)
-@JsonTypeName("ClusterPoolUpgradeProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AKSPatchUpgrade", value = ClusterPoolAksPatchVersionUpgradeProperties.class),
-    @JsonSubTypes.Type(name = "NodeOsUpgrade", value = ClusterPoolNodeOsImageUpdateProperties.class) })
 @Immutable
-public class ClusterPoolUpgradeProperties {
+public class ClusterPoolUpgradeProperties implements JsonSerializable<ClusterPoolUpgradeProperties> {
+    /*
+     * Type of upgrade.
+     */
+    private ClusterPoolUpgradeType upgradeType = ClusterPoolUpgradeType.fromString("ClusterPoolUpgradeProperties");
+
     /**
      * Creates an instance of ClusterPoolUpgradeProperties class.
      */
     public ClusterPoolUpgradeProperties() {
+    }
+
+    /**
+     * Get the upgradeType property: Type of upgrade.
+     * 
+     * @return the upgradeType value.
+     */
+    public ClusterPoolUpgradeType upgradeType() {
+        return this.upgradeType;
     }
 
     /**
@@ -35,5 +42,69 @@ public class ClusterPoolUpgradeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("upgradeType", this.upgradeType == null ? null : this.upgradeType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterPoolUpgradeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterPoolUpgradeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterPoolUpgradeProperties.
+     */
+    public static ClusterPoolUpgradeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("upgradeType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AKSPatchUpgrade".equals(discriminatorValue)) {
+                    return ClusterPoolAksPatchVersionUpgradeProperties.fromJson(readerToUse.reset());
+                } else if ("NodeOsUpgrade".equals(discriminatorValue)) {
+                    return ClusterPoolNodeOsImageUpdateProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ClusterPoolUpgradeProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterPoolUpgradeProperties deserializedClusterPoolUpgradeProperties = new ClusterPoolUpgradeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeType".equals(fieldName)) {
+                    deserializedClusterPoolUpgradeProperties.upgradeType
+                        = ClusterPoolUpgradeType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterPoolUpgradeProperties;
+        });
     }
 }

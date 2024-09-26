@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The SpatialSpec model.
  */
 @Fluent
-public final class SpatialSpec {
+public final class SpatialSpec implements JsonSerializable<SpatialSpec> {
     /*
-     * The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard (/path/*)
+     * The path for which the indexing behavior applies to. Index paths typically start with root and end with wildcard
+     * (/path/*)
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * List of path's spatial type
      */
-    @JsonProperty(value = "types")
     private List<SpatialType> types;
 
     /**
@@ -35,7 +37,7 @@ public final class SpatialSpec {
     /**
      * Get the path property: The path for which the indexing behavior applies to. Index paths typically start with root
      * and end with wildcard (/path/*).
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -45,7 +47,7 @@ public final class SpatialSpec {
     /**
      * Set the path property: The path for which the indexing behavior applies to. Index paths typically start with root
      * and end with wildcard (/path/*).
-     *
+     * 
      * @param path the path value to set.
      * @return the SpatialSpec object itself.
      */
@@ -56,7 +58,7 @@ public final class SpatialSpec {
 
     /**
      * Get the types property: List of path's spatial type.
-     *
+     * 
      * @return the types value.
      */
     public List<SpatialType> types() {
@@ -65,7 +67,7 @@ public final class SpatialSpec {
 
     /**
      * Set the types property: List of path's spatial type.
-     *
+     * 
      * @param types the types value to set.
      * @return the SpatialSpec object itself.
      */
@@ -76,9 +78,50 @@ public final class SpatialSpec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeArrayField("types", this.types,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpatialSpec from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpatialSpec if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpatialSpec.
+     */
+    public static SpatialSpec fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpatialSpec deserializedSpatialSpec = new SpatialSpec();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("path".equals(fieldName)) {
+                    deserializedSpatialSpec.path = reader.getString();
+                } else if ("types".equals(fieldName)) {
+                    List<SpatialType> types = reader.readArray(reader1 -> SpatialType.fromString(reader1.getString()));
+                    deserializedSpatialSpec.types = types;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpatialSpec;
+        });
     }
 }

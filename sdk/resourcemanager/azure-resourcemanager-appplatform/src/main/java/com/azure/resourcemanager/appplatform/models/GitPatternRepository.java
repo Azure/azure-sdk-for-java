@@ -6,78 +6,71 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Git repository property payload for config server.
  */
 @Fluent
-public final class GitPatternRepository {
+public final class GitPatternRepository implements JsonSerializable<GitPatternRepository> {
     /*
      * Name of the repository
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Collection of pattern of the repository
      */
-    @JsonProperty(value = "pattern")
     private List<String> pattern;
 
     /*
      * URI of the repository
      */
-    @JsonProperty(value = "uri", required = true)
     private String uri;
 
     /*
      * Label of the repository
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Searching path of the repository
      */
-    @JsonProperty(value = "searchPaths")
     private List<String> searchPaths;
 
     /*
      * Username of git repository basic auth.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Password of git repository basic auth.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Public sshKey of git repository.
      */
-    @JsonProperty(value = "hostKey")
     private String hostKey;
 
     /*
      * SshKey algorithm of git repository.
      */
-    @JsonProperty(value = "hostKeyAlgorithm")
     private String hostKeyAlgorithm;
 
     /*
      * Private sshKey algorithm of git repository.
      */
-    @JsonProperty(value = "privateKey")
     private String privateKey;
 
     /*
      * Strict host key checking or not.
      */
-    @JsonProperty(value = "strictHostKeyChecking")
     private Boolean strictHostKeyChecking;
 
     /**
@@ -313,14 +306,83 @@ public final class GitPatternRepository {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model GitPatternRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model GitPatternRepository"));
         }
         if (uri() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property uri in model GitPatternRepository"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property uri in model GitPatternRepository"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GitPatternRepository.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeArrayField("pattern", this.pattern, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeArrayField("searchPaths", this.searchPaths, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("hostKey", this.hostKey);
+        jsonWriter.writeStringField("hostKeyAlgorithm", this.hostKeyAlgorithm);
+        jsonWriter.writeStringField("privateKey", this.privateKey);
+        jsonWriter.writeBooleanField("strictHostKeyChecking", this.strictHostKeyChecking);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitPatternRepository from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitPatternRepository if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GitPatternRepository.
+     */
+    public static GitPatternRepository fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitPatternRepository deserializedGitPatternRepository = new GitPatternRepository();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedGitPatternRepository.name = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedGitPatternRepository.uri = reader.getString();
+                } else if ("pattern".equals(fieldName)) {
+                    List<String> pattern = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGitPatternRepository.pattern = pattern;
+                } else if ("label".equals(fieldName)) {
+                    deserializedGitPatternRepository.label = reader.getString();
+                } else if ("searchPaths".equals(fieldName)) {
+                    List<String> searchPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGitPatternRepository.searchPaths = searchPaths;
+                } else if ("username".equals(fieldName)) {
+                    deserializedGitPatternRepository.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedGitPatternRepository.password = reader.getString();
+                } else if ("hostKey".equals(fieldName)) {
+                    deserializedGitPatternRepository.hostKey = reader.getString();
+                } else if ("hostKeyAlgorithm".equals(fieldName)) {
+                    deserializedGitPatternRepository.hostKeyAlgorithm = reader.getString();
+                } else if ("privateKey".equals(fieldName)) {
+                    deserializedGitPatternRepository.privateKey = reader.getString();
+                } else if ("strictHostKeyChecking".equals(fieldName)) {
+                    deserializedGitPatternRepository.strictHostKeyChecking = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitPatternRepository;
+        });
+    }
 }

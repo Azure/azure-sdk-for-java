@@ -6,51 +6,52 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The properties of the volume. */
+/**
+ * The properties of the volume.
+ */
 @Fluent
-public final class Volume {
+public final class Volume implements JsonSerializable<Volume> {
     /*
      * The name of the volume.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The Azure File volume.
      */
-    @JsonProperty(value = "azureFile")
     private AzureFileVolume azureFile;
 
     /*
      * The empty directory volume.
      */
-    @JsonProperty(value = "emptyDir")
     private Object emptyDir;
 
     /*
      * The secret volume.
      */
-    @JsonProperty(value = "secret")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> secret;
 
     /*
      * The git repo volume.
      */
-    @JsonProperty(value = "gitRepo")
     private GitRepoVolume gitRepo;
 
-    /** Creates an instance of Volume class. */
+    /**
+     * Creates an instance of Volume class.
+     */
     public Volume() {
     }
 
     /**
      * Get the name property: The name of the volume.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +60,7 @@ public final class Volume {
 
     /**
      * Set the name property: The name of the volume.
-     *
+     * 
      * @param name the name value to set.
      * @return the Volume object itself.
      */
@@ -70,7 +71,7 @@ public final class Volume {
 
     /**
      * Get the azureFile property: The Azure File volume.
-     *
+     * 
      * @return the azureFile value.
      */
     public AzureFileVolume azureFile() {
@@ -79,7 +80,7 @@ public final class Volume {
 
     /**
      * Set the azureFile property: The Azure File volume.
-     *
+     * 
      * @param azureFile the azureFile value to set.
      * @return the Volume object itself.
      */
@@ -90,7 +91,7 @@ public final class Volume {
 
     /**
      * Get the emptyDir property: The empty directory volume.
-     *
+     * 
      * @return the emptyDir value.
      */
     public Object emptyDir() {
@@ -99,7 +100,7 @@ public final class Volume {
 
     /**
      * Set the emptyDir property: The empty directory volume.
-     *
+     * 
      * @param emptyDir the emptyDir value to set.
      * @return the Volume object itself.
      */
@@ -110,7 +111,7 @@ public final class Volume {
 
     /**
      * Get the secret property: The secret volume.
-     *
+     * 
      * @return the secret value.
      */
     public Map<String, String> secret() {
@@ -119,7 +120,7 @@ public final class Volume {
 
     /**
      * Set the secret property: The secret volume.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the Volume object itself.
      */
@@ -130,7 +131,7 @@ public final class Volume {
 
     /**
      * Get the gitRepo property: The git repo volume.
-     *
+     * 
      * @return the gitRepo value.
      */
     public GitRepoVolume gitRepo() {
@@ -139,7 +140,7 @@ public final class Volume {
 
     /**
      * Set the gitRepo property: The git repo volume.
-     *
+     * 
      * @param gitRepo the gitRepo value to set.
      * @return the Volume object itself.
      */
@@ -150,13 +151,12 @@ public final class Volume {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Volume"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Volume"));
         }
         if (azureFile() != null) {
             azureFile().validate();
@@ -167,4 +167,54 @@ public final class Volume {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Volume.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("azureFile", this.azureFile);
+        jsonWriter.writeUntypedField("emptyDir", this.emptyDir);
+        jsonWriter.writeMapField("secret", this.secret, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("gitRepo", this.gitRepo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Volume from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Volume if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Volume.
+     */
+    public static Volume fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Volume deserializedVolume = new Volume();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVolume.name = reader.getString();
+                } else if ("azureFile".equals(fieldName)) {
+                    deserializedVolume.azureFile = AzureFileVolume.fromJson(reader);
+                } else if ("emptyDir".equals(fieldName)) {
+                    deserializedVolume.emptyDir = reader.readUntyped();
+                } else if ("secret".equals(fieldName)) {
+                    Map<String, String> secret = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVolume.secret = secret;
+                } else if ("gitRepo".equals(fieldName)) {
+                    deserializedVolume.gitRepo = GitRepoVolume.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolume;
+        });
+    }
 }

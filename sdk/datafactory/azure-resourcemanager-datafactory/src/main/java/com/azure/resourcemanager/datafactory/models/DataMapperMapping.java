@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Source and target table mapping details.
  */
 @Fluent
-public final class DataMapperMapping {
+public final class DataMapperMapping implements JsonSerializable<DataMapperMapping> {
     /*
      * Name of the target table
      */
-    @JsonProperty(value = "targetEntityName")
     private String targetEntityName;
 
     /*
      * Name of the source table
      */
-    @JsonProperty(value = "sourceEntityName")
     private String sourceEntityName;
 
     /*
      * The connection reference for the source connection.
      */
-    @JsonProperty(value = "sourceConnectionReference")
     private MapperConnectionReference sourceConnectionReference;
 
     /*
      * This holds the user provided attribute mapping information.
      */
-    @JsonProperty(value = "attributeMappingInfo")
     private MapperAttributeMappings attributeMappingInfo;
 
     /*
      * This holds the source denormalization information used while joining multiple sources.
      */
-    @JsonProperty(value = "sourceDenormalizeInfo")
     private Object sourceDenormalizeInfo;
 
     /**
@@ -162,5 +161,54 @@ public final class DataMapperMapping {
         if (attributeMappingInfo() != null) {
             attributeMappingInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetEntityName", this.targetEntityName);
+        jsonWriter.writeStringField("sourceEntityName", this.sourceEntityName);
+        jsonWriter.writeJsonField("sourceConnectionReference", this.sourceConnectionReference);
+        jsonWriter.writeJsonField("attributeMappingInfo", this.attributeMappingInfo);
+        jsonWriter.writeUntypedField("sourceDenormalizeInfo", this.sourceDenormalizeInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataMapperMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataMapperMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataMapperMapping.
+     */
+    public static DataMapperMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataMapperMapping deserializedDataMapperMapping = new DataMapperMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetEntityName".equals(fieldName)) {
+                    deserializedDataMapperMapping.targetEntityName = reader.getString();
+                } else if ("sourceEntityName".equals(fieldName)) {
+                    deserializedDataMapperMapping.sourceEntityName = reader.getString();
+                } else if ("sourceConnectionReference".equals(fieldName)) {
+                    deserializedDataMapperMapping.sourceConnectionReference
+                        = MapperConnectionReference.fromJson(reader);
+                } else if ("attributeMappingInfo".equals(fieldName)) {
+                    deserializedDataMapperMapping.attributeMappingInfo = MapperAttributeMappings.fromJson(reader);
+                } else if ("sourceDenormalizeInfo".equals(fieldName)) {
+                    deserializedDataMapperMapping.sourceDenormalizeInfo = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataMapperMapping;
+        });
     }
 }

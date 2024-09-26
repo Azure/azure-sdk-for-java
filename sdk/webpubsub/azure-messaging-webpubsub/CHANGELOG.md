@@ -1,11 +1,20 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
-- Added a `clientEndpointType` option to `GenerateClientTokenOptions` to specify the type of client endpoint
-  when generating token. This option can be used to generate token and client connection URL for a specific client endpoint type, such as `Default` or `MQTT`.
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.3.0 (2024-08-06)
+
+### Features Added
+
+- Added a `webPubSubClientProtocol` option to `GenerateClientTokenOptions` to specify the type of client when generating token. This option can be used to generate token and client connection URL for a specific client type, such as `Default` or `MQTT`.
 - Added a `addConnectionsToGroups` method to `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient` to add filtered connections to multiple groups.
 - Migrated serialization to `azure-json` which offers implementation agnostic serialization, providing support for
   more serialization frameworks than just Jackson.
@@ -14,9 +23,14 @@
 
 - Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2024-01-01`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+
 
 ## 1.2.17 (2024-07-26)
 

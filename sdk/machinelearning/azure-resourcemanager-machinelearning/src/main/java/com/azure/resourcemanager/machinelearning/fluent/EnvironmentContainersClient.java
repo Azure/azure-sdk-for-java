@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.EnvironmentContainerInner;
 import com.azure.resourcemanager.machinelearning.models.ListViewType;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentContainersClient.
+ */
 public interface EnvironmentContainersClient {
     /**
      * List environment containers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface EnvironmentContainersClient {
 
     /**
      * List environment containers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -41,12 +43,12 @@ public interface EnvironmentContainersClient {
      * @return a paginated list of EnvironmentContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<EnvironmentContainerInner> list(
-        String resourceGroupName, String workspaceName, String skip, ListViewType listViewType, Context context);
+    PagedIterable<EnvironmentContainerInner> list(String resourceGroupName, String workspaceName, String skip,
+        ListViewType listViewType, Context context);
 
     /**
      * Delete container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -61,7 +63,7 @@ public interface EnvironmentContainersClient {
 
     /**
      * Delete container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -74,7 +76,7 @@ public interface EnvironmentContainersClient {
 
     /**
      * Get container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -85,12 +87,12 @@ public interface EnvironmentContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentContainerInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context);
+    Response<EnvironmentContainerInner> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context);
 
     /**
      * Get container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -104,7 +106,7 @@ public interface EnvironmentContainersClient {
 
     /**
      * Create or update container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -116,12 +118,12 @@ public interface EnvironmentContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EnvironmentContainerInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body, Context context);
+    Response<EnvironmentContainerInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String name, EnvironmentContainerInner body, Context context);
 
     /**
      * Create or update container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -132,6 +134,6 @@ public interface EnvironmentContainersClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EnvironmentContainerInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, EnvironmentContainerInner body);
+    EnvironmentContainerInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
+        EnvironmentContainerInner body);
 }

@@ -5,18 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network Profile containing configurations for Public and Private NIC.
  */
 @Fluent
-public final class NetworkVirtualAppliancePropertiesFormatNetworkProfile {
+public final class NetworkVirtualAppliancePropertiesFormatNetworkProfile
+    implements JsonSerializable<NetworkVirtualAppliancePropertiesFormatNetworkProfile> {
     /*
      * The networkInterfaceConfigurations property.
      */
-    @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualApplianceNetworkInterfaceConfiguration> networkInterfaceConfigurations;
 
     /**
@@ -55,5 +59,47 @@ public final class NetworkVirtualAppliancePropertiesFormatNetworkProfile {
         if (networkInterfaceConfigurations() != null) {
             networkInterfaceConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("networkInterfaceConfigurations", this.networkInterfaceConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkVirtualAppliancePropertiesFormatNetworkProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkVirtualAppliancePropertiesFormatNetworkProfile if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkVirtualAppliancePropertiesFormatNetworkProfile.
+     */
+    public static NetworkVirtualAppliancePropertiesFormatNetworkProfile fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkVirtualAppliancePropertiesFormatNetworkProfile deserializedNetworkVirtualAppliancePropertiesFormatNetworkProfile
+                = new NetworkVirtualAppliancePropertiesFormatNetworkProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaceConfigurations".equals(fieldName)) {
+                    List<VirtualApplianceNetworkInterfaceConfiguration> networkInterfaceConfigurations
+                        = reader.readArray(reader1 -> VirtualApplianceNetworkInterfaceConfiguration.fromJson(reader1));
+                    deserializedNetworkVirtualAppliancePropertiesFormatNetworkProfile.networkInterfaceConfigurations
+                        = networkInterfaceConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkVirtualAppliancePropertiesFormatNetworkProfile;
+        });
     }
 }

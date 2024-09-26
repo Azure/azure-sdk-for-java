@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Gets the unit of measurement.
  */
@@ -56,7 +53,6 @@ public enum UsageUnit {
      * @param value the serialized value to parse.
      * @return the parsed UsageUnit object, or null if unable to parse.
      */
-    @JsonCreator
     public static UsageUnit fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +69,6 @@ public enum UsageUnit {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

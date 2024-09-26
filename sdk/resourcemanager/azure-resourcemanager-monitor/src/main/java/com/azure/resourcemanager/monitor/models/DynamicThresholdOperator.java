@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class DynamicThresholdOperator extends ExpandableStringEnum<Dynamic
      * @param name a name to look for.
      * @return the corresponding DynamicThresholdOperator.
      */
-    @JsonCreator
     public static DynamicThresholdOperator fromString(String name) {
         return fromString(name, DynamicThresholdOperator.class);
     }

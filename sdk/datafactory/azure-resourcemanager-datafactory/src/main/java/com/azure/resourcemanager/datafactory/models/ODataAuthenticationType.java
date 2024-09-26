@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class ODataAuthenticationType extends ExpandableStringEnum<ODataAut
      * @param name a name to look for.
      * @return the corresponding ODataAuthenticationType.
      */
-    @JsonCreator
     public static ODataAuthenticationType fromString(String name) {
         return fromString(name, ODataAuthenticationType.class);
     }

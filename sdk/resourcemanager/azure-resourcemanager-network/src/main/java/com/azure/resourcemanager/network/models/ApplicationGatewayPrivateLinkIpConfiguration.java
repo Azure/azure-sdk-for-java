@@ -6,8 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateLinkIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The application gateway private link ip configuration.
@@ -17,25 +20,21 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
     /*
      * Properties of an application gateway private link ip configuration.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayPrivateLinkIpConfigurationProperties innerProperties;
 
     /*
      * The name of application gateway private link ip configuration.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -212,5 +211,53 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayPrivateLinkIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayPrivateLinkIpConfiguration if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayPrivateLinkIpConfiguration.
+     */
+    public static ApplicationGatewayPrivateLinkIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayPrivateLinkIpConfiguration deserializedApplicationGatewayPrivateLinkIpConfiguration
+                = new ApplicationGatewayPrivateLinkIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfiguration.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfiguration.innerProperties
+                        = ApplicationGatewayPrivateLinkIpConfigurationProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfiguration.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfiguration.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkIpConfiguration.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayPrivateLinkIpConfiguration;
+        });
     }
 }

@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class ResourceProvidersGetCustomDomainVerificationIdWithResponseMockTests {
     @Test
     public void testGetCustomDomainVerificationIdWithResponse() throws Exception {
-        String responseStr = "\"orimmo\"";
+        String responseStr = "\"utrpbr\"";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,6 +32,6 @@ public final class ResourceProvidersGetCustomDomainVerificationIdWithResponseMoc
             .getCustomDomainVerificationIdWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("orimmo", response);
+        Assertions.assertEquals("utrpbr", response);
     }
 }

@@ -38,12 +38,6 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
      */
     private List<ScaleRuleAuth> auth;
 
-    /*
-     * The resource ID of a user-assigned managed identity that is assigned to the job, or 'system' for system-assigned
-     * identity.
-     */
-    private String identity;
-
     /**
      * Creates an instance of JobScaleRule class.
      */
@@ -133,28 +127,6 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
     }
 
     /**
-     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the job, or
-     * 'system' for system-assigned identity.
-     * 
-     * @return the identity value.
-     */
-    public String identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the job, or
-     * 'system' for system-assigned identity.
-     * 
-     * @param identity the identity value to set.
-     * @return the JobScaleRule object itself.
-     */
-    public JobScaleRule withIdentity(String identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -175,7 +147,6 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeUntypedField("metadata", this.metadata);
         jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -203,8 +174,6 @@ public final class JobScaleRule implements JsonSerializable<JobScaleRule> {
                 } else if ("auth".equals(fieldName)) {
                     List<ScaleRuleAuth> auth = reader.readArray(reader1 -> ScaleRuleAuth.fromJson(reader1));
                     deserializedJobScaleRule.auth = auth;
-                } else if ("identity".equals(fieldName)) {
-                    deserializedJobScaleRule.identity = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

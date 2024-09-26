@@ -211,7 +211,7 @@ public class SocketConnectionCacheTest {
             SocketConnection connection2 = instance.get(socketConnectionProperties);
             assertNotSame(connection1, connection2, "Connections are the same");
         } catch (IOException e) {
-            fail("Exception thrown: " + e.getMessage());
+            fail(e);
         }
     }
 

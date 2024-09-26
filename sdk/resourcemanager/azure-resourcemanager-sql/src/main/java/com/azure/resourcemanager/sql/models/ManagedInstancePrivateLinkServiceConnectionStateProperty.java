@@ -6,36 +6,42 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ManagedInstancePrivateLinkServiceConnectionStateProperty model. */
+/**
+ * The ManagedInstancePrivateLinkServiceConnectionStateProperty model.
+ */
 @Fluent
-public final class ManagedInstancePrivateLinkServiceConnectionStateProperty {
+public final class ManagedInstancePrivateLinkServiceConnectionStateProperty
+    implements JsonSerializable<ManagedInstancePrivateLinkServiceConnectionStateProperty> {
     /*
      * The private link service connection status.
      */
-    @JsonProperty(value = "status", required = true)
     private String status;
 
     /*
      * The private link service connection description.
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * The private link service connection description.
      */
-    @JsonProperty(value = "actionsRequired", access = JsonProperty.Access.WRITE_ONLY)
     private String actionsRequired;
 
-    /** Creates an instance of ManagedInstancePrivateLinkServiceConnectionStateProperty class. */
+    /**
+     * Creates an instance of ManagedInstancePrivateLinkServiceConnectionStateProperty class.
+     */
     public ManagedInstancePrivateLinkServiceConnectionStateProperty() {
     }
 
     /**
      * Get the status property: The private link service connection status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -44,7 +50,7 @@ public final class ManagedInstancePrivateLinkServiceConnectionStateProperty {
 
     /**
      * Set the status property: The private link service connection status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ManagedInstancePrivateLinkServiceConnectionStateProperty object itself.
      */
@@ -55,7 +61,7 @@ public final class ManagedInstancePrivateLinkServiceConnectionStateProperty {
 
     /**
      * Get the description property: The private link service connection description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -64,7 +70,7 @@ public final class ManagedInstancePrivateLinkServiceConnectionStateProperty {
 
     /**
      * Set the description property: The private link service connection description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ManagedInstancePrivateLinkServiceConnectionStateProperty object itself.
      */
@@ -75,7 +81,7 @@ public final class ManagedInstancePrivateLinkServiceConnectionStateProperty {
 
     /**
      * Get the actionsRequired property: The private link service connection description.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String actionsRequired() {
@@ -84,26 +90,69 @@ public final class ManagedInstancePrivateLinkServiceConnectionStateProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model"
-                            + " ManagedInstancePrivateLinkServiceConnectionStateProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model ManagedInstancePrivateLinkServiceConnectionStateProperty"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model"
-                            + " ManagedInstancePrivateLinkServiceConnectionStateProperty"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model ManagedInstancePrivateLinkServiceConnectionStateProperty"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(ManagedInstancePrivateLinkServiceConnectionStateProperty.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(ManagedInstancePrivateLinkServiceConnectionStateProperty.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstancePrivateLinkServiceConnectionStateProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstancePrivateLinkServiceConnectionStateProperty if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * ManagedInstancePrivateLinkServiceConnectionStateProperty.
+     */
+    public static ManagedInstancePrivateLinkServiceConnectionStateProperty fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstancePrivateLinkServiceConnectionStateProperty deserializedManagedInstancePrivateLinkServiceConnectionStateProperty
+                = new ManagedInstancePrivateLinkServiceConnectionStateProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkServiceConnectionStateProperty.status = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkServiceConnectionStateProperty.description
+                        = reader.getString();
+                } else if ("actionsRequired".equals(fieldName)) {
+                    deserializedManagedInstancePrivateLinkServiceConnectionStateProperty.actionsRequired
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstancePrivateLinkServiceConnectionStateProperty;
+        });
+    }
 }

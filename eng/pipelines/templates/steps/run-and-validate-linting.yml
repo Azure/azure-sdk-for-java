@@ -23,7 +23,7 @@ parameters:
 
 steps:
   # maven dependency:tree needs to be able to resolve dependencies, so these should be installed.
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build and Install'
     inputs:
       mavenPomFile: pom.xml
@@ -37,7 +37,7 @@ steps:
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
-  - task: Maven@3
+  - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Run SpotBugs and Checkstyle'
     ${{ else }}:
@@ -77,7 +77,7 @@ steps:
     continueOnError: ${{ parameters.ContinueOnError }}
     condition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
-  - task: Maven@3
+  - task: Maven@4
     ${{ if ne(parameters.SDKType, 'client') }}:
       displayName: 'Run Javadoc and Spotless'
     ${{ else }}:

@@ -6,28 +6,45 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The JobScheduleAction model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
-@JsonTypeName("CreateJob")
+/**
+ * The JobScheduleAction model.
+ */
 @Fluent
 public final class JobScheduleAction extends ScheduleActionBase {
     /*
+     * [Required] Specifies the action type of the schedule
+     */
+    private ScheduleActionType actionType = ScheduleActionType.CREATE_JOB;
+
+    /*
      * [Required] Defines Schedule action definition details.
      */
-    @JsonProperty(value = "jobDefinition", required = true)
     private JobBaseProperties jobDefinition;
 
-    /** Creates an instance of JobScheduleAction class. */
+    /**
+     * Creates an instance of JobScheduleAction class.
+     */
     public JobScheduleAction() {
     }
 
     /**
+     * Get the actionType property: [Required] Specifies the action type of the schedule.
+     * 
+     * @return the actionType value.
+     */
+    @Override
+    public ScheduleActionType actionType() {
+        return this.actionType;
+    }
+
+    /**
      * Get the jobDefinition property: [Required] Defines Schedule action definition details.
-     *
+     * 
      * @return the jobDefinition value.
      */
     public JobBaseProperties jobDefinition() {
@@ -36,7 +53,7 @@ public final class JobScheduleAction extends ScheduleActionBase {
 
     /**
      * Set the jobDefinition property: [Required] Defines Schedule action definition details.
-     *
+     * 
      * @param jobDefinition the jobDefinition value to set.
      * @return the JobScheduleAction object itself.
      */
@@ -47,15 +64,15 @@ public final class JobScheduleAction extends ScheduleActionBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (jobDefinition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property jobDefinition in model JobScheduleAction"));
         } else {
             jobDefinition().validate();
@@ -63,4 +80,44 @@ public final class JobScheduleAction extends ScheduleActionBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobScheduleAction.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("jobDefinition", this.jobDefinition);
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobScheduleAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobScheduleAction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobScheduleAction.
+     */
+    public static JobScheduleAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobScheduleAction deserializedJobScheduleAction = new JobScheduleAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobDefinition".equals(fieldName)) {
+                    deserializedJobScheduleAction.jobDefinition = JobBaseProperties.fromJson(reader);
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedJobScheduleAction.actionType = ScheduleActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobScheduleAction;
+        });
+    }
 }

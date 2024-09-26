@@ -443,8 +443,10 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     public SyncPoller<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
             ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
-            apiPortalCustomDomainResource).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+                apiPortalCustomDomainResource)
+            .getSyncPoller();
     }
 
     /**
@@ -466,8 +468,10 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     public SyncPoller<PollResult<ApiPortalCustomDomainResourceInner>, ApiPortalCustomDomainResourceInner>
         beginCreateOrUpdate(String resourceGroupName, String serviceName, String apiPortalName, String domainName,
             ApiPortalCustomDomainResourceInner apiPortalCustomDomainResource, Context context) {
-        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
-            apiPortalCustomDomainResource, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiPortalName, domainName,
+                apiPortalCustomDomainResource, context)
+            .getSyncPoller();
     }
 
     /**
@@ -980,9 +984,7 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1008,9 +1010,7 @@ public final class ApiPortalCustomDomainsClientImpl implements ApiPortalCustomDo
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

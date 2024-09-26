@@ -14,32 +14,32 @@ public final class BackupsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackupsList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"backupId\":\"qg\",\"creationDate\":\"2021-09-02T13:08:41Z\",\"provisioningState\":\"fqntcyp\",\"size\":1419187115637928307,\"label\":\"oimwkslirc\",\"backupType\":\"Manual\",\"failureReason\":\"vydfceacvlhvygdy\",\"volumeResourceId\":\"t\",\"useExistingSnapshot\":true,\"snapshotName\":\"wnawjslbiw\",\"backupPolicyResourceId\":\"jgcyztsfmznba\"},\"id\":\"ph\",\"name\":\"hqnrn\",\"type\":\"pxehuwrykqga\"},{\"properties\":{\"backupId\":\"mvikl\",\"creationDate\":\"2021-05-22T16:01:58Z\",\"provisioningState\":\"khbejdznxc\",\"size\":8784071109028394620,\"label\":\"njivolvtnovq\",\"backupType\":\"Scheduled\",\"failureReason\":\"mjdftu\",\"volumeResourceId\":\"jltduceam\",\"useExistingSnapshot\":false,\"snapshotName\":\"u\",\"backupPolicyResourceId\":\"ejwcwwqiok\"},\"id\":\"sx\",\"name\":\"ojmsvpkjprvkwc\",\"type\":\"zqljyxgtczh\"}],\"nextLink\":\"dbsdshm\"}")
+            "{\"value\":[{\"properties\":{\"backupId\":\"j\",\"creationDate\":\"2021-04-12T13:12:30Z\",\"provisioningState\":\"cotmr\",\"size\":8990215421896908005,\"label\":\"tymoxoftp\",\"backupType\":\"Manual\",\"failureReason\":\"yczuhxacpq\",\"volumeResourceId\":\"lihhyuspskasdvlm\",\"useExistingSnapshot\":true,\"snapshotName\":\"zxulucvpamrsreu\",\"backupPolicyResourceId\":\"xurisjnhnyt\"},\"id\":\"fq\",\"name\":\"zgxmr\",\"type\":\"ublwpcesutrg\"},{\"properties\":{\"backupId\":\"pauutpw\",\"creationDate\":\"2021-02-03T03:54:48Z\",\"provisioningState\":\"hej\",\"size\":1067428032118416748,\"label\":\"nfqn\",\"backupType\":\"Scheduled\",\"failureReason\":\"sx\",\"volumeResourceId\":\"vfoimwksli\",\"useExistingSnapshot\":false,\"snapshotName\":\"jxv\",\"backupPolicyResourceId\":\"fceacvlhvygd\"},\"id\":\"t\",\"name\":\"mrtwna\",\"type\":\"jslb\"}],\"nextLink\":\"kojgcyzts\"}")
             .toObject(BackupsList.class);
-        Assertions.assertEquals("oimwkslirc", model.value().get(0).label());
-        Assertions.assertEquals("t", model.value().get(0).volumeResourceId());
+        Assertions.assertEquals("tymoxoftp", model.value().get(0).label());
+        Assertions.assertEquals("lihhyuspskasdvlm", model.value().get(0).volumeResourceId());
         Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
-        Assertions.assertEquals("wnawjslbiw", model.value().get(0).snapshotName());
-        Assertions.assertEquals("dbsdshm", model.nextLink());
+        Assertions.assertEquals("zxulucvpamrsreu", model.value().get(0).snapshotName());
+        Assertions.assertEquals("kojgcyzts", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackupsList model = new BackupsList().withValue(Arrays.asList(
-            new BackupInner().withLabel("oimwkslirc")
-                .withVolumeResourceId("t")
+            new BackupInner().withLabel("tymoxoftp")
+                .withVolumeResourceId("lihhyuspskasdvlm")
                 .withUseExistingSnapshot(true)
-                .withSnapshotName("wnawjslbiw"),
-            new BackupInner().withLabel("njivolvtnovq")
-                .withVolumeResourceId("jltduceam")
+                .withSnapshotName("zxulucvpamrsreu"),
+            new BackupInner().withLabel("nfqn")
+                .withVolumeResourceId("vfoimwksli")
                 .withUseExistingSnapshot(false)
-                .withSnapshotName("u")))
-            .withNextLink("dbsdshm");
+                .withSnapshotName("jxv")))
+            .withNextLink("kojgcyzts");
         model = BinaryData.fromObject(model).toObject(BackupsList.class);
-        Assertions.assertEquals("oimwkslirc", model.value().get(0).label());
-        Assertions.assertEquals("t", model.value().get(0).volumeResourceId());
+        Assertions.assertEquals("tymoxoftp", model.value().get(0).label());
+        Assertions.assertEquals("lihhyuspskasdvlm", model.value().get(0).volumeResourceId());
         Assertions.assertEquals(true, model.value().get(0).useExistingSnapshot());
-        Assertions.assertEquals("wnawjslbiw", model.value().get(0).snapshotName());
-        Assertions.assertEquals("dbsdshm", model.nextLink());
+        Assertions.assertEquals("zxulucvpamrsreu", model.value().get(0).snapshotName());
+        Assertions.assertEquals("kojgcyzts", model.nextLink());
     }
 }

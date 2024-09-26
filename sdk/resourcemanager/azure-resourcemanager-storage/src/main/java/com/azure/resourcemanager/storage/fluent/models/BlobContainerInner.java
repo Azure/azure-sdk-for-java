@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.ImmutabilityPolicyProperties;
 import com.azure.resourcemanager.storage.models.ImmutableStorageWithVersioning;
@@ -13,7 +16,7 @@ import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
 import com.azure.resourcemanager.storage.models.LegalHoldProperties;
 import com.azure.resourcemanager.storage.models.PublicAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -25,8 +28,27 @@ public final class BlobContainerInner extends AzureEntityResource {
     /*
      * Properties of the blob container.
      */
-    @JsonProperty(value = "properties")
     private ContainerProperties innerContainerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * Resource Etag.
+     */
+    private String etag;
 
     /**
      * Creates an instance of BlobContainerInner class.
@@ -41,6 +63,46 @@ public final class BlobContainerInner extends AzureEntityResource {
      */
     private ContainerProperties innerContainerProperties() {
         return this.innerContainerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -343,5 +405,50 @@ public final class BlobContainerInner extends AzureEntityResource {
         if (innerContainerProperties() != null) {
             innerContainerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerContainerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobContainerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobContainerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobContainerInner.
+     */
+    public static BlobContainerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobContainerInner deserializedBlobContainerInner = new BlobContainerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBlobContainerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBlobContainerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobContainerInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBlobContainerInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBlobContainerInner.innerContainerProperties = ContainerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobContainerInner;
+        });
     }
 }

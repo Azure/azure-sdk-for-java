@@ -9,7 +9,9 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class AppServicePlansListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListAppServicePlansByResourceGroup.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListAppServicePlansByResourceGroup.
+     * json
      */
     /**
      * Sample code: List App Service plans by resource group.

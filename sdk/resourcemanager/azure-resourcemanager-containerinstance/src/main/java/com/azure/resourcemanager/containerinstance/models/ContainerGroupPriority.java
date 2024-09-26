@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The priority of the container group. */
+/**
+ * The priority of the container group.
+ */
 public final class ContainerGroupPriority extends ExpandableStringEnum<ContainerGroupPriority> {
-    /** Static value Regular for ContainerGroupPriority. */
+    /**
+     * Static value Regular for ContainerGroupPriority.
+     */
     public static final ContainerGroupPriority REGULAR = fromString("Regular");
 
-    /** Static value Spot for ContainerGroupPriority. */
+    /**
+     * Static value Spot for ContainerGroupPriority.
+     */
     public static final ContainerGroupPriority SPOT = fromString("Spot");
 
     /**
      * Creates a new instance of ContainerGroupPriority value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ContainerGroupPriority extends ExpandableStringEnum<Container
 
     /**
      * Creates or finds a ContainerGroupPriority from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContainerGroupPriority.
      */
-    @JsonCreator
     public static ContainerGroupPriority fromString(String name) {
         return fromString(name, ContainerGroupPriority.class);
     }
 
     /**
      * Gets known ContainerGroupPriority values.
-     *
+     * 
      * @return known ContainerGroupPriority values.
      */
     public static Collection<ContainerGroupPriority> values() {

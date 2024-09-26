@@ -25,12 +25,16 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.standbypool.fluent.StandbyPoolClient;
 import com.azure.resourcemanager.standbypool.implementation.OperationsImpl;
+import com.azure.resourcemanager.standbypool.implementation.StandbyContainerGroupPoolRuntimeViewsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyContainerGroupPoolsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyPoolClientBuilder;
+import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinePoolRuntimeViewsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinePoolsImpl;
 import com.azure.resourcemanager.standbypool.implementation.StandbyVirtualMachinesImpl;
 import com.azure.resourcemanager.standbypool.models.Operations;
+import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPoolRuntimeViews;
 import com.azure.resourcemanager.standbypool.models.StandbyContainerGroupPools;
+import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolRuntimeViews;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePools;
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachines;
 import java.time.Duration;
@@ -50,7 +54,11 @@ public final class StandbyPoolManager {
 
     private StandbyVirtualMachines standbyVirtualMachines;
 
+    private StandbyVirtualMachinePoolRuntimeViews standbyVirtualMachinePoolRuntimeViews;
+
     private StandbyContainerGroupPools standbyContainerGroupPools;
+
+    private StandbyContainerGroupPoolRuntimeViews standbyContainerGroupPoolRuntimeViews;
 
     private final StandbyPoolClient clientObject;
 
@@ -301,6 +309,19 @@ public final class StandbyPoolManager {
     }
 
     /**
+     * Gets the resource collection API of StandbyVirtualMachinePoolRuntimeViews.
+     * 
+     * @return Resource collection API of StandbyVirtualMachinePoolRuntimeViews.
+     */
+    public StandbyVirtualMachinePoolRuntimeViews standbyVirtualMachinePoolRuntimeViews() {
+        if (this.standbyVirtualMachinePoolRuntimeViews == null) {
+            this.standbyVirtualMachinePoolRuntimeViews = new StandbyVirtualMachinePoolRuntimeViewsImpl(
+                clientObject.getStandbyVirtualMachinePoolRuntimeViews(), this);
+        }
+        return standbyVirtualMachinePoolRuntimeViews;
+    }
+
+    /**
      * Gets the resource collection API of StandbyContainerGroupPools. It manages StandbyContainerGroupPoolResource.
      * 
      * @return Resource collection API of StandbyContainerGroupPools.
@@ -311,6 +332,19 @@ public final class StandbyPoolManager {
                 = new StandbyContainerGroupPoolsImpl(clientObject.getStandbyContainerGroupPools(), this);
         }
         return standbyContainerGroupPools;
+    }
+
+    /**
+     * Gets the resource collection API of StandbyContainerGroupPoolRuntimeViews.
+     * 
+     * @return Resource collection API of StandbyContainerGroupPoolRuntimeViews.
+     */
+    public StandbyContainerGroupPoolRuntimeViews standbyContainerGroupPoolRuntimeViews() {
+        if (this.standbyContainerGroupPoolRuntimeViews == null) {
+            this.standbyContainerGroupPoolRuntimeViews = new StandbyContainerGroupPoolRuntimeViewsImpl(
+                clientObject.getStandbyContainerGroupPoolRuntimeViews(), this);
+        }
+        return standbyContainerGroupPoolRuntimeViews;
     }
 
     /**

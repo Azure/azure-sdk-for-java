@@ -56,7 +56,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.6.3</version>
+  <version>1.7.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -241,6 +241,7 @@ For "Feature Flag" and "Secret Reference" configuration settings, see [samples][
 * [Recover a snapshot](#recover-a-snapshot)
 * [Retrieve all Snapshots](#retrieve-all-snapshots)
 * [Retrieve Configuration Settings in a Snapshot](#retrieve-configuration-settings-in-a-snapshot)
+* [Retrieve Labels](#retrieve-labels)
 
 ### Create a Configuration Client
 
@@ -400,6 +401,7 @@ configurationClient.setConfigurationSetting(key2, "new_label", "new_value");
 SettingSelector selector = new SettingSelector().setKeyFilter(key + "," + key2);
 PagedIterable<ConfigurationSetting> settings = configurationClient.listConfigurationSettings(selector);
 ```
+For more filters see class `SettingSelector`, such as `tagsFilter` see [samples][samples].
 
 ### List revisions of multiple Configuration Settings
 
@@ -535,6 +537,18 @@ for (ConfigurationSetting setting : configurationSettings) {
 }
 ```
 
+### Retrieve Labels
+List multiple labels in the App Configuration store by calling `listLabels`.
+
+```java readme-sample-listLabels
+String labelNameFilter = "{labelNamePrefix}*";
+configurationClient.listLabels(new SettingLabelSelector().setNameFilter(labelNameFilter))
+        .forEach(label -> {
+            System.out.println("label name = " + label.getName());
+        });
+```
+
+
 ## Troubleshooting
 
 ### General
@@ -560,7 +574,7 @@ For more detail information, check out the [AddHeadersFromContextPolicy][add_hea
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure 
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL 

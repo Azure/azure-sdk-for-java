@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Code indicating the current status of the upgrade.
  */
@@ -46,7 +43,6 @@ public enum RollingUpgradeStatusCode {
      * @param value the serialized value to parse.
      * @return the parsed RollingUpgradeStatusCode object, or null if unable to parse.
      */
-    @JsonCreator
     public static RollingUpgradeStatusCode fromString(String value) {
         if (value == null) {
             return null;
@@ -63,7 +59,6 @@ public enum RollingUpgradeStatusCode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.fluent.models.NetworkRuleSetInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of the List NetworkRuleSet operation. */
+/**
+ * The response of the List NetworkRuleSet operation.
+ */
 @Fluent
-public final class NetworkRuleSetListResult {
+public final class NetworkRuleSetListResult implements JsonSerializable<NetworkRuleSetListResult> {
     /*
      * Result of the List NetworkRuleSet operation.
      */
-    @JsonProperty(value = "value")
     private List<NetworkRuleSetInner> value;
 
     /*
      * Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of NetworkRuleSetListResult class.
+     */
+    public NetworkRuleSetListResult() {
+    }
+
+    /**
      * Get the value property: Result of the List NetworkRuleSet operation.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkRuleSetInner> value() {
@@ -35,7 +45,7 @@ public final class NetworkRuleSetListResult {
 
     /**
      * Set the value property: Result of the List NetworkRuleSet operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkRuleSetListResult object itself.
      */
@@ -47,7 +57,7 @@ public final class NetworkRuleSetListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * NetworkRuleSet.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -57,7 +67,7 @@ public final class NetworkRuleSetListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
      * NetworkRuleSet.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkRuleSetListResult object itself.
      */
@@ -68,12 +78,53 @@ public final class NetworkRuleSetListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkRuleSetListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkRuleSetListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkRuleSetListResult.
+     */
+    public static NetworkRuleSetListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkRuleSetListResult deserializedNetworkRuleSetListResult = new NetworkRuleSetListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<NetworkRuleSetInner> value
+                        = reader.readArray(reader1 -> NetworkRuleSetInner.fromJson(reader1));
+                    deserializedNetworkRuleSetListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedNetworkRuleSetListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkRuleSetListResult;
+        });
     }
 }

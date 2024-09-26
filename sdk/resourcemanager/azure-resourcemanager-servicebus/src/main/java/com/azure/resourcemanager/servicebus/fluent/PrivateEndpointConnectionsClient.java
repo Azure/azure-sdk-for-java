@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * Gets the available PrivateEndpointConnections within a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,36 +37,36 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets the available PrivateEndpointConnections within a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available PrivateEndpointConnections within a namespace as paginated response with {@link
-     *     PagedIterable}.
+     * @return the available PrivateEndpointConnections within a namespace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String namespaceName);
 
     /**
      * Gets the available PrivateEndpointConnections within a namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available PrivateEndpointConnections within a namespace as paginated response with {@link
-     *     PagedIterable}.
+     * @return the available PrivateEndpointConnections within a namespace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String namespaceName, Context context);
 
     /**
      * Creates or updates PrivateEndpointConnections of service namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -73,18 +75,15 @@ public interface PrivateEndpointConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of the PrivateEndpointConnection along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateEndpointConnectionInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    Mono<Response<PrivateEndpointConnectionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Creates or updates PrivateEndpointConnections of service namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -95,34 +94,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return properties of the PrivateEndpointConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
+    Mono<PrivateEndpointConnectionInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Creates or updates PrivateEndpointConnections of service namespace.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param privateEndpointConnectionName The PrivateEndpointConnection name.
-     * @param parameters Parameters supplied to update Status of PrivateEndPoint Connection to namespace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of the PrivateEndpointConnection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters);
-
-    /**
-     * Creates or updates PrivateEndpointConnections of service namespace.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -134,16 +111,28 @@ public interface PrivateEndpointConnectionsClient {
      * @return properties of the PrivateEndpointConnection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String namespaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    Response<PrivateEndpointConnectionInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
+
+    /**
+     * Creates or updates PrivateEndpointConnections of service namespace.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param privateEndpointConnectionName The PrivateEndpointConnection name.
+     * @param parameters Parameters supplied to update Status of PrivateEndPoint Connection to namespace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of the PrivateEndpointConnection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner createOrUpdate(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Deletes an existing Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -153,12 +142,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes an existing Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -168,12 +157,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes an existing Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -183,12 +172,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes an existing Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -199,12 +188,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes an existing Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -218,7 +207,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -231,7 +220,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes an existing Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -245,7 +234,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Gets a description for the specified Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -253,15 +242,15 @@ public interface PrivateEndpointConnectionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a description for the specified Private Endpoint Connection along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName);
+    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Gets a description for the specified Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -271,27 +260,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a description for the specified Private Endpoint Connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName);
+    Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Gets a description for the specified Private Endpoint Connection.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param namespaceName The namespace name.
-     * @param privateEndpointConnectionName The PrivateEndpointConnection name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a description for the specified Private Endpoint Connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName);
-
-    /**
-     * Gets a description for the specified Private Endpoint Connection.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param namespaceName The namespace name.
      * @param privateEndpointConnectionName The PrivateEndpointConnection name.
@@ -302,6 +276,21 @@ public interface PrivateEndpointConnectionsClient {
      * @return a description for the specified Private Endpoint Connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName, Context context);
+
+    /**
+     * Gets a description for the specified Private Endpoint Connection.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param namespaceName The namespace name.
+     * @param privateEndpointConnectionName The PrivateEndpointConnection name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a description for the specified Private Endpoint Connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateEndpointConnectionInner get(String resourceGroupName, String namespaceName,
+        String privateEndpointConnectionName);
 }

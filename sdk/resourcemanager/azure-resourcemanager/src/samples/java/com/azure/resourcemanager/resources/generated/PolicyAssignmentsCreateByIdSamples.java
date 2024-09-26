@@ -20,7 +20,8 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentById.json
      */
     /**
      * Sample code: Create or update policy assignment by ID.
@@ -49,7 +50,8 @@ public final class PolicyAssignmentsCreateByIdSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/createPolicyAssignmentWithIdentityById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * createPolicyAssignmentWithIdentityById.json
      */
     /**
      * Sample code: Create or update policy assignment with a managed identity by ID.

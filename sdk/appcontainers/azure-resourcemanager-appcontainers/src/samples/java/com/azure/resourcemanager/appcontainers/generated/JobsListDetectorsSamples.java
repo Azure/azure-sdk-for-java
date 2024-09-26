@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsListDetectorsSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-02-02-preview/examples/Job_ListDetectors.json
+     * specification/app/resource-manager/Microsoft.App/stable/2024-03-01/examples/Job_ListDetectors.json
      */
     /**
      * Sample code: Get the list of available diagnostic data for a Container App Job.

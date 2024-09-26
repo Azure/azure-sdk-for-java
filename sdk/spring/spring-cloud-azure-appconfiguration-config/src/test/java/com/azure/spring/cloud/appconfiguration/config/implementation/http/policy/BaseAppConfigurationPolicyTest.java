@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +48,6 @@ public class BaseAppConfigurationPolicyTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        BaseAppConfigurationPolicy.setWatchRequests(false);
     }
 
     @AfterEach
@@ -78,7 +78,7 @@ public class BaseAppConfigurationPolicyTest {
         request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
 
         when(contextMock.getHttpRequest()).thenReturn(request);
-        BaseAppConfigurationPolicy.setWatchRequests(true);
+        when(contextMock.getData("refresh")).thenReturn(Optional.of(true));
 
         policy.process(contextMock, nextMock);
 

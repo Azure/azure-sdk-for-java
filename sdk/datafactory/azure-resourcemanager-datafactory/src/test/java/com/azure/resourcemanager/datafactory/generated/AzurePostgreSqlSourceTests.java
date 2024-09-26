@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSource model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"datamenqcjjfxqtvsfs\",\"queryTimeout\":\"datayzgaweixnoblazw\",\"additionalColumns\":\"dataaczi\",\"sourceRetryCount\":\"dataduwlsovitpcsma\",\"sourceRetryWait\":\"datadxubhmiuxypvuaz\",\"maxConcurrentConnections\":\"datatbnekhjz\",\"disableMetricsCollection\":\"datab\",\"\":{\"pp\":\"dataqkuozarr\",\"bkvbcvoyqnr\":\"datazry\",\"woghbpzxkjqecj\":\"datadrctarvz\"}}")
+            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"datapsoeocvywtyehln\",\"queryTimeout\":\"dataqeply\",\"additionalColumns\":\"dataad\",\"sourceRetryCount\":\"datagwdxoxjlvvvz\",\"sourceRetryWait\":\"datajvyintgkve\",\"maxConcurrentConnections\":\"dataeldnmb\",\"disableMetricsCollection\":\"databii\",\"\":{\"jaagfeiw\":\"datakxi\",\"zmsivqegmpfzbrh\":\"datauxqw\",\"tkrsjspziiev\":\"dataqj\",\"auyxyoyjas\":\"datattsz\"}}")
             .toObject(AzurePostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("dataduwlsovitpcsma")
-            .withSourceRetryWait("datadxubhmiuxypvuaz")
-            .withMaxConcurrentConnections("datatbnekhjz")
-            .withDisableMetricsCollection("datab")
-            .withQueryTimeout("datayzgaweixnoblazw")
-            .withAdditionalColumns("dataaczi")
-            .withQuery("datamenqcjjfxqtvsfs");
+        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("datagwdxoxjlvvvz")
+            .withSourceRetryWait("datajvyintgkve")
+            .withMaxConcurrentConnections("dataeldnmb")
+            .withDisableMetricsCollection("databii")
+            .withQueryTimeout("dataqeply")
+            .withAdditionalColumns("dataad")
+            .withQuery("datapsoeocvywtyehln");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSource.class);
     }
 }

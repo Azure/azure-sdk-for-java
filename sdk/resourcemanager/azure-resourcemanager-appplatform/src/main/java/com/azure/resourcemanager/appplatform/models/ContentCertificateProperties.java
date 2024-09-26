@@ -5,27 +5,81 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Properties of certificate imported from key vault.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ContentCertificate")
 @Fluent
 public final class ContentCertificateProperties extends CertificateProperties {
     /*
+     * The type of the certificate source.
+     */
+    private String type = "ContentCertificate";
+
+    /*
      * The content of uploaded certificate.
      */
-    @JsonProperty(value = "content")
     private String content;
+
+    /*
+     * The thumbprint of certificate.
+     */
+    private String thumbprint;
+
+    /*
+     * The issuer of certificate.
+     */
+    private String issuer;
+
+    /*
+     * The issue date of certificate.
+     */
+    private String issuedDate;
+
+    /*
+     * The expiration date of certificate.
+     */
+    private String expirationDate;
+
+    /*
+     * The activate date of certificate.
+     */
+    private String activateDate;
+
+    /*
+     * The subject name of certificate.
+     */
+    private String subjectName;
+
+    /*
+     * The domain list of certificate.
+     */
+    private List<String> dnsNames;
+
+    /*
+     * Provisioning state of the Certificate
+     */
+    private CertificateResourceProvisioningState provisioningState;
 
     /**
      * Creates an instance of ContentCertificateProperties class.
      */
     public ContentCertificateProperties() {
+    }
+
+    /**
+     * Get the type property: The type of the certificate source.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -49,6 +103,86 @@ public final class ContentCertificateProperties extends CertificateProperties {
     }
 
     /**
+     * Get the thumbprint property: The thumbprint of certificate.
+     * 
+     * @return the thumbprint value.
+     */
+    @Override
+    public String thumbprint() {
+        return this.thumbprint;
+    }
+
+    /**
+     * Get the issuer property: The issuer of certificate.
+     * 
+     * @return the issuer value.
+     */
+    @Override
+    public String issuer() {
+        return this.issuer;
+    }
+
+    /**
+     * Get the issuedDate property: The issue date of certificate.
+     * 
+     * @return the issuedDate value.
+     */
+    @Override
+    public String issuedDate() {
+        return this.issuedDate;
+    }
+
+    /**
+     * Get the expirationDate property: The expiration date of certificate.
+     * 
+     * @return the expirationDate value.
+     */
+    @Override
+    public String expirationDate() {
+        return this.expirationDate;
+    }
+
+    /**
+     * Get the activateDate property: The activate date of certificate.
+     * 
+     * @return the activateDate value.
+     */
+    @Override
+    public String activateDate() {
+        return this.activateDate;
+    }
+
+    /**
+     * Get the subjectName property: The subject name of certificate.
+     * 
+     * @return the subjectName value.
+     */
+    @Override
+    public String subjectName() {
+        return this.subjectName;
+    }
+
+    /**
+     * Get the dnsNames property: The domain list of certificate.
+     * 
+     * @return the dnsNames value.
+     */
+    @Override
+    public List<String> dnsNames() {
+        return this.dnsNames;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the Certificate.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public CertificateResourceProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,5 +190,62 @@ public final class ContentCertificateProperties extends CertificateProperties {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("content", this.content);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentCertificateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentCertificateProperties.
+     */
+    public static ContentCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentCertificateProperties deserializedContentCertificateProperties = new ContentCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprint".equals(fieldName)) {
+                    deserializedContentCertificateProperties.thumbprint = reader.getString();
+                } else if ("issuer".equals(fieldName)) {
+                    deserializedContentCertificateProperties.issuer = reader.getString();
+                } else if ("issuedDate".equals(fieldName)) {
+                    deserializedContentCertificateProperties.issuedDate = reader.getString();
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedContentCertificateProperties.expirationDate = reader.getString();
+                } else if ("activateDate".equals(fieldName)) {
+                    deserializedContentCertificateProperties.activateDate = reader.getString();
+                } else if ("subjectName".equals(fieldName)) {
+                    deserializedContentCertificateProperties.subjectName = reader.getString();
+                } else if ("dnsNames".equals(fieldName)) {
+                    List<String> dnsNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContentCertificateProperties.dnsNames = dnsNames;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedContentCertificateProperties.provisioningState
+                        = CertificateResourceProvisioningState.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedContentCertificateProperties.type = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedContentCertificateProperties.content = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentCertificateProperties;
+        });
     }
 }

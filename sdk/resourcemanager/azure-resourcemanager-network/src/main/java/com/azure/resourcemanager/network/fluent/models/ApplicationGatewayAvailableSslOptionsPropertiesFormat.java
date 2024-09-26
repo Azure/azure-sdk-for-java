@@ -6,39 +6,40 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyName;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of ApplicationGatewayAvailableSslOptions.
  */
 @Fluent
-public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
+public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayAvailableSslOptionsPropertiesFormat> {
     /*
      * List of available Ssl predefined policy.
      */
-    @JsonProperty(value = "predefinedPolicies")
     private List<SubResource> predefinedPolicies;
 
     /*
      * Name of the Ssl predefined policy applied by default to application gateway.
      */
-    @JsonProperty(value = "defaultPolicy")
     private ApplicationGatewaySslPolicyName defaultPolicy;
 
     /*
      * List of available Ssl cipher suites.
      */
-    @JsonProperty(value = "availableCipherSuites")
     private List<ApplicationGatewaySslCipherSuite> availableCipherSuites;
 
     /*
      * List of available Ssl protocols.
      */
-    @JsonProperty(value = "availableProtocols")
     private List<ApplicationGatewaySslProtocol> availableProtocols;
 
     /**
@@ -137,5 +138,64 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("predefinedPolicies", this.predefinedPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultPolicy", this.defaultPolicy == null ? null : this.defaultPolicy.toString());
+        jsonWriter.writeArrayField("availableCipherSuites", this.availableCipherSuites,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("availableProtocols", this.availableProtocols,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayAvailableSslOptionsPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayAvailableSslOptionsPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayAvailableSslOptionsPropertiesFormat.
+     */
+    public static ApplicationGatewayAvailableSslOptionsPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayAvailableSslOptionsPropertiesFormat deserializedApplicationGatewayAvailableSslOptionsPropertiesFormat
+                = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("predefinedPolicies".equals(fieldName)) {
+                    List<SubResource> predefinedPolicies = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewayAvailableSslOptionsPropertiesFormat.predefinedPolicies
+                        = predefinedPolicies;
+                } else if ("defaultPolicy".equals(fieldName)) {
+                    deserializedApplicationGatewayAvailableSslOptionsPropertiesFormat.defaultPolicy
+                        = ApplicationGatewaySslPolicyName.fromString(reader.getString());
+                } else if ("availableCipherSuites".equals(fieldName)) {
+                    List<ApplicationGatewaySslCipherSuite> availableCipherSuites
+                        = reader.readArray(reader1 -> ApplicationGatewaySslCipherSuite.fromString(reader1.getString()));
+                    deserializedApplicationGatewayAvailableSslOptionsPropertiesFormat.availableCipherSuites
+                        = availableCipherSuites;
+                } else if ("availableProtocols".equals(fieldName)) {
+                    List<ApplicationGatewaySslProtocol> availableProtocols
+                        = reader.readArray(reader1 -> ApplicationGatewaySslProtocol.fromString(reader1.getString()));
+                    deserializedApplicationGatewayAvailableSslOptionsPropertiesFormat.availableProtocols
+                        = availableProtocols;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayAvailableSslOptionsPropertiesFormat;
+        });
     }
 }

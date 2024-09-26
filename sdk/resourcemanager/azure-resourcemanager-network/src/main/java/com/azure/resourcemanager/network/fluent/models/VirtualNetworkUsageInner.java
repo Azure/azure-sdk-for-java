@@ -5,42 +5,41 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.VirtualNetworkUsageName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Usage details for subnet.
  */
 @Immutable
-public final class VirtualNetworkUsageInner {
+public final class VirtualNetworkUsageInner implements JsonSerializable<VirtualNetworkUsageInner> {
     /*
      * Indicates number of IPs used from the Subnet.
      */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Double currentValue;
 
     /*
      * Subnet identifier.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Indicates the size of the subnet.
      */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Double limit;
 
     /*
      * The name containing common and localized value for usage.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkUsageName name;
 
     /*
      * Usage units. Returns 'Count'.
      */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
@@ -103,5 +102,48 @@ public final class VirtualNetworkUsageInner {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkUsageInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkUsageInner.
+     */
+    public static VirtualNetworkUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkUsageInner deserializedVirtualNetworkUsageInner = new VirtualNetworkUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentValue".equals(fieldName)) {
+                    deserializedVirtualNetworkUsageInner.currentValue = reader.getNullable(JsonReader::getDouble);
+                } else if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkUsageInner.id = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedVirtualNetworkUsageInner.limit = reader.getNullable(JsonReader::getDouble);
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkUsageInner.name = VirtualNetworkUsageName.fromJson(reader);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedVirtualNetworkUsageInner.unit = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkUsageInner;
+        });
     }
 }

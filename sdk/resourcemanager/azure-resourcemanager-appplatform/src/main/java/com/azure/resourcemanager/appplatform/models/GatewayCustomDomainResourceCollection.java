@@ -5,26 +5,29 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appplatform.fluent.models.GatewayCustomDomainResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Object that includes an array of Spring Cloud Gateway custom domain resources and a possible link for next set.
  */
 @Fluent
-public final class GatewayCustomDomainResourceCollection {
+public final class GatewayCustomDomainResourceCollection
+    implements JsonSerializable<GatewayCustomDomainResourceCollection> {
     /*
      * Collection of Spring Cloud Gateway custom domain resources
      */
-    @JsonProperty(value = "value")
     private List<GatewayCustomDomainResourceInner> value;
 
     /*
      * URL client should use to fetch the next page (per server side paging).
      * It's null for now, added for future use.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -84,5 +87,47 @@ public final class GatewayCustomDomainResourceCollection {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayCustomDomainResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayCustomDomainResourceCollection if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayCustomDomainResourceCollection.
+     */
+    public static GatewayCustomDomainResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayCustomDomainResourceCollection deserializedGatewayCustomDomainResourceCollection
+                = new GatewayCustomDomainResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<GatewayCustomDomainResourceInner> value
+                        = reader.readArray(reader1 -> GatewayCustomDomainResourceInner.fromJson(reader1));
+                    deserializedGatewayCustomDomainResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedGatewayCustomDomainResourceCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayCustomDomainResourceCollection;
+        });
     }
 }

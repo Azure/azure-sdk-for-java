@@ -5,27 +5,29 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayPrivateLinkIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of private link configuration on an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayPrivateLinkConfigurationProperties {
+public final class ApplicationGatewayPrivateLinkConfigurationProperties
+    implements JsonSerializable<ApplicationGatewayPrivateLinkConfigurationProperties> {
     /*
      * An array of application gateway private link ip configurations.
      */
-    @JsonProperty(value = "ipConfigurations")
     private List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations;
 
     /*
      * The provisioning state of the application gateway private link configuration.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -36,7 +38,7 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Get the ipConfigurations property: An array of application gateway private link ip configurations.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations() {
@@ -45,7 +47,7 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Set the ipConfigurations property: An array of application gateway private link ip configurations.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the ApplicationGatewayPrivateLinkConfigurationProperties object itself.
      */
@@ -57,7 +59,7 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the application gateway private link configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -66,12 +68,57 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayPrivateLinkConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayPrivateLinkConfigurationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayPrivateLinkConfigurationProperties.
+     */
+    public static ApplicationGatewayPrivateLinkConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayPrivateLinkConfigurationProperties deserializedApplicationGatewayPrivateLinkConfigurationProperties
+                = new ApplicationGatewayPrivateLinkConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigurations".equals(fieldName)) {
+                    List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> ApplicationGatewayPrivateLinkIpConfiguration.fromJson(reader1));
+                    deserializedApplicationGatewayPrivateLinkConfigurationProperties.ipConfigurations
+                        = ipConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayPrivateLinkConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayPrivateLinkConfigurationProperties;
+        });
     }
 }

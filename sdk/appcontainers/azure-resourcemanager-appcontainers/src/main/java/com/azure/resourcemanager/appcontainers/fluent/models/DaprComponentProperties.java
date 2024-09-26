@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.appcontainers.models.DaprComponentServiceBinding;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import java.io.IOException;
@@ -59,11 +58,6 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
      * Names of container apps that can use this Dapr component
      */
     private List<String> scopes;
-
-    /*
-     * List of container app services that are bound to the Dapr component
-     */
-    private List<DaprComponentServiceBinding> serviceComponentBind;
 
     /**
      * Creates an instance of DaprComponentProperties class.
@@ -232,26 +226,6 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
     }
 
     /**
-     * Get the serviceComponentBind property: List of container app services that are bound to the Dapr component.
-     * 
-     * @return the serviceComponentBind value.
-     */
-    public List<DaprComponentServiceBinding> serviceComponentBind() {
-        return this.serviceComponentBind;
-    }
-
-    /**
-     * Set the serviceComponentBind property: List of container app services that are bound to the Dapr component.
-     * 
-     * @param serviceComponentBind the serviceComponentBind value to set.
-     * @return the DaprComponentProperties object itself.
-     */
-    public DaprComponentProperties withServiceComponentBind(List<DaprComponentServiceBinding> serviceComponentBind) {
-        this.serviceComponentBind = serviceComponentBind;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -262,9 +236,6 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
         }
         if (metadata() != null) {
             metadata().forEach(e -> e.validate());
-        }
-        if (serviceComponentBind() != null) {
-            serviceComponentBind().forEach(e -> e.validate());
         }
     }
 
@@ -282,8 +253,6 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
         jsonWriter.writeStringField("secretStoreComponent", this.secretStoreComponent);
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("serviceComponentBind", this.serviceComponentBind,
-            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -321,10 +290,6 @@ public final class DaprComponentProperties implements JsonSerializable<DaprCompo
                 } else if ("scopes".equals(fieldName)) {
                     List<String> scopes = reader.readArray(reader1 -> reader1.getString());
                     deserializedDaprComponentProperties.scopes = scopes;
-                } else if ("serviceComponentBind".equals(fieldName)) {
-                    List<DaprComponentServiceBinding> serviceComponentBind
-                        = reader.readArray(reader1 -> DaprComponentServiceBinding.fromJson(reader1));
-                    deserializedDaprComponentProperties.serviceComponentBind = serviceComponentBind;
                 } else {
                     reader.skipChildren();
                 }

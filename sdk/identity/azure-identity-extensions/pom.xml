@@ -22,7 +22,7 @@
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
-      <version>8.0.33</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
+      <version>9.0.0</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -34,7 +34,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
 
     <!-- test   -->
@@ -91,7 +91,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.mysql:mysql-connector-j:[8.0.33]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
+                <include>com.mysql:mysql-connector-j:[9.0.0]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.3.9]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>

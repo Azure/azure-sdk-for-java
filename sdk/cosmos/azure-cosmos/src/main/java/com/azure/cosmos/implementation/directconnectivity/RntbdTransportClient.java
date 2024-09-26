@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.OperationCancelledException;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -19,6 +20,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ClosedClientTransportException;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
@@ -420,7 +422,10 @@ public class RntbdTransportClient extends TransportClient {
 
     private void throwIfClosed() {
         if (this.closed.get()) {
-            throw new TransportException(lenientFormat("%s is closed", this), null);
+            String message = lenientFormat("%s is closed", this);
+            ClosedClientTransportException transportException
+                = new ClosedClientTransportException(message, null);
+            throw new InternalServerErrorException(message, transportException, HttpConstants.SubStatusCodes.CLOSED_CLIENT);
         }
     }
 

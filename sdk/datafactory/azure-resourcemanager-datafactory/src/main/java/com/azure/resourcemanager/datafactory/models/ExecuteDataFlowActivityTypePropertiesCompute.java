@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Compute properties for data flow activity.
  */
 @Fluent
-public final class ExecuteDataFlowActivityTypePropertiesCompute {
+public final class ExecuteDataFlowActivityTypePropertiesCompute
+    implements JsonSerializable<ExecuteDataFlowActivityTypePropertiesCompute> {
     /*
      * Compute type of the cluster which will execute data flow job. Possible values include: 'General',
      * 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "computeType")
     private Object computeType;
 
     /*
      * Core count of the cluster which will execute data flow job. Supported values are: 8, 16, 32, 48, 80, 144 and 272.
      * Type: integer (or Expression with resultType integer)
      */
-    @JsonProperty(value = "coreCount")
     private Object coreCount;
 
     /**
@@ -82,5 +85,45 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("computeType", this.computeType);
+        jsonWriter.writeUntypedField("coreCount", this.coreCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecuteDataFlowActivityTypePropertiesCompute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecuteDataFlowActivityTypePropertiesCompute if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExecuteDataFlowActivityTypePropertiesCompute.
+     */
+    public static ExecuteDataFlowActivityTypePropertiesCompute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecuteDataFlowActivityTypePropertiesCompute deserializedExecuteDataFlowActivityTypePropertiesCompute
+                = new ExecuteDataFlowActivityTypePropertiesCompute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeType".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivityTypePropertiesCompute.computeType = reader.readUntyped();
+                } else if ("coreCount".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivityTypePropertiesCompute.coreCount = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExecuteDataFlowActivityTypePropertiesCompute;
+        });
     }
 }

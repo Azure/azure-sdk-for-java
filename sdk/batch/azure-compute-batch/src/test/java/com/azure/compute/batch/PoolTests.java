@@ -41,7 +41,7 @@ public class PoolTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testPoolOData() throws Exception {
+    public void testPoolOData() {
 
         // TODO (NickKouds): Looks to be an issue with Jackson desierlization of pool stats for PoolStatistics startTime and lastUpdateTime
 //        RequestOptions requestOptions = new RequestOptions();
@@ -80,7 +80,7 @@ public class PoolTests extends BatchClientTestBase {
     }
 
     @Test
-    public void canCreateDataDisk() throws Exception {
+    public void canCreateDataDisk() {
         String poolId = getStringIdWithUserNamePrefix("-testpool3");
 
         // Create a pool with 0 Small VMs
@@ -121,7 +121,7 @@ public class PoolTests extends BatchClientTestBase {
     }
 
     @Test
-    public void canCRUDLowPriIaaSPool() throws Exception {
+    public void canCRUDLowPriIaaSPool() {
         // CREATE
         String poolId = getStringIdWithUserNamePrefix("-canCRUDLowPri-testPool");
 
@@ -252,7 +252,7 @@ public class PoolTests extends BatchClientTestBase {
                 }
 
                 System.out.println("wait 15 seconds for pool delete...");
-                threadSleepInRecordMode(15 * 1000);
+                sleepIfRunningAgainstService(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
             Assertions.assertTrue(deleted);
@@ -269,7 +269,7 @@ public class PoolTests extends BatchClientTestBase {
     }
 
     @Test
-    public void testDeserializationOfBatchPoolResourceStatistics() throws IOException {
+    public void testDeserializationOfBatchPoolResourceStatistics() {
         // Simulated JSON response with numbers as strings
         String jsonResponse = "{"
             + "\"startTime\":\"2022-01-01T00:00:00Z\","

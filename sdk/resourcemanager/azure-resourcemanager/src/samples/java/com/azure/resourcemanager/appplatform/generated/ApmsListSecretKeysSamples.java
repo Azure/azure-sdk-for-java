@@ -19,7 +19,11 @@ public final class ApmsListSecretKeysSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apmsListSecretKeys(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApms().listSecretKeysWithResponse("myResourceGroup",
-            "myservice", "myappinsights", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApms()
+            .listSecretKeysWithResponse("myResourceGroup", "myservice", "myappinsights",
+                com.azure.core.util.Context.NONE);
     }
 }

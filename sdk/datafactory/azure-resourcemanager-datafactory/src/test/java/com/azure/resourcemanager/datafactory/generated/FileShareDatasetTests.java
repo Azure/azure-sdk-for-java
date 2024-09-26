@@ -21,42 +21,44 @@ public final class FileShareDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileShareDataset model = BinaryData.fromString(
-            "{\"type\":\"FileShare\",\"typeProperties\":{\"folderPath\":\"datahhlwtpk\",\"fileName\":\"datageattbzkg\",\"modifiedDatetimeStart\":\"dataqnwqstt\",\"modifiedDatetimeEnd\":\"datauvcysjeufjxf\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"dataitfnonp\",\"deserializer\":\"datauxlvrhprrvbwonl\",\"\":{\"huy\":\"datalvtlrvbst\",\"u\":\"datauninttlnrjdszd\",\"vgp\":\"dataiciqppo\",\"uhwfwj\":\"datae\"}},\"fileFilter\":\"dataxuoxtfnres\",\"compression\":{\"type\":\"dataepgckn\",\"level\":\"datamgvsnvbtqdxfmj\",\"\":{\"jluqllbsupu\":\"datan\"}}},\"description\":\"x\",\"structure\":\"datadlhzwhcu\",\"schema\":\"databosjjfd\",\"linkedServiceName\":{\"referenceName\":\"zhrjqfyaytvsly\",\"parameters\":{\"cjiwgsxfaio\":\"datagniuar\",\"ujjgnfgrzxbarc\":\"datawd\",\"jwenjcytesmf\":\"datapaefzqsy\"}},\"parameters\":{\"fzhhezvhjudxdyyr\":{\"type\":\"Bool\",\"defaultValue\":\"dataodqhuauzmzivrt\"}},\"annotations\":[\"dataahswtvdkxb\",\"datassgfenffdxbvwfqj\",\"datahivdrija\",\"dataxndmuvar\"],\"folder\":{\"name\":\"zj\"},\"\":{\"muhcuhtuzl\":\"datar\"}}")
+            "{\"type\":\"FileShare\",\"typeProperties\":{\"folderPath\":\"datalmcvrjaznotdofq\",\"fileName\":\"databq\",\"modifiedDatetimeStart\":\"dataqkpsbqsb\",\"modifiedDatetimeEnd\":\"dataitaftazgcxsvqlc\",\"format\":{\"type\":\"DatasetStorageFormat\",\"serializer\":\"dataylamxow\",\"deserializer\":\"datacjoyutehlkarvt\",\"\":{\"whpcekggvmfnn\":\"datauksxiknsgofun\",\"txtpwcvgifws\":\"databxngdfkkede\"}},\"fileFilter\":\"datajzijaciwmmpdt\",\"compression\":{\"type\":\"dataonbz\",\"level\":\"datanfzyviiwsuanz\",\"\":{\"kzqqhbtfloilmkf\":\"datayui\",\"ikdlpsxntugfwimq\":\"dataeoiipjpngvyvu\",\"fmvswx\":\"dataryclo\",\"wulkr\":\"datajeleifqhdxt\"}}},\"description\":\"paevykbyjecrqk\",\"structure\":\"datakkchsfoulborc\",\"schema\":\"dataibsdqbdyblpe\",\"linkedServiceName\":{\"referenceName\":\"t\",\"parameters\":{\"lerufollcshju\":\"datapgweoqhbjqlqf\",\"xvjeazrah\":\"dataihbymjjvtpne\",\"qamcthtpqgfz\":\"datalhbimyii\"}},\"parameters\":{\"vflgzhc\":{\"type\":\"Bool\",\"defaultValue\":\"datakdi\"},\"pccxziv\":{\"type\":\"Object\",\"defaultValue\":\"datawahcrxofgrutv\"},\"jd\":{\"type\":\"SecureString\",\"defaultValue\":\"datahzghhhkvn\"}},\"annotations\":[\"dataq\"],\"folder\":{\"name\":\"njvpmxn\"},\"\":{\"olrwvtlgxyfj\":\"datazstqlf\"}}")
             .toObject(FileShareDataset.class);
-        Assertions.assertEquals("x", model.description());
-        Assertions.assertEquals("zhrjqfyaytvsly", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("fzhhezvhjudxdyyr").type());
-        Assertions.assertEquals("zj", model.folder().name());
+        Assertions.assertEquals("paevykbyjecrqk", model.description());
+        Assertions.assertEquals("t", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("vflgzhc").type());
+        Assertions.assertEquals("njvpmxn", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileShareDataset model = new FileShareDataset().withDescription("x")
-            .withStructure("datadlhzwhcu")
-            .withSchema("databosjjfd")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("zhrjqfyaytvsly")
-                .withParameters(
-                    mapOf("cjiwgsxfaio", "datagniuar", "ujjgnfgrzxbarc", "datawd", "jwenjcytesmf", "datapaefzqsy")))
-            .withParameters(mapOf("fzhhezvhjudxdyyr",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataodqhuauzmzivrt")))
-            .withAnnotations(Arrays.asList("dataahswtvdkxb", "datassgfenffdxbvwfqj", "datahivdrija", "dataxndmuvar"))
-            .withFolder(new DatasetFolder().withName("zj"))
-            .withFolderPath("datahhlwtpk")
-            .withFileName("datageattbzkg")
-            .withModifiedDatetimeStart("dataqnwqstt")
-            .withModifiedDatetimeEnd("datauvcysjeufjxf")
-            .withFormat(new DatasetStorageFormat().withSerializer("dataitfnonp")
-                .withDeserializer("datauxlvrhprrvbwonl")
+        FileShareDataset model = new FileShareDataset().withDescription("paevykbyjecrqk")
+            .withStructure("datakkchsfoulborc")
+            .withSchema("dataibsdqbdyblpe")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("t")
+                .withParameters(mapOf("lerufollcshju", "datapgweoqhbjqlqf", "xvjeazrah", "dataihbymjjvtpne",
+                    "qamcthtpqgfz", "datalhbimyii")))
+            .withParameters(mapOf("vflgzhc",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datakdi"), "pccxziv",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datawahcrxofgrutv"), "jd",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datahzghhhkvn")))
+            .withAnnotations(Arrays.asList("dataq"))
+            .withFolder(new DatasetFolder().withName("njvpmxn"))
+            .withFolderPath("datalmcvrjaznotdofq")
+            .withFileName("databq")
+            .withModifiedDatetimeStart("dataqkpsbqsb")
+            .withModifiedDatetimeEnd("dataitaftazgcxsvqlc")
+            .withFormat(new DatasetStorageFormat().withSerializer("dataylamxow")
+                .withDeserializer("datacjoyutehlkarvt")
                 .withAdditionalProperties(mapOf("type", "DatasetStorageFormat")))
-            .withFileFilter("dataxuoxtfnres")
-            .withCompression(new DatasetCompression().withType("dataepgckn")
-                .withLevel("datamgvsnvbtqdxfmj")
+            .withFileFilter("datajzijaciwmmpdt")
+            .withCompression(new DatasetCompression().withType("dataonbz")
+                .withLevel("datanfzyviiwsuanz")
                 .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(FileShareDataset.class);
-        Assertions.assertEquals("x", model.description());
-        Assertions.assertEquals("zhrjqfyaytvsly", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("fzhhezvhjudxdyyr").type());
-        Assertions.assertEquals("zj", model.folder().name());
+        Assertions.assertEquals("paevykbyjecrqk", model.description());
+        Assertions.assertEquals("t", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("vflgzhc").type());
+        Assertions.assertEquals("njvpmxn", model.folder().name());
     }
 
     // Use "Map.of" if available

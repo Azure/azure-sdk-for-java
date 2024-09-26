@@ -95,6 +95,8 @@ service
 <details>
 <summary> appcontainers </summary>
 
+* [package-2024-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-2024-03)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-appcontainers/1.0.0)
 * [package-preview-2024-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-preview-2024-02)
     * [1.0.0-beta.8](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-appcontainers/1.0.0-beta.8)
 * [package-preview-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/app/resource-manager#tag-package-preview-2023-11)
@@ -524,6 +526,7 @@ service
 <summary> datafactory </summary>
 
 * [package-2018-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager#tag-package-2018-06)
+    * [1.0.0-beta.30](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.30)
     * [1.0.0-beta.29](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.29)
     * [1.0.0-beta.28](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.28)
     * [1.0.0-beta.27](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.27)
@@ -911,6 +914,8 @@ service
 <details>
 <summary> hdinsight </summary>
 
+* [package-2024-08-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager#tag-package-2024-08-preview)
+    * [1.1.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight/1.1.0-beta.2)
 * [package-2023-04-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager#tag-package-2023-04-preview)
     * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight/1.1.0-beta.1)
 * [package-2021-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager#tag-package-2021-06)
@@ -927,6 +932,8 @@ service
 <details>
 <summary> hdinsight-containers </summary>
 
+* [package-preview-2024-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-preview-2024-05)
+    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.3)
 * [package-preview-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-preview-2023-11)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hdinsight-containers/1.0.0-beta.2)
 * [package-2023-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hdinsight/resource-manager/Microsoft.HDInsight/HDInsightOnAks#tag-package-2023-06-preview)
@@ -1192,6 +1199,8 @@ service
 <details>
 <summary> machinelearning </summary>
 
+* [package-2024-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager#tag-package-2024-04)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-machinelearning/1.1.0)
 * [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager#tag-package-2022-10)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-machinelearning/1.0.0)
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-machinelearning/1.0.0-beta.3)
@@ -1370,6 +1379,8 @@ service
 <details>
 <summary> netapp </summary>
 
+* [package-2024-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-2024-03)
+    * [1.4.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.4.0)
 * [package-netapp-2023-11-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2023-11-01)
     * [1.3.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.3.0)
     * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.2.0)
@@ -1723,6 +1734,14 @@ service
 
 <br/>
 <details>
+<summary> redhatopenshift </summary>
+
+* [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redhatopenshift/resource-manager/Microsoft.RedHatOpenShift/openshiftclusters#tag-package-2023-11)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-redhatopenshift/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> redisenterprise </summary>
 
 * [package-preview-2024-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redisenterprise/resource-manager#tag-package-preview-2024-03)
@@ -1881,6 +1900,14 @@ service
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicefabric/1.0.0-beta.2)
 * [package-2019-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabric/resource-manager#tag-package-2019-03)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicefabric/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> servicefabricmanagedclusters </summary>
+
+* [package-2024-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/servicefabricmanagedclusters/resource-manager#tag-package-2024-04)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-servicefabricmanagedclusters/1.0.0-beta.1)
 </details>
 
 <br/>

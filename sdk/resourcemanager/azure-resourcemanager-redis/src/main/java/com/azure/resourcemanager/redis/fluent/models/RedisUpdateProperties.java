@@ -5,13 +5,16 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RedisCommonProperties;
 import com.azure.resourcemanager.redis.models.RedisConfiguration;
 import com.azure.resourcemanager.redis.models.Sku;
 import com.azure.resourcemanager.redis.models.TlsVersion;
 import com.azure.resourcemanager.redis.models.UpdateChannel;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -22,7 +25,6 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
     /*
      * The SKU of the Redis cache to deploy.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /**
@@ -155,11 +157,86 @@ public final class RedisUpdateProperties extends RedisCommonProperties {
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (sku() != null) {
             sku().validate();
         }
+        if (redisConfiguration() != null) {
+            redisConfiguration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("redisConfiguration", redisConfiguration());
+        jsonWriter.writeStringField("redisVersion", redisVersion());
+        jsonWriter.writeBooleanField("enableNonSslPort", enableNonSslPort());
+        jsonWriter.writeNumberField("replicasPerMaster", replicasPerMaster());
+        jsonWriter.writeNumberField("replicasPerPrimary", replicasPerPrimary());
+        jsonWriter.writeMapField("tenantSettings", tenantSettings(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("shardCount", shardCount());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            minimumTlsVersion() == null ? null : minimumTlsVersion().toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
+        jsonWriter.writeStringField("updateChannel", updateChannel() == null ? null : updateChannel().toString());
+        jsonWriter.writeBooleanField("disableAccessKeyAuthentication", disableAccessKeyAuthentication());
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RedisUpdateProperties.
+     */
+    public static RedisUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisUpdateProperties deserializedRedisUpdateProperties = new RedisUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("redisConfiguration".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withRedisConfiguration(RedisConfiguration.fromJson(reader));
+                } else if ("redisVersion".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withRedisVersion(reader.getString());
+                } else if ("enableNonSslPort".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withEnableNonSslPort(reader.getNullable(JsonReader::getBoolean));
+                } else if ("replicasPerMaster".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withReplicasPerMaster(reader.getNullable(JsonReader::getInt));
+                } else if ("replicasPerPrimary".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withReplicasPerPrimary(reader.getNullable(JsonReader::getInt));
+                } else if ("tenantSettings".equals(fieldName)) {
+                    Map<String, String> tenantSettings = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRedisUpdateProperties.withTenantSettings(tenantSettings);
+                } else if ("shardCount".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withShardCount(reader.getNullable(JsonReader::getInt));
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withMinimumTlsVersion(TlsVersion.fromString(reader.getString()));
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedRedisUpdateProperties
+                        .withPublicNetworkAccess(PublicNetworkAccess.fromString(reader.getString()));
+                } else if ("updateChannel".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.withUpdateChannel(UpdateChannel.fromString(reader.getString()));
+                } else if ("disableAccessKeyAuthentication".equals(fieldName)) {
+                    deserializedRedisUpdateProperties
+                        .withDisableAccessKeyAuthentication(reader.getNullable(JsonReader::getBoolean));
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRedisUpdateProperties.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisUpdateProperties;
+        });
     }
 }

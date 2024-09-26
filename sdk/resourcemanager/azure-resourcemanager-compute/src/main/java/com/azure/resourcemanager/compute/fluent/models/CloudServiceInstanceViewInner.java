@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatusesSummary;
 import com.azure.resourcemanager.compute.models.ResourceInstanceViewStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * InstanceView of CloudService as a whole.
  */
 @Fluent
-public final class CloudServiceInstanceViewInner {
+public final class CloudServiceInstanceViewInner implements JsonSerializable<CloudServiceInstanceViewInner> {
     /*
      * Instance view statuses.
      */
-    @JsonProperty(value = "roleInstance")
     private InstanceViewStatusesSummary roleInstance;
 
     /*
      * The version of the SDK that was used to generate the package for the cloud service.
      */
-    @JsonProperty(value = "sdkVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sdkVersion;
 
     /*
      * Specifies a list of unique identifiers generated internally for the cloud service. <br /><br /> NOTE: If you are
      * using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
      */
-    @JsonProperty(value = "privateIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIds;
 
     /*
      * The statuses property.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceInstanceViewStatus> statuses;
 
     /**
@@ -107,5 +107,52 @@ public final class CloudServiceInstanceViewInner {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("roleInstance", this.roleInstance);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceInstanceViewInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceInstanceViewInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServiceInstanceViewInner.
+     */
+    public static CloudServiceInstanceViewInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceInstanceViewInner deserializedCloudServiceInstanceViewInner
+                = new CloudServiceInstanceViewInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("roleInstance".equals(fieldName)) {
+                    deserializedCloudServiceInstanceViewInner.roleInstance
+                        = InstanceViewStatusesSummary.fromJson(reader);
+                } else if ("sdkVersion".equals(fieldName)) {
+                    deserializedCloudServiceInstanceViewInner.sdkVersion = reader.getString();
+                } else if ("privateIds".equals(fieldName)) {
+                    List<String> privateIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCloudServiceInstanceViewInner.privateIds = privateIds;
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceInstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> ResourceInstanceViewStatus.fromJson(reader1));
+                    deserializedCloudServiceInstanceViewInner.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceInstanceViewInner;
+        });
     }
 }

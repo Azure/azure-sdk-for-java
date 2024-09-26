@@ -14,11 +14,8 @@ module com.azure.resourcemanager.appservice {
     exports com.azure.resourcemanager.appservice.fluent.models;
     exports com.azure.resourcemanager.appservice.models;
 
-    // open packages specifically for azure core and jackson
-    opens com.azure.resourcemanager.appservice.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.appservice.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    // open packages specifically for azure core
+    opens com.azure.resourcemanager.appservice.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.appservice.models to com.azure.core;
+    opens com.azure.resourcemanager.appservice.implementation to com.azure.core;
 }

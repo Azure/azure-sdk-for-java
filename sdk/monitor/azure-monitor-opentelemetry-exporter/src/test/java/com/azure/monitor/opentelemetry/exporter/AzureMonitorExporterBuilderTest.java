@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.monitor.opentelemetry.AzureMonitor;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -18,22 +19,17 @@ import java.util.stream.Stream;
 public class AzureMonitorExporterBuilderTest {
     @ParameterizedTest
     @MethodSource("getInvalidConnectionStrings")
-    public <T extends RuntimeException> void testInvalidConnectionStrings(
-        String connectionString, Class<T> exceptionExpected) {
-        Assertions.assertThrows(
-            exceptionExpected,
-            () -> {
-                AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-                new AzureMonitorExporterBuilder()
-                    .connectionString(connectionString)
-                    .install(sdkBuilder);
-                sdkBuilder.build();
-            });
+    public <T extends RuntimeException> void testInvalidConnectionStrings(String connectionString,
+        Class<T> exceptionExpected) {
+        Assertions.assertThrows(exceptionExpected, () -> {
+            AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+            AzureMonitor.customize(sdkBuilder, connectionString);
+            sdkBuilder.build();
+        });
     }
 
     private static Stream<Arguments> getInvalidConnectionStrings() {
-        return Stream.of(
-            Arguments.of(null, NullPointerException.class),
+        return Stream.of(Arguments.of(null, NullPointerException.class),
             Arguments.of("", IllegalArgumentException.class),
             Arguments.of("InstrumentationKey=;IngestionEndpoint=url", IllegalArgumentException.class),
             Arguments.of("Instrumentation=iKey;IngestionEndpoint=url", IllegalArgumentException.class),

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.communication.identity {
-
+    requires com.azure.json;
     requires transitive com.azure.communication.common;
 
     // public API surface area
@@ -10,7 +10,7 @@ module com.azure.communication.identity {
     exports com.azure.communication.identity.models;
 
     opens com.azure.communication.identity.models
-        to com.fasterxml.jackson.databind;
+        to com.azure.core;
     opens com.azure.communication.identity.implementation.models
-        to com.fasterxml.jackson.databind;
+        to com.azure.core;
 }

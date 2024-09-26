@@ -5,24 +5,23 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.billing.models.ReservationPropertyUtilization;
+import com.azure.resourcemanager.billing.fluent.models.ReservationPropertyUtilization;
 import com.azure.resourcemanager.billing.models.ReservationUtilizationAggregates;
 import java.util.Arrays;
 
 public final class ReservationPropertyUtilizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationPropertyUtilization model =
-            BinaryData
-                .fromString(
-                    "{\"trend\":\"ckh\",\"aggregates\":[{\"grain\":5.347806,\"grainUnit\":\"ffwafq\",\"value\":61.13735,\"valueUnit\":\"aspavehhr\"}]}")
-                .toObject(ReservationPropertyUtilization.class);
+        ReservationPropertyUtilization model = BinaryData.fromString(
+            "{\"trend\":\"ocgjs\",\"aggregates\":[{\"grain\":1.3885856,\"grainUnit\":\"hwvixqqggljkybsj\",\"value\":28.30782,\"valueUnit\":\"vtzqnrbctbhp\"},{\"grain\":13.420904,\"grainUnit\":\"cvrdnyeitaneqady\",\"value\":77.752335,\"valueUnit\":\"hwriuo\"},{\"grain\":12.099033,\"grainUnit\":\"fki\",\"value\":28.832603,\"valueUnit\":\"saaxwspca\"},{\"grain\":75.33044,\"grainUnit\":\"fjqebglcxkx\",\"value\":53.11063,\"valueUnit\":\"omv\"}]}")
+            .toObject(ReservationPropertyUtilization.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationPropertyUtilization model =
-            new ReservationPropertyUtilization().withAggregates(Arrays.asList(new ReservationUtilizationAggregates()));
+        ReservationPropertyUtilization model = new ReservationPropertyUtilization().withAggregates(
+            Arrays.asList(new ReservationUtilizationAggregates(), new ReservationUtilizationAggregates(),
+                new ReservationUtilizationAggregates(), new ReservationUtilizationAggregates()));
         model = BinaryData.fromObject(model).toObject(ReservationPropertyUtilization.class);
     }
 }

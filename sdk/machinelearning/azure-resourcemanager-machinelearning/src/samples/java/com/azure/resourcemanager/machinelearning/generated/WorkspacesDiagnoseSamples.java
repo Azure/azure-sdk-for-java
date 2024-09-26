@@ -9,37 +9,36 @@ import com.azure.resourcemanager.machinelearning.models.DiagnoseWorkspaceParamet
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces Diagnose. */
+/**
+ * Samples for Workspaces Diagnose.
+ */
 public final class WorkspacesDiagnoseSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Workspace/diagnose.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/diagnose.json
      */
     /**
      * Sample code: Diagnose Workspace.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void diagnoseWorkspace(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .workspaces()
-            .diagnose(
-                "workspace-1234",
-                "testworkspace",
-                new DiagnoseWorkspaceParameters()
-                    .withValue(
-                        new DiagnoseRequestProperties()
-                            .withUdr(mapOf())
-                            .withNsg(mapOf())
-                            .withResourceLock(mapOf())
-                            .withDnsResolution(mapOf())
-                            .withStorageAccount(mapOf())
-                            .withKeyVault(mapOf())
-                            .withContainerRegistry(mapOf())
-                            .withApplicationInsights(mapOf())
-                            .withOthers(mapOf())),
+        manager.workspaces()
+            .diagnose("workspace-1234", "testworkspace",
+                new DiagnoseWorkspaceParameters().withValue(new DiagnoseRequestProperties().withUdr(mapOf())
+                    .withNsg(mapOf())
+                    .withResourceLock(mapOf())
+                    .withDnsResolution(mapOf())
+                    .withStorageAccount(mapOf())
+                    .withKeyVault(mapOf())
+                    .withContainerRegistry(mapOf())
+                    .withApplicationInsights(mapOf())
+                    .withOthers(mapOf())),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The TerminateNotificationProfile model.
  */
 @Fluent
-public final class TerminateNotificationProfile {
+public final class TerminateNotificationProfile implements JsonSerializable<TerminateNotificationProfile> {
     /*
      * Configurable length of time a Virtual Machine being deleted will have to potentially approve the Terminate
      * Scheduled Event before the event is auto approved (timed out). The configuration must be specified in ISO 8601
      * format, the default value is 5 minutes (PT5M)
      */
-    @JsonProperty(value = "notBeforeTimeout")
     private String notBeforeTimeout;
 
     /*
      * Specifies whether the Terminate Scheduled event is enabled or disabled.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /**
@@ -82,5 +84,44 @@ public final class TerminateNotificationProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notBeforeTimeout", this.notBeforeTimeout);
+        jsonWriter.writeBooleanField("enable", this.enable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TerminateNotificationProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TerminateNotificationProfile if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TerminateNotificationProfile.
+     */
+    public static TerminateNotificationProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TerminateNotificationProfile deserializedTerminateNotificationProfile = new TerminateNotificationProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notBeforeTimeout".equals(fieldName)) {
+                    deserializedTerminateNotificationProfile.notBeforeTimeout = reader.getString();
+                } else if ("enable".equals(fieldName)) {
+                    deserializedTerminateNotificationProfile.enable = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTerminateNotificationProfile;
+        });
     }
 }

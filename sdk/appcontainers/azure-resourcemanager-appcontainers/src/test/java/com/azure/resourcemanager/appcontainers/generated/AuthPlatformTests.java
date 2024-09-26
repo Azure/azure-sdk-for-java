@@ -12,16 +12,16 @@ public final class AuthPlatformTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthPlatform model
-            = BinaryData.fromString("{\"enabled\":true,\"runtimeVersion\":\"jaoyfhrtx\"}").toObject(AuthPlatform.class);
+            = BinaryData.fromString("{\"enabled\":true,\"runtimeVersion\":\"bpzvgn\"}").toObject(AuthPlatform.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("jaoyfhrtx", model.runtimeVersion());
+        Assertions.assertEquals("bpzvgn", model.runtimeVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthPlatform model = new AuthPlatform().withEnabled(true).withRuntimeVersion("jaoyfhrtx");
+        AuthPlatform model = new AuthPlatform().withEnabled(true).withRuntimeVersion("bpzvgn");
         model = BinaryData.fromObject(model).toObject(AuthPlatform.class);
         Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("jaoyfhrtx", model.runtimeVersion());
+        Assertions.assertEquals("bpzvgn", model.runtimeVersion());
     }
 }

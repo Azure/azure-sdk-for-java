@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.CredentialSetInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of a request to list credential sets for a container registry.
  */
 @Fluent
-public final class CredentialSetListResult {
+public final class CredentialSetListResult implements JsonSerializable<CredentialSetListResult> {
     /*
      * The list of credential sets. Since this list may be incomplete, the nextLink field should be used to request the
      * next list of credential sets.
      */
-    @JsonProperty(value = "value")
     private List<CredentialSetInner> value;
 
     /*
      * The URI that can be used to request the next list of credential sets.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -34,8 +36,8 @@ public final class CredentialSetListResult {
     }
 
     /**
-     * Get the value property: The list of credential sets. Since this list may be incomplete, the nextLink field
-     * should be used to request the next list of credential sets.
+     * Get the value property: The list of credential sets. Since this list may be incomplete, the nextLink field should
+     * be used to request the next list of credential sets.
      * 
      * @return the value value.
      */
@@ -44,8 +46,8 @@ public final class CredentialSetListResult {
     }
 
     /**
-     * Set the value property: The list of credential sets. Since this list may be incomplete, the nextLink field
-     * should be used to request the next list of credential sets.
+     * Set the value property: The list of credential sets. Since this list may be incomplete, the nextLink field should
+     * be used to request the next list of credential sets.
      * 
      * @param value the value value to set.
      * @return the CredentialSetListResult object itself.
@@ -84,5 +86,45 @@ public final class CredentialSetListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialSetListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialSetListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CredentialSetListResult.
+     */
+    public static CredentialSetListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialSetListResult deserializedCredentialSetListResult = new CredentialSetListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CredentialSetInner> value = reader.readArray(reader1 -> CredentialSetInner.fromJson(reader1));
+                    deserializedCredentialSetListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedCredentialSetListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialSetListResult;
+        });
     }
 }

@@ -11,11 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.BillingSubscriptionsClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner;
-import com.azure.resourcemanager.billing.fluent.models.ValidateSubscriptionTransferEligibilityResultInner;
+import com.azure.resourcemanager.billing.fluent.models.MoveBillingSubscriptionEligibilityResultInner;
 import com.azure.resourcemanager.billing.models.BillingSubscription;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionMergeRequest;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionPatch;
 import com.azure.resourcemanager.billing.models.BillingSubscriptions;
-import com.azure.resourcemanager.billing.models.TransferBillingSubscriptionRequestProperties;
-import com.azure.resourcemanager.billing.models.ValidateSubscriptionTransferEligibilityResult;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionSplitRequest;
+import com.azure.resourcemanager.billing.models.CancelSubscriptionRequest;
+import com.azure.resourcemanager.billing.models.MoveBillingSubscriptionEligibilityResult;
+import com.azure.resourcemanager.billing.models.MoveBillingSubscriptionRequest;
 
 public final class BillingSubscriptionsImpl implements BillingSubscriptions {
     private static final ClientLogger LOGGER = new ClientLogger(BillingSubscriptionsImpl.class);
@@ -24,156 +28,279 @@ public final class BillingSubscriptionsImpl implements BillingSubscriptions {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public BillingSubscriptionsImpl(
-        BillingSubscriptionsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public BillingSubscriptionsImpl(BillingSubscriptionsClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BillingSubscription> listByCustomer(String billingAccountName, String customerName) {
-        PagedIterable<BillingSubscriptionInner> inner =
-            this.serviceClient().listByCustomer(billingAccountName, customerName);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    public Response<BillingSubscription> getByBillingProfileWithResponse(String billingAccountName,
+        String billingProfileName, String billingSubscriptionName, String expand, Context context) {
+        Response<BillingSubscriptionInner> inner = this.serviceClient()
+            .getByBillingProfileWithResponse(billingAccountName, billingProfileName, billingSubscriptionName, expand,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BillingSubscriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public PagedIterable<BillingSubscription> listByCustomer(
-        String billingAccountName, String customerName, Context context) {
-        PagedIterable<BillingSubscriptionInner> inner =
-            this.serviceClient().listByCustomer(billingAccountName, customerName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    public BillingSubscription getByBillingProfile(String billingAccountName, String billingProfileName,
+        String billingSubscriptionName) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().getByBillingProfile(billingAccountName, billingProfileName, billingSubscriptionName);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<BillingSubscription> listByBillingProfile(String billingAccountName,
+        String billingProfileName) {
+        PagedIterable<BillingSubscriptionInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingSubscription> listByBillingProfile(String billingAccountName, String billingProfileName,
+        Boolean includeDeleted, String expand, String filter, String orderBy, Long top, Long skip, Boolean count,
+        String search, Context context) {
+        PagedIterable<BillingSubscriptionInner> inner = this.serviceClient()
+            .listByBillingProfile(billingAccountName, billingProfileName, includeDeleted, expand, filter, orderBy, top,
+                skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingSubscription> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName) {
+        PagedIterable<BillingSubscriptionInner> inner
+            = this.serviceClient().listByCustomer(billingAccountName, billingProfileName, customerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingSubscription> listByCustomer(String billingAccountName, String billingProfileName,
+        String customerName, Boolean includeDeleted, String expand, String filter, String orderBy, Long top, Long skip,
+        Boolean count, String search, Context context) {
+        PagedIterable<BillingSubscriptionInner> inner = this.serviceClient()
+            .listByCustomer(billingAccountName, billingProfileName, customerName, includeDeleted, expand, filter,
+                orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingSubscription> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName) {
+        PagedIterable<BillingSubscriptionInner> inner
+            = this.serviceClient().listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<BillingSubscription> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Boolean includeDeleted, String expand, String filter, String orderBy, Long top,
+        Long skip, Boolean count, String search, Context context) {
+        PagedIterable<BillingSubscriptionInner> inner = this.serviceClient()
+            .listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName, includeDeleted, expand,
+                filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    }
+
+    public void cancel(String billingAccountName, String billingSubscriptionName,
+        CancelSubscriptionRequest parameters) {
+        this.serviceClient().cancel(billingAccountName, billingSubscriptionName, parameters);
+    }
+
+    public void cancel(String billingAccountName, String billingSubscriptionName, CancelSubscriptionRequest parameters,
+        Context context) {
+        this.serviceClient().cancel(billingAccountName, billingSubscriptionName, parameters, context);
+    }
+
+    public BillingSubscription merge(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionMergeRequest parameters) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().merge(billingAccountName, billingSubscriptionName, parameters);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription merge(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionMergeRequest parameters, Context context) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().merge(billingAccountName, billingSubscriptionName, parameters, context);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription move(String billingAccountName, String billingSubscriptionName,
+        MoveBillingSubscriptionRequest parameters) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().move(billingAccountName, billingSubscriptionName, parameters);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription move(String billingAccountName, String billingSubscriptionName,
+        MoveBillingSubscriptionRequest parameters, Context context) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().move(billingAccountName, billingSubscriptionName, parameters, context);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription split(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionSplitRequest parameters) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().split(billingAccountName, billingSubscriptionName, parameters);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription split(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionSplitRequest parameters, Context context) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().split(billingAccountName, billingSubscriptionName, parameters, context);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<MoveBillingSubscriptionEligibilityResult> validateMoveEligibilityWithResponse(
+        String billingAccountName, String billingSubscriptionName, MoveBillingSubscriptionRequest parameters,
+        Context context) {
+        Response<MoveBillingSubscriptionEligibilityResultInner> inner = this.serviceClient()
+            .validateMoveEligibilityWithResponse(billingAccountName, billingSubscriptionName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new MoveBillingSubscriptionEligibilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public MoveBillingSubscriptionEligibilityResult validateMoveEligibility(String billingAccountName,
+        String billingSubscriptionName, MoveBillingSubscriptionRequest parameters) {
+        MoveBillingSubscriptionEligibilityResultInner inner
+            = this.serviceClient().validateMoveEligibility(billingAccountName, billingSubscriptionName, parameters);
+        if (inner != null) {
+            return new MoveBillingSubscriptionEligibilityResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void deleteByResourceGroup(String billingAccountName, String billingSubscriptionName) {
+        this.serviceClient().delete(billingAccountName, billingSubscriptionName);
+    }
+
+    public void delete(String billingAccountName, String billingSubscriptionName, Context context) {
+        this.serviceClient().delete(billingAccountName, billingSubscriptionName, context);
+    }
+
+    public Response<BillingSubscription> getWithResponse(String billingAccountName, String billingSubscriptionName,
+        String expand, Context context) {
+        Response<BillingSubscriptionInner> inner
+            = this.serviceClient().getWithResponse(billingAccountName, billingSubscriptionName, expand, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BillingSubscriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription get(String billingAccountName, String billingSubscriptionName) {
+        BillingSubscriptionInner inner = this.serviceClient().get(billingAccountName, billingSubscriptionName);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription update(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionPatch parameters) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().update(billingAccountName, billingSubscriptionName, parameters);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BillingSubscription update(String billingAccountName, String billingSubscriptionName,
+        BillingSubscriptionPatch parameters, Context context) {
+        BillingSubscriptionInner inner
+            = this.serviceClient().update(billingAccountName, billingSubscriptionName, parameters, context);
+        if (inner != null) {
+            return new BillingSubscriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<BillingSubscription> listByBillingAccount(String billingAccountName) {
         PagedIterable<BillingSubscriptionInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingSubscription> listByBillingAccount(String billingAccountName, Context context) {
-        PagedIterable<BillingSubscriptionInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    public PagedIterable<BillingSubscription> listByBillingAccount(String billingAccountName, Boolean includeDeleted,
+        Boolean includeTenantSubscriptions, Boolean includeFailed, String expand, String filter, String orderBy,
+        Long top, Long skip, Boolean count, String search, Context context) {
+        PagedIterable<BillingSubscriptionInner> inner = this.serviceClient()
+            .listByBillingAccount(billingAccountName, includeDeleted, includeTenantSubscriptions, includeFailed, expand,
+                filter, orderBy, top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingSubscription> listByBillingProfile(
-        String billingAccountName, String billingProfileName) {
-        PagedIterable<BillingSubscriptionInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    public PagedIterable<BillingSubscription> listByCustomerAtBillingAccount(String billingAccountName,
+        String customerName) {
+        PagedIterable<BillingSubscriptionInner> inner
+            = this.serviceClient().listByCustomerAtBillingAccount(billingAccountName, customerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingSubscription> listByBillingProfile(
-        String billingAccountName, String billingProfileName, Context context) {
-        PagedIterable<BillingSubscriptionInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    public PagedIterable<BillingSubscription> listByCustomerAtBillingAccount(String billingAccountName,
+        String customerName, Boolean includeDeleted, String expand, String filter, String orderBy, Long top, Long skip,
+        Boolean count, String search, Context context) {
+        PagedIterable<BillingSubscriptionInner> inner = this.serviceClient()
+            .listByCustomerAtBillingAccount(billingAccountName, customerName, includeDeleted, expand, filter, orderBy,
+                top, skip, count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingSubscription> listByInvoiceSection(
-        String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        PagedIterable<BillingSubscriptionInner> inner =
-            this.serviceClient().listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
+    public PagedIterable<BillingSubscription> listByEnrollmentAccount(String billingAccountName,
+        String enrollmentAccountName) {
+        PagedIterable<BillingSubscriptionInner> inner
+            = this.serviceClient().listByEnrollmentAccount(billingAccountName, enrollmentAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BillingSubscription> listByInvoiceSection(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, Context context) {
-        PagedIterable<BillingSubscriptionInner> inner =
-            this
-                .serviceClient()
-                .listByInvoiceSection(billingAccountName, billingProfileName, invoiceSectionName, context);
-        return Utils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
-    }
-
-    public Response<BillingSubscription> getWithResponse(String billingAccountName, Context context) {
-        Response<BillingSubscriptionInner> inner = this.serviceClient().getWithResponse(billingAccountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BillingSubscriptionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public BillingSubscription get(String billingAccountName) {
-        BillingSubscriptionInner inner = this.serviceClient().get(billingAccountName);
-        if (inner != null) {
-            return new BillingSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<BillingSubscription> updateWithResponse(
-        String billingAccountName, BillingSubscriptionInner parameters, Context context) {
-        Response<BillingSubscriptionInner> inner =
-            this.serviceClient().updateWithResponse(billingAccountName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BillingSubscriptionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public BillingSubscription update(String billingAccountName, BillingSubscriptionInner parameters) {
-        BillingSubscriptionInner inner = this.serviceClient().update(billingAccountName, parameters);
-        if (inner != null) {
-            return new BillingSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public BillingSubscription move(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters) {
-        BillingSubscriptionInner inner = this.serviceClient().move(billingAccountName, parameters);
-        if (inner != null) {
-            return new BillingSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public BillingSubscription move(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context) {
-        BillingSubscriptionInner inner = this.serviceClient().move(billingAccountName, parameters, context);
-        if (inner != null) {
-            return new BillingSubscriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ValidateSubscriptionTransferEligibilityResult> validateMoveWithResponse(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters, Context context) {
-        Response<ValidateSubscriptionTransferEligibilityResultInner> inner =
-            this.serviceClient().validateMoveWithResponse(billingAccountName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ValidateSubscriptionTransferEligibilityResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ValidateSubscriptionTransferEligibilityResult validateMove(
-        String billingAccountName, TransferBillingSubscriptionRequestProperties parameters) {
-        ValidateSubscriptionTransferEligibilityResultInner inner =
-            this.serviceClient().validateMove(billingAccountName, parameters);
-        if (inner != null) {
-            return new ValidateSubscriptionTransferEligibilityResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<BillingSubscription> listByEnrollmentAccount(String billingAccountName,
+        String enrollmentAccountName, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
+        Context context) {
+        PagedIterable<BillingSubscriptionInner> inner = this.serviceClient()
+            .listByEnrollmentAccount(billingAccountName, enrollmentAccountName, filter, orderBy, top, skip, count,
+                search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BillingSubscriptionImpl(inner1, this.manager()));
     }
 
     private BillingSubscriptionsClient serviceClient() {

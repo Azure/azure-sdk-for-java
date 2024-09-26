@@ -9,39 +9,33 @@ import com.azure.resourcemanager.privatedns.fluent.models.VirtualNetworkLinkInne
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworkLinks CreateOrUpdate. */
+/**
+ * Samples for VirtualNetworkLinks CreateOrUpdate.
+ */
 public final class VirtualNetworkLinksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkPut.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkPut.json
      */
     /**
      * Sample code: PUT Private DNS Zone Virtual Network Link.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void pUTPrivateDNSZoneVirtualNetworkLink(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .createOrUpdate(
-                "resourceGroup1",
-                "privatezone1.com",
-                "virtualNetworkLink1",
-                new VirtualNetworkLinkInner()
-                    .withLocation("Global")
-                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
-                    .withVirtualNetwork(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/virtualNetworkSubscriptionId/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/virtualNetworkName"))
-                    .withRegistrationEnabled(false),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+            .createOrUpdate("resourceGroup1", "privatezone1.com", "virtualNetworkLink1", new VirtualNetworkLinkInner()
+                .withLocation("Global")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+                .withVirtualNetwork(new SubResource().withId(
+                    "/subscriptions/virtualNetworkSubscriptionId/resourceGroups/virtualNetworkResourceGroup/providers/Microsoft.Network/virtualNetworks/virtualNetworkName"))
+                .withRegistrationEnabled(false), null, null, com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

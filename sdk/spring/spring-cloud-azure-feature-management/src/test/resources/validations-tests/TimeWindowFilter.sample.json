@@ -1,0 +1,84 @@
+{
+    "feature_management": {
+        "feature_flags": [
+            {
+                "id": "PastTimeWindow",
+                "description": "A feature flag using a time window filter, that is active from 2023-06-29 07:00:00 to 2023-08-30 07:00:00. Will always return false as the current time is outside the time window.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Thu, 29 Jun 2023 07:00:00 GMT",
+                                "End": "Wed, 30 Aug 2023 07:00:00 GMT"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "FutureTimeWindow",
+                "description": "A feature flag using a time window filter, that is active from 3023-06-27 06:00:00 to 3023-06-28 06:05:00. Will always return false as the time window has yet been reached.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Fri, 27 Jun 3023 06:00:00 GMT",
+                                "End": "Sat, 28 Jun 3023 06:05:00 GMT"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "PresentTimeWindow",
+                "description": "A feature flag using a time window filter, that is active from 2023-06-27 06:00:00 to 3023-06-28 06:05:00. Will always return true as we are in the time window.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Thu, 29 Jun 2023 07:00:00 GMT",
+                                "End": "Sat, 28 Jun 3023 06:05:00 GMT"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "StartedTimeWindow",
+                "description": "A feature flag using a time window filter, that will always return true as the current time is within the time window.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "Start": "Tue, 27 Jun 2023 06:00:00 GMT"
+                            }
+                        }
+                    ]
+                }
+            },
+            {
+                "id": "WillEndTimeWindow",
+                "description": "A feature flag using a time window filter, that will always return true as the current time is within the time window.",
+                "enabled": true,
+                "conditions": {
+                    "client_filters": [
+                        {
+                            "name": "Microsoft.TimeWindow",
+                            "parameters": {
+                                "End": "Sat, 28 Jun 3023 06:05:00 GMT"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

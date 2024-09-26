@@ -5,102 +5,90 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The DataConnection model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = DataConnection.class)
-@JsonTypeName("DataConnection")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "logAnalytics", value = LogAnalyticsDataConnection.class),
-    @JsonSubTypes.Type(name = "azureDataExplorer", value = AzureDataExplorerDataConnection.class) })
 @Immutable
-public class DataConnection {
+public class DataConnection implements JsonSerializable<DataConnection> {
+
+    /*
+     * Discriminator property for DataConnection.
+     */
+    @Generated
+    private String kind = "DataConnection";
 
     /*
      * The system generated unique id for the resource.
      */
     @Generated
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The caller provided unique name for the resource.
      */
     @Generated
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The name that can be used for display purposes.
      */
     @Generated
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The type of data the data connection will transfer
      */
     @Generated
-    @JsonProperty(value = "content")
     private DataConnectionContent content;
 
     /*
      * The date the data connection was created.
      */
     @Generated
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
      * The rate at which the data connection will receive updates.
      */
     @Generated
-    @JsonProperty(value = "frequency")
     private DataConnectionFrequency frequency;
 
     /*
      * The day to update the data connection on.
      */
     @Generated
-    @JsonProperty(value = "frequencyOffset")
     private Integer frequencyOffset;
 
     /*
      * The date the data connection was last updated.
      */
     @Generated
-    @JsonProperty(value = "updatedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedDate;
 
     /*
      * The date the data connection was last updated by user.
      */
     @Generated
-    @JsonProperty(value = "userUpdatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime userUpdatedAt;
 
     /*
      * An indicator of whether the data connection is active.
      */
     @Generated
-    @JsonProperty(value = "active")
     private Boolean active;
 
     /*
      * A message that specifies details about data connection if inactive.
      */
     @Generated
-    @JsonProperty(value = "inactiveMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String inactiveMessage;
 
     /**
@@ -108,6 +96,16 @@ public class DataConnection {
      */
     @Generated
     protected DataConnection() {
+    }
+
+    /**
+     * Get the kind property: Discriminator property for DataConnection.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
     }
 
     /**
@@ -121,6 +119,18 @@ public class DataConnection {
     }
 
     /**
+     * Set the id property: The system generated unique id for the resource.
+     *
+     * @param id the id value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the name property: The caller provided unique name for the resource.
      *
      * @return the name value.
@@ -128,6 +138,18 @@ public class DataConnection {
     @Generated
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Set the name property: The caller provided unique name for the resource.
+     *
+     * @param name the name value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -141,6 +163,18 @@ public class DataConnection {
     }
 
     /**
+     * Set the displayName property: The name that can be used for display purposes.
+     *
+     * @param displayName the displayName value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the content property: The type of data the data connection will transfer.
      *
      * @return the content value.
@@ -148,6 +182,18 @@ public class DataConnection {
     @Generated
     public DataConnectionContent getContent() {
         return this.content;
+    }
+
+    /**
+     * Set the content property: The type of data the data connection will transfer.
+     *
+     * @param content the content value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setContent(DataConnectionContent content) {
+        this.content = content;
+        return this;
     }
 
     /**
@@ -161,6 +207,18 @@ public class DataConnection {
     }
 
     /**
+     * Set the createdDate property: The date the data connection was created.
+     *
+     * @param createdDate the createdDate value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setCreatedDate(OffsetDateTime createdDate) {
+        this.createdDate = createdDate;
+        return this;
+    }
+
+    /**
      * Get the frequency property: The rate at which the data connection will receive updates.
      *
      * @return the frequency value.
@@ -168,6 +226,18 @@ public class DataConnection {
     @Generated
     public DataConnectionFrequency getFrequency() {
         return this.frequency;
+    }
+
+    /**
+     * Set the frequency property: The rate at which the data connection will receive updates.
+     *
+     * @param frequency the frequency value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setFrequency(DataConnectionFrequency frequency) {
+        this.frequency = frequency;
+        return this;
     }
 
     /**
@@ -181,6 +251,18 @@ public class DataConnection {
     }
 
     /**
+     * Set the frequencyOffset property: The day to update the data connection on.
+     *
+     * @param frequencyOffset the frequencyOffset value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setFrequencyOffset(Integer frequencyOffset) {
+        this.frequencyOffset = frequencyOffset;
+        return this;
+    }
+
+    /**
      * Get the updatedDate property: The date the data connection was last updated.
      *
      * @return the updatedDate value.
@@ -188,6 +270,18 @@ public class DataConnection {
     @Generated
     public OffsetDateTime getUpdatedDate() {
         return this.updatedDate;
+    }
+
+    /**
+     * Set the updatedDate property: The date the data connection was last updated.
+     *
+     * @param updatedDate the updatedDate value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setUpdatedDate(OffsetDateTime updatedDate) {
+        this.updatedDate = updatedDate;
+        return this;
     }
 
     /**
@@ -201,6 +295,18 @@ public class DataConnection {
     }
 
     /**
+     * Set the userUpdatedAt property: The date the data connection was last updated by user.
+     *
+     * @param userUpdatedAt the userUpdatedAt value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setUserUpdatedAt(OffsetDateTime userUpdatedAt) {
+        this.userUpdatedAt = userUpdatedAt;
+        return this;
+    }
+
+    /**
      * Get the active property: An indicator of whether the data connection is active.
      *
      * @return the active value.
@@ -211,6 +317,18 @@ public class DataConnection {
     }
 
     /**
+     * Set the active property: An indicator of whether the data connection is active.
+     *
+     * @param active the active value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setActive(Boolean active) {
+        this.active = active;
+        return this;
+    }
+
+    /**
      * Get the inactiveMessage property: A message that specifies details about data connection if inactive.
      *
      * @return the inactiveMessage value.
@@ -218,5 +336,114 @@ public class DataConnection {
     @Generated
     public String getInactiveMessage() {
         return this.inactiveMessage;
+    }
+
+    /**
+     * Set the inactiveMessage property: A message that specifies details about data connection if inactive.
+     *
+     * @param inactiveMessage the inactiveMessage value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    DataConnection setInactiveMessage(String inactiveMessage) {
+        this.inactiveMessage = inactiveMessage;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("content", this.content == null ? null : this.content.toString());
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeNumberField("frequencyOffset", this.frequencyOffset);
+        jsonWriter.writeBooleanField("active", this.active);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnection from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnection if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataConnection.
+     */
+    @Generated
+    public static DataConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                // Prepare for reading
+                readerToUse.nextToken();
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("logAnalytics".equals(discriminatorValue)) {
+                    return LogAnalyticsDataConnection.fromJson(readerToUse.reset());
+                } else if ("azureDataExplorer".equals(discriminatorValue)) {
+                    return AzureDataExplorerDataConnection.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    @Generated
+    static DataConnection fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnection deserializedDataConnection = new DataConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedDataConnection.name = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDataConnection.kind = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedDataConnection.id = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDataConnection.displayName = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedDataConnection.content = DataConnectionContent.fromString(reader.getString());
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedDataConnection.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedDataConnection.frequency = DataConnectionFrequency.fromString(reader.getString());
+                } else if ("frequencyOffset".equals(fieldName)) {
+                    deserializedDataConnection.frequencyOffset = reader.getNullable(JsonReader::getInt);
+                } else if ("updatedDate".equals(fieldName)) {
+                    deserializedDataConnection.updatedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("userUpdatedAt".equals(fieldName)) {
+                    deserializedDataConnection.userUpdatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("active".equals(fieldName)) {
+                    deserializedDataConnection.active = reader.getNullable(JsonReader::getBoolean);
+                } else if ("inactiveMessage".equals(fieldName)) {
+                    deserializedDataConnection.inactiveMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedDataConnection;
+        });
     }
 }

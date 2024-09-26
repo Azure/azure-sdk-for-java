@@ -11,18 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceConnectionSharedAccessSignatureTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceConnectionSharedAccessSignature model =
-            BinaryData
-                .fromString("{\"sas\":\"uczkgofxyfsruc\"}")
-                .toObject(WorkspaceConnectionSharedAccessSignature.class);
-        Assertions.assertEquals("uczkgofxyfsruc", model.sas());
+        WorkspaceConnectionSharedAccessSignature model
+            = BinaryData.fromString("{\"sas\":\"vo\"}").toObject(WorkspaceConnectionSharedAccessSignature.class);
+        Assertions.assertEquals("vo", model.sas());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceConnectionSharedAccessSignature model =
-            new WorkspaceConnectionSharedAccessSignature().withSas("uczkgofxyfsruc");
+        WorkspaceConnectionSharedAccessSignature model = new WorkspaceConnectionSharedAccessSignature().withSas("vo");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionSharedAccessSignature.class);
-        Assertions.assertEquals("uczkgofxyfsruc", model.sas());
+        Assertions.assertEquals("vo", model.sas());
     }
 }

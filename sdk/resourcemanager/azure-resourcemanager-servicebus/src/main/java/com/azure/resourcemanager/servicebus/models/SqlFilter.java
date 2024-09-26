@@ -5,35 +5,42 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents a filter which is a composition of an expression and an action that is executed in the pub/sub pipeline.
  */
 @Fluent
-public final class SqlFilter {
+public final class SqlFilter implements JsonSerializable<SqlFilter> {
     /*
      * The SQL expression. e.g. MyProperty='ABC'
      */
-    @JsonProperty(value = "sqlExpression")
     private String sqlExpression;
 
     /*
      * This property is reserved for future use. An integer value showing the compatibility level, currently hard-coded
      * to 20.
      */
-    @JsonProperty(value = "compatibilityLevel")
     private Integer compatibilityLevel;
 
     /*
      * Value that indicates whether the rule action requires preprocessing.
      */
-    @JsonProperty(value = "requiresPreprocessing")
     private Boolean requiresPreprocessing;
 
     /**
+     * Creates an instance of SqlFilter class.
+     */
+    public SqlFilter() {
+    }
+
+    /**
      * Get the sqlExpression property: The SQL expression. e.g. MyProperty='ABC'.
-     *
+     * 
      * @return the sqlExpression value.
      */
     public String sqlExpression() {
@@ -42,7 +49,7 @@ public final class SqlFilter {
 
     /**
      * Set the sqlExpression property: The SQL expression. e.g. MyProperty='ABC'.
-     *
+     * 
      * @param sqlExpression the sqlExpression value to set.
      * @return the SqlFilter object itself.
      */
@@ -54,7 +61,7 @@ public final class SqlFilter {
     /**
      * Get the compatibilityLevel property: This property is reserved for future use. An integer value showing the
      * compatibility level, currently hard-coded to 20.
-     *
+     * 
      * @return the compatibilityLevel value.
      */
     public Integer compatibilityLevel() {
@@ -64,7 +71,7 @@ public final class SqlFilter {
     /**
      * Set the compatibilityLevel property: This property is reserved for future use. An integer value showing the
      * compatibility level, currently hard-coded to 20.
-     *
+     * 
      * @param compatibilityLevel the compatibilityLevel value to set.
      * @return the SqlFilter object itself.
      */
@@ -75,7 +82,7 @@ public final class SqlFilter {
 
     /**
      * Get the requiresPreprocessing property: Value that indicates whether the rule action requires preprocessing.
-     *
+     * 
      * @return the requiresPreprocessing value.
      */
     public Boolean requiresPreprocessing() {
@@ -84,7 +91,7 @@ public final class SqlFilter {
 
     /**
      * Set the requiresPreprocessing property: Value that indicates whether the rule action requires preprocessing.
-     *
+     * 
      * @param requiresPreprocessing the requiresPreprocessing value to set.
      * @return the SqlFilter object itself.
      */
@@ -95,9 +102,51 @@ public final class SqlFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sqlExpression", this.sqlExpression);
+        jsonWriter.writeNumberField("compatibilityLevel", this.compatibilityLevel);
+        jsonWriter.writeBooleanField("requiresPreprocessing", this.requiresPreprocessing);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlFilter if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SqlFilter.
+     */
+    public static SqlFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlFilter deserializedSqlFilter = new SqlFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sqlExpression".equals(fieldName)) {
+                    deserializedSqlFilter.sqlExpression = reader.getString();
+                } else if ("compatibilityLevel".equals(fieldName)) {
+                    deserializedSqlFilter.compatibilityLevel = reader.getNullable(JsonReader::getInt);
+                } else if ("requiresPreprocessing".equals(fieldName)) {
+                    deserializedSqlFilter.requiresPreprocessing = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlFilter;
+        });
     }
 }

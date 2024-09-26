@@ -26,10 +26,16 @@ public final class RegistriesCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryCreateZoneRedundant(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRegistries().create("myResourceGroup", "myRegistry",
-            new RegistryInner().withLocation("westus").withTags(mapOf("key", "fakeTokenPlaceholder"))
-                .withSku(new Sku().withName(SkuName.STANDARD)).withZoneRedundancy(ZoneRedundancy.ENABLED),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .create("myResourceGroup", "myRegistry",
+                new RegistryInner().withLocation("westus")
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withZoneRedundancy(ZoneRedundancy.ENABLED),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -43,10 +49,16 @@ public final class RegistriesCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void registryCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getRegistries().create("myResourceGroup", "myRegistry",
-            new RegistryInner().withLocation("westus").withTags(mapOf("key", "fakeTokenPlaceholder"))
-                .withSku(new Sku().withName(SkuName.STANDARD)).withAdminUserEnabled(true),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getRegistries()
+            .create("myResourceGroup", "myRegistry",
+                new RegistryInner().withLocation("westus")
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
+                    .withSku(new Sku().withName(SkuName.STANDARD))
+                    .withAdminUserEnabled(true),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

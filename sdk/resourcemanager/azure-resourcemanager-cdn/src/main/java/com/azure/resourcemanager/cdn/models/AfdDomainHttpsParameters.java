@@ -6,29 +6,30 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The JSON object that contains the properties to secure a domain.
  */
 @Fluent
-public final class AfdDomainHttpsParameters {
+public final class AfdDomainHttpsParameters implements JsonSerializable<AfdDomainHttpsParameters> {
     /*
      * Defines the source of the SSL certificate.
      */
-    @JsonProperty(value = "certificateType", required = true)
     private AfdCertificateType certificateType;
 
     /*
      * TLS protocol version that will be used for Https
      */
-    @JsonProperty(value = "minimumTlsVersion")
     private AfdMinimumTlsVersion minimumTlsVersion;
 
     /*
      * Resource reference to the secret. ie. subs/rg/profile/secret
      */
-    @JsonProperty(value = "secret")
     private ResourceReference secret;
 
     /**
@@ -104,8 +105,9 @@ public final class AfdDomainHttpsParameters {
      */
     public void validate() {
         if (certificateType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property certificateType in model AfdDomainHttpsParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property certificateType in model AfdDomainHttpsParameters"));
         }
         if (secret() != null) {
             secret().validate();
@@ -113,4 +115,51 @@ public final class AfdDomainHttpsParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AfdDomainHttpsParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificateType",
+            this.certificateType == null ? null : this.certificateType.toString());
+        jsonWriter.writeStringField("minimumTlsVersion",
+            this.minimumTlsVersion == null ? null : this.minimumTlsVersion.toString());
+        jsonWriter.writeJsonField("secret", this.secret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdDomainHttpsParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdDomainHttpsParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AfdDomainHttpsParameters.
+     */
+    public static AfdDomainHttpsParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdDomainHttpsParameters deserializedAfdDomainHttpsParameters = new AfdDomainHttpsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificateType".equals(fieldName)) {
+                    deserializedAfdDomainHttpsParameters.certificateType
+                        = AfdCertificateType.fromString(reader.getString());
+                } else if ("minimumTlsVersion".equals(fieldName)) {
+                    deserializedAfdDomainHttpsParameters.minimumTlsVersion
+                        = AfdMinimumTlsVersion.fromString(reader.getString());
+                } else if ("secret".equals(fieldName)) {
+                    deserializedAfdDomainHttpsParameters.secret = ResourceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdDomainHttpsParameters;
+        });
+    }
 }

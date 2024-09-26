@@ -110,11 +110,7 @@ public class ManagedHsmTests extends KeyVaultManagementTest {
      */
     // TODO(xiaofei) support managedHsm creation
     private ManagedHsm createManagedHsm(String mhsmName) {
-        String objectId = authorizationManager
-            .servicePrincipals()
-            .getByNameAsync(clientIdFromFile())
-            .block()
-            .id();
+        String objectId = azureCliSignedInUser().id();
 
         keyVaultManager.resourceManager().resourceGroups().define(rgName).withRegion(Region.US_EAST2).create();
         ManagedHsmInner inner = keyVaultManager.serviceClient()

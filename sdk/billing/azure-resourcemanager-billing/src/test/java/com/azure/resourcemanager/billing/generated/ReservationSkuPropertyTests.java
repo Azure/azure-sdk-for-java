@@ -10,7 +10,8 @@ import com.azure.resourcemanager.billing.models.ReservationSkuProperty;
 public final class ReservationSkuPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationSkuProperty model = BinaryData.fromString("{\"name\":\"t\"}").toObject(ReservationSkuProperty.class);
+        ReservationSkuProperty model
+            = BinaryData.fromString("{\"name\":\"swxspvckojaz\"}").toObject(ReservationSkuProperty.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,42 +5,42 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The instance view of a virtual machine extension.
  */
 @Fluent
-public final class VirtualMachineExtensionInstanceView {
+public final class VirtualMachineExtensionInstanceView
+    implements JsonSerializable<VirtualMachineExtensionInstanceView> {
     /*
      * The virtual machine extension name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the type of the extension; an example is "CustomScriptExtension".
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Specifies the version of the script handler.
      */
-    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "substatuses")
     private List<InstanceViewStatus> substatuses;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**
@@ -161,5 +161,58 @@ public final class VirtualMachineExtensionInstanceView {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
+        jsonWriter.writeArrayField("substatuses", this.substatuses, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineExtensionInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineExtensionInstanceView if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineExtensionInstanceView.
+     */
+    public static VirtualMachineExtensionInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineExtensionInstanceView deserializedVirtualMachineExtensionInstanceView
+                = new VirtualMachineExtensionInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionInstanceView.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionInstanceView.type = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionInstanceView.typeHandlerVersion = reader.getString();
+                } else if ("substatuses".equals(fieldName)) {
+                    List<InstanceViewStatus> substatuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedVirtualMachineExtensionInstanceView.substatuses = substatuses;
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedVirtualMachineExtensionInstanceView.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineExtensionInstanceView;
+        });
     }
 }

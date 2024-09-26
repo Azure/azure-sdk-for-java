@@ -40,6 +40,7 @@ public class AnalyzeLayoutFromUrlAsync {
                 null,
                 null,
                 null,
+                null,
                 new AnalyzeDocumentRequest().setUrlSource("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/documentintelligence/"
                     + "azure-ai-documentintelligence/src/samples/resources/sample-forms/forms/selectionMarkForm.pdf"));
 

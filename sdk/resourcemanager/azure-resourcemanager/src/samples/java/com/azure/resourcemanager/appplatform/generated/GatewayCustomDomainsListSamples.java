@@ -18,7 +18,10 @@ public final class GatewayCustomDomainsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewayCustomDomainsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getGatewayCustomDomains().list("myResourceGroup", "myservice",
-            "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getGatewayCustomDomains()
+            .list("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

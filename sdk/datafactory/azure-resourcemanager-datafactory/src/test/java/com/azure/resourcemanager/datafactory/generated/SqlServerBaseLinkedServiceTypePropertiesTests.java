@@ -11,32 +11,32 @@ public final class SqlServerBaseLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlServerBaseLinkedServiceTypeProperties model = BinaryData.fromString(
-            "{\"server\":\"dataxoluzntbpcad\",\"database\":\"datax\",\"encrypt\":\"dataxipe\",\"trustServerCertificate\":\"dataplfmfvmjjfzi\",\"hostNameInCertificate\":\"datalbiqq\",\"applicationIntent\":\"dataarxknfvbsym\",\"connectTimeout\":\"databahdbtjm\",\"connectRetryCount\":\"datazonrklbizrxh\",\"connectRetryInterval\":\"datafvpanloqovvcxgq\",\"loadBalanceTimeout\":\"datauirgopgzatucu\",\"commandTimeout\":\"datajuzvyjxux\",\"integratedSecurity\":\"dataquoqhqrcsk\",\"failoverPartner\":\"dataqfhlrvuvd\",\"maxPoolSize\":\"datavyjcdpncvfyeqyod\",\"minPoolSize\":\"datajc\",\"multipleActiveResultSets\":\"datapqhipajs\",\"multiSubnetFailover\":\"datavnmevl\",\"packetSize\":\"datacuwrfgpjfv\",\"pooling\":\"datakseodvlmdzgvc\"}")
+            "{\"server\":\"datamadkbxuip\",\"database\":\"dataawxugpubeqk\",\"encrypt\":\"datazmuzgueuyg\",\"trustServerCertificate\":\"datahauhe\",\"hostNameInCertificate\":\"dataswe\",\"applicationIntent\":\"datagxxzxwrnqwdjvl\",\"connectTimeout\":\"datazxyylwsfxqcmej\",\"connectRetryCount\":\"datajcbciuagakmxg\",\"connectRetryInterval\":\"datamavllp\",\"loadBalanceTimeout\":\"dataguzsyfwamhm\",\"commandTimeout\":\"dataxxb\",\"integratedSecurity\":\"datagwnompvy\",\"failoverPartner\":\"datacnzcu\",\"maxPoolSize\":\"datasalbjf\",\"minPoolSize\":\"dataexqfzmhkridipwc\",\"multipleActiveResultSets\":\"datannmpifjqhjenb\",\"multiSubnetFailover\":\"datapfpllosadjffllr\",\"packetSize\":\"datag\",\"pooling\":\"datayeok\"}")
             .toObject(SqlServerBaseLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlServerBaseLinkedServiceTypeProperties model
-            = new SqlServerBaseLinkedServiceTypeProperties().withServer("dataxoluzntbpcad")
-                .withDatabase("datax")
-                .withEncrypt("dataxipe")
-                .withTrustServerCertificate("dataplfmfvmjjfzi")
-                .withHostnameInCertificate("datalbiqq")
-                .withApplicationIntent("dataarxknfvbsym")
-                .withConnectTimeout("databahdbtjm")
-                .withConnectRetryCount("datazonrklbizrxh")
-                .withConnectRetryInterval("datafvpanloqovvcxgq")
-                .withLoadBalanceTimeout("datauirgopgzatucu")
-                .withCommandTimeout("datajuzvyjxux")
-                .withIntegratedSecurity("dataquoqhqrcsk")
-                .withFailoverPartner("dataqfhlrvuvd")
-                .withMaxPoolSize("datavyjcdpncvfyeqyod")
-                .withMinPoolSize("datajc")
-                .withMultipleActiveResultSets("datapqhipajs")
-                .withMultiSubnetFailover("datavnmevl")
-                .withPacketSize("datacuwrfgpjfv")
-                .withPooling("datakseodvlmdzgvc");
+            = new SqlServerBaseLinkedServiceTypeProperties().withServer("datamadkbxuip")
+                .withDatabase("dataawxugpubeqk")
+                .withEncrypt("datazmuzgueuyg")
+                .withTrustServerCertificate("datahauhe")
+                .withHostnameInCertificate("dataswe")
+                .withApplicationIntent("datagxxzxwrnqwdjvl")
+                .withConnectTimeout("datazxyylwsfxqcmej")
+                .withConnectRetryCount("datajcbciuagakmxg")
+                .withConnectRetryInterval("datamavllp")
+                .withLoadBalanceTimeout("dataguzsyfwamhm")
+                .withCommandTimeout("dataxxb")
+                .withIntegratedSecurity("datagwnompvy")
+                .withFailoverPartner("datacnzcu")
+                .withMaxPoolSize("datasalbjf")
+                .withMinPoolSize("dataexqfzmhkridipwc")
+                .withMultipleActiveResultSets("datannmpifjqhjenb")
+                .withMultiSubnetFailover("datapfpllosadjffllr")
+                .withPacketSize("datag")
+                .withPooling("datayeok");
         model = BinaryData.fromObject(model).toObject(SqlServerBaseLinkedServiceTypeProperties.class);
     }
 }

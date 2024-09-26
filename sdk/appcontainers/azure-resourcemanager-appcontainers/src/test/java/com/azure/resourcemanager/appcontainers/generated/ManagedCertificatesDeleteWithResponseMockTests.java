@@ -27,8 +27,7 @@ public final class ManagedCertificatesDeleteWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.managedCertificates()
-            .deleteWithResponse("kclbtxluevsol", "wil", "ngojfsqebuuxjx", com.azure.core.util.Context.NONE);
+        manager.managedCertificates().deleteWithResponse("lmf", "jdoq", "ykglt", com.azure.core.util.Context.NONE);
 
     }
 }

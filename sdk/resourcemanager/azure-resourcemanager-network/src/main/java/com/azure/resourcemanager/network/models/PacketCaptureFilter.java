@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Filter that is applied to packet capture request. Multiple filters can be applied.
  */
 @Fluent
-public final class PacketCaptureFilter {
+public final class PacketCaptureFilter implements JsonSerializable<PacketCaptureFilter> {
     /*
      * Protocol to be filtered on.
      */
-    @JsonProperty(value = "protocol")
     private PcProtocol protocol;
 
     /*
@@ -23,7 +26,6 @@ public final class PacketCaptureFilter {
      * range. "127.0.0.1;127.0.0.5"? for multiple entries. Multiple ranges not currently supported. Mixing ranges with
      * multiple entries not currently supported. Default = null.
      */
-    @JsonProperty(value = "localIPAddress")
     private String localIpAddress;
 
     /*
@@ -31,7 +33,6 @@ public final class PacketCaptureFilter {
      * range. "127.0.0.1;127.0.0.5;" for multiple entries. Multiple ranges not currently supported. Mixing ranges with
      * multiple entries not currently supported. Default = null.
      */
-    @JsonProperty(value = "remoteIPAddress")
     private String remoteIpAddress;
 
     /*
@@ -39,7 +40,6 @@ public final class PacketCaptureFilter {
      * entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported.
      * Default = null.
      */
-    @JsonProperty(value = "localPort")
     private String localPort;
 
     /*
@@ -47,7 +47,6 @@ public final class PacketCaptureFilter {
      * entries. Multiple ranges not currently supported. Mixing ranges with multiple entries not currently supported.
      * Default = null.
      */
-    @JsonProperty(value = "remotePort")
     private String remotePort;
 
     /**
@@ -178,5 +177,53 @@ public final class PacketCaptureFilter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("localIPAddress", this.localIpAddress);
+        jsonWriter.writeStringField("remoteIPAddress", this.remoteIpAddress);
+        jsonWriter.writeStringField("localPort", this.localPort);
+        jsonWriter.writeStringField("remotePort", this.remotePort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCaptureFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCaptureFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCaptureFilter.
+     */
+    public static PacketCaptureFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCaptureFilter deserializedPacketCaptureFilter = new PacketCaptureFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.protocol = PcProtocol.fromString(reader.getString());
+                } else if ("localIPAddress".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.localIpAddress = reader.getString();
+                } else if ("remoteIPAddress".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.remoteIpAddress = reader.getString();
+                } else if ("localPort".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.localPort = reader.getString();
+                } else if ("remotePort".equals(fieldName)) {
+                    deserializedPacketCaptureFilter.remotePort = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCaptureFilter;
+        });
     }
 }

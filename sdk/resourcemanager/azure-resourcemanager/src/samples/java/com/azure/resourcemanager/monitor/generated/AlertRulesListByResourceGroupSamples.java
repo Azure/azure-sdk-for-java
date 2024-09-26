@@ -18,7 +18,10 @@ public final class AlertRulesListByResourceGroupSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAlertRules(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getAlertRules().listByResourceGroup("Rac46PostSwapRG",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getAlertRules()
+            .listByResourceGroup("Rac46PostSwapRG", com.azure.core.util.Context.NONE);
     }
 }

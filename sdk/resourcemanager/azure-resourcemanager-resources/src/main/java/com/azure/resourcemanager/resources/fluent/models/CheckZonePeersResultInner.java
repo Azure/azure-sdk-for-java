@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.AvailabilityZonePeers;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Result of the Check zone peers operation.
  */
 @Fluent
-public final class CheckZonePeersResultInner {
+public final class CheckZonePeersResultInner implements JsonSerializable<CheckZonePeersResultInner> {
     /*
      * The subscription ID.
      */
-    @JsonProperty(value = "subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /*
      * the location of the subscription.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The Availability Zones shared by the subscriptions.
      */
-    @JsonProperty(value = "availabilityZonePeers")
     private List<AvailabilityZonePeers> availabilityZonePeers;
 
     /**
@@ -96,5 +97,49 @@ public final class CheckZonePeersResultInner {
         if (availabilityZonePeers() != null) {
             availabilityZonePeers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeArrayField("availabilityZonePeers", this.availabilityZonePeers,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckZonePeersResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckZonePeersResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckZonePeersResultInner.
+     */
+    public static CheckZonePeersResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckZonePeersResultInner deserializedCheckZonePeersResultInner = new CheckZonePeersResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subscriptionId".equals(fieldName)) {
+                    deserializedCheckZonePeersResultInner.subscriptionId = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCheckZonePeersResultInner.location = reader.getString();
+                } else if ("availabilityZonePeers".equals(fieldName)) {
+                    List<AvailabilityZonePeers> availabilityZonePeers
+                        = reader.readArray(reader1 -> AvailabilityZonePeers.fromJson(reader1));
+                    deserializedCheckZonePeersResultInner.availabilityZonePeers = availabilityZonePeers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckZonePeersResultInner;
+        });
     }
 }

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsGetSlotSiteDeploymentStatusSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteDeploymentStatusSlot.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/GetSiteDeploymentStatusSlot.json
      */
     /**
      * Sample code: Get Deployment Status Slot.

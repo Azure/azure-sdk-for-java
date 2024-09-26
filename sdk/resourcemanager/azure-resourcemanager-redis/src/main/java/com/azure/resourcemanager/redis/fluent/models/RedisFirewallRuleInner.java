@@ -7,7 +7,10 @@ package com.azure.resourcemanager.redis.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted to connect.
@@ -17,8 +20,22 @@ public class RedisFirewallRuleInner extends ProxyResource {
     /*
      * redis cache firewall rule properties
      */
-    @JsonProperty(value = "properties", required = true)
     private RedisFirewallRuleProperties innerProperties = new RedisFirewallRuleProperties();
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of RedisFirewallRuleInner class.
@@ -33,6 +50,47 @@ public class RedisFirewallRuleInner extends ProxyResource {
      */
     private RedisFirewallRuleProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Set the innerProperties property: redis cache firewall rule properties.
+     * 
+     * @param innerProperties the innerProperties value to set.
+     * @return the RedisFirewallRuleInner object itself.
+     */
+    RedisFirewallRuleInner withInnerProperties(RedisFirewallRuleProperties innerProperties) {
+        this.innerProperties = innerProperties;
+        return this;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -97,4 +155,47 @@ public class RedisFirewallRuleInner extends ProxyResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RedisFirewallRuleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RedisFirewallRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RedisFirewallRuleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RedisFirewallRuleInner.
+     */
+    public static RedisFirewallRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RedisFirewallRuleInner deserializedRedisFirewallRuleInner = new RedisFirewallRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRedisFirewallRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRedisFirewallRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRedisFirewallRuleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRedisFirewallRuleInner.innerProperties = RedisFirewallRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRedisFirewallRuleInner;
+        });
+    }
 }

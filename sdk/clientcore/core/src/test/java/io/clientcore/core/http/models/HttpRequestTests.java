@@ -10,12 +10,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.ByteArrayInputStream;
-import java.net.MalformedURLException;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.util.TestUtils.assertArraysEqual;
-import static io.clientcore.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -26,35 +25,34 @@ public class HttpRequestTests {
     private static final long BODY_LENGTH = BODY_BYTES.length;
 
     @Test
-    public void constructor() throws MalformedURLException {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
+    public void constructor() {
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"));
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
-        assertEquals(createUrl("http://request.url"), request.getUrl());
+        assertEquals(URI.create("http://request.uri"), request.getUri());
         assertNull(request.getBody());
     }
 
     @Test
-    public void constructorWithHeaders() throws MalformedURLException {
+    public void constructorWithHeaders() {
         final HttpHeaders headers = new HttpHeaders();
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"))
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"))
             .setHeaders(headers);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
-        assertEquals(createUrl("http://request.url"), request.getUrl());
+        assertEquals(URI.create("http://request.uri"), request.getUri());
         assertSame(headers, request.getHeaders());
         assertNull(request.getBody());
     }
 
     @ParameterizedTest(name = "[{index}] {displayName}") // BinaryData.toString would trigger buffering.
     @MethodSource("getBinaryDataBodyVariants")
-    public void constructorWithBinaryDataBody(BinaryData data, Long expectedContentLength)
-        throws MalformedURLException {
+    public void constructorWithBinaryDataBody(BinaryData data, Long expectedContentLength) {
 
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url")).setBody(data);
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri")).setBody(data);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
-        assertEquals(createUrl("http://request.url"), request.getUrl());
+        assertEquals(URI.create("http://request.uri"), request.getUri());
 
         assertSame(data, request.getBody());
         assertEquals(expectedContentLength, getContentLength(request));
@@ -69,7 +67,7 @@ public class HttpRequestTests {
     @ParameterizedTest(name = "[{index}] {displayName}") // BinaryData.toString would trigger buffering.
     @MethodSource("getBinaryDataBodyVariants")
     public void testSetBodyAsBinaryData(BinaryData data, Long expectedContentLength) {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.url");
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.uri");
 
         request.setBody(data);
 
@@ -85,7 +83,7 @@ public class HttpRequestTests {
 
     @Test
     public void testSetBodyAsString() {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.url");
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.uri");
 
         request.setBody(BinaryData.fromString(BODY));
 
@@ -96,7 +94,7 @@ public class HttpRequestTests {
 
     @Test
     public void testSetBodyAsByteArray() {
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.url");
+        final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.uri");
 
         request.setBody(BinaryData.fromBytes(BODY_BYTES));
 

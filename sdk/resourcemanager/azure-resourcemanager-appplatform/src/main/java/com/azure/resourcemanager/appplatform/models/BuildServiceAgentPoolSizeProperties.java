@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Build service agent pool size properties.
  */
 @Fluent
-public final class BuildServiceAgentPoolSizeProperties {
+public final class BuildServiceAgentPoolSizeProperties
+    implements JsonSerializable<BuildServiceAgentPoolSizeProperties> {
     /*
      * The name of build service agent pool size
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The cpu property of build service agent pool size
      */
-    @JsonProperty(value = "cpu", access = JsonProperty.Access.WRITE_ONLY)
     private String cpu;
 
     /*
      * The memory property of build service agent pool size
      */
-    @JsonProperty(value = "memory", access = JsonProperty.Access.WRITE_ONLY)
     private String memory;
 
     /**
@@ -80,5 +82,46 @@ public final class BuildServiceAgentPoolSizeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BuildServiceAgentPoolSizeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BuildServiceAgentPoolSizeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BuildServiceAgentPoolSizeProperties.
+     */
+    public static BuildServiceAgentPoolSizeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BuildServiceAgentPoolSizeProperties deserializedBuildServiceAgentPoolSizeProperties
+                = new BuildServiceAgentPoolSizeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedBuildServiceAgentPoolSizeProperties.name = reader.getString();
+                } else if ("cpu".equals(fieldName)) {
+                    deserializedBuildServiceAgentPoolSizeProperties.cpu = reader.getString();
+                } else if ("memory".equals(fieldName)) {
+                    deserializedBuildServiceAgentPoolSizeProperties.memory = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBuildServiceAgentPoolSizeProperties;
+        });
     }
 }

@@ -6,36 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.DynamicsCrmLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Dynamics CRM linked service.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = DynamicsCrmLinkedService.class,
-    visible = true)
-@JsonTypeName("DynamicsCrm")
 @Fluent
 public final class DynamicsCrmLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "DynamicsCrm";
 
     /*
      * Dynamics CRM linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private DynamicsCrmLinkedServiceTypeProperties innerTypeProperties = new DynamicsCrmLinkedServiceTypeProperties();
 
     /**
@@ -61,6 +53,15 @@ public final class DynamicsCrmLinkedService extends LinkedService {
      */
     private DynamicsCrmLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DynamicsCrmLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -231,7 +232,8 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the authenticationType value.
      */
@@ -242,7 +244,8 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: The authentication type to connect to Dynamics CRM server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
      * 
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsCrmLinkedService object itself.
@@ -252,6 +255,31 @@ public final class DynamicsCrmLinkedService extends LinkedService {
             this.innerTypeProperties = new DynamicsCrmLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the domain value.
+     */
+    public Object domain() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().domain();
+    }
+
+    /**
+     * Set the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param domain the domain value to set.
+     * @return the DynamicsCrmLinkedService object itself.
+     */
+    public DynamicsCrmLinkedService withDomain(Object domain) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new DynamicsCrmLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDomain(domain);
         return this;
     }
 
@@ -450,4 +478,74 @@ public final class DynamicsCrmLinkedService extends LinkedService {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DynamicsCrmLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DynamicsCrmLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DynamicsCrmLinkedService if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DynamicsCrmLinkedService.
+     */
+    public static DynamicsCrmLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DynamicsCrmLinkedService deserializedDynamicsCrmLinkedService = new DynamicsCrmLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedDynamicsCrmLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDynamicsCrmLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedService.innerTypeProperties
+                        = DynamicsCrmLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedDynamicsCrmLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDynamicsCrmLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedDynamicsCrmLinkedService;
+        });
+    }
 }

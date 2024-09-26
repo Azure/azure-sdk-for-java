@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The IpRule model.
  */
 @Fluent
-public final class IpRule {
+public final class IpRule implements JsonSerializable<IpRule> {
     /*
      * Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
      */
-    @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
     /**
@@ -50,5 +53,41 @@ public final class IpRule {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpRule if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the IpRule.
+     */
+    public static IpRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpRule deserializedIpRule = new IpRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("addressPrefix".equals(fieldName)) {
+                    deserializedIpRule.addressPrefix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpRule;
+        });
     }
 }

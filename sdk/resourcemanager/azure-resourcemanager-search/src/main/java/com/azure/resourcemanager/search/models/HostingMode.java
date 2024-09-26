@@ -4,22 +4,25 @@
 
 package com.azure.resourcemanager.search.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Applicable only for the standard3 SKU. You can set this property to enable up to 3 high density partitions that allow
  * up to 1000 indexes, which is much higher than the maximum indexes allowed for any other SKU. For the standard3 SKU,
  * the value is either 'default' or 'highDensity'. For all other SKUs, this value must be 'default'.
  */
 public enum HostingMode {
-    /** Enum value default. */
+    /**
+     * Enum value default.
+     */
     DEFAULT("default"),
 
-    /** Enum value highDensity. */
+    /**
+     * Enum value highDensity.
+     */
     HIGH_DENSITY("highDensity");
 
-    /** The actual serialized value for a HostingMode instance. */
+    /**
+     * The actual serialized value for a HostingMode instance.
+     */
     private final String value;
 
     HostingMode(String value) {
@@ -28,11 +31,10 @@ public enum HostingMode {
 
     /**
      * Parses a serialized value to a HostingMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed HostingMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static HostingMode fromString(String value) {
         if (value == null) {
             return null;
@@ -46,8 +48,9 @@ public enum HostingMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

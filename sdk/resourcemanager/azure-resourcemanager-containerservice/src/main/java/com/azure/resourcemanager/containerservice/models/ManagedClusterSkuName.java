@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClu
      * @param name a name to look for.
      * @return the corresponding ManagedClusterSkuName.
      */
-    @JsonCreator
     public static ManagedClusterSkuName fromString(String name) {
         return fromString(name, ManagedClusterSkuName.class);
     }

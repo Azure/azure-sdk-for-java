@@ -1312,8 +1312,10 @@ public final class ActionGroupsClientImpl implements InnerSupportsGet<ActionGrou
     public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
         beginCreateNotificationsAtActionGroupResourceLevel(String resourceGroupName, String actionGroupName,
             NotificationRequestBody notificationRequest) {
-        return this.beginCreateNotificationsAtActionGroupResourceLevelAsync(resourceGroupName, actionGroupName,
-            notificationRequest).getSyncPoller();
+        return this
+            .beginCreateNotificationsAtActionGroupResourceLevelAsync(resourceGroupName, actionGroupName,
+                notificationRequest)
+            .getSyncPoller();
     }
 
     /**
@@ -1332,8 +1334,10 @@ public final class ActionGroupsClientImpl implements InnerSupportsGet<ActionGrou
     public SyncPoller<PollResult<TestNotificationDetailsResponseInner>, TestNotificationDetailsResponseInner>
         beginCreateNotificationsAtActionGroupResourceLevel(String resourceGroupName, String actionGroupName,
             NotificationRequestBody notificationRequest, Context context) {
-        return this.beginCreateNotificationsAtActionGroupResourceLevelAsync(resourceGroupName, actionGroupName,
-            notificationRequest, context).getSyncPoller();
+        return this
+            .beginCreateNotificationsAtActionGroupResourceLevelAsync(resourceGroupName, actionGroupName,
+                notificationRequest, context)
+            .getSyncPoller();
     }
 
     /**

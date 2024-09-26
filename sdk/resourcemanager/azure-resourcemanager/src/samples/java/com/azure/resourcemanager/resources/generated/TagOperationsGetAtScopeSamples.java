@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class TagOperationsGetAtScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetTagsResource.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetTagsResource.json
      */
     /**
      * Sample code: Get tags on a resource.
@@ -27,7 +28,8 @@ public final class TagOperationsGetAtScopeSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetTagsSubscription.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/GetTagsSubscription.json
      */
     /**
      * Sample code: Get tags on a subscription.

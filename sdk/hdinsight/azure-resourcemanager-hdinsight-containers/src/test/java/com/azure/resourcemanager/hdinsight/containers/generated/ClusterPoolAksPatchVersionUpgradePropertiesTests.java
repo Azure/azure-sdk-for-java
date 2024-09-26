@@ -12,20 +12,22 @@ public final class ClusterPoolAksPatchVersionUpgradePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolAksPatchVersionUpgradeProperties model = BinaryData.fromString(
-            "{\"upgradeType\":\"AKSPatchUpgrade\",\"upgradeClusterPool\":false,\"upgradeAllClusterNodes\":true,\"targetAksVersion\":\"jrywvtylbfpnc\"}")
+            "{\"upgradeType\":\"AKSPatchUpgrade\",\"upgradeClusterPool\":true,\"upgradeAllClusterNodes\":false,\"targetAksVersion\":\"ifmzzsd\"}")
             .toObject(ClusterPoolAksPatchVersionUpgradeProperties.class);
-        Assertions.assertEquals(false, model.upgradeClusterPool());
-        Assertions.assertEquals(true, model.upgradeAllClusterNodes());
-        Assertions.assertEquals("jrywvtylbfpnc", model.targetAksVersion());
+        Assertions.assertEquals(true, model.upgradeClusterPool());
+        Assertions.assertEquals(false, model.upgradeAllClusterNodes());
+        Assertions.assertEquals("ifmzzsd", model.targetAksVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolAksPatchVersionUpgradeProperties model = new ClusterPoolAksPatchVersionUpgradeProperties()
-            .withUpgradeClusterPool(false).withUpgradeAllClusterNodes(true).withTargetAksVersion("jrywvtylbfpnc");
+        ClusterPoolAksPatchVersionUpgradeProperties model
+            = new ClusterPoolAksPatchVersionUpgradeProperties().withUpgradeClusterPool(true)
+                .withUpgradeAllClusterNodes(false)
+                .withTargetAksVersion("ifmzzsd");
         model = BinaryData.fromObject(model).toObject(ClusterPoolAksPatchVersionUpgradeProperties.class);
-        Assertions.assertEquals(false, model.upgradeClusterPool());
-        Assertions.assertEquals(true, model.upgradeAllClusterNodes());
-        Assertions.assertEquals("jrywvtylbfpnc", model.targetAksVersion());
+        Assertions.assertEquals(true, model.upgradeClusterPool());
+        Assertions.assertEquals(false, model.upgradeAllClusterNodes());
+        Assertions.assertEquals("ifmzzsd", model.targetAksVersion());
     }
 }

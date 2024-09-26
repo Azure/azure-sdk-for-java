@@ -19,7 +19,10 @@ public final class ServiceRegistriesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void serviceRegistriesGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServiceRegistries().getWithResponse("myResourceGroup",
-            "myservice", "default", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServiceRegistries()
+            .getWithResponse("myResourceGroup", "myservice", "default", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,47 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** baseItemVersion. */
+/**
+ * baseItemVersion.
+ */
 @Fluent
 public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
     /*
      * identitySet
      */
-    @JsonProperty(value = "lastModifiedBy")
     private MicrosoftGraphIdentitySet lastModifiedBy;
 
     /*
      * Date and time the version was last modified. Read-only.
      */
-    @JsonProperty(value = "lastModifiedDateTime")
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * publicationFacet
      */
-    @JsonProperty(value = "publication")
     private MicrosoftGraphPublicationFacet publication;
 
     /*
      * baseItemVersion
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphBaseItemVersion class. */
+    /**
+     * Creates an instance of MicrosoftGraphBaseItemVersion class.
+     */
     public MicrosoftGraphBaseItemVersion() {
     }
 
     /**
      * Get the lastModifiedBy property: identitySet.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public MicrosoftGraphIdentitySet lastModifiedBy() {
@@ -54,7 +57,7 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
 
     /**
      * Set the lastModifiedBy property: identitySet.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the MicrosoftGraphBaseItemVersion object itself.
      */
@@ -65,7 +68,7 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
 
     /**
      * Get the lastModifiedDateTime property: Date and time the version was last modified. Read-only.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -74,7 +77,7 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
 
     /**
      * Set the lastModifiedDateTime property: Date and time the version was last modified. Read-only.
-     *
+     * 
      * @param lastModifiedDateTime the lastModifiedDateTime value to set.
      * @return the MicrosoftGraphBaseItemVersion object itself.
      */
@@ -85,7 +88,7 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
 
     /**
      * Get the publication property: publicationFacet.
-     *
+     * 
      * @return the publication value.
      */
     public MicrosoftGraphPublicationFacet publication() {
@@ -94,7 +97,7 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
 
     /**
      * Set the publication property: publicationFacet.
-     *
+     * 
      * @param publication the publication value to set.
      * @return the MicrosoftGraphBaseItemVersion object itself.
      */
@@ -105,17 +108,16 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: baseItemVersion.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: baseItemVersion.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphBaseItemVersion object itself.
      */
@@ -124,15 +126,9 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphBaseItemVersion withId(String id) {
         super.withId(id);
@@ -141,7 +137,7 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -153,5 +149,68 @@ public class MicrosoftGraphBaseItemVersion extends MicrosoftGraphEntity {
         if (publication() != null) {
             publication().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            this.lastModifiedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedDateTime));
+        jsonWriter.writeJsonField("publication", this.publication);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphBaseItemVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphBaseItemVersion if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphBaseItemVersion.
+     */
+    public static MicrosoftGraphBaseItemVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphBaseItemVersion deserializedMicrosoftGraphBaseItemVersion
+                = new MicrosoftGraphBaseItemVersion();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemVersion.withId(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemVersion.lastModifiedBy
+                        = MicrosoftGraphIdentitySet.fromJson(reader);
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemVersion.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("publication".equals(fieldName)) {
+                    deserializedMicrosoftGraphBaseItemVersion.publication
+                        = MicrosoftGraphPublicationFacet.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphBaseItemVersion.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphBaseItemVersion;
+        });
     }
 }

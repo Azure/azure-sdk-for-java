@@ -19,7 +19,10 @@ public final class CacheRulesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cacheRuleList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getCacheRules().list("myResourceGroup", "myRegistry",
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getCacheRules()
+            .list("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

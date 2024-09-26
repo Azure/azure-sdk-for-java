@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class QueryStringBehavior extends ExpandableStringEnum<QueryStringB
      * @param name a name to look for.
      * @return the corresponding QueryStringBehavior.
      */
-    @JsonCreator
     public static QueryStringBehavior fromString(String name) {
         return fromString(name, QueryStringBehavior.class);
     }

@@ -5,12 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AuthType;
 import com.azure.resourcemanager.appservice.models.EnvironmentVariable;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.VolumeMount;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -22,8 +24,22 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     /*
      * SiteContainer resource specific properties
      */
-    @JsonProperty(value = "properties")
     private SiteContainerProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of SiteContainerInner class.
@@ -33,11 +49,41 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the innerProperties property: SiteContainer resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteContainerProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -51,7 +97,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the image property: Image Name.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -60,7 +106,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the image property: Image Name.
-     *
+     * 
      * @param image the image value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -74,7 +120,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the targetPort property: Target Port.
-     *
+     * 
      * @return the targetPort value.
      */
     public String targetPort() {
@@ -83,7 +129,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the targetPort property: Target Port.
-     *
+     * 
      * @param targetPort the targetPort value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -98,7 +144,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     /**
      * Get the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the isMain value.
      */
     public Boolean isMain() {
@@ -108,7 +154,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
     /**
      * Set the isMain property: &lt;code&gt;true&lt;/code&gt; if the container is the main site container;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param isMain the isMain value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -122,7 +168,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the startUpCommand property: StartUp Command.
-     *
+     * 
      * @return the startUpCommand value.
      */
     public String startUpCommand() {
@@ -131,7 +177,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the startUpCommand property: StartUp Command.
-     *
+     * 
      * @param startUpCommand the startUpCommand value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -145,7 +191,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the authType property: Auth Type.
-     *
+     * 
      * @return the authType value.
      */
     public AuthType authType() {
@@ -154,7 +200,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the authType property: Auth Type.
-     *
+     * 
      * @param authType the authType value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -168,7 +214,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the username property: User Name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -177,7 +223,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the username property: User Name.
-     *
+     * 
      * @param username the username value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -191,7 +237,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the passwordSecret property: Password Secret.
-     *
+     * 
      * @return the passwordSecret value.
      */
     public String passwordSecret() {
@@ -200,7 +246,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the passwordSecret property: Password Secret.
-     *
+     * 
      * @param passwordSecret the passwordSecret value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -214,7 +260,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     *
+     * 
      * @return the userManagedIdentityClientId value.
      */
     public String userManagedIdentityClientId() {
@@ -223,7 +269,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the userManagedIdentityClientId property: UserManagedIdentity ClientId.
-     *
+     * 
      * @param userManagedIdentityClientId the userManagedIdentityClientId value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -237,7 +283,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the createdTime property: Created Time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -246,7 +292,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the lastModifiedTime property: Last Modified Time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -255,7 +301,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the volumeMounts property: List of volume mounts.
-     *
+     * 
      * @return the volumeMounts value.
      */
     public List<VolumeMount> volumeMounts() {
@@ -264,7 +310,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the volumeMounts property: List of volume mounts.
-     *
+     * 
      * @param volumeMounts the volumeMounts value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -278,7 +324,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Get the environmentVariables property: List of environment variables.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public List<EnvironmentVariable> environmentVariables() {
@@ -287,7 +333,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Set the environmentVariables property: List of environment variables.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the SiteContainerInner object itself.
      */
@@ -301,7 +347,7 @@ public final class SiteContainerInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -310,5 +356,51 @@ public final class SiteContainerInner extends ProxyOnlyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteContainerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteContainerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteContainerInner.
+     */
+    public static SiteContainerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteContainerInner deserializedSiteContainerInner = new SiteContainerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSiteContainerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSiteContainerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSiteContainerInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteContainerInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSiteContainerInner.innerProperties = SiteContainerProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteContainerInner;
+        });
     }
 }

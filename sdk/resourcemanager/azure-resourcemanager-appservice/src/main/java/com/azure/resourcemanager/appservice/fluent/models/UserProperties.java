@@ -6,41 +6,40 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * User resource specific properties.
  */
 @Fluent
-public final class UserProperties {
+public final class UserProperties implements JsonSerializable<UserProperties> {
     /*
      * Username used for publishing.
      */
-    @JsonProperty(value = "publishingUserName", required = true)
     private String publishingUsername;
 
     /*
      * Password used for publishing.
      */
-    @JsonProperty(value = "publishingPassword")
     private String publishingPassword;
 
     /*
      * Password hash used for publishing.
      */
-    @JsonProperty(value = "publishingPasswordHash")
     private String publishingPasswordHash;
 
     /*
      * Password hash salt used for publishing.
      */
-    @JsonProperty(value = "publishingPasswordHashSalt")
     private String publishingPasswordHashSalt;
 
     /*
      * Url of SCM site.
      */
-    @JsonProperty(value = "scmUri")
     private String scmUri;
 
     /**
@@ -163,4 +162,53 @@ public final class UserProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publishingUserName", this.publishingUsername);
+        jsonWriter.writeStringField("publishingPassword", this.publishingPassword);
+        jsonWriter.writeStringField("publishingPasswordHash", this.publishingPasswordHash);
+        jsonWriter.writeStringField("publishingPasswordHashSalt", this.publishingPasswordHashSalt);
+        jsonWriter.writeStringField("scmUri", this.scmUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserProperties.
+     */
+    public static UserProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserProperties deserializedUserProperties = new UserProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publishingUserName".equals(fieldName)) {
+                    deserializedUserProperties.publishingUsername = reader.getString();
+                } else if ("publishingPassword".equals(fieldName)) {
+                    deserializedUserProperties.publishingPassword = reader.getString();
+                } else if ("publishingPasswordHash".equals(fieldName)) {
+                    deserializedUserProperties.publishingPasswordHash = reader.getString();
+                } else if ("publishingPasswordHashSalt".equals(fieldName)) {
+                    deserializedUserProperties.publishingPasswordHashSalt = reader.getString();
+                } else if ("scmUri".equals(fieldName)) {
+                    deserializedUserProperties.scmUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserProperties;
+        });
+    }
 }

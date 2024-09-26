@@ -23,10 +23,16 @@ public final class RulesUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void rulesUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.cdnProfiles().manager().serviceClient().getRules().update("RG", "profile1", "ruleSet1", "rule1",
-            new RuleUpdateParameters().withOrder(1).withActions(
-                Arrays.asList(new DeliveryRuleResponseHeaderAction().withParameters(new HeaderActionParameters()
-                    .withHeaderAction(HeaderAction.OVERWRITE).withHeaderName("X-CDN").withValue("MSFT")))),
-            com.azure.core.util.Context.NONE);
+        azure.cdnProfiles()
+            .manager()
+            .serviceClient()
+            .getRules()
+            .update("RG", "profile1", "ruleSet1", "rule1",
+                new RuleUpdateParameters().withOrder(1)
+                    .withActions(Arrays.asList(new DeliveryRuleResponseHeaderAction()
+                        .withParameters(new HeaderActionParameters().withHeaderAction(HeaderAction.OVERWRITE)
+                            .withHeaderName("X-CDN")
+                            .withValue("MSFT")))),
+                com.azure.core.util.Context.NONE);
     }
 }

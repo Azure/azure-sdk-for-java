@@ -6,37 +6,37 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An object that defines the blob inventory rule.
  */
 @Fluent
-public final class BlobInventoryPolicyDefinition {
+public final class BlobInventoryPolicyDefinition implements JsonSerializable<BlobInventoryPolicyDefinition> {
     /*
      * An object that defines the filter set.
      */
-    @JsonProperty(value = "filters")
     private BlobInventoryPolicyFilter filters;
 
     /*
      * This is a required field, it specifies the format for the inventory files.
      */
-    @JsonProperty(value = "format", required = true)
     private Format format;
 
     /*
      * This is a required field. This field is used to schedule an inventory formation.
      */
-    @JsonProperty(value = "schedule", required = true)
     private Schedule schedule;
 
     /*
      * This is a required field. This field specifies the scope of the inventory created either at the blob or container
      * level.
      */
-    @JsonProperty(value = "objectType", required = true)
     private ObjectType objectType;
 
     /*
@@ -57,7 +57,6 @@ public final class BlobInventoryPolicyDefinition {
      * Group, Permissions, Acl, DeletionId' are valid only for Hns enabled accounts.Schema field values 'Tags, TagCount'
      * are only valid for Non-Hns accounts.
      */
-    @JsonProperty(value = "schemaFields", required = true)
     private List<String> schemaFields;
 
     /**
@@ -230,4 +229,55 @@ public final class BlobInventoryPolicyDefinition {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobInventoryPolicyDefinition.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        jsonWriter.writeStringField("schedule", this.schedule == null ? null : this.schedule.toString());
+        jsonWriter.writeStringField("objectType", this.objectType == null ? null : this.objectType.toString());
+        jsonWriter.writeArrayField("schemaFields", this.schemaFields, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("filters", this.filters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobInventoryPolicyDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobInventoryPolicyDefinition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobInventoryPolicyDefinition.
+     */
+    public static BlobInventoryPolicyDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobInventoryPolicyDefinition deserializedBlobInventoryPolicyDefinition
+                = new BlobInventoryPolicyDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("format".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyDefinition.format = Format.fromString(reader.getString());
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyDefinition.schedule = Schedule.fromString(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyDefinition.objectType = ObjectType.fromString(reader.getString());
+                } else if ("schemaFields".equals(fieldName)) {
+                    List<String> schemaFields = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBlobInventoryPolicyDefinition.schemaFields = schemaFields;
+                } else if ("filters".equals(fieldName)) {
+                    deserializedBlobInventoryPolicyDefinition.filters = BlobInventoryPolicyFilter.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBlobInventoryPolicyDefinition;
+        });
+    }
 }

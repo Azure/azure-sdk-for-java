@@ -6,62 +6,58 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Hubspot Service linked service properties.
  */
 @Fluent
-public final class HubspotLinkedServiceTypeProperties {
+public final class HubspotLinkedServiceTypeProperties implements JsonSerializable<HubspotLinkedServiceTypeProperties> {
     /*
      * The client ID associated with your Hubspot application.
      */
-    @JsonProperty(value = "clientId", required = true)
     private Object clientId;
 
     /*
      * The client secret associated with your Hubspot application.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The access token obtained when initially authenticating your OAuth integration.
      */
-    @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
      * The refresh token obtained when initially authenticating your OAuth integration.
      */
-    @JsonProperty(value = "refreshToken")
     private SecretBase refreshToken;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -261,4 +257,63 @@ public final class HubspotLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HubspotLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeJsonField("accessToken", this.accessToken);
+        jsonWriter.writeJsonField("refreshToken", this.refreshToken);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubspotLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubspotLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HubspotLinkedServiceTypeProperties.
+     */
+    public static HubspotLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubspotLinkedServiceTypeProperties deserializedHubspotLinkedServiceTypeProperties
+                = new HubspotLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.accessToken = SecretBase.fromJson(reader);
+                } else if ("refreshToken".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.refreshToken = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.useHostVerification = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.usePeerVerification = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedHubspotLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubspotLinkedServiceTypeProperties;
+        });
+    }
 }

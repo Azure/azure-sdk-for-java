@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,7 +38,6 @@ public final class OutboundType extends ExpandableStringEnum<OutboundType> {
      * @param name a name to look for.
      * @return the corresponding OutboundType.
      */
-    @JsonCreator
     public static OutboundType fromString(String name) {
         return fromString(name, OutboundType.class);
     }

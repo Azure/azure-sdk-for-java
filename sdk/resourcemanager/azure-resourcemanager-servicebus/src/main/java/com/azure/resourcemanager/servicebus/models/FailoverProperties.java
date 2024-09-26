@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.fluent.models.FailoverPropertiesProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Safe failover is to indicate the service should wait for pending replication to finish before switching to the
  * secondary.
  */
 @Fluent
-public final class FailoverProperties {
+public final class FailoverProperties implements JsonSerializable<FailoverProperties> {
     /*
      * Safe failover is to indicate the service should wait for pending replication to finish before switching to the
      * secondary.
      */
-    @JsonProperty(value = "properties")
     private FailoverPropertiesProperties innerProperties;
+
+    /**
+     * Creates an instance of FailoverProperties class.
+     */
+    public FailoverProperties() {
+    }
 
     /**
      * Get the innerProperties property: Safe failover is to indicate the service should wait for pending replication to
      * finish before switching to the secondary.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FailoverPropertiesProperties innerProperties() {
@@ -34,7 +43,7 @@ public final class FailoverProperties {
     /**
      * Get the isSafeFailover property: Safe failover is to indicate the service should wait for pending replication to
      * finish before switching to the secondary.
-     *
+     * 
      * @return the isSafeFailover value.
      */
     public Boolean isSafeFailover() {
@@ -44,7 +53,7 @@ public final class FailoverProperties {
     /**
      * Set the isSafeFailover property: Safe failover is to indicate the service should wait for pending replication to
      * finish before switching to the secondary.
-     *
+     * 
      * @param isSafeFailover the isSafeFailover value to set.
      * @return the FailoverProperties object itself.
      */
@@ -58,12 +67,48 @@ public final class FailoverProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FailoverProperties.
+     */
+    public static FailoverProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverProperties deserializedFailoverProperties = new FailoverProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedFailoverProperties.innerProperties = FailoverPropertiesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverProperties;
+        });
     }
 }

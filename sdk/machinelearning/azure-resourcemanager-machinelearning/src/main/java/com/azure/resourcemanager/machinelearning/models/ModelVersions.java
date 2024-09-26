@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ModelVersions. */
+/**
+ * Resource collection API of ModelVersions.
+ */
 public interface ModelVersions {
     /**
      * List model versions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Model name. This is case-sensitive.
@@ -25,7 +27,7 @@ public interface ModelVersions {
 
     /**
      * List model versions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Model name. This is case-sensitive.
@@ -45,25 +47,13 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a paginated list of ModelVersion entities as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ModelVersion> list(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        String skip,
-        String orderBy,
-        Integer top,
-        String version,
-        String description,
-        Integer offset,
-        String tags,
-        String properties,
-        String feed,
-        ListViewType listViewType,
-        Context context);
+    PagedIterable<ModelVersion> list(String resourceGroupName, String workspaceName, String name, String skip,
+        String orderBy, Integer top, String version, String description, Integer offset, String tags, String properties,
+        String feed, ListViewType listViewType, Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -74,12 +64,12 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name, String version,
+        Context context);
 
     /**
      * Delete version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -92,7 +82,7 @@ public interface ModelVersions {
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -103,12 +93,12 @@ public interface ModelVersions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return version along with {@link Response}.
      */
-    Response<ModelVersion> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context);
+    Response<ModelVersion> getWithResponse(String resourceGroupName, String workspaceName, String name, String version,
+        Context context);
 
     /**
      * Get version.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -121,8 +111,38 @@ public interface ModelVersions {
     ModelVersion get(String resourceGroupName, String workspaceName, String name, String version);
 
     /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body);
+
+    /**
+     * Publish version asset into registry.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param name Container name.
+     * @param version Version identifier.
+     * @param body Destination registry info.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void publish(String resourceGroupName, String workspaceName, String name, String version, DestinationAsset body,
+        Context context);
+
+    /**
      * Get version.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,7 +153,7 @@ public interface ModelVersions {
 
     /**
      * Get version.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +165,7 @@ public interface ModelVersions {
 
     /**
      * Delete version.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,7 +175,7 @@ public interface ModelVersions {
 
     /**
      * Delete version.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +187,7 @@ public interface ModelVersions {
 
     /**
      * Begins definition for a new ModelVersion resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ModelVersion definition.
      */

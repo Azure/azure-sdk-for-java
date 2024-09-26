@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicaType. */
+/**
+ * Defines values for ReplicaType.
+ */
 public final class ReplicaType extends ExpandableStringEnum<ReplicaType> {
-    /** Static value Primary for ReplicaType. */
+    /**
+     * Static value Primary for ReplicaType.
+     */
     public static final ReplicaType PRIMARY = fromString("Primary");
 
-    /** Static value ReadableSecondary for ReplicaType. */
+    /**
+     * Static value ReadableSecondary for ReplicaType.
+     */
     public static final ReplicaType READABLE_SECONDARY = fromString("ReadableSecondary");
 
     /**
+     * Creates a new instance of ReplicaType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ReplicaType() {
+    }
+
+    /**
      * Creates or finds a ReplicaType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReplicaType.
      */
-    @JsonCreator
     public static ReplicaType fromString(String name) {
         return fromString(name, ReplicaType.class);
     }
 
     /**
      * Gets known ReplicaType values.
-     *
+     * 
      * @return known ReplicaType values.
      */
     public static Collection<ReplicaType> values() {

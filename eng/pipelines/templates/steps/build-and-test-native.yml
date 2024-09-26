@@ -31,7 +31,7 @@ parameters:
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
 
 steps:
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build for non-From Source run'
     inputs:
       mavenPomFile: pom.xml
@@ -44,7 +44,7 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Run tests'
     inputs:
       mavenPomFile: pom.xml
@@ -67,7 +67,7 @@ steps:
       arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Generate aggregate code coverage report'
     condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
@@ -78,7 +78,7 @@ steps:
       jdkDirectory: $(Agent.BuildDirectory)/graalvm-22.3.0
       goals: jacoco:report-aggregate
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml
@@ -96,7 +96,7 @@ steps:
     env:  ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Run tests for From Source run'
     inputs:
       mavenPomFile: ClientFromSourcePom.xml
@@ -133,12 +133,17 @@ steps:
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 
+  # Dotnet core sdk task 7.0.x. This is a prerequisite for PublishCodeCoverageResults@2
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk 7.0.x'
+    inputs:
+      version: 7.0.x
+
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
-  - task: PublishCodeCoverageResults@1
+  - task: PublishCodeCoverageResults@2
     condition: eq(variables['RunAggregateReports'], 'true')
     inputs:
-      codeCoverageTool: JaCoCo
       summaryFileLocation: target/site/test-coverage/jacoco.xml
       reportDirectory: target/site/test-coverage/
       failIfCoverageEmpty: false

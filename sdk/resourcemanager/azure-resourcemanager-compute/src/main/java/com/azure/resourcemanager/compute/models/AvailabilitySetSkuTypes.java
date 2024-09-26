@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +37,6 @@ public final class AvailabilitySetSkuTypes extends ExpandableStringEnum<Availabi
      * @param name a name to look for.
      * @return the corresponding AvailabilitySetSkuTypes.
      */
-    @JsonCreator
     public static AvailabilitySetSkuTypes fromString(String name) {
         return fromString(name, AvailabilitySetSkuTypes.class);
     }

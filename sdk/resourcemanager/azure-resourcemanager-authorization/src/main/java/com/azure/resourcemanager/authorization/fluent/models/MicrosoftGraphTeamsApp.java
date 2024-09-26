@@ -5,54 +5,54 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** teamsApp. */
+/**
+ * teamsApp.
+ */
 @Fluent
 public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     /*
      * The name of the catalog app provided by the app developer in the Microsoft Teams zip app package.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * teamsAppDistributionMethod
      */
-    @JsonProperty(value = "distributionMethod")
     private MicrosoftGraphTeamsAppDistributionMethod distributionMethod;
 
     /*
      * The ID of the catalog provided by the app developer in the Microsoft Teams zip app package.
      */
-    @JsonProperty(value = "externalId")
     private String externalId;
 
     /*
      * The details for each version of the app.
      */
-    @JsonProperty(value = "appDefinitions")
     private List<MicrosoftGraphTeamsAppDefinition> appDefinitions;
 
     /*
      * teamsApp
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphTeamsApp class. */
+    /**
+     * Creates an instance of MicrosoftGraphTeamsApp class.
+     */
     public MicrosoftGraphTeamsApp() {
     }
 
     /**
      * Get the displayName property: The name of the catalog app provided by the app developer in the Microsoft Teams
      * zip app package.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -62,7 +62,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     /**
      * Set the displayName property: The name of the catalog app provided by the app developer in the Microsoft Teams
      * zip app package.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphTeamsApp object itself.
      */
@@ -73,7 +73,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
 
     /**
      * Get the distributionMethod property: teamsAppDistributionMethod.
-     *
+     * 
      * @return the distributionMethod value.
      */
     public MicrosoftGraphTeamsAppDistributionMethod distributionMethod() {
@@ -82,7 +82,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
 
     /**
      * Set the distributionMethod property: teamsAppDistributionMethod.
-     *
+     * 
      * @param distributionMethod the distributionMethod value to set.
      * @return the MicrosoftGraphTeamsApp object itself.
      */
@@ -94,7 +94,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     /**
      * Get the externalId property: The ID of the catalog provided by the app developer in the Microsoft Teams zip app
      * package.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -104,7 +104,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
     /**
      * Set the externalId property: The ID of the catalog provided by the app developer in the Microsoft Teams zip app
      * package.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the MicrosoftGraphTeamsApp object itself.
      */
@@ -115,7 +115,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
 
     /**
      * Get the appDefinitions property: The details for each version of the app.
-     *
+     * 
      * @return the appDefinitions value.
      */
     public List<MicrosoftGraphTeamsAppDefinition> appDefinitions() {
@@ -124,7 +124,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
 
     /**
      * Set the appDefinitions property: The details for each version of the app.
-     *
+     * 
      * @param appDefinitions the appDefinitions value to set.
      * @return the MicrosoftGraphTeamsApp object itself.
      */
@@ -135,17 +135,16 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: teamsApp.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: teamsApp.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphTeamsApp object itself.
      */
@@ -154,15 +153,9 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphTeamsApp withId(String id) {
         super.withId(id);
@@ -171,7 +164,7 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -180,5 +173,69 @@ public final class MicrosoftGraphTeamsApp extends MicrosoftGraphEntity {
         if (appDefinitions() != null) {
             appDefinitions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("distributionMethod",
+            this.distributionMethod == null ? null : this.distributionMethod.toString());
+        jsonWriter.writeStringField("externalId", this.externalId);
+        jsonWriter.writeArrayField("appDefinitions", this.appDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphTeamsApp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphTeamsApp if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphTeamsApp.
+     */
+    public static MicrosoftGraphTeamsApp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphTeamsApp deserializedMicrosoftGraphTeamsApp = new MicrosoftGraphTeamsApp();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsApp.withId(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsApp.displayName = reader.getString();
+                } else if ("distributionMethod".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsApp.distributionMethod
+                        = MicrosoftGraphTeamsAppDistributionMethod.fromString(reader.getString());
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedMicrosoftGraphTeamsApp.externalId = reader.getString();
+                } else if ("appDefinitions".equals(fieldName)) {
+                    List<MicrosoftGraphTeamsAppDefinition> appDefinitions
+                        = reader.readArray(reader1 -> MicrosoftGraphTeamsAppDefinition.fromJson(reader1));
+                    deserializedMicrosoftGraphTeamsApp.appDefinitions = appDefinitions;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphTeamsApp.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphTeamsApp;
+        });
     }
 }

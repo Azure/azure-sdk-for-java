@@ -73,25 +73,30 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
 
     @Test
     void customizerShouldBeCalledOnEachCreatedClient() {
-        AtomicInteger calledTimes = new AtomicInteger();
+        AtomicInteger clientBuilderCalledTimes = new AtomicInteger();
+        AtomicInteger senderClientBuilderCalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProducerFactory factory = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
 
-        factory.addBuilderCustomizer(builder -> calledTimes.getAndIncrement());
+        factory.addServiceBusClientBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
+        factory.addBuilderCustomizer(builder -> senderClientBuilderCalledTimes.getAndIncrement());
 
         factory.createProducer("queue-1");
         factory.createProducer("queue-2");
         factory.createProducer("topic-1");
         factory.createProducer("topic-2");
 
-        assertEquals(4, calledTimes.get());
+        assertEquals(4, clientBuilderCalledTimes.get());
+        assertEquals(4, senderClientBuilderCalledTimes.get());
     }
 
     @Test
     void dedicatedCustomizerShouldBeCalledOnlyWhenMatchingClientsCreated() {
+        AtomicInteger clientBuilderCalledTimes = new AtomicInteger();
         AtomicInteger customizer1CalledTimes = new AtomicInteger();
         AtomicInteger customizer2CalledTimes = new AtomicInteger();
         DefaultServiceBusNamespaceProducerFactory factory = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
 
+        factory.addServiceBusClientBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("queue-1", builder -> customizer1CalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("topic-2", builder -> customizer2CalledTimes.getAndIncrement());
 
@@ -100,6 +105,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
         factory.createProducer("topic-1");
         factory.createProducer("topic-2");
 
+        assertEquals(4, clientBuilderCalledTimes.get());
         assertEquals(1, customizer1CalledTimes.get());
         assertEquals(1, customizer2CalledTimes.get());
     }

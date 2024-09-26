@@ -5,41 +5,42 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Entity representing the reference to the template.
  */
 @Fluent
-public final class DeploymentStacksTemplateLink {
+public final class DeploymentStacksTemplateLink implements JsonSerializable<DeploymentStacksTemplateLink> {
     /*
      * The URI of the template to deploy. Use either the uri or id property, but not both.
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * The resourceId of a Template Spec. Use either the id or uri property, but not both.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The relativePath property can be used to deploy a linked template at a location relative to the parent. If the parent template was linked with a TemplateSpec, this will reference an artifact in the TemplateSpec.  If the parent was linked with a URI, the child deployment will be a combination of the parent and relativePath URIs.
+     * The relativePath property can be used to deploy a linked template at a location relative to the parent. If the
+     * parent template was linked with a TemplateSpec, this will reference an artifact in the TemplateSpec. If the
+     * parent was linked with a URI, the child deployment will be a combination of the parent and relativePath URIs.
      */
-    @JsonProperty(value = "relativePath")
     private String relativePath;
 
     /*
      * The query string (for example, a SAS token) to be used with the templateLink URI.
      */
-    @JsonProperty(value = "queryString")
     private String queryString;
 
     /*
      * If included, must match the ContentVersion in the template.
      */
-    @JsonProperty(value = "contentVersion")
     private String contentVersion;
 
     /**
@@ -160,5 +161,53 @@ public final class DeploymentStacksTemplateLink {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uri", this.uri);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("relativePath", this.relativePath);
+        jsonWriter.writeStringField("queryString", this.queryString);
+        jsonWriter.writeStringField("contentVersion", this.contentVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentStacksTemplateLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentStacksTemplateLink if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentStacksTemplateLink.
+     */
+    public static DeploymentStacksTemplateLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentStacksTemplateLink deserializedDeploymentStacksTemplateLink = new DeploymentStacksTemplateLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uri".equals(fieldName)) {
+                    deserializedDeploymentStacksTemplateLink.uri = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedDeploymentStacksTemplateLink.id = reader.getString();
+                } else if ("relativePath".equals(fieldName)) {
+                    deserializedDeploymentStacksTemplateLink.relativePath = reader.getString();
+                } else if ("queryString".equals(fieldName)) {
+                    deserializedDeploymentStacksTemplateLink.queryString = reader.getString();
+                } else if ("contentVersion".equals(fieldName)) {
+                    deserializedDeploymentStacksTemplateLink.contentVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentStacksTemplateLink;
+        });
     }
 }

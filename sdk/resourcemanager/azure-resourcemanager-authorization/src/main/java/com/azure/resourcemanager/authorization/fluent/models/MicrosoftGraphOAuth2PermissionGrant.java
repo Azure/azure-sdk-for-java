@@ -5,21 +5,22 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** oAuth2PermissionGrant. */
+/**
+ * oAuth2PermissionGrant.
+ */
 @Fluent
 public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEntity {
     /*
      * The id of the client service principal for the application which is authorized to act on behalf of a signed-in
      * user when accessing an API. Required. Supports $filter (eq only).
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
@@ -29,21 +30,18 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * may be authorized to consent on behalf of themselves in some cases, for some delegated permissions. Required.
      * Supports $filter (eq only).
      */
-    @JsonProperty(value = "consentType")
     private String consentType;
 
     /*
      * The id of the user on behalf of whom the client is authorized to access the resource, when consentType is
      * Principal. If consentType is AllPrincipals this value is null. Required when consentType is Principal.
      */
-    @JsonProperty(value = "principalId")
     private String principalId;
 
     /*
      * The id of the resource service principal to which access is authorized. This identifies the API which the client
      * is authorized to attempt to call on behalf of a signed-in user.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
@@ -52,22 +50,23 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * should match the value field of one of the delegated permissions defined by the API, listed in the
      * publishedPermissionScopes property of the resource service principal.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * oAuth2PermissionGrant
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOAuth2PermissionGrant class. */
+    /**
+     * Creates an instance of MicrosoftGraphOAuth2PermissionGrant class.
+     */
     public MicrosoftGraphOAuth2PermissionGrant() {
     }
 
     /**
      * Get the clientId property: The id of the client service principal for the application which is authorized to act
      * on behalf of a signed-in user when accessing an API. Required. Supports $filter (eq only).
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -77,7 +76,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
     /**
      * Set the clientId property: The id of the client service principal for the application which is authorized to act
      * on behalf of a signed-in user when accessing an API. Required. Supports $filter (eq only).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the MicrosoftGraphOAuth2PermissionGrant object itself.
      */
@@ -92,7 +91,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * indicates authorization to impersonate a specific user. Consent on behalf of all users can be granted by an
      * administrator. Non-admin users may be authorized to consent on behalf of themselves in some cases, for some
      * delegated permissions. Required. Supports $filter (eq only).
-     *
+     * 
      * @return the consentType value.
      */
     public String consentType() {
@@ -105,7 +104,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * indicates authorization to impersonate a specific user. Consent on behalf of all users can be granted by an
      * administrator. Non-admin users may be authorized to consent on behalf of themselves in some cases, for some
      * delegated permissions. Required. Supports $filter (eq only).
-     *
+     * 
      * @param consentType the consentType value to set.
      * @return the MicrosoftGraphOAuth2PermissionGrant object itself.
      */
@@ -118,7 +117,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * Get the principalId property: The id of the user on behalf of whom the client is authorized to access the
      * resource, when consentType is Principal. If consentType is AllPrincipals this value is null. Required when
      * consentType is Principal.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -129,7 +128,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * Set the principalId property: The id of the user on behalf of whom the client is authorized to access the
      * resource, when consentType is Principal. If consentType is AllPrincipals this value is null. Required when
      * consentType is Principal.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the MicrosoftGraphOAuth2PermissionGrant object itself.
      */
@@ -141,7 +140,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
     /**
      * Get the resourceId property: The id of the resource service principal to which access is authorized. This
      * identifies the API which the client is authorized to attempt to call on behalf of a signed-in user.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -151,7 +150,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
     /**
      * Set the resourceId property: The id of the resource service principal to which access is authorized. This
      * identifies the API which the client is authorized to attempt to call on behalf of a signed-in user.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the MicrosoftGraphOAuth2PermissionGrant object itself.
      */
@@ -165,7 +164,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * included in access tokens for the resource application (the API). For example, openid User.Read
      * GroupMember.Read.All. Each claim value should match the value field of one of the delegated permissions defined
      * by the API, listed in the publishedPermissionScopes property of the resource service principal.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -177,7 +176,7 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
      * included in access tokens for the resource application (the API). For example, openid User.Read
      * GroupMember.Read.All. Each claim value should match the value field of one of the delegated permissions defined
      * by the API, listed in the publishedPermissionScopes property of the resource service principal.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the MicrosoftGraphOAuth2PermissionGrant object itself.
      */
@@ -188,17 +187,16 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
 
     /**
      * Get the additionalProperties property: oAuth2PermissionGrant.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: oAuth2PermissionGrant.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOAuth2PermissionGrant object itself.
      */
@@ -207,15 +205,9 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOAuth2PermissionGrant withId(String id) {
         super.withId(id);
@@ -224,11 +216,74 @@ public final class MicrosoftGraphOAuth2PermissionGrant extends MicrosoftGraphEnt
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("consentType", this.consentType);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("scope", this.scope);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOAuth2PermissionGrant from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOAuth2PermissionGrant if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOAuth2PermissionGrant.
+     */
+    public static MicrosoftGraphOAuth2PermissionGrant fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOAuth2PermissionGrant deserializedMicrosoftGraphOAuth2PermissionGrant
+                = new MicrosoftGraphOAuth2PermissionGrant();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOAuth2PermissionGrant.withId(reader.getString());
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOAuth2PermissionGrant.clientId = reader.getString();
+                } else if ("consentType".equals(fieldName)) {
+                    deserializedMicrosoftGraphOAuth2PermissionGrant.consentType = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOAuth2PermissionGrant.principalId = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedMicrosoftGraphOAuth2PermissionGrant.resourceId = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedMicrosoftGraphOAuth2PermissionGrant.scope = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOAuth2PermissionGrant.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOAuth2PermissionGrant;
+        });
     }
 }

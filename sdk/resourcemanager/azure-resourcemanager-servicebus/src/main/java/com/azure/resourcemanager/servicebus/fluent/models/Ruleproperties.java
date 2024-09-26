@@ -5,44 +5,52 @@
 package com.azure.resourcemanager.servicebus.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicebus.models.Action;
 import com.azure.resourcemanager.servicebus.models.CorrelationFilter;
 import com.azure.resourcemanager.servicebus.models.FilterType;
 import com.azure.resourcemanager.servicebus.models.SqlFilter;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Description of Rule Resource. */
+/**
+ * Description of Rule Resource.
+ */
 @Fluent
-public final class Ruleproperties {
+public final class Ruleproperties implements JsonSerializable<Ruleproperties> {
     /*
      * Represents the filter actions which are allowed for the transformation of a message that have been matched by a
      * filter expression.
      */
-    @JsonProperty(value = "action")
     private Action action;
 
     /*
      * Filter type that is evaluated against a BrokeredMessage.
      */
-    @JsonProperty(value = "filterType")
     private FilterType filterType;
 
     /*
      * Properties of sqlFilter
      */
-    @JsonProperty(value = "sqlFilter")
     private SqlFilter sqlFilter;
 
     /*
      * Properties of correlationFilter
      */
-    @JsonProperty(value = "correlationFilter")
     private CorrelationFilter correlationFilter;
+
+    /**
+     * Creates an instance of Ruleproperties class.
+     */
+    public Ruleproperties() {
+    }
 
     /**
      * Get the action property: Represents the filter actions which are allowed for the transformation of a message that
      * have been matched by a filter expression.
-     *
+     * 
      * @return the action value.
      */
     public Action action() {
@@ -52,7 +60,7 @@ public final class Ruleproperties {
     /**
      * Set the action property: Represents the filter actions which are allowed for the transformation of a message that
      * have been matched by a filter expression.
-     *
+     * 
      * @param action the action value to set.
      * @return the Ruleproperties object itself.
      */
@@ -63,7 +71,7 @@ public final class Ruleproperties {
 
     /**
      * Get the filterType property: Filter type that is evaluated against a BrokeredMessage.
-     *
+     * 
      * @return the filterType value.
      */
     public FilterType filterType() {
@@ -72,7 +80,7 @@ public final class Ruleproperties {
 
     /**
      * Set the filterType property: Filter type that is evaluated against a BrokeredMessage.
-     *
+     * 
      * @param filterType the filterType value to set.
      * @return the Ruleproperties object itself.
      */
@@ -83,7 +91,7 @@ public final class Ruleproperties {
 
     /**
      * Get the sqlFilter property: Properties of sqlFilter.
-     *
+     * 
      * @return the sqlFilter value.
      */
     public SqlFilter sqlFilter() {
@@ -92,7 +100,7 @@ public final class Ruleproperties {
 
     /**
      * Set the sqlFilter property: Properties of sqlFilter.
-     *
+     * 
      * @param sqlFilter the sqlFilter value to set.
      * @return the Ruleproperties object itself.
      */
@@ -103,7 +111,7 @@ public final class Ruleproperties {
 
     /**
      * Get the correlationFilter property: Properties of correlationFilter.
-     *
+     * 
      * @return the correlationFilter value.
      */
     public CorrelationFilter correlationFilter() {
@@ -112,7 +120,7 @@ public final class Ruleproperties {
 
     /**
      * Set the correlationFilter property: Properties of correlationFilter.
-     *
+     * 
      * @param correlationFilter the correlationFilter value to set.
      * @return the Ruleproperties object itself.
      */
@@ -123,7 +131,7 @@ public final class Ruleproperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -136,5 +144,50 @@ public final class Ruleproperties {
         if (correlationFilter() != null) {
             correlationFilter().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("action", this.action);
+        jsonWriter.writeStringField("filterType", this.filterType == null ? null : this.filterType.toString());
+        jsonWriter.writeJsonField("sqlFilter", this.sqlFilter);
+        jsonWriter.writeJsonField("correlationFilter", this.correlationFilter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Ruleproperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Ruleproperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Ruleproperties.
+     */
+    public static Ruleproperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Ruleproperties deserializedRuleproperties = new Ruleproperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("action".equals(fieldName)) {
+                    deserializedRuleproperties.action = Action.fromJson(reader);
+                } else if ("filterType".equals(fieldName)) {
+                    deserializedRuleproperties.filterType = FilterType.fromString(reader.getString());
+                } else if ("sqlFilter".equals(fieldName)) {
+                    deserializedRuleproperties.sqlFilter = SqlFilter.fromJson(reader);
+                } else if ("correlationFilter".equals(fieldName)) {
+                    deserializedRuleproperties.correlationFilter = CorrelationFilter.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRuleproperties;
+        });
     }
 }

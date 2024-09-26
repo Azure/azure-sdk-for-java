@@ -5,41 +5,41 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Gets the workflow trigger callback URL query parameters.
  */
 @Fluent
-public final class WorkflowTriggerListCallbackUrlQueries {
+public final class WorkflowTriggerListCallbackUrlQueries
+    implements JsonSerializable<WorkflowTriggerListCallbackUrlQueries> {
     /*
      * The api version.
      */
-    @JsonProperty(value = "api-version")
     private String apiVersion;
 
     /*
      * The SAS permissions.
      */
-    @JsonProperty(value = "sp")
     private String sp;
 
     /*
      * The SAS version.
      */
-    @JsonProperty(value = "sv")
     private String sv;
 
     /*
      * The SAS signature.
      */
-    @JsonProperty(value = "sig")
     private String sig;
 
     /*
      * The SAS timestamp.
      */
-    @JsonProperty(value = "se")
     private String se;
 
     /**
@@ -154,5 +154,54 @@ public final class WorkflowTriggerListCallbackUrlQueries {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("api-version", this.apiVersion);
+        jsonWriter.writeStringField("sp", this.sp);
+        jsonWriter.writeStringField("sv", this.sv);
+        jsonWriter.writeStringField("sig", this.sig);
+        jsonWriter.writeStringField("se", this.se);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowTriggerListCallbackUrlQueries from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowTriggerListCallbackUrlQueries if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkflowTriggerListCallbackUrlQueries.
+     */
+    public static WorkflowTriggerListCallbackUrlQueries fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowTriggerListCallbackUrlQueries deserializedWorkflowTriggerListCallbackUrlQueries
+                = new WorkflowTriggerListCallbackUrlQueries();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("api-version".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.apiVersion = reader.getString();
+                } else if ("sp".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.sp = reader.getString();
+                } else if ("sv".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.sv = reader.getString();
+                } else if ("sig".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.sig = reader.getString();
+                } else if ("se".equals(fieldName)) {
+                    deserializedWorkflowTriggerListCallbackUrlQueries.se = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowTriggerListCallbackUrlQueries;
+        });
     }
 }

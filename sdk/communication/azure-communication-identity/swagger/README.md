@@ -27,7 +27,7 @@ autorest --java
 ``` yaml
 java: true
 output-folder: ..\
-use: '@autorest/java@4.1.17'
+use: '@autorest/java@4.1.27'
 tag: package-2023-10
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5797d78f04cd8ca773be82d2c99a3294009b3f0a/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
@@ -45,6 +45,7 @@ generate-client-as-impl: true
 service-interface-as-public: true
 context-client-method-parameter: true
 enable-sync-stack: true
+stream-style-serialization: true
 ```
 
 ### Rename CommunicationIdentityTokenScope to CommunicationTokenScope
@@ -54,4 +55,13 @@ directive:
     where: $.definitions.CommunicationIdentityTokenScope
     transform: >
       $["x-ms-enum"].name = "CommunicationTokenScope";
+```
+
+### Directive changing GetTokenForTeamsUserOptions to required properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.GetTokenForTeamsUserOptions
+    transform: >
+     $.required = [ "token", "appId", "userId" ];
 ```

@@ -198,6 +198,7 @@ class ServiceBusBinderConfigurationTests {
         this.contextRunner
             .withBean(ServiceBusProvisioner.class, () -> mock(ServiceBusProvisioner.class))
             .withPropertyValues("spring.cloud.azure.servicebus.namespace=fake-namespace")
+            .withBean("client-customizer1", ServiceBusClientBuilderCustomizer.class, ServiceBusClientBuilderCustomizer::new)
             .withBean("producer-customizer1", ServiceBusSenderClientBuilderCustomizer.class, ServiceBusSenderClientBuilderCustomizer::new)
             .withBean("processor-customizer1", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
             .withBean("processor-customizer2", ServiceBusProcessorClientBuilderCustomizer.class, ServiceBusProcessorClientBuilderCustomizer::new)
@@ -211,9 +212,18 @@ class ServiceBusBinderConfigurationTests {
 
                 ServiceBusBinderConfiguration.DefaultProcessorFactoryCustomizer defaultFactoryCustomizer = (ServiceBusBinderConfiguration.DefaultProcessorFactoryCustomizer) clientFactoryCustomizer;
 
+                assertEquals(1, (int) defaultFactoryCustomizer.getClientBuilderCustomizers().stream().count());
                 assertEquals(2, (int) defaultFactoryCustomizer.getProcessorClientBuilderCustomizers().stream().count());
                 assertEquals(3, (int) defaultFactoryCustomizer.getSessionProcessorClientBuilderCustomizers().stream().count());
             });
+    }
+
+    private static class ServiceBusClientBuilderCustomizer implements AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> {
+
+        @Override
+        public void customize(ServiceBusClientBuilder builder) {
+
+        }
     }
 
     private static class ServiceBusSenderClientBuilderCustomizer implements AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> {

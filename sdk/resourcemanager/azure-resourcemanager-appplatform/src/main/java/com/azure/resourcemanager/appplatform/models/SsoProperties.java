@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Single sign-on related configuration.
  */
 @Fluent
-public final class SsoProperties {
+public final class SsoProperties implements JsonSerializable<SsoProperties> {
     /*
      * It defines the specific actions applications can be allowed to do on a user's behalf
      */
-    @JsonProperty(value = "scope")
     private List<String> scope;
 
     /*
      * The public identifier for the application
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * The secret known only to the application and the authorization server
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /*
      * The URI of Issuer Identifier
      */
-    @JsonProperty(value = "issuerUri")
     private String issuerUri;
 
     /**
@@ -129,5 +129,51 @@ public final class SsoProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("scope", this.scope, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        jsonWriter.writeStringField("issuerUri", this.issuerUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsoProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsoProperties.
+     */
+    public static SsoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsoProperties deserializedSsoProperties = new SsoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    List<String> scope = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSsoProperties.scope = scope;
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSsoProperties.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedSsoProperties.clientSecret = reader.getString();
+                } else if ("issuerUri".equals(fieldName)) {
+                    deserializedSsoProperties.issuerUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsoProperties;
+        });
     }
 }

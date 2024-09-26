@@ -28,12 +28,6 @@ public final class HttpScaleRule implements JsonSerializable<HttpScaleRule> {
      */
     private List<ScaleRuleAuth> auth;
 
-    /*
-     * The resource ID of a user-assigned managed identity that is assigned to the Container App, or 'system' for
-     * system-assigned identity.
-     */
-    private String identity;
-
     /**
      * Creates an instance of HttpScaleRule class.
      */
@@ -81,28 +75,6 @@ public final class HttpScaleRule implements JsonSerializable<HttpScaleRule> {
     }
 
     /**
-     * Get the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
-     * App, or 'system' for system-assigned identity.
-     * 
-     * @return the identity value.
-     */
-    public String identity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: The resource ID of a user-assigned managed identity that is assigned to the Container
-     * App, or 'system' for system-assigned identity.
-     * 
-     * @param identity the identity value to set.
-     * @return the HttpScaleRule object itself.
-     */
-    public HttpScaleRule withIdentity(String identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -121,7 +93,6 @@ public final class HttpScaleRule implements JsonSerializable<HttpScaleRule> {
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("auth", this.auth, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -146,8 +117,6 @@ public final class HttpScaleRule implements JsonSerializable<HttpScaleRule> {
                 } else if ("auth".equals(fieldName)) {
                     List<ScaleRuleAuth> auth = reader.readArray(reader1 -> ScaleRuleAuth.fromJson(reader1));
                     deserializedHttpScaleRule.auth = auth;
-                } else if ("identity".equals(fieldName)) {
-                    deserializedHttpScaleRule.identity = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -22,10 +22,13 @@ public final class BuildServiceAgentPoolUpdatePutSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void buildServiceAgentPoolUpdatePut(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getBuildServiceAgentPools().updatePut("myResourceGroup",
-            "myservice", "default", "default",
-            new BuildServiceAgentPoolResourceInner().withProperties(new BuildServiceAgentPoolProperties()
-                .withPoolSize(new BuildServiceAgentPoolSizeProperties().withName("S3"))),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getBuildServiceAgentPools()
+            .updatePut("myResourceGroup", "myservice", "default", "default",
+                new BuildServiceAgentPoolResourceInner().withProperties(new BuildServiceAgentPoolProperties()
+                    .withPoolSize(new BuildServiceAgentPoolSizeProperties().withName("S3"))),
+                com.azure.core.util.Context.NONE);
     }
 }

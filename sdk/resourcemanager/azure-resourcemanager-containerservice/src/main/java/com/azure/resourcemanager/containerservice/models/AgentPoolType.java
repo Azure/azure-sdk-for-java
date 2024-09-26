@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class AgentPoolType extends ExpandableStringEnum<AgentPoolType> {
      * @param name a name to look for.
      * @return the corresponding AgentPoolType.
      */
-    @JsonCreator
     public static AgentPoolType fromString(String name) {
         return fromString(name, AgentPoolType.class);
     }

@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.exception.AdditionalInfo;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * App Service error response.
@@ -20,6 +22,31 @@ public final class DefaultErrorResponseError extends ManagementError {
      * More information to debug error.
      */
     private String innererror;
+
+    /*
+     * The error code parsed from the body of the http error response.
+     */
+    private String code;
+
+    /*
+     * The error message parsed from the body of the http error response.
+     */
+    private String message;
+
+    /*
+     * The target of the error.
+     */
+    private String target;
+
+    /*
+     * Details for the error.
+     */
+    private List<ManagementError> details;
+
+    /*
+     * Additional info for the error.
+     */
+    private List<AdditionalInfo> additionalInfo;
 
     /**
      * Creates an instance of DefaultErrorResponseError class.
@@ -34,6 +61,56 @@ public final class DefaultErrorResponseError extends ManagementError {
      */
     public String getInnererror() {
         return this.innererror;
+    }
+
+    /**
+     * Get the code property: The error code parsed from the body of the http error response.
+     * 
+     * @return the code value.
+     */
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
+     * Get the message property: The error message parsed from the body of the http error response.
+     * 
+     * @return the message value.
+     */
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Get the target property: The target of the error.
+     * 
+     * @return the target value.
+     */
+    @Override
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Get the details property: Details for the error.
+     * 
+     * @return the details value.
+     */
+    @Override
+    public List<ManagementError> getDetails() {
+        return this.details;
+    }
+
+    /**
+     * Get the additionalInfo property: Additional info for the error.
+     * 
+     * @return the additionalInfo value.
+     */
+    @Override
+    public List<AdditionalInfo> getAdditionalInfo() {
+        return this.additionalInfo;
     }
 
     /**
@@ -63,12 +140,42 @@ public final class DefaultErrorResponseError extends ManagementError {
      */
     public static DefaultErrorResponseError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
+            JsonReader bufferedReader = reader.bufferObject();
+            bufferedReader.nextToken();
+            while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = bufferedReader.getFieldName();
+                bufferedReader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    return readManagementError(bufferedReader);
+                } else {
+                    bufferedReader.skipChildren();
+                }
+            }
+            return readManagementError(bufferedReader.reset());
+        });
+    }
+
+    private static DefaultErrorResponseError readManagementError(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
             DefaultErrorResponseError deserializedDefaultErrorResponseError = new DefaultErrorResponseError();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("innererror".equals(fieldName)) {
+                if ("code".equals(fieldName)) {
+                    deserializedDefaultErrorResponseError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedDefaultErrorResponseError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedDefaultErrorResponseError.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ManagementError> details = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedDefaultErrorResponseError.details = details;
+                } else if ("additionalInfo".equals(fieldName)) {
+                    List<AdditionalInfo> additionalInfo = reader.readArray(reader1 -> AdditionalInfo.fromJson(reader1));
+                    deserializedDefaultErrorResponseError.additionalInfo = additionalInfo;
+                } else if ("innererror".equals(fieldName)) {
                     deserializedDefaultErrorResponseError.innererror = reader.getString();
                 } else {
                     reader.skipChildren();

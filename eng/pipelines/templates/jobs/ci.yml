@@ -162,7 +162,7 @@ jobs:
           python -m pip install markdown2==2.4.6 BeautifulSoup4==4.11.1
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
-      - task: Maven@3
+      - task: Maven@4
         displayName: 'Build and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
         inputs:
           mavenPomFile: pom.xml
@@ -196,6 +196,16 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
+
+      - task: Powershell@2
+        inputs:
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
+          arguments: >
+            -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
+            -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
+          pwsh: true
+          workingDirectory: $(Pipeline.Workspace)
+        displayName: Update package properties with namespaces
 
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:

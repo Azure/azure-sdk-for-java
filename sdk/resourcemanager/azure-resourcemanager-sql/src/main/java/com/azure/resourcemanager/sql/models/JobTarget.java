@@ -6,61 +6,62 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A job target, for example a specific database or a container of databases that is evaluated during job execution. */
+/**
+ * A job target, for example a specific database or a container of databases that is evaluated during job execution.
+ */
 @Fluent
-public final class JobTarget {
+public final class JobTarget implements JsonSerializable<JobTarget> {
     /*
      * Whether the target is included or excluded from the group.
      */
-    @JsonProperty(value = "membershipType")
     private JobTargetGroupMembershipType membershipType;
 
     /*
      * The target type.
      */
-    @JsonProperty(value = "type", required = true)
     private JobTargetType type;
 
     /*
      * The target server name.
      */
-    @JsonProperty(value = "serverName")
     private String serverName;
 
     /*
      * The target database name.
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * The target elastic pool name.
      */
-    @JsonProperty(value = "elasticPoolName")
     private String elasticPoolName;
 
     /*
      * The target shard map.
      */
-    @JsonProperty(value = "shardMapName")
     private String shardMapName;
 
     /*
      * The resource ID of the credential that is used during job execution to connect to the target and determine the
      * list of databases inside the target.
      */
-    @JsonProperty(value = "refreshCredential")
     private String refreshCredential;
 
-    /** Creates an instance of JobTarget class. */
+    /**
+     * Creates an instance of JobTarget class.
+     */
     public JobTarget() {
     }
 
     /**
      * Get the membershipType property: Whether the target is included or excluded from the group.
-     *
+     * 
      * @return the membershipType value.
      */
     public JobTargetGroupMembershipType membershipType() {
@@ -69,7 +70,7 @@ public final class JobTarget {
 
     /**
      * Set the membershipType property: Whether the target is included or excluded from the group.
-     *
+     * 
      * @param membershipType the membershipType value to set.
      * @return the JobTarget object itself.
      */
@@ -80,7 +81,7 @@ public final class JobTarget {
 
     /**
      * Get the type property: The target type.
-     *
+     * 
      * @return the type value.
      */
     public JobTargetType type() {
@@ -89,7 +90,7 @@ public final class JobTarget {
 
     /**
      * Set the type property: The target type.
-     *
+     * 
      * @param type the type value to set.
      * @return the JobTarget object itself.
      */
@@ -100,7 +101,7 @@ public final class JobTarget {
 
     /**
      * Get the serverName property: The target server name.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -109,7 +110,7 @@ public final class JobTarget {
 
     /**
      * Set the serverName property: The target server name.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the JobTarget object itself.
      */
@@ -120,7 +121,7 @@ public final class JobTarget {
 
     /**
      * Get the databaseName property: The target database name.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -129,7 +130,7 @@ public final class JobTarget {
 
     /**
      * Set the databaseName property: The target database name.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the JobTarget object itself.
      */
@@ -140,7 +141,7 @@ public final class JobTarget {
 
     /**
      * Get the elasticPoolName property: The target elastic pool name.
-     *
+     * 
      * @return the elasticPoolName value.
      */
     public String elasticPoolName() {
@@ -149,7 +150,7 @@ public final class JobTarget {
 
     /**
      * Set the elasticPoolName property: The target elastic pool name.
-     *
+     * 
      * @param elasticPoolName the elasticPoolName value to set.
      * @return the JobTarget object itself.
      */
@@ -160,7 +161,7 @@ public final class JobTarget {
 
     /**
      * Get the shardMapName property: The target shard map.
-     *
+     * 
      * @return the shardMapName value.
      */
     public String shardMapName() {
@@ -169,7 +170,7 @@ public final class JobTarget {
 
     /**
      * Set the shardMapName property: The target shard map.
-     *
+     * 
      * @param shardMapName the shardMapName value to set.
      * @return the JobTarget object itself.
      */
@@ -181,7 +182,7 @@ public final class JobTarget {
     /**
      * Get the refreshCredential property: The resource ID of the credential that is used during job execution to
      * connect to the target and determine the list of databases inside the target.
-     *
+     * 
      * @return the refreshCredential value.
      */
     public String refreshCredential() {
@@ -191,7 +192,7 @@ public final class JobTarget {
     /**
      * Set the refreshCredential property: The resource ID of the credential that is used during job execution to
      * connect to the target and determine the list of databases inside the target.
-     *
+     * 
      * @param refreshCredential the refreshCredential value to set.
      * @return the JobTarget object itself.
      */
@@ -202,15 +203,71 @@ public final class JobTarget {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property type in model JobTarget"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model JobTarget"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobTarget.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("membershipType",
+            this.membershipType == null ? null : this.membershipType.toString());
+        jsonWriter.writeStringField("serverName", this.serverName);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("elasticPoolName", this.elasticPoolName);
+        jsonWriter.writeStringField("shardMapName", this.shardMapName);
+        jsonWriter.writeStringField("refreshCredential", this.refreshCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobTarget from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobTarget if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobTarget.
+     */
+    public static JobTarget fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobTarget deserializedJobTarget = new JobTarget();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedJobTarget.type = JobTargetType.fromString(reader.getString());
+                } else if ("membershipType".equals(fieldName)) {
+                    deserializedJobTarget.membershipType = JobTargetGroupMembershipType.fromString(reader.getString());
+                } else if ("serverName".equals(fieldName)) {
+                    deserializedJobTarget.serverName = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedJobTarget.databaseName = reader.getString();
+                } else if ("elasticPoolName".equals(fieldName)) {
+                    deserializedJobTarget.elasticPoolName = reader.getString();
+                } else if ("shardMapName".equals(fieldName)) {
+                    deserializedJobTarget.shardMapName = reader.getString();
+                } else if ("refreshCredential".equals(fieldName)) {
+                    deserializedJobTarget.refreshCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobTarget;
+        });
+    }
 }

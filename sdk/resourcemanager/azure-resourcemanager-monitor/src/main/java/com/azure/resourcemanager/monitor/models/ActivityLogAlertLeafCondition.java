@@ -5,7 +5,10 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,11 +24,8 @@ import java.util.List;
 @Fluent
 public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition {
     /*
-     * An Activity Log Alert rule 'anyOf' condition.
-     * 
      * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
      */
-    @JsonProperty(value = "anyOf")
     private List<AlertRuleLeafCondition> anyOf;
 
     /**
@@ -35,9 +35,8 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
     }
 
     /**
-     * Get the anyOf property: An Activity Log Alert rule 'anyOf' condition.
-     * 
-     * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
+     * Get the anyOf property: An Activity Log Alert rule condition that is met when at least one of its member leaf
+     * conditions are met.
      * 
      * @return the anyOf value.
      */
@@ -46,9 +45,8 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
     }
 
     /**
-     * Set the anyOf property: An Activity Log Alert rule 'anyOf' condition.
-     * 
-     * An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
+     * Set the anyOf property: An Activity Log Alert rule condition that is met when at least one of its member leaf
+     * conditions are met.
      * 
      * @param anyOf the anyOf value to set.
      * @return the ActivityLogAlertLeafCondition object itself.
@@ -96,5 +94,54 @@ public final class ActivityLogAlertLeafCondition extends AlertRuleLeafCondition 
         if (anyOf() != null) {
             anyOf().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("field", field());
+        jsonWriter.writeStringField("equals", equals());
+        jsonWriter.writeArrayField("containsAny", containsAny(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("anyOf", this.anyOf, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityLogAlertLeafCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityLogAlertLeafCondition if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityLogAlertLeafCondition.
+     */
+    public static ActivityLogAlertLeafCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityLogAlertLeafCondition deserializedActivityLogAlertLeafCondition
+                = new ActivityLogAlertLeafCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("field".equals(fieldName)) {
+                    deserializedActivityLogAlertLeafCondition.withField(reader.getString());
+                } else if ("equals".equals(fieldName)) {
+                    deserializedActivityLogAlertLeafCondition.withEquals(reader.getString());
+                } else if ("containsAny".equals(fieldName)) {
+                    List<String> containsAny = reader.readArray(reader1 -> reader1.getString());
+                    deserializedActivityLogAlertLeafCondition.withContainsAny(containsAny);
+                } else if ("anyOf".equals(fieldName)) {
+                    List<AlertRuleLeafCondition> anyOf
+                        = reader.readArray(reader1 -> AlertRuleLeafCondition.fromJson(reader1));
+                    deserializedActivityLogAlertLeafCondition.anyOf = anyOf;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityLogAlertLeafCondition;
+        });
     }
 }

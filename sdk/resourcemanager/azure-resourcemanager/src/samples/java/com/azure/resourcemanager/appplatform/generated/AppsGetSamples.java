@@ -18,8 +18,11 @@ public final class AppsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsGetVNetInjection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApps().getWithResponse("myResourceGroup", "myservice",
-            "myapp", null, com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApps()
+            .getWithResponse("myResourceGroup", "myservice", "myapp", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -32,7 +35,10 @@ public final class AppsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getApps().getWithResponse("myResourceGroup", "myservice",
-            "myapp", null, com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getApps()
+            .getWithResponse("myResourceGroup", "myservice", "myapp", null, com.azure.core.util.Context.NONE);
     }
 }

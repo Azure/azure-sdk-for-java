@@ -13,7 +13,8 @@ import com.azure.resourcemanager.resources.models.ResourceIdentityType;
  */
 public final class PolicyAssignmentsUpdateByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/updatePolicyAssignmentWithIdentityById.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * updatePolicyAssignmentWithIdentityById.json
      */
     /**
      * Sample code: Update policy assignment with a managed identity by ID.

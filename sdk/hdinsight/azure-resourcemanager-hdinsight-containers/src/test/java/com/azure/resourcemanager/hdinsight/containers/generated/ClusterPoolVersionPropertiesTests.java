@@ -11,21 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterPoolVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterPoolVersionProperties model
-            = BinaryData.fromString("{\"clusterPoolVersion\":\"mvdk\",\"aksVersion\":\"ynwcvtbv\",\"isPreview\":true}")
-                .toObject(ClusterPoolVersionProperties.class);
-        Assertions.assertEquals("mvdk", model.clusterPoolVersion());
-        Assertions.assertEquals("ynwcvtbv", model.aksVersion());
+        ClusterPoolVersionProperties model = BinaryData
+            .fromString("{\"clusterPoolVersion\":\"khbejdznxc\",\"aksVersion\":\"srhnjivo\",\"isPreview\":true}")
+            .toObject(ClusterPoolVersionProperties.class);
+        Assertions.assertEquals("khbejdznxc", model.clusterPoolVersion());
+        Assertions.assertEquals("srhnjivo", model.aksVersion());
         Assertions.assertEquals(true, model.isPreview());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterPoolVersionProperties model = new ClusterPoolVersionProperties().withClusterPoolVersion("mvdk")
-            .withAksVersion("ynwcvtbv").withIsPreview(true);
+        ClusterPoolVersionProperties model = new ClusterPoolVersionProperties().withClusterPoolVersion("khbejdznxc")
+            .withAksVersion("srhnjivo")
+            .withIsPreview(true);
         model = BinaryData.fromObject(model).toObject(ClusterPoolVersionProperties.class);
-        Assertions.assertEquals("mvdk", model.clusterPoolVersion());
-        Assertions.assertEquals("ynwcvtbv", model.aksVersion());
+        Assertions.assertEquals("khbejdznxc", model.clusterPoolVersion());
+        Assertions.assertEquals("srhnjivo", model.aksVersion());
         Assertions.assertEquals(true, model.isPreview());
     }
 }

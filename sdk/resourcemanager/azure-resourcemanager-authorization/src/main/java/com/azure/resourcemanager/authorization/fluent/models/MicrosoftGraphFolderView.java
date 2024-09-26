@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** folderView. */
+/**
+ * folderView.
+ */
 @Fluent
-public final class MicrosoftGraphFolderView {
+public final class MicrosoftGraphFolderView implements JsonSerializable<MicrosoftGraphFolderView> {
     /*
      * The method by which the folder should be sorted.
      */
-    @JsonProperty(value = "sortBy")
     private String sortBy;
 
     /*
      * If true, indicates that items should be sorted in descending order. Otherwise, items should be sorted ascending.
      */
-    @JsonProperty(value = "sortOrder")
     private String sortOrder;
 
     /*
      * The type of view that should be used to represent the folder.
      */
-    @JsonProperty(value = "viewType")
     private String viewType;
 
     /*
      * folderView
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphFolderView class. */
+    /**
+     * Creates an instance of MicrosoftGraphFolderView class.
+     */
     public MicrosoftGraphFolderView() {
     }
 
     /**
      * Get the sortBy property: The method by which the folder should be sorted.
-     *
+     * 
      * @return the sortBy value.
      */
     public String sortBy() {
@@ -53,7 +55,7 @@ public final class MicrosoftGraphFolderView {
 
     /**
      * Set the sortBy property: The method by which the folder should be sorted.
-     *
+     * 
      * @param sortBy the sortBy value to set.
      * @return the MicrosoftGraphFolderView object itself.
      */
@@ -65,7 +67,7 @@ public final class MicrosoftGraphFolderView {
     /**
      * Get the sortOrder property: If true, indicates that items should be sorted in descending order. Otherwise, items
      * should be sorted ascending.
-     *
+     * 
      * @return the sortOrder value.
      */
     public String sortOrder() {
@@ -75,7 +77,7 @@ public final class MicrosoftGraphFolderView {
     /**
      * Set the sortOrder property: If true, indicates that items should be sorted in descending order. Otherwise, items
      * should be sorted ascending.
-     *
+     * 
      * @param sortOrder the sortOrder value to set.
      * @return the MicrosoftGraphFolderView object itself.
      */
@@ -86,7 +88,7 @@ public final class MicrosoftGraphFolderView {
 
     /**
      * Get the viewType property: The type of view that should be used to represent the folder.
-     *
+     * 
      * @return the viewType value.
      */
     public String viewType() {
@@ -95,7 +97,7 @@ public final class MicrosoftGraphFolderView {
 
     /**
      * Set the viewType property: The type of view that should be used to represent the folder.
-     *
+     * 
      * @param viewType the viewType value to set.
      * @return the MicrosoftGraphFolderView object itself.
      */
@@ -106,17 +108,16 @@ public final class MicrosoftGraphFolderView {
 
     /**
      * Get the additionalProperties property: folderView.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: folderView.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphFolderView object itself.
      */
@@ -125,19 +126,64 @@ public final class MicrosoftGraphFolderView {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sortBy", this.sortBy);
+        jsonWriter.writeStringField("sortOrder", this.sortOrder);
+        jsonWriter.writeStringField("viewType", this.viewType);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphFolderView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphFolderView if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphFolderView.
+     */
+    public static MicrosoftGraphFolderView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphFolderView deserializedMicrosoftGraphFolderView = new MicrosoftGraphFolderView();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sortBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphFolderView.sortBy = reader.getString();
+                } else if ("sortOrder".equals(fieldName)) {
+                    deserializedMicrosoftGraphFolderView.sortOrder = reader.getString();
+                } else if ("viewType".equals(fieldName)) {
+                    deserializedMicrosoftGraphFolderView.viewType = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphFolderView.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphFolderView;
+        });
     }
 }

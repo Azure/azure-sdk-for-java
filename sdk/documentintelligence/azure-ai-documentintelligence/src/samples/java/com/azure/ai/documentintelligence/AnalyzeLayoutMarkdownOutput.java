@@ -40,6 +40,7 @@ public class AnalyzeLayoutMarkdownOutput {
                         null,
                         null,
                         ContentFormat.MARKDOWN,
+                    null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();

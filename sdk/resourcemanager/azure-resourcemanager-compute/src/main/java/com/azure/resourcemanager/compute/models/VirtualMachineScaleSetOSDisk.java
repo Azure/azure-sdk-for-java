@@ -6,31 +6,32 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine scale set operating system disk.
  */
 @Fluent
-public final class VirtualMachineScaleSetOSDisk {
+public final class VirtualMachineScaleSetOSDisk implements JsonSerializable<VirtualMachineScaleSetOSDisk> {
     /*
      * The disk name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default
      * values are: **None for Standard storage. ReadOnly for Premium storage.**
      */
-    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
-    @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /*
@@ -39,13 +40,11 @@ public final class VirtualMachineScaleSetOSDisk {
      * you also use the imageReference element described above. If you are using a marketplace image, you also use the
      * plan element previously described.
      */
-    @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;
 
     /*
      * Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
      */
-    @JsonProperty(value = "diffDiskSettings")
     private DiffDiskSettings diffDiskSettings;
 
     /*
@@ -53,32 +52,27 @@ public final class VirtualMachineScaleSetOSDisk {
      * in a virtual machine image. The property 'diskSizeGB' is the number of bytes x 1024^3 for the disk and the value
      * cannot be larger than 1023.
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * This property allows you to specify the type of the OS that is included in the disk if creating a VM from
      * user-image or a specialized VHD. Possible values are: **Windows,** **Linux.**
      */
-    @JsonProperty(value = "osType")
     private OperatingSystemTypes osType;
 
     /*
      * Specifies information about the unmanaged user image to base the scale set on.
      */
-    @JsonProperty(value = "image")
     private VirtualHardDisk image;
 
     /*
      * Specifies the container urls that are used to store operating system disks for the scale set.
      */
-    @JsonProperty(value = "vhdContainers")
     private List<String> vhdContainers;
 
     /*
      * The managed disk parameters.
      */
-    @JsonProperty(value = "managedDisk")
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /*
@@ -88,7 +82,6 @@ public final class VirtualMachineScaleSetOSDisk {
      * retained after VMSS Flex VM is deleted. <br><br> The default value is set to **Delete**. For an Ephemeral OS
      * Disk, the default value is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
      */
-    @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
     /**
@@ -370,4 +363,78 @@ public final class VirtualMachineScaleSetOSDisk {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetOSDisk.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createOption", this.createOption == null ? null : this.createOption.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        jsonWriter.writeJsonField("diffDiskSettings", this.diffDiskSettings);
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeJsonField("image", this.image);
+        jsonWriter.writeArrayField("vhdContainers", this.vhdContainers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetOSDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetOSDisk if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetOSDisk.
+     */
+    public static VirtualMachineScaleSetOSDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetOSDisk deserializedVirtualMachineScaleSetOSDisk = new VirtualMachineScaleSetOSDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.createOption
+                        = DiskCreateOptionTypes.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.name = reader.getString();
+                } else if ("caching".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.caching = CachingTypes.fromString(reader.getString());
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.writeAcceleratorEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diffDiskSettings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.diffDiskSettings = DiffDiskSettings.fromJson(reader);
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("osType".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.osType
+                        = OperatingSystemTypes.fromString(reader.getString());
+                } else if ("image".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.image = VirtualHardDisk.fromJson(reader);
+                } else if ("vhdContainers".equals(fieldName)) {
+                    List<String> vhdContainers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetOSDisk.vhdContainers = vhdContainers;
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.managedDisk
+                        = VirtualMachineScaleSetManagedDiskParameters.fromJson(reader);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetOSDisk.deleteOption
+                        = DiskDeleteOptionTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetOSDisk;
+        });
+    }
 }

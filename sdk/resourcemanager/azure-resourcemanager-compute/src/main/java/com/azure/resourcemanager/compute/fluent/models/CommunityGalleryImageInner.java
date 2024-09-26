@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.CommunityGalleryImageIdentifier;
 import com.azure.resourcemanager.compute.models.Disallowed;
@@ -15,7 +18,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PirCommunityGalleryResource;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +31,27 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
     /*
      * Describes the properties of a gallery image definition.
      */
-    @JsonProperty(value = "properties")
     private CommunityGalleryImageProperties innerProperties;
+
+    /*
+     * Resource name
+     */
+    private String name;
+
+    /*
+     * Resource location
+     */
+    private String location;
+
+    /*
+     * Resource type
+     */
+    private String type;
+
+    /*
+     * The identifier information of community gallery.
+     */
+    private CommunityGalleryIdentifier innerIdentifier;
 
     /**
      * Creates an instance of CommunityGalleryImageInner class.
@@ -47,11 +69,64 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
     }
 
     /**
-     * {@inheritDoc}
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
      */
     @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the location property: Resource location.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the type property: Resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the innerIdentifier property: The identifier information of community gallery.
+     * 
+     * @return the innerIdentifier value.
+     */
+    private CommunityGalleryIdentifier innerIdentifier() {
+        return this.innerIdentifier;
+    }
+
+    /**
+     * Get the uniqueId property: The unique id of this community gallery.
+     * 
+     * @return the uniqueId value.
+     */
+    public String uniqueId() {
+        return this.innerIdentifier() == null ? null : this.innerIdentifier().uniqueId();
+    }
+
+    /**
+     * Set the uniqueId property: The unique id of this community gallery.
+     * 
+     * @param uniqueId the uniqueId value to set.
+     * @return the CommunityGalleryImageInner object itself.
+     */
     public CommunityGalleryImageInner withUniqueId(String uniqueId) {
-        super.withUniqueId(uniqueId);
+        if (this.innerIdentifier() == null) {
+            this.innerIdentifier = new CommunityGalleryIdentifier();
+        }
+        this.innerIdentifier().withUniqueId(uniqueId);
         return this;
     }
 
@@ -398,5 +473,52 @@ public final class CommunityGalleryImageInner extends PirCommunityGalleryResourc
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identifier", innerIdentifier());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunityGalleryImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunityGalleryImageInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunityGalleryImageInner.
+     */
+    public static CommunityGalleryImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunityGalleryImageInner deserializedCommunityGalleryImageInner = new CommunityGalleryImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCommunityGalleryImageInner.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCommunityGalleryImageInner.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCommunityGalleryImageInner.type = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedCommunityGalleryImageInner.innerIdentifier
+                        = CommunityGalleryIdentifier.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCommunityGalleryImageInner.innerProperties
+                        = CommunityGalleryImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunityGalleryImageInner;
+        });
     }
 }

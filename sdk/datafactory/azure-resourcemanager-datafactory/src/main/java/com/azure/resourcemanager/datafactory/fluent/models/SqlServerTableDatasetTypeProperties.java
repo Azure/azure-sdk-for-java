@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * On-premises SQL Server dataset properties.
  */
 @Fluent
-public final class SqlServerTableDatasetTypeProperties {
+public final class SqlServerTableDatasetTypeProperties
+    implements JsonSerializable<SqlServerTableDatasetTypeProperties> {
     /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /*
      * The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /**
@@ -108,5 +110,48 @@ public final class SqlServerTableDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeUntypedField("table", this.table);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerTableDatasetTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlServerTableDatasetTypeProperties.
+     */
+    public static SqlServerTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerTableDatasetTypeProperties deserializedSqlServerTableDatasetTypeProperties
+                = new SqlServerTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedSqlServerTableDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedSqlServerTableDatasetTypeProperties.schema = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedSqlServerTableDatasetTypeProperties.table = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlServerTableDatasetTypeProperties;
+        });
     }
 }

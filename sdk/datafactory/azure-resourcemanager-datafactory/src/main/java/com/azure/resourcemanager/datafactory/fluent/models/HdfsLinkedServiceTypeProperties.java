@@ -6,45 +6,44 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * HDFS linked service properties.
  */
 @Fluent
-public final class HdfsLinkedServiceTypeProperties {
+public final class HdfsLinkedServiceTypeProperties implements JsonSerializable<HdfsLinkedServiceTypeProperties> {
     /*
      * The URL of the HDFS service endpoint, e.g. http://myhostname:50070/webhdfs/v1 . Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
      * Type of authentication used to connect to the HDFS. Possible values are: Anonymous and Windows. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * User name for Windows authentication. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * Password for Windows authentication.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /**
@@ -178,4 +177,54 @@ public final class HdfsLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HdfsLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", this.url);
+        jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HdfsLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HdfsLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HdfsLinkedServiceTypeProperties.
+     */
+    public static HdfsLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HdfsLinkedServiceTypeProperties deserializedHdfsLinkedServiceTypeProperties
+                = new HdfsLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedHdfsLinkedServiceTypeProperties.url = reader.readUntyped();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedHdfsLinkedServiceTypeProperties.authenticationType = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedHdfsLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedHdfsLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedHdfsLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHdfsLinkedServiceTypeProperties;
+        });
+    }
 }

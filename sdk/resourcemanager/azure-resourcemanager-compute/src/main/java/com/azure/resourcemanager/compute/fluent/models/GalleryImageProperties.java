@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
@@ -16,107 +21,93 @@ import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Describes the properties of a gallery image definition.
  */
 @Fluent
-public final class GalleryImageProperties {
+public final class GalleryImageProperties implements JsonSerializable<GalleryImageProperties> {
     /*
      * The description of this gallery image definition resource. This property is updatable.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The Eula agreement for the gallery image definition.
      */
-    @JsonProperty(value = "eula")
     private String eula;
 
     /*
      * The privacy statement uri.
      */
-    @JsonProperty(value = "privacyStatementUri")
     private String privacyStatementUri;
 
     /*
      * The release note uri.
      */
-    @JsonProperty(value = "releaseNoteUri")
     private String releaseNoteUri;
 
     /*
      * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
      * managed image. Possible values are: **Windows,** **Linux.**
      */
-    @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
      * This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
      * or 'Specialized'.
      */
-    @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
     /*
      * The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      */
-    @JsonProperty(value = "hyperVGeneration")
     private HyperVGeneration hyperVGeneration;
 
     /*
      * The end of life date of the gallery image definition. This property can be used for decommissioning purposes.
      * This property is updatable.
      */
-    @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
      * This is the gallery image definition identifier.
      */
-    @JsonProperty(value = "identifier", required = true)
     private GalleryImageIdentifier identifier;
 
     /*
      * The properties describe the recommended machine configuration for this Image Definition. These properties are
      * updatable.
      */
-    @JsonProperty(value = "recommended")
     private RecommendedMachineConfiguration recommended;
 
     /*
      * Describes the disallowed disk types.
      */
-    @JsonProperty(value = "disallowed")
     private Disallowed disallowed;
 
     /*
      * Describes the gallery image definition purchase plan. This is used by marketplace images.
      */
-    @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryProvisioningState provisioningState;
 
     /*
      * A list of gallery image features.
      */
-    @JsonProperty(value = "features")
     private List<GalleryImageFeature> features;
 
     /*
      * The architecture of the image. Applicable to OS disks only.
      */
-    @JsonProperty(value = "architecture")
     private Architecture architecture;
 
     /**
@@ -462,4 +453,90 @@ public final class GalleryImageProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryImageProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("osState", this.osState == null ? null : this.osState.toString());
+        jsonWriter.writeJsonField("identifier", this.identifier);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("eula", this.eula);
+        jsonWriter.writeStringField("privacyStatementUri", this.privacyStatementUri);
+        jsonWriter.writeStringField("releaseNoteUri", this.releaseNoteUri);
+        jsonWriter.writeStringField("hyperVGeneration",
+            this.hyperVGeneration == null ? null : this.hyperVGeneration.toString());
+        jsonWriter.writeStringField("endOfLifeDate",
+            this.endOfLifeDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endOfLifeDate));
+        jsonWriter.writeJsonField("recommended", this.recommended);
+        jsonWriter.writeJsonField("disallowed", this.disallowed);
+        jsonWriter.writeJsonField("purchasePlan", this.purchasePlan);
+        jsonWriter.writeArrayField("features", this.features, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryImageProperties.
+     */
+    public static GalleryImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageProperties deserializedGalleryImageProperties = new GalleryImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedGalleryImageProperties.osType = OperatingSystemTypes.fromString(reader.getString());
+                } else if ("osState".equals(fieldName)) {
+                    deserializedGalleryImageProperties.osState
+                        = OperatingSystemStateTypes.fromString(reader.getString());
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedGalleryImageProperties.identifier = GalleryImageIdentifier.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedGalleryImageProperties.description = reader.getString();
+                } else if ("eula".equals(fieldName)) {
+                    deserializedGalleryImageProperties.eula = reader.getString();
+                } else if ("privacyStatementUri".equals(fieldName)) {
+                    deserializedGalleryImageProperties.privacyStatementUri = reader.getString();
+                } else if ("releaseNoteUri".equals(fieldName)) {
+                    deserializedGalleryImageProperties.releaseNoteUri = reader.getString();
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedGalleryImageProperties.hyperVGeneration
+                        = HyperVGeneration.fromString(reader.getString());
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedGalleryImageProperties.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("recommended".equals(fieldName)) {
+                    deserializedGalleryImageProperties.recommended = RecommendedMachineConfiguration.fromJson(reader);
+                } else if ("disallowed".equals(fieldName)) {
+                    deserializedGalleryImageProperties.disallowed = Disallowed.fromJson(reader);
+                } else if ("purchasePlan".equals(fieldName)) {
+                    deserializedGalleryImageProperties.purchasePlan = ImagePurchasePlan.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGalleryImageProperties.provisioningState
+                        = GalleryProvisioningState.fromString(reader.getString());
+                } else if ("features".equals(fieldName)) {
+                    List<GalleryImageFeature> features
+                        = reader.readArray(reader1 -> GalleryImageFeature.fromJson(reader1));
+                    deserializedGalleryImageProperties.features = features;
+                } else if ("architecture".equals(fieldName)) {
+                    deserializedGalleryImageProperties.architecture = Architecture.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageProperties;
+        });
+    }
 }

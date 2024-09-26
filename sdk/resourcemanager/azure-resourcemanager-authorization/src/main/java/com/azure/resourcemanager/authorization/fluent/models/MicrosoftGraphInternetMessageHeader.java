@@ -5,40 +5,44 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** internetMessageHeader. */
+/**
+ * internetMessageHeader.
+ */
 @Fluent
-public final class MicrosoftGraphInternetMessageHeader {
+public final class MicrosoftGraphInternetMessageHeader
+    implements JsonSerializable<MicrosoftGraphInternetMessageHeader> {
     /*
      * Represents the key in a key-value pair.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The value in a key-value pair.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * internetMessageHeader
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphInternetMessageHeader class. */
+    /**
+     * Creates an instance of MicrosoftGraphInternetMessageHeader class.
+     */
     public MicrosoftGraphInternetMessageHeader() {
     }
 
     /**
      * Get the name property: Represents the key in a key-value pair.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +51,7 @@ public final class MicrosoftGraphInternetMessageHeader {
 
     /**
      * Set the name property: Represents the key in a key-value pair.
-     *
+     * 
      * @param name the name value to set.
      * @return the MicrosoftGraphInternetMessageHeader object itself.
      */
@@ -58,7 +62,7 @@ public final class MicrosoftGraphInternetMessageHeader {
 
     /**
      * Get the value property: The value in a key-value pair.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -67,7 +71,7 @@ public final class MicrosoftGraphInternetMessageHeader {
 
     /**
      * Set the value property: The value in a key-value pair.
-     *
+     * 
      * @param value the value value to set.
      * @return the MicrosoftGraphInternetMessageHeader object itself.
      */
@@ -78,17 +82,16 @@ public final class MicrosoftGraphInternetMessageHeader {
 
     /**
      * Get the additionalProperties property: internetMessageHeader.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: internetMessageHeader.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphInternetMessageHeader object itself.
      */
@@ -97,19 +100,62 @@ public final class MicrosoftGraphInternetMessageHeader {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphInternetMessageHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphInternetMessageHeader if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphInternetMessageHeader.
+     */
+    public static MicrosoftGraphInternetMessageHeader fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphInternetMessageHeader deserializedMicrosoftGraphInternetMessageHeader
+                = new MicrosoftGraphInternetMessageHeader();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedMicrosoftGraphInternetMessageHeader.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedMicrosoftGraphInternetMessageHeader.value = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphInternetMessageHeader.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphInternetMessageHeader;
+        });
     }
 }

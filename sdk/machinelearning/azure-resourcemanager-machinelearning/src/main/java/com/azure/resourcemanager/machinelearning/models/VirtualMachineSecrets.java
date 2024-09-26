@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.fluent.models.ComputeSecretsInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Secrets related to a Machine Learning compute based on AKS. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "computeType")
-@JsonTypeName("VirtualMachine")
+/**
+ * Secrets related to a Machine Learning compute based on AKS.
+ */
 @Fluent
 public final class VirtualMachineSecrets extends ComputeSecretsInner {
     /*
+     * The type of compute
+     */
+    private ComputeType computeType = ComputeType.VIRTUAL_MACHINE;
+
+    /*
      * Admin credentials for virtual machine.
      */
-    @JsonProperty(value = "administratorAccount")
     private VirtualMachineSshCredentials administratorAccount;
 
-    /** Creates an instance of VirtualMachineSecrets class. */
+    /**
+     * Creates an instance of VirtualMachineSecrets class.
+     */
     public VirtualMachineSecrets() {
     }
 
     /**
+     * Get the computeType property: The type of compute.
+     * 
+     * @return the computeType value.
+     */
+    @Override
+    public ComputeType computeType() {
+        return this.computeType;
+    }
+
+    /**
      * Get the administratorAccount property: Admin credentials for virtual machine.
-     *
+     * 
      * @return the administratorAccount value.
      */
     public VirtualMachineSshCredentials administratorAccount() {
@@ -36,7 +53,7 @@ public final class VirtualMachineSecrets extends ComputeSecretsInner {
 
     /**
      * Set the administratorAccount property: Admin credentials for virtual machine.
-     *
+     * 
      * @param administratorAccount the administratorAccount value to set.
      * @return the VirtualMachineSecrets object itself.
      */
@@ -47,7 +64,7 @@ public final class VirtualMachineSecrets extends ComputeSecretsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -56,5 +73,45 @@ public final class VirtualMachineSecrets extends ComputeSecretsInner {
         if (administratorAccount() != null) {
             administratorAccount().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computeType", this.computeType == null ? null : this.computeType.toString());
+        jsonWriter.writeJsonField("administratorAccount", this.administratorAccount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineSecrets from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineSecrets if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineSecrets.
+     */
+    public static VirtualMachineSecrets fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineSecrets deserializedVirtualMachineSecrets = new VirtualMachineSecrets();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeType".equals(fieldName)) {
+                    deserializedVirtualMachineSecrets.computeType = ComputeType.fromString(reader.getString());
+                } else if ("administratorAccount".equals(fieldName)) {
+                    deserializedVirtualMachineSecrets.administratorAccount
+                        = VirtualMachineSshCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineSecrets;
+        });
     }
 }

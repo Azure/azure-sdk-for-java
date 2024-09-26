@@ -17,28 +17,14 @@ public final class EndpointPropertiesBaseImpl implements EndpointPropertiesBase 
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    EndpointPropertiesBaseImpl(
-        EndpointPropertiesBaseInner innerObject,
+    EndpointPropertiesBaseImpl(EndpointPropertiesBaseInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public EndpointAuthMode authMode() {
-        return this.innerModel().authMode();
-    }
-
     public String description() {
         return this.innerModel().description();
-    }
-
-    public EndpointAuthKeys keys() {
-        EndpointAuthKeysInner inner = this.innerModel().keys();
-        if (inner != null) {
-            return new EndpointAuthKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Map<String, String> properties() {
@@ -56,6 +42,19 @@ public final class EndpointPropertiesBaseImpl implements EndpointPropertiesBase 
 
     public String swaggerUri() {
         return this.innerModel().swaggerUri();
+    }
+
+    public EndpointAuthMode authMode() {
+        return this.innerModel().authMode();
+    }
+
+    public EndpointAuthKeys keys() {
+        EndpointAuthKeysInner inner = this.innerModel().keys();
+        if (inner != null) {
+            return new EndpointAuthKeysImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public EndpointPropertiesBaseInner innerModel() {

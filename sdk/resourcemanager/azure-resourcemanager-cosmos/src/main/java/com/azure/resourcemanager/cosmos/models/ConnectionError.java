@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ConnectionError model.
  */
 @Fluent
-public final class ConnectionError {
+public final class ConnectionError implements JsonSerializable<ConnectionError> {
     /*
      * The kind of connection error that occurred.
      */
-    @JsonProperty(value = "connectionState")
     private ConnectionState connectionState;
 
     /*
      * The IP of host that originated the failed connection.
      */
-    @JsonProperty(value = "iPFrom")
     private String iPFrom;
 
     /*
      * The IP that the connection attempted to reach.
      */
-    @JsonProperty(value = "iPTo")
     private String iPTo;
 
     /*
      * The TCP port the connection was attempted on.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * Detailed error message about the failed connection.
      */
-    @JsonProperty(value = "exception")
     private String exception;
 
     /**
@@ -154,5 +153,54 @@ public final class ConnectionError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("connectionState",
+            this.connectionState == null ? null : this.connectionState.toString());
+        jsonWriter.writeStringField("iPFrom", this.iPFrom);
+        jsonWriter.writeStringField("iPTo", this.iPTo);
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("exception", this.exception);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionError.
+     */
+    public static ConnectionError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionError deserializedConnectionError = new ConnectionError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionState".equals(fieldName)) {
+                    deserializedConnectionError.connectionState = ConnectionState.fromString(reader.getString());
+                } else if ("iPFrom".equals(fieldName)) {
+                    deserializedConnectionError.iPFrom = reader.getString();
+                } else if ("iPTo".equals(fieldName)) {
+                    deserializedConnectionError.iPTo = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedConnectionError.port = reader.getNullable(JsonReader::getInt);
+                } else if ("exception".equals(fieldName)) {
+                    deserializedConnectionError.exception = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionError;
+        });
     }
 }

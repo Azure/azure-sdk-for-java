@@ -6,29 +6,30 @@ package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Status of the instance view.
  */
 @Fluent
-public class ClusterInstanceViewStatus {
+public class ClusterInstanceViewStatus implements JsonSerializable<ClusterInstanceViewStatus> {
     /*
      * The cluster ready status
      */
-    @JsonProperty(value = "ready", required = true)
     private String ready;
 
     /*
      * The status reason.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * The additional message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -104,10 +105,54 @@ public class ClusterInstanceViewStatus {
      */
     public void validate() {
         if (ready() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property ready in model ClusterInstanceViewStatus"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property ready in model ClusterInstanceViewStatus"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterInstanceViewStatus.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ready", this.ready);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInstanceViewStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInstanceViewStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInstanceViewStatus.
+     */
+    public static ClusterInstanceViewStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInstanceViewStatus deserializedClusterInstanceViewStatus = new ClusterInstanceViewStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ready".equals(fieldName)) {
+                    deserializedClusterInstanceViewStatus.ready = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedClusterInstanceViewStatus.reason = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedClusterInstanceViewStatus.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInstanceViewStatus;
+        });
+    }
 }

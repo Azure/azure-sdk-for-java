@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WorkspaceConnections. */
+/**
+ * Resource collection API of WorkspaceConnections.
+ */
 public interface WorkspaceConnections {
     /**
      * The get operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
@@ -22,12 +24,12 @@ public interface WorkspaceConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<WorkspaceConnectionPropertiesV2BasicResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context);
+    Response<WorkspaceConnectionPropertiesV2BasicResource> getWithResponse(String resourceGroupName,
+        String workspaceName, String connectionName, Context context);
 
     /**
      * The get operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
@@ -36,12 +38,12 @@ public interface WorkspaceConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    WorkspaceConnectionPropertiesV2BasicResource get(
-        String resourceGroupName, String workspaceName, String connectionName);
+    WorkspaceConnectionPropertiesV2BasicResource get(String resourceGroupName, String workspaceName,
+        String connectionName);
 
     /**
      * The delete operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
@@ -51,12 +53,12 @@ public interface WorkspaceConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String connectionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String connectionName,
+        Context context);
 
     /**
      * The delete operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param connectionName Friendly name of the workspace connection.
@@ -68,7 +70,7 @@ public interface WorkspaceConnections {
 
     /**
      * The list operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -80,7 +82,7 @@ public interface WorkspaceConnections {
 
     /**
      * The list operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param target Target of the workspace connection.
@@ -91,12 +93,41 @@ public interface WorkspaceConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> list(
-        String resourceGroupName, String workspaceName, String target, String category, Context context);
+    PagedIterable<WorkspaceConnectionPropertiesV2BasicResource> list(String resourceGroupName, String workspaceName,
+        String target, String category, Context context);
+
+    /**
+     * List all the secrets of a machine learning workspaces connections.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param connectionName Friendly name of the workspace connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<WorkspaceConnectionPropertiesV2BasicResource> listSecretsWithResponse(String resourceGroupName,
+        String workspaceName, String connectionName, Context context);
+
+    /**
+     * List all the secrets of a machine learning workspaces connections.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName Name of Azure Machine Learning workspace.
+     * @param connectionName Friendly name of the workspace connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    WorkspaceConnectionPropertiesV2BasicResource listSecrets(String resourceGroupName, String workspaceName,
+        String connectionName);
 
     /**
      * The get operation.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,7 +138,7 @@ public interface WorkspaceConnections {
 
     /**
      * The get operation.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +150,7 @@ public interface WorkspaceConnections {
 
     /**
      * The delete operation.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -129,7 +160,7 @@ public interface WorkspaceConnections {
 
     /**
      * The delete operation.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -141,7 +172,7 @@ public interface WorkspaceConnections {
 
     /**
      * Begins definition for a new WorkspaceConnectionPropertiesV2BasicResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new WorkspaceConnectionPropertiesV2BasicResource definition.
      */

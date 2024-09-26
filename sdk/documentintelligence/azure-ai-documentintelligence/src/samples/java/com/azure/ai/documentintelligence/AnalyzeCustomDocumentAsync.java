@@ -53,7 +53,7 @@ public class AnalyzeCustomDocumentAsync {
             StringIndexType.TEXT_ELEMENTS,
             Arrays.asList(DocumentAnalysisFeature.LANGUAGES),
             null,
-            ContentFormat.TEXT, new AnalyzeDocumentRequest().setBase64Source(fileContent));
+            ContentFormat.TEXT, null, new AnalyzeDocumentRequest().setBase64Source(fileContent));
 
 
         Mono<AnalyzeResult> analyzeDocumentResult = analyzeDocumentPoller

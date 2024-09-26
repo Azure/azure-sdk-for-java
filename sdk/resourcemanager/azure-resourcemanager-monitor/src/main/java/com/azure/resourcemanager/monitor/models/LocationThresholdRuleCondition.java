@@ -5,35 +5,52 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * A rule condition based on a certain number of locations failing.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition")
 @Fluent
 public final class LocationThresholdRuleCondition extends RuleCondition {
+    /*
+     * specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
+     * management events), LocationThresholdRuleCondition (based on the number of failures of a web test), and
+     * ThresholdRuleCondition (based on the threshold of a metric).
+     */
+    private String odataType = "Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition";
+
     /*
      * the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
      * If specified then it must be between 5 minutes and 1 day.
      */
-    @JsonProperty(value = "windowSize")
     private Duration windowSize;
 
     /*
      * the number of locations that must fail to activate the alert.
      */
-    @JsonProperty(value = "failedLocationCount", required = true)
     private int failedLocationCount;
 
     /**
      * Creates an instance of LocationThresholdRuleCondition class.
      */
     public LocationThresholdRuleCondition() {
+    }
+
+    /**
+     * Get the odataType property: specifies the type of condition. This can be one of three types:
+     * ManagementEventRuleCondition (occurrences of management events), LocationThresholdRuleCondition (based on the
+     * number of failures of a web test), and ThresholdRuleCondition (based on the threshold of a metric).
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -95,5 +112,53 @@ public final class LocationThresholdRuleCondition extends RuleCondition {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataSource", dataSource());
+        jsonWriter.writeIntField("failedLocationCount", this.failedLocationCount);
+        jsonWriter.writeStringField("odata.type", this.odataType);
+        jsonWriter.writeStringField("windowSize", CoreUtils.durationToStringWithDays(this.windowSize));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocationThresholdRuleCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocationThresholdRuleCondition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LocationThresholdRuleCondition.
+     */
+    public static LocationThresholdRuleCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocationThresholdRuleCondition deserializedLocationThresholdRuleCondition
+                = new LocationThresholdRuleCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataSource".equals(fieldName)) {
+                    deserializedLocationThresholdRuleCondition.withDataSource(RuleDataSource.fromJson(reader));
+                } else if ("failedLocationCount".equals(fieldName)) {
+                    deserializedLocationThresholdRuleCondition.failedLocationCount = reader.getInt();
+                } else if ("odata.type".equals(fieldName)) {
+                    deserializedLocationThresholdRuleCondition.odataType = reader.getString();
+                } else if ("windowSize".equals(fieldName)) {
+                    deserializedLocationThresholdRuleCondition.windowSize
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocationThresholdRuleCondition;
+        });
     }
 }

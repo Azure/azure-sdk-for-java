@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the SearchManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {SearchManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the SearchManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { SearchManagementClientImpl.class })
 public final class SearchManagementClientBuilder {
     /*
      * The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
@@ -26,7 +28,7 @@ public final class SearchManagementClientBuilder {
     /**
      * Sets The unique identifier for a Microsoft Azure subscription. You can obtain this value from the Azure Resource
      * Manager API, command line tools, or the portal.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the SearchManagementClientBuilder.
      */
@@ -42,7 +44,7 @@ public final class SearchManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the SearchManagementClientBuilder.
      */
@@ -58,7 +60,7 @@ public final class SearchManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the SearchManagementClientBuilder.
      */
@@ -74,7 +76,7 @@ public final class SearchManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the SearchManagementClientBuilder.
      */
@@ -90,7 +92,7 @@ public final class SearchManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the SearchManagementClientBuilder.
      */
@@ -106,7 +108,7 @@ public final class SearchManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the SearchManagementClientBuilder.
      */
@@ -117,30 +119,22 @@ public final class SearchManagementClientBuilder {
 
     /**
      * Builds an instance of SearchManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of SearchManagementClientImpl.
      */
     public SearchManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        SearchManagementClientImpl client =
-            new SearchManagementClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                this.subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        SearchManagementClientImpl client = new SearchManagementClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

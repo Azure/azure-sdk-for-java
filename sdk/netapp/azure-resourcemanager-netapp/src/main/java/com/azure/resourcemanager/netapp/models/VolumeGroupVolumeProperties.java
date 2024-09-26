@@ -203,8 +203,9 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
      */
@@ -214,8 +215,9 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
-     * used for alerting only. Minimum size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for
-     * LargeVolume on exceptional basis. Specified in bytes.
+     * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeGroupVolumeProperties object itself.
@@ -1286,8 +1288,6 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
 
                 if ("id".equals(fieldName)) {
                     deserializedVolumeGroupVolumeProperties.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedVolumeGroupVolumeProperties.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
                     deserializedVolumeGroupVolumeProperties.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {

@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** freeBusyStatus. */
+/**
+ * freeBusyStatus.
+ */
 public final class MicrosoftGraphFreeBusyStatus extends ExpandableStringEnum<MicrosoftGraphFreeBusyStatus> {
-    /** Static value unknown for MicrosoftGraphFreeBusyStatus. */
+    /**
+     * Static value unknown for MicrosoftGraphFreeBusyStatus.
+     */
     public static final MicrosoftGraphFreeBusyStatus UNKNOWN = fromString("unknown");
 
-    /** Static value free for MicrosoftGraphFreeBusyStatus. */
+    /**
+     * Static value free for MicrosoftGraphFreeBusyStatus.
+     */
     public static final MicrosoftGraphFreeBusyStatus FREE = fromString("free");
 
-    /** Static value tentative for MicrosoftGraphFreeBusyStatus. */
+    /**
+     * Static value tentative for MicrosoftGraphFreeBusyStatus.
+     */
     public static final MicrosoftGraphFreeBusyStatus TENTATIVE = fromString("tentative");
 
-    /** Static value busy for MicrosoftGraphFreeBusyStatus. */
+    /**
+     * Static value busy for MicrosoftGraphFreeBusyStatus.
+     */
     public static final MicrosoftGraphFreeBusyStatus BUSY = fromString("busy");
 
-    /** Static value oof for MicrosoftGraphFreeBusyStatus. */
+    /**
+     * Static value oof for MicrosoftGraphFreeBusyStatus.
+     */
     public static final MicrosoftGraphFreeBusyStatus OOF = fromString("oof");
 
-    /** Static value workingElsewhere for MicrosoftGraphFreeBusyStatus. */
+    /**
+     * Static value workingElsewhere for MicrosoftGraphFreeBusyStatus.
+     */
     public static final MicrosoftGraphFreeBusyStatus WORKING_ELSEWHERE = fromString("workingElsewhere");
 
     /**
      * Creates a new instance of MicrosoftGraphFreeBusyStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class MicrosoftGraphFreeBusyStatus extends ExpandableStringEnum<Mic
 
     /**
      * Creates or finds a MicrosoftGraphFreeBusyStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphFreeBusyStatus.
      */
-    @JsonCreator
     public static MicrosoftGraphFreeBusyStatus fromString(String name) {
         return fromString(name, MicrosoftGraphFreeBusyStatus.class);
     }
 
     /**
      * Gets known MicrosoftGraphFreeBusyStatus values.
-     *
+     * 
      * @return known MicrosoftGraphFreeBusyStatus values.
      */
     public static Collection<MicrosoftGraphFreeBusyStatus> values() {

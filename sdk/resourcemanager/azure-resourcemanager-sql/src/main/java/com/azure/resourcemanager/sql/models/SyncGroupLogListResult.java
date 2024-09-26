@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.SyncGroupLogPropertiesInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of sync group log properties. */
+/**
+ * A list of sync group log properties.
+ */
 @Immutable
-public final class SyncGroupLogListResult {
+public final class SyncGroupLogListResult implements JsonSerializable<SyncGroupLogListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SyncGroupLogPropertiesInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SyncGroupLogListResult class. */
+    /**
+     * Creates an instance of SyncGroupLogListResult class.
+     */
     public SyncGroupLogListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<SyncGroupLogPropertiesInner> value() {
@@ -39,7 +45,7 @@ public final class SyncGroupLogListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class SyncGroupLogListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncGroupLogListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncGroupLogListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncGroupLogListResult.
+     */
+    public static SyncGroupLogListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncGroupLogListResult deserializedSyncGroupLogListResult = new SyncGroupLogListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SyncGroupLogPropertiesInner> value
+                        = reader.readArray(reader1 -> SyncGroupLogPropertiesInner.fromJson(reader1));
+                    deserializedSyncGroupLogListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSyncGroupLogListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncGroupLogListResult;
+        });
     }
 }

@@ -6,32 +6,34 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.BlobEventsTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Trigger that runs every time a Blob event occurs.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = BlobEventsTrigger.class, visible = true)
-@JsonTypeName("BlobEventsTrigger")
 @Fluent
 public final class BlobEventsTrigger extends MultiplePipelineTrigger {
     /*
      * Trigger type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "BlobEventsTrigger";
 
     /*
      * Blob Events Trigger properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private BlobEventsTriggerTypeProperties innerTypeProperties = new BlobEventsTriggerTypeProperties();
+
+    /*
+     * Indicates if trigger is running or not. Updated when Start/Stop APIs are called on the Trigger.
+     */
+    private TriggerRuntimeState runtimeState;
 
     /**
      * Creates an instance of BlobEventsTrigger class.
@@ -56,6 +58,17 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
      */
     private BlobEventsTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * Get the runtimeState property: Indicates if trigger is running or not. Updated when Start/Stop APIs are called on
+     * the Trigger.
+     * 
+     * @return the runtimeState value.
+     */
+    @Override
+    public TriggerRuntimeState runtimeState() {
+        return this.runtimeState;
     }
 
     /**
@@ -226,4 +239,70 @@ public final class BlobEventsTrigger extends MultiplePipelineTrigger {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobEventsTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("pipelines", pipelines(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BlobEventsTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BlobEventsTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BlobEventsTrigger.
+     */
+    public static BlobEventsTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BlobEventsTrigger deserializedBlobEventsTrigger = new BlobEventsTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedBlobEventsTrigger.withDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedBlobEventsTrigger.runtimeState = TriggerRuntimeState.fromString(reader.getString());
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedBlobEventsTrigger.withAnnotations(annotations);
+                } else if ("pipelines".equals(fieldName)) {
+                    List<TriggerPipelineReference> pipelines
+                        = reader.readArray(reader1 -> TriggerPipelineReference.fromJson(reader1));
+                    deserializedBlobEventsTrigger.withPipelines(pipelines);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedBlobEventsTrigger.innerTypeProperties
+                        = BlobEventsTriggerTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedBlobEventsTrigger.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedBlobEventsTrigger.withAdditionalProperties(additionalProperties);
+
+            return deserializedBlobEventsTrigger;
+        });
+    }
 }

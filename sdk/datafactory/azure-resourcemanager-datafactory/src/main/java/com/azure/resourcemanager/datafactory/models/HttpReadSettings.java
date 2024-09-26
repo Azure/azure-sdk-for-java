@@ -5,58 +5,51 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Http read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HttpReadSettings.class, visible = true)
-@JsonTypeName("HttpReadSettings")
 @Fluent
 public final class HttpReadSettings extends StoreReadSettings {
     /*
      * The read setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "HttpReadSettings";
 
     /*
      * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
      * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
      * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
      * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "requestTimeout")
     private Object requestTimeout;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
     /**
@@ -211,5 +204,73 @@ public final class HttpReadSettings extends StoreReadSettings {
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        jsonWriter.writeUntypedField("requestTimeout", this.requestTimeout);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpReadSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpReadSettings.
+     */
+    public static HttpReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpReadSettings deserializedHttpReadSettings = new HttpReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedHttpReadSettings.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedHttpReadSettings.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedHttpReadSettings.type = reader.getString();
+                } else if ("requestMethod".equals(fieldName)) {
+                    deserializedHttpReadSettings.requestMethod = reader.readUntyped();
+                } else if ("requestBody".equals(fieldName)) {
+                    deserializedHttpReadSettings.requestBody = reader.readUntyped();
+                } else if ("additionalHeaders".equals(fieldName)) {
+                    deserializedHttpReadSettings.additionalHeaders = reader.readUntyped();
+                } else if ("requestTimeout".equals(fieldName)) {
+                    deserializedHttpReadSettings.requestTimeout = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedHttpReadSettings.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHttpReadSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedHttpReadSettings;
+        });
     }
 }

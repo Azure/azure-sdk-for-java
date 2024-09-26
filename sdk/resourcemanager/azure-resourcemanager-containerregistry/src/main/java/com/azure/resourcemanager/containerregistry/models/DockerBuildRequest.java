@@ -6,89 +6,92 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The parameters for a docker quick build.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DockerBuildRequest")
 @Fluent
 public final class DockerBuildRequest extends RunRequest {
     /*
+     * The type of the run request.
+     */
+    private String type = "DockerBuildRequest";
+
+    /*
      * The fully qualified image names including the repository and tag.
      */
-    @JsonProperty(value = "imageNames")
     private List<String> imageNames;
 
     /*
      * The value of this property indicates whether the image built should be pushed to the registry or not.
      */
-    @JsonProperty(value = "isPushEnabled")
     private Boolean isPushEnabled;
 
     /*
      * The value of this property indicates whether the image cache is enabled or not.
      */
-    @JsonProperty(value = "noCache")
     private Boolean noCache;
 
     /*
      * The Docker file path relative to the source location.
      */
-    @JsonProperty(value = "dockerFilePath", required = true)
     private String dockerFilePath;
 
     /*
      * The name of the target build stage for the docker build.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * The collection of override arguments to be used when executing the run.
      */
-    @JsonProperty(value = "arguments")
     private List<Argument> arguments;
 
     /*
      * Run timeout in seconds.
      */
-    @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
      * The platform properties against which the run has to happen.
      */
-    @JsonProperty(value = "platform", required = true)
     private PlatformProperties platform;
 
     /*
      * The machine configuration of the run agent.
      */
-    @JsonProperty(value = "agentConfiguration")
     private AgentProperties agentConfiguration;
 
     /*
      * The URL(absolute or relative) of the source context. It can be an URL to a tar or git repository.
      * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
      */
-    @JsonProperty(value = "sourceLocation")
     private String sourceLocation;
 
     /*
      * The properties that describes a set of credentials that will be used when this run is invoked.
      */
-    @JsonProperty(value = "credentials")
     private Credentials credentials;
 
     /**
      * Creates an instance of DockerBuildRequest class.
      */
     public DockerBuildRequest() {
+    }
+
+    /**
+     * Get the type property: The type of the run request.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -355,15 +358,16 @@ public final class DockerBuildRequest extends RunRequest {
     public void validate() {
         super.validate();
         if (dockerFilePath() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property dockerFilePath in model DockerBuildRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dockerFilePath in model DockerBuildRequest"));
         }
         if (arguments() != null) {
             arguments().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property platform in model DockerBuildRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property platform in model DockerBuildRequest"));
         } else {
             platform().validate();
         }
@@ -376,4 +380,85 @@ public final class DockerBuildRequest extends RunRequest {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DockerBuildRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isArchiveEnabled", isArchiveEnabled());
+        jsonWriter.writeStringField("agentPoolName", agentPoolName());
+        jsonWriter.writeStringField("logTemplate", logTemplate());
+        jsonWriter.writeStringField("dockerFilePath", this.dockerFilePath);
+        jsonWriter.writeJsonField("platform", this.platform);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeArrayField("imageNames", this.imageNames, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isPushEnabled", this.isPushEnabled);
+        jsonWriter.writeBooleanField("noCache", this.noCache);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeArrayField("arguments", this.arguments, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("timeout", this.timeout);
+        jsonWriter.writeJsonField("agentConfiguration", this.agentConfiguration);
+        jsonWriter.writeStringField("sourceLocation", this.sourceLocation);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DockerBuildRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DockerBuildRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DockerBuildRequest.
+     */
+    public static DockerBuildRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DockerBuildRequest deserializedDockerBuildRequest = new DockerBuildRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isArchiveEnabled".equals(fieldName)) {
+                    deserializedDockerBuildRequest.withIsArchiveEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("agentPoolName".equals(fieldName)) {
+                    deserializedDockerBuildRequest.withAgentPoolName(reader.getString());
+                } else if ("logTemplate".equals(fieldName)) {
+                    deserializedDockerBuildRequest.withLogTemplate(reader.getString());
+                } else if ("dockerFilePath".equals(fieldName)) {
+                    deserializedDockerBuildRequest.dockerFilePath = reader.getString();
+                } else if ("platform".equals(fieldName)) {
+                    deserializedDockerBuildRequest.platform = PlatformProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedDockerBuildRequest.type = reader.getString();
+                } else if ("imageNames".equals(fieldName)) {
+                    List<String> imageNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDockerBuildRequest.imageNames = imageNames;
+                } else if ("isPushEnabled".equals(fieldName)) {
+                    deserializedDockerBuildRequest.isPushEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("noCache".equals(fieldName)) {
+                    deserializedDockerBuildRequest.noCache = reader.getNullable(JsonReader::getBoolean);
+                } else if ("target".equals(fieldName)) {
+                    deserializedDockerBuildRequest.target = reader.getString();
+                } else if ("arguments".equals(fieldName)) {
+                    List<Argument> arguments = reader.readArray(reader1 -> Argument.fromJson(reader1));
+                    deserializedDockerBuildRequest.arguments = arguments;
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedDockerBuildRequest.timeout = reader.getNullable(JsonReader::getInt);
+                } else if ("agentConfiguration".equals(fieldName)) {
+                    deserializedDockerBuildRequest.agentConfiguration = AgentProperties.fromJson(reader);
+                } else if ("sourceLocation".equals(fieldName)) {
+                    deserializedDockerBuildRequest.sourceLocation = reader.getString();
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedDockerBuildRequest.credentials = Credentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDockerBuildRequest;
+        });
+    }
 }

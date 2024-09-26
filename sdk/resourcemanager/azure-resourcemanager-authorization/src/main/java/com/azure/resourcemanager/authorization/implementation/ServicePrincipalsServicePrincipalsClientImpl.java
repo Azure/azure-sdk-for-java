@@ -44,24 +44,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ServicePrincipalsServicePrincipalsClient.
  */
 public final class ServicePrincipalsServicePrincipalsClientImpl implements ServicePrincipalsServicePrincipalsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicePrincipalsServicePrincipalsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftGraphClientImpl client;
 
     /**
      * Initializes an instance of ServicePrincipalsServicePrincipalsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicePrincipalsServicePrincipalsClientImpl(MicrosoftGraphClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ServicePrincipalsServicePrincipalsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ServicePrincipalsServicePrincipalsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,80 +72,62 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftGraphClient")
     public interface ServicePrincipalsServicePrincipalsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/servicePrincipals")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfServicePrincipal>> listServicePrincipal(
-            @HostParam("$host") String endpoint,
-            @HeaderParam("ConsistencyLevel") String consistencyLevel,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$select") String select,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<CollectionOfServicePrincipal>> listServicePrincipal(@HostParam("$host") String endpoint,
+            @HeaderParam("ConsistencyLevel") String consistencyLevel, @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip, @QueryParam("$search") String search,
+            @QueryParam("$filter") String filter, @QueryParam("$count") Boolean count,
+            @QueryParam("$orderby") String orderby, @QueryParam("$select") String select,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/servicePrincipals")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<MicrosoftGraphServicePrincipalInner>> createServicePrincipal(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MicrosoftGraphServicePrincipalInner>> createServicePrincipal(@HostParam("$host") String endpoint,
             @BodyParam("application/json") MicrosoftGraphServicePrincipalInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/servicePrincipals/{servicePrincipal-id}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<MicrosoftGraphServicePrincipalInner>> getServicePrincipal(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MicrosoftGraphServicePrincipalInner>> getServicePrincipal(@HostParam("$host") String endpoint,
             @PathParam("servicePrincipal-id") String servicePrincipalId,
-            @HeaderParam("ConsistencyLevel") String consistencyLevel,
-            @QueryParam("$select") String select,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("ConsistencyLevel") String consistencyLevel, @QueryParam("$select") String select,
+            @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/servicePrincipals/{servicePrincipal-id}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Void>> updateServicePrincipal(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> updateServicePrincipal(@HostParam("$host") String endpoint,
             @PathParam("servicePrincipal-id") String servicePrincipalId,
             @BodyParam("application/json") MicrosoftGraphServicePrincipalInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/servicePrincipals/{servicePrincipal-id}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Void>> deleteServicePrincipal(
-            @HostParam("$host") String endpoint,
-            @PathParam("servicePrincipal-id") String servicePrincipalId,
-            @HeaderParam("If-Match") String ifMatch,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> deleteServicePrincipal(@HostParam("$host") String endpoint,
+            @PathParam("servicePrincipal-id") String servicePrincipalId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({ "Accept: application/json", "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfServicePrincipal>> listMore(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+        Mono<Response<CollectionOfServicePrincipal>>
+            listMore(@PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -158,80 +140,45 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from servicePrincipals along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return entities from servicePrincipals along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphServicePrincipalInner>> listServicePrincipalSinglePageAsync(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ServicePrincipalsServicePrincipalOrderby> orderby,
-        List<ServicePrincipalsServicePrincipalSelect> select,
+        String consistencyLevel, Integer top, Integer skip, String search, String filter, Boolean count,
+        List<ServicePrincipalsServicePrincipalOrderby> orderby, List<ServicePrincipalsServicePrincipalSelect> select,
         List<ServicePrincipalsServicePrincipalExpand> expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listServicePrincipal(
-                            this.client.getEndpoint(),
-                            consistencyLevel,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            selectConverted,
-                            expandConverted,
-                            accept,
-                            context))
-            .<PagedResponse<MicrosoftGraphServicePrincipalInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.listServicePrincipal(this.client.getEndpoint(), consistencyLevel, top, skip,
+                search, filter, count, orderbyConverted, selectConverted, expandConverted, accept, context))
+            .<PagedResponse<MicrosoftGraphServicePrincipalInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -245,78 +192,45 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from servicePrincipals along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return entities from servicePrincipals along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphServicePrincipalInner>> listServicePrincipalSinglePageAsync(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ServicePrincipalsServicePrincipalOrderby> orderby,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand,
-        Context context) {
+        String consistencyLevel, Integer top, Integer skip, String search, String filter, Boolean count,
+        List<ServicePrincipalsServicePrincipalOrderby> orderby, List<ServicePrincipalsServicePrincipalSelect> select,
+        List<ServicePrincipalsServicePrincipalExpand> expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        String orderbyConverted =
-            (orderby == null)
-                ? null
-                : orderby
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String orderbyConverted = (orderby == null)
+            ? null
+            : orderby.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
-            .listServicePrincipal(
-                this.client.getEndpoint(),
-                consistencyLevel,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                selectConverted,
-                expandConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .listServicePrincipal(this.client.getEndpoint(), consistencyLevel, top, skip, search, filter, count,
+                orderbyConverted, selectConverted, expandConverted, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -332,26 +246,17 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return entities from servicePrincipals as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ServicePrincipalsServicePrincipalOrderby> orderby,
-        List<ServicePrincipalsServicePrincipalSelect> select,
+    public PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync(String consistencyLevel,
+        Integer top, Integer skip, String search, String filter, Boolean count,
+        List<ServicePrincipalsServicePrincipalOrderby> orderby, List<ServicePrincipalsServicePrincipalSelect> select,
         List<ServicePrincipalsServicePrincipalExpand> expand) {
-        return new PagedFlux<>(
-            () ->
-                listServicePrincipalSinglePageAsync(
-                    consistencyLevel, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listMoreSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listServicePrincipalSinglePageAsync(consistencyLevel, top, skip, search, filter,
+            count, orderby, select, expand), nextLink -> listMoreSinglePageAsync(nextLink));
     }
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from servicePrincipals as paginated response with {@link PagedFlux}.
@@ -367,16 +272,13 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         final List<ServicePrincipalsServicePrincipalOrderby> orderby = null;
         final List<ServicePrincipalsServicePrincipalSelect> select = null;
         final List<ServicePrincipalsServicePrincipalExpand> expand = null;
-        return new PagedFlux<>(
-            () ->
-                listServicePrincipalSinglePageAsync(
-                    consistencyLevel, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listMoreSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listServicePrincipalSinglePageAsync(consistencyLevel, top, skip, search, filter,
+            count, orderby, select, expand), nextLink -> listMoreSinglePageAsync(nextLink));
     }
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -393,27 +295,17 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return entities from servicePrincipals as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ServicePrincipalsServicePrincipalOrderby> orderby,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listServicePrincipalSinglePageAsync(
-                    consistencyLevel, top, skip, search, filter, count, orderby, select, expand, context),
-            nextLink -> listMoreSinglePageAsync(nextLink, context));
+    private PagedFlux<MicrosoftGraphServicePrincipalInner> listServicePrincipalAsync(String consistencyLevel,
+        Integer top, Integer skip, String search, String filter, Boolean count,
+        List<ServicePrincipalsServicePrincipalOrderby> orderby, List<ServicePrincipalsServicePrincipalSelect> select,
+        List<ServicePrincipalsServicePrincipalExpand> expand, Context context) {
+        return new PagedFlux<>(() -> listServicePrincipalSinglePageAsync(consistencyLevel, top, skip, search, filter,
+            count, orderby, select, expand, context), nextLink -> listMoreSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entities from servicePrincipals as paginated response with {@link PagedIterable}.
@@ -435,7 +327,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Get entities from servicePrincipals.
-     *
+     * 
      * @param consistencyLevel Indicates the requested consistency level.
      * @param top Show only the first n items.
      * @param skip Skip the first n items.
@@ -452,25 +344,17 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return entities from servicePrincipals as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphServicePrincipalInner> listServicePrincipal(
-        String consistencyLevel,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ServicePrincipalsServicePrincipalOrderby> orderby,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand,
-        Context context) {
-        return new PagedIterable<>(
-            listServicePrincipalAsync(
-                consistencyLevel, top, skip, search, filter, count, orderby, select, expand, context));
+    public PagedIterable<MicrosoftGraphServicePrincipalInner> listServicePrincipal(String consistencyLevel, Integer top,
+        Integer skip, String search, String filter, Boolean count,
+        List<ServicePrincipalsServicePrincipalOrderby> orderby, List<ServicePrincipalsServicePrincipalSelect> select,
+        List<ServicePrincipalsServicePrincipalExpand> expand, Context context) {
+        return new PagedIterable<>(listServicePrincipalAsync(consistencyLevel, top, skip, search, filter, count,
+            orderby, select, expand, context));
     }
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -478,13 +362,11 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return servicePrincipal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MicrosoftGraphServicePrincipalInner>> createServicePrincipalWithResponseAsync(
-        MicrosoftGraphServicePrincipalInner body) {
+    public Mono<Response<MicrosoftGraphServicePrincipalInner>>
+        createServicePrincipalWithResponseAsync(MicrosoftGraphServicePrincipalInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -499,7 +381,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,13 +390,11 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return servicePrincipal along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MicrosoftGraphServicePrincipalInner>> createServicePrincipalWithResponseAsync(
-        MicrosoftGraphServicePrincipalInner body, Context context) {
+    private Mono<Response<MicrosoftGraphServicePrincipalInner>>
+        createServicePrincipalWithResponseAsync(MicrosoftGraphServicePrincipalInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (body == null) {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
@@ -528,7 +408,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -536,14 +416,14 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return servicePrincipal on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MicrosoftGraphServicePrincipalInner> createServicePrincipalAsync(
-        MicrosoftGraphServicePrincipalInner body) {
+    public Mono<MicrosoftGraphServicePrincipalInner>
+        createServicePrincipalAsync(MicrosoftGraphServicePrincipalInner body) {
         return createServicePrincipalWithResponseAsync(body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -552,14 +432,14 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return servicePrincipal along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphServicePrincipalInner> createServicePrincipalWithResponse(
-        MicrosoftGraphServicePrincipalInner body, Context context) {
+    public Response<MicrosoftGraphServicePrincipalInner>
+        createServicePrincipalWithResponse(MicrosoftGraphServicePrincipalInner body, Context context) {
         return createServicePrincipalWithResponseAsync(body, context).block();
     }
 
     /**
      * Add new entity to servicePrincipals.
-     *
+     * 
      * @param body New entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -573,7 +453,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param consistencyLevel Indicates the requested consistency level.
      * @param select Select properties to be returned.
@@ -581,58 +461,41 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return entity from servicePrincipals by key along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphServicePrincipalInner>> getServicePrincipalWithResponseAsync(
-        String servicePrincipalId,
-        String consistencyLevel,
-        List<ServicePrincipalsServicePrincipalSelect> select,
+        String servicePrincipalId, String consistencyLevel, List<ServicePrincipalsServicePrincipalSelect> select,
         List<ServicePrincipalsServicePrincipalExpand> expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter servicePrincipalId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getServicePrincipal(
-                            this.client.getEndpoint(),
-                            servicePrincipalId,
-                            consistencyLevel,
-                            selectConverted,
-                            expandConverted,
-                            accept,
-                            context))
+            .withContext(context -> service.getServicePrincipal(this.client.getEndpoint(), servicePrincipalId,
+                consistencyLevel, selectConverted, expandConverted, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param consistencyLevel Indicates the requested consistency level.
      * @param select Select properties to be returned.
@@ -641,56 +504,40 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from servicePrincipals by key along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return entity from servicePrincipals by key along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphServicePrincipalInner>> getServicePrincipalWithResponseAsync(
-        String servicePrincipalId,
-        String consistencyLevel,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand,
-        Context context) {
+        String servicePrincipalId, String consistencyLevel, List<ServicePrincipalsServicePrincipalSelect> select,
+        List<ServicePrincipalsServicePrincipalExpand> expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter servicePrincipalId is required and cannot be null."));
         }
         final String accept = "application/json";
-        String selectConverted =
-            (select == null)
-                ? null
-                : select
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
-        String expandConverted =
-            (expand == null)
-                ? null
-                : expand
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String selectConverted = (select == null)
+            ? null
+            : select.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
+        String expandConverted = (expand == null)
+            ? null
+            : expand.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
-        return service
-            .getServicePrincipal(
-                this.client.getEndpoint(),
-                servicePrincipalId,
-                consistencyLevel,
-                selectConverted,
-                expandConverted,
-                accept,
-                context);
+        return service.getServicePrincipal(this.client.getEndpoint(), servicePrincipalId, consistencyLevel,
+            selectConverted, expandConverted, accept, context);
     }
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -708,7 +555,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param consistencyLevel Indicates the requested consistency level.
      * @param select Select properties to be returned.
@@ -720,19 +567,16 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return entity from servicePrincipals by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MicrosoftGraphServicePrincipalInner> getServicePrincipalWithResponse(
-        String servicePrincipalId,
-        String consistencyLevel,
-        List<ServicePrincipalsServicePrincipalSelect> select,
-        List<ServicePrincipalsServicePrincipalExpand> expand,
-        Context context) {
+    public Response<MicrosoftGraphServicePrincipalInner> getServicePrincipalWithResponse(String servicePrincipalId,
+        String consistencyLevel, List<ServicePrincipalsServicePrincipalSelect> select,
+        List<ServicePrincipalsServicePrincipalExpand> expand, Context context) {
         return getServicePrincipalWithResponseAsync(servicePrincipalId, consistencyLevel, select, expand, context)
             .block();
     }
 
     /**
      * Get entity from servicePrincipals by key.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -750,7 +594,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -759,13 +603,11 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateServicePrincipalWithResponseAsync(
-        String servicePrincipalId, MicrosoftGraphServicePrincipalInner body) {
+    public Mono<Response<Void>> updateServicePrincipalWithResponseAsync(String servicePrincipalId,
+        MicrosoftGraphServicePrincipalInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -778,16 +620,14 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateServicePrincipal(this.client.getEndpoint(), servicePrincipalId, body, accept, context))
+            .withContext(context -> service.updateServicePrincipal(this.client.getEndpoint(), servicePrincipalId, body,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @param context The context to associate with this operation.
@@ -797,13 +637,11 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateServicePrincipalWithResponseAsync(
-        String servicePrincipalId, MicrosoftGraphServicePrincipalInner body, Context context) {
+    private Mono<Response<Void>> updateServicePrincipalWithResponseAsync(String servicePrincipalId,
+        MicrosoftGraphServicePrincipalInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -821,7 +659,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -836,7 +674,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @param context The context to associate with this operation.
@@ -846,14 +684,14 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateServicePrincipalWithResponse(
-        String servicePrincipalId, MicrosoftGraphServicePrincipalInner body, Context context) {
+    public Response<Void> updateServicePrincipalWithResponse(String servicePrincipalId,
+        MicrosoftGraphServicePrincipalInner body, Context context) {
         return updateServicePrincipalWithResponseAsync(servicePrincipalId, body, context).block();
     }
 
     /**
      * Update entity in servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param body New property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -867,7 +705,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -878,10 +716,8 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteServicePrincipalWithResponseAsync(String servicePrincipalId, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -889,17 +725,14 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .deleteServicePrincipal(
-                            this.client.getEndpoint(), servicePrincipalId, ifMatch, accept, context))
+            .withContext(context -> service.deleteServicePrincipal(this.client.getEndpoint(), servicePrincipalId,
+                ifMatch, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param ifMatch ETag.
      * @param context The context to associate with this operation.
@@ -909,13 +742,11 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteServicePrincipalWithResponseAsync(
-        String servicePrincipalId, String ifMatch, Context context) {
+    private Mono<Response<Void>> deleteServicePrincipalWithResponseAsync(String servicePrincipalId, String ifMatch,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (servicePrincipalId == null) {
             return Mono
@@ -928,7 +759,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -943,7 +774,7 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @param ifMatch ETag.
      * @param context The context to associate with this operation.
@@ -953,14 +784,14 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteServicePrincipalWithResponse(
-        String servicePrincipalId, String ifMatch, Context context) {
+    public Response<Void> deleteServicePrincipalWithResponse(String servicePrincipalId, String ifMatch,
+        Context context) {
         return deleteServicePrincipalWithResponseAsync(servicePrincipalId, ifMatch, context).block();
     }
 
     /**
      * Delete entity from servicePrincipals.
-     *
+     * 
      * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -974,9 +805,8 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -987,25 +817,16 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
-        return FluxUtil
-            .withContext(context -> service.listMore(nextLink, context))
-            .<PagedResponse<MicrosoftGraphServicePrincipalInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listMore(nextLink, context))
+            .<PagedResponse<MicrosoftGraphServicePrincipalInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
@@ -1013,22 +834,14 @@ public final class ServicePrincipalsServicePrincipalsClientImpl implements Servi
      * @return collection of servicePrincipal along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphServicePrincipalInner>> listMoreSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MicrosoftGraphServicePrincipalInner>> listMoreSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .listMore(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listMore(nextLink, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

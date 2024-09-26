@@ -22,11 +22,16 @@ public final class CertificatesCreateOrUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void certificatesCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getCertificates().createOrUpdate("myResourceGroup",
-            "myservice", "mycertificate",
-            new CertificateResourceInner().withProperties(new KeyVaultCertificateProperties()
-                .withVaultUri("https://myvault.vault.azure.net").withKeyVaultCertName("fakeTokenPlaceholder")
-                .withCertVersion("08a219d06d874795a96db47e06fbb01e").withAutoSync(KeyVaultCertificateAutoSync.ENABLED)),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getCertificates()
+            .createOrUpdate("myResourceGroup", "myservice", "mycertificate",
+                new CertificateResourceInner()
+                    .withProperties(new KeyVaultCertificateProperties().withVaultUri("https://myvault.vault.azure.net")
+                        .withKeyVaultCertName("fakeTokenPlaceholder")
+                        .withCertVersion("08a219d06d874795a96db47e06fbb01e")
+                        .withAutoSync(KeyVaultCertificateAutoSync.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }

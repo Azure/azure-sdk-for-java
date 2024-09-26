@@ -11,15 +11,16 @@ public final class NetezzaTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetezzaTableDatasetTypeProperties model = BinaryData
-            .fromString("{\"tableName\":\"datanyfowyj\",\"table\":\"dataakkiub\",\"schema\":\"datakittlrgl\"}")
+            .fromString("{\"tableName\":\"datakrqdbsgkqy\",\"table\":\"dataotypcjxh\",\"schema\":\"datazlocjhzppdbr\"}")
             .toObject(NetezzaTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetezzaTableDatasetTypeProperties model = new NetezzaTableDatasetTypeProperties().withTableName("datanyfowyj")
-            .withTable("dataakkiub")
-            .withSchema("datakittlrgl");
+        NetezzaTableDatasetTypeProperties model
+            = new NetezzaTableDatasetTypeProperties().withTableName("datakrqdbsgkqy")
+                .withTable("dataotypcjxh")
+                .withSchema("datazlocjhzppdbr");
         model = BinaryData.fromObject(model).toObject(NetezzaTableDatasetTypeProperties.class);
     }
 }

@@ -6,87 +6,81 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
  * Information needed for cloning operation.
  */
 @Fluent
-public final class CloningInfo {
+public final class CloningInfo implements JsonSerializable<CloningInfo> {
     /*
      * Correlation ID of cloning operation. This ID ties multiple cloning operations
      * together to use the same snapshot.
      */
-    @JsonProperty(value = "correlationId")
     private UUID correlationId;
 
     /*
      * <code>true</code> to overwrite destination app; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "overwrite")
     private Boolean overwrite;
 
     /*
      * <code>true</code> to clone custom hostnames from source app; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "cloneCustomHostNames")
     private Boolean cloneCustomHostNames;
 
     /*
      * <code>true</code> to clone source control from source app; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "cloneSourceControl")
     private Boolean cloneSourceControl;
 
     /*
      * ARM resource ID of the source app. App resource ID is of the form
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production slots and
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for other slots.
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName} for production
+     * slots and
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{
+     * slotName} for other slots.
      */
-    @JsonProperty(value = "sourceWebAppId", required = true)
     private String sourceWebAppId;
 
     /*
      * Location of source app ex: West US or North Europe
      */
-    @JsonProperty(value = "sourceWebAppLocation")
     private String sourceWebAppLocation;
 
     /*
      * App Service Environment.
      */
-    @JsonProperty(value = "hostingEnvironment")
     private String hostingEnvironment;
 
     /*
      * Application setting overrides for cloned app. If specified, these settings override the settings cloned
      * from source app. Otherwise, application settings from source app are retained.
      */
-    @JsonProperty(value = "appSettingsOverrides")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> appSettingsOverrides;
 
     /*
      * <code>true</code> to configure load balancing for source and destination app.
      */
-    @JsonProperty(value = "configureLoadBalancing")
     private Boolean configureLoadBalancing;
 
     /*
      * ARM resource ID of the Traffic Manager profile to use, if it exists. Traffic Manager resource ID is of the form
-     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{profileName}.
+     * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{
+     * profileName}.
      */
-    @JsonProperty(value = "trafficManagerProfileId")
     private String trafficManagerProfileId;
 
     /*
      * Name of Traffic Manager profile to create. This is only needed if Traffic Manager profile does not already exist.
      */
-    @JsonProperty(value = "trafficManagerProfileName")
     private String trafficManagerProfileName;
 
     /**
@@ -98,7 +92,7 @@ public final class CloningInfo {
     /**
      * Get the correlationId property: Correlation ID of cloning operation. This ID ties multiple cloning operations
      * together to use the same snapshot.
-     *
+     * 
      * @return the correlationId value.
      */
     public UUID correlationId() {
@@ -108,7 +102,7 @@ public final class CloningInfo {
     /**
      * Set the correlationId property: Correlation ID of cloning operation. This ID ties multiple cloning operations
      * together to use the same snapshot.
-     *
+     * 
      * @param correlationId the correlationId value to set.
      * @return the CloningInfo object itself.
      */
@@ -120,7 +114,7 @@ public final class CloningInfo {
     /**
      * Get the overwrite property: &lt;code&gt;true&lt;/code&gt; to overwrite destination app; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the overwrite value.
      */
     public Boolean overwrite() {
@@ -130,7 +124,7 @@ public final class CloningInfo {
     /**
      * Set the overwrite property: &lt;code&gt;true&lt;/code&gt; to overwrite destination app; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param overwrite the overwrite value to set.
      * @return the CloningInfo object itself.
      */
@@ -142,7 +136,7 @@ public final class CloningInfo {
     /**
      * Get the cloneCustomHostNames property: &lt;code&gt;true&lt;/code&gt; to clone custom hostnames from source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the cloneCustomHostNames value.
      */
     public Boolean cloneCustomHostNames() {
@@ -152,7 +146,7 @@ public final class CloningInfo {
     /**
      * Set the cloneCustomHostNames property: &lt;code&gt;true&lt;/code&gt; to clone custom hostnames from source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param cloneCustomHostNames the cloneCustomHostNames value to set.
      * @return the CloningInfo object itself.
      */
@@ -164,7 +158,7 @@ public final class CloningInfo {
     /**
      * Get the cloneSourceControl property: &lt;code&gt;true&lt;/code&gt; to clone source control from source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the cloneSourceControl value.
      */
     public Boolean cloneSourceControl() {
@@ -174,7 +168,7 @@ public final class CloningInfo {
     /**
      * Set the cloneSourceControl property: &lt;code&gt;true&lt;/code&gt; to clone source control from source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param cloneSourceControl the cloneSourceControl value to set.
      * @return the CloningInfo object itself.
      */
@@ -189,7 +183,7 @@ public final class CloningInfo {
      * slots and
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName}
      * for other slots.
-     *
+     * 
      * @return the sourceWebAppId value.
      */
     public String sourceWebAppId() {
@@ -202,7 +196,7 @@ public final class CloningInfo {
      * slots and
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName}
      * for other slots.
-     *
+     * 
      * @param sourceWebAppId the sourceWebAppId value to set.
      * @return the CloningInfo object itself.
      */
@@ -213,7 +207,7 @@ public final class CloningInfo {
 
     /**
      * Get the sourceWebAppLocation property: Location of source app ex: West US or North Europe.
-     *
+     * 
      * @return the sourceWebAppLocation value.
      */
     public String sourceWebAppLocation() {
@@ -222,7 +216,7 @@ public final class CloningInfo {
 
     /**
      * Set the sourceWebAppLocation property: Location of source app ex: West US or North Europe.
-     *
+     * 
      * @param sourceWebAppLocation the sourceWebAppLocation value to set.
      * @return the CloningInfo object itself.
      */
@@ -233,7 +227,7 @@ public final class CloningInfo {
 
     /**
      * Get the hostingEnvironment property: App Service Environment.
-     *
+     * 
      * @return the hostingEnvironment value.
      */
     public String hostingEnvironment() {
@@ -242,7 +236,7 @@ public final class CloningInfo {
 
     /**
      * Set the hostingEnvironment property: App Service Environment.
-     *
+     * 
      * @param hostingEnvironment the hostingEnvironment value to set.
      * @return the CloningInfo object itself.
      */
@@ -255,7 +249,7 @@ public final class CloningInfo {
      * Get the appSettingsOverrides property: Application setting overrides for cloned app. If specified, these settings
      * override the settings cloned
      * from source app. Otherwise, application settings from source app are retained.
-     *
+     * 
      * @return the appSettingsOverrides value.
      */
     public Map<String, String> appSettingsOverrides() {
@@ -266,7 +260,7 @@ public final class CloningInfo {
      * Set the appSettingsOverrides property: Application setting overrides for cloned app. If specified, these settings
      * override the settings cloned
      * from source app. Otherwise, application settings from source app are retained.
-     *
+     * 
      * @param appSettingsOverrides the appSettingsOverrides value to set.
      * @return the CloningInfo object itself.
      */
@@ -278,7 +272,7 @@ public final class CloningInfo {
     /**
      * Get the configureLoadBalancing property: &lt;code&gt;true&lt;/code&gt; to configure load balancing for source and
      * destination app.
-     *
+     * 
      * @return the configureLoadBalancing value.
      */
     public Boolean configureLoadBalancing() {
@@ -288,7 +282,7 @@ public final class CloningInfo {
     /**
      * Set the configureLoadBalancing property: &lt;code&gt;true&lt;/code&gt; to configure load balancing for source and
      * destination app.
-     *
+     * 
      * @param configureLoadBalancing the configureLoadBalancing value to set.
      * @return the CloningInfo object itself.
      */
@@ -301,7 +295,7 @@ public final class CloningInfo {
      * Get the trafficManagerProfileId property: ARM resource ID of the Traffic Manager profile to use, if it exists.
      * Traffic Manager resource ID is of the form
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{profileName}.
-     *
+     * 
      * @return the trafficManagerProfileId value.
      */
     public String trafficManagerProfileId() {
@@ -312,7 +306,7 @@ public final class CloningInfo {
      * Set the trafficManagerProfileId property: ARM resource ID of the Traffic Manager profile to use, if it exists.
      * Traffic Manager resource ID is of the form
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{profileName}.
-     *
+     * 
      * @param trafficManagerProfileId the trafficManagerProfileId value to set.
      * @return the CloningInfo object itself.
      */
@@ -324,7 +318,7 @@ public final class CloningInfo {
     /**
      * Get the trafficManagerProfileName property: Name of Traffic Manager profile to create. This is only needed if
      * Traffic Manager profile does not already exist.
-     *
+     * 
      * @return the trafficManagerProfileName value.
      */
     public String trafficManagerProfileName() {
@@ -334,7 +328,7 @@ public final class CloningInfo {
     /**
      * Set the trafficManagerProfileName property: Name of Traffic Manager profile to create. This is only needed if
      * Traffic Manager profile does not already exist.
-     *
+     * 
      * @param trafficManagerProfileName the trafficManagerProfileName value to set.
      * @return the CloningInfo object itself.
      */
@@ -345,7 +339,7 @@ public final class CloningInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -356,4 +350,74 @@ public final class CloningInfo {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CloningInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceWebAppId", this.sourceWebAppId);
+        jsonWriter.writeStringField("correlationId", Objects.toString(this.correlationId, null));
+        jsonWriter.writeBooleanField("overwrite", this.overwrite);
+        jsonWriter.writeBooleanField("cloneCustomHostNames", this.cloneCustomHostNames);
+        jsonWriter.writeBooleanField("cloneSourceControl", this.cloneSourceControl);
+        jsonWriter.writeStringField("sourceWebAppLocation", this.sourceWebAppLocation);
+        jsonWriter.writeStringField("hostingEnvironment", this.hostingEnvironment);
+        jsonWriter.writeMapField("appSettingsOverrides", this.appSettingsOverrides,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("configureLoadBalancing", this.configureLoadBalancing);
+        jsonWriter.writeStringField("trafficManagerProfileId", this.trafficManagerProfileId);
+        jsonWriter.writeStringField("trafficManagerProfileName", this.trafficManagerProfileName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloningInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloningInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CloningInfo.
+     */
+    public static CloningInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloningInfo deserializedCloningInfo = new CloningInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceWebAppId".equals(fieldName)) {
+                    deserializedCloningInfo.sourceWebAppId = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedCloningInfo.correlationId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("overwrite".equals(fieldName)) {
+                    deserializedCloningInfo.overwrite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cloneCustomHostNames".equals(fieldName)) {
+                    deserializedCloningInfo.cloneCustomHostNames = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cloneSourceControl".equals(fieldName)) {
+                    deserializedCloningInfo.cloneSourceControl = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceWebAppLocation".equals(fieldName)) {
+                    deserializedCloningInfo.sourceWebAppLocation = reader.getString();
+                } else if ("hostingEnvironment".equals(fieldName)) {
+                    deserializedCloningInfo.hostingEnvironment = reader.getString();
+                } else if ("appSettingsOverrides".equals(fieldName)) {
+                    Map<String, String> appSettingsOverrides = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCloningInfo.appSettingsOverrides = appSettingsOverrides;
+                } else if ("configureLoadBalancing".equals(fieldName)) {
+                    deserializedCloningInfo.configureLoadBalancing = reader.getNullable(JsonReader::getBoolean);
+                } else if ("trafficManagerProfileId".equals(fieldName)) {
+                    deserializedCloningInfo.trafficManagerProfileId = reader.getString();
+                } else if ("trafficManagerProfileName".equals(fieldName)) {
+                    deserializedCloningInfo.trafficManagerProfileName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloningInfo;
+        });
+    }
 }

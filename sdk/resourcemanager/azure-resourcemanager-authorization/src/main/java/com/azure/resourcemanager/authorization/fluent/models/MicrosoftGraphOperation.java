@@ -5,47 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** operation. */
+/**
+ * operation.
+ */
 @Fluent
 public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
     /*
      * The start time of the operation.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * The time of the last action of the operation.
      */
-    @JsonProperty(value = "lastActionDateTime")
     private OffsetDateTime lastActionDateTime;
 
     /*
      * operationStatus
      */
-    @JsonProperty(value = "status")
     private MicrosoftGraphOperationStatus status;
 
     /*
      * operation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOperation class. */
+    /**
+     * Creates an instance of MicrosoftGraphOperation class.
+     */
     public MicrosoftGraphOperation() {
     }
 
     /**
      * Get the createdDateTime property: The start time of the operation.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -54,7 +57,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
 
     /**
      * Set the createdDateTime property: The start time of the operation.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the MicrosoftGraphOperation object itself.
      */
@@ -65,7 +68,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
 
     /**
      * Get the lastActionDateTime property: The time of the last action of the operation.
-     *
+     * 
      * @return the lastActionDateTime value.
      */
     public OffsetDateTime lastActionDateTime() {
@@ -74,7 +77,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
 
     /**
      * Set the lastActionDateTime property: The time of the last action of the operation.
-     *
+     * 
      * @param lastActionDateTime the lastActionDateTime value to set.
      * @return the MicrosoftGraphOperation object itself.
      */
@@ -85,7 +88,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
 
     /**
      * Get the status property: operationStatus.
-     *
+     * 
      * @return the status value.
      */
     public MicrosoftGraphOperationStatus status() {
@@ -94,7 +97,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
 
     /**
      * Set the status property: operationStatus.
-     *
+     * 
      * @param status the status value to set.
      * @return the MicrosoftGraphOperation object itself.
      */
@@ -105,17 +108,16 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
 
     /**
      * Get the additionalProperties property: operation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: operation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOperation object itself.
      */
@@ -124,15 +126,9 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphOperation withId(String id) {
         super.withId(id);
@@ -141,11 +137,74 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("lastActionDateTime",
+            this.lastActionDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastActionDateTime));
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOperation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOperation.
+     */
+    public static MicrosoftGraphOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOperation deserializedMicrosoftGraphOperation = new MicrosoftGraphOperation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphOperation.withId(reader.getString());
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOperation.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastActionDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphOperation.lastActionDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedMicrosoftGraphOperation.status
+                        = MicrosoftGraphOperationStatus.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOperation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOperation;
+        });
     }
 }

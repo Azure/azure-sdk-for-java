@@ -5,34 +5,39 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** onenotePagePreviewLinks. */
+/**
+ * onenotePagePreviewLinks.
+ */
 @Fluent
-public final class MicrosoftGraphOnenotePagePreviewLinks {
+public final class MicrosoftGraphOnenotePagePreviewLinks
+    implements JsonSerializable<MicrosoftGraphOnenotePagePreviewLinks> {
     /*
      * externalLink
      */
-    @JsonProperty(value = "previewImageUrl")
     private MicrosoftGraphExternalLink previewImageUrl;
 
     /*
      * onenotePagePreviewLinks
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphOnenotePagePreviewLinks class. */
+    /**
+     * Creates an instance of MicrosoftGraphOnenotePagePreviewLinks class.
+     */
     public MicrosoftGraphOnenotePagePreviewLinks() {
     }
 
     /**
      * Get the previewImageUrl property: externalLink.
-     *
+     * 
      * @return the previewImageUrl value.
      */
     public MicrosoftGraphExternalLink previewImageUrl() {
@@ -41,7 +46,7 @@ public final class MicrosoftGraphOnenotePagePreviewLinks {
 
     /**
      * Set the previewImageUrl property: externalLink.
-     *
+     * 
      * @param previewImageUrl the previewImageUrl value to set.
      * @return the MicrosoftGraphOnenotePagePreviewLinks object itself.
      */
@@ -52,17 +57,16 @@ public final class MicrosoftGraphOnenotePagePreviewLinks {
 
     /**
      * Get the additionalProperties property: onenotePagePreviewLinks.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: onenotePagePreviewLinks.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphOnenotePagePreviewLinks object itself.
      */
@@ -71,22 +75,63 @@ public final class MicrosoftGraphOnenotePagePreviewLinks {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (previewImageUrl() != null) {
             previewImageUrl().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("previewImageUrl", this.previewImageUrl);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphOnenotePagePreviewLinks from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphOnenotePagePreviewLinks if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphOnenotePagePreviewLinks.
+     */
+    public static MicrosoftGraphOnenotePagePreviewLinks fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphOnenotePagePreviewLinks deserializedMicrosoftGraphOnenotePagePreviewLinks
+                = new MicrosoftGraphOnenotePagePreviewLinks();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("previewImageUrl".equals(fieldName)) {
+                    deserializedMicrosoftGraphOnenotePagePreviewLinks.previewImageUrl
+                        = MicrosoftGraphExternalLink.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphOnenotePagePreviewLinks.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphOnenotePagePreviewLinks;
+        });
     }
 }

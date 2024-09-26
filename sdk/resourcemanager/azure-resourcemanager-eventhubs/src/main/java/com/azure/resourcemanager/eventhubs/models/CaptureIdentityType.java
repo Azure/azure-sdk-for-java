@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Type of Azure Active Directory Managed Identity.
  */
@@ -36,7 +33,6 @@ public enum CaptureIdentityType {
      * @param value the serialized value to parse.
      * @return the parsed CaptureIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static CaptureIdentityType fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum CaptureIdentityType {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

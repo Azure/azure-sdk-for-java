@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.WebhookPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,18 +18,15 @@ import java.util.Map;
  * The parameters for updating a webhook.
  */
 @Fluent
-public final class WebhookUpdateParameters {
+public final class WebhookUpdateParameters implements JsonSerializable<WebhookUpdateParameters> {
     /*
      * The tags for the webhook.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The properties that the webhook will be updated with.
      */
-    @JsonProperty(value = "properties")
     private WebhookPropertiesUpdateParameters innerProperties;
 
     /**
@@ -192,5 +192,46 @@ public final class WebhookUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebhookUpdateParameters.
+     */
+    public static WebhookUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookUpdateParameters deserializedWebhookUpdateParameters = new WebhookUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWebhookUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookUpdateParameters.innerProperties
+                        = WebhookPropertiesUpdateParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookUpdateParameters;
+        });
     }
 }

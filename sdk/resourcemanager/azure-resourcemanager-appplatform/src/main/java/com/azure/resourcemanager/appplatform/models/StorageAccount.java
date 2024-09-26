@@ -6,33 +6,45 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * storage resource of type Azure Storage Account.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storageType")
-@JsonTypeName("StorageAccount")
 @Fluent
 public final class StorageAccount extends StorageProperties {
     /*
+     * The type of the storage.
+     */
+    private StorageType storageType = StorageType.STORAGE_ACCOUNT;
+
+    /*
      * The account name of the Azure Storage Account.
      */
-    @JsonProperty(value = "accountName", required = true)
     private String accountName;
 
     /*
      * The account key of the Azure Storage Account.
      */
-    @JsonProperty(value = "accountKey")
     private String accountKey;
 
     /**
      * Creates an instance of StorageAccount class.
      */
     public StorageAccount() {
+    }
+
+    /**
+     * Get the storageType property: The type of the storage.
+     * 
+     * @return the storageType value.
+     */
+    @Override
+    public StorageType storageType() {
+        return this.storageType;
     }
 
     /**
@@ -84,14 +96,57 @@ public final class StorageAccount extends StorageProperties {
     public void validate() {
         super.validate();
         if (accountName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property accountName in model StorageAccount"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property accountName in model StorageAccount"));
         }
         if (accountKey() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property accountKey in model StorageAccount"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property accountKey in model StorageAccount"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageAccount.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accountName", this.accountName);
+        jsonWriter.writeStringField("accountKey", this.accountKey);
+        jsonWriter.writeStringField("storageType", this.storageType == null ? null : this.storageType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccount.
+     */
+    public static StorageAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccount deserializedStorageAccount = new StorageAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accountName".equals(fieldName)) {
+                    deserializedStorageAccount.accountName = reader.getString();
+                } else if ("accountKey".equals(fieldName)) {
+                    deserializedStorageAccount.accountKey = reader.getString();
+                } else if ("storageType".equals(fieldName)) {
+                    deserializedStorageAccount.storageType = StorageType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccount;
+        });
+    }
 }

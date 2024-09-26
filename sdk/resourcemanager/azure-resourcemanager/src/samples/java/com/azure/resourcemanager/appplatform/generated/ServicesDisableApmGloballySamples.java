@@ -20,7 +20,10 @@ public final class ServicesDisableApmGloballySamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void servicesDisableApmGlobally(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getServices()
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getServices()
             .disableApmGlobally("myResourceGroup", "myservice", new ApmReference().withResourceId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice/apms/myappinsights"),
                 com.azure.core.util.Context.NONE);

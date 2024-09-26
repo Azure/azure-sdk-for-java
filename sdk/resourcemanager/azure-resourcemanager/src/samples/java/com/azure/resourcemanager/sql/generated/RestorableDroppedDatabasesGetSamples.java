@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for RestorableDroppedDatabases Get. */
+/**
+ * Samples for RestorableDroppedDatabases Get.
+ */
 public final class RestorableDroppedDatabasesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetRestorableDroppedDatabase.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/GetRestorableDroppedDatabase.json
      */
     /**
      * Sample code: Gets a restorable dropped database.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsARestorableDroppedDatabase(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getRestorableDroppedDatabases()
-            .getWithResponse("Default-SQL-SouthEastAsia", "testsvr", "testdb,131403269876900000", Context.NONE);
+            .getWithResponse("Default-SQL-SouthEastAsia", "testsvr", "testdb,131403269876900000",
+                com.azure.core.util.Context.NONE);
     }
 }

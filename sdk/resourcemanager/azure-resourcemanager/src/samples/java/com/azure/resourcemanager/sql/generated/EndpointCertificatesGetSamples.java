@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.sql.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for EndpointCertificates Get. */
+/**
+ * Samples for EndpointCertificates Get.
+ */
 public final class EndpointCertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EndpointCertificatesGet.json
+     * x-ms-original-file:
+     * specification/sql/resource-manager/Microsoft.Sql/stable/2021-11-01/examples/EndpointCertificatesGet.json
      */
     /**
      * Sample code: Gets an endpoint certificate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsAnEndpointCertificate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .sqlServers()
+        azure.sqlServers()
             .manager()
             .serviceClient()
             .getEndpointCertificates()
-            .getWithResponse("testrg", "testcl", "DATABASE_MIRRORING", Context.NONE);
+            .getWithResponse("testrg", "testcl", "DATABASE_MIRRORING", com.azure.core.util.Context.NONE);
     }
 }

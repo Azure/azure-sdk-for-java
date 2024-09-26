@@ -11,25 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class TrafficWeightTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficWeight model = BinaryData.fromString(
-            "{\"revisionName\":\"wspughftqsxhqx\",\"weight\":318834407,\"latestRevision\":true,\"label\":\"dxdigr\"}")
+        TrafficWeight model = BinaryData
+            .fromString("{\"revisionName\":\"v\",\"weight\":2103137599,\"latestRevision\":true,\"label\":\"gibtnm\"}")
             .toObject(TrafficWeight.class);
-        Assertions.assertEquals("wspughftqsxhqx", model.revisionName());
-        Assertions.assertEquals(318834407, model.weight());
+        Assertions.assertEquals("v", model.revisionName());
+        Assertions.assertEquals(2103137599, model.weight());
         Assertions.assertEquals(true, model.latestRevision());
-        Assertions.assertEquals("dxdigr", model.label());
+        Assertions.assertEquals("gibtnm", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficWeight model = new TrafficWeight().withRevisionName("wspughftqsxhqx")
-            .withWeight(318834407)
+        TrafficWeight model = new TrafficWeight().withRevisionName("v")
+            .withWeight(2103137599)
             .withLatestRevision(true)
-            .withLabel("dxdigr");
+            .withLabel("gibtnm");
         model = BinaryData.fromObject(model).toObject(TrafficWeight.class);
-        Assertions.assertEquals("wspughftqsxhqx", model.revisionName());
-        Assertions.assertEquals(318834407, model.weight());
+        Assertions.assertEquals("v", model.revisionName());
+        Assertions.assertEquals(2103137599, model.weight());
         Assertions.assertEquals(true, model.latestRevision());
-        Assertions.assertEquals("dxdigr", model.label());
+        Assertions.assertEquals("gibtnm", model.label());
     }
 }

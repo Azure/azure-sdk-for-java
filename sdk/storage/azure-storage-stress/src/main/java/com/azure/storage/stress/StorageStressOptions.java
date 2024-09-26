@@ -10,23 +10,15 @@ import com.beust.jcommander.Parameter;
 public class StorageStressOptions extends PerfStressOptions {
     @Parameter(names = { "--downloadFaults" }, description = "Enable fault injection for downloads")
     private boolean enableFaultInjectionDownloads = false;
-    @Parameter(names = { "--cs"}, description = "Storage connection string")
-    private String connectionString = Configuration.getGlobalConfiguration().get("STORAGE_CONNECTION_STRING");
-    @Parameter(names = { "--pbcs"}, description = "Page Blob Storage connection string")
-    private String pageBlobConnectionString = Configuration.getGlobalConfiguration().get("PAGE_BLOB_STORAGE_CONNECTION_STRING");
     @Parameter(names = { "--uploadFaults" }, description = "Enable fault injection for uploads")
     private boolean enableFaultInjectionUploads = false;
+    @Parameter(names = { "--endpoint"}, description = "Storage endpoint string")
+    private String endpointString = Configuration.getGlobalConfiguration().get("STORAGE_ENDPOINT_STRING");
+    @Parameter(names = { "--pbEndpoint"}, description = "Page Blob Storage endpoint string")
+    private String pageBlobEndpointString = Configuration.getGlobalConfiguration().get("PAGE_BLOB_STORAGE_ENDPOINT_STRING");
 
     public boolean isFaultInjectionEnabledForDownloads() {
         return enableFaultInjectionDownloads;
-    }
-
-    public String getConnectionString() {
-        return connectionString;
-    }
-
-    public String getPageBlobConnectionString() {
-        return pageBlobConnectionString;
     }
 
     /**
@@ -37,5 +29,13 @@ public class StorageStressOptions extends PerfStressOptions {
      */
     public boolean isFaultInjectionEnabledForUploads() {
         return enableFaultInjectionUploads;
+    }
+
+    public String getEndpointString() {
+        return endpointString;
+    }
+
+    public String getPageBlobEndpointString() {
+        return pageBlobEndpointString;
     }
 }

@@ -5,54 +5,53 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Maintenance Operation Status.
  */
 @Fluent
-public final class MaintenanceRedeployStatus {
+public final class MaintenanceRedeployStatus implements JsonSerializable<MaintenanceRedeployStatus> {
     /*
      * True, if customer is allowed to perform Maintenance.
      */
-    @JsonProperty(value = "isCustomerInitiatedMaintenanceAllowed")
     private Boolean isCustomerInitiatedMaintenanceAllowed;
 
     /*
      * Start Time for the Pre Maintenance Window.
      */
-    @JsonProperty(value = "preMaintenanceWindowStartTime")
     private OffsetDateTime preMaintenanceWindowStartTime;
 
     /*
      * End Time for the Pre Maintenance Window.
      */
-    @JsonProperty(value = "preMaintenanceWindowEndTime")
     private OffsetDateTime preMaintenanceWindowEndTime;
 
     /*
      * Start Time for the Maintenance Window.
      */
-    @JsonProperty(value = "maintenanceWindowStartTime")
     private OffsetDateTime maintenanceWindowStartTime;
 
     /*
      * End Time for the Maintenance Window.
      */
-    @JsonProperty(value = "maintenanceWindowEndTime")
     private OffsetDateTime maintenanceWindowEndTime;
 
     /*
      * The Last Maintenance Operation Result Code.
      */
-    @JsonProperty(value = "lastOperationResultCode")
     private MaintenanceOperationResultCodeTypes lastOperationResultCode;
 
     /*
      * Message returned for the last Maintenance Operation.
      */
-    @JsonProperty(value = "lastOperationMessage")
     private String lastOperationMessage;
 
     /**
@@ -209,5 +208,79 @@ public final class MaintenanceRedeployStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isCustomerInitiatedMaintenanceAllowed",
+            this.isCustomerInitiatedMaintenanceAllowed);
+        jsonWriter.writeStringField("preMaintenanceWindowStartTime",
+            this.preMaintenanceWindowStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.preMaintenanceWindowStartTime));
+        jsonWriter.writeStringField("preMaintenanceWindowEndTime",
+            this.preMaintenanceWindowEndTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.preMaintenanceWindowEndTime));
+        jsonWriter.writeStringField("maintenanceWindowStartTime",
+            this.maintenanceWindowStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.maintenanceWindowStartTime));
+        jsonWriter.writeStringField("maintenanceWindowEndTime",
+            this.maintenanceWindowEndTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.maintenanceWindowEndTime));
+        jsonWriter.writeStringField("lastOperationResultCode",
+            this.lastOperationResultCode == null ? null : this.lastOperationResultCode.toString());
+        jsonWriter.writeStringField("lastOperationMessage", this.lastOperationMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceRedeployStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceRedeployStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceRedeployStatus.
+     */
+    public static MaintenanceRedeployStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceRedeployStatus deserializedMaintenanceRedeployStatus = new MaintenanceRedeployStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isCustomerInitiatedMaintenanceAllowed".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.isCustomerInitiatedMaintenanceAllowed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("preMaintenanceWindowStartTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.preMaintenanceWindowStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("preMaintenanceWindowEndTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.preMaintenanceWindowEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceWindowStartTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.maintenanceWindowStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("maintenanceWindowEndTime".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.maintenanceWindowEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastOperationResultCode".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.lastOperationResultCode
+                        = MaintenanceOperationResultCodeTypes.fromString(reader.getString());
+                } else if ("lastOperationMessage".equals(fieldName)) {
+                    deserializedMaintenanceRedeployStatus.lastOperationMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceRedeployStatus;
+        });
     }
 }

@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * An error response from the pod identity provisioning.
  */
 @Fluent
-public final class ManagedClusterPodIdentityProvisioningErrorBody {
+public final class ManagedClusterPodIdentityProvisioningErrorBody
+    implements JsonSerializable<ManagedClusterPodIdentityProvisioningErrorBody> {
     /*
      * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * A message describing the error, intended to be suitable for display in a user interface.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * The target of the particular error. For example, the name of the property in error.
      */
-    @JsonProperty(value = "target")
     private String target;
 
     /*
      * A list of additional details about the error.
      */
-    @JsonProperty(value = "details")
     private List<ManagedClusterPodIdentityProvisioningErrorBody> details;
 
     /**
@@ -137,5 +138,53 @@ public final class ManagedClusterPodIdentityProvisioningErrorBody {
         if (details() != null) {
             details().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedClusterPodIdentityProvisioningErrorBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedClusterPodIdentityProvisioningErrorBody if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedClusterPodIdentityProvisioningErrorBody.
+     */
+    public static ManagedClusterPodIdentityProvisioningErrorBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedClusterPodIdentityProvisioningErrorBody deserializedManagedClusterPodIdentityProvisioningErrorBody
+                = new ManagedClusterPodIdentityProvisioningErrorBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentityProvisioningErrorBody.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentityProvisioningErrorBody.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedManagedClusterPodIdentityProvisioningErrorBody.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ManagedClusterPodIdentityProvisioningErrorBody> details
+                        = reader.readArray(reader1 -> ManagedClusterPodIdentityProvisioningErrorBody.fromJson(reader1));
+                    deserializedManagedClusterPodIdentityProvisioningErrorBody.details = details;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedClusterPodIdentityProvisioningErrorBody;
+        });
     }
 }

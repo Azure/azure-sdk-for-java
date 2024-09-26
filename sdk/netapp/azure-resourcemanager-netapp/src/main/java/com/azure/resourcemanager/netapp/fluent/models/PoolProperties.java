@@ -26,7 +26,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
     private String poolId;
 
     /*
-     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiple of
      * 1099511627776).
      */
     private long size;
@@ -84,7 +84,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
 
     /**
      * Get the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
-     * multiply of 1099511627776).
+     * multiple of 1099511627776).
      * 
      * @return the size value.
      */
@@ -94,7 +94,7 @@ public final class PoolProperties implements JsonSerializable<PoolProperties> {
 
     /**
      * Set the size property: Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be
-     * multiply of 1099511627776).
+     * multiple of 1099511627776).
      * 
      * @param size the size value to set.
      * @return the PoolProperties object itself.

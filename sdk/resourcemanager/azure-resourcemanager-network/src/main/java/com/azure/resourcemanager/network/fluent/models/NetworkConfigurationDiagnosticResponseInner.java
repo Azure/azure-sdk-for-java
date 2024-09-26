@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.NetworkConfigurationDiagnosticResult;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Results of network configuration diagnostic on the target resource.
  */
 @Immutable
-public final class NetworkConfigurationDiagnosticResponseInner {
+public final class NetworkConfigurationDiagnosticResponseInner
+    implements JsonSerializable<NetworkConfigurationDiagnosticResponseInner> {
     /*
      * List of network configuration diagnostic results.
      */
-    @JsonProperty(value = "results", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkConfigurationDiagnosticResult> results;
 
     /**
@@ -44,5 +48,43 @@ public final class NetworkConfigurationDiagnosticResponseInner {
         if (results() != null) {
             results().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkConfigurationDiagnosticResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkConfigurationDiagnosticResponseInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkConfigurationDiagnosticResponseInner.
+     */
+    public static NetworkConfigurationDiagnosticResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkConfigurationDiagnosticResponseInner deserializedNetworkConfigurationDiagnosticResponseInner
+                = new NetworkConfigurationDiagnosticResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("results".equals(fieldName)) {
+                    List<NetworkConfigurationDiagnosticResult> results
+                        = reader.readArray(reader1 -> NetworkConfigurationDiagnosticResult.fromJson(reader1));
+                    deserializedNetworkConfigurationDiagnosticResponseInner.results = results;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkConfigurationDiagnosticResponseInner;
+        });
     }
 }

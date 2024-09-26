@@ -11,15 +11,15 @@ public final class AzureBlobStorageLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobStorageLocation model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobStorageLocation\",\"container\":\"datai\",\"folderPath\":\"datauktirzkaugpu\",\"fileName\":\"dataocf\",\"\":{\"rjlvzklkvbgi\":\"datawgofmhx\",\"shjvpzaptuoskaoi\":\"datayjtkakvlb\"}}")
+            "{\"type\":\"AzureBlobStorageLocation\",\"container\":\"datazpzlpryf\",\"folderPath\":\"datamdutzfk\",\"fileName\":\"datalnoud\",\"\":{\"gdpri\":\"datand\"}}")
             .toObject(AzureBlobStorageLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobStorageLocation model = new AzureBlobStorageLocation().withFolderPath("datauktirzkaugpu")
-            .withFileName("dataocf")
-            .withContainer("datai");
+        AzureBlobStorageLocation model = new AzureBlobStorageLocation().withFolderPath("datamdutzfk")
+            .withFileName("datalnoud")
+            .withContainer("datazpzlpryf");
         model = BinaryData.fromObject(model).toObject(AzureBlobStorageLocation.class);
     }
 }

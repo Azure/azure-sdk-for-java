@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentStackInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of Deployment stacks.
  */
 @Fluent
-public final class DeploymentStackListResult {
+public final class DeploymentStackListResult implements JsonSerializable<DeploymentStackListResult> {
     /*
      * An array of Deployment stacks.
      */
-    @JsonProperty(value = "value")
     private List<DeploymentStackInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,45 @@ public final class DeploymentStackListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentStackListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentStackListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentStackListResult.
+     */
+    public static DeploymentStackListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentStackListResult deserializedDeploymentStackListResult = new DeploymentStackListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DeploymentStackInner> value
+                        = reader.readArray(reader1 -> DeploymentStackInner.fromJson(reader1));
+                    deserializedDeploymentStackListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDeploymentStackListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentStackListResult;
+        });
     }
 }

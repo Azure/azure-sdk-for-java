@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.DataFlowDebugSessionInfoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of active debug sessions.
  */
 @Fluent
-public final class QueryDataFlowDebugSessionsResponse {
+public final class QueryDataFlowDebugSessionsResponse implements JsonSerializable<QueryDataFlowDebugSessionsResponse> {
     /*
      * Array with all active debug sessions.
      */
-    @JsonProperty(value = "value")
     private List<DataFlowDebugSessionInfoInner> value;
 
     /*
      * The link to the next page of results, if any remaining results exist.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -81,5 +83,47 @@ public final class QueryDataFlowDebugSessionsResponse {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryDataFlowDebugSessionsResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryDataFlowDebugSessionsResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryDataFlowDebugSessionsResponse.
+     */
+    public static QueryDataFlowDebugSessionsResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryDataFlowDebugSessionsResponse deserializedQueryDataFlowDebugSessionsResponse
+                = new QueryDataFlowDebugSessionsResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataFlowDebugSessionInfoInner> value
+                        = reader.readArray(reader1 -> DataFlowDebugSessionInfoInner.fromJson(reader1));
+                    deserializedQueryDataFlowDebugSessionsResponse.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedQueryDataFlowDebugSessionsResponse.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryDataFlowDebugSessionsResponse;
+        });
     }
 }

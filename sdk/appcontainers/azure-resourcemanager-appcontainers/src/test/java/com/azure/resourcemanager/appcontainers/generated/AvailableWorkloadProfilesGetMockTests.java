@@ -23,7 +23,7 @@ public final class AvailableWorkloadProfilesGetMockTests {
     @Test
     public void testGet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"rmukmyjmkxett\",\"properties\":{\"category\":\"ojfkq\",\"applicability\":\"LocationDefault\",\"cores\":1380093813,\"memoryGiB\":1972496452,\"gpus\":1164062166,\"displayName\":\"qxcsqhtkbtnqlrn\"},\"id\":\"dmbi\",\"name\":\"psnaww\",\"type\":\"qkzn\"}]}";
+            = "{\"value\":[{\"location\":\"pxl\",\"properties\":{\"category\":\"nelxieixynll\",\"applicability\":\"Custom\",\"cores\":1222388745,\"memoryGiB\":2008141079,\"gpus\":1839785994,\"displayName\":\"slhcawjutifd\"},\"id\":\"mvi\",\"name\":\"orq\",\"type\":\"bttzhraglkafhonq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,14 @@ public final class AvailableWorkloadProfilesGetMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AvailableWorkloadProfile> response
-            = manager.availableWorkloadProfiles().get("a", com.azure.core.util.Context.NONE);
+            = manager.availableWorkloadProfiles().get("zob", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rmukmyjmkxett", response.iterator().next().location());
-        Assertions.assertEquals("ojfkq", response.iterator().next().properties().category());
-        Assertions.assertEquals(Applicability.LOCATION_DEFAULT,
-            response.iterator().next().properties().applicability());
-        Assertions.assertEquals(1380093813, response.iterator().next().properties().cores());
-        Assertions.assertEquals(1972496452, response.iterator().next().properties().memoryGiB());
-        Assertions.assertEquals(1164062166, response.iterator().next().properties().gpus());
-        Assertions.assertEquals("qxcsqhtkbtnqlrn", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("pxl", response.iterator().next().location());
+        Assertions.assertEquals("nelxieixynll", response.iterator().next().properties().category());
+        Assertions.assertEquals(Applicability.CUSTOM, response.iterator().next().properties().applicability());
+        Assertions.assertEquals(1222388745, response.iterator().next().properties().cores());
+        Assertions.assertEquals(2008141079, response.iterator().next().properties().memoryGiB());
+        Assertions.assertEquals(1839785994, response.iterator().next().properties().gpus());
+        Assertions.assertEquals("slhcawjutifd", response.iterator().next().properties().displayName());
     }
 }

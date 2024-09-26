@@ -13,6 +13,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import java.io.File;
 import java.time.Duration;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,10 +31,6 @@ public class ZipDeployTests extends AppServiceTest {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void canZipDeployFunction() {
-        if (skipInPlayback()) {
-            return;
-        }
-
         // Create function app
         FunctionApp functionApp =
             appServiceManager
@@ -58,5 +55,13 @@ public class ZipDeployTests extends AppServiceTest {
             .assertEquals(
                 envelopes.iterator().next().href(),
                 "https://" + webappName4 + ".scm.azurewebsites.net/api/functions/square");
+
+
+        Assertions.assertNull(functionApp.listFunctionKeys("square").get("my-key"));
+
+        functionApp.addFunctionKey("square", "my-key", "my-value");
+
+        Map<String, String> keys = functionApp.listFunctionKeys("square");
+        Assertions.assertEquals("my-value", keys.get("my-key"));
     }
 }

@@ -60,7 +60,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues) throws InvalidConfigurationPropertyValueException {
+    public void initProperties(List<String> keyPrefixTrimValues, boolean isRefresh) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -70,7 +70,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
 
             // * for wildcard match
-            processConfigurationSettings(replicaClient.listSettings(settingSelector), settingSelector.getKeyFilter(),
+            processConfigurationSettings(replicaClient.listSettings(settingSelector, isRefresh), settingSelector.getKeyFilter(),
                 keyPrefixTrimValues);
         }
     }

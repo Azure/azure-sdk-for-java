@@ -7,15 +7,19 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Objects;
 
-/** driveItemVersion. */
+/**
+ * driveItemVersion.
+ */
 @Fluent
 public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItemVersion {
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
@@ -23,27 +27,27 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
     /*
      * The content stream for this version of the item.
      */
-    @JsonProperty(value = "content")
     private Base64Url content;
 
     /*
      * Indicates the size of the content stream for this version of the item.
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
      * driveItemVersion
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphDriveItemVersion class. */
+    /**
+     * Creates an instance of MicrosoftGraphDriveItemVersion class.
+     */
     public MicrosoftGraphDriveItemVersion() {
     }
 
     /**
      * Get the content property: The content stream for this version of the item.
-     *
+     * 
      * @return the content value.
      */
     public byte[] content() {
@@ -55,7 +59,7 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
 
     /**
      * Set the content property: The content stream for this version of the item.
-     *
+     * 
      * @param content the content value to set.
      * @return the MicrosoftGraphDriveItemVersion object itself.
      */
@@ -70,7 +74,7 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
 
     /**
      * Get the size property: Indicates the size of the content stream for this version of the item.
-     *
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -79,7 +83,7 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
 
     /**
      * Set the size property: Indicates the size of the content stream for this version of the item.
-     *
+     * 
      * @param size the size value to set.
      * @return the MicrosoftGraphDriveItemVersion object itself.
      */
@@ -90,17 +94,16 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
 
     /**
      * Get the additionalProperties property: driveItemVersion.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: driveItemVersion.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphDriveItemVersion object itself.
      */
@@ -109,36 +112,36 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItemVersion withLastModifiedBy(MicrosoftGraphIdentitySet lastModifiedBy) {
         super.withLastModifiedBy(lastModifiedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItemVersion withLastModifiedDateTime(OffsetDateTime lastModifiedDateTime) {
         super.withLastModifiedDateTime(lastModifiedDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItemVersion withPublication(MicrosoftGraphPublicationFacet publication) {
         super.withPublication(publication);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphDriveItemVersion withId(String id) {
         super.withId(id);
@@ -147,11 +150,81 @@ public final class MicrosoftGraphDriveItemVersion extends MicrosoftGraphBaseItem
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("lastModifiedBy", lastModifiedBy());
+        jsonWriter.writeStringField("lastModifiedDateTime",
+            lastModifiedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(lastModifiedDateTime()));
+        jsonWriter.writeJsonField("publication", publication());
+        jsonWriter.writeStringField("content", Objects.toString(this.content, null));
+        jsonWriter.writeNumberField("size", this.size);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphDriveItemVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphDriveItemVersion if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphDriveItemVersion.
+     */
+    public static MicrosoftGraphDriveItemVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphDriveItemVersion deserializedMicrosoftGraphDriveItemVersion
+                = new MicrosoftGraphDriveItemVersion();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItemVersion.withId(reader.getString());
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItemVersion
+                        .withLastModifiedBy(MicrosoftGraphIdentitySet.fromJson(reader));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItemVersion.withLastModifiedDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("publication".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItemVersion
+                        .withPublication(MicrosoftGraphPublicationFacet.fromJson(reader));
+                } else if ("content".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItemVersion.content
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                } else if ("size".equals(fieldName)) {
+                    deserializedMicrosoftGraphDriveItemVersion.size = reader.getNullable(JsonReader::getLong);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphDriveItemVersion.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphDriveItemVersion;
+        });
     }
 }

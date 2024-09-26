@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VpnClientConnectionHealth properties.
  */
 @Fluent
-public final class VpnClientConnectionHealth {
+public final class VpnClientConnectionHealth implements JsonSerializable<VpnClientConnectionHealth> {
     /*
      * Total of the Ingress Bytes Transferred in this P2S Vpn connection.
      */
-    @JsonProperty(value = "totalIngressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalIngressBytesTransferred;
 
     /*
      * Total of the Egress Bytes Transferred in this connection.
      */
-    @JsonProperty(value = "totalEgressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalEgressBytesTransferred;
 
     /*
      * The total of p2s vpn clients connected at this time to this P2SVpnGateway.
      */
-    @JsonProperty(value = "vpnClientConnectionsCount")
     private Integer vpnClientConnectionsCount;
 
     /*
      * List of allocated ip addresses to the connected p2s vpn clients.
      */
-    @JsonProperty(value = "allocatedIpAddresses")
     private List<String> allocatedIpAddresses;
 
     /**
@@ -109,5 +109,53 @@ public final class VpnClientConnectionHealth {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("vpnClientConnectionsCount", this.vpnClientConnectionsCount);
+        jsonWriter.writeArrayField("allocatedIpAddresses", this.allocatedIpAddresses,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnClientConnectionHealth from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnClientConnectionHealth if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnClientConnectionHealth.
+     */
+    public static VpnClientConnectionHealth fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnClientConnectionHealth deserializedVpnClientConnectionHealth = new VpnClientConnectionHealth();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalIngressBytesTransferred".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealth.totalIngressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalEgressBytesTransferred".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealth.totalEgressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("vpnClientConnectionsCount".equals(fieldName)) {
+                    deserializedVpnClientConnectionHealth.vpnClientConnectionsCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("allocatedIpAddresses".equals(fieldName)) {
+                    List<String> allocatedIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVpnClientConnectionHealth.allocatedIpAddresses = allocatedIpAddresses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnClientConnectionHealth;
+        });
     }
 }

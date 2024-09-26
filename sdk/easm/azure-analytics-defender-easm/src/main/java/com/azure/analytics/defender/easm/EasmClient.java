@@ -55,58 +55,24 @@ public final class EasmClient {
 
     /**
      * Retrieve a list of assets for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A list of expressions that specify the order of the returned resources.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
-     * <tr>
-     * <td>mark</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and subsequent
-     * values are returned in the response.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * <tr><td>mark</td><td>String</td><td>No</td><td>Specify this value instead of 'skip' to use cursor-based
+     * searching. Initial value is '*' and subsequent values are returned in the response.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     displayName: String (Optional)
@@ -140,16 +106,16 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAssetResource(RequestOptions requestOptions) {
-        return this.serviceClient.listAssetResource(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
+        return this.serviceClient.listAssetResource(requestOptions);
     }
 
     /**
      * Update labels on assets matching the provided filter.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
@@ -160,9 +126,9 @@ public final class EasmClient {
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -179,7 +145,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param filter An expression on the resource type that selects the resources to be returned.
-     * @param assetUpdateData A request body used to update an asset.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -189,18 +155,18 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateAssetsWithResponse(String filter, BinaryData assetUpdateData,
+    public Response<BinaryData> updateAssetsWithResponse(String filter, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.updateAssetsWithResponse(filter, assetUpdateData, requestOptions);
+        return this.serviceClient.updateAssetsWithResponse(filter, body, requestOptions);
     }
 
     /**
      * Retrieve an asset by assetId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Required)
      *     name: String (Optional)
      *     displayName: String (Optional)
@@ -243,39 +209,19 @@ public final class EasmClient {
 
     /**
      * Retrieve a list of data connections.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -297,27 +243,28 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDataConnection(RequestOptions requestOptions) {
-        return this.serviceClient.listDataConnection(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
+        return this.serviceClient.listDataConnection(requestOptions);
     }
 
     /**
      * Validate a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     name: String (Optional)
      *     content: String(assets/attackSurfaceInsights) (Optional)
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -335,28 +282,27 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return validate result for validate action endpoints along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateDataConnectionWithResponse(BinaryData dataConnectionData,
-        RequestOptions requestOptions) {
-        return this.serviceClient.validateDataConnectionWithResponse(dataConnectionData, requestOptions);
+    public Response<BinaryData> validateDataConnectionWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.validateDataConnectionWithResponse(body, requestOptions);
     }
 
     /**
      * Retrieve a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -388,22 +334,23 @@ public final class EasmClient {
 
     /**
      * Create or replace a data connection with a given dataConnectionName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     name: String (Optional)
      *     content: String(assets/attackSurfaceInsights) (Optional)
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
+     *     kind: String (Required)
      *     id: String (Optional)
      *     name: String (Required)
      *     displayName: String (Optional)
@@ -419,7 +366,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param dataConnectionName The caller provided unique name for the resource.
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -429,10 +376,9 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceDataConnectionWithResponse(String dataConnectionName,
-        BinaryData dataConnectionData, RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDataConnectionWithResponse(dataConnectionName, dataConnectionData,
-            requestOptions);
+    public Response<BinaryData> createOrReplaceDataConnectionWithResponse(String dataConnectionName, BinaryData body,
+        RequestOptions requestOptions) {
+        return this.serviceClient.createOrReplaceDataConnectionWithResponse(dataConnectionName, body, requestOptions);
     }
 
     /**
@@ -453,10 +399,77 @@ public final class EasmClient {
     }
 
     /**
+     * Retrieve a list of discovery group for the provided search parameters.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>{@code
+     * {
+     *     id: String (Optional)
+     *     name: String (Required)
+     *     displayName: String (Optional)
+     *     description: String (Optional)
+     *     tier: String (Optional)
+     *     frequencyMilliseconds: Long (Optional)
+     *     seeds (Optional): [
+     *          (Optional){
+     *             kind: String(as/attribute/contact/domain/host/ipBlock) (Optional)
+     *             name: String (Optional)
+     *         }
+     *     ]
+     *     names (Optional): [
+     *         String (Optional)
+     *     ]
+     *     excludes (Optional): [
+     *         (recursive schema, see above)
+     *     ]
+     *     latestRun (Optional): {
+     *         submittedDate: OffsetDateTime (Optional)
+     *         startedDate: OffsetDateTime (Optional)
+     *         completedDate: OffsetDateTime (Optional)
+     *         tier: String (Optional)
+     *         state: String(pending/running/completed/failed) (Optional)
+     *         totalAssetsFoundCount: Long (Optional)
+     *         seeds (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         excludes (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         names (Optional): [
+     *             String (Optional)
+     *         ]
+     *     }
+     *     createdDate: OffsetDateTime (Optional)
+     *     templateId: String (Optional)
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
+        return this.serviceClient.listDiscoGroup(requestOptions);
+    }
+
+    /**
      * Validate a discovery group with a given groupName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -478,9 +491,9 @@ public final class EasmClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     error (Optional): {
@@ -498,26 +511,24 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
+     * @return validate result for validate action endpoints along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> validateDiscoGroupWithResponse(BinaryData discoGroupData,
-        RequestOptions requestOptions) {
-        return this.serviceClient.validateDiscoGroupWithResponse(discoGroupData, requestOptions);
+    public Response<BinaryData> validateDiscoGroupWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.validateDiscoGroupWithResponse(body, requestOptions);
     }
 
     /**
      * Retrieve a discovery group with a given groupName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -576,9 +587,8 @@ public final class EasmClient {
 
     /**
      * Create a discovery group with a given groupName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     name: String (Optional)
@@ -600,9 +610,9 @@ public final class EasmClient {
      *     templateId: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -646,7 +656,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param groupName The caller provided unique name for the resource.
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -656,9 +666,9 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData discoGroupData,
+    public Response<BinaryData> createOrReplaceDiscoGroupWithResponse(String groupName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceDiscoGroupWithResponse(groupName, discoGroupData, requestOptions);
+        return this.serviceClient.createOrReplaceDiscoGroupWithResponse(groupName, body, requestOptions);
     }
 
     /**
@@ -680,43 +690,17 @@ public final class EasmClient {
 
     /**
      * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
@@ -748,50 +732,25 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listRuns(String groupName, RequestOptions requestOptions) {
-        return this.serviceClient.listRuns(groupName, requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
+        return this.serviceClient.listRuns(groupName, requestOptions);
     }
 
     /**
      * Retrieve a list of disco templates for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -821,16 +780,16 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listDiscoTemplate(RequestOptions requestOptions) {
-        return this.serviceClient.listDiscoTemplate(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
+        return this.serviceClient.listDiscoTemplate(requestOptions);
     }
 
     /**
      * Retrieve a disco template with a given templateId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -869,9 +828,8 @@ public final class EasmClient {
 
     /**
      * Get billable assets summary for the workspace.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -904,9 +862,8 @@ public final class EasmClient {
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metric: String (Optional)
@@ -915,9 +872,9 @@ public final class EasmClient {
      *     page: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     displayName: String (Optional)
@@ -931,6 +888,7 @@ public final class EasmClient {
      *         nextLink: String (Optional)
      *         value (Optional): [
      *              (Optional){
+     *                 kind: String (Required)
      *                 id: String (Required)
      *                 name: String (Optional)
      *                 displayName: String (Optional)
@@ -960,7 +918,7 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param reportAssetSnapshotRequest A request body used to retrieve an asset report snapshot.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -970,16 +928,14 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSnapshotWithResponse(BinaryData reportAssetSnapshotRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSnapshotWithResponse(reportAssetSnapshotRequest, requestOptions);
+    public Response<BinaryData> getSnapshotWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getSnapshotWithResponse(body, requestOptions);
     }
 
     /**
      * Get asset summary details for the summary request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     metricCategories (Optional): [
@@ -996,9 +952,9 @@ public final class EasmClient {
      *     labelName: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     assetSummaries (Optional): [
@@ -1020,8 +976,7 @@ public final class EasmClient {
      * }
      * }</pre>
      *
-     * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1031,50 +986,23 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getSummaryWithResponse(BinaryData reportAssetSummaryRequest,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getSummaryWithResponse(reportAssetSummaryRequest, requestOptions);
+    public Response<BinaryData> getSummaryWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.getSummaryWithResponse(body, requestOptions);
     }
 
     /**
      * Retrieve a list of saved filters for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1092,16 +1020,16 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listSavedFilter(RequestOptions requestOptions) {
-        return this.serviceClient.listSavedFilter(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
+        return this.serviceClient.listSavedFilter(requestOptions);
     }
 
     /**
      * Retrieve a saved filter by filterName.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1128,18 +1056,17 @@ public final class EasmClient {
 
     /**
      * Create or replace a saved filter with a given filterName.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Optional)
@@ -1151,7 +1078,7 @@ public final class EasmClient {
      * }</pre>
      *
      * @param filterName The caller provided unique name for the resource.
-     * @param savedFilterData A request body used to create a saved filter.
+     * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1161,9 +1088,9 @@ public final class EasmClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrReplaceSavedFilterWithResponse(String filterName, BinaryData savedFilterData,
+    public Response<BinaryData> createOrReplaceSavedFilterWithResponse(String filterName, BinaryData body,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrReplaceSavedFilterWithResponse(filterName, savedFilterData, requestOptions);
+        return this.serviceClient.createOrReplaceSavedFilterWithResponse(filterName, body, requestOptions);
     }
 
     /**
@@ -1185,49 +1112,19 @@ public final class EasmClient {
 
     /**
      * Retrieve a list of tasks for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>orderby</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A list of expressions that specify the order of the returned resources.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>filter</td><td>String</td><td>No</td><td>Filter the result list using the given expression.</td></tr>
+     * <tr><td>orderby</td><td>String</td><td>No</td><td>A list of expressions that specify the order of the returned
+     * resources.</td></tr>
+     * <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     * <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1238,7 +1135,7 @@ public final class EasmClient {
      *     phase: String(running/polling/complete) (Optional)
      *     reason: String (Optional)
      *     metadata (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      * }
      * }</pre>
@@ -1250,16 +1147,16 @@ public final class EasmClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listTask(RequestOptions requestOptions) {
-        return this.serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
+        return this.serviceClient.listTask(requestOptions);
     }
 
     /**
      * Retrieve a task by taskId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1291,9 +1188,8 @@ public final class EasmClient {
 
     /**
      * Cancel a task by taskId.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
+     * 
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1326,6 +1222,12 @@ public final class EasmClient {
     /**
      * Retrieve a list of assets for the provided search parameters.
      *
+     * @param filter Filter the result list using the given expression.
+     * @param orderBy A list of expressions that specify the order of the returned resources.
+     * @param skip The number of result items to skip.
+     * @param mark Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and
+     * subsequent values are returned in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1333,19 +1235,51 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
      */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<AssetResource> listAssetResource(String filter, String orderBy, Integer skip, String mark) {
+        // Generated convenience method for listAssetResource
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        if (mark != null) {
+            requestOptions.addQueryParam("mark", mark, false);
+        }
+        return serviceClient.listAssetResource(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AssetResource.class));
+    }
+
+    /**
+     * Retrieve a list of assets for the provided search parameters.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssetResource> listAssetResource() {
         // Generated convenience method for listAssetResource
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listAssetResource(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(AssetResource.class));
     }
 
     /**
      * Update labels on assets matching the provided filter.
      *
      * @param filter An expression on the resource type that selects the resources to be returned.
-     * @param assetUpdateData A request body used to update an asset.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1354,12 +1288,12 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Task updateAssets(String filter, AssetUpdateData assetUpdateData) {
+    public Task updateAssets(String filter, AssetUpdateData body) {
         // Generated convenience method for updateAssetsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(
-            updateAssetsWithResponse(filter, BinaryData.fromObject(assetUpdateData), requestOptions).getValue())
+        return updateAssetsWithResponse(filter, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(Task.class);
     }
 
@@ -1375,11 +1309,36 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the items in the current page of results.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssetResource getAssetResource(String assetId) {
         // Generated convenience method for getAssetResourceWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(getAssetResourceWithResponse(assetId, requestOptions).getValue()).toObject(AssetResource.class);
+        return getAssetResourceWithResponse(assetId, requestOptions).getValue().toObject(AssetResource.class);
+    }
+
+    /**
+     * Retrieve a list of data connections.
+     *
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DataConnection> listDataConnection(Integer skip) {
+        // Generated convenience method for listDataConnection
+        RequestOptions requestOptions = new RequestOptions();
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        return serviceClient.listDataConnection(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DataConnection.class));
     }
 
     /**
@@ -1392,32 +1351,33 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataConnection> listDataConnection() {
         // Generated convenience method for listDataConnection
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listDataConnection(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DataConnection.class));
     }
 
     /**
      * Validate a data connection with a given dataConnectionName.
      *
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return validate result for validate action endpoints.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateResult validateDataConnection(DataConnectionData dataConnectionData) {
+    public ValidateResult validateDataConnection(DataConnectionData body) {
         // Generated convenience method for validateDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(
-            validateDataConnectionWithResponse(BinaryData.fromObject(dataConnectionData), requestOptions).getValue())
+        return validateDataConnectionWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(ValidateResult.class);
     }
 
@@ -1433,19 +1393,20 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataConnection getDataConnection(String dataConnectionName) {
         // Generated convenience method for getDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(getDataConnectionWithResponse(dataConnectionName, requestOptions).getValue())
+        return getDataConnectionWithResponse(dataConnectionName, requestOptions).getValue()
             .toObject(DataConnection.class);
     }
 
     /**
-     * Create or update a data connection with a given dataConnectionName.
+     * Create or replace a data connection with a given dataConnectionName.
      *
      * @param dataConnectionName The caller provided unique name for the resource.
-     * @param dataConnectionData The dataConnectionData parameter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1454,13 +1415,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataConnection createOrReplaceDataConnection(String dataConnectionName,
-        DataConnectionData dataConnectionData) {
+    public DataConnection createOrReplaceDataConnection(String dataConnectionName, DataConnectionData body) {
         // Generated convenience method for createOrReplaceDataConnectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(createOrReplaceDataConnectionWithResponse(dataConnectionName,
-            BinaryData.fromObject(dataConnectionData), requestOptions).getValue()).toObject(DataConnection.class);
+        return createOrReplaceDataConnectionWithResponse(dataConnectionName, BinaryData.fromObject(body),
+            requestOptions).getValue().toObject(DataConnection.class);
     }
 
     /**
@@ -1485,6 +1446,9 @@ public final class EasmClient {
     /**
      * Retrieve a list of discovery group for the provided search parameters.
      *
+     * @param filter Filter the result list using the given expression.
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1492,31 +1456,58 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
      */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiscoGroup> listDiscoGroup(String filter, Integer skip) {
+        // Generated convenience method for listDiscoGroup
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        return serviceClient.listDiscoGroup(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoGroup.class));
+    }
+
+    /**
+     * Retrieve a list of discovery group for the provided search parameters.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoGroup> listDiscoGroup() {
         // Generated convenience method for listDiscoGroup
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listDiscoGroup(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoGroup.class));
     }
 
     /**
      * Validate a discovery group with a given groupName.
      *
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return validate result for validate action endpoints.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateResult validateDiscoGroup(DiscoGroupData discoGroupData) {
+    public ValidateResult validateDiscoGroup(DiscoGroupData body) {
         // Generated convenience method for validateDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(validateDiscoGroupWithResponse(BinaryData.fromObject(discoGroupData), requestOptions).getValue())
+        return validateDiscoGroupWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(ValidateResult.class);
     }
 
@@ -1532,18 +1523,19 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DiscoGroup getDiscoGroup(String groupName) {
         // Generated convenience method for getDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(getDiscoGroupWithResponse(groupName, requestOptions).getValue()).toObject(DiscoGroup.class);
+        return getDiscoGroupWithResponse(groupName, requestOptions).getValue().toObject(DiscoGroup.class);
     }
 
     /**
      * Create a discovery group with a given groupName.
      *
      * @param groupName The caller provided unique name for the resource.
-     * @param discoGroupData A request body used to create a discovery group.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1552,18 +1544,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DiscoGroup createOrReplaceDiscoGroup(String groupName, DiscoGroupData discoGroupData) {
+    public DiscoGroup createOrReplaceDiscoGroup(String groupName, DiscoGroupData body) {
         // Generated convenience method for createOrReplaceDiscoGroupWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(
-            createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(discoGroupData), requestOptions)
-                .getValue())
+        return createOrReplaceDiscoGroupWithResponse(groupName, BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(DiscoGroup.class);
-    }
-
-    private BinaryData cleanUp(BinaryData input) {
-        return BinaryData.fromString(input.toString().replaceAll("\\+0000", "+00:00"));
     }
 
     /**
@@ -1589,6 +1576,8 @@ public final class EasmClient {
      * Retrieve a collection of discovery run results for a discovery group with a given groupName.
      *
      * @param groupName The unique identifier for the discovery group.
+     * @param filter Filter the result list using the given expression.
+     * @param skip The number of result items to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1597,12 +1586,68 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiscoRunResult> listRuns(String groupName, String filter, Integer skip) {
+        // Generated convenience method for listRuns
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        return serviceClient.listRuns(groupName, requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoRunResult.class));
+    }
+
+    /**
+     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
+     *
+     * @param groupName The unique identifier for the discovery group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the paginated response with {@link PagedIterable}.
+     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoRunResult> listRuns(String groupName) {
         // Generated convenience method for listRuns
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listRuns(groupName, requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoRunResult.class));
+    }
+
+    /**
+     * Retrieve a list of disco templates for the provided search parameters.
+     *
+     * @param filter Filter the result list using the given expression.
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiscoTemplate> listDiscoTemplate(String filter, Integer skip) {
+        // Generated convenience method for listDiscoTemplate
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        return serviceClient.listDiscoTemplate(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1615,12 +1660,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiscoTemplate> listDiscoTemplate() {
         // Generated convenience method for listDiscoTemplate
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listDiscoTemplate(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DiscoTemplate.class));
     }
 
     /**
@@ -1653,18 +1699,18 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return billable assets summary for the workspace.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReportBillableAssetSummaryResult getBillable() {
         // Generated convenience method for getBillableWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(getBillableWithResponse(requestOptions).getValue())
-            .toObject(ReportBillableAssetSummaryResult.class);
+        return getBillableWithResponse(requestOptions).getValue().toObject(ReportBillableAssetSummaryResult.class);
     }
 
     /**
      * Get the most recent snapshot of asset summary values for the snapshot request.
      *
-     * @param reportAssetSnapshotRequest A request body used to retrieve an asset report snapshot.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1673,20 +1719,19 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the most recent snapshot of asset summary values for the snapshot request.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReportAssetSnapshotResult getSnapshot(ReportAssetSnapshotRequest reportAssetSnapshotRequest) {
+    public ReportAssetSnapshotResult getSnapshot(ReportAssetSnapshotRequest body) {
         // Generated convenience method for getSnapshotWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(
-            getSnapshotWithResponse(BinaryData.fromObject(reportAssetSnapshotRequest), requestOptions).getValue())
+        return getSnapshotWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(ReportAssetSnapshotResult.class);
     }
 
     /**
      * Get asset summary details for the summary request.
      *
-     * @param reportAssetSummaryRequest A request body used to retrieve summary asset information. One and only one
-     * collection of summary identifiers must be provided: filters, metrics, or metricCategories.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1695,13 +1740,41 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset summary details for the summary request.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReportAssetSummaryResult getSummary(ReportAssetSummaryRequest reportAssetSummaryRequest) {
+    public ReportAssetSummaryResult getSummary(ReportAssetSummaryRequest body) {
         // Generated convenience method for getSummaryWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(
-            getSummaryWithResponse(BinaryData.fromObject(reportAssetSummaryRequest), requestOptions).getValue())
+        return getSummaryWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(ReportAssetSummaryResult.class);
+    }
+
+    /**
+     * Retrieve a list of saved filters for the provided search parameters.
+     *
+     * @param filter Filter the result list using the given expression.
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SavedFilter> listSavedFilter(String filter, Integer skip) {
+        // Generated convenience method for listSavedFilter
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        return serviceClient.listSavedFilter(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SavedFilter.class));
     }
 
     /**
@@ -1714,12 +1787,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SavedFilter> listSavedFilter() {
         // Generated convenience method for listSavedFilter
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.listSavedFilter(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(SavedFilter.class));
     }
 
     /**
@@ -1734,18 +1808,19 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SavedFilter getSavedFilter(String filterName) {
         // Generated convenience method for getSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(getSavedFilterWithResponse(filterName, requestOptions).getValue()).toObject(SavedFilter.class);
+        return getSavedFilterWithResponse(filterName, requestOptions).getValue().toObject(SavedFilter.class);
     }
 
     /**
-     * Create or update a saved filter with a given filterName.
+     * Create or replace a saved filter with a given filterName.
      *
      * @param filterName The caller provided unique name for the resource.
-     * @param savedFilterData A request body used to create a saved filter.
+     * @param body Body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1754,13 +1829,13 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SavedFilter createOrReplaceSavedFilter(String filterName, SavedFilterData savedFilterData) {
+    public SavedFilter createOrReplaceSavedFilter(String filterName, SavedFilterData body) {
         // Generated convenience method for createOrReplaceSavedFilterWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(
-            createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(savedFilterData), requestOptions)
-                .getValue())
+        return createOrReplaceSavedFilterWithResponse(filterName, BinaryData.fromObject(body), requestOptions)
+            .getValue()
             .toObject(SavedFilter.class);
     }
 
@@ -1786,6 +1861,10 @@ public final class EasmClient {
     /**
      * Retrieve a list of tasks for the provided search parameters.
      *
+     * @param filter Filter the result list using the given expression.
+     * @param orderBy A list of expressions that specify the order of the returned resources.
+     * @param skip The number of result items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1793,12 +1872,39 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of Task items as paginated response with {@link PagedIterable}.
      */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Task> listTask(String filter, String orderBy, Integer skip) {
+        // Generated convenience method for listTask
+        RequestOptions requestOptions = new RequestOptions();
+        if (filter != null) {
+            requestOptions.addQueryParam("filter", filter, false);
+        }
+        if (orderBy != null) {
+            requestOptions.addQueryParam("orderby", orderBy, false);
+        }
+        if (skip != null) {
+            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
+        }
+        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Task.class));
+    }
+
+    /**
+     * Retrieve a list of tasks for the provided search parameters.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Task items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Task> listTask() {
         // Generated convenience method for listTask
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listTask(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
+        return serviceClient.listTask(requestOptions).mapPage(bodyItemValue -> bodyItemValue.toObject(Task.class));
     }
 
     /**
@@ -1813,11 +1919,12 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task getTask(String taskId) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(getTaskWithResponse(taskId, requestOptions).getValue()).toObject(Task.class);
+        return getTaskWithResponse(taskId, requestOptions).getValue().toObject(Task.class);
     }
 
     /**
@@ -1832,302 +1939,11 @@ public final class EasmClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Task cancelTask(String taskId) {
         // Generated convenience method for cancelTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cleanUp(cancelTaskWithResponse(taskId, requestOptions).getValue()).toObject(Task.class);
-    }
-
-    /**
-     * Retrieve a list of discovery group for the provided search parameters.
-     *
-     * <p>
-     * <strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Filter the result list using the given expression.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
-     * <p>
-     * <strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String (Optional)
-     *     name: String (Required)
-     *     displayName: String (Optional)
-     *     description: String (Optional)
-     *     tier: String (Optional)
-     *     frequencyMilliseconds: Long (Optional)
-     *     seeds (Optional): [
-     *          (Optional){
-     *             kind: String(as/attribute/contact/domain/host/ipBlock) (Optional)
-     *             name: String (Optional)
-     *         }
-     *     ]
-     *     names (Optional): [
-     *         String (Optional)
-     *     ]
-     *     excludes (Optional): [
-     *         (recursive schema, see above)
-     *     ]
-     *     latestRun (Optional): {
-     *         submittedDate: OffsetDateTime (Optional)
-     *         startedDate: OffsetDateTime (Optional)
-     *         completedDate: OffsetDateTime (Optional)
-     *         tier: String (Optional)
-     *         state: String(pending/running/completed/failed) (Optional)
-     *         totalAssetsFoundCount: Long (Optional)
-     *         seeds (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         excludes (Optional): [
-     *             (recursive schema, see above)
-     *         ]
-     *         names (Optional): [
-     *             String (Optional)
-     *         ]
-     *     }
-     *     createdDate: OffsetDateTime (Optional)
-     *     templateId: String (Optional)
-     * }
-     * }</pre>
-     *
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listDiscoGroup(RequestOptions requestOptions) {
-        return this.serviceClient.listDiscoGroup(requestOptions).mapPage(bodyItemValue -> cleanUp(bodyItemValue));
-    }
-
-    /**
-     * Retrieve a list of assets for the provided search parameters.
-     *
-     * @param filter Filter the result list using the given expression.
-     * @param orderBy A list of expressions that specify the order of the returned resources.
-     * @param skip The number of result items to skip.
-     * @param mark Specify this value instead of 'skip' to use cursor-based searching. Initial value is '*' and
-     * subsequent values are returned in the response.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of AssetResource items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssetResource> listAssetResource(String filter, String orderBy, Integer skip, String mark) {
-        // Generated convenience method for listAssetResource
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby", orderBy, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        if (mark != null) {
-            requestOptions.addQueryParam("mark", mark, false);
-        }
-        return serviceClient.listAssetResource(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(AssetResource.class));
-    }
-
-    /**
-     * Retrieve a list of data connections.
-     *
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DataConnection items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataConnection> listDataConnection(Integer skip) {
-        // Generated convenience method for listDataConnection
-        RequestOptions requestOptions = new RequestOptions();
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        return serviceClient.listDataConnection(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DataConnection.class));
-    }
-
-    /**
-     * Retrieve a list of discovery group for the provided search parameters.
-     *
-     * @param filter Filter the result list using the given expression.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiscoGroup items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiscoGroup> listDiscoGroup(String filter, Integer skip) {
-        // Generated convenience method for listDiscoGroup
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        return serviceClient.listDiscoGroup(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoGroup.class));
-    }
-
-    /**
-     * Retrieve a list of disco templates for the provided search parameters.
-     *
-     * @param filter Filter the result list using the given expression.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiscoTemplate items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiscoTemplate> listDiscoTemplate(String filter, Integer skip) {
-        // Generated convenience method for listDiscoTemplate
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        return serviceClient.listDiscoTemplate(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoTemplate.class));
-    }
-
-    /**
-     * Retrieve a list of saved filters for the provided search parameters.
-     *
-     * @param filter Filter the result list using the given expression.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of SavedFilter items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SavedFilter> listSavedFilter(String filter, Integer skip) {
-        // Generated convenience method for listSavedFilter
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        return serviceClient.listSavedFilter(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(SavedFilter.class));
-    }
-
-    /**
-     * Retrieve a list of tasks for the provided search parameters.
-     *
-     * @param filter Filter the result list using the given expression.
-     * @param orderBy A list of expressions that specify the order of the returned resources.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of Task items as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Task> listTask(String filter, String orderBy, Integer skip) {
-        // Generated convenience method for listTask
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (orderBy != null) {
-            requestOptions.addQueryParam("orderby", orderBy, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        return serviceClient.listTask(requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(Task.class));
-    }
-
-    /**
-     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     *
-     * @param groupName The unique identifier for the discovery group.
-     * @param filter Filter the result list using the given expression.
-     * @param skip The number of result items to skip.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DiscoRunResult> listRuns(String groupName, String filter, Integer skip) {
-        // Generated convenience method for listRuns
-        RequestOptions requestOptions = new RequestOptions();
-        if (filter != null) {
-            requestOptions.addQueryParam("filter", filter, false);
-        }
-        if (skip != null) {
-            requestOptions.addQueryParam("skip", String.valueOf(skip), false);
-        }
-        return serviceClient.listRuns(groupName, requestOptions)
-            .mapPage(bodyItemValue -> cleanUp(bodyItemValue).toObject(DiscoRunResult.class));
+        return cancelTaskWithResponse(taskId, requestOptions).getValue().toObject(Task.class);
     }
 }

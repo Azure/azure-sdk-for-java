@@ -9,7 +9,9 @@ package com.azure.resourcemanager.appservice.generated;
  */
 public final class WebAppsListWorkflowsConnectionsSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWorkflowsConfigurationConnections.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ListWorkflowsConfigurationConnections
+     * .json
      */
     /**
      * Sample code: List the Instance Workflows Configuration Connections Slot.

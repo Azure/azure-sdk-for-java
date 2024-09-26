@@ -164,7 +164,8 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
             handleClose();
         }).cache(1);
 
-        this.subscriptions = Disposables.composite(this.endpointStates.subscribe(),
+        this.subscriptions = Disposables.composite(
+            this.endpointStates.subscribe(null, e -> logger.warning("Sender link endpoint state signaled error.", e)),
 
             this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 

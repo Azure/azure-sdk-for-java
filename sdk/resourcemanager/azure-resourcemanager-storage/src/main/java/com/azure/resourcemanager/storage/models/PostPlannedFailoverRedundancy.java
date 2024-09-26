@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class PostPlannedFailoverRedundancy extends ExpandableStringEnum<Po
      * @param name a name to look for.
      * @return the corresponding PostPlannedFailoverRedundancy.
      */
-    @JsonCreator
     public static PostPlannedFailoverRedundancy fromString(String name) {
         return fromString(name, PostPlannedFailoverRedundancy.class);
     }

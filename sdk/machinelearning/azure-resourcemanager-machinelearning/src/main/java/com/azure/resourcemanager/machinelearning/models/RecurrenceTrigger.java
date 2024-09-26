@@ -6,40 +6,55 @@ package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RecurrenceTrigger model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "triggerType")
-@JsonTypeName("Recurrence")
+/**
+ * The RecurrenceTrigger model.
+ */
 @Fluent
 public final class RecurrenceTrigger extends TriggerBase {
     /*
+     * [Required]
+     */
+    private TriggerType triggerType = TriggerType.RECURRENCE;
+
+    /*
      * [Required] The frequency to trigger schedule.
      */
-    @JsonProperty(value = "frequency", required = true)
     private RecurrenceFrequency frequency;
 
     /*
      * [Required] Specifies schedule interval in conjunction with frequency
      */
-    @JsonProperty(value = "interval", required = true)
     private int interval;
 
     /*
      * The recurrence schedule.
      */
-    @JsonProperty(value = "schedule")
     private RecurrenceSchedule schedule;
 
-    /** Creates an instance of RecurrenceTrigger class. */
+    /**
+     * Creates an instance of RecurrenceTrigger class.
+     */
     public RecurrenceTrigger() {
     }
 
     /**
+     * Get the triggerType property: [Required].
+     * 
+     * @return the triggerType value.
+     */
+    @Override
+    public TriggerType triggerType() {
+        return this.triggerType;
+    }
+
+    /**
      * Get the frequency property: [Required] The frequency to trigger schedule.
-     *
+     * 
      * @return the frequency value.
      */
     public RecurrenceFrequency frequency() {
@@ -48,7 +63,7 @@ public final class RecurrenceTrigger extends TriggerBase {
 
     /**
      * Set the frequency property: [Required] The frequency to trigger schedule.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the RecurrenceTrigger object itself.
      */
@@ -59,7 +74,7 @@ public final class RecurrenceTrigger extends TriggerBase {
 
     /**
      * Get the interval property: [Required] Specifies schedule interval in conjunction with frequency.
-     *
+     * 
      * @return the interval value.
      */
     public int interval() {
@@ -68,7 +83,7 @@ public final class RecurrenceTrigger extends TriggerBase {
 
     /**
      * Set the interval property: [Required] Specifies schedule interval in conjunction with frequency.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the RecurrenceTrigger object itself.
      */
@@ -79,7 +94,7 @@ public final class RecurrenceTrigger extends TriggerBase {
 
     /**
      * Get the schedule property: The recurrence schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public RecurrenceSchedule schedule() {
@@ -88,7 +103,7 @@ public final class RecurrenceTrigger extends TriggerBase {
 
     /**
      * Set the schedule property: The recurrence schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the RecurrenceTrigger object itself.
      */
@@ -97,21 +112,27 @@ public final class RecurrenceTrigger extends TriggerBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecurrenceTrigger withEndTime(String endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecurrenceTrigger withStartTime(String startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RecurrenceTrigger withTimeZone(String timeZone) {
         super.withTimeZone(timeZone);
@@ -120,16 +141,15 @@ public final class RecurrenceTrigger extends TriggerBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (frequency() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property frequency in model RecurrenceTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property frequency in model RecurrenceTrigger"));
         }
         if (schedule() != null) {
             schedule().validate();
@@ -137,4 +157,59 @@ public final class RecurrenceTrigger extends TriggerBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecurrenceTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endTime", endTime());
+        jsonWriter.writeStringField("startTime", startTime());
+        jsonWriter.writeStringField("timeZone", timeZone());
+        jsonWriter.writeStringField("frequency", this.frequency == null ? null : this.frequency.toString());
+        jsonWriter.writeIntField("interval", this.interval);
+        jsonWriter.writeStringField("triggerType", this.triggerType == null ? null : this.triggerType.toString());
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecurrenceTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecurrenceTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecurrenceTrigger.
+     */
+    public static RecurrenceTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecurrenceTrigger deserializedRecurrenceTrigger = new RecurrenceTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endTime".equals(fieldName)) {
+                    deserializedRecurrenceTrigger.withEndTime(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedRecurrenceTrigger.withStartTime(reader.getString());
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedRecurrenceTrigger.withTimeZone(reader.getString());
+                } else if ("frequency".equals(fieldName)) {
+                    deserializedRecurrenceTrigger.frequency = RecurrenceFrequency.fromString(reader.getString());
+                } else if ("interval".equals(fieldName)) {
+                    deserializedRecurrenceTrigger.interval = reader.getInt();
+                } else if ("triggerType".equals(fieldName)) {
+                    deserializedRecurrenceTrigger.triggerType = TriggerType.fromString(reader.getString());
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedRecurrenceTrigger.schedule = RecurrenceSchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecurrenceTrigger;
+        });
+    }
 }

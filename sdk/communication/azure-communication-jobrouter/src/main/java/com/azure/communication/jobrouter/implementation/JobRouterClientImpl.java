@@ -166,7 +166,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> upsertJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -178,7 +178,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> upsertJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -190,7 +190,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs/{jobId}")
         @ExpectedResponses({ 200 })
@@ -200,7 +200,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -210,7 +210,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/jobs/{jobId}")
         @ExpectedResponses({ 204 })
@@ -220,7 +220,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:reclassify")
         @ExpectedResponses({ 200 })
@@ -230,7 +230,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> reclassifyJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:reclassify")
         @ExpectedResponses({ 200 })
@@ -240,7 +240,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> reclassifyJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:cancel")
         @ExpectedResponses({ 200 })
@@ -250,7 +250,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> cancelJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}:cancel")
         @ExpectedResponses({ 200 })
@@ -260,7 +260,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> cancelJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:complete")
         @ExpectedResponses({ 200 })
@@ -270,7 +270,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> completeJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:complete")
@@ -281,7 +281,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> completeJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:close")
@@ -292,7 +292,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> closeJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:close")
@@ -303,7 +303,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> closeJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs")
@@ -313,7 +313,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobs(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs")
@@ -323,7 +323,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs/{jobId}/position")
@@ -334,7 +334,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getQueuePosition(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/jobs/{jobId}/position")
         @ExpectedResponses({ 200 })
@@ -344,7 +344,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getQueuePositionSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({ 200 })
@@ -354,7 +354,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> unassignJob(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/jobs/{jobId}/assignments/{assignmentId}:unassign")
@@ -365,7 +365,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> unassignJobSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @PathParam("assignmentId") String assignmentId, @HeaderParam("accept") String accept,
+            @PathParam("assignmentId") String assignmentId, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
@@ -376,7 +376,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> acceptJobOffer(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
@@ -387,7 +387,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> acceptJobOfferSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:decline")
@@ -398,7 +398,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> declineJobOffer(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Post("/routing/workers/{workerId}/offers/{offerId}:decline")
@@ -409,7 +409,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> declineJobOfferSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @PathParam("offerId") String offerId, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @PathParam("offerId") String offerId, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("/routing/queues/{queueId}/statistics")
@@ -420,7 +420,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getQueueStatistics(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/queues/{queueId}/statistics")
         @ExpectedResponses({ 200 })
@@ -430,7 +430,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getQueueStatisticsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("queueId") String queueId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Patch("/routing/workers/{workerId}")
         @ExpectedResponses({ 200, 201 })
@@ -440,7 +440,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> upsertWorker(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -452,7 +452,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> upsertWorkerSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/merge-patch+json") BinaryData resource, RequestOptions requestOptions,
             Context context);
 
@@ -464,7 +464,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getWorker(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/workers/{workerId}")
         @ExpectedResponses({ 200 })
@@ -474,7 +474,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> getWorkerSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/workers/{workerId}")
         @ExpectedResponses({ 204 })
@@ -484,7 +484,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteWorker(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Delete("/routing/workers/{workerId}")
         @ExpectedResponses({ 204 })
@@ -494,7 +494,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> deleteWorkerSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("workerId") String workerId,
-            @HeaderParam("accept") String accept, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Get("/routing/workers")
         @ExpectedResponses({ 200 })
@@ -503,7 +503,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listWorkers(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("/routing/workers")
@@ -513,7 +513,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listWorkersSync(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
             RequestOptions requestOptions, Context context);
 
         @Get("{nextLink}")
@@ -523,7 +523,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listJobsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -533,7 +533,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listJobsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -543,7 +543,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listWorkersNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
 
         @Get("{nextLink}")
@@ -553,7 +553,7 @@ public final class JobRouterClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> listWorkersNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("endpoint") String endpoint, @HeaderParam("accept") String accept, RequestOptions requestOptions,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept, RequestOptions requestOptions,
             Context context);
     }
 

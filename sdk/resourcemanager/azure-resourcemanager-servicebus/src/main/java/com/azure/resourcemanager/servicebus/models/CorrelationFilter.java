@@ -5,77 +5,77 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents the correlation filter expression. */
+/**
+ * Represents the correlation filter expression.
+ */
 @Fluent
-public final class CorrelationFilter {
+public final class CorrelationFilter implements JsonSerializable<CorrelationFilter> {
     /*
      * dictionary object for custom filters
      */
-    @JsonProperty(value = "properties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
     /*
      * Identifier of the correlation.
      */
-    @JsonProperty(value = "correlationId")
     private String correlationId;
 
     /*
      * Identifier of the message.
      */
-    @JsonProperty(value = "messageId")
     private String messageId;
 
     /*
      * Address to send to.
      */
-    @JsonProperty(value = "to")
     private String to;
 
     /*
      * Address of the queue to reply to.
      */
-    @JsonProperty(value = "replyTo")
     private String replyTo;
 
     /*
      * Application specific label.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /*
      * Session identifier.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Session identifier to reply to.
      */
-    @JsonProperty(value = "replyToSessionId")
     private String replyToSessionId;
 
     /*
      * Content type of the message.
      */
-    @JsonProperty(value = "contentType")
     private String contentType;
 
     /*
      * Value that indicates whether the rule action requires preprocessing.
      */
-    @JsonProperty(value = "requiresPreprocessing")
     private Boolean requiresPreprocessing;
 
     /**
+     * Creates an instance of CorrelationFilter class.
+     */
+    public CorrelationFilter() {
+    }
+
+    /**
      * Get the properties property: dictionary object for custom filters.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -84,7 +84,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the properties property: dictionary object for custom filters.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -95,7 +95,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the correlationId property: Identifier of the correlation.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -104,7 +104,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the correlationId property: Identifier of the correlation.
-     *
+     * 
      * @param correlationId the correlationId value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -115,7 +115,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the messageId property: Identifier of the message.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -124,7 +124,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the messageId property: Identifier of the message.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -135,7 +135,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the to property: Address to send to.
-     *
+     * 
      * @return the to value.
      */
     public String to() {
@@ -144,7 +144,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the to property: Address to send to.
-     *
+     * 
      * @param to the to value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -155,7 +155,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the replyTo property: Address of the queue to reply to.
-     *
+     * 
      * @return the replyTo value.
      */
     public String replyTo() {
@@ -164,7 +164,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the replyTo property: Address of the queue to reply to.
-     *
+     * 
      * @param replyTo the replyTo value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -175,7 +175,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the label property: Application specific label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -184,7 +184,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the label property: Application specific label.
-     *
+     * 
      * @param label the label value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -195,7 +195,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the sessionId property: Session identifier.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -204,7 +204,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the sessionId property: Session identifier.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -215,7 +215,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the replyToSessionId property: Session identifier to reply to.
-     *
+     * 
      * @return the replyToSessionId value.
      */
     public String replyToSessionId() {
@@ -224,7 +224,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the replyToSessionId property: Session identifier to reply to.
-     *
+     * 
      * @param replyToSessionId the replyToSessionId value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -235,7 +235,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the contentType property: Content type of the message.
-     *
+     * 
      * @return the contentType value.
      */
     public String contentType() {
@@ -244,7 +244,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the contentType property: Content type of the message.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -255,7 +255,7 @@ public final class CorrelationFilter {
 
     /**
      * Get the requiresPreprocessing property: Value that indicates whether the rule action requires preprocessing.
-     *
+     * 
      * @return the requiresPreprocessing value.
      */
     public Boolean requiresPreprocessing() {
@@ -264,7 +264,7 @@ public final class CorrelationFilter {
 
     /**
      * Set the requiresPreprocessing property: Value that indicates whether the rule action requires preprocessing.
-     *
+     * 
      * @param requiresPreprocessing the requiresPreprocessing value to set.
      * @return the CorrelationFilter object itself.
      */
@@ -275,9 +275,73 @@ public final class CorrelationFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("correlationId", this.correlationId);
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("to", this.to);
+        jsonWriter.writeStringField("replyTo", this.replyTo);
+        jsonWriter.writeStringField("label", this.label);
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("replyToSessionId", this.replyToSessionId);
+        jsonWriter.writeStringField("contentType", this.contentType);
+        jsonWriter.writeBooleanField("requiresPreprocessing", this.requiresPreprocessing);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CorrelationFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CorrelationFilter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CorrelationFilter.
+     */
+    public static CorrelationFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CorrelationFilter deserializedCorrelationFilter = new CorrelationFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCorrelationFilter.properties = properties;
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedCorrelationFilter.correlationId = reader.getString();
+                } else if ("messageId".equals(fieldName)) {
+                    deserializedCorrelationFilter.messageId = reader.getString();
+                } else if ("to".equals(fieldName)) {
+                    deserializedCorrelationFilter.to = reader.getString();
+                } else if ("replyTo".equals(fieldName)) {
+                    deserializedCorrelationFilter.replyTo = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedCorrelationFilter.label = reader.getString();
+                } else if ("sessionId".equals(fieldName)) {
+                    deserializedCorrelationFilter.sessionId = reader.getString();
+                } else if ("replyToSessionId".equals(fieldName)) {
+                    deserializedCorrelationFilter.replyToSessionId = reader.getString();
+                } else if ("contentType".equals(fieldName)) {
+                    deserializedCorrelationFilter.contentType = reader.getString();
+                } else if ("requiresPreprocessing".equals(fieldName)) {
+                    deserializedCorrelationFilter.requiresPreprocessing = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCorrelationFilter;
+        });
     }
 }

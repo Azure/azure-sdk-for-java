@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -25,7 +23,7 @@ public final class DedicatedGatewayType extends ExpandableStringEnum<DedicatedGa
 
     /**
      * Creates a new instance of DedicatedGatewayType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,18 +32,17 @@ public final class DedicatedGatewayType extends ExpandableStringEnum<DedicatedGa
 
     /**
      * Creates or finds a DedicatedGatewayType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DedicatedGatewayType.
      */
-    @JsonCreator
     public static DedicatedGatewayType fromString(String name) {
         return fromString(name, DedicatedGatewayType.class);
     }
 
     /**
      * Gets known DedicatedGatewayType values.
-     *
+     * 
      * @return known DedicatedGatewayType values.
      */
     public static Collection<DedicatedGatewayType> values() {

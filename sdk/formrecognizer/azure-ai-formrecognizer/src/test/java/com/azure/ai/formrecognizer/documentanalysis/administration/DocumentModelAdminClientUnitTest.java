@@ -10,10 +10,12 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.ONE_NANO_DURATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,6 +37,7 @@ public class DocumentModelAdminClientUnitTest {
     protected static void beforeTest() {
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint("https://localhost:8080")
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .credential(new AzureKeyCredential("fakeKey"));
 
         analysisClient = builder.buildClient();
@@ -42,6 +45,7 @@ public class DocumentModelAdminClientUnitTest {
 
         DocumentModelAdministrationClientBuilder adminBuilder = new DocumentModelAdministrationClientBuilder()
             .endpoint("https://localhost:8080")
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .credential(new AzureKeyCredential("fakeKey"));
 
         client = adminBuilder.buildClient();

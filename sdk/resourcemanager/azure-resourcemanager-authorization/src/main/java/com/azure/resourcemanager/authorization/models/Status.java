@@ -5,80 +5,125 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the role assignment schedule. */
+/**
+ * The status of the role assignment schedule.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value Accepted for Status. */
+    /**
+     * Static value Accepted for Status.
+     */
     public static final Status ACCEPTED = fromString("Accepted");
 
-    /** Static value PendingEvaluation for Status. */
+    /**
+     * Static value PendingEvaluation for Status.
+     */
     public static final Status PENDING_EVALUATION = fromString("PendingEvaluation");
 
-    /** Static value Granted for Status. */
+    /**
+     * Static value Granted for Status.
+     */
     public static final Status GRANTED = fromString("Granted");
 
-    /** Static value Denied for Status. */
+    /**
+     * Static value Denied for Status.
+     */
     public static final Status DENIED = fromString("Denied");
 
-    /** Static value PendingProvisioning for Status. */
+    /**
+     * Static value PendingProvisioning for Status.
+     */
     public static final Status PENDING_PROVISIONING = fromString("PendingProvisioning");
 
-    /** Static value Provisioned for Status. */
+    /**
+     * Static value Provisioned for Status.
+     */
     public static final Status PROVISIONED = fromString("Provisioned");
 
-    /** Static value PendingRevocation for Status. */
+    /**
+     * Static value PendingRevocation for Status.
+     */
     public static final Status PENDING_REVOCATION = fromString("PendingRevocation");
 
-    /** Static value Revoked for Status. */
+    /**
+     * Static value Revoked for Status.
+     */
     public static final Status REVOKED = fromString("Revoked");
 
-    /** Static value Canceled for Status. */
+    /**
+     * Static value Canceled for Status.
+     */
     public static final Status CANCELED = fromString("Canceled");
 
-    /** Static value Failed for Status. */
+    /**
+     * Static value Failed for Status.
+     */
     public static final Status FAILED = fromString("Failed");
 
-    /** Static value PendingApprovalProvisioning for Status. */
+    /**
+     * Static value PendingApprovalProvisioning for Status.
+     */
     public static final Status PENDING_APPROVAL_PROVISIONING = fromString("PendingApprovalProvisioning");
 
-    /** Static value PendingApproval for Status. */
+    /**
+     * Static value PendingApproval for Status.
+     */
     public static final Status PENDING_APPROVAL = fromString("PendingApproval");
 
-    /** Static value FailedAsResourceIsLocked for Status. */
+    /**
+     * Static value FailedAsResourceIsLocked for Status.
+     */
     public static final Status FAILED_AS_RESOURCE_IS_LOCKED = fromString("FailedAsResourceIsLocked");
 
-    /** Static value PendingAdminDecision for Status. */
+    /**
+     * Static value PendingAdminDecision for Status.
+     */
     public static final Status PENDING_ADMIN_DECISION = fromString("PendingAdminDecision");
 
-    /** Static value AdminApproved for Status. */
+    /**
+     * Static value AdminApproved for Status.
+     */
     public static final Status ADMIN_APPROVED = fromString("AdminApproved");
 
-    /** Static value AdminDenied for Status. */
+    /**
+     * Static value AdminDenied for Status.
+     */
     public static final Status ADMIN_DENIED = fromString("AdminDenied");
 
-    /** Static value TimedOut for Status. */
+    /**
+     * Static value TimedOut for Status.
+     */
     public static final Status TIMED_OUT = fromString("TimedOut");
 
-    /** Static value ProvisioningStarted for Status. */
+    /**
+     * Static value ProvisioningStarted for Status.
+     */
     public static final Status PROVISIONING_STARTED = fromString("ProvisioningStarted");
 
-    /** Static value Invalid for Status. */
+    /**
+     * Static value Invalid for Status.
+     */
     public static final Status INVALID = fromString("Invalid");
 
-    /** Static value PendingScheduleCreation for Status. */
+    /**
+     * Static value PendingScheduleCreation for Status.
+     */
     public static final Status PENDING_SCHEDULE_CREATION = fromString("PendingScheduleCreation");
 
-    /** Static value ScheduleCreated for Status. */
+    /**
+     * Static value ScheduleCreated for Status.
+     */
     public static final Status SCHEDULE_CREATED = fromString("ScheduleCreated");
 
-    /** Static value PendingExternalProvisioning for Status. */
+    /**
+     * Static value PendingExternalProvisioning for Status.
+     */
     public static final Status PENDING_EXTERNAL_PROVISIONING = fromString("PendingExternalProvisioning");
 
     /**
      * Creates a new instance of Status value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -87,18 +132,17 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Creates or finds a Status from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Status.
      */
-    @JsonCreator
     public static Status fromString(String name) {
         return fromString(name, Status.class);
     }
 
     /**
      * Gets known Status values.
-     *
+     * 
      * @return known Status values.
      */
     public static Collection<Status> values() {

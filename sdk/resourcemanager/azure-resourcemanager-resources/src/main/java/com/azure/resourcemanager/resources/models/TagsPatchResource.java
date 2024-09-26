@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Wrapper resource for tags patch API request only.
  */
 @Fluent
-public final class TagsPatchResource {
+public final class TagsPatchResource implements JsonSerializable<TagsPatchResource> {
     /*
      * The operation type for the patch API.
      */
-    @JsonProperty(value = "operation")
     private TagsPatchOperation operation;
 
     /*
      * The set of tags.
      */
-    @JsonProperty(value = "properties")
     private Tags properties;
 
     /**
@@ -79,5 +81,44 @@ public final class TagsPatchResource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TagsPatchResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TagsPatchResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TagsPatchResource.
+     */
+    public static TagsPatchResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TagsPatchResource deserializedTagsPatchResource = new TagsPatchResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operation".equals(fieldName)) {
+                    deserializedTagsPatchResource.operation = TagsPatchOperation.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTagsPatchResource.properties = Tags.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTagsPatchResource;
+        });
     }
 }

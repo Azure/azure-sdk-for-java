@@ -6,6 +6,9 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.DeepCreatedCustomDomain;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOrigin;
 import com.azure.resourcemanager.cdn.models.DeepCreatedOriginGroup;
@@ -18,7 +21,7 @@ import com.azure.resourcemanager.cdn.models.OptimizationType;
 import com.azure.resourcemanager.cdn.models.QueryStringCachingBehavior;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
 import com.azure.resourcemanager.cdn.models.UrlSigningKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,37 +32,31 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     /*
      * The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
      */
-    @JsonProperty(value = "hostName", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
      * The source of the content being delivered via CDN.
      */
-    @JsonProperty(value = "origins", required = true)
     private List<DeepCreatedOrigin> origins;
 
     /*
      * The origin groups comprising of origins that are used for load balancing the traffic based on availability.
      */
-    @JsonProperty(value = "originGroups")
     private List<DeepCreatedOriginGroup> originGroups;
 
     /*
      * The custom domains under the endpoint.
      */
-    @JsonProperty(value = "customDomains", access = JsonProperty.Access.WRITE_ONLY)
     private List<DeepCreatedCustomDomain> customDomains;
 
     /*
      * Resource status of the endpoint.
      */
-    @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
     private EndpointResourceState resourceState;
 
     /*
      * Provisioning status of the endpoint.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private EndpointProvisioningState provisioningState;
 
     /**
@@ -283,8 +280,8 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     public void validate() {
         super.validate();
         if (origins() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property origins in model EndpointProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property origins in model EndpointProperties"));
         } else {
             origins().forEach(e -> e.validate());
         }
@@ -297,4 +294,110 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("originPath", originPath());
+        jsonWriter.writeArrayField("contentTypesToCompress", contentTypesToCompress(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("originHostHeader", originHostHeader());
+        jsonWriter.writeBooleanField("isCompressionEnabled", isCompressionEnabled());
+        jsonWriter.writeBooleanField("isHttpAllowed", isHttpAllowed());
+        jsonWriter.writeBooleanField("isHttpsAllowed", isHttpsAllowed());
+        jsonWriter.writeStringField("queryStringCachingBehavior",
+            queryStringCachingBehavior() == null ? null : queryStringCachingBehavior().toString());
+        jsonWriter.writeStringField("optimizationType",
+            optimizationType() == null ? null : optimizationType().toString());
+        jsonWriter.writeStringField("probePath", probePath());
+        jsonWriter.writeArrayField("geoFilters", geoFilters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("defaultOriginGroup", defaultOriginGroup());
+        jsonWriter.writeArrayField("urlSigningKeys", urlSigningKeys(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("deliveryPolicy", deliveryPolicy());
+        jsonWriter.writeJsonField("webApplicationFirewallPolicyLink", webApplicationFirewallPolicyLink());
+        jsonWriter.writeArrayField("origins", this.origins, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("originGroups", this.originGroups, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EndpointProperties.
+     */
+    public static EndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointProperties deserializedEndpointProperties = new EndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("originPath".equals(fieldName)) {
+                    deserializedEndpointProperties.withOriginPath(reader.getString());
+                } else if ("contentTypesToCompress".equals(fieldName)) {
+                    List<String> contentTypesToCompress = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEndpointProperties.withContentTypesToCompress(contentTypesToCompress);
+                } else if ("originHostHeader".equals(fieldName)) {
+                    deserializedEndpointProperties.withOriginHostHeader(reader.getString());
+                } else if ("isCompressionEnabled".equals(fieldName)) {
+                    deserializedEndpointProperties.withIsCompressionEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isHttpAllowed".equals(fieldName)) {
+                    deserializedEndpointProperties.withIsHttpAllowed(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isHttpsAllowed".equals(fieldName)) {
+                    deserializedEndpointProperties.withIsHttpsAllowed(reader.getNullable(JsonReader::getBoolean));
+                } else if ("queryStringCachingBehavior".equals(fieldName)) {
+                    deserializedEndpointProperties
+                        .withQueryStringCachingBehavior(QueryStringCachingBehavior.fromString(reader.getString()));
+                } else if ("optimizationType".equals(fieldName)) {
+                    deserializedEndpointProperties
+                        .withOptimizationType(OptimizationType.fromString(reader.getString()));
+                } else if ("probePath".equals(fieldName)) {
+                    deserializedEndpointProperties.withProbePath(reader.getString());
+                } else if ("geoFilters".equals(fieldName)) {
+                    List<GeoFilter> geoFilters = reader.readArray(reader1 -> GeoFilter.fromJson(reader1));
+                    deserializedEndpointProperties.withGeoFilters(geoFilters);
+                } else if ("defaultOriginGroup".equals(fieldName)) {
+                    deserializedEndpointProperties.withDefaultOriginGroup(ResourceReference.fromJson(reader));
+                } else if ("urlSigningKeys".equals(fieldName)) {
+                    List<UrlSigningKey> urlSigningKeys = reader.readArray(reader1 -> UrlSigningKey.fromJson(reader1));
+                    deserializedEndpointProperties.withUrlSigningKeys(urlSigningKeys);
+                } else if ("deliveryPolicy".equals(fieldName)) {
+                    deserializedEndpointProperties
+                        .withDeliveryPolicy(EndpointPropertiesUpdateParametersDeliveryPolicy.fromJson(reader));
+                } else if ("webApplicationFirewallPolicyLink".equals(fieldName)) {
+                    deserializedEndpointProperties.withWebApplicationFirewallPolicyLink(
+                        EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink.fromJson(reader));
+                } else if ("origins".equals(fieldName)) {
+                    List<DeepCreatedOrigin> origins = reader.readArray(reader1 -> DeepCreatedOrigin.fromJson(reader1));
+                    deserializedEndpointProperties.origins = origins;
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedEndpointProperties.hostname = reader.getString();
+                } else if ("originGroups".equals(fieldName)) {
+                    List<DeepCreatedOriginGroup> originGroups
+                        = reader.readArray(reader1 -> DeepCreatedOriginGroup.fromJson(reader1));
+                    deserializedEndpointProperties.originGroups = originGroups;
+                } else if ("customDomains".equals(fieldName)) {
+                    List<DeepCreatedCustomDomain> customDomains
+                        = reader.readArray(reader1 -> DeepCreatedCustomDomain.fromJson(reader1));
+                    deserializedEndpointProperties.customDomains = customDomains;
+                } else if ("resourceState".equals(fieldName)) {
+                    deserializedEndpointProperties.resourceState = EndpointResourceState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEndpointProperties.provisioningState
+                        = EndpointProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointProperties;
+        });
+    }
 }

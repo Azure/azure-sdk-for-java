@@ -7,61 +7,63 @@ package com.azure.resourcemanager.privatedns.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for PrivateDnsManagementClient class. */
+/**
+ * The interface for PrivateDnsManagementClient class.
+ */
 public interface PrivateDnsManagementClient {
     /**
      * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the PrivateZonesClient object to access its operations.
-     *
+     * 
      * @return the PrivateZonesClient object.
      */
     PrivateZonesClient getPrivateZones();
 
     /**
      * Gets the VirtualNetworkLinksClient object to access its operations.
-     *
+     * 
      * @return the VirtualNetworkLinksClient object.
      */
     VirtualNetworkLinksClient getVirtualNetworkLinks();
 
     /**
      * Gets the RecordSetsClient object to access its operations.
-     *
+     * 
      * @return the RecordSetsClient object.
      */
     RecordSetsClient getRecordSets();

@@ -4,10 +4,15 @@
 
 package com.azure.resourcemanager.mongocluster.generated;
 
+import com.azure.resourcemanager.mongocluster.models.AdministratorProperties;
+import com.azure.resourcemanager.mongocluster.models.ComputeProperties;
+import com.azure.resourcemanager.mongocluster.models.HighAvailabilityMode;
+import com.azure.resourcemanager.mongocluster.models.HighAvailabilityProperties;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterUpdateProperties;
-import com.azure.resourcemanager.mongocluster.models.NodeGroupSpec;
-import com.azure.resourcemanager.mongocluster.models.NodeKind;
+import com.azure.resourcemanager.mongocluster.models.PublicNetworkAccess;
+import com.azure.resourcemanager.mongocluster.models.ShardingProperties;
+import com.azure.resourcemanager.mongocluster.models.StorageProperties;
 import java.util.Arrays;
 
 /**
@@ -15,8 +20,26 @@ import java.util.Arrays;
  */
 public final class MongoClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/mongocluster/DocumentDB.MongoCluster.Management/examples/2024-03-01-preview/
-     * MongoClusters_PatchDiskSize.json
+     * x-ms-original-file: 2024-07-01/MongoClusters_ResetPassword.json
+     */
+    /**
+     * Sample code: Resets the administrator login password.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        resetsTheAdministratorLoginPassword(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withAdministrator(
+                new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder")))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2024-07-01/MongoClusters_PatchDiskSize.json
      */
     /**
      * Sample code: Updates the disk size on a Mongo Cluster resource.
@@ -29,8 +52,51 @@ public final class MongoClustersUpdateSamples {
             .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withStorage(new StorageProperties().withSizeGb(256L)))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2024-07-01/MongoClusters_PatchPrivateNetworkAccess.json
+     */
+    /**
+     * Sample code: Disables public network access on a Mongo Cluster resource with a private endpoint connection.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new MongoClusterUpdateProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2024-07-01/MongoClusters_Update.json
+     */
+    /**
+     * Sample code: Updates a Mongo Cluster resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void
+        updatesAMongoClusterResource(com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        MongoCluster resource = manager.mongoClusters()
+            .getByResourceGroupWithResponse("TestResourceGroup", "myMongoCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withProperties(new MongoClusterUpdateProperties()
-                .withNodeGroupSpecs(Arrays.asList(new NodeGroupSpec().withDiskSizeGB(256L).withKind(NodeKind.SHARD))))
+                .withAdministrator(new AdministratorProperties().withUserName("mongoAdmin"))
+                .withServerVersion("5.0")
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.SAME_ZONE))
+                .withStorage(new StorageProperties().withSizeGb(256L))
+                .withSharding(new ShardingProperties().withShardCount(4))
+                .withCompute(new ComputeProperties().withTier("M50"))
+                .withPreviewFeatures(Arrays.asList()))
             .apply();
     }
 }

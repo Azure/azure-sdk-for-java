@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SkuScaleType extends ExpandableStringEnum<SkuScaleType> {
      * @param name a name to look for.
      * @return the corresponding SkuScaleType.
      */
-    @JsonCreator
     public static SkuScaleType fromString(String name) {
         return fromString(name, SkuScaleType.class);
     }

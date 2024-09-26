@@ -417,6 +417,13 @@ public interface VirtualMachine
      */
     boolean isHibernationEnabled();
 
+    /**
+     * Whether ultra SSD feature is enabled.
+     *
+     * @return true if ultra SSD feature is enabled on the virtual machine.
+     */
+    boolean isUltraSsdEnabled();
+
     /** @return the {@link SecurityTypes} of the virtual machine */
     SecurityTypes securityType();
 
@@ -1910,6 +1917,13 @@ public interface VirtualMachine
              * @return the next stage of the definition
              */
             WithCreate enableHibernation();
+
+            /**
+             * Enables ultra SSD feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enableUltraSsd();
         }
 
         /** The stage of the definition allowing to specify the SecurityType for the virtual machine. */
@@ -2464,6 +2478,20 @@ public interface VirtualMachine
              * @return the next stage of the update
              */
             Update disableHibernation();
+
+            /**
+             * Enables ultra SSD feature.
+             *
+             * @return the next stage of the update
+             */
+            Update enableUltraSsd();
+
+            /**
+             * Disables ultra SSD feature.
+             *
+             * @return the next stage of the update
+             */
+            Update disableUltraSsd();
         }
 
         /** The stage of the VM update allowing to swap os disk. */

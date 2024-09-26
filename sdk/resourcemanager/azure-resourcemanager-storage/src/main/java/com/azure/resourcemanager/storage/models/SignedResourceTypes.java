@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class SignedResourceTypes extends ExpandableStringEnum<SignedResour
      * @param name a name to look for.
      * @return the corresponding SignedResourceTypes.
      */
-    @JsonCreator
     public static SignedResourceTypes fromString(String name) {
         return fromString(name, SignedResourceTypes.class);
     }

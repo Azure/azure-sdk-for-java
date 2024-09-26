@@ -46,27 +46,31 @@ public final class TasksCreateSamples {
      */
     public static void
         tasksCreateWithUserIdentitiesWithSystemIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks()
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
             .create("myResourceGroup", "myRegistry", "mytTask",
-                new TaskInner().withLocation("eastus").withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                new TaskInner().withLocation("eastus")
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                     .withStatus(TaskStatus.ENABLED)
-                    .withPlatform(new PlatformProperties().withOs(
-                        OS.LINUX).withArchitecture(
-                            Architecture.AMD64))
-                    .withAgentConfiguration(new AgentProperties().withCpu(2)).withStep(new DockerTaskStep()
-                        .withContextPath("src").withImageNames(Arrays.asList("azurerest:testtag")).withIsPushEnabled(
-                            true)
-                        .withNoCache(false).withDockerFilePath("src/DockerFile")
+                    .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
+                    .withAgentConfiguration(new AgentProperties().withCpu(2))
+                    .withStep(new DockerTaskStep().withContextPath("src")
+                        .withImageNames(Arrays.asList("azurerest:testtag"))
+                        .withIsPushEnabled(true)
+                        .withNoCache(false)
+                        .withDockerFilePath("src/DockerFile")
                         .withArguments(Arrays.asList(
                             new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                            new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue")
+                            new Argument().withName("mysecrettestargument")
+                                .withValue("mysecrettestvalue")
                                 .withIsSecret(true))))
                     .withTrigger(
                         new TriggerProperties()
-                            .withTimerTriggers(
-                                Arrays.asList(new TimerTrigger().withSchedule("30 9 * * 1-5")
-                                    .withName("myTimerTrigger")))
+                            .withTimerTriggers(Arrays
+                                .asList(new TimerTrigger().withSchedule("30 9 * * 1-5").withName("myTimerTrigger")))
                             .withSourceTriggers(Arrays.asList(new SourceTrigger()
                                 .withSourceRepository(
                                     new SourceProperties().withSourceControlType(SourceControlType.GITHUB)
@@ -76,8 +80,9 @@ public final class TasksCreateSamples {
                                             .withToken("fakeTokenPlaceholder")))
                                 .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                                 .withName("mySourceTrigger")))
-                            .withBaseImageTrigger(new BaseImageTrigger()
-                                .withBaseImageTriggerType(BaseImageTriggerType.RUNTIME).withName("myBaseImageTrigger")))
+                            .withBaseImageTrigger(
+                                new BaseImageTrigger().withBaseImageTriggerType(BaseImageTriggerType.RUNTIME)
+                                    .withName("myBaseImageTrigger")))
                     .withIsSystemTask(false),
                 com.azure.core.util.Context.NONE);
     }
@@ -93,26 +98,31 @@ public final class TasksCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks()
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
             .create("myResourceGroup", "myRegistry", "mytTask",
-                new TaskInner().withLocation("eastus").withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                new TaskInner().withLocation("eastus")
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                     .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
                     .withStatus(TaskStatus.ENABLED)
                     .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
                     .withAgentConfiguration(new AgentProperties().withCpu(2))
-                    .withStep(new DockerTaskStep()
-                        .withContextPath("src").withImageNames(Arrays.asList("azurerest:testtag")).withIsPushEnabled(
-                            true)
-                        .withNoCache(false).withDockerFilePath("src/DockerFile")
+                    .withStep(new DockerTaskStep().withContextPath("src")
+                        .withImageNames(Arrays.asList("azurerest:testtag"))
+                        .withIsPushEnabled(true)
+                        .withNoCache(false)
+                        .withDockerFilePath("src/DockerFile")
                         .withArguments(Arrays.asList(
                             new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                            new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue")
+                            new Argument().withName("mysecrettestargument")
+                                .withValue("mysecrettestvalue")
                                 .withIsSecret(true))))
                     .withTrigger(
                         new TriggerProperties()
-                            .withTimerTriggers(
-                                Arrays.asList(new TimerTrigger().withSchedule("30 9 * * 1-5")
-                                    .withName("myTimerTrigger")))
+                            .withTimerTriggers(Arrays
+                                .asList(new TimerTrigger().withSchedule("30 9 * * 1-5").withName("myTimerTrigger")))
                             .withSourceTriggers(Arrays.asList(new SourceTrigger()
                                 .withSourceRepository(
                                     new SourceProperties().withSourceControlType(SourceControlType.GITHUB)
@@ -127,7 +137,8 @@ public final class TasksCreateSamples {
                                     .withUpdateTriggerEndpoint("https://user:pass@mycicd.webhook.com?token=foo")
                                     .withUpdateTriggerPayloadType(UpdateTriggerPayloadType.TOKEN)
                                     .withName("myBaseImageTrigger")))
-                    .withLogTemplate("acr/tasks:{{.Run.OS}}").withIsSystemTask(false),
+                    .withLogTemplate("acr/tasks:{{.Run.OS}}")
+                    .withIsSystemTask(false),
                 com.azure.core.util.Context.NONE);
     }
 
@@ -142,23 +153,29 @@ public final class TasksCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksCreateWithSystemAndUserIdentities(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().create("myResourceGroup", "myRegistry",
-            "mytTask", new TaskInner().withLocation("eastus").withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .create("myResourceGroup", "myRegistry", "mytTask", new TaskInner().withLocation("eastus")
+                .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
                 .withIdentity(new IdentityProperties().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
                         "/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourcegroups/myResourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity2",
                         new UserIdentityProperties())))
-                .withStatus(
-                    TaskStatus.ENABLED)
+                .withStatus(TaskStatus.ENABLED)
                 .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
-                .withAgentConfiguration(new AgentProperties().withCpu(2)).withStep(new DockerTaskStep().withContextPath(
-                    "src").withImageNames(
-                        Arrays.asList("azurerest:testtag"))
-                    .withIsPushEnabled(true).withNoCache(false).withDockerFilePath("src/DockerFile")
-                    .withArguments(Arrays
-                        .asList(new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                            new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue")
-                                .withIsSecret(true))))
+                .withAgentConfiguration(new AgentProperties().withCpu(2))
+                .withStep(new DockerTaskStep().withContextPath("src")
+                    .withImageNames(Arrays.asList("azurerest:testtag"))
+                    .withIsPushEnabled(true)
+                    .withNoCache(false)
+                    .withDockerFilePath("src/DockerFile")
+                    .withArguments(Arrays.asList(
+                        new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                        new Argument().withName("mysecrettestargument")
+                            .withValue("mysecrettestvalue")
+                            .withIsSecret(true))))
                 .withTrigger(
                     new TriggerProperties()
                         .withTimerTriggers(
@@ -178,8 +195,7 @@ public final class TasksCreateSamples {
                                 .withUpdateTriggerEndpoint("https://user:pass@mycicd.webhook.com?token=foo")
                                 .withUpdateTriggerPayloadType(UpdateTriggerPayloadType.DEFAULT)
                                 .withName("myBaseImageTrigger")))
-                .withIsSystemTask(false),
-            com.azure.core.util.Context.NONE);
+                .withIsSystemTask(false), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -193,25 +209,31 @@ public final class TasksCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksCreateWithUserIdentities(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().create("myResourceGroup", "myRegistry",
-            "mytTask",
-            new TaskInner().withLocation("eastus").withTags(mapOf("testkey", "fakeTokenPlaceholder")).withIdentity(
-                new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(mapOf(
-                    "/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourcegroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
-                    new UserIdentityProperties(),
-                    "/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourcegroups/myResourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity2",
-                    new UserIdentityProperties())))
-                .withStatus(
-                    TaskStatus.ENABLED)
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .create("myResourceGroup", "myRegistry", "mytTask", new TaskInner().withLocation("eastus")
+                .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                .withIdentity(new IdentityProperties().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourcegroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity1",
+                        new UserIdentityProperties(),
+                        "/subscriptions/f9d7ebed-adbd-4cb4-b973-aaf82c136138/resourcegroups/myResourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity2",
+                        new UserIdentityProperties())))
+                .withStatus(TaskStatus.ENABLED)
                 .withPlatform(new PlatformProperties().withOs(OS.LINUX).withArchitecture(Architecture.AMD64))
-                .withAgentConfiguration(new AgentProperties().withCpu(2)).withStep(new DockerTaskStep().withContextPath(
-                    "src").withImageNames(
-                        Arrays.asList("azurerest:testtag"))
-                    .withIsPushEnabled(true).withNoCache(false).withDockerFilePath("src/DockerFile")
-                    .withArguments(Arrays
-                        .asList(new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
-                            new Argument().withName("mysecrettestargument").withValue("mysecrettestvalue")
-                                .withIsSecret(true))))
+                .withAgentConfiguration(new AgentProperties().withCpu(2))
+                .withStep(new DockerTaskStep().withContextPath("src")
+                    .withImageNames(Arrays.asList("azurerest:testtag"))
+                    .withIsPushEnabled(true)
+                    .withNoCache(false)
+                    .withDockerFilePath("src/DockerFile")
+                    .withArguments(Arrays.asList(
+                        new Argument().withName("mytestargument").withValue("mytestvalue").withIsSecret(false),
+                        new Argument().withName("mysecrettestargument")
+                            .withValue("mysecrettestvalue")
+                            .withIsSecret(true))))
                 .withTrigger(
                     new TriggerProperties()
                         .withTimerTriggers(
@@ -231,8 +253,7 @@ public final class TasksCreateSamples {
                                 .withUpdateTriggerEndpoint("https://user:pass@mycicd.webhook.com?token=foo")
                                 .withUpdateTriggerPayloadType(UpdateTriggerPayloadType.DEFAULT)
                                 .withName("myBaseImageTrigger")))
-                .withIsSystemTask(false),
-            com.azure.core.util.Context.NONE);
+                .withIsSystemTask(false), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -246,11 +267,17 @@ public final class TasksCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksCreateQuickTask(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().create("myResourceGroup", "myRegistry",
-            "quicktask",
-            new TaskInner().withLocation("eastus").withTags(mapOf("testkey", "fakeTokenPlaceholder"))
-                .withStatus(TaskStatus.ENABLED).withLogTemplate("acr/tasks:{{.Run.OS}}").withIsSystemTask(true),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .create("myResourceGroup", "myRegistry", "quicktask",
+                new TaskInner().withLocation("eastus")
+                    .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                    .withStatus(TaskStatus.ENABLED)
+                    .withLogTemplate("acr/tasks:{{.Run.OS}}")
+                    .withIsSystemTask(true),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

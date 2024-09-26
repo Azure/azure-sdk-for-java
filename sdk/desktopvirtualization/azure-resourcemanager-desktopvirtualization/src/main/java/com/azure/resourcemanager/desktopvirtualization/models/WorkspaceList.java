@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.WorkspaceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * WorkspaceList
- *
- * <p>List of Workspace definitions.
+ * 
+ * List of Workspace definitions.
  */
 @Fluent
-public final class WorkspaceList {
+public final class WorkspaceList implements JsonSerializable<WorkspaceList> {
     /*
      * List of Workspace definitions.
      */
-    @JsonProperty(value = "value")
     private List<WorkspaceInner> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkspaceList class. */
+    /**
+     * Creates an instance of WorkspaceList class.
+     */
     public WorkspaceList() {
     }
 
     /**
      * Get the value property: List of Workspace definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkspaceInner> value() {
@@ -43,7 +47,7 @@ public final class WorkspaceList {
 
     /**
      * Set the value property: List of Workspace definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkspaceList object itself.
      */
@@ -54,7 +58,7 @@ public final class WorkspaceList {
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,12 +67,51 @@ public final class WorkspaceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspaceList.
+     */
+    public static WorkspaceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceList deserializedWorkspaceList = new WorkspaceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WorkspaceInner> value = reader.readArray(reader1 -> WorkspaceInner.fromJson(reader1));
+                    deserializedWorkspaceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWorkspaceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceList;
+        });
     }
 }

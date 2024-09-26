@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a column to sort.
  */
 @Fluent
-public final class OrderBy {
+public final class OrderBy implements JsonSerializable<OrderBy> {
     /*
      * Describes the actual column name to sort by
      */
-    @JsonProperty(value = "field")
     private String field;
 
     /*
      * Describes if results should be in ascending/descending order
      */
-    @JsonProperty(value = "order")
     private FirewallPolicyIdpsQuerySortOrder order;
 
     /**
@@ -76,5 +78,44 @@ public final class OrderBy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("field", this.field);
+        jsonWriter.writeStringField("order", this.order == null ? null : this.order.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderBy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderBy if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the OrderBy.
+     */
+    public static OrderBy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderBy deserializedOrderBy = new OrderBy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("field".equals(fieldName)) {
+                    deserializedOrderBy.field = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedOrderBy.order = FirewallPolicyIdpsQuerySortOrder.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderBy;
+        });
     }
 }

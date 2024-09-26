@@ -14,7 +14,7 @@ import java.util.Map;
 public final class NatGatewaysUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/NatGatewayUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/NatGatewayUpdateTags.json
      */
     /**
      * Sample code: Update nat gateway tags.

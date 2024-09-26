@@ -43,7 +43,6 @@ public final class ManualResourcePredictionsProfile extends ResourcePredictionsP
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

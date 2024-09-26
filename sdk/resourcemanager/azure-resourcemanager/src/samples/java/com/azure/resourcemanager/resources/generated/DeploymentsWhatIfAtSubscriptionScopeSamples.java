@@ -16,7 +16,8 @@ import java.util.Map;
  */
 public final class DeploymentsWhatIfAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/PostDeploymentWhatIfOnSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-03-01/examples/
+     * PostDeploymentWhatIfOnSubscription.json
      */
     /**
      * Sample code: Predict template changes at subscription scope.

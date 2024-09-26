@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.fluent.models.RoleEligibilityScheduleRequestInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Role eligibility schedule request list operation result. */
+/**
+ * Role eligibility schedule request list operation result.
+ */
 @Fluent
-public final class RoleEligibilityScheduleRequestListResult {
+public final class RoleEligibilityScheduleRequestListResult
+    implements JsonSerializable<RoleEligibilityScheduleRequestListResult> {
     /*
      * Role eligibility schedule request list.
      */
-    @JsonProperty(value = "value")
     private List<RoleEligibilityScheduleRequestInner> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RoleEligibilityScheduleRequestListResult class. */
+    /**
+     * Creates an instance of RoleEligibilityScheduleRequestListResult class.
+     */
     public RoleEligibilityScheduleRequestListResult() {
     }
 
     /**
      * Get the value property: Role eligibility schedule request list.
-     *
+     * 
      * @return the value value.
      */
     public List<RoleEligibilityScheduleRequestInner> value() {
@@ -39,7 +46,7 @@ public final class RoleEligibilityScheduleRequestListResult {
 
     /**
      * Set the value property: Role eligibility schedule request list.
-     *
+     * 
      * @param value the value value to set.
      * @return the RoleEligibilityScheduleRequestListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class RoleEligibilityScheduleRequestListResult {
 
     /**
      * Get the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class RoleEligibilityScheduleRequestListResult {
 
     /**
      * Set the nextLink property: The URL to use for getting the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RoleEligibilityScheduleRequestListResult object itself.
      */
@@ -70,12 +77,54 @@ public final class RoleEligibilityScheduleRequestListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleEligibilityScheduleRequestListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleEligibilityScheduleRequestListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoleEligibilityScheduleRequestListResult.
+     */
+    public static RoleEligibilityScheduleRequestListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleEligibilityScheduleRequestListResult deserializedRoleEligibilityScheduleRequestListResult
+                = new RoleEligibilityScheduleRequestListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RoleEligibilityScheduleRequestInner> value
+                        = reader.readArray(reader1 -> RoleEligibilityScheduleRequestInner.fromJson(reader1));
+                    deserializedRoleEligibilityScheduleRequestListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRoleEligibilityScheduleRequestListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleEligibilityScheduleRequestListResult;
+        });
     }
 }

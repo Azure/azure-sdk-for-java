@@ -7,25 +7,28 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetNetworkConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a virtual machine scale set network profile's network configurations.
  */
 @Fluent
-public final class VirtualMachineScaleSetNetworkConfiguration {
+public final class VirtualMachineScaleSetNetworkConfiguration
+    implements JsonSerializable<VirtualMachineScaleSetNetworkConfiguration> {
     /*
      * The network configuration name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Describes a virtual machine scale set network profile's IP configuration.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetNetworkConfigurationProperties innerProperties;
 
     /**
@@ -344,4 +347,46 @@ public final class VirtualMachineScaleSetNetworkConfiguration {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetNetworkConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetNetworkConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetNetworkConfiguration if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetNetworkConfiguration.
+     */
+    public static VirtualMachineScaleSetNetworkConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetNetworkConfiguration deserializedVirtualMachineScaleSetNetworkConfiguration
+                = new VirtualMachineScaleSetNetworkConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetNetworkConfiguration.innerProperties
+                        = VirtualMachineScaleSetNetworkConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetNetworkConfiguration;
+        });
+    }
 }

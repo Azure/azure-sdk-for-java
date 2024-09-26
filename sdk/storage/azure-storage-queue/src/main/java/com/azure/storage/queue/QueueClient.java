@@ -478,8 +478,8 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<QueuesGetPropertiesHeaders, Void>> operation =
-            () -> this.azureQueueStorage.getQueues().getPropertiesWithResponse(queueName, null, null, finalContext);
+        Supplier<ResponseBase<QueuesGetPropertiesHeaders, Void>> operation = () -> this.azureQueueStorage.getQueues()
+            .getPropertiesWithResponse(queueName, null, null, finalContext);
 
         ResponseBase<QueuesGetPropertiesHeaders, Void> response = submitThreadPool(operation, LOGGER, timeout);
         return new SimpleResponse<>(response, ModelHelper.transformQueueProperties(response.getDeserializedHeaders()));
@@ -592,8 +592,8 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
-        ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper> responseBase =
-            azureQueueStorage.getQueues().getAccessPolicyWithResponse(queueName, null, null, Context.NONE);
+        ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper> responseBase
+            = azureQueueStorage.getQueues().getAccessPolicyWithResponse(queueName, null, null, Context.NONE);
 
         Supplier<PagedResponse<QueueSignedIdentifier>> response = () -> new PagedResponseBase<>(
             responseBase.getRequest(), responseBase.getStatusCode(), responseBase.getHeaders(),
@@ -724,8 +724,8 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<Response<Void>> operation = () ->
-            this.azureQueueStorage.getMessages().clearNoCustomHeadersWithResponse(queueName, null, null, finalContext);
+        Supplier<Response<Void>> operation = () -> this.azureQueueStorage.getMessages()
+            .clearNoCustomHeadersWithResponse(queueName, null, null, finalContext);
 
         return submitThreadPool(operation, LOGGER, timeout);
     }
@@ -898,9 +898,9 @@ public final class QueueClient {
         String finalMessage = ModelHelper.encodeMessage(message, messageEncoding);
         QueueMessage queueMessage = new QueueMessage().setMessageText(finalMessage);
 
-        Supplier<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> operation = () ->
-            this.azureQueueStorage.getMessages().enqueueWithResponse(queueName, queueMessage,
-                visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, finalContext);
+        Supplier<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> operation
+            = () -> this.azureQueueStorage.getMessages().enqueueWithResponse(queueName, queueMessage,
+            visibilityTimeoutInSeconds, timeToLiveInSeconds, null, null, finalContext);
 
         ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper> response =
             submitThreadPool(operation, LOGGER, timeout);
@@ -935,7 +935,7 @@ public final class QueueClient {
     public QueueMessageItem receiveMessage() {
         List<QueueMessageItem> result = receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE).stream()
             .collect(Collectors.toList());
-        return result.size() == 0 ? null : result.get(0);
+        return result.isEmpty() ? null : result.get(0);
     }
 
     /**
@@ -1019,9 +1019,9 @@ public final class QueueClient {
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
-        Supplier<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> operation = () ->
-            this.azureQueueStorage.getMessages()
-                .dequeueWithResponse(queueName, maxMessages, visibilityTimeoutInSeconds, null, null, finalContext);
+        Supplier<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> operation
+            = () -> this.azureQueueStorage.getMessages().dequeueWithResponse(queueName, maxMessages,
+            visibilityTimeoutInSeconds, null, null, finalContext);
 
         ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> response =
             submitThreadPool(operation, LOGGER, timeout);
@@ -1146,8 +1146,9 @@ public final class QueueClient {
 
     PagedIterable<PeekedMessageItem> peekMessagesWithOptionalTimeout(Integer maxMessages, Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        Supplier<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> operation = () ->
-            this.azureQueueStorage.getMessages().peekWithResponse(queueName, maxMessages, null, null, finalContext);
+        Supplier<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> operation
+            = () -> this.azureQueueStorage.getMessages().peekWithResponse(queueName, maxMessages, null, null,
+            finalContext);
 
         ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response =
             submitThreadPool(operation, LOGGER, timeout);
@@ -1442,7 +1443,24 @@ public final class QueueClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
+        return generateSas(queueServiceSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
     }
 }

@@ -5,86 +5,74 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * HDFS read settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = HdfsReadSettings.class, visible = true)
-@JsonTypeName("HdfsReadSettings")
 @Fluent
 public final class HdfsReadSettings extends StoreReadSettings {
     /*
      * The read setting type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "HdfsReadSettings";
 
     /*
      * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression with
      * resultType boolean).
      */
-    @JsonProperty(value = "recursive")
     private Object recursive;
 
     /*
      * HDFS wildcardFolderPath. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
      * HDFS wildcardFileName. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
      * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
      * copy. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileListPath")
     private Object fileListPath;
 
     /*
      * Indicates whether to enable partition discovery. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enablePartitionDiscovery")
     private Object enablePartitionDiscovery;
 
     /*
      * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /*
      * Specifies Distcp-related settings.
      */
-    @JsonProperty(value = "distcpSettings")
     private DistcpSettings distcpSettings;
 
     /*
      * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
      * Expression with resultType boolean).
      */
-    @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /**
@@ -348,5 +336,88 @@ public final class HdfsReadSettings extends StoreReadSettings {
         if (distcpSettings() != null) {
             distcpSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("recursive", this.recursive);
+        jsonWriter.writeUntypedField("wildcardFolderPath", this.wildcardFolderPath);
+        jsonWriter.writeUntypedField("wildcardFileName", this.wildcardFileName);
+        jsonWriter.writeUntypedField("fileListPath", this.fileListPath);
+        jsonWriter.writeUntypedField("enablePartitionDiscovery", this.enablePartitionDiscovery);
+        jsonWriter.writeUntypedField("partitionRootPath", this.partitionRootPath);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        jsonWriter.writeJsonField("distcpSettings", this.distcpSettings);
+        jsonWriter.writeUntypedField("deleteFilesAfterCompletion", this.deleteFilesAfterCompletion);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HdfsReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HdfsReadSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HdfsReadSettings.
+     */
+    public static HdfsReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HdfsReadSettings deserializedHdfsReadSettings = new HdfsReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedHdfsReadSettings.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedHdfsReadSettings.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedHdfsReadSettings.type = reader.getString();
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedHdfsReadSettings.recursive = reader.readUntyped();
+                } else if ("wildcardFolderPath".equals(fieldName)) {
+                    deserializedHdfsReadSettings.wildcardFolderPath = reader.readUntyped();
+                } else if ("wildcardFileName".equals(fieldName)) {
+                    deserializedHdfsReadSettings.wildcardFileName = reader.readUntyped();
+                } else if ("fileListPath".equals(fieldName)) {
+                    deserializedHdfsReadSettings.fileListPath = reader.readUntyped();
+                } else if ("enablePartitionDiscovery".equals(fieldName)) {
+                    deserializedHdfsReadSettings.enablePartitionDiscovery = reader.readUntyped();
+                } else if ("partitionRootPath".equals(fieldName)) {
+                    deserializedHdfsReadSettings.partitionRootPath = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedHdfsReadSettings.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedHdfsReadSettings.modifiedDatetimeEnd = reader.readUntyped();
+                } else if ("distcpSettings".equals(fieldName)) {
+                    deserializedHdfsReadSettings.distcpSettings = DistcpSettings.fromJson(reader);
+                } else if ("deleteFilesAfterCompletion".equals(fieldName)) {
+                    deserializedHdfsReadSettings.deleteFilesAfterCompletion = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHdfsReadSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedHdfsReadSettings;
+        });
     }
 }

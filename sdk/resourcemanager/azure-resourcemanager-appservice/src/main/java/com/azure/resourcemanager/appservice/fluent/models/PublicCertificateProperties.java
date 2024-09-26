@@ -6,30 +6,31 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.PublicCertificateLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * PublicCertificate resource specific properties.
  */
 @Fluent
-public final class PublicCertificateProperties {
+public final class PublicCertificateProperties implements JsonSerializable<PublicCertificateProperties> {
     /*
      * Public Certificate byte array
      */
-    @JsonProperty(value = "blob")
     private byte[] blob;
 
     /*
      * Public Certificate Location
      */
-    @JsonProperty(value = "publicCertificateLocation")
     private PublicCertificateLocation publicCertificateLocation;
 
     /*
      * Certificate Thumbprint
      */
-    @JsonProperty(value = "thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /**
@@ -94,5 +95,48 @@ public final class PublicCertificateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("blob", this.blob);
+        jsonWriter.writeStringField("publicCertificateLocation",
+            this.publicCertificateLocation == null ? null : this.publicCertificateLocation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicCertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicCertificateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicCertificateProperties.
+     */
+    public static PublicCertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicCertificateProperties deserializedPublicCertificateProperties = new PublicCertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blob".equals(fieldName)) {
+                    deserializedPublicCertificateProperties.blob = reader.getBinary();
+                } else if ("publicCertificateLocation".equals(fieldName)) {
+                    deserializedPublicCertificateProperties.publicCertificateLocation
+                        = PublicCertificateLocation.fromString(reader.getString());
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedPublicCertificateProperties.thumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicCertificateProperties;
+        });
     }
 }

@@ -6,164 +6,148 @@ package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of cluster. */
+/**
+ * The properties of cluster.
+ */
 @Fluent
-public final class ClusterGetProperties {
+public final class ClusterGetProperties implements JsonSerializable<ClusterGetProperties> {
     /*
      * The version of the cluster.
      */
-    @JsonProperty(value = "clusterVersion")
     private String clusterVersion;
 
     /*
      * The hdp version of the cluster.
      */
-    @JsonProperty(value = "clusterHdpVersion")
     private String clusterHdpVersion;
 
     /*
      * The type of operating system.
      */
-    @JsonProperty(value = "osType")
     private OSType osType;
 
     /*
      * The cluster tier.
      */
-    @JsonProperty(value = "tier")
     private Tier tier;
 
     /*
      * The cluster id.
      */
-    @JsonProperty(value = "clusterId")
     private String clusterId;
 
     /*
      * The cluster definition.
      */
-    @JsonProperty(value = "clusterDefinition", required = true)
     private ClusterDefinition clusterDefinition;
 
     /*
      * The cluster kafka rest proxy configuration.
      */
-    @JsonProperty(value = "kafkaRestProperties")
     private KafkaRestProperties kafkaRestProperties;
 
     /*
      * The security profile.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * The compute profile.
      */
-    @JsonProperty(value = "computeProfile")
     private ComputeProfile computeProfile;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState")
     private HDInsightClusterProvisioningState provisioningState;
 
     /*
      * The date on which the cluster was created.
      */
-    @JsonProperty(value = "createdDate")
     private String createdDate;
 
     /*
      * The state of the cluster.
      */
-    @JsonProperty(value = "clusterState")
     private String clusterState;
 
     /*
      * The quota information.
      */
-    @JsonProperty(value = "quotaInfo")
     private QuotaInfo quotaInfo;
 
     /*
      * The list of errors.
      */
-    @JsonProperty(value = "errors")
     private List<Errors> errors;
 
     /*
      * The list of connectivity endpoints.
      */
-    @JsonProperty(value = "connectivityEndpoints")
     private List<ConnectivityEndpoint> connectivityEndpoints;
 
     /*
      * The disk encryption properties.
      */
-    @JsonProperty(value = "diskEncryptionProperties")
     private DiskEncryptionProperties diskEncryptionProperties;
 
     /*
      * The encryption-in-transit properties.
      */
-    @JsonProperty(value = "encryptionInTransitProperties")
     private EncryptionInTransitProperties encryptionInTransitProperties;
 
     /*
      * The storage profile.
      */
-    @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
      * The minimal supported tls version.
      */
-    @JsonProperty(value = "minSupportedTlsVersion")
     private String minSupportedTlsVersion;
 
     /*
      * The excluded services config.
      */
-    @JsonProperty(value = "excludedServicesConfig")
     private ExcludedServicesConfig excludedServicesConfig;
 
     /*
      * The network properties.
      */
-    @JsonProperty(value = "networkProperties")
     private NetworkProperties networkProperties;
 
     /*
      * The compute isolation properties.
      */
-    @JsonProperty(value = "computeIsolationProperties")
     private ComputeIsolationProperties computeIsolationProperties;
 
     /*
      * The private link configurations.
      */
-    @JsonProperty(value = "privateLinkConfigurations")
     private List<PrivateLinkConfiguration> privateLinkConfigurations;
 
     /*
      * The list of private endpoint connections.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of ClusterGetProperties class. */
+    /**
+     * Creates an instance of ClusterGetProperties class.
+     */
     public ClusterGetProperties() {
     }
 
     /**
      * Get the clusterVersion property: The version of the cluster.
-     *
+     * 
      * @return the clusterVersion value.
      */
     public String clusterVersion() {
@@ -172,7 +156,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the clusterVersion property: The version of the cluster.
-     *
+     * 
      * @param clusterVersion the clusterVersion value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -183,7 +167,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the clusterHdpVersion property: The hdp version of the cluster.
-     *
+     * 
      * @return the clusterHdpVersion value.
      */
     public String clusterHdpVersion() {
@@ -192,7 +176,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the clusterHdpVersion property: The hdp version of the cluster.
-     *
+     * 
      * @param clusterHdpVersion the clusterHdpVersion value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -203,7 +187,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the osType property: The type of operating system.
-     *
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -212,7 +196,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the osType property: The type of operating system.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -223,7 +207,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the tier property: The cluster tier.
-     *
+     * 
      * @return the tier value.
      */
     public Tier tier() {
@@ -232,7 +216,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the tier property: The cluster tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -243,7 +227,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the clusterId property: The cluster id.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -252,7 +236,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the clusterId property: The cluster id.
-     *
+     * 
      * @param clusterId the clusterId value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -263,7 +247,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the clusterDefinition property: The cluster definition.
-     *
+     * 
      * @return the clusterDefinition value.
      */
     public ClusterDefinition clusterDefinition() {
@@ -272,7 +256,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the clusterDefinition property: The cluster definition.
-     *
+     * 
      * @param clusterDefinition the clusterDefinition value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -283,7 +267,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the kafkaRestProperties property: The cluster kafka rest proxy configuration.
-     *
+     * 
      * @return the kafkaRestProperties value.
      */
     public KafkaRestProperties kafkaRestProperties() {
@@ -292,7 +276,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the kafkaRestProperties property: The cluster kafka rest proxy configuration.
-     *
+     * 
      * @param kafkaRestProperties the kafkaRestProperties value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -303,7 +287,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the securityProfile property: The security profile.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -312,7 +296,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the securityProfile property: The security profile.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -323,7 +307,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the computeProfile property: The compute profile.
-     *
+     * 
      * @return the computeProfile value.
      */
     public ComputeProfile computeProfile() {
@@ -332,7 +316,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the computeProfile property: The compute profile.
-     *
+     * 
      * @param computeProfile the computeProfile value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -343,7 +327,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public HDInsightClusterProvisioningState provisioningState() {
@@ -352,7 +336,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -363,7 +347,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the createdDate property: The date on which the cluster was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public String createdDate() {
@@ -372,7 +356,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the createdDate property: The date on which the cluster was created.
-     *
+     * 
      * @param createdDate the createdDate value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -383,7 +367,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the clusterState property: The state of the cluster.
-     *
+     * 
      * @return the clusterState value.
      */
     public String clusterState() {
@@ -392,7 +376,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the clusterState property: The state of the cluster.
-     *
+     * 
      * @param clusterState the clusterState value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -403,7 +387,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the quotaInfo property: The quota information.
-     *
+     * 
      * @return the quotaInfo value.
      */
     public QuotaInfo quotaInfo() {
@@ -412,7 +396,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the quotaInfo property: The quota information.
-     *
+     * 
      * @param quotaInfo the quotaInfo value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -423,7 +407,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the errors property: The list of errors.
-     *
+     * 
      * @return the errors value.
      */
     public List<Errors> errors() {
@@ -432,7 +416,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the errors property: The list of errors.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -443,7 +427,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the connectivityEndpoints property: The list of connectivity endpoints.
-     *
+     * 
      * @return the connectivityEndpoints value.
      */
     public List<ConnectivityEndpoint> connectivityEndpoints() {
@@ -452,7 +436,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the connectivityEndpoints property: The list of connectivity endpoints.
-     *
+     * 
      * @param connectivityEndpoints the connectivityEndpoints value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -463,7 +447,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the diskEncryptionProperties property: The disk encryption properties.
-     *
+     * 
      * @return the diskEncryptionProperties value.
      */
     public DiskEncryptionProperties diskEncryptionProperties() {
@@ -472,7 +456,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the diskEncryptionProperties property: The disk encryption properties.
-     *
+     * 
      * @param diskEncryptionProperties the diskEncryptionProperties value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -483,7 +467,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the encryptionInTransitProperties property: The encryption-in-transit properties.
-     *
+     * 
      * @return the encryptionInTransitProperties value.
      */
     public EncryptionInTransitProperties encryptionInTransitProperties() {
@@ -492,19 +476,19 @@ public final class ClusterGetProperties {
 
     /**
      * Set the encryptionInTransitProperties property: The encryption-in-transit properties.
-     *
+     * 
      * @param encryptionInTransitProperties the encryptionInTransitProperties value to set.
      * @return the ClusterGetProperties object itself.
      */
-    public ClusterGetProperties withEncryptionInTransitProperties(
-        EncryptionInTransitProperties encryptionInTransitProperties) {
+    public ClusterGetProperties
+        withEncryptionInTransitProperties(EncryptionInTransitProperties encryptionInTransitProperties) {
         this.encryptionInTransitProperties = encryptionInTransitProperties;
         return this;
     }
 
     /**
      * Get the storageProfile property: The storage profile.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
@@ -513,7 +497,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the storageProfile property: The storage profile.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -524,7 +508,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the minSupportedTlsVersion property: The minimal supported tls version.
-     *
+     * 
      * @return the minSupportedTlsVersion value.
      */
     public String minSupportedTlsVersion() {
@@ -533,7 +517,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the minSupportedTlsVersion property: The minimal supported tls version.
-     *
+     * 
      * @param minSupportedTlsVersion the minSupportedTlsVersion value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -544,7 +528,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the excludedServicesConfig property: The excluded services config.
-     *
+     * 
      * @return the excludedServicesConfig value.
      */
     public ExcludedServicesConfig excludedServicesConfig() {
@@ -553,7 +537,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the excludedServicesConfig property: The excluded services config.
-     *
+     * 
      * @param excludedServicesConfig the excludedServicesConfig value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -564,7 +548,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the networkProperties property: The network properties.
-     *
+     * 
      * @return the networkProperties value.
      */
     public NetworkProperties networkProperties() {
@@ -573,7 +557,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the networkProperties property: The network properties.
-     *
+     * 
      * @param networkProperties the networkProperties value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -584,7 +568,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the computeIsolationProperties property: The compute isolation properties.
-     *
+     * 
      * @return the computeIsolationProperties value.
      */
     public ComputeIsolationProperties computeIsolationProperties() {
@@ -593,7 +577,7 @@ public final class ClusterGetProperties {
 
     /**
      * Set the computeIsolationProperties property: The compute isolation properties.
-     *
+     * 
      * @param computeIsolationProperties the computeIsolationProperties value to set.
      * @return the ClusterGetProperties object itself.
      */
@@ -604,7 +588,7 @@ public final class ClusterGetProperties {
 
     /**
      * Get the privateLinkConfigurations property: The private link configurations.
-     *
+     * 
      * @return the privateLinkConfigurations value.
      */
     public List<PrivateLinkConfiguration> privateLinkConfigurations() {
@@ -613,19 +597,19 @@ public final class ClusterGetProperties {
 
     /**
      * Set the privateLinkConfigurations property: The private link configurations.
-     *
+     * 
      * @param privateLinkConfigurations the privateLinkConfigurations value to set.
      * @return the ClusterGetProperties object itself.
      */
-    public ClusterGetProperties withPrivateLinkConfigurations(
-        List<PrivateLinkConfiguration> privateLinkConfigurations) {
+    public ClusterGetProperties
+        withPrivateLinkConfigurations(List<PrivateLinkConfiguration> privateLinkConfigurations) {
         this.privateLinkConfigurations = privateLinkConfigurations;
         return this;
     }
 
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -634,15 +618,14 @@ public final class ClusterGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clusterDefinition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterDefinition in model ClusterGetProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterDefinition in model ClusterGetProperties"));
         } else {
             clusterDefinition().validate();
         }
@@ -691,4 +674,123 @@ public final class ClusterGetProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ClusterGetProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("clusterDefinition", this.clusterDefinition);
+        jsonWriter.writeStringField("clusterVersion", this.clusterVersion);
+        jsonWriter.writeStringField("clusterHdpVersion", this.clusterHdpVersion);
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeStringField("clusterId", this.clusterId);
+        jsonWriter.writeJsonField("kafkaRestProperties", this.kafkaRestProperties);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("computeProfile", this.computeProfile);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("createdDate", this.createdDate);
+        jsonWriter.writeStringField("clusterState", this.clusterState);
+        jsonWriter.writeJsonField("quotaInfo", this.quotaInfo);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("connectivityEndpoints", this.connectivityEndpoints,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("diskEncryptionProperties", this.diskEncryptionProperties);
+        jsonWriter.writeJsonField("encryptionInTransitProperties", this.encryptionInTransitProperties);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeStringField("minSupportedTlsVersion", this.minSupportedTlsVersion);
+        jsonWriter.writeJsonField("excludedServicesConfig", this.excludedServicesConfig);
+        jsonWriter.writeJsonField("networkProperties", this.networkProperties);
+        jsonWriter.writeJsonField("computeIsolationProperties", this.computeIsolationProperties);
+        jsonWriter.writeArrayField("privateLinkConfigurations", this.privateLinkConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterGetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterGetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterGetProperties.
+     */
+    public static ClusterGetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterGetProperties deserializedClusterGetProperties = new ClusterGetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterDefinition".equals(fieldName)) {
+                    deserializedClusterGetProperties.clusterDefinition = ClusterDefinition.fromJson(reader);
+                } else if ("clusterVersion".equals(fieldName)) {
+                    deserializedClusterGetProperties.clusterVersion = reader.getString();
+                } else if ("clusterHdpVersion".equals(fieldName)) {
+                    deserializedClusterGetProperties.clusterHdpVersion = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedClusterGetProperties.osType = OSType.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedClusterGetProperties.tier = Tier.fromString(reader.getString());
+                } else if ("clusterId".equals(fieldName)) {
+                    deserializedClusterGetProperties.clusterId = reader.getString();
+                } else if ("kafkaRestProperties".equals(fieldName)) {
+                    deserializedClusterGetProperties.kafkaRestProperties = KafkaRestProperties.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedClusterGetProperties.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("computeProfile".equals(fieldName)) {
+                    deserializedClusterGetProperties.computeProfile = ComputeProfile.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterGetProperties.provisioningState
+                        = HDInsightClusterProvisioningState.fromString(reader.getString());
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedClusterGetProperties.createdDate = reader.getString();
+                } else if ("clusterState".equals(fieldName)) {
+                    deserializedClusterGetProperties.clusterState = reader.getString();
+                } else if ("quotaInfo".equals(fieldName)) {
+                    deserializedClusterGetProperties.quotaInfo = QuotaInfo.fromJson(reader);
+                } else if ("errors".equals(fieldName)) {
+                    List<Errors> errors = reader.readArray(reader1 -> Errors.fromJson(reader1));
+                    deserializedClusterGetProperties.errors = errors;
+                } else if ("connectivityEndpoints".equals(fieldName)) {
+                    List<ConnectivityEndpoint> connectivityEndpoints
+                        = reader.readArray(reader1 -> ConnectivityEndpoint.fromJson(reader1));
+                    deserializedClusterGetProperties.connectivityEndpoints = connectivityEndpoints;
+                } else if ("diskEncryptionProperties".equals(fieldName)) {
+                    deserializedClusterGetProperties.diskEncryptionProperties
+                        = DiskEncryptionProperties.fromJson(reader);
+                } else if ("encryptionInTransitProperties".equals(fieldName)) {
+                    deserializedClusterGetProperties.encryptionInTransitProperties
+                        = EncryptionInTransitProperties.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedClusterGetProperties.storageProfile = StorageProfile.fromJson(reader);
+                } else if ("minSupportedTlsVersion".equals(fieldName)) {
+                    deserializedClusterGetProperties.minSupportedTlsVersion = reader.getString();
+                } else if ("excludedServicesConfig".equals(fieldName)) {
+                    deserializedClusterGetProperties.excludedServicesConfig = ExcludedServicesConfig.fromJson(reader);
+                } else if ("networkProperties".equals(fieldName)) {
+                    deserializedClusterGetProperties.networkProperties = NetworkProperties.fromJson(reader);
+                } else if ("computeIsolationProperties".equals(fieldName)) {
+                    deserializedClusterGetProperties.computeIsolationProperties
+                        = ComputeIsolationProperties.fromJson(reader);
+                } else if ("privateLinkConfigurations".equals(fieldName)) {
+                    List<PrivateLinkConfiguration> privateLinkConfigurations
+                        = reader.readArray(reader1 -> PrivateLinkConfiguration.fromJson(reader1));
+                    deserializedClusterGetProperties.privateLinkConfigurations = privateLinkConfigurations;
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedClusterGetProperties.privateEndpointConnections = privateEndpointConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterGetProperties;
+        });
+    }
 }

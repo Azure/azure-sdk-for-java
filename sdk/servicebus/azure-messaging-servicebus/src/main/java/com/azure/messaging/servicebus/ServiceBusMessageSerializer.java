@@ -87,9 +87,11 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         int payloadSize = getPayloadSize(amqpMessage);
 
         final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
+        final DeliveryAnnotations deliveryAnnotations = amqpMessage.getDeliveryAnnotations();
         final ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
 
         int annotationsSize = 0;
+        int deliveryAnnotationsSize = 0;
         int applicationPropertiesSize = 0;
 
         if (messageAnnotations != null) {
@@ -98,6 +100,15 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             for (Map.Entry<Symbol, Object> entry : map.entrySet()) {
                 final int size = sizeof(entry.getKey()) + sizeof(entry.getValue());
                 annotationsSize += size;
+            }
+        }
+
+        if (deliveryAnnotations != null) {
+            final Map<Symbol, Object> map = deliveryAnnotations.getValue();
+
+            for (Map.Entry<Symbol, Object> entry : map.entrySet()) {
+                final int size = sizeof(entry.getKey()) + sizeof(entry.getValue());
+                deliveryAnnotationsSize += size;
             }
         }
 
@@ -110,7 +121,7 @@ class ServiceBusMessageSerializer implements MessageSerializer {
             }
         }
 
-        return annotationsSize + applicationPropertiesSize + payloadSize;
+        return annotationsSize + deliveryAnnotationsSize + applicationPropertiesSize + payloadSize;
     }
 
     /**

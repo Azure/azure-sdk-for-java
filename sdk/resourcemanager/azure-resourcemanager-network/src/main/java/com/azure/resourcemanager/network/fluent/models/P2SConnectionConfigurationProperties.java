@@ -6,51 +6,50 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Parameters for P2SConnectionConfiguration.
  */
 @Fluent
-public final class P2SConnectionConfigurationProperties {
+public final class P2SConnectionConfigurationProperties
+    implements JsonSerializable<P2SConnectionConfigurationProperties> {
     /*
      * The reference to the address space resource which represents Address space for P2S VpnClient.
      */
-    @JsonProperty(value = "vpnClientAddressPool")
     private AddressSpace vpnClientAddressPool;
 
     /*
      * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
-    @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
 
     /*
      * Flag indicating whether the enable internet security flag is turned on for the P2S Connections or not.
      */
-    @JsonProperty(value = "enableInternetSecurity")
     private Boolean enableInternetSecurity;
 
     /*
      * List of Configuration Policy Groups that this P2SConnectionConfiguration is attached to.
      */
-    @JsonProperty(value = "configurationPolicyGroupAssociations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> configurationPolicyGroupAssociations;
 
     /*
      * List of previous Configuration Policy Groups that this P2SConnectionConfiguration was attached to.
      */
-    @JsonProperty(value = "previousConfigurationPolicyGroupAssociations", access = JsonProperty.Access.WRITE_ONLY)
     private List<VpnServerConfigurationPolicyGroupInner> previousConfigurationPolicyGroupAssociations;
 
     /*
      * The provisioning state of the P2SConnectionConfiguration resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -169,5 +168,64 @@ public final class P2SConnectionConfigurationProperties {
         if (previousConfigurationPolicyGroupAssociations() != null) {
             previousConfigurationPolicyGroupAssociations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vpnClientAddressPool", this.vpnClientAddressPool);
+        jsonWriter.writeJsonField("routingConfiguration", this.routingConfiguration);
+        jsonWriter.writeBooleanField("enableInternetSecurity", this.enableInternetSecurity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of P2SConnectionConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of P2SConnectionConfigurationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the P2SConnectionConfigurationProperties.
+     */
+    public static P2SConnectionConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            P2SConnectionConfigurationProperties deserializedP2SConnectionConfigurationProperties
+                = new P2SConnectionConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vpnClientAddressPool".equals(fieldName)) {
+                    deserializedP2SConnectionConfigurationProperties.vpnClientAddressPool
+                        = AddressSpace.fromJson(reader);
+                } else if ("routingConfiguration".equals(fieldName)) {
+                    deserializedP2SConnectionConfigurationProperties.routingConfiguration
+                        = RoutingConfiguration.fromJson(reader);
+                } else if ("enableInternetSecurity".equals(fieldName)) {
+                    deserializedP2SConnectionConfigurationProperties.enableInternetSecurity
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("configurationPolicyGroupAssociations".equals(fieldName)) {
+                    List<SubResource> configurationPolicyGroupAssociations
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedP2SConnectionConfigurationProperties.configurationPolicyGroupAssociations
+                        = configurationPolicyGroupAssociations;
+                } else if ("previousConfigurationPolicyGroupAssociations".equals(fieldName)) {
+                    List<VpnServerConfigurationPolicyGroupInner> previousConfigurationPolicyGroupAssociations
+                        = reader.readArray(reader1 -> VpnServerConfigurationPolicyGroupInner.fromJson(reader1));
+                    deserializedP2SConnectionConfigurationProperties.previousConfigurationPolicyGroupAssociations
+                        = previousConfigurationPolicyGroupAssociations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedP2SConnectionConfigurationProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedP2SConnectionConfigurationProperties;
+        });
     }
 }

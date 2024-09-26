@@ -5,83 +5,81 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** photo. */
+/**
+ * photo.
+ */
 @Fluent
-public final class MicrosoftGraphPhoto {
+public final class MicrosoftGraphPhoto implements JsonSerializable<MicrosoftGraphPhoto> {
     /*
      * Camera manufacturer. Read-only.
      */
-    @JsonProperty(value = "cameraMake")
     private String cameraMake;
 
     /*
      * Camera model. Read-only.
      */
-    @JsonProperty(value = "cameraModel")
     private String cameraModel;
 
     /*
      * The denominator for the exposure time fraction from the camera. Read-only.
      */
-    @JsonProperty(value = "exposureDenominator")
     private Double exposureDenominator;
 
     /*
      * The numerator for the exposure time fraction from the camera. Read-only.
      */
-    @JsonProperty(value = "exposureNumerator")
     private Double exposureNumerator;
 
     /*
      * The F-stop value from the camera. Read-only.
      */
-    @JsonProperty(value = "fNumber")
     private Double fNumber;
 
     /*
      * The focal length from the camera. Read-only.
      */
-    @JsonProperty(value = "focalLength")
     private Double focalLength;
 
     /*
      * The ISO value from the camera. Read-only.
      */
-    @JsonProperty(value = "iso")
     private Integer iso;
 
     /*
      * The orientation value from the camera. Writable on OneDrive Personal.
      */
-    @JsonProperty(value = "orientation")
     private Integer orientation;
 
     /*
      * Represents the date and time the photo was taken. Read-only.
      */
-    @JsonProperty(value = "takenDateTime")
     private OffsetDateTime takenDateTime;
 
     /*
      * photo
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPhoto class. */
+    /**
+     * Creates an instance of MicrosoftGraphPhoto class.
+     */
     public MicrosoftGraphPhoto() {
     }
 
     /**
      * Get the cameraMake property: Camera manufacturer. Read-only.
-     *
+     * 
      * @return the cameraMake value.
      */
     public String cameraMake() {
@@ -90,7 +88,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the cameraMake property: Camera manufacturer. Read-only.
-     *
+     * 
      * @param cameraMake the cameraMake value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -101,7 +99,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the cameraModel property: Camera model. Read-only.
-     *
+     * 
      * @return the cameraModel value.
      */
     public String cameraModel() {
@@ -110,7 +108,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the cameraModel property: Camera model. Read-only.
-     *
+     * 
      * @param cameraModel the cameraModel value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -121,7 +119,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the exposureDenominator property: The denominator for the exposure time fraction from the camera. Read-only.
-     *
+     * 
      * @return the exposureDenominator value.
      */
     public Double exposureDenominator() {
@@ -130,7 +128,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the exposureDenominator property: The denominator for the exposure time fraction from the camera. Read-only.
-     *
+     * 
      * @param exposureDenominator the exposureDenominator value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -141,7 +139,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the exposureNumerator property: The numerator for the exposure time fraction from the camera. Read-only.
-     *
+     * 
      * @return the exposureNumerator value.
      */
     public Double exposureNumerator() {
@@ -150,7 +148,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the exposureNumerator property: The numerator for the exposure time fraction from the camera. Read-only.
-     *
+     * 
      * @param exposureNumerator the exposureNumerator value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -161,7 +159,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the fNumber property: The F-stop value from the camera. Read-only.
-     *
+     * 
      * @return the fNumber value.
      */
     public Double fNumber() {
@@ -170,7 +168,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the fNumber property: The F-stop value from the camera. Read-only.
-     *
+     * 
      * @param fNumber the fNumber value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -181,7 +179,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the focalLength property: The focal length from the camera. Read-only.
-     *
+     * 
      * @return the focalLength value.
      */
     public Double focalLength() {
@@ -190,7 +188,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the focalLength property: The focal length from the camera. Read-only.
-     *
+     * 
      * @param focalLength the focalLength value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -201,7 +199,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the iso property: The ISO value from the camera. Read-only.
-     *
+     * 
      * @return the iso value.
      */
     public Integer iso() {
@@ -210,7 +208,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the iso property: The ISO value from the camera. Read-only.
-     *
+     * 
      * @param iso the iso value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -221,7 +219,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the orientation property: The orientation value from the camera. Writable on OneDrive Personal.
-     *
+     * 
      * @return the orientation value.
      */
     public Integer orientation() {
@@ -230,7 +228,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the orientation property: The orientation value from the camera. Writable on OneDrive Personal.
-     *
+     * 
      * @param orientation the orientation value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -241,7 +239,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the takenDateTime property: Represents the date and time the photo was taken. Read-only.
-     *
+     * 
      * @return the takenDateTime value.
      */
     public OffsetDateTime takenDateTime() {
@@ -250,7 +248,7 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Set the takenDateTime property: Represents the date and time the photo was taken. Read-only.
-     *
+     * 
      * @param takenDateTime the takenDateTime value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -261,17 +259,16 @@ public final class MicrosoftGraphPhoto {
 
     /**
      * Get the additionalProperties property: photo.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: photo.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPhoto object itself.
      */
@@ -280,19 +277,84 @@ public final class MicrosoftGraphPhoto {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cameraMake", this.cameraMake);
+        jsonWriter.writeStringField("cameraModel", this.cameraModel);
+        jsonWriter.writeNumberField("exposureDenominator", this.exposureDenominator);
+        jsonWriter.writeNumberField("exposureNumerator", this.exposureNumerator);
+        jsonWriter.writeNumberField("fNumber", this.fNumber);
+        jsonWriter.writeNumberField("focalLength", this.focalLength);
+        jsonWriter.writeNumberField("iso", this.iso);
+        jsonWriter.writeNumberField("orientation", this.orientation);
+        jsonWriter.writeStringField("takenDateTime",
+            this.takenDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.takenDateTime));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPhoto from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPhoto if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPhoto.
+     */
+    public static MicrosoftGraphPhoto fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPhoto deserializedMicrosoftGraphPhoto = new MicrosoftGraphPhoto();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cameraMake".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.cameraMake = reader.getString();
+                } else if ("cameraModel".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.cameraModel = reader.getString();
+                } else if ("exposureDenominator".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.exposureDenominator = reader.getNullable(JsonReader::getDouble);
+                } else if ("exposureNumerator".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.exposureNumerator = reader.getNullable(JsonReader::getDouble);
+                } else if ("fNumber".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.fNumber = reader.getNullable(JsonReader::getDouble);
+                } else if ("focalLength".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.focalLength = reader.getNullable(JsonReader::getDouble);
+                } else if ("iso".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.iso = reader.getNullable(JsonReader::getInt);
+                } else if ("orientation".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.orientation = reader.getNullable(JsonReader::getInt);
+                } else if ("takenDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphPhoto.takenDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPhoto.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPhoto;
+        });
     }
 }

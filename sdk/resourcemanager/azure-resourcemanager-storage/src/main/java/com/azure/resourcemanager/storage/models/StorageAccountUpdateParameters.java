@@ -5,21 +5,23 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.fluent.models.StorageAccountPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The parameters that can be provided when updating the storage account properties.
  */
 @Fluent
-public final class StorageAccountUpdateParameters {
+public final class StorageAccountUpdateParameters implements JsonSerializable<StorageAccountUpdateParameters> {
     /*
      * Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS,
      * nor can accounts of those SKU names be updated to any other value.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
@@ -27,26 +29,21 @@ public final class StorageAccountUpdateParameters {
      * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have a
      * key no greater in length than 128 characters and a value no greater in length than 256 characters.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The parameters used when updating a storage account.
      */
-    @JsonProperty(value = "properties")
     private StorageAccountPropertiesUpdateParameters innerProperties;
 
     /*
      * Optional. Indicates the type of storage account. Currently only StorageV2 value supported by server.
      */
-    @JsonProperty(value = "kind")
     private Kind kind;
 
     /**
@@ -723,5 +720,56 @@ public final class StorageAccountUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccountUpdateParameters.
+     */
+    public static StorageAccountUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountUpdateParameters deserializedStorageAccountUpdateParameters
+                = new StorageAccountUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageAccountUpdateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.identity = Identity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.innerProperties
+                        = StorageAccountPropertiesUpdateParameters.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStorageAccountUpdateParameters.kind = Kind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountUpdateParameters;
+        });
     }
 }

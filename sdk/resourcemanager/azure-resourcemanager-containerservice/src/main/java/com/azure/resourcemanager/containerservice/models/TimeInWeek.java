@@ -5,19 +5,21 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Time in a week.
  */
 @Fluent
-public final class TimeInWeek {
+public final class TimeInWeek implements JsonSerializable<TimeInWeek> {
     /*
      * The day of the week.
      */
-    @JsonProperty(value = "day")
     private WeekDay day;
 
     /*
@@ -25,7 +27,6 @@ public final class TimeInWeek {
      * 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means the 00:00 - 02:00 UTC time
      * range.
      */
-    @JsonProperty(value = "hourSlots")
     private List<Integer> hourSlots;
 
     /**
@@ -36,7 +37,7 @@ public final class TimeInWeek {
 
     /**
      * Get the day property: The day of the week.
-     *
+     * 
      * @return the day value.
      */
     public WeekDay day() {
@@ -45,7 +46,7 @@ public final class TimeInWeek {
 
     /**
      * Set the day property: The day of the week.
-     *
+     * 
      * @param day the day value to set.
      * @return the TimeInWeek object itself.
      */
@@ -58,7 +59,7 @@ public final class TimeInWeek {
      * Get the hourSlots property: Each integer hour represents a time range beginning at 0m after the hour ending at
      * the next hour (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means
      * the 00:00 - 02:00 UTC time range.
-     *
+     * 
      * @return the hourSlots value.
      */
     public List<Integer> hourSlots() {
@@ -69,7 +70,7 @@ public final class TimeInWeek {
      * Set the hourSlots property: Each integer hour represents a time range beginning at 0m after the hour ending at
      * the next hour (non-inclusive). 0 corresponds to 00:00 UTC, 23 corresponds to 23:00 UTC. Specifying [0, 1] means
      * the 00:00 - 02:00 UTC time range.
-     *
+     * 
      * @param hourSlots the hourSlots value to set.
      * @return the TimeInWeek object itself.
      */
@@ -80,9 +81,49 @@ public final class TimeInWeek {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("day", this.day == null ? null : this.day.toString());
+        jsonWriter.writeArrayField("hourSlots", this.hourSlots, (writer, element) -> writer.writeInt(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeInWeek from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeInWeek if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the TimeInWeek.
+     */
+    public static TimeInWeek fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeInWeek deserializedTimeInWeek = new TimeInWeek();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("day".equals(fieldName)) {
+                    deserializedTimeInWeek.day = WeekDay.fromString(reader.getString());
+                } else if ("hourSlots".equals(fieldName)) {
+                    List<Integer> hourSlots = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedTimeInWeek.hourSlots = hourSlots;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeInWeek;
+        });
     }
 }

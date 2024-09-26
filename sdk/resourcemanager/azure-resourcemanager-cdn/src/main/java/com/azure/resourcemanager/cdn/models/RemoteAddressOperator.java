@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RemoteAddressOperator extends ExpandableStringEnum<RemoteAddr
      * @param name a name to look for.
      * @return the corresponding RemoteAddressOperator.
      */
-    @JsonCreator
     public static RemoteAddressOperator fromString(String name) {
         return fromString(name, RemoteAddressOperator.class);
     }

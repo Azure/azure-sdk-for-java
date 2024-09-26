@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The type of the pattern for an alias path.
  */
 @Fluent
-public final class AliasPattern {
+public final class AliasPattern implements JsonSerializable<AliasPattern> {
     /*
      * The alias pattern phrase.
      */
-    @JsonProperty(value = "phrase")
     private String phrase;
 
     /*
      * The alias pattern variable.
      */
-    @JsonProperty(value = "variable")
     private String variable;
 
     /*
      * The type of alias pattern
      */
-    @JsonProperty(value = "type")
     private AliasPatternType type;
 
     /**
@@ -102,5 +103,47 @@ public final class AliasPattern {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("phrase", this.phrase);
+        jsonWriter.writeStringField("variable", this.variable);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AliasPattern from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AliasPattern if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AliasPattern.
+     */
+    public static AliasPattern fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AliasPattern deserializedAliasPattern = new AliasPattern();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("phrase".equals(fieldName)) {
+                    deserializedAliasPattern.phrase = reader.getString();
+                } else if ("variable".equals(fieldName)) {
+                    deserializedAliasPattern.variable = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAliasPattern.type = AliasPatternType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAliasPattern;
+        });
     }
 }

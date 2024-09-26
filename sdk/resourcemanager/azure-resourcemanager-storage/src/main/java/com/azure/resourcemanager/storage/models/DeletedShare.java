@@ -6,23 +6,25 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The deleted share to be restored.
  */
 @Fluent
-public final class DeletedShare {
+public final class DeletedShare implements JsonSerializable<DeletedShare> {
     /*
      * Required. Identify the name of the deleted share that will be restored.
      */
-    @JsonProperty(value = "deletedShareName", required = true)
     private String deletedShareName;
 
     /*
      * Required. Identify the version of the deleted share that will be restored.
      */
-    @JsonProperty(value = "deletedShareVersion", required = true)
     private String deletedShareVersion;
 
     /**
@@ -89,4 +91,44 @@ public final class DeletedShare {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeletedShare.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deletedShareName", this.deletedShareName);
+        jsonWriter.writeStringField("deletedShareVersion", this.deletedShareVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedShare from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedShare if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeletedShare.
+     */
+    public static DeletedShare fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedShare deserializedDeletedShare = new DeletedShare();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deletedShareName".equals(fieldName)) {
+                    deserializedDeletedShare.deletedShareName = reader.getString();
+                } else if ("deletedShareVersion".equals(fieldName)) {
+                    deserializedDeletedShare.deletedShareVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedShare;
+        });
+    }
 }

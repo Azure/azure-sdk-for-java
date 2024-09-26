@@ -24,10 +24,13 @@ public final class ReplicationsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getReplications().create("myResourceGroup", "myRegistry",
-            "myReplication",
-            new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder")),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getReplications()
+            .create("myResourceGroup", "myRegistry", "myReplication",
+                new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -41,11 +44,16 @@ public final class ReplicationsCreateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void replicationCreateZoneRedundant(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getReplications().create("myResourceGroup", "myRegistry",
-            "myReplication",
-            new ReplicationInner().withLocation("eastus").withTags(mapOf("key", "fakeTokenPlaceholder"))
-                .withRegionEndpointEnabled(true).withZoneRedundancy(ZoneRedundancy.ENABLED),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getReplications()
+            .create("myResourceGroup", "myRegistry", "myReplication",
+                new ReplicationInner().withLocation("eastus")
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
+                    .withRegionEndpointEnabled(true)
+                    .withZoneRedundancy(ZoneRedundancy.ENABLED),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

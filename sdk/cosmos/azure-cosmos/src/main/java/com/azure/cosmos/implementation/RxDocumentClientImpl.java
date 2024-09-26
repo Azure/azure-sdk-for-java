@@ -40,7 +40,6 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -95,6 +94,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.util.concurrent.Queues;
+import reactor.util.function.Tuple2;
 import reactor.util.retry.Retry;
 
 import java.io.IOException;
@@ -1826,14 +1826,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY, Utils.escapeNonAscii(partitionKeyInternal.toJson()));
     }
 
-    private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
-                                                                    String documentCollectionLink,
-                                                                    Object document,
-                                                                    RequestOptions options,
-                                                                    boolean disableAutomaticIdGeneration,
-                                                                    OperationType operationType,
-                                                                    DiagnosticsClientContext clientContextOverride,
-                                                                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
+    private Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
+                                                                           String documentCollectionLink,
+                                                                           Object document,
+                                                                           RequestOptions options,
+                                                                           boolean disableAutomaticIdGeneration,
+                                                                           OperationType operationType,
+                                                                           DiagnosticsClientContext clientContextOverride,
+                                                                           PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
@@ -1878,8 +1878,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
+        if (requestRetryPolicy != null) {
+            requestRetryPolicy.onBeforeSendRequest(request);
+        }
+
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
-        return addPartitionKeyInformation(request, content, document, options, collectionObs, pointOperationContextForCircuitBreaker);
+        return addPartitionKeyInformation(request, content, document, options, collectionObs, pointOperationContextForCircuitBreaker)
+            .zipWith(collectionObs);
     }
 
     private Mono<RxDocumentServiceRequest> getBatchDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
@@ -1944,26 +1949,32 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 new AtomicBoolean(false),
                 false,
                 documentCollectionLink,
-                metadataDiagnosticsContext,
                 serializationDiagnosticsContext));
 
         return this.collectionCache.resolveCollectionAsync(metadataDiagnosticsContext, request)
-            .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, documentCollectionValueHolder.v.getResourceId(), null, null)
-                .flatMap(collectionRoutingMapValueHolder -> {
+            .flatMap(documentCollectionValueHolder -> {
 
-                    addBatchHeaders(request, serverBatchRequest, documentCollectionValueHolder.v);
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                }
 
-                    if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
-                        options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                        addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v);
-                    }
+                return this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
 
-                    if (requestRetryPolicy != null) {
-                        requestRetryPolicy.onBeforeSendRequest(request);
-                    }
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
 
-                    return Mono.just(request);
-                }));
+                        addBatchHeaders(request, serverBatchRequest, documentCollectionValueHolder.v);
+
+                        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+                        }
+
+                        return Mono.just(request);
+                    });
+            });
     }
 
     private RxDocumentServiceRequest addBatchHeaders(RxDocumentServiceRequest request,
@@ -2246,15 +2257,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Create,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> createDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> createDocumentCore(
                 collectionLink,
                 document,
                 opt,
                 disableAutomaticIdGeneration,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker,
-                collectionRoutingMap),
+                pointOperationContextForCircuitBreaker
+            ),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -2268,8 +2279,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean disableAutomaticIdGeneration,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
         DocumentClientRetryPolicy requestRetryPolicy =
@@ -2294,7 +2304,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         finalRetryPolicyInstance,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        collectionRoutingMap,
                         pointOperationContextForCircuitBreaker),
                 requestRetryPolicy),
             scopedDiagnosticsFactory
@@ -2309,12 +2318,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy requestRetryPolicy,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> documentServiceRequestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(
+            Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> requestToDocumentCollectionObs = getCreateDocumentRequest(
                 requestRetryPolicy,
                 collectionLink,
                 document,
@@ -2324,28 +2332,37 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientContextOverride,
                 pointOperationContextForCircuitBreaker);
 
-            return requestObs
-                    .flatMap(request -> {
+            return requestToDocumentCollectionObs
+                .flatMap(requestToDocumentCollection -> {
 
-                        addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMap.v);
-                        documentServiceRequestReference.set(request);
-                        request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                    RxDocumentServiceRequest request = requestToDocumentCollection.getT1();
+                    Utils.ValueHolder<DocumentCollection> documentCollectionValueHolder = requestToDocumentCollection.getT2();
 
-                        // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                        // excluded regions to know the next location endpoint to route the request to
-                        // unavailable regions are effectively excluded regions for this request
-                        if (requestRetryPolicy != null) {
-                            requestRetryPolicy.onBeforeSendRequest(request);
-                        }
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
 
-                        // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                        // to the RxDocumentServiceRequest instance
-                        mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
 
-                        return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
-                    })
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
 
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+                            documentServiceRequestReference.set(request);
+                            request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+
+                            // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                            // to the RxDocumentServiceRequest instance
+                            mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                            return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
+
+                        })
+                        .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                });
         } catch (Exception e) {
             logger.debug("Failure in creating a document due to [{}]", e.getMessage(), e);
             return Mono.error(e);
@@ -2541,8 +2558,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Upsert,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> upsertDocumentCore(
-                collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap),
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> upsertDocumentCore(
+                collectionLink, document, opt, disableAutomaticIdGeneration, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -2556,8 +2573,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean disableAutomaticIdGeneration,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -2581,7 +2597,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         finalRetryPolicyInstance,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        collectionRoutingMap,
                         pointOperationContextForCircuitBreaker),
                     finalRetryPolicyInstance),
                 scopedDiagnosticsFactory), requestReference);
@@ -2595,13 +2610,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> reqObs =
+            Mono<Tuple2<RxDocumentServiceRequest, Utils.ValueHolder<DocumentCollection>>> requestToDocumentCollectionObs =
                 getCreateDocumentRequest(
                     retryPolicyInstance,
                     collectionLink,
@@ -2612,28 +2626,37 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     clientContextOverride,
                     pointOperationContextForCircuitBreaker);
 
-            return reqObs
-                .flatMap(request -> {
+            return requestToDocumentCollectionObs
+                .flatMap(requestToDocumentCollection -> {
+                    RxDocumentServiceRequest request = requestToDocumentCollection.getT1();
+                    Utils.ValueHolder<DocumentCollection> documentCollectionValueHolder = requestToDocumentCollection.getT2();
 
-                    addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMap.v);
-
-                    request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                    requestReference.set(request);
-
-                    // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                    // excluded regions to know the next location endpoint to route the request to
-                    // unavailable regions are effectively excluded regions for this request
-                    if (retryPolicyInstance != null) {
-                        retryPolicyInstance.onBeforeSendRequest(request);
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                     }
 
-                    // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                    // to the RxDocumentServiceRequest instance
-                    mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
 
-                    return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
-                })
-                .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
+
+                            options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                            request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                            requestReference.set(request);
+
+                            // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                            // to the RxDocumentServiceRequest instance
+                            mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                            return upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                        })
+                        .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+
+                });
 
         } catch (Exception e) {
             logger.debug("Failure in upserting a document due to [{}]", e.getMessage(), e);
@@ -2650,14 +2673,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> replaceDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> replaceDocumentCore(
                 documentLink,
                 document,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker,
-                collectionRoutingMap),
+                pointOperationContextForCircuitBreaker),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -2670,8 +2692,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -2697,7 +2718,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         endToEndPolicyConfig,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        collectionRoutingMap,
                         pointOperationContextForCircuitBreaker),
                     requestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
@@ -2711,7 +2731,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
@@ -2732,7 +2751,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
-                collectionRoutingMap,
                 pointOperationContextForCircuitBreaker);
 
         } catch (Exception e) {
@@ -2749,13 +2767,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Replace,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> replaceDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> replaceDocumentCore(
                 document,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker,
-                collectionRoutingMap),
+                pointOperationContextForCircuitBreaker
+            ),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -2767,8 +2785,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         DocumentClientRetryPolicy requestRetryPolicy =
             this.resetSessionTokenRetryPolicy.getRequestPolicy(clientContextOverride);
@@ -2788,7 +2805,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 endToEndPolicyConfig,
                 clientContextOverride,
                 requestReference,
-                collectionRoutingMap,
                 pointOperationContextForCircuitBreaker),
             requestRetryPolicy), requestReference);
     }
@@ -2800,7 +2816,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
@@ -2815,7 +2830,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 retryPolicyInstance,
                 clientContextOverride,
                 requestReference,
-                collectionRoutingMap,
                 pointOperationContextForCircuitBreaker);
 
         } catch (Exception e) {
@@ -2831,7 +2845,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         if (document == null) {
@@ -2882,6 +2895,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
         }
 
+        if (retryPolicyInstance != null) {
+            retryPolicyInstance.onBeforeSendRequest(request);
+        }
+
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs =
             collectionCache.resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
@@ -2889,28 +2906,37 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Mono<RxDocumentServiceRequest> requestObs =
             addPartitionKeyInformation(request, content, document, options, collectionObs, pointOperationContextForCircuitBreaker);
 
-        return requestObs
-            .flatMap(req -> {
+        return collectionObs
+            .flatMap(documentCollectionValueHolder -> {
 
-                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMap.v);
-
-                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                requestReference.set(req);
-
-                // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                // excluded regions to know the next location endpoint to route the request to
-                // unavailable regions are effectively excluded regions for this request
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                 }
 
-                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                // to the RxDocumentServiceRequest instance
-                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
 
-                return replace(request, retryPolicyInstance);
-            })
-            .map(resp -> toResourceResponse(resp, Document.class));
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
+
+                        return requestObs.flatMap(req -> {
+
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return replace(request, retryPolicyInstance);
+                            })
+                            .map(resp -> toResourceResponse(resp, Document.class));
+                    });
+            });
     }
 
     private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(
@@ -2952,14 +2978,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Patch,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> patchDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> patchDocumentCore(
                 documentLink,
                 cosmosPatchOperations,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker,
-                collectionRoutingMap),
+                pointOperationContextForCircuitBreaker),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -2972,8 +2997,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -2993,7 +3017,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         documentClientRetryPolicy,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        collectionRoutingMap,
                         pointOperationContextForCircuitBreaker),
                     documentClientRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
@@ -3006,7 +3029,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         checkArgument(StringUtils.isNotEmpty(documentLink), "expected non empty documentLink");
@@ -3072,28 +3094,38 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             collectionObs,
             pointOperationContextForCircuitBreaker);
 
-        return requestObs
-            .flatMap(req -> {
+        return collectionObs
+            .flatMap(documentCollectionValueHolder -> {
 
-                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMap.v);
-
-                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                requestReference.set(req);
-
-                // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                // excluded regions to know the next location endpoint to route the request to
-                // unavailable regions are effectively excluded regions for this request
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
+                if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                    return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                 }
 
-                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                // to the RxDocumentServiceRequest instance
-                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
 
-                return patch(request, retryPolicyInstance);
-            })
-            .map(resp -> toResourceResponse(resp, Document.class));
+                        if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                            return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                        }
+
+                        return requestObs
+                            .flatMap(req -> {
+
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return patch(request, retryPolicyInstance);
+                            })
+                            .map(resp -> toResourceResponse(resp, Document.class));
+                    });
+            });
     }
 
     @Override
@@ -3104,14 +3136,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> deleteDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> deleteDocumentCore(
                 documentLink,
                 null,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker,
-                collectionRoutingMap),
+                pointOperationContextForCircuitBreaker
+            ),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -3126,14 +3158,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Delete,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> deleteDocumentCore(
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> deleteDocumentCore(
                 documentLink,
                 internalObjectNode,
                 opt,
                 e2ecfg,
                 clientCtxOverride,
-                pointOperationContextForCircuitBreaker,
-                collectionRoutingMap),
+                pointOperationContextForCircuitBreaker),
             options,
             options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled(),
             collectionLink
@@ -3146,8 +3177,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -3167,7 +3197,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         requestRetryPolicy,
                         scopedDiagnosticsFactory,
                         requestReference,
-                        collectionRoutingMap,
                         pointOperationContextForCircuitBreaker),
                     requestRetryPolicy),
                 scopedDiagnosticsFactory), requestReference);
@@ -3180,7 +3209,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
@@ -3206,6 +3234,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                 request);
@@ -3213,29 +3245,27 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
                 request, null, internalObjectNode, options, collectionObs, pointOperationContextForCircuitBreaker);
 
-            return requestObs
-                    .flatMap(req -> {
+            return collectionObs
+                .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
+                    .flatMap(collectionRoutingMapValueHolder -> {
+                        return requestObs
+                            .flatMap(req -> {
 
-                        addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMap.v);
+                                options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
-                        req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                        requestReference.set(req);
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
 
-                        // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                        // excluded regions to know the next location endpoint to route the request to
-                        // unavailable regions are effectively excluded regions for this request
-                        if (retryPolicyInstance != null) {
-                            retryPolicyInstance.onBeforeSendRequest(request);
-                        }
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
 
-                        // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                        // to the RxDocumentServiceRequest instance
-                        mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+                                return this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
+                            })
+                            .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
-                        return this.delete(req, retryPolicyInstance, getOperationContextAndListenerTuple(options));
-                    })
-                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
-
+                    }));
         } catch (Exception e) {
             logger.debug("Failure in deleting a document due to [{}]", e.getMessage());
             return Mono.error(e);
@@ -3294,7 +3324,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return wrapPointOperationWithAvailabilityStrategy(
             ResourceType.Document,
             OperationType.Read,
-            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker, collectionRoutingMap),
+            (opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker) -> readDocumentCore(documentLink, opt, e2ecfg, clientCtxOverride, pointOperationContextForCircuitBreaker),
             options,
             false,
             innerDiagnosticsFactory,
@@ -3307,8 +3337,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
         DiagnosticsClientContext clientContextOverride,
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap) {
+        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(clientContextOverride, false);
@@ -3326,7 +3355,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     retryPolicyInstance,
                     scopedDiagnosticsFactory,
                     requestReference,
-                    collectionRoutingMap,
                     pointOperationContextForCircuitBreaker),
                 retryPolicyInstance),
             scopedDiagnosticsFactory
@@ -3339,7 +3367,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DocumentClientRetryPolicy retryPolicyInstance,
         DiagnosticsClientContext clientContextOverride,
         AtomicReference<RxDocumentServiceRequest> requestReference,
-        Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         try {
@@ -3359,32 +3386,47 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
 
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+            return collectionObs.flatMap(documentCollectionValueHolder -> {
 
-            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, pointOperationContextForCircuitBreaker);
+                    if (documentCollectionValueHolder == null || documentCollectionValueHolder.v == null) {
+                        return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
+                    }
 
-            return requestObs.flatMap(req -> {
+                    DocumentCollection documentCollection = documentCollectionValueHolder.v;
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null)
+                        .flatMap(collectionRoutingMapValueHolder -> {
 
-                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMap.v);
+                            if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
+                                return Mono.error(new IllegalStateException("collectionRoutingMapValueHolder or collectionRoutingMapValueHolder.v cannot be null"));
+                            }
 
-                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
-                requestReference.set(req);
+                            Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs, pointOperationContextForCircuitBreaker);
 
-                // needs to be after addPartitionLevelUnavailableRegionsForRequest since onBeforeSendRequest uses
-                // excluded regions to know the next location endpoint to route the request to
-                // unavailable regions are effectively excluded regions for this request
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
+                            return requestObs.flatMap(req -> {
+
+                                options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
+                                addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+
+                                req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
+                                requestReference.set(req);
+
+                                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
+                                // to the RxDocumentServiceRequest instance
+                                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
+
+                                return this.read(req, retryPolicyInstance)
+                                    .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
+                            });
+
+                        });
+
                 }
-
-                // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
-                // to the RxDocumentServiceRequest instance
-                mergeContextInformationIntoDiagnosticsForPointRequest(request, pointOperationContextForCircuitBreaker);
-
-                return this.read(req, retryPolicyInstance)
-                        .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
-            });
-
+            );
         } catch (Exception e) {
             logger.debug("Failure in reading a document due to [{}]", e.getMessage());
             return Mono.error(e);
@@ -3978,7 +4020,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
-            public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions) {
+            public Mono<RxDocumentServiceRequest> addPartitionLevelUnavailableRegionsOnRequest(RxDocumentServiceRequest request, CosmosQueryRequestOptions queryRequestOptions, DocumentClientRetryPolicy documentClientRetryPolicy) {
 
                 if (RxDocumentClientImpl.this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
 
@@ -3994,6 +4036,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
+
+                            // onBeforeSendRequest uses excluded regions to know the next location endpoint
+                            // to route the request to unavailable regions are effectively excluded regions for this request
+                            if (documentClientRetryPolicy != null) {
+                                documentClientRetryPolicy.onBeforeSendRequest(request);
+                            }
+
                             return Mono.just(request);
                         });
                 } else {
@@ -4444,9 +4493,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          boolean disableAutomaticIdGeneration) {
         DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
-        return handleCircuitBreakingFeedbackForPointOperation(ObservableHelper
-            .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
-                collectionLink, serverBatchRequest, options, documentClientRetryPolicy, disableAutomaticIdGeneration, requestReference), documentClientRetryPolicy), requestReference);
+        RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, ResourceType.Document, OperationType.Batch);
+        ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        return handleCircuitBreakingFeedbackForPointOperation(
+            getPointOperationResponseMonoWithE2ETimeout(
+                nonNullRequestOptions,
+                endToEndPolicyConfig,
+                ObservableHelper
+                    .inlineIfPossibleAsObs(() -> executeBatchRequestInternal(
+                        collectionLink,
+                        serverBatchRequest,
+                        options,
+                        documentClientRetryPolicy,
+                        disableAutomaticIdGeneration,
+                        requestReference), documentClientRetryPolicy),
+                scopedDiagnosticsFactory
+            ),
+            requestReference);
     }
 
     private Mono<StoredProcedureResponse> executeStoredProcedureInternal(String storedProcedureLink,
@@ -5699,6 +5764,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (!closed.getAndSet(true)) {
             activeClientsCnt.decrementAndGet();
             logger.info("Shutting down ...");
+
+            if (this.globalPartitionEndpointManagerForCircuitBreaker != null) {
+                logger.info("Closing globalPartitionEndpointManagerForCircuitBreaker...");
+                LifeCycleUtils.closeQuietly(this.globalPartitionEndpointManagerForCircuitBreaker);
+            }
+
             logger.info("Closing Global Endpoint Manager ...");
             LifeCycleUtils.closeQuietly(this.globalEndpointManager);
             logger.info("Closing StoreClientFactory ...");
@@ -5908,7 +5979,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     public void addPartitionLevelUnavailableRegionsForRequest(
         RxDocumentServiceRequest request,
         RequestOptions options,
-        CollectionRoutingMap collectionRoutingMap) {
+        CollectionRoutingMap collectionRoutingMap,
+        DocumentClientRetryPolicy documentClientRetryPolicy) {
 
         checkNotNull(request, "Argument 'request' cannot be null!");
 
@@ -5918,25 +5990,46 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
             checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
 
+            PartitionKeyRange resolvedPartitionKeyRange = null;
+
             PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
             PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
 
-            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
-            PartitionKeyRange partitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+            if (partitionKeyInternal != null) {
+                String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
 
-            checkNotNull(partitionKeyRange, "partitionKeyRange cannot be null!");
+                // cache the effective partition key if possible - can be a bottleneck,
+                // since it is also recomputed in AddressResolver
+                request.setEffectivePartitionKey(effectivePartitionKeyString);
+            } else if (request.getPartitionKeyRangeIdentity() != null) {
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+            }
+
+            checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
             checkNotNull(this.globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+            // setting it here in case request.requestContext.resolvedPartitionKeyRange
+            // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+            // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+            // help failover as well)
+            // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+            // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+            request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
             List<String> unavailableRegionsForPartition
                 = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
                 request.getResourceId(),
-                partitionKeyRange,
+                resolvedPartitionKeyRange,
                 request.getOperationType());
 
-            // cache the effective partition key if possible - can be a bottleneck,
-            // since it is also recomputed in AddressResolver
-            request.setEffectivePartitionKey(effectivePartitionKeyString);
             request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+
+            // onBeforeSendRequest uses excluded regions to know the next location endpoint
+            // to route the request to unavailable regions are effectively excluded regions for this request
+            if (documentClientRetryPolicy != null) {
+                documentClientRetryPolicy.onBeforeSendRequest(request);
+            }
         }
     }
 
@@ -5945,12 +6038,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
 
         if (pointOperationContextForCircuitBreaker != null) {
-            MetadataDiagnosticsContext metadataDiagnosticsContext
-                = pointOperationContextForCircuitBreaker.getMetadataDiagnosticsContext();
             SerializationDiagnosticsContext serializationDiagnosticsContext
                 = pointOperationContextForCircuitBreaker.getSerializationDiagnosticsContext();
 
-            diagnosticsAccessor.mergeMetadataDiagnosticContext(request.requestContext.cosmosDiagnostics, metadataDiagnosticsContext);
             diagnosticsAccessor.mergeSerializationDiagnosticContext(request.requestContext.cosmosDiagnostics, serializationDiagnosticsContext);
         }
     }
@@ -5972,6 +6062,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        // setting it here in case request.requestContext.resolvedPartitionKeyRange
+        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+        // help failover as well)
+        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
             checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
@@ -6044,212 +6142,186 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         DiagnosticsClientContext innerDiagnosticsFactory,
         String collectionLink) {
 
-        final MetadataDiagnosticsContext metadataDiagnosticsContext = new MetadataDiagnosticsContext();
+        checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
+        checkNotNull(operationType, "Argument 'operationType' must not be null.");
+        checkNotNull(callback, "Argument 'callback' must not be null.");
 
-        return Mono.defer(() -> this.collectionCache.resolveByNameAsync(metadataDiagnosticsContext, collectionLink, null)
-            .flatMap(collection -> this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, collection.getResourceId(), null, null)
-                .flatMap(collectionRoutingMapValueHolder -> {
+        final RequestOptions nonNullRequestOptions =
+            initialRequestOptions != null ? initialRequestOptions : new RequestOptions();
 
-                    checkNotNull(resourceType, "Argument 'resourceType' must not be null.");
-                    checkNotNull(operationType, "Argument 'operationType' must not be null.");
-                    checkNotNull(callback, "Argument 'callback' must not be null.");
+        checkArgument(
+            resourceType == ResourceType.Document,
+            "This method can only be used for document point operations.");
 
-                    final RequestOptions nonNullRequestOptions =
-                        initialRequestOptions != null ? initialRequestOptions : new RequestOptions();
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
+            getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
 
-                    checkArgument(
-                        resourceType == ResourceType.Document,
-                        "This method can only be used for document point operations.");
+        List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
+            endToEndPolicyConfig,
+            resourceType,
+            operationType,
+            idempotentWriteRetriesEnabled,
+            nonNullRequestOptions);
 
-                    CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
-                        getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, resourceType, operationType);
+        AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
 
-                    if (collectionRoutingMapValueHolder.v == null) {
-                        return Mono.error(new CollectionRoutingMapNotFoundException("Argument 'collectionRoutingMapValueHolder.v' cannot be null!"));
+        if (orderedApplicableRegionsForSpeculation.size() < 2) {
+            // There is at most one applicable region - no hedging possible
+            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForMainRequest = new PointOperationContextForCircuitBreaker(
+                isOperationSuccessful,
+                false,
+                collectionLink,
+                new SerializationDiagnosticsContext());
+
+            pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
+            return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest);
+        }
+
+        ThresholdBasedAvailabilityStrategy availabilityStrategy =
+            (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
+        List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
+
+        final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
+
+        orderedApplicableRegionsForSpeculation
+            .forEach(region -> {
+                RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
+
+                if (monoList.isEmpty()) {
+                    // no special error handling for transient errors to suppress them here
+                    // because any cross-regional retries are expected to be processed
+                    // by the ClientRetryPolicy for the initial request - so, any outcome of the
+                    // initial Mono should be treated as non-transient error - even when
+                    // the error would otherwise be treated as transient
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForMainRequest
+                        = new PointOperationContextForCircuitBreaker(
+                        isOperationSuccessful,
+                        true,
+                        collectionLink,
+                        new SerializationDiagnosticsContext());
+
+                    pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
+                    Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
+                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest)
+                            .map(NonTransientPointOperationResult::new)
+                            .onErrorResume(
+                                RxDocumentClientImpl::isCosmosException,
+                                t -> Mono.just(
+                                    new NonTransientPointOperationResult(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+
+                    if (logger.isDebugEnabled()) {
+                        monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
+                            "STARTING to process {} operation in region '{}'",
+                            operationType,
+                            region)));
+                    } else {
+                        monoList.add(initialMonoAcrossAllRegions);
                     }
+                } else {
+                    clonedOptions.setExcludedRegions(
+                        getEffectiveExcludedRegionsForHedging(
+                            nonNullRequestOptions.getExcludedRegions(),
+                            orderedApplicableRegionsForSpeculation,
+                            region)
+                    );
 
-                    nonNullRequestOptions.setPartitionKeyDefinition(collection.getPartitionKey());
+                    // Non-Transient errors are mapped to a value - this ensures the firstWithValue
+                    // operator below will complete the composite Mono for both successful values
+                    // and non-transient errors
+                    PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForHedgedRequest
+                        = new PointOperationContextForCircuitBreaker(
+                        isOperationSuccessful,
+                        true,
+                        collectionLink,
+                        new SerializationDiagnosticsContext());
 
-                    List<String> orderedApplicableRegionsForSpeculation = getApplicableRegionsForSpeculation(
-                        endToEndPolicyConfig,
-                        resourceType,
-                        operationType,
-                        idempotentWriteRetriesEnabled,
-                        nonNullRequestOptions);
+                    pointOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
+                    Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
+                        callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForHedgedRequest)
+                            .map(NonTransientPointOperationResult::new)
+                            .onErrorResume(
+                                RxDocumentClientImpl::isNonTransientCosmosException,
+                                t -> Mono.just(
+                                    new NonTransientPointOperationResult(
+                                        Utils.as(Exceptions.unwrap(t), CosmosException.class))));
 
-                    AtomicBoolean isOperationSuccessful = new AtomicBoolean(false);
+                    Duration delayForCrossRegionalRetry = (availabilityStrategy)
+                        .getThreshold()
+                        .plus((availabilityStrategy)
+                            .getThresholdStep()
+                            .multipliedBy(monoList.size() - 1));
 
-                    if (orderedApplicableRegionsForSpeculation.size() < 2) {
-                        // There is at most one applicable region - no hedging possible
-                        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForMainRequest = new PointOperationContextForCircuitBreaker(
-                            isOperationSuccessful,
-                            false,
-                            collectionLink,
-                            metadataDiagnosticsContext,
-                            new SerializationDiagnosticsContext());
-
-                        pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
-                        return callback.apply(nonNullRequestOptions, endToEndPolicyConfig, innerDiagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest, collectionRoutingMapValueHolder);
+                    if (logger.isDebugEnabled()) {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
+                                .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
+                                .delaySubscription(delayForCrossRegionalRetry));
+                    } else {
+                        monoList.add(
+                            regionalCrossRegionRetryMono
+                                .delaySubscription(delayForCrossRegionalRetry));
                     }
+                }
+            });
 
-                    ThresholdBasedAvailabilityStrategy availabilityStrategy =
-                        (ThresholdBasedAvailabilityStrategy) endToEndPolicyConfig.getAvailabilityStrategy();
-                    List<Mono<NonTransientPointOperationResult>> monoList = new ArrayList<>();
+        // NOTE - merging diagnosticsFactory cannot only happen in
+        // doFinally operator because the doFinally operator is a side effect method -
+        // meaning it executes concurrently with firing the onComplete/onError signal
+        // doFinally is also triggered by cancellation
+        // So, to make sure merging the Context happens synchronously in line we
+        // have to ensure merging is happening on error/completion
+        // and also in doOnCancel.
+        return Mono
+            .firstWithValue(monoList)
+            .flatMap(nonTransientResult -> {
+                diagnosticsFactory.merge(nonNullRequestOptions);
+                if (nonTransientResult.isError()) {
+                    return Mono.error(nonTransientResult.exception);
+                }
 
-                    final ScopedDiagnosticsFactory diagnosticsFactory = new ScopedDiagnosticsFactory(innerDiagnosticsFactory, false);
+                return Mono.just(nonTransientResult.response);
+            })
+            .onErrorMap(throwable -> {
+                Throwable exception = Exceptions.unwrap(throwable);
 
-                    orderedApplicableRegionsForSpeculation
-                        .forEach(region -> {
-                            RequestOptions clonedOptions = new RequestOptions(nonNullRequestOptions);
+                if (exception instanceof NoSuchElementException) {
 
-                            if (monoList.isEmpty()) {
-                                // no special error handling for transient errors to suppress them here
-                                // because any cross-regional retries are expected to be processed
-                                // by the ClientRetryPolicy for the initial request - so, any outcome of the
-                                // initial Mono should be treated as non-transient error - even when
-                                // the error would otherwise be treated as transient
-                                PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForMainRequest
-                                    = new PointOperationContextForCircuitBreaker(
-                                    isOperationSuccessful,
-                                    true,
-                                    collectionLink,
-                                    metadataDiagnosticsContext,
-                                    new SerializationDiagnosticsContext());
+                    List<Throwable> innerThrowables = Exceptions
+                        .unwrapMultiple(exception.getCause());
 
-                                pointOperationContextForCircuitBreakerForMainRequest.setIsRequestHedged(false);
-                                Mono<NonTransientPointOperationResult> initialMonoAcrossAllRegions =
-                                    callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForMainRequest, collectionRoutingMapValueHolder)
-                                        .map(NonTransientPointOperationResult::new)
-                                        .onErrorResume(
-                                            RxDocumentClientImpl::isCosmosException,
-                                            t -> Mono.just(
-                                                new NonTransientPointOperationResult(
-                                                    Utils.as(Exceptions.unwrap(t), CosmosException.class))));
+                    int index = 0;
+                    for (Throwable innerThrowable : innerThrowables) {
+                        Throwable innerException = Exceptions.unwrap(innerThrowable);
 
-                                if (logger.isDebugEnabled()) {
-                                    monoList.add(initialMonoAcrossAllRegions.doOnSubscribe(c -> logger.debug(
-                                        "STARTING to process {} operation in region '{}'",
-                                        operationType,
-                                        region)));
-                                } else {
-                                    monoList.add(initialMonoAcrossAllRegions);
-                                }
-                            } else {
-                                clonedOptions.setExcludedRegions(
-                                    getEffectiveExcludedRegionsForHedging(
-                                        nonNullRequestOptions.getExcludedRegions(),
-                                        orderedApplicableRegionsForSpeculation,
-                                        region)
-                                );
-
-                                // Non-Transient errors are mapped to a value - this ensures the firstWithValue
-                                // operator below will complete the composite Mono for both successful values
-                                // and non-transient errors
-                                PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreakerForHedgedRequest
-                                    = new PointOperationContextForCircuitBreaker(
-                                    isOperationSuccessful,
-                                    true,
-                                    collectionLink,
-                                    metadataDiagnosticsContext,
-                                    new SerializationDiagnosticsContext());
-
-                                pointOperationContextForCircuitBreakerForHedgedRequest.setIsRequestHedged(true);
-                                Mono<NonTransientPointOperationResult> regionalCrossRegionRetryMono =
-                                    callback.apply(clonedOptions, endToEndPolicyConfig, diagnosticsFactory, pointOperationContextForCircuitBreakerForHedgedRequest, collectionRoutingMapValueHolder)
-                                        .map(NonTransientPointOperationResult::new)
-                                        .onErrorResume(
-                                            RxDocumentClientImpl::isNonTransientCosmosException,
-                                            t -> Mono.just(
-                                                new NonTransientPointOperationResult(
-                                                    Utils.as(Exceptions.unwrap(t), CosmosException.class))));
-
-                                Duration delayForCrossRegionalRetry = (availabilityStrategy)
-                                    .getThreshold()
-                                    .plus((availabilityStrategy)
-                                        .getThresholdStep()
-                                        .multipliedBy(monoList.size() - 1));
-
-                                if (logger.isDebugEnabled()) {
-                                    monoList.add(
-                                        regionalCrossRegionRetryMono
-                                            .doOnSubscribe(c -> logger.debug("STARTING to process {} operation in region '{}'", operationType, region))
-                                            .delaySubscription(delayForCrossRegionalRetry));
-                                } else {
-                                    monoList.add(
-                                        regionalCrossRegionRetryMono
-                                            .delaySubscription(delayForCrossRegionalRetry));
-                                }
-                            }
-                        });
-
-                    // NOTE - merging diagnosticsFactory cannot only happen in
-                    // doFinally operator because the doFinally operator is a side effect method -
-                    // meaning it executes concurrently with firing the onComplete/onError signal
-                    // doFinally is also triggered by cancellation
-                    // So, to make sure merging the Context happens synchronously in line we
-                    // have to ensure merging is happening on error/completion
-                    // and also in doOnCancel.
-                    return Mono
-                        .firstWithValue(monoList)
-                        .flatMap(nonTransientResult -> {
+                        // collect latest CosmosException instance bubbling up for a region
+                        if (innerException instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
                             diagnosticsFactory.merge(nonNullRequestOptions);
-                            if (nonTransientResult.isError()) {
-                                return Mono.error(nonTransientResult.exception);
-                            }
+                            return cosmosException;
+                        } else if (innerException instanceof NoSuchElementException) {
+                            logger.trace(
+                                "Operation in {} completed with empty result because it was cancelled.",
+                                orderedApplicableRegionsForSpeculation.get(index));
+                        } else if (logger.isWarnEnabled()) {
+                            String message = "Unexpected Non-CosmosException when processing operation in '"
+                                + orderedApplicableRegionsForSpeculation.get(index)
+                                + "'.";
+                            logger.warn(
+                                message,
+                                innerException
+                            );
+                        }
 
-                            return Mono.just(nonTransientResult.response);
-                        })
-                        .onErrorMap(throwable -> {
-                            Throwable exception = Exceptions.unwrap(throwable);
+                        index++;
+                    }
+                }
 
-                            if (exception instanceof NoSuchElementException) {
+                diagnosticsFactory.merge(nonNullRequestOptions);
 
-                                List<Throwable> innerThrowables = Exceptions
-                                    .unwrapMultiple(exception.getCause());
-
-                                int index = 0;
-                                for (Throwable innerThrowable : innerThrowables) {
-                                    Throwable innerException = Exceptions.unwrap(innerThrowable);
-
-                                    // collect latest CosmosException instance bubbling up for a region
-                                    if (innerException instanceof CosmosException) {
-                                        CosmosException cosmosException = Utils.as(innerException, CosmosException.class);
-                                        diagnosticsFactory.merge(nonNullRequestOptions);
-                                        return cosmosException;
-                                    } else if (innerException instanceof NoSuchElementException) {
-                                        logger.trace(
-                                            "Operation in {} completed with empty result because it was cancelled.",
-                                            orderedApplicableRegionsForSpeculation.get(index));
-                                    } else if (logger.isWarnEnabled()) {
-                                        String message = "Unexpected Non-CosmosException when processing operation in '"
-                                            + orderedApplicableRegionsForSpeculation.get(index)
-                                            + "'.";
-                                        logger.warn(
-                                            message,
-                                            innerException
-                                        );
-                                    }
-
-                                    index++;
-                                }
-                            }
-
-                            diagnosticsFactory.merge(nonNullRequestOptions);
-
-                            return exception;
-                        })
-                        .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
-                }))
-            )
-            .retryWhen(Retry.fixedDelay(Configs.getStaleCollectionCacheRefreshRetryCount(), Duration.ofSeconds(Configs.getStaleCollectionCacheRefreshRetryIntervalInSeconds()))
-                .filter(throwable -> throwable instanceof CollectionRoutingMapNotFoundException)
-                .doBeforeRetry((retrySignal) -> this.collectionCache
-                .refresh(
-                    null,
-                    collectionLink,
-                    null)
-            )
-        );
+                return exception;
+            })
+            .doOnCancel(() -> diagnosticsFactory.merge(nonNullRequestOptions));
     }
 
     private static boolean isCosmosException(Throwable t) {
@@ -6634,8 +6706,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RequestOptions requestOptions,
             CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
             DiagnosticsClientContext clientContextOverride,
-            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker,
-            Utils.ValueHolder<CollectionRoutingMap> collectionRoutingMap);
+            PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker);
     }
 
     private static class NonTransientPointOperationResult {

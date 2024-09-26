@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.keyvault.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** SKU of the managed HSM Pool. */
+/**
+ * SKU of the managed HSM Pool.
+ */
 public enum ManagedHsmSkuName {
-    /** Enum value Standard_B1. */
+    /**
+     * Enum value Standard_B1.
+     */
     STANDARD_B1("Standard_B1"),
 
-    /** Enum value Custom_B32. */
+    /**
+     * Enum value Custom_B32.
+     */
     CUSTOM_B32("Custom_B32"),
 
-    /** Enum value Custom_B6. */
+    /**
+     * Enum value Custom_B6.
+     */
     CUSTOM_B6("Custom_B6");
 
-    /** The actual serialized value for a ManagedHsmSkuName instance. */
+    /**
+     * The actual serialized value for a ManagedHsmSkuName instance.
+     */
     private final String value;
 
     ManagedHsmSkuName(String value) {
@@ -27,11 +34,10 @@ public enum ManagedHsmSkuName {
 
     /**
      * Parses a serialized value to a ManagedHsmSkuName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ManagedHsmSkuName object, or null if unable to parse.
      */
-    @JsonCreator
     public static ManagedHsmSkuName fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ManagedHsmSkuName {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

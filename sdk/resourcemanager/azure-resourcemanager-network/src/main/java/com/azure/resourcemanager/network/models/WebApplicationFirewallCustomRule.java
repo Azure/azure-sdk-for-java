@@ -6,72 +6,66 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines contents of a web application rule.
  */
 @Fluent
-public final class WebApplicationFirewallCustomRule {
+public final class WebApplicationFirewallCustomRule implements JsonSerializable<WebApplicationFirewallCustomRule> {
     /*
      * The name of the resource that is unique within a policy. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Priority of the rule. Rules with a lower value will be evaluated before rules with a higher value.
      */
-    @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
      * Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
      */
-    @JsonProperty(value = "state")
     private WebApplicationFirewallState state;
 
     /*
      * Duration over which Rate Limit policy will be applied. Applies only when ruleType is RateLimitRule.
      */
-    @JsonProperty(value = "rateLimitDuration")
     private ApplicationGatewayFirewallRateLimitDuration rateLimitDuration;
 
     /*
      * Rate Limit threshold to apply in case ruleType is RateLimitRule. Must be greater than or equal to 1
      */
-    @JsonProperty(value = "rateLimitThreshold")
     private Integer rateLimitThreshold;
 
     /*
      * The rule type.
      */
-    @JsonProperty(value = "ruleType", required = true)
     private WebApplicationFirewallRuleType ruleType;
 
     /*
      * List of match conditions.
      */
-    @JsonProperty(value = "matchConditions", required = true)
     private List<MatchCondition> matchConditions;
 
     /*
      * List of user session identifier group by clauses.
      */
-    @JsonProperty(value = "groupByUserSession")
     private List<GroupByUserSession> groupByUserSession;
 
     /*
      * Type of Actions.
      */
-    @JsonProperty(value = "action", required = true)
     private WebApplicationFirewallAction action;
 
     /**
@@ -309,4 +303,80 @@ public final class WebApplicationFirewallCustomRule {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebApplicationFirewallCustomRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("priority", this.priority);
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeArrayField("matchConditions", this.matchConditions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("action", this.action == null ? null : this.action.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("rateLimitDuration",
+            this.rateLimitDuration == null ? null : this.rateLimitDuration.toString());
+        jsonWriter.writeNumberField("rateLimitThreshold", this.rateLimitThreshold);
+        jsonWriter.writeArrayField("groupByUserSession", this.groupByUserSession,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebApplicationFirewallCustomRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebApplicationFirewallCustomRule if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebApplicationFirewallCustomRule.
+     */
+    public static WebApplicationFirewallCustomRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebApplicationFirewallCustomRule deserializedWebApplicationFirewallCustomRule
+                = new WebApplicationFirewallCustomRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("priority".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.priority = reader.getInt();
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.ruleType
+                        = WebApplicationFirewallRuleType.fromString(reader.getString());
+                } else if ("matchConditions".equals(fieldName)) {
+                    List<MatchCondition> matchConditions
+                        = reader.readArray(reader1 -> MatchCondition.fromJson(reader1));
+                    deserializedWebApplicationFirewallCustomRule.matchConditions = matchConditions;
+                } else if ("action".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.action
+                        = WebApplicationFirewallAction.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.etag = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.state
+                        = WebApplicationFirewallState.fromString(reader.getString());
+                } else if ("rateLimitDuration".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.rateLimitDuration
+                        = ApplicationGatewayFirewallRateLimitDuration.fromString(reader.getString());
+                } else if ("rateLimitThreshold".equals(fieldName)) {
+                    deserializedWebApplicationFirewallCustomRule.rateLimitThreshold
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("groupByUserSession".equals(fieldName)) {
+                    List<GroupByUserSession> groupByUserSession
+                        = reader.readArray(reader1 -> GroupByUserSession.fromJson(reader1));
+                    deserializedWebApplicationFirewallCustomRule.groupByUserSession = groupByUserSession;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebApplicationFirewallCustomRule;
+        });
+    }
 }

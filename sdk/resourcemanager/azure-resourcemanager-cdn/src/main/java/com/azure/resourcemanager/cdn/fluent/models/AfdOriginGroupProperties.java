@@ -5,12 +5,15 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.EnabledState;
 import com.azure.resourcemanager.cdn.models.HealthProbeParameters;
 import com.azure.resourcemanager.cdn.models.LoadBalancingSettingsParameters;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The JSON object that contains the properties of the origin group.
@@ -20,14 +23,17 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
     /*
      * Provisioning status
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AfdProvisioningState provisioningState;
 
     /*
      * The deploymentStatus property.
      */
-    @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
+
+    /*
+     * The name of the profile which holds the origin group.
+     */
+    private String profileName;
 
     /**
      * Creates an instance of AfdOriginGroupProperties class.
@@ -51,6 +57,16 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
      */
     public DeploymentStatus deploymentStatus() {
         return this.deploymentStatus;
+    }
+
+    /**
+     * Get the profileName property: The name of the profile which holds the origin group.
+     * 
+     * @return the profileName value.
+     */
+    @Override
+    public String profileName() {
+        return this.profileName;
     }
 
     /**
@@ -99,5 +115,64 @@ public final class AfdOriginGroupProperties extends AfdOriginGroupUpdateProperti
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("loadBalancingSettings", loadBalancingSettings());
+        jsonWriter.writeJsonField("healthProbeSettings", healthProbeSettings());
+        jsonWriter.writeNumberField("trafficRestorationTimeToHealedOrNewEndpointsInMinutes",
+            trafficRestorationTimeToHealedOrNewEndpointsInMinutes());
+        jsonWriter.writeStringField("sessionAffinityState",
+            sessionAffinityState() == null ? null : sessionAffinityState().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdOriginGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdOriginGroupProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AfdOriginGroupProperties.
+     */
+    public static AfdOriginGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdOriginGroupProperties deserializedAfdOriginGroupProperties = new AfdOriginGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileName".equals(fieldName)) {
+                    deserializedAfdOriginGroupProperties.profileName = reader.getString();
+                } else if ("loadBalancingSettings".equals(fieldName)) {
+                    deserializedAfdOriginGroupProperties
+                        .withLoadBalancingSettings(LoadBalancingSettingsParameters.fromJson(reader));
+                } else if ("healthProbeSettings".equals(fieldName)) {
+                    deserializedAfdOriginGroupProperties
+                        .withHealthProbeSettings(HealthProbeParameters.fromJson(reader));
+                } else if ("trafficRestorationTimeToHealedOrNewEndpointsInMinutes".equals(fieldName)) {
+                    deserializedAfdOriginGroupProperties.withTrafficRestorationTimeToHealedOrNewEndpointsInMinutes(
+                        reader.getNullable(JsonReader::getInt));
+                } else if ("sessionAffinityState".equals(fieldName)) {
+                    deserializedAfdOriginGroupProperties
+                        .withSessionAffinityState(EnabledState.fromString(reader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAfdOriginGroupProperties.provisioningState
+                        = AfdProvisioningState.fromString(reader.getString());
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedAfdOriginGroupProperties.deploymentStatus
+                        = DeploymentStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdOriginGroupProperties;
+        });
     }
 }

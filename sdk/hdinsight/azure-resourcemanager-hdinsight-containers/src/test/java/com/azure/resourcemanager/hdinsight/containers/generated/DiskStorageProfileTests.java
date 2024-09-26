@@ -13,18 +13,18 @@ public final class DiskStorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiskStorageProfile model
-            = BinaryData.fromString("{\"dataDiskSize\":1565866782,\"dataDiskType\":\"Standard_HDD_LRS\"}")
+            = BinaryData.fromString("{\"dataDiskSize\":220182660,\"dataDiskType\":\"Premium_SSD_LRS\"}")
                 .toObject(DiskStorageProfile.class);
-        Assertions.assertEquals(1565866782, model.dataDiskSize());
-        Assertions.assertEquals(DataDiskType.STANDARD_HDD_LRS, model.dataDiskType());
+        Assertions.assertEquals(220182660, model.dataDiskSize());
+        Assertions.assertEquals(DataDiskType.PREMIUM_SSD_LRS, model.dataDiskType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DiskStorageProfile model
-            = new DiskStorageProfile().withDataDiskSize(1565866782).withDataDiskType(DataDiskType.STANDARD_HDD_LRS);
+            = new DiskStorageProfile().withDataDiskSize(220182660).withDataDiskType(DataDiskType.PREMIUM_SSD_LRS);
         model = BinaryData.fromObject(model).toObject(DiskStorageProfile.class);
-        Assertions.assertEquals(1565866782, model.dataDiskSize());
-        Assertions.assertEquals(DataDiskType.STANDARD_HDD_LRS, model.dataDiskType());
+        Assertions.assertEquals(220182660, model.dataDiskSize());
+        Assertions.assertEquals(DataDiskType.PREMIUM_SSD_LRS, model.dataDiskType());
     }
 }

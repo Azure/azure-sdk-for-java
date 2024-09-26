@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -192,7 +191,6 @@ public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding OpenShiftContainerServiceVMSize.
      */
-    @JsonCreator
     public static OpenShiftContainerServiceVMSize fromString(String name) {
         return fromString(name, OpenShiftContainerServiceVMSize.class);
     }

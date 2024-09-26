@@ -19,7 +19,8 @@ public interface FunctionDeploymentSlot
         FunctionDeploymentSlotBasic,
         DeploymentSlotBase<FunctionDeploymentSlot>,
         Updatable<DeploymentSlotBase.Update<FunctionDeploymentSlot>>,
-        HasParent<FunctionApp> {
+        HasParent<FunctionApp>,
+        SupportsOneDeploy {
 
     /** @return the master key for the function app */
     String getMasterKey();

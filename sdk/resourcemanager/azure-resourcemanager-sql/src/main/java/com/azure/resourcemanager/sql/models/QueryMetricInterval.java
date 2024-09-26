@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of a query metrics interval. */
+/**
+ * Properties of a query metrics interval.
+ */
 @Fluent
-public final class QueryMetricInterval {
+public final class QueryMetricInterval implements JsonSerializable<QueryMetricInterval> {
     /*
      * The start time for the metric interval (ISO-8601 format).
      */
-    @JsonProperty(value = "intervalStartTime", access = JsonProperty.Access.WRITE_ONLY)
     private String intervalStartTime;
 
     /*
      * Interval type (length).
      */
-    @JsonProperty(value = "intervalType", access = JsonProperty.Access.WRITE_ONLY)
     private QueryTimeGrainType intervalType;
 
     /*
      * Execution count of a query in this interval.
      */
-    @JsonProperty(value = "executionCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long executionCount;
 
     /*
      * List of metric objects for this interval
      */
-    @JsonProperty(value = "metrics")
     private List<QueryMetricProperties> metrics;
 
-    /** Creates an instance of QueryMetricInterval class. */
+    /**
+     * Creates an instance of QueryMetricInterval class.
+     */
     public QueryMetricInterval() {
     }
 
     /**
      * Get the intervalStartTime property: The start time for the metric interval (ISO-8601 format).
-     *
+     * 
      * @return the intervalStartTime value.
      */
     public String intervalStartTime() {
@@ -50,7 +54,7 @@ public final class QueryMetricInterval {
 
     /**
      * Get the intervalType property: Interval type (length).
-     *
+     * 
      * @return the intervalType value.
      */
     public QueryTimeGrainType intervalType() {
@@ -59,7 +63,7 @@ public final class QueryMetricInterval {
 
     /**
      * Get the executionCount property: Execution count of a query in this interval.
-     *
+     * 
      * @return the executionCount value.
      */
     public Long executionCount() {
@@ -68,7 +72,7 @@ public final class QueryMetricInterval {
 
     /**
      * Get the metrics property: List of metric objects for this interval.
-     *
+     * 
      * @return the metrics value.
      */
     public List<QueryMetricProperties> metrics() {
@@ -77,7 +81,7 @@ public final class QueryMetricInterval {
 
     /**
      * Set the metrics property: List of metric objects for this interval.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the QueryMetricInterval object itself.
      */
@@ -88,12 +92,56 @@ public final class QueryMetricInterval {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (metrics() != null) {
             metrics().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("metrics", this.metrics, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QueryMetricInterval from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QueryMetricInterval if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QueryMetricInterval.
+     */
+    public static QueryMetricInterval fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QueryMetricInterval deserializedQueryMetricInterval = new QueryMetricInterval();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("intervalStartTime".equals(fieldName)) {
+                    deserializedQueryMetricInterval.intervalStartTime = reader.getString();
+                } else if ("intervalType".equals(fieldName)) {
+                    deserializedQueryMetricInterval.intervalType = QueryTimeGrainType.fromString(reader.getString());
+                } else if ("executionCount".equals(fieldName)) {
+                    deserializedQueryMetricInterval.executionCount = reader.getNullable(JsonReader::getLong);
+                } else if ("metrics".equals(fieldName)) {
+                    List<QueryMetricProperties> metrics
+                        = reader.readArray(reader1 -> QueryMetricProperties.fromJson(reader1));
+                    deserializedQueryMetricInterval.metrics = metrics;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQueryMetricInterval;
+        });
     }
 }

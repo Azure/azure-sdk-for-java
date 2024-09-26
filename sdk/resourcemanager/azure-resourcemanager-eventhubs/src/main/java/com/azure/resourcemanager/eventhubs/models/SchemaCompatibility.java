@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Collection;
 
 /**
@@ -30,7 +28,7 @@ public final class SchemaCompatibility extends ExpandableStringEnum<SchemaCompat
 
     /**
      * Creates a new instance of SchemaCompatibility value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +37,17 @@ public final class SchemaCompatibility extends ExpandableStringEnum<SchemaCompat
 
     /**
      * Creates or finds a SchemaCompatibility from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SchemaCompatibility.
      */
-    @JsonCreator
     public static SchemaCompatibility fromString(String name) {
         return fromString(name, SchemaCompatibility.class);
     }
 
     /**
      * Gets known SchemaCompatibility values.
-     *
+     * 
      * @return known SchemaCompatibility values.
      */
     public static Collection<SchemaCompatibility> values() {

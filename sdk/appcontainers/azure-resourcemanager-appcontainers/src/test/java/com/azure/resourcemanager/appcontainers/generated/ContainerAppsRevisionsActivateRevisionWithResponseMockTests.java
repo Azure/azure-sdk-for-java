@@ -28,7 +28,7 @@ public final class ContainerAppsRevisionsActivateRevisionWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.containerAppsRevisions()
-            .activateRevisionWithResponse("v", "bkut", "umltwjflu", com.azure.core.util.Context.NONE);
+            .activateRevisionWithResponse("ejchcsrlz", "nmzlanru", "dwv", com.azure.core.util.Context.NONE);
 
     }
 }

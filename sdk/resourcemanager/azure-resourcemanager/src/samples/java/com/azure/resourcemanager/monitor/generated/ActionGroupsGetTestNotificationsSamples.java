@@ -18,7 +18,10 @@ public final class ActionGroupsGetTestNotificationsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getNotificationDetailsAtSubscriptionLevel(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActionGroups()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActionGroups()
             .getTestNotificationsWithResponse("11000222191287", com.azure.core.util.Context.NONE);
     }
 }

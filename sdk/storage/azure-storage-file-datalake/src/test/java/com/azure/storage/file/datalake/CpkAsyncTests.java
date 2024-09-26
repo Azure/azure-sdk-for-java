@@ -5,6 +5,7 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.LiveOnly;
+import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
 import com.azure.storage.file.datalake.models.FileReadAsyncResponse;
 import com.azure.storage.file.datalake.models.PathInfo;
@@ -85,7 +86,8 @@ public class CpkAsyncTests extends DataLakeTestBase {
             .assertNext(r -> {
                 assertEquals(200, r.getStatusCode());
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+                assertEquals(key.getKeySha256(),
+                    r.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
             })
             .verifyComplete();
     }
@@ -109,7 +111,8 @@ public class CpkAsyncTests extends DataLakeTestBase {
         StepVerifier.create(response)
             .assertNext(r -> {
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+                assertEquals(key.getKeySha256(),
+                    r.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
             })
             .verifyComplete();
     }
@@ -139,7 +142,8 @@ public class CpkAsyncTests extends DataLakeTestBase {
             .assertNext(r -> {
                 assertEquals(key.getKeySha256(), r.getValue().getCustomerProvidedKey().getKeySha256());
                 assertTrue(Boolean.parseBoolean(r.getHeaders().getValue(X_MS_REQUEST_SERVER_ENCRYPTED)));
-                assertEquals(key.getKeySha256(), r.getHeaders().getValue(X_MS_ENCRYPTION_KEY_SHA256));
+                assertEquals(key.getKeySha256(),
+                    r.getHeaders().getValue(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256_HEADER_NAME));
             })
             .verifyComplete();
     }

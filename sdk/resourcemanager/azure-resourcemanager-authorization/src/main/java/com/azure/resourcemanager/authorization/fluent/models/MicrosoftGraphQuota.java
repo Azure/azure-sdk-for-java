@@ -5,64 +5,63 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** quota. */
+/**
+ * quota.
+ */
 @Fluent
-public final class MicrosoftGraphQuota {
+public final class MicrosoftGraphQuota implements JsonSerializable<MicrosoftGraphQuota> {
     /*
      * Total space consumed by files in the recycle bin, in bytes. Read-only.
      */
-    @JsonProperty(value = "deleted")
     private Long deleted;
 
     /*
      * Total space remaining before reaching the quota limit, in bytes. Read-only.
      */
-    @JsonProperty(value = "remaining")
     private Long remaining;
 
     /*
      * Enumeration value that indicates the state of the storage space. Read-only.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * storagePlanInformation
      */
-    @JsonProperty(value = "storagePlanInformation")
     private MicrosoftGraphStoragePlanInformation storagePlanInformation;
 
     /*
      * Total allowed storage space, in bytes. Read-only.
      */
-    @JsonProperty(value = "total")
     private Long total;
 
     /*
      * Total space used, in bytes. Read-only.
      */
-    @JsonProperty(value = "used")
     private Long used;
 
     /*
      * quota
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphQuota class. */
+    /**
+     * Creates an instance of MicrosoftGraphQuota class.
+     */
     public MicrosoftGraphQuota() {
     }
 
     /**
      * Get the deleted property: Total space consumed by files in the recycle bin, in bytes. Read-only.
-     *
+     * 
      * @return the deleted value.
      */
     public Long deleted() {
@@ -71,7 +70,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Set the deleted property: Total space consumed by files in the recycle bin, in bytes. Read-only.
-     *
+     * 
      * @param deleted the deleted value to set.
      * @return the MicrosoftGraphQuota object itself.
      */
@@ -82,7 +81,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Get the remaining property: Total space remaining before reaching the quota limit, in bytes. Read-only.
-     *
+     * 
      * @return the remaining value.
      */
     public Long remaining() {
@@ -91,7 +90,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Set the remaining property: Total space remaining before reaching the quota limit, in bytes. Read-only.
-     *
+     * 
      * @param remaining the remaining value to set.
      * @return the MicrosoftGraphQuota object itself.
      */
@@ -102,7 +101,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Get the state property: Enumeration value that indicates the state of the storage space. Read-only.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -111,7 +110,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Set the state property: Enumeration value that indicates the state of the storage space. Read-only.
-     *
+     * 
      * @param state the state value to set.
      * @return the MicrosoftGraphQuota object itself.
      */
@@ -122,7 +121,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Get the storagePlanInformation property: storagePlanInformation.
-     *
+     * 
      * @return the storagePlanInformation value.
      */
     public MicrosoftGraphStoragePlanInformation storagePlanInformation() {
@@ -131,7 +130,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Set the storagePlanInformation property: storagePlanInformation.
-     *
+     * 
      * @param storagePlanInformation the storagePlanInformation value to set.
      * @return the MicrosoftGraphQuota object itself.
      */
@@ -142,7 +141,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Get the total property: Total allowed storage space, in bytes. Read-only.
-     *
+     * 
      * @return the total value.
      */
     public Long total() {
@@ -151,7 +150,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Set the total property: Total allowed storage space, in bytes. Read-only.
-     *
+     * 
      * @param total the total value to set.
      * @return the MicrosoftGraphQuota object itself.
      */
@@ -162,7 +161,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Get the used property: Total space used, in bytes. Read-only.
-     *
+     * 
      * @return the used value.
      */
     public Long used() {
@@ -171,7 +170,7 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Set the used property: Total space used, in bytes. Read-only.
-     *
+     * 
      * @param used the used value to set.
      * @return the MicrosoftGraphQuota object itself.
      */
@@ -182,17 +181,16 @@ public final class MicrosoftGraphQuota {
 
     /**
      * Get the additionalProperties property: quota.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: quota.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphQuota object itself.
      */
@@ -201,22 +199,77 @@ public final class MicrosoftGraphQuota {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storagePlanInformation() != null) {
             storagePlanInformation().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("deleted", this.deleted);
+        jsonWriter.writeNumberField("remaining", this.remaining);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeJsonField("storagePlanInformation", this.storagePlanInformation);
+        jsonWriter.writeNumberField("total", this.total);
+        jsonWriter.writeNumberField("used", this.used);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphQuota from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphQuota if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphQuota.
+     */
+    public static MicrosoftGraphQuota fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphQuota deserializedMicrosoftGraphQuota = new MicrosoftGraphQuota();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deleted".equals(fieldName)) {
+                    deserializedMicrosoftGraphQuota.deleted = reader.getNullable(JsonReader::getLong);
+                } else if ("remaining".equals(fieldName)) {
+                    deserializedMicrosoftGraphQuota.remaining = reader.getNullable(JsonReader::getLong);
+                } else if ("state".equals(fieldName)) {
+                    deserializedMicrosoftGraphQuota.state = reader.getString();
+                } else if ("storagePlanInformation".equals(fieldName)) {
+                    deserializedMicrosoftGraphQuota.storagePlanInformation
+                        = MicrosoftGraphStoragePlanInformation.fromJson(reader);
+                } else if ("total".equals(fieldName)) {
+                    deserializedMicrosoftGraphQuota.total = reader.getNullable(JsonReader::getLong);
+                } else if ("used".equals(fieldName)) {
+                    deserializedMicrosoftGraphQuota.used = reader.getNullable(JsonReader::getLong);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphQuota.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphQuota;
+        });
     }
 }

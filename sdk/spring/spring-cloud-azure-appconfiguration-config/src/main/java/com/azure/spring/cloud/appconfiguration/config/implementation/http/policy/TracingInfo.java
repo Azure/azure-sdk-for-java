@@ -5,6 +5,8 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.http.polic
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 
+import org.springframework.util.StringUtils;
+
 import com.azure.core.util.Configuration;
 import com.azure.spring.cloud.appconfiguration.config.implementation.HostType;
 import com.azure.spring.cloud.appconfiguration.config.implementation.RequestTracingConstants;
@@ -19,7 +21,7 @@ public class TracingInfo {
     private int replicaCount;
 
     private final FeatureFlagTracing featureFlagTracing;
-    
+
     private final Configuration configuration;
 
     public TracingInfo(boolean isDev, boolean isKeyVaultConfigured, int replicaCount, Configuration configuration) {
@@ -31,7 +33,8 @@ public class TracingInfo {
     }
 
     public String getValue(boolean watchRequests) {
-        String track = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
+        String track = configuration
+            .get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && Boolean.valueOf(track)) {
             return "";
         }
@@ -60,6 +63,8 @@ public class TracingInfo {
         if (replicaCount > 0) {
             sb.append(",").append(RequestTracingConstants.REPLICA_COUNT).append("=").append(replicaCount);
         }
+        
+        sb = getFeatureManagementUsage(sb);
 
         return sb.toString();
     }
@@ -80,9 +85,20 @@ public class TracingInfo {
             hostType = HostType.KUBERNETES;
         } else if (System.getenv(RequestTracingConstants.CONTAINER_APP_ENVIRONMENT_VARIABLE.toString()) != null) {
             hostType = HostType.CONTAINER_APP;
+        } else if (System.getenv(RequestTracingConstants.SERVICE_FABRIC_ENVIRONMENT_VARIABLE.toString()) != null) {
+            hostType = HostType.SERVICE_FABRIC;
         }
 
         return hostType.toString();
+    }
+    
+    private static StringBuilder getFeatureManagementUsage(StringBuilder sb) {
+        ClassLoader loader = ClassLoader.getSystemClassLoader();
+        Package ff = loader.getDefinedPackage("com.azure.spring.cloud.feature.management.models");
+        if (ff != null && StringUtils.hasText(ff.getImplementationVersion())) {
+            sb.append(",FMSpVer=").append(ff.getImplementationVersion());
+        }
+        return sb;
     }
 
     /**

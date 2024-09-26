@@ -60,8 +60,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void beforeTest() {
-        this.hubClient = toClose(new EventHubClientBuilder().connectionString(TestUtils.getConnectionString())
-            .buildClient());
+        this.hubClient = toClose(createBuilder().buildClient());
 
         List<String> allIds = new ArrayList<>();
         final EventHubProperties properties = hubClient.getProperties();
@@ -91,10 +90,11 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final int queueSize = 10;
+        final EventHubClientBuilder builder = createBuilder();
 
         producer = toClose(new EventHubBufferedProducerClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
                 fail("Exception occurred while sending messages." + failed.getThrowable());
@@ -157,9 +157,10 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final Duration maxWaitTime = Duration.ofSeconds(15);
         final int queueSize = 10;
 
+        final EventHubClientBuilder builder = createBuilder();
         producer = new EventHubBufferedProducerClientBuilder()
-            .connectionString(TestUtils.getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
                 fail("Exception occurred while sending messages." + failed.getThrowable());

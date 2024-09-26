@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class ManagementPolicyName extends ExpandableStringEnum<ManagementP
      * @param name a name to look for.
      * @return the corresponding ManagementPolicyName.
      */
-    @JsonCreator
     public static ManagementPolicyName fromString(String name) {
         return fromString(name, ManagementPolicyName.class);
     }

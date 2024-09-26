@@ -6,17 +6,20 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A reference to the certificate.
  */
 @Fluent
-public final class CertificateReference {
+public final class CertificateReference implements JsonSerializable<CertificateReference> {
     /*
      * Resource Id of the certificate
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /**
@@ -52,10 +55,48 @@ public final class CertificateReference {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property resourceId in model CertificateReference"));
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property resourceId in model CertificateReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateReference.
+     */
+    public static CertificateReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateReference deserializedCertificateReference = new CertificateReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedCertificateReference.resourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateReference;
+        });
+    }
 }

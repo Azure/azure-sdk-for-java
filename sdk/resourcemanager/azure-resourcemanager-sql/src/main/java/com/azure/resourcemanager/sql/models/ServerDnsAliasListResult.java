@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.fluent.models.ServerDnsAliasInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of server DNS aliases. */
+/**
+ * A list of server DNS aliases.
+ */
 @Immutable
-public final class ServerDnsAliasListResult {
+public final class ServerDnsAliasListResult implements JsonSerializable<ServerDnsAliasListResult> {
     /*
      * Array of results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerDnsAliasInner> value;
 
     /*
      * Link to retrieve next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServerDnsAliasListResult class. */
+    /**
+     * Creates an instance of ServerDnsAliasListResult class.
+     */
     public ServerDnsAliasListResult() {
     }
 
     /**
      * Get the value property: Array of results.
-     *
+     * 
      * @return the value value.
      */
     public List<ServerDnsAliasInner> value() {
@@ -39,7 +45,7 @@ public final class ServerDnsAliasListResult {
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class ServerDnsAliasListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerDnsAliasListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerDnsAliasListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerDnsAliasListResult.
+     */
+    public static ServerDnsAliasListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerDnsAliasListResult deserializedServerDnsAliasListResult = new ServerDnsAliasListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ServerDnsAliasInner> value
+                        = reader.readArray(reader1 -> ServerDnsAliasInner.fromJson(reader1));
+                    deserializedServerDnsAliasListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedServerDnsAliasListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerDnsAliasListResult;
+        });
     }
 }

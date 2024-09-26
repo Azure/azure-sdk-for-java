@@ -6,18 +6,22 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Specifies a list of virtual machine instance IDs from the VM scale set.
  */
 @Fluent
-public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
+public final class VirtualMachineScaleSetVMInstanceRequiredIDs
+    implements JsonSerializable<VirtualMachineScaleSetVMInstanceRequiredIDs> {
     /*
      * The virtual machine scale set instance ids.
      */
-    @JsonProperty(value = "instanceIds", required = true)
     private List<String> instanceIds;
 
     /**
@@ -60,4 +64,43 @@ public final class VirtualMachineScaleSetVMInstanceRequiredIDs {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetVMInstanceRequiredIDs.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("instanceIds", this.instanceIds, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetVMInstanceRequiredIDs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetVMInstanceRequiredIDs if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetVMInstanceRequiredIDs.
+     */
+    public static VirtualMachineScaleSetVMInstanceRequiredIDs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetVMInstanceRequiredIDs deserializedVirtualMachineScaleSetVMInstanceRequiredIDs
+                = new VirtualMachineScaleSetVMInstanceRequiredIDs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceIds".equals(fieldName)) {
+                    List<String> instanceIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetVMInstanceRequiredIDs.instanceIds = instanceIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetVMInstanceRequiredIDs;
+        });
+    }
 }

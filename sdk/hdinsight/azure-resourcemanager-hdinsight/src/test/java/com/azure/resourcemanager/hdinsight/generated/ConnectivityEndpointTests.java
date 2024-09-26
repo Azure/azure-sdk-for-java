@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectivityEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectivityEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"vasrruvwb\",\"protocol\":\"qfsubcgjbirx\",\"location\":\"ybsrfbjfdtwss\",\"port\":772106102,\"privateIPAddress\":\"pvjzbe\"}")
-                .toObject(ConnectivityEndpoint.class);
-        Assertions.assertEquals("vasrruvwb", model.name());
-        Assertions.assertEquals("qfsubcgjbirx", model.protocol());
-        Assertions.assertEquals("ybsrfbjfdtwss", model.location());
-        Assertions.assertEquals(772106102, model.port());
-        Assertions.assertEquals("pvjzbe", model.privateIpAddress());
+        ConnectivityEndpoint model = BinaryData.fromString(
+            "{\"name\":\"lbg\",\"protocol\":\"duiertgcc\",\"location\":\"vaolpsslqlf\",\"port\":219002993,\"privateIPAddress\":\"bbglzpswiydmc\"}")
+            .toObject(ConnectivityEndpoint.class);
+        Assertions.assertEquals("lbg", model.name());
+        Assertions.assertEquals("duiertgcc", model.protocol());
+        Assertions.assertEquals("vaolpsslqlf", model.location());
+        Assertions.assertEquals(219002993, model.port());
+        Assertions.assertEquals("bbglzpswiydmc", model.privateIpAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectivityEndpoint model =
-            new ConnectivityEndpoint()
-                .withName("vasrruvwb")
-                .withProtocol("qfsubcgjbirx")
-                .withLocation("ybsrfbjfdtwss")
-                .withPort(772106102)
-                .withPrivateIpAddress("pvjzbe");
+        ConnectivityEndpoint model = new ConnectivityEndpoint().withName("lbg")
+            .withProtocol("duiertgcc")
+            .withLocation("vaolpsslqlf")
+            .withPort(219002993)
+            .withPrivateIpAddress("bbglzpswiydmc");
         model = BinaryData.fromObject(model).toObject(ConnectivityEndpoint.class);
-        Assertions.assertEquals("vasrruvwb", model.name());
-        Assertions.assertEquals("qfsubcgjbirx", model.protocol());
-        Assertions.assertEquals("ybsrfbjfdtwss", model.location());
-        Assertions.assertEquals(772106102, model.port());
-        Assertions.assertEquals("pvjzbe", model.privateIpAddress());
+        Assertions.assertEquals("lbg", model.name());
+        Assertions.assertEquals("duiertgcc", model.protocol());
+        Assertions.assertEquals("vaolpsslqlf", model.location());
+        Assertions.assertEquals(219002993, model.port());
+        Assertions.assertEquals("bbglzpswiydmc", model.privateIpAddress());
     }
 }

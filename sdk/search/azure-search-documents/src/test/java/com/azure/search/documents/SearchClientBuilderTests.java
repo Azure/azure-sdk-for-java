@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Header;
 import com.azure.search.documents.indexes.SearchIndexClientBuilderTests;
@@ -34,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.CONCURRENT)
 public class SearchClientBuilderTests {
-    private static final AzureKeyCredential SEARCH_API_KEY_CREDENTIAL = new AzureKeyCredential("0123");
+    private static final MockTokenCredential SEARCH_CREDENTIAL = new MockTokenCredential();
     private static final String SEARCH_ENDPOINT = "https://test.search.windows.net";
     private static final String INDEX_NAME = "myindex";
     private static final SearchServiceVersion API_VERSION = SearchServiceVersion.V2020_06_30;
@@ -43,9 +44,10 @@ public class SearchClientBuilderTests {
     public void buildSyncClientTest() {
         SearchClient client = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
             .serviceVersion(API_VERSION)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(client);
@@ -56,8 +58,9 @@ public class SearchClientBuilderTests {
     public void buildSyncClientUsingDefaultApiVersionTest() {
         SearchClient client = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(client);
@@ -68,9 +71,10 @@ public class SearchClientBuilderTests {
     public void buildAsyncClientTest() {
         SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
             .serviceVersion(API_VERSION)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -81,8 +85,9 @@ public class SearchClientBuilderTests {
     public void buildAsyncClientUsingDefaultApiVersionTest() {
         SearchAsyncClient client = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -93,8 +98,9 @@ public class SearchClientBuilderTests {
     public void whenBuildClientAndVerifyPropertiesThenSuccess() {
         SearchClient client = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertEquals(SEARCH_ENDPOINT, client.getEndpoint());
@@ -102,8 +108,9 @@ public class SearchClientBuilderTests {
 
         SearchAsyncClient asyncClient = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertEquals(SEARCH_ENDPOINT, asyncClient.getEndpoint());
@@ -137,7 +144,7 @@ public class SearchClientBuilderTests {
         new SecureRandom().nextBytes(randomData);
         SearchAsyncClient searchAsyncClient = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName("test_builder")
             .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .httpClient(new SearchIndexClientBuilderTests.FreshDateTestClient())
@@ -154,7 +161,7 @@ public class SearchClientBuilderTests {
     public void clientOptionsIsPreferredOverLogOptions() {
         SearchClient searchClient = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName("test_builder")
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
@@ -173,7 +180,7 @@ public class SearchClientBuilderTests {
     public void applicationIdFallsBackToLogOptions() {
         SearchClient searchClient = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName("test_builder")
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
@@ -190,7 +197,7 @@ public class SearchClientBuilderTests {
     public void clientOptionHeadersAreAddedLast() {
         SearchClient searchClient = new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName("test_builder")
             .clientOptions(new ClientOptions()
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
@@ -208,11 +215,12 @@ public class SearchClientBuilderTests {
     public void bothRetryOptionsAndRetryPolicySet() {
         assertThrows(IllegalStateException.class, () -> new SearchClientBuilder()
             .endpoint(SEARCH_ENDPOINT)
-            .credential(SEARCH_API_KEY_CREDENTIAL)
+            .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
             .serviceVersion(API_VERSION)
             .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient());
     }
 }

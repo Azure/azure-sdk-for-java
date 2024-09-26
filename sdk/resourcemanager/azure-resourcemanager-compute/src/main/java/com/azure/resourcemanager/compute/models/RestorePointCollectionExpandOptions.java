@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -33,7 +32,6 @@ public final class RestorePointCollectionExpandOptions
      * @param name a name to look for.
      * @return the corresponding RestorePointCollectionExpandOptions.
      */
-    @JsonCreator
     public static RestorePointCollectionExpandOptions fromString(String name) {
         return fromString(name, RestorePointCollectionExpandOptions.class);
     }

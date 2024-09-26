@@ -31,9 +31,9 @@ import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
 import com.azure.resourcemanager.appservice.fluent.models.HybridConnectionInner;
 import com.azure.resourcemanager.appservice.fluent.models.IdentifierInner;
 import com.azure.resourcemanager.appservice.fluent.models.KeyInfoInner;
+import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployLogInner;
 import com.azure.resourcemanager.appservice.fluent.models.MSDeployStatusInner;
-import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlStatusInner;
 import com.azure.resourcemanager.appservice.fluent.models.NetworkFeaturesInner;
 import com.azure.resourcemanager.appservice.fluent.models.NetworkTraceInner;
 import com.azure.resourcemanager.appservice.fluent.models.OperationInner;
@@ -79,8 +79,8 @@ import com.azure.resourcemanager.appservice.models.CsmDeploymentStatus;
 import com.azure.resourcemanager.appservice.models.CsmPublishingProfileOptions;
 import com.azure.resourcemanager.appservice.models.CsmSlotEntity;
 import com.azure.resourcemanager.appservice.models.DeletedAppRestoreRequest;
-import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.MigrateMySqlRequest;
+import com.azure.resourcemanager.appservice.models.MSDeploy;
 import com.azure.resourcemanager.appservice.models.PremierAddOnPatchResource;
 import com.azure.resourcemanager.appservice.models.SnapshotRestoreRequest;
 import com.azure.resourcemanager.appservice.models.StorageMigrationOptions;
@@ -88,11 +88,10 @@ import com.azure.resourcemanager.appservice.models.WorkflowArtifacts;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.nio.ByteBuffer;
 import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
  * An instance of this class provides access to all the operations defined in WebAppsClient.
@@ -101,9 +100,9 @@ public interface WebAppsClient
     extends InnerSupportsGet<SiteInner>, InnerSupportsListing<SiteInner>, InnerSupportsDelete<Void> {
     /**
      * Get all apps for a subscription.
-     *
+     * 
      * Description for Get all apps for a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -114,9 +113,9 @@ public interface WebAppsClient
 
     /**
      * Get all apps for a subscription.
-     *
+     * 
      * Description for Get all apps for a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -127,9 +126,9 @@ public interface WebAppsClient
 
     /**
      * Get all apps for a subscription.
-     *
+     * 
      * Description for Get all apps for a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -142,9 +141,9 @@ public interface WebAppsClient
 
     /**
      * Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * Description for Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default
      * is false, which only gives you the production slot of all apps.
@@ -159,9 +158,9 @@ public interface WebAppsClient
 
     /**
      * Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * Description for Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -174,9 +173,9 @@ public interface WebAppsClient
 
     /**
      * Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * Description for Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -189,9 +188,9 @@ public interface WebAppsClient
 
     /**
      * Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * Description for Gets all web, mobile, and API apps in the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param includeSlots Specify &lt;strong&gt;true&lt;/strong&gt; to include deployment slots in results. The default
      * is false, which only gives you the production slot of all apps.
@@ -207,9 +206,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,9 +225,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,9 +243,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -263,9 +262,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +280,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -301,9 +300,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -320,9 +319,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -339,9 +338,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -359,9 +358,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -377,9 +376,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -395,9 +394,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -414,9 +413,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param deleteMetrics If true, web app metrics are also deleted.
@@ -436,9 +435,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,9 +453,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param deleteMetrics If true, web app metrics are also deleted.
@@ -477,9 +476,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,9 +493,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -514,9 +513,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -533,9 +532,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -552,9 +551,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -572,9 +571,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -590,9 +589,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -608,9 +607,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -627,9 +626,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param hostname Custom hostname.
@@ -645,9 +644,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -661,9 +660,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param hostname Custom hostname.
@@ -680,9 +679,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -696,9 +695,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -714,9 +713,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -731,9 +730,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -750,9 +749,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -766,9 +765,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
@@ -784,9 +783,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
@@ -801,9 +800,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
@@ -820,9 +819,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Backup configuration. You can use the JSON response from the POST action as input here.
@@ -837,9 +836,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -853,9 +852,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -869,9 +868,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -886,9 +885,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -904,9 +903,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -921,9 +920,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -940,9 +939,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -957,9 +956,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -976,9 +975,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -995,9 +994,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1015,9 +1014,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1035,11 +1034,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -1058,11 +1057,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -1081,11 +1080,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -1105,11 +1104,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -1126,9 +1125,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1145,9 +1144,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1164,9 +1163,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1183,9 +1182,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1203,9 +1202,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1221,9 +1220,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1238,9 +1237,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -1256,9 +1255,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1274,9 +1273,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1292,9 +1291,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -1311,9 +1310,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,9 +1328,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1345,9 +1344,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -1363,9 +1362,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1379,12 +1378,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1399,12 +1398,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1417,12 +1416,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1436,12 +1435,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1454,9 +1453,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1472,9 +1471,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1488,9 +1487,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -1506,9 +1505,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1522,12 +1521,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1542,12 +1541,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1560,12 +1559,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1579,12 +1578,12 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1597,9 +1596,9 @@ public interface WebAppsClient
 
     /**
      * List the configurations of an app
-     *
+     * 
      * Description for List the configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1613,9 +1612,9 @@ public interface WebAppsClient
 
     /**
      * List the configurations of an app
-     *
+     * 
      * Description for List the configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1629,9 +1628,9 @@ public interface WebAppsClient
 
     /**
      * List the configurations of an app
-     *
+     * 
      * Description for List the configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -1646,9 +1645,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
@@ -1664,9 +1663,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
@@ -1682,9 +1681,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
@@ -1700,9 +1699,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
@@ -1719,9 +1718,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
@@ -1737,9 +1736,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
@@ -1755,9 +1754,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
@@ -1774,9 +1773,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1791,9 +1790,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1807,9 +1806,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -1825,9 +1824,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1841,9 +1840,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettings Auth settings associated with web app.
@@ -1860,9 +1859,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettings Auth settings associated with web app.
@@ -1879,9 +1878,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettings Auth settings associated with web app.
@@ -1899,9 +1898,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettings Auth settings associated with web app.
@@ -1917,9 +1916,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1934,9 +1933,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1951,9 +1950,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -1969,9 +1968,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1985,9 +1984,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2003,9 +2002,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2020,9 +2019,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2039,9 +2038,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2055,9 +2054,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettingsV2 Auth settings associated with web app.
@@ -2074,9 +2073,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettingsV2 Auth settings associated with web app.
@@ -2093,9 +2092,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettingsV2 Auth settings associated with web app.
@@ -2113,9 +2112,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param siteAuthSettingsV2 Auth settings associated with web app.
@@ -2131,9 +2130,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2148,9 +2147,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2165,9 +2164,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2184,9 +2183,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2200,9 +2199,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param azureStorageAccounts Azure storage accounts of the app.
@@ -2219,9 +2218,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param azureStorageAccounts Azure storage accounts of the app.
@@ -2237,9 +2236,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param azureStorageAccounts Azure storage accounts of the app.
@@ -2257,9 +2256,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param azureStorageAccounts Azure storage accounts of the app.
@@ -2275,9 +2274,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2293,9 +2292,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2310,9 +2309,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2328,9 +2327,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2344,9 +2343,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Edited backup configuration.
@@ -2363,9 +2362,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Edited backup configuration.
@@ -2381,9 +2380,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Edited backup configuration.
@@ -2400,9 +2399,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Edited backup configuration.
@@ -2417,9 +2416,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2433,9 +2432,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2449,9 +2448,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2466,9 +2465,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2481,9 +2480,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2498,9 +2497,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2514,9 +2513,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2532,9 +2531,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2548,9 +2547,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2564,9 +2563,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2580,9 +2579,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2598,9 +2597,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -2617,9 +2616,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -2635,9 +2634,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -2654,9 +2653,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -2671,9 +2670,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2688,9 +2687,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2704,9 +2703,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2722,9 +2721,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -2741,9 +2740,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -2759,9 +2758,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -2778,9 +2777,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -2796,9 +2795,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
@@ -2814,9 +2813,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
@@ -2832,9 +2831,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
@@ -2851,9 +2850,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStrings Connection strings of the app or deployment slot. See example.
@@ -2869,9 +2868,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2886,9 +2885,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2902,9 +2901,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2920,9 +2919,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2936,9 +2935,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2954,9 +2953,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2970,9 +2969,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -2988,9 +2987,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3004,9 +3003,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the
@@ -3024,9 +3023,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the
@@ -3043,9 +3042,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the
@@ -3063,9 +3062,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteLogsConfig A SiteLogsConfig JSON object that contains the logging configuration to change in the
@@ -3082,9 +3081,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
@@ -3100,9 +3099,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
@@ -3118,9 +3117,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
@@ -3137,9 +3136,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param metadata Edited metadata of the app or deployment slot. See example.
@@ -3154,9 +3153,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3170,9 +3169,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3186,9 +3185,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -3203,9 +3202,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3219,9 +3218,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3236,9 +3235,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3253,9 +3252,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3269,9 +3268,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -3287,9 +3286,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3303,9 +3302,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3319,9 +3318,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -3336,9 +3335,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param pushSettings Push settings associated with web app.
@@ -3354,9 +3353,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param pushSettings Push settings associated with web app.
@@ -3372,9 +3371,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param pushSettings Push settings associated with web app.
@@ -3391,9 +3390,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param pushSettings Push settings associated with web app.
@@ -3408,9 +3407,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3424,9 +3423,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3440,9 +3439,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -3458,9 +3457,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3474,9 +3473,9 @@ public interface WebAppsClient
 
     /**
      * Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * Description for Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3491,9 +3490,9 @@ public interface WebAppsClient
 
     /**
      * Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * Description for Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3507,9 +3506,9 @@ public interface WebAppsClient
 
     /**
      * Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * Description for Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -3525,9 +3524,9 @@ public interface WebAppsClient
 
     /**
      * Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * Description for Gets the names of app settings and connection strings that stick to the slot (not swapped).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3541,10 +3540,10 @@ public interface WebAppsClient
 
     /**
      * Updates the names of application settings and connection string that remain with the slot during swap operation.
-     *
+     * 
      * Description for Updates the names of application settings and connection string that remain with the slot during
      * swap operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
@@ -3560,10 +3559,10 @@ public interface WebAppsClient
 
     /**
      * Updates the names of application settings and connection string that remain with the slot during swap operation.
-     *
+     * 
      * Description for Updates the names of application settings and connection string that remain with the slot during
      * swap operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
@@ -3579,10 +3578,10 @@ public interface WebAppsClient
 
     /**
      * Updates the names of application settings and connection string that remain with the slot during swap operation.
-     *
+     * 
      * Description for Updates the names of application settings and connection string that remain with the slot during
      * swap operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
@@ -3599,10 +3598,10 @@ public interface WebAppsClient
 
     /**
      * Updates the names of application settings and connection string that remain with the slot during swap operation.
-     *
+     * 
      * Description for Updates the names of application settings and connection string that remain with the slot during
      * swap operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotConfigNames Names of application settings and connection strings. See example.
@@ -3619,10 +3618,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3637,10 +3636,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3655,10 +3654,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -3675,10 +3674,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3692,9 +3691,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3710,9 +3709,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3728,9 +3727,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3746,9 +3745,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3765,9 +3764,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3783,9 +3782,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3801,9 +3800,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3820,9 +3819,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3838,9 +3837,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3856,9 +3855,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3875,9 +3874,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
@@ -3894,10 +3893,10 @@ public interface WebAppsClient
     /**
      * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the
      * ID of the snapshot.
-     *
+     * 
      * Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a
      * timestamp and the ID of the snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3914,10 +3913,10 @@ public interface WebAppsClient
     /**
      * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the
      * ID of the snapshot.
-     *
+     * 
      * Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a
      * timestamp and the ID of the snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3934,10 +3933,10 @@ public interface WebAppsClient
     /**
      * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the
      * ID of the snapshot.
-     *
+     * 
      * Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a
      * timestamp and the ID of the snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -3954,9 +3953,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -3972,9 +3971,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -3990,9 +3989,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -4009,9 +4008,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -4026,9 +4025,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -4044,9 +4043,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -4061,9 +4060,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -4080,9 +4079,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -4096,9 +4095,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4111,9 +4110,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4126,9 +4125,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -4142,9 +4141,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4157,9 +4156,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4172,9 +4171,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4187,9 +4186,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -4203,9 +4202,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4218,9 +4217,9 @@ public interface WebAppsClient
 
     /**
      * List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4234,9 +4233,9 @@ public interface WebAppsClient
 
     /**
      * List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4251,9 +4250,9 @@ public interface WebAppsClient
 
     /**
      * List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -4269,9 +4268,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4289,9 +4288,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4308,9 +4307,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4329,9 +4328,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4348,9 +4347,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4366,9 +4365,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4383,9 +4382,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4402,9 +4401,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4418,9 +4417,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4438,9 +4437,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4457,9 +4456,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4478,9 +4477,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4496,9 +4495,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4516,9 +4515,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4535,9 +4534,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4556,9 +4555,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -4574,7 +4573,7 @@ public interface WebAppsClient
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4588,7 +4587,7 @@ public interface WebAppsClient
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4602,7 +4601,7 @@ public interface WebAppsClient
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -4618,7 +4617,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param deploymentStatusId GUID of the deployment operation.
@@ -4635,7 +4634,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param deploymentStatusId GUID of the deployment operation.
@@ -4652,7 +4651,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param deploymentStatusId GUID of the deployment operation.
@@ -4669,7 +4668,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param deploymentStatusId GUID of the deployment operation.
@@ -4687,7 +4686,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param deploymentStatusId GUID of the deployment operation.
@@ -4704,7 +4703,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param deploymentStatusId GUID of the deployment operation.
@@ -4720,7 +4719,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param deploymentStatusId GUID of the deployment operation.
@@ -4737,9 +4736,9 @@ public interface WebAppsClient
 
     /**
      * List deployments for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployments for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4753,9 +4752,9 @@ public interface WebAppsClient
 
     /**
      * List deployments for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployments for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4769,9 +4768,9 @@ public interface WebAppsClient
 
     /**
      * List deployments for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployments for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -4786,9 +4785,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -4804,9 +4803,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -4821,9 +4820,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -4840,9 +4839,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -4857,9 +4856,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -4877,9 +4876,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -4896,9 +4895,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -4916,9 +4915,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -4934,9 +4933,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -4951,9 +4950,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -4968,9 +4967,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -4986,9 +4985,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -5002,9 +5001,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -5022,9 +5021,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -5040,9 +5039,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -5060,9 +5059,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -5079,10 +5078,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
@@ -5099,10 +5098,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
@@ -5118,10 +5117,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
@@ -5139,10 +5138,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request A RestoreRequest object that includes Azure storage URL and blog name for discovery of backup.
@@ -5157,9 +5156,9 @@ public interface WebAppsClient
 
     /**
      * Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * Description for Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5173,9 +5172,9 @@ public interface WebAppsClient
 
     /**
      * Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * Description for Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5189,9 +5188,9 @@ public interface WebAppsClient
 
     /**
      * Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * Description for Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -5207,9 +5206,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5226,9 +5225,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5244,9 +5243,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5263,9 +5262,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5281,9 +5280,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5301,9 +5300,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5320,9 +5319,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5340,9 +5339,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5359,9 +5358,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5377,9 +5376,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5395,9 +5394,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5414,9 +5413,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5430,9 +5429,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5450,9 +5449,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5469,9 +5468,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5489,9 +5488,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -5508,9 +5507,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5524,9 +5523,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5540,9 +5539,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -5557,9 +5556,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5573,9 +5572,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
@@ -5593,9 +5592,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
@@ -5613,9 +5612,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
@@ -5633,9 +5632,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
@@ -5654,9 +5653,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
@@ -5673,9 +5672,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
@@ -5692,9 +5691,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param mSDeploy Details of MSDeploy operation.
@@ -5713,9 +5712,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5731,9 +5730,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5749,9 +5748,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -5768,9 +5767,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5786,9 +5785,9 @@ public interface WebAppsClient
 
     /**
      * Invoke onedeploy status API /api/deployments and gets the deployment status for the site
-     *
+     * 
      * Description for Invoke onedeploy status API /api/deployments and gets the deployment status for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5802,9 +5801,9 @@ public interface WebAppsClient
 
     /**
      * Invoke onedeploy status API /api/deployments and gets the deployment status for the site
-     *
+     * 
      * Description for Invoke onedeploy status API /api/deployments and gets the deployment status for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5818,9 +5817,9 @@ public interface WebAppsClient
 
     /**
      * Invoke onedeploy status API /api/deployments and gets the deployment status for the site
-     *
+     * 
      * Description for Invoke onedeploy status API /api/deployments and gets the deployment status for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -5835,9 +5834,9 @@ public interface WebAppsClient
 
     /**
      * Invoke onedeploy status API /api/deployments and gets the deployment status for the site
-     *
+     * 
      * Description for Invoke onedeploy status API /api/deployments and gets the deployment status for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5851,9 +5850,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * Description for Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5867,9 +5866,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * Description for Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5883,9 +5882,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * Description for Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -5900,9 +5899,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * Description for Invoke the OneDeploy publish web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5916,9 +5915,9 @@ public interface WebAppsClient
 
     /**
      * List the functions for a web site, or a deployment slot.
-     *
+     * 
      * Description for List the functions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5934,9 +5933,9 @@ public interface WebAppsClient
 
     /**
      * List the functions for a web site, or a deployment slot.
-     *
+     * 
      * Description for List the functions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5952,9 +5951,9 @@ public interface WebAppsClient
 
     /**
      * List the functions for a web site, or a deployment slot.
-     *
+     * 
      * Description for List the functions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -5971,9 +5970,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5987,9 +5986,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6003,9 +6002,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -6020,9 +6019,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6036,9 +6035,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6056,9 +6055,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6075,9 +6074,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6096,9 +6095,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6115,9 +6114,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6134,9 +6133,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6153,9 +6152,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6172,9 +6171,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6192,9 +6191,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6211,9 +6210,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6230,9 +6229,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6250,9 +6249,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6269,9 +6268,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6288,9 +6287,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6309,9 +6308,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6327,9 +6326,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6347,9 +6346,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6367,9 +6366,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6388,9 +6387,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6408,9 +6407,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6429,9 +6428,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6449,9 +6448,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6471,9 +6470,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -6490,9 +6489,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6508,9 +6507,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6525,9 +6524,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6544,9 +6543,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6561,9 +6560,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6579,9 +6578,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6596,9 +6595,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6615,9 +6614,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -6632,9 +6631,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6648,9 +6647,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6664,9 +6663,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -6681,9 +6680,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6697,9 +6696,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6713,9 +6712,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6729,9 +6728,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -6746,9 +6745,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6761,9 +6760,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6777,9 +6776,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6793,9 +6792,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -6810,9 +6809,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -6825,9 +6824,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6845,9 +6844,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6865,9 +6864,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6886,9 +6885,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6906,9 +6905,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6927,9 +6926,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6947,9 +6946,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6969,9 +6968,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -6988,9 +6987,9 @@ public interface WebAppsClient
 
     /**
      * Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * Description for Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7004,9 +7003,9 @@ public interface WebAppsClient
 
     /**
      * Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * Description for Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7020,9 +7019,9 @@ public interface WebAppsClient
 
     /**
      * Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * Description for Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -7037,9 +7036,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7055,9 +7054,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7072,9 +7071,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7091,9 +7090,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7108,9 +7107,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7127,9 +7126,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7146,9 +7145,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7166,9 +7165,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7185,9 +7184,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7202,9 +7201,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7219,9 +7218,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7238,9 +7237,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -7254,9 +7253,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7273,9 +7272,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7292,9 +7291,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7312,9 +7311,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7331,9 +7330,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7351,9 +7350,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7371,9 +7370,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7392,9 +7391,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7412,9 +7411,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7433,9 +7432,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7454,9 +7453,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7476,9 +7475,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7495,9 +7494,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7515,9 +7514,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7535,9 +7534,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7556,9 +7555,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -7576,9 +7575,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7592,9 +7591,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7608,9 +7607,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param context The context to associate with this operation.
@@ -7626,9 +7625,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7642,9 +7641,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7660,9 +7659,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7676,9 +7675,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -7694,9 +7693,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -7710,9 +7709,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -7729,9 +7728,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -7747,9 +7746,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -7766,9 +7765,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -7784,9 +7783,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7804,9 +7803,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7823,9 +7822,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7844,9 +7843,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7863,9 +7862,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7883,9 +7882,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7902,9 +7901,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7923,9 +7922,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7941,9 +7940,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7961,9 +7960,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -7980,9 +7979,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -8000,9 +7999,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -8019,9 +8018,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8035,9 +8034,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -8051,9 +8050,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -8069,9 +8068,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -8087,9 +8086,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -8104,9 +8103,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -8123,9 +8122,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -8140,9 +8139,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8158,9 +8157,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8175,9 +8174,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8194,9 +8193,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8211,9 +8210,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8232,9 +8231,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8253,9 +8252,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8274,9 +8273,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8296,9 +8295,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8317,9 +8316,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8338,9 +8337,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8360,9 +8359,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8380,9 +8379,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8399,9 +8398,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8420,9 +8419,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param instanceId ID of web app instance.
@@ -8439,10 +8438,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
@@ -8460,10 +8459,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
@@ -8481,10 +8480,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param instanceId ID of a specific scaled-out instance. This is the value of the name property in the JSON
@@ -8504,9 +8503,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8526,9 +8525,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8548,9 +8547,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8571,9 +8570,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8593,10 +8592,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8617,10 +8616,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8640,10 +8639,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8665,10 +8664,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8686,9 +8685,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8708,9 +8707,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8730,9 +8729,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8753,9 +8752,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8774,9 +8773,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8796,9 +8795,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8818,9 +8817,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8841,9 +8840,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8864,9 +8863,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8887,9 +8886,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8911,9 +8910,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8934,9 +8933,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8956,9 +8955,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -8978,9 +8977,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -9001,9 +9000,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9018,9 +9017,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9034,9 +9033,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -9051,9 +9050,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9067,9 +9066,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9083,9 +9082,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9099,9 +9098,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -9116,9 +9115,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9133,9 +9132,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9149,9 +9148,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -9167,9 +9166,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9183,9 +9182,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app.
-     *
+     * 
      * Description for Restores a web app.
-     *
+     * 
      * @param subscriptionName Azure subscription.
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -9203,9 +9202,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app.
-     *
+     * 
      * Description for Restores a web app.
-     *
+     * 
      * @param subscriptionName Azure subscription.
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -9222,9 +9221,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app.
-     *
+     * 
      * Description for Restores a web app.
-     *
+     * 
      * @param subscriptionName Azure subscription.
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -9241,9 +9240,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app.
-     *
+     * 
      * Description for Restores a web app.
-     *
+     * 
      * @param subscriptionName Azure subscription.
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -9262,9 +9261,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app.
-     *
+     * 
      * Description for Restores a web app.
-     *
+     * 
      * @param subscriptionName Azure subscription.
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -9281,9 +9280,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app.
-     *
+     * 
      * Description for Restores a web app.
-     *
+     * 
      * @param subscriptionName Azure subscription.
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -9300,9 +9299,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app.
-     *
+     * 
      * Description for Restores a web app.
-     *
+     * 
      * @param subscriptionName Azure subscription.
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
@@ -9320,9 +9319,9 @@ public interface WebAppsClient
 
     /**
      * Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * Description for Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param migrationRequestEnvelope MySql migration options.
@@ -9338,9 +9337,9 @@ public interface WebAppsClient
 
     /**
      * Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * Description for Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param migrationRequestEnvelope MySql migration options.
@@ -9356,9 +9355,9 @@ public interface WebAppsClient
 
     /**
      * Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * Description for Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param migrationRequestEnvelope MySql migration options.
@@ -9374,9 +9373,9 @@ public interface WebAppsClient
 
     /**
      * Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * Description for Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param migrationRequestEnvelope MySql migration options.
@@ -9393,9 +9392,9 @@ public interface WebAppsClient
 
     /**
      * Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * Description for Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param migrationRequestEnvelope MySql migration options.
@@ -9411,9 +9410,9 @@ public interface WebAppsClient
 
     /**
      * Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * Description for Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param migrationRequestEnvelope MySql migration options.
@@ -9428,9 +9427,9 @@ public interface WebAppsClient
 
     /**
      * Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * Description for Migrates a local (in-app) MySql database to a remote MySql database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param migrationRequestEnvelope MySql migration options.
@@ -9447,10 +9446,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9465,10 +9464,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9482,10 +9481,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -9501,10 +9500,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9518,9 +9517,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9535,9 +9534,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9551,9 +9550,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -9569,9 +9568,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9587,11 +9586,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9609,11 +9608,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9631,11 +9630,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9654,11 +9653,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9674,9 +9673,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9692,9 +9691,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9710,9 +9709,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -9729,9 +9728,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -9748,11 +9747,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9770,11 +9769,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9792,11 +9791,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9815,11 +9814,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionEnvelope Properties of the Virtual Network connection. See example.
@@ -9835,9 +9834,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -9856,9 +9855,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -9876,9 +9875,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -9898,9 +9897,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -9917,9 +9916,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -9935,9 +9934,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -9952,9 +9951,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -9971,9 +9970,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -9988,9 +9987,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -10008,9 +10007,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10024,9 +10023,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -10045,9 +10044,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10061,9 +10060,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -10081,9 +10080,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -10101,9 +10100,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10118,9 +10117,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10135,9 +10134,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -10156,9 +10155,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -10176,9 +10175,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10192,9 +10191,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10208,9 +10207,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -10229,9 +10228,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10245,9 +10244,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10261,9 +10260,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param context The context to associate with this operation.
@@ -10278,9 +10277,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10293,9 +10292,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10311,9 +10310,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10328,9 +10327,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10347,9 +10346,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10364,9 +10363,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10382,9 +10381,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10399,9 +10398,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10418,9 +10417,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10435,9 +10434,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10453,9 +10452,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10470,9 +10469,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10489,9 +10488,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -10506,9 +10505,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10522,9 +10521,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10538,9 +10537,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -10556,9 +10555,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10571,9 +10570,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -10590,9 +10589,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10606,9 +10605,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10622,9 +10621,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example:
@@ -10643,9 +10642,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10661,9 +10660,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10677,9 +10676,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -10695,9 +10694,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10711,9 +10710,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10727,9 +10726,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10743,9 +10742,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -10760,9 +10759,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -10776,9 +10775,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10794,9 +10793,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10811,9 +10810,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10830,9 +10829,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10847,9 +10846,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10866,9 +10865,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10885,9 +10884,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10905,9 +10904,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10924,9 +10923,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10942,9 +10941,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10959,9 +10958,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10978,9 +10977,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -10994,9 +10993,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -11013,9 +11012,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -11032,9 +11031,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -11052,9 +11051,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -11071,10 +11070,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11089,10 +11088,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11106,10 +11105,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param context The context to associate with this operation.
@@ -11124,10 +11123,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11141,10 +11140,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param access The information for the private access.
@@ -11161,10 +11160,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param access The information for the private access.
@@ -11180,10 +11179,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param access The information for the private access.
@@ -11200,10 +11199,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param access The information for the private access.
@@ -11218,9 +11217,9 @@ public interface WebAppsClient
 
     /**
      * Gets the list of private endpoint connections associated with a site
-     *
+     * 
      * Description for Gets the list of private endpoint connections associated with a site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11235,9 +11234,9 @@ public interface WebAppsClient
 
     /**
      * Gets the list of private endpoint connections associated with a site
-     *
+     * 
      * Description for Gets the list of private endpoint connections associated with a site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11252,9 +11251,9 @@ public interface WebAppsClient
 
     /**
      * Gets the list of private endpoint connections associated with a site
-     *
+     * 
      * Description for Gets the list of private endpoint connections associated with a site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param context The context to associate with this operation.
@@ -11270,9 +11269,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11289,9 +11288,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11307,9 +11306,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11326,9 +11325,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -11344,13 +11343,13 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11365,13 +11364,13 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11386,13 +11385,13 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11407,13 +11406,13 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -11429,13 +11428,13 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11449,13 +11448,13 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -11469,13 +11468,13 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -11490,9 +11489,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -11508,9 +11507,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -11526,9 +11525,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -11544,9 +11543,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -11563,9 +11562,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -11581,9 +11580,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -11598,9 +11597,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -11617,9 +11616,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11635,9 +11634,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11651,9 +11650,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param context The context to associate with this operation.
@@ -11669,9 +11668,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11685,10 +11684,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11704,10 +11703,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -11723,10 +11722,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -11743,9 +11742,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11763,9 +11762,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11782,9 +11781,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11803,9 +11802,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11823,10 +11822,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11844,10 +11843,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11865,10 +11864,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11887,10 +11886,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11906,9 +11905,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11925,9 +11924,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11944,9 +11943,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11965,9 +11964,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -11984,9 +11983,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12003,9 +12002,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12022,9 +12021,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12043,9 +12042,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12064,9 +12063,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12085,9 +12084,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12107,9 +12106,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12128,9 +12127,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12147,9 +12146,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12166,9 +12165,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -12187,9 +12186,9 @@ public interface WebAppsClient
 
     /**
      * Get public certificates for an app or a deployment slot.
-     *
+     * 
      * Description for Get public certificates for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12203,9 +12202,9 @@ public interface WebAppsClient
 
     /**
      * Get public certificates for an app or a deployment slot.
-     *
+     * 
      * Description for Get public certificates for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12219,9 +12218,9 @@ public interface WebAppsClient
 
     /**
      * Get public certificates for an app or a deployment slot.
-     *
+     * 
      * Description for Get public certificates for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -12237,9 +12236,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12255,9 +12254,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12273,9 +12272,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12292,9 +12291,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12309,9 +12308,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12329,9 +12328,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12349,9 +12348,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12370,9 +12369,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12390,9 +12389,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12408,9 +12407,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12425,9 +12424,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12444,9 +12443,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -12460,9 +12459,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use
@@ -12479,9 +12478,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use
@@ -12498,9 +12497,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use
@@ -12518,9 +12517,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publishingProfileOptions Specifies publishingProfileOptions for publishing profile. For example, use
@@ -12538,10 +12537,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12556,10 +12555,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12574,10 +12573,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -12593,10 +12592,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12609,9 +12608,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By
@@ -12630,9 +12629,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12646,9 +12645,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param softRestart Specify true to apply the configuration settings and restarts the app only if necessary. By
@@ -12668,9 +12667,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -12683,9 +12682,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Information on restore request .
@@ -12701,9 +12700,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Information on restore request .
@@ -12719,9 +12718,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Information on restore request .
@@ -12737,9 +12736,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Information on restore request .
@@ -12756,9 +12755,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Information on restore request .
@@ -12773,9 +12772,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Information on restore request .
@@ -12789,9 +12788,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param request Information on restore request .
@@ -12806,9 +12805,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Deleted web app restore information.
@@ -12824,9 +12823,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Deleted web app restore information.
@@ -12842,9 +12841,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Deleted web app restore information.
@@ -12860,9 +12859,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Deleted web app restore information.
@@ -12879,9 +12878,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Deleted web app restore information.
@@ -12897,9 +12896,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Deleted web app restore information.
@@ -12913,9 +12912,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Deleted web app restore information.
@@ -12931,9 +12930,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites
@@ -12950,9 +12949,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites
@@ -12969,9 +12968,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites
@@ -12988,9 +12987,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites
@@ -13008,9 +13007,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites
@@ -13026,9 +13025,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites
@@ -13043,9 +13042,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param restoreRequest Snapshot restore settings. Snapshot information can be obtained by calling GetDeletedSites
@@ -13061,7 +13060,7 @@ public interface WebAppsClient
 
     /**
      * Lists all the site containers of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13075,7 +13074,7 @@ public interface WebAppsClient
 
     /**
      * Lists all the site containers of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13089,7 +13088,7 @@ public interface WebAppsClient
 
     /**
      * Lists all the site containers of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -13104,7 +13103,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13121,7 +13120,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13136,7 +13135,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13153,7 +13152,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13168,7 +13167,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13185,7 +13184,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13202,7 +13201,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13220,7 +13219,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13237,7 +13236,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13253,7 +13252,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13268,7 +13267,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13285,7 +13284,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param containerName Site Container Name.
@@ -13299,9 +13298,9 @@ public interface WebAppsClient
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13317,9 +13316,9 @@ public interface WebAppsClient
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13335,9 +13334,9 @@ public interface WebAppsClient
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -13354,9 +13353,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13374,9 +13373,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13393,9 +13392,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13414,9 +13413,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13433,9 +13432,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13453,9 +13452,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13473,9 +13472,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13493,9 +13492,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13514,9 +13513,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13534,9 +13533,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13553,9 +13552,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13574,9 +13573,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13594,9 +13593,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13613,9 +13612,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13634,9 +13633,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -13652,9 +13651,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's deployment slots.
-     *
+     * 
      * Description for Gets an app's deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13668,9 +13667,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's deployment slots.
-     *
+     * 
      * Description for Gets an app's deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -13684,9 +13683,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's deployment slots.
-     *
+     * 
      * Description for Gets an app's deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -13701,9 +13700,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
@@ -13721,9 +13720,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
@@ -13740,9 +13739,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
@@ -13760,9 +13759,9 @@ public interface WebAppsClient
 
     /**
      * Gets the details of a web, mobile, or API app.
-     *
+     * 
      * Description for Gets the details of a web, mobile, or API app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns the production slot.
@@ -13779,9 +13778,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -13801,9 +13800,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -13822,9 +13821,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -13843,9 +13842,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -13865,9 +13864,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -13885,9 +13884,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -13905,9 +13904,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -13927,9 +13926,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
@@ -13950,9 +13949,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
@@ -13969,9 +13968,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
@@ -13993,9 +13992,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * Description for Deletes a web, mobile, or API app, or one of the deployment slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app to delete.
      * @param slot Name of the deployment slot to delete. By default, the API deletes the production slot.
@@ -14011,9 +14010,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -14033,9 +14032,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -14054,9 +14053,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -14076,9 +14075,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
@@ -14096,9 +14095,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -14115,9 +14114,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -14133,9 +14132,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -14153,9 +14152,9 @@ public interface WebAppsClient
 
     /**
      * Analyze a custom hostname.
-     *
+     * 
      * Description for Analyze a custom hostname.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -14170,9 +14169,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -14189,9 +14188,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -14208,9 +14207,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -14228,9 +14227,9 @@ public interface WebAppsClient
 
     /**
      * Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * Description for Applies the configuration settings from the target slot onto the current slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -14245,9 +14244,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the
@@ -14265,9 +14264,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the
@@ -14285,9 +14284,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the
@@ -14306,9 +14305,9 @@ public interface WebAppsClient
 
     /**
      * Creates a backup of an app.
-     *
+     * 
      * Description for Creates a backup of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create a backup for the
@@ -14325,9 +14324,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production
@@ -14343,9 +14342,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production
@@ -14361,9 +14360,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production
@@ -14380,9 +14379,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14400,9 +14399,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14419,9 +14418,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14440,9 +14439,9 @@ public interface WebAppsClient
 
     /**
      * Gets a backup of an app by its ID.
-     *
+     * 
      * Description for Gets a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14459,9 +14458,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14481,9 +14480,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14502,9 +14501,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14525,9 +14524,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a backup of an app by its ID.
-     *
+     * 
      * Description for Deletes a backup of an app by its ID.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14547,11 +14546,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -14571,11 +14570,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -14595,11 +14594,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -14620,11 +14619,11 @@ public interface WebAppsClient
      * Gets status of a web app backup that may be in progress, including secrets associated with the backup, such as
      * the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is passed in the
      * request body.
-     *
+     * 
      * Description for Gets status of a web app backup that may be in progress, including secrets associated with the
      * backup, such as the Azure Storage SAS URL. Also can be used to update the SAS URL for the backup if a new URL is
      * passed in the request body.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param backupId ID of backup.
@@ -14642,9 +14641,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14663,9 +14662,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14684,9 +14683,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14705,9 +14704,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14727,9 +14726,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14748,9 +14747,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14767,9 +14766,9 @@ public interface WebAppsClient
 
     /**
      * Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restores a specific backup to another app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param backupId ID of the backup.
@@ -14788,9 +14787,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -14807,9 +14806,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -14826,9 +14825,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed and whether Ftp is allowed for a given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -14846,9 +14845,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -14865,9 +14864,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -14883,9 +14882,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -14902,9 +14901,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -14919,13 +14918,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14940,13 +14939,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14959,13 +14958,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -14980,13 +14979,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * Description for Updates whether FTP is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -14999,9 +14998,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -15018,9 +15017,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -15036,9 +15035,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -15055,9 +15054,9 @@ public interface WebAppsClient
 
     /**
      * Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * Description for Returns whether Scm basic auth is allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -15072,13 +15071,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -15093,13 +15092,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -15112,13 +15111,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -15133,13 +15132,13 @@ public interface WebAppsClient
 
     /**
      * Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * Description for Updates whether user publishing credentials are allowed on the site or not.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
-     * @param csmPublishingAccessPoliciesEntity Publishing Credentials Policies parameters.
+     * @param csmPublishingAccessPoliciesEntity The csmPublishingAccessPoliciesEntity parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -15152,9 +15151,9 @@ public interface WebAppsClient
 
     /**
      * List the configurations of an app
-     *
+     * 
      * Description for List the configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -15170,9 +15169,9 @@ public interface WebAppsClient
 
     /**
      * List the configurations of an app
-     *
+     * 
      * Description for List the configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -15188,9 +15187,9 @@ public interface WebAppsClient
 
     /**
      * List the configurations of an app
-     *
+     * 
      * Description for List the configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -15208,9 +15207,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings
@@ -15228,9 +15227,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings
@@ -15248,9 +15247,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings
@@ -15269,9 +15268,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the application settings of an app.
-     *
+     * 
      * Description for Replaces the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the application settings
@@ -15289,9 +15288,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings
@@ -15308,9 +15307,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings
@@ -15326,9 +15325,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings
@@ -15346,9 +15345,9 @@ public interface WebAppsClient
 
     /**
      * Gets the application settings of an app.
-     *
+     * 
      * Description for Gets the application settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the application settings
@@ -15364,9 +15363,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15384,9 +15383,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15404,9 +15403,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15425,9 +15424,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * Description for Updates the Authentication / Authorization settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15444,9 +15443,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15464,9 +15463,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15483,9 +15482,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15504,9 +15503,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * Description for Gets the Authentication/Authorization settings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15522,7 +15521,7 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15540,7 +15539,7 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15558,7 +15557,7 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15576,7 +15575,7 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15592,9 +15591,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15612,9 +15611,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15632,9 +15631,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15653,9 +15652,9 @@ public interface WebAppsClient
 
     /**
      * Updates site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Updates site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -15672,9 +15671,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15692,9 +15691,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15711,9 +15710,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15732,9 +15731,9 @@ public interface WebAppsClient
 
     /**
      * Gets site's Authentication / Authorization settings for apps via the V2 format
-     *
+     * 
      * Description for Gets site's Authentication / Authorization settings for apps via the V2 format.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the settings for the
@@ -15750,9 +15749,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15772,9 +15771,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15792,9 +15791,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15814,9 +15813,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Updates the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15834,9 +15833,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15854,9 +15853,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15873,9 +15872,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15893,9 +15892,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Azure storage account configurations of an app.
-     *
+     * 
      * Description for Gets the Azure storage account configurations of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the Azure storage
@@ -15912,9 +15911,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration
@@ -15933,9 +15932,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration
@@ -15953,9 +15952,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration
@@ -15974,9 +15973,9 @@ public interface WebAppsClient
 
     /**
      * Updates the backup configuration of an app.
-     *
+     * 
      * Description for Updates the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the backup configuration
@@ -15994,9 +15993,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration
@@ -16013,9 +16012,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration
@@ -16031,9 +16030,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration
@@ -16051,9 +16050,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the backup configuration of an app.
-     *
+     * 
      * Description for Deletes the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the backup configuration
@@ -16068,9 +16067,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration
@@ -16088,9 +16087,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration
@@ -16106,9 +16105,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration
@@ -16126,9 +16125,9 @@ public interface WebAppsClient
 
     /**
      * Gets the backup configuration of an app.
-     *
+     * 
      * Description for Gets the backup configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the backup configuration
@@ -16144,9 +16143,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -16162,9 +16161,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -16180,9 +16179,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -16199,9 +16198,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -16219,9 +16218,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -16238,9 +16237,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -16258,9 +16257,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettingKey App Setting key name.
@@ -16277,9 +16276,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -16295,9 +16294,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -16313,9 +16312,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference app settings and status of an app
-     *
+     * 
      * Description for Gets the config reference app settings and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot The slot parameter.
@@ -16332,9 +16331,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -16352,9 +16351,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -16371,9 +16370,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -16391,9 +16390,9 @@ public interface WebAppsClient
 
     /**
      * Gets the config reference and status of an app
-     *
+     * 
      * Description for Gets the config reference and status of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param connectionStringKey The connectionStringKey parameter.
@@ -16410,9 +16409,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings
@@ -16430,9 +16429,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings
@@ -16450,9 +16449,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings
@@ -16471,9 +16470,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the connection strings of an app.
-     *
+     * 
      * Description for Replaces the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the connection settings
@@ -16491,9 +16490,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for
@@ -16510,9 +16509,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for
@@ -16529,9 +16528,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for
@@ -16549,9 +16548,9 @@ public interface WebAppsClient
 
     /**
      * Gets the connection strings of an app.
-     *
+     * 
      * Description for Gets the connection strings of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the connection settings for
@@ -16567,9 +16566,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration
@@ -16587,9 +16586,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration
@@ -16606,9 +16605,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration
@@ -16626,9 +16625,9 @@ public interface WebAppsClient
 
     /**
      * Gets the logging configuration of an app.
-     *
+     * 
      * Description for Gets the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the logging configuration
@@ -16644,9 +16643,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging
@@ -16666,9 +16665,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging
@@ -16687,9 +16686,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging
@@ -16709,9 +16708,9 @@ public interface WebAppsClient
 
     /**
      * Updates the logging configuration of an app.
-     *
+     * 
      * Description for Updates the logging configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the logging
@@ -16730,9 +16729,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the
@@ -16750,9 +16749,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the
@@ -16770,9 +16769,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the
@@ -16791,9 +16790,9 @@ public interface WebAppsClient
 
     /**
      * Replaces the metadata of an app.
-     *
+     * 
      * Description for Replaces the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the metadata for the
@@ -16811,9 +16810,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the
@@ -16830,9 +16829,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the
@@ -16848,9 +16847,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the
@@ -16868,9 +16867,9 @@ public interface WebAppsClient
 
     /**
      * Gets the metadata of an app.
-     *
+     * 
      * Description for Gets the metadata of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the metadata for the
@@ -16886,9 +16885,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials
@@ -16906,9 +16905,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials
@@ -16925,9 +16924,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials
@@ -16944,9 +16943,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials
@@ -16964,9 +16963,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials
@@ -16982,9 +16981,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials
@@ -17000,9 +16999,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * Description for Gets the Git/FTP publishing credentials of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing credentials
@@ -17019,9 +17018,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17038,9 +17037,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17057,9 +17056,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17077,9 +17076,9 @@ public interface WebAppsClient
 
     /**
      * Updates the Push settings associated with web app.
-     *
+     * 
      * Description for Updates the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17096,9 +17095,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17114,9 +17113,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17131,9 +17130,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17150,9 +17149,9 @@ public interface WebAppsClient
 
     /**
      * Gets the Push settings associated with web app.
-     *
+     * 
      * Description for Gets the Push settings associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17168,10 +17167,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -17189,10 +17188,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -17209,10 +17208,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -17231,10 +17230,10 @@ public interface WebAppsClient
     /**
      * Gets the configuration of an app, such as platform version and bitness, default documents, virtual applications,
      * Always On, etc.
-     *
+     * 
      * Description for Gets the configuration of an app, such as platform version and bitness, default documents,
      * virtual applications, Always On, etc.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -17250,9 +17249,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17270,9 +17269,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17290,9 +17289,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17311,9 +17310,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17331,9 +17330,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17351,9 +17350,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17371,9 +17370,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17392,9 +17391,9 @@ public interface WebAppsClient
 
     /**
      * Updates the configuration of an app.
-     *
+     * 
      * Description for Updates the configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update configuration for the
@@ -17413,10 +17412,10 @@ public interface WebAppsClient
     /**
      * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the
      * ID of the snapshot.
-     *
+     * 
      * Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a
      * timestamp and the ID of the snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -17435,10 +17434,10 @@ public interface WebAppsClient
     /**
      * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the
      * ID of the snapshot.
-     *
+     * 
      * Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a
      * timestamp and the ID of the snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -17457,10 +17456,10 @@ public interface WebAppsClient
     /**
      * Gets a list of web app configuration snapshots identifiers. Each element of the list contains a timestamp and the
      * ID of the snapshot.
-     *
+     * 
      * Description for Gets a list of web app configuration snapshots identifiers. Each element of the list contains a
      * timestamp and the ID of the snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will return configuration for the
@@ -17479,9 +17478,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17499,9 +17498,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17519,9 +17518,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17540,9 +17539,9 @@ public interface WebAppsClient
 
     /**
      * Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * Description for Gets a snapshot of the configuration of an app at a previous point in time.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17560,9 +17559,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17580,9 +17579,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17600,9 +17599,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17621,9 +17620,9 @@ public interface WebAppsClient
 
     /**
      * Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * Description for Reverts the configuration of an app to a previous snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param snapshotId The ID of the snapshot to read.
@@ -17639,9 +17638,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17656,9 +17655,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17672,9 +17671,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17690,9 +17689,9 @@ public interface WebAppsClient
 
     /**
      * Gets the last lines of docker logs for the given site
-     *
+     * 
      * Description for Gets the last lines of docker logs for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17706,9 +17705,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17723,9 +17722,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17739,9 +17738,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17757,9 +17756,9 @@ public interface WebAppsClient
 
     /**
      * Gets the ZIP archived docker log files for the given site
-     *
+     * 
      * Description for Gets the ZIP archived docker log files for the given site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -17773,9 +17772,9 @@ public interface WebAppsClient
 
     /**
      * List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
@@ -17791,9 +17790,9 @@ public interface WebAppsClient
 
     /**
      * List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
@@ -17810,9 +17809,9 @@ public interface WebAppsClient
 
     /**
      * List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List continuous web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
@@ -17831,9 +17830,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17853,9 +17852,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17875,9 +17874,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17898,9 +17897,9 @@ public interface WebAppsClient
 
     /**
      * Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17920,9 +17919,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17940,9 +17939,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17959,9 +17958,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17980,9 +17979,9 @@ public interface WebAppsClient
 
     /**
      * Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a continuous web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -17998,9 +17997,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18020,9 +18019,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18041,9 +18040,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18064,9 +18063,9 @@ public interface WebAppsClient
 
     /**
      * Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Start a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18084,9 +18083,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18106,9 +18105,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18127,9 +18126,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18150,9 +18149,9 @@ public interface WebAppsClient
 
     /**
      * Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Stop a continuous web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -18170,7 +18169,7 @@ public interface WebAppsClient
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18187,7 +18186,7 @@ public interface WebAppsClient
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18204,7 +18203,7 @@ public interface WebAppsClient
 
     /**
      * List deployment statuses for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18222,7 +18221,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18241,7 +18240,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18260,7 +18259,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18279,7 +18278,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18299,7 +18298,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18318,7 +18317,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18336,7 +18335,7 @@ public interface WebAppsClient
 
     /**
      * Gets the deployment status for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the deployment status for
@@ -18355,9 +18354,9 @@ public interface WebAppsClient
 
     /**
      * List deployments for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployments for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -18373,9 +18372,9 @@ public interface WebAppsClient
 
     /**
      * List deployments for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployments for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -18391,9 +18390,9 @@ public interface WebAppsClient
 
     /**
      * List deployments for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployments for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -18411,9 +18410,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18432,9 +18431,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18451,9 +18450,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18472,9 +18471,9 @@ public interface WebAppsClient
 
     /**
      * Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Get a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18491,9 +18490,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -18513,9 +18512,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -18534,9 +18533,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -18556,9 +18555,9 @@ public interface WebAppsClient
 
     /**
      * Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for Create a deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id ID of an existing deployment.
@@ -18577,9 +18576,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18597,9 +18596,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18616,9 +18615,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18637,9 +18636,9 @@ public interface WebAppsClient
 
     /**
      * Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a deployment by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id Deployment ID.
@@ -18655,9 +18654,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -18677,9 +18676,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -18697,9 +18696,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -18719,9 +18718,9 @@ public interface WebAppsClient
 
     /**
      * List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * Description for List deployment log for specific deployment for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param id The ID of a specific deployment. This is the value of the name property in the JSON response from "GET
@@ -18740,10 +18739,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the
@@ -18762,10 +18761,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the
@@ -18784,10 +18783,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the
@@ -18807,10 +18806,10 @@ public interface WebAppsClient
     /**
      * Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to get information
      * about the databases stored in a backup.
-     *
+     * 
      * Description for Discovers an existing app backup that can be restored from a blob in Azure storage. Use this to
      * get information about the databases stored in a backup.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will perform discovery for the
@@ -18828,9 +18827,9 @@ public interface WebAppsClient
 
     /**
      * Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * Description for Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -18847,9 +18846,9 @@ public interface WebAppsClient
 
     /**
      * Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * Description for Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -18866,9 +18865,9 @@ public interface WebAppsClient
 
     /**
      * Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * Description for Lists ownership identifiers for domain associated with web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -18886,9 +18885,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -18907,9 +18906,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -18927,9 +18926,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -18948,9 +18947,9 @@ public interface WebAppsClient
 
     /**
      * Get domain ownership identifier for web app.
-     *
+     * 
      * Description for Get domain ownership identifier for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -18968,9 +18967,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -18991,9 +18990,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19012,9 +19011,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19035,9 +19034,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19056,9 +19055,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19076,9 +19075,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19096,9 +19095,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19117,9 +19116,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * Description for Deletes a domain ownership identifier for a web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19136,9 +19135,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19158,9 +19157,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19179,9 +19178,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19201,9 +19200,9 @@ public interface WebAppsClient
 
     /**
      * Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * Description for Creates a domain ownership identifier for web app, or updates an existing ownership identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param domainOwnershipIdentifierName Name of domain ownership identifier.
@@ -19222,9 +19221,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19240,9 +19239,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19257,9 +19256,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19276,9 +19275,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19293,9 +19292,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19314,9 +19313,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19335,9 +19334,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19356,9 +19355,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19378,9 +19377,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19399,9 +19398,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19420,9 +19419,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19442,9 +19441,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19462,9 +19461,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19481,9 +19480,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19502,9 +19501,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19521,9 +19520,9 @@ public interface WebAppsClient
 
     /**
      * List the functions for a web site, or a deployment slot.
-     *
+     * 
      * Description for List the functions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -19540,9 +19539,9 @@ public interface WebAppsClient
 
     /**
      * List the functions for a web site, or a deployment slot.
-     *
+     * 
      * Description for List the functions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -19559,9 +19558,9 @@ public interface WebAppsClient
 
     /**
      * List the functions for a web site, or a deployment slot.
-     *
+     * 
      * Description for List the functions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -19580,9 +19579,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19598,9 +19597,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19615,9 +19614,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19634,9 +19633,9 @@ public interface WebAppsClient
 
     /**
      * Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * Description for Fetch a short lived token that can be exchanged for a master key.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -19651,9 +19650,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19672,9 +19671,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19693,9 +19692,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19715,9 +19714,9 @@ public interface WebAppsClient
 
     /**
      * Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * Description for Get function information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19736,9 +19735,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19756,9 +19755,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19777,9 +19776,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19798,9 +19797,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19820,9 +19819,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19840,9 +19839,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19860,9 +19859,9 @@ public interface WebAppsClient
 
     /**
      * Create function for web site, or a deployment slot.
-     *
+     * 
      * Description for Create function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19881,9 +19880,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19902,9 +19901,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19922,9 +19921,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19944,9 +19943,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function for web site, or a deployment slot.
-     *
+     * 
      * Description for Delete a function for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -19963,9 +19962,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -19984,9 +19983,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -20005,9 +20004,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -20027,9 +20026,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a function secret.
-     *
+     * 
      * Description for Add or update a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -20048,9 +20047,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -20070,9 +20069,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -20092,9 +20091,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -20115,9 +20114,9 @@ public interface WebAppsClient
 
     /**
      * Delete a function secret.
-     *
+     * 
      * Description for Delete a function secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName The name of the function.
@@ -20136,9 +20135,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20155,9 +20154,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20174,9 +20173,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20194,9 +20193,9 @@ public interface WebAppsClient
 
     /**
      * Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function keys for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20212,9 +20211,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20231,9 +20230,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20250,9 +20249,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20270,9 +20269,9 @@ public interface WebAppsClient
 
     /**
      * Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * Description for Get function secrets for a function in a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param functionName Function name.
@@ -20289,9 +20288,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -20306,9 +20305,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -20323,9 +20322,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -20342,9 +20341,9 @@ public interface WebAppsClient
 
     /**
      * Get host secrets for a function app.
-     *
+     * 
      * Description for Get host secrets for a function app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -20359,9 +20358,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20376,9 +20375,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20393,9 +20392,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20411,9 +20410,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20427,9 +20426,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20444,9 +20443,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20461,9 +20460,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20479,9 +20478,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -20495,9 +20494,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20516,9 +20515,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20537,9 +20536,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20559,9 +20558,9 @@ public interface WebAppsClient
 
     /**
      * Add or update a host level secret.
-     *
+     * 
      * Description for Add or update a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20580,9 +20579,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20602,9 +20601,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20624,9 +20623,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20647,9 +20646,9 @@ public interface WebAppsClient
 
     /**
      * Delete a host level secret.
-     *
+     * 
      * Description for Delete a host level secret.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param keyType The type of host key.
@@ -20667,9 +20666,9 @@ public interface WebAppsClient
 
     /**
      * Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * Description for Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the
@@ -20685,9 +20684,9 @@ public interface WebAppsClient
 
     /**
      * Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * Description for Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the
@@ -20703,9 +20702,9 @@ public interface WebAppsClient
 
     /**
      * Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * Description for Get hostname bindings for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the
@@ -20723,9 +20722,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -20743,9 +20742,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -20763,9 +20762,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -20784,9 +20783,9 @@ public interface WebAppsClient
 
     /**
      * Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named hostname binding for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -20803,9 +20802,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -20824,9 +20823,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -20845,9 +20844,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -20867,9 +20866,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param hostname Hostname in the hostname binding.
@@ -20888,9 +20887,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -20908,9 +20907,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -20927,9 +20926,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -20948,9 +20947,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -20966,9 +20965,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -20986,9 +20985,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21006,9 +21005,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21027,9 +21026,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * Description for Retrieves a specific Service Bus Hybrid Connection used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21047,9 +21046,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21068,9 +21067,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21089,9 +21088,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21112,9 +21111,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21133,9 +21132,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21155,9 +21154,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21177,9 +21176,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21200,9 +21199,9 @@ public interface WebAppsClient
 
     /**
      * Removes a Hybrid Connection from this site.
-     *
+     * 
      * Description for Removes a Hybrid Connection from this site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21221,9 +21220,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21242,9 +21241,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21263,9 +21262,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21285,9 +21284,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * Description for Creates a new Hybrid Connection using a Service Bus relay.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param namespaceName The namespace for this hybrid connection.
@@ -21306,9 +21305,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -21324,9 +21323,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -21341,9 +21340,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -21360,9 +21359,9 @@ public interface WebAppsClient
 
     /**
      * Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * Description for Retrieves all Service Bus Hybrid Connections used by this Web App.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -21377,9 +21376,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the
@@ -21397,9 +21396,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the
@@ -21416,9 +21415,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the
@@ -21436,9 +21435,9 @@ public interface WebAppsClient
 
     /**
      * Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets hybrid connections configured for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get hybrid connections for the
@@ -21455,9 +21454,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -21476,9 +21475,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -21496,9 +21495,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -21517,9 +21516,9 @@ public interface WebAppsClient
 
     /**
      * Gets a hybrid connection configuration by its name.
-     *
+     * 
      * Description for Gets a hybrid connection configuration by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection.
@@ -21537,9 +21536,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21560,9 +21559,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21581,9 +21580,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21604,9 +21603,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21625,9 +21624,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21647,9 +21646,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21669,9 +21668,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21692,9 +21691,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a relay service connection by its name.
-     *
+     * 
      * Description for Deletes a relay service connection by its name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21712,9 +21711,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21735,9 +21734,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21756,9 +21755,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21779,9 +21778,9 @@ public interface WebAppsClient
 
     /**
      * Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * Description for Creates a new hybrid connection configuration (PUT), or updates an existing one (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param entityName Name of the hybrid connection configuration.
@@ -21800,9 +21799,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
@@ -21818,9 +21817,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
@@ -21836,9 +21835,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets the production slot instances.
@@ -21855,9 +21854,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -21874,9 +21873,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -21893,9 +21892,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -21913,9 +21912,9 @@ public interface WebAppsClient
 
     /**
      * Gets all scale-out instances of an app.
-     *
+     * 
      * Description for Gets all scale-out instances of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param instanceId The instanceId parameter.
@@ -21932,9 +21931,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -21951,9 +21950,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -21970,9 +21969,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -21990,9 +21989,9 @@ public interface WebAppsClient
 
     /**
      * Get the status of the last MSDeploy operation.
-     *
+     * 
      * Description for Get the status of the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22009,9 +22008,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22031,9 +22030,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22053,9 +22052,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22075,9 +22074,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22098,9 +22097,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22120,9 +22119,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22142,9 +22141,9 @@ public interface WebAppsClient
 
     /**
      * Invoke the MSDeploy web app extension.
-     *
+     * 
      * Description for Invoke the MSDeploy web app extension.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22165,9 +22164,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22186,9 +22185,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22207,9 +22206,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22229,9 +22228,9 @@ public interface WebAppsClient
 
     /**
      * Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * Description for Get the MSDeploy Log for the last MSDeploy operation.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -22249,10 +22248,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -22273,10 +22272,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -22297,10 +22296,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -22322,9 +22321,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22346,9 +22345,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22370,9 +22369,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22395,9 +22394,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22420,10 +22419,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22446,10 +22445,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22472,10 +22471,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22499,10 +22498,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22523,9 +22522,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22547,9 +22546,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22571,9 +22570,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22596,9 +22595,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22620,9 +22619,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22644,9 +22643,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22668,9 +22667,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22693,9 +22692,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22718,9 +22717,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22743,9 +22742,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22769,9 +22768,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22794,9 +22793,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22818,9 +22817,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22842,9 +22841,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -22867,9 +22866,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
@@ -22886,9 +22885,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
@@ -22903,9 +22902,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
@@ -22922,9 +22921,9 @@ public interface WebAppsClient
 
     /**
      * Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * Description for Shows whether an app can be cloned to another resource group or subscription.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. By default, this API returns information on the production slot.
@@ -22939,9 +22938,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production
@@ -22957,9 +22956,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production
@@ -22975,9 +22974,9 @@ public interface WebAppsClient
 
     /**
      * Gets existing backups of an app.
-     *
+     * 
      * Description for Gets existing backups of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get backups of the production
@@ -22995,9 +22994,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -23013,9 +23012,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -23030,9 +23029,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -23049,9 +23048,9 @@ public interface WebAppsClient
 
     /**
      * This is to allow calling via powershell and ARM template.
-     *
+     * 
      * Description for This is to allow calling via powershell and ARM template.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -23066,10 +23065,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of the deployment slot.
@@ -23085,10 +23084,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of the deployment slot.
@@ -23103,10 +23102,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of the deployment slot.
@@ -23123,10 +23122,10 @@ public interface WebAppsClient
 
     /**
      * Returns the status of MySql in app migration, if one is active, and whether or not MySql in app is enabled
-     *
+     * 
      * Description for Returns the status of MySql in app migration, if one is active, and whether or not MySql in app
      * is enabled.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of the deployment slot.
@@ -23141,9 +23140,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the
@@ -23160,9 +23159,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the
@@ -23179,9 +23178,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the
@@ -23199,9 +23198,9 @@ public interface WebAppsClient
 
     /**
      * Gets a Swift Virtual Network connection.
-     *
+     * 
      * Description for Gets a Swift Virtual Network connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a gateway for the
@@ -23219,11 +23218,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23243,11 +23242,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23267,11 +23266,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23293,11 +23292,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23315,9 +23314,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
@@ -23336,9 +23335,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
@@ -23356,9 +23355,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
@@ -23378,9 +23377,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * Description for Deletes a Swift Virtual Network connection from an app (or deployment slot).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the connection for the
@@ -23399,11 +23398,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23423,11 +23422,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23447,11 +23446,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23473,11 +23472,11 @@ public interface WebAppsClient
      * Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true when doing a GET
      * against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * Description for Integrates this Web App with a Virtual Network. This requires that 1) "swiftSupported" is true
      * when doing a GET against this resource, and 2) that the target Subnet has already been delegated, and is not
      * in use by another App Service Plan other than the one this App is in.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will add or update connections for
@@ -23495,9 +23494,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -23518,9 +23517,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -23541,9 +23540,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -23565,9 +23564,9 @@ public interface WebAppsClient
 
     /**
      * Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets all network features used by the app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param view The type of view. Only "summary" is supported at this time.
@@ -23586,9 +23585,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -23606,9 +23605,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -23626,9 +23625,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -23647,9 +23646,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -23666,9 +23665,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23687,9 +23686,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23704,9 +23703,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23726,9 +23725,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * Description for Start capturing network packets for the site (To be deprecated).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23743,9 +23742,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23764,9 +23763,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23785,9 +23784,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23803,9 +23802,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23821,9 +23820,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23843,9 +23842,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23864,9 +23863,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23881,9 +23880,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23898,9 +23897,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23920,9 +23919,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23938,9 +23937,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23955,9 +23954,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23974,9 +23973,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -23990,9 +23989,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24010,9 +24009,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24030,9 +24029,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24051,9 +24050,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24071,9 +24070,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24091,9 +24090,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24111,9 +24110,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24132,9 +24131,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24151,9 +24150,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24171,9 +24170,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24191,9 +24190,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24212,9 +24211,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets a named operation for a network trace capturing (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param operationId GUID of the operation.
@@ -24232,9 +24231,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password
@@ -24251,9 +24250,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password
@@ -24269,9 +24268,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password
@@ -24289,9 +24288,9 @@ public interface WebAppsClient
 
     /**
      * Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Generates a new publishing password for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API generate a new publishing password
@@ -24306,9 +24305,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24327,9 +24326,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24344,9 +24343,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24361,9 +24360,9 @@ public interface WebAppsClient
 
     /**
      * Gets perfmon counters for web app.
-     *
+     * 
      * Description for Gets perfmon counters for web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24383,9 +24382,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24402,9 +24401,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24419,9 +24418,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24438,9 +24437,9 @@ public interface WebAppsClient
 
     /**
      * Gets web app's event logs.
-     *
+     * 
      * Description for Gets web app's event logs.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -24455,9 +24454,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the
@@ -24474,9 +24473,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the
@@ -24492,9 +24491,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the
@@ -24512,9 +24511,9 @@ public interface WebAppsClient
 
     /**
      * Gets the premier add-ons of an app.
-     *
+     * 
      * Description for Gets the premier add-ons of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the premier add-ons for the
@@ -24530,9 +24529,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24550,9 +24549,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24570,9 +24569,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24591,9 +24590,9 @@ public interface WebAppsClient
 
     /**
      * Gets a named add-on of an app.
-     *
+     * 
      * Description for Gets a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24610,9 +24609,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24631,9 +24630,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24652,9 +24651,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24674,9 +24673,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24695,9 +24694,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24715,9 +24714,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24734,9 +24733,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24755,9 +24754,9 @@ public interface WebAppsClient
 
     /**
      * Delete a premier add-on from an app.
-     *
+     * 
      * Description for Delete a premier add-on from an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24773,9 +24772,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24794,9 +24793,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24815,9 +24814,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24837,9 +24836,9 @@ public interface WebAppsClient
 
     /**
      * Updates a named add-on of an app.
-     *
+     * 
      * Description for Updates a named add-on of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param premierAddOnName Add-on name.
@@ -24858,10 +24857,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -24878,10 +24877,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -24896,10 +24895,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -24916,10 +24915,10 @@ public interface WebAppsClient
 
     /**
      * Gets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Gets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -24934,10 +24933,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -24955,10 +24954,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -24975,10 +24974,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -24996,10 +24995,10 @@ public interface WebAppsClient
 
     /**
      * Sets data around private site access enablement and authorized Virtual Networks that can access the site.
-     *
+     * 
      * Description for Sets data around private site access enablement and authorized Virtual Networks that can access
      * the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for the web app.
@@ -25016,9 +25015,9 @@ public interface WebAppsClient
 
     /**
      * Gets the list of private endpoint connections associated with a site
-     *
+     * 
      * Description for Gets the list of private endpoint connections associated with a site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param slot Name of the site deployment slot.
@@ -25034,9 +25033,9 @@ public interface WebAppsClient
 
     /**
      * Gets the list of private endpoint connections associated with a site
-     *
+     * 
      * Description for Gets the list of private endpoint connections associated with a site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param slot Name of the site deployment slot.
@@ -25052,9 +25051,9 @@ public interface WebAppsClient
 
     /**
      * Gets the list of private endpoint connections associated with a site
-     *
+     * 
      * Description for Gets the list of private endpoint connections associated with a site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param slot Name of the site deployment slot.
@@ -25071,9 +25070,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -25091,9 +25090,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -25110,9 +25109,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -25130,9 +25129,9 @@ public interface WebAppsClient
 
     /**
      * Gets a private endpoint connection
-     *
+     * 
      * Description for Gets a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
@@ -25149,14 +25148,14 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -25171,14 +25170,14 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -25193,14 +25192,14 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -25215,14 +25214,14 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -25238,14 +25237,14 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -25259,14 +25258,14 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -25280,14 +25279,14 @@ public interface WebAppsClient
 
     /**
      * Approves or rejects a private endpoint connection
-     *
+     * 
      * Description for Approves or rejects a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
      * @param slot The slot parameter.
-     * @param privateEndpointWrapper Remote Private Endpoint Connection ARM resource.
+     * @param privateEndpointWrapper The privateEndpointWrapper parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -25302,9 +25301,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -25321,9 +25320,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -25340,9 +25339,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -25359,9 +25358,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -25379,9 +25378,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -25398,9 +25397,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -25417,9 +25416,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a private endpoint connection
-     *
+     * 
      * Description for Deletes a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param privateEndpointConnectionName The privateEndpointConnectionName parameter.
@@ -25437,9 +25436,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param slot The slot parameter.
@@ -25456,9 +25455,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param slot The slot parameter.
@@ -25474,9 +25473,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param slot The slot parameter.
@@ -25493,9 +25492,9 @@ public interface WebAppsClient
 
     /**
      * Gets the private link resources
-     *
+     * 
      * Description for Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
      * @param slot The slot parameter.
@@ -25510,10 +25509,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -25531,10 +25530,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -25552,10 +25551,10 @@ public interface WebAppsClient
 
     /**
      * Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get list of processes for a web site, or a deployment slot, or for a specific scaled-out instance
      * in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -25575,9 +25574,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25597,9 +25596,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25618,9 +25617,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25641,9 +25640,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25663,10 +25662,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25687,10 +25686,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25710,10 +25709,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25735,10 +25734,10 @@ public interface WebAppsClient
     /**
      * Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out instance in a web
      * site.
-     *
+     * 
      * Description for Terminate a process by its ID for a web site, or a deployment slot, or specific scaled-out
      * instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25756,9 +25755,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25778,9 +25777,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25799,9 +25798,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25822,9 +25821,9 @@ public interface WebAppsClient
 
     /**
      * Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get a memory dump of a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25843,9 +25842,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25865,9 +25864,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25887,9 +25886,9 @@ public interface WebAppsClient
 
     /**
      * List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List module information for a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25910,9 +25909,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25933,9 +25932,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25956,9 +25955,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -25980,9 +25979,9 @@ public interface WebAppsClient
 
     /**
      * Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for Get process information by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -26003,9 +26002,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -26025,9 +26024,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -26047,9 +26046,9 @@ public interface WebAppsClient
 
     /**
      * List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * Description for List the threads in a process by its ID for a specific scaled-out instance in a web site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param processId PID.
@@ -26070,9 +26069,9 @@ public interface WebAppsClient
 
     /**
      * Get public certificates for an app or a deployment slot.
-     *
+     * 
      * Description for Get public certificates for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the
@@ -26089,9 +26088,9 @@ public interface WebAppsClient
 
     /**
      * Get public certificates for an app or a deployment slot.
-     *
+     * 
      * Description for Get public certificates for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the
@@ -26108,9 +26107,9 @@ public interface WebAppsClient
 
     /**
      * Get public certificates for an app or a deployment slot.
-     *
+     * 
      * Description for Get public certificates for an app or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API gets hostname bindings for the
@@ -26128,9 +26127,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -26148,9 +26147,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -26168,9 +26167,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -26189,9 +26188,9 @@ public interface WebAppsClient
 
     /**
      * Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Get the named public certificate for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API the named binding for the production
@@ -26209,9 +26208,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -26232,9 +26231,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -26254,9 +26253,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -26278,9 +26277,9 @@ public interface WebAppsClient
 
     /**
      * Creates a hostname binding for an app.
-     *
+     * 
      * Description for Creates a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param publicCertificateName Public certificate name.
@@ -26300,9 +26299,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -26320,9 +26319,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -26340,9 +26339,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -26361,9 +26360,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a hostname binding for an app.
-     *
+     * 
      * Description for Deletes a hostname binding for an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the binding for the
@@ -26379,9 +26378,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for
@@ -26400,9 +26399,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for
@@ -26421,9 +26420,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for
@@ -26443,9 +26442,9 @@ public interface WebAppsClient
 
     /**
      * Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the publishing profile for an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the publishing profile for
@@ -26465,10 +26464,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for
@@ -26486,10 +26485,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for
@@ -26506,10 +26505,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for
@@ -26528,10 +26527,10 @@ public interface WebAppsClient
     /**
      * Resets the configuration settings of the current slot if they were previously modified by calling the API with
      * POST.
-     *
+     * 
      * Description for Resets the configuration settings of the current slot if they were previously modified by calling
      * the API with POST.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API resets configuration settings for
@@ -26546,9 +26545,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
@@ -26568,9 +26567,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
@@ -26585,9 +26584,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
@@ -26608,9 +26607,9 @@ public interface WebAppsClient
 
     /**
      * Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Restarts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restart the production slot.
@@ -26624,9 +26623,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the
@@ -26644,9 +26643,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the
@@ -26664,9 +26663,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the
@@ -26684,9 +26683,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the
@@ -26705,9 +26704,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the
@@ -26725,9 +26724,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the
@@ -26743,9 +26742,9 @@ public interface WebAppsClient
 
     /**
      * Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * Description for Restores an app from a backup blob in Azure Storage.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will restore a backup of the
@@ -26763,9 +26762,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26782,9 +26781,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26801,9 +26800,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26820,9 +26819,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26840,9 +26839,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26859,9 +26858,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26877,9 +26876,9 @@ public interface WebAppsClient
 
     /**
      * Restores a deleted web app to this web app.
-     *
+     * 
      * Description for Restores a deleted web app to this web app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26896,9 +26895,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26916,9 +26915,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26936,9 +26935,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26956,9 +26955,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26977,9 +26976,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -26997,9 +26996,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -27015,9 +27014,9 @@ public interface WebAppsClient
 
     /**
      * Restores a web app from a snapshot.
-     *
+     * 
      * Description for Restores a web app from a snapshot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -27035,7 +27034,7 @@ public interface WebAppsClient
 
     /**
      * Lists all the site containers of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a list of site containers
@@ -27051,7 +27050,7 @@ public interface WebAppsClient
 
     /**
      * Lists all the site containers of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a list of site containers
@@ -27067,7 +27066,7 @@ public interface WebAppsClient
 
     /**
      * Lists all the site containers of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get a list of site containers
@@ -27085,7 +27084,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
@@ -27104,7 +27103,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
@@ -27122,7 +27121,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
@@ -27141,7 +27140,7 @@ public interface WebAppsClient
 
     /**
      * Gets a site container of a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the Site Container for the
@@ -27158,7 +27157,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
@@ -27177,7 +27176,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
@@ -27196,7 +27195,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
@@ -27216,7 +27215,7 @@ public interface WebAppsClient
 
     /**
      * Creates or Updates a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will create the container for the
@@ -27235,7 +27234,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
@@ -27253,7 +27252,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
@@ -27270,7 +27269,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
@@ -27289,7 +27288,7 @@ public interface WebAppsClient
 
     /**
      * Deletes a site container for a site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the container for the
@@ -27305,9 +27304,9 @@ public interface WebAppsClient
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
@@ -27324,9 +27323,9 @@ public interface WebAppsClient
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
@@ -27343,9 +27342,9 @@ public interface WebAppsClient
 
     /**
      * Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get list of siteextensions for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API uses the production slot.
@@ -27364,9 +27363,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27385,9 +27384,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27406,9 +27405,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27428,9 +27427,9 @@ public interface WebAppsClient
 
     /**
      * Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * Description for Get site extension information by its ID for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27449,9 +27448,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27470,9 +27469,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27491,9 +27490,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27512,9 +27511,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27534,9 +27533,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27555,9 +27554,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27576,9 +27575,9 @@ public interface WebAppsClient
 
     /**
      * Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * Description for Install site extension on a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27598,9 +27597,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27620,9 +27619,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27641,9 +27640,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27664,9 +27663,9 @@ public interface WebAppsClient
 
     /**
      * Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * Description for Remove a site extension from a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param siteExtensionId Site extension name.
@@ -27684,9 +27683,9 @@ public interface WebAppsClient
 
     /**
      * Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * Description for Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27703,9 +27702,9 @@ public interface WebAppsClient
 
     /**
      * Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * Description for Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27722,9 +27721,9 @@ public interface WebAppsClient
 
     /**
      * Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * Description for Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27742,9 +27741,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27761,9 +27760,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27780,9 +27779,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27799,9 +27798,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27819,9 +27818,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27837,9 +27836,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27854,9 +27853,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the source slot. If a slot is not specified, the production slot is used as the source slot.
@@ -27872,9 +27871,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user.
-     *
+     * 
      * Description for Returns all Snapshots to the user.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param slot Website Slot.
@@ -27890,9 +27889,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user.
-     *
+     * 
      * Description for Returns all Snapshots to the user.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param slot Website Slot.
@@ -27908,9 +27907,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user.
-     *
+     * 
      * Description for Returns all Snapshots to the user.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param slot Website Slot.
@@ -27927,9 +27926,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * Description for Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param slot Website Slot.
@@ -27945,9 +27944,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * Description for Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param slot Website Slot.
@@ -27963,9 +27962,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * Description for Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param slot Website Slot.
@@ -27983,9 +27982,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control
@@ -28003,9 +28002,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control
@@ -28021,9 +28020,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control
@@ -28041,9 +28040,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get the source control
@@ -28059,9 +28058,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28080,9 +28079,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28100,9 +28099,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28120,9 +28119,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28141,9 +28140,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28161,9 +28160,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28181,9 +28180,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28202,9 +28201,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control
@@ -28224,9 +28223,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control
@@ -28244,9 +28243,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control
@@ -28267,9 +28266,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will delete the source control
@@ -28286,9 +28285,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28307,9 +28306,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28327,9 +28326,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28348,9 +28347,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will update the source control
@@ -28368,9 +28367,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
@@ -28385,9 +28384,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
@@ -28402,9 +28401,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
@@ -28420,9 +28419,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will start the production slot.
@@ -28436,9 +28435,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28457,9 +28456,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28478,9 +28477,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28496,9 +28495,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28514,9 +28513,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28536,9 +28535,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28557,9 +28556,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28574,9 +28573,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28591,9 +28590,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28613,9 +28612,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
@@ -28630,9 +28629,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
@@ -28647,9 +28646,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
@@ -28665,9 +28664,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will stop the production slot.
@@ -28681,9 +28680,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28698,9 +28697,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28715,9 +28714,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28734,9 +28733,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param slot The name of the slot for this web app.
@@ -28750,9 +28749,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -28767,9 +28766,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -28784,9 +28783,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -28802,9 +28801,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param slot Name of web app slot. If not specified then will default to production slot.
@@ -28818,9 +28817,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -28835,9 +28834,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -28852,9 +28851,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -28871,9 +28870,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot.
@@ -28887,9 +28886,9 @@ public interface WebAppsClient
 
     /**
      * List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
@@ -28905,9 +28904,9 @@ public interface WebAppsClient
 
     /**
      * List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
@@ -28924,9 +28923,9 @@ public interface WebAppsClient
 
     /**
      * List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API deletes a deployment for the
@@ -28945,9 +28944,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -28966,9 +28965,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -28987,9 +28986,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29009,9 +29008,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29029,9 +29028,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29049,9 +29048,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29068,9 +29067,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29089,9 +29088,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29107,9 +29106,9 @@ public interface WebAppsClient
 
     /**
      * List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * Description for List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29128,9 +29127,9 @@ public interface WebAppsClient
 
     /**
      * List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * Description for List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29150,9 +29149,9 @@ public interface WebAppsClient
 
     /**
      * List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * Description for List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29173,9 +29172,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29195,9 +29194,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29217,9 +29216,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29240,9 +29239,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29262,9 +29261,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29283,9 +29282,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29303,9 +29302,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29325,9 +29324,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -29344,9 +29343,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the
@@ -29366,9 +29365,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the
@@ -29384,9 +29383,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the
@@ -29402,9 +29401,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get quota information of the
@@ -29425,9 +29424,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections
@@ -29444,9 +29443,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections
@@ -29462,9 +29461,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections
@@ -29482,9 +29481,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slot Name of the deployment slot. If a slot is not specified, the API will get virtual network connections
@@ -29500,9 +29499,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29521,9 +29520,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29541,9 +29540,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29562,9 +29561,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29581,10 +29580,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29604,10 +29603,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29626,10 +29625,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29649,10 +29648,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29671,9 +29670,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29693,9 +29692,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29714,9 +29713,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29737,9 +29736,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -29757,10 +29756,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29780,10 +29779,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29802,10 +29801,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29825,10 +29824,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -29847,9 +29846,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -29871,9 +29870,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -29894,9 +29893,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -29918,9 +29917,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -29941,9 +29940,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -29964,9 +29963,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -29986,9 +29985,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -30010,9 +30009,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -30032,9 +30031,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -30055,9 +30054,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -30077,9 +30076,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -30100,9 +30099,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -30122,9 +30121,9 @@ public interface WebAppsClient
 
     /**
      * List webjobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List webjobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -30140,9 +30139,9 @@ public interface WebAppsClient
 
     /**
      * List webjobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List webjobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -30158,9 +30157,9 @@ public interface WebAppsClient
 
     /**
      * List webjobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List webjobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot. If a slot is not specified, the API returns deployments for the
@@ -30177,9 +30176,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -30197,9 +30196,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -30216,9 +30215,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -30237,9 +30236,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -30256,9 +30255,9 @@ public interface WebAppsClient
 
     /**
      * Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * Description for Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30274,9 +30273,9 @@ public interface WebAppsClient
 
     /**
      * Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * Description for Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30292,9 +30291,9 @@ public interface WebAppsClient
 
     /**
      * Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * Description for Get the difference in configuration settings between two web app slots.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30311,9 +30310,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30329,9 +30328,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30347,9 +30346,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30365,9 +30364,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30384,9 +30383,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30401,9 +30400,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30417,9 +30416,9 @@ public interface WebAppsClient
 
     /**
      * Swaps two deployment slots of an app.
-     *
+     * 
      * Description for Swaps two deployment slots of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param slotSwapEntity JSON object that contains the target slot name. See example.
@@ -30434,9 +30433,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user.
-     *
+     * 
      * Description for Returns all Snapshots to the user.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30451,9 +30450,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user.
-     *
+     * 
      * Description for Returns all Snapshots to the user.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30468,9 +30467,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user.
-     *
+     * 
      * Description for Returns all Snapshots to the user.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param context The context to associate with this operation.
@@ -30486,9 +30485,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * Description for Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30503,9 +30502,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * Description for Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30520,9 +30519,9 @@ public interface WebAppsClient
 
     /**
      * Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * Description for Returns all Snapshots to the user from DRSecondary endpoint.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Website Name.
      * @param context The context to associate with this operation.
@@ -30538,9 +30537,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30555,9 +30554,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30571,9 +30570,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -30589,9 +30588,9 @@ public interface WebAppsClient
 
     /**
      * Gets the source control configuration of an app.
-     *
+     * 
      * Description for Gets the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30605,9 +30604,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30624,9 +30623,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30642,9 +30641,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30660,9 +30659,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30679,9 +30678,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30697,9 +30696,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30715,9 +30714,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30734,9 +30733,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param additionalFlags The additionalFlags parameter.
@@ -30754,9 +30753,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30772,9 +30771,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param additionalFlags The additionalFlags parameter.
@@ -30793,9 +30792,9 @@ public interface WebAppsClient
 
     /**
      * Deletes the source control configuration of an app.
-     *
+     * 
      * Description for Deletes the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30810,9 +30809,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30829,9 +30828,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30847,9 +30846,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30866,9 +30865,9 @@ public interface WebAppsClient
 
     /**
      * Updates the source control configuration of an app.
-     *
+     * 
      * Description for Updates the source control configuration of an app.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteSourceControl JSON representation of a SiteSourceControl object. See example.
@@ -30884,9 +30883,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30900,9 +30899,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30916,9 +30915,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -30933,9 +30932,9 @@ public interface WebAppsClient
 
     /**
      * Starts an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Starts an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30948,9 +30947,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -30968,9 +30967,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -30988,9 +30987,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31004,9 +31003,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31020,9 +31019,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -31041,9 +31040,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -31061,9 +31060,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31077,9 +31076,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31093,9 +31092,9 @@ public interface WebAppsClient
 
     /**
      * Start capturing network packets for the site.
-     *
+     * 
      * Description for Start capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param durationInSeconds The duration to keep capturing in seconds.
@@ -31114,9 +31113,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31130,9 +31129,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31146,9 +31145,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -31163,9 +31162,9 @@ public interface WebAppsClient
 
     /**
      * Stops an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Stops an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31178,9 +31177,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31194,9 +31193,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31210,9 +31209,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @param context The context to associate with this operation.
@@ -31227,9 +31226,9 @@ public interface WebAppsClient
 
     /**
      * Stop ongoing capturing network packets for the site.
-     *
+     * 
      * Description for Stop ongoing capturing network packets for the site.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name The name of the web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31242,9 +31241,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31258,9 +31257,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31274,9 +31273,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @param context The context to associate with this operation.
@@ -31291,9 +31290,9 @@ public interface WebAppsClient
 
     /**
      * Sync web app repository.
-     *
+     * 
      * Description for Sync web app repository.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of web app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31306,9 +31305,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31322,9 +31321,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31338,9 +31337,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -31355,9 +31354,9 @@ public interface WebAppsClient
 
     /**
      * Syncs function trigger metadata to the management database
-     *
+     * 
      * Description for Syncs function trigger metadata to the management database.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31370,9 +31369,9 @@ public interface WebAppsClient
 
     /**
      * List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31386,9 +31385,9 @@ public interface WebAppsClient
 
     /**
      * List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31403,9 +31402,9 @@ public interface WebAppsClient
 
     /**
      * List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List triggered web jobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -31421,9 +31420,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31441,9 +31440,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31460,9 +31459,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31481,9 +31480,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31500,9 +31499,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31518,9 +31517,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31535,9 +31534,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31554,9 +31553,9 @@ public interface WebAppsClient
 
     /**
      * Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * Description for Delete a triggered web job by its ID for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31570,9 +31569,9 @@ public interface WebAppsClient
 
     /**
      * List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * Description for List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31590,9 +31589,9 @@ public interface WebAppsClient
 
     /**
      * List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * Description for List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31611,9 +31610,9 @@ public interface WebAppsClient
 
     /**
      * List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * Description for List a triggered web job's history for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31633,9 +31632,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31654,9 +31653,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31675,9 +31674,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31697,9 +31696,9 @@ public interface WebAppsClient
 
     /**
      * Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * Description for Gets a triggered web job's history by its ID for an app, , or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31718,9 +31717,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31737,9 +31736,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31756,9 +31755,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31777,9 +31776,9 @@ public interface WebAppsClient
 
     /**
      * Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * Description for Run a triggered web job for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of Web Job.
@@ -31795,9 +31794,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param filter Return only information specified in the filter (using OData syntax). For example:
@@ -31814,9 +31813,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31830,9 +31829,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31846,9 +31845,9 @@ public interface WebAppsClient
 
     /**
      * Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * Description for Gets the quota usage information of an app (or deployment slot, if specified).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param filter Return only information specified in the filter (using OData syntax). For example:
@@ -31866,9 +31865,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31883,9 +31882,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31899,9 +31898,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param context The context to associate with this operation.
@@ -31917,9 +31916,9 @@ public interface WebAppsClient
 
     /**
      * Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * Description for Gets the virtual networks the app (or deployment slot) is connected to.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31933,9 +31932,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -31952,9 +31951,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -31969,9 +31968,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -31988,9 +31987,9 @@ public interface WebAppsClient
 
     /**
      * Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * Description for Gets a virtual network the app (or deployment slot) is connected to by name.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -32005,10 +32004,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32026,10 +32025,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32046,10 +32045,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32067,10 +32066,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32087,9 +32086,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -32106,9 +32105,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -32125,9 +32124,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -32146,9 +32145,9 @@ public interface WebAppsClient
 
     /**
      * Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * Description for Deletes a connection from an app (or deployment slot to a named virtual network.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the virtual network.
@@ -32164,10 +32163,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32185,10 +32184,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32205,10 +32204,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32226,10 +32225,10 @@ public interface WebAppsClient
 
     /**
      * Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties (PATCH).
-     *
+     * 
      * Description for Adds a Virtual Network connection to an app or slot (PUT) or updates the connection properties
      * (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of an existing Virtual Network.
@@ -32246,9 +32245,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32268,9 +32267,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32289,9 +32288,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32311,9 +32310,9 @@ public interface WebAppsClient
 
     /**
      * Gets an app's Virtual Network gateway.
-     *
+     * 
      * Description for Gets an app's Virtual Network gateway.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32332,9 +32331,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32353,9 +32352,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32373,9 +32372,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32394,9 +32393,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32414,9 +32413,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32435,9 +32434,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32455,9 +32454,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32476,9 +32475,9 @@ public interface WebAppsClient
 
     /**
      * Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * Description for Adds a gateway to a connected Virtual Network (PUT) or updates it (PATCH).
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param vnetName Name of the Virtual Network.
@@ -32496,9 +32495,9 @@ public interface WebAppsClient
 
     /**
      * List webjobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List webjobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32512,9 +32511,9 @@ public interface WebAppsClient
 
     /**
      * List webjobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List webjobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32528,9 +32527,9 @@ public interface WebAppsClient
 
     /**
      * List webjobs for an app, or a deployment slot.
-     *
+     * 
      * Description for List webjobs for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -32545,9 +32544,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -32562,9 +32561,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -32579,9 +32578,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -32598,9 +32597,9 @@ public interface WebAppsClient
 
     /**
      * Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * Description for Get webjob information for an app, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param webJobName Name of the web job.
@@ -32615,9 +32614,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowArtifacts Application settings and files of the workflow.
@@ -32633,9 +32632,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32649,9 +32648,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowArtifacts Application settings and files of the workflow.
@@ -32668,9 +32667,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32683,9 +32682,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32702,9 +32701,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32719,9 +32718,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32739,9 +32738,9 @@ public interface WebAppsClient
 
     /**
      * Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * Description for Creates the artifacts for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32755,7 +32754,7 @@ public interface WebAppsClient
 
     /**
      * List the workflows for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32770,7 +32769,7 @@ public interface WebAppsClient
 
     /**
      * List the workflows for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32785,7 +32784,7 @@ public interface WebAppsClient
 
     /**
      * List the workflows for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32802,7 +32801,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32822,7 +32821,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32842,7 +32841,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32862,7 +32861,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32881,7 +32880,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32897,7 +32896,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32912,7 +32911,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32929,7 +32928,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param slot Name of the deployment slot.
@@ -32944,7 +32943,7 @@ public interface WebAppsClient
 
     /**
      * List the workflows for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32958,7 +32957,7 @@ public interface WebAppsClient
 
     /**
      * List the workflows for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32972,7 +32971,7 @@ public interface WebAppsClient
 
     /**
      * List the workflows for a web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -32987,7 +32986,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName Workflow name.
@@ -33006,7 +33005,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName Workflow name.
@@ -33024,7 +33023,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName Workflow name.
@@ -33043,7 +33042,7 @@ public interface WebAppsClient
 
     /**
      * Get workflow information by its ID for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param workflowName Workflow name.
@@ -33060,7 +33059,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33075,7 +33074,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33089,7 +33088,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @param context The context to associate with this operation.
@@ -33105,7 +33104,7 @@ public interface WebAppsClient
 
     /**
      * Lists logic app's connections for web site, or a deployment slot.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

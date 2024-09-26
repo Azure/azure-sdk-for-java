@@ -6,14 +6,16 @@ package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cdn.models.AfdDomainHttpsParameters;
 import com.azure.resourcemanager.cdn.models.AfdProvisioningState;
 import com.azure.resourcemanager.cdn.models.DeploymentStatus;
 import com.azure.resourcemanager.cdn.models.DomainValidationProperties;
 import com.azure.resourcemanager.cdn.models.DomainValidationState;
 import com.azure.resourcemanager.cdn.models.ResourceReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -25,39 +27,37 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
      * Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. DCV stands for
      * DomainControlValidation.
      */
-    @JsonProperty(value = "domainValidationState", access = JsonProperty.Access.WRITE_ONLY)
     private DomainValidationState domainValidationState;
 
     /*
      * The host name of the domain. Must be a domain name.
      */
-    @JsonProperty(value = "hostName", required = true)
     private String hostname;
 
     /*
      * Key-Value pair representing migration properties for domains.
      */
-    @JsonProperty(value = "extendedProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extendedProperties;
 
     /*
      * Values the customer needs to validate domain ownership
      */
-    @JsonProperty(value = "validationProperties", access = JsonProperty.Access.WRITE_ONLY)
     private DomainValidationProperties validationProperties;
 
     /*
      * Provisioning status
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AfdProvisioningState provisioningState;
 
     /*
      * The deploymentStatus property.
      */
-    @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DeploymentStatus deploymentStatus;
+
+    /*
+     * The name of the profile which holds the domain.
+     */
+    private String profileName;
 
     /**
      * Creates an instance of AfdDomainProperties class.
@@ -143,6 +143,16 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
     }
 
     /**
+     * Get the profileName property: The name of the profile which holds the domain.
+     * 
+     * @return the profileName value.
+     */
+    @Override
+    public String profileName() {
+        return this.profileName;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -179,8 +189,8 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
     public void validate() {
         super.validate();
         if (hostname() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property hostname in model AfdDomainProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property hostname in model AfdDomainProperties"));
         }
         if (validationProperties() != null) {
             validationProperties().validate();
@@ -188,4 +198,68 @@ public final class AfdDomainProperties extends AfdDomainUpdatePropertiesParamete
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AfdDomainProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("tlsSettings", tlsSettings());
+        jsonWriter.writeJsonField("azureDnsZone", azureDnsZone());
+        jsonWriter.writeJsonField("preValidatedCustomDomainResourceId", preValidatedCustomDomainResourceId());
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeMapField("extendedProperties", this.extendedProperties,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AfdDomainProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AfdDomainProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AfdDomainProperties.
+     */
+    public static AfdDomainProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AfdDomainProperties deserializedAfdDomainProperties = new AfdDomainProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileName".equals(fieldName)) {
+                    deserializedAfdDomainProperties.profileName = reader.getString();
+                } else if ("tlsSettings".equals(fieldName)) {
+                    deserializedAfdDomainProperties.withTlsSettings(AfdDomainHttpsParameters.fromJson(reader));
+                } else if ("azureDnsZone".equals(fieldName)) {
+                    deserializedAfdDomainProperties.withAzureDnsZone(ResourceReference.fromJson(reader));
+                } else if ("preValidatedCustomDomainResourceId".equals(fieldName)) {
+                    deserializedAfdDomainProperties
+                        .withPreValidatedCustomDomainResourceId(ResourceReference.fromJson(reader));
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedAfdDomainProperties.hostname = reader.getString();
+                } else if ("domainValidationState".equals(fieldName)) {
+                    deserializedAfdDomainProperties.domainValidationState
+                        = DomainValidationState.fromString(reader.getString());
+                } else if ("extendedProperties".equals(fieldName)) {
+                    Map<String, String> extendedProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAfdDomainProperties.extendedProperties = extendedProperties;
+                } else if ("validationProperties".equals(fieldName)) {
+                    deserializedAfdDomainProperties.validationProperties = DomainValidationProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAfdDomainProperties.provisioningState
+                        = AfdProvisioningState.fromString(reader.getString());
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedAfdDomainProperties.deploymentStatus = DeploymentStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAfdDomainProperties;
+        });
+    }
 }

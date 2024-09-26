@@ -16,7 +16,7 @@ part of JDK 11.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-jdk-httpclient</artifactId>
-    <version>1.0.0-beta.14</version>
+    <version>1.0.0-beta.16</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -80,7 +80,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- links -->
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-jdk-httpclient%2FREADME.png)

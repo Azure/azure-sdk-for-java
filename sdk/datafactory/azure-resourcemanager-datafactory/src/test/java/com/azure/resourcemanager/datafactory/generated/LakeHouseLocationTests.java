@@ -11,13 +11,13 @@ public final class LakeHouseLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseLocation model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseLocation\",\"folderPath\":\"databtvkbi\",\"fileName\":\"datanhtfgfi\",\"\":{\"bcakzn\":\"datayhizpaczmu\"}}")
+            "{\"type\":\"LakeHouseLocation\",\"folderPath\":\"dataoyrzaaoe\",\"fileName\":\"datapmjen\",\"\":{\"axxcrxoxdj\":\"dataat\"}}")
             .toObject(LakeHouseLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseLocation model = new LakeHouseLocation().withFolderPath("databtvkbi").withFileName("datanhtfgfi");
+        LakeHouseLocation model = new LakeHouseLocation().withFolderPath("dataoyrzaaoe").withFileName("datapmjen");
         model = BinaryData.fromObject(model).toObject(LakeHouseLocation.class);
     }
 }

@@ -44,6 +44,7 @@ public class AnalyzeAddOnQueryFields {
                         Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
                         Arrays.asList("Address", "InvoiceNumber"),
                         null,
+                        null,
                         new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(invoiceDocument.toPath())));
 
         AnalyzeResult analyzeLayoutResult = analyzeLayoutResultPoller.getFinalResult();

@@ -12,19 +12,19 @@ public final class VolumeMountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeMount model
-            = BinaryData.fromString("{\"volumeName\":\"mc\",\"mountPath\":\"hixbjxyfwnyl\",\"subPath\":\"ool\"}")
+            = BinaryData.fromString("{\"volumeName\":\"uoujmkcjhwqy\",\"mountPath\":\"r\",\"subPath\":\"n\"}")
                 .toObject(VolumeMount.class);
-        Assertions.assertEquals("mc", model.volumeName());
-        Assertions.assertEquals("hixbjxyfwnyl", model.mountPath());
-        Assertions.assertEquals("ool", model.subPath());
+        Assertions.assertEquals("uoujmkcjhwqy", model.volumeName());
+        Assertions.assertEquals("r", model.mountPath());
+        Assertions.assertEquals("n", model.subPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeMount model = new VolumeMount().withVolumeName("mc").withMountPath("hixbjxyfwnyl").withSubPath("ool");
+        VolumeMount model = new VolumeMount().withVolumeName("uoujmkcjhwqy").withMountPath("r").withSubPath("n");
         model = BinaryData.fromObject(model).toObject(VolumeMount.class);
-        Assertions.assertEquals("mc", model.volumeName());
-        Assertions.assertEquals("hixbjxyfwnyl", model.mountPath());
-        Assertions.assertEquals("ool", model.subPath());
+        Assertions.assertEquals("uoujmkcjhwqy", model.volumeName());
+        Assertions.assertEquals("r", model.mountPath());
+        Assertions.assertEquals("n", model.subPath());
     }
 }

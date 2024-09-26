@@ -6,33 +6,33 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportItem;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure reachability report details.
  */
 @Fluent
-public final class AzureReachabilityReportInner {
+public final class AzureReachabilityReportInner implements JsonSerializable<AzureReachabilityReportInner> {
     /*
      * The aggregation level of Azure reachability report. Can be Country, State or City.
      */
-    @JsonProperty(value = "aggregationLevel", required = true)
     private String aggregationLevel;
 
     /*
      * Parameters that define a geographic location.
      */
-    @JsonProperty(value = "providerLocation", required = true)
     private AzureReachabilityReportLocation providerLocation;
 
     /*
      * List of Azure reachability report items.
      */
-    @JsonProperty(value = "reachabilityReport", required = true)
     private List<AzureReachabilityReportItem> reachabilityReport;
 
     /**
@@ -44,7 +44,7 @@ public final class AzureReachabilityReportInner {
     /**
      * Get the aggregationLevel property: The aggregation level of Azure reachability report. Can be Country, State or
      * City.
-     *
+     * 
      * @return the aggregationLevel value.
      */
     public String aggregationLevel() {
@@ -54,7 +54,7 @@ public final class AzureReachabilityReportInner {
     /**
      * Set the aggregationLevel property: The aggregation level of Azure reachability report. Can be Country, State or
      * City.
-     *
+     * 
      * @param aggregationLevel the aggregationLevel value to set.
      * @return the AzureReachabilityReportInner object itself.
      */
@@ -65,7 +65,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Get the providerLocation property: Parameters that define a geographic location.
-     *
+     * 
      * @return the providerLocation value.
      */
     public AzureReachabilityReportLocation providerLocation() {
@@ -74,7 +74,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Set the providerLocation property: Parameters that define a geographic location.
-     *
+     * 
      * @param providerLocation the providerLocation value to set.
      * @return the AzureReachabilityReportInner object itself.
      */
@@ -85,7 +85,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Get the reachabilityReport property: List of Azure reachability report items.
-     *
+     * 
      * @return the reachabilityReport value.
      */
     public List<AzureReachabilityReportItem> reachabilityReport() {
@@ -94,7 +94,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Set the reachabilityReport property: List of Azure reachability report items.
-     *
+     * 
      * @param reachabilityReport the reachabilityReport value to set.
      * @return the AzureReachabilityReportInner object itself.
      */
@@ -105,7 +105,7 @@ public final class AzureReachabilityReportInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -131,4 +131,51 @@ public final class AzureReachabilityReportInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureReachabilityReportInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("aggregationLevel", this.aggregationLevel);
+        jsonWriter.writeJsonField("providerLocation", this.providerLocation);
+        jsonWriter.writeArrayField("reachabilityReport", this.reachabilityReport,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureReachabilityReportInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureReachabilityReportInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureReachabilityReportInner.
+     */
+    public static AzureReachabilityReportInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureReachabilityReportInner deserializedAzureReachabilityReportInner = new AzureReachabilityReportInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregationLevel".equals(fieldName)) {
+                    deserializedAzureReachabilityReportInner.aggregationLevel = reader.getString();
+                } else if ("providerLocation".equals(fieldName)) {
+                    deserializedAzureReachabilityReportInner.providerLocation
+                        = AzureReachabilityReportLocation.fromJson(reader);
+                } else if ("reachabilityReport".equals(fieldName)) {
+                    List<AzureReachabilityReportItem> reachabilityReport
+                        = reader.readArray(reader1 -> AzureReachabilityReportItem.fromJson(reader1));
+                    deserializedAzureReachabilityReportInner.reachabilityReport = reachabilityReport;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureReachabilityReportInner;
+        });
+    }
 }

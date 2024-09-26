@@ -6,42 +6,41 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes the connection monitor test group.
  */
 @Fluent
-public final class ConnectionMonitorTestGroup {
+public final class ConnectionMonitorTestGroup implements JsonSerializable<ConnectionMonitorTestGroup> {
     /*
      * The name of the connection monitor test group.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Value indicating whether test group is disabled.
      */
-    @JsonProperty(value = "disable")
     private Boolean disable;
 
     /*
      * List of test configuration names.
      */
-    @JsonProperty(value = "testConfigurations", required = true)
     private List<String> testConfigurations;
 
     /*
      * List of source endpoint names.
      */
-    @JsonProperty(value = "sources", required = true)
     private List<String> sources;
 
     /*
      * List of destination endpoint names.
      */
-    @JsonProperty(value = "destinations", required = true)
     private List<String> destinations;
 
     /**
@@ -179,4 +178,57 @@ public final class ConnectionMonitorTestGroup {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorTestGroup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("testConfigurations", this.testConfigurations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("sources", this.sources, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinations", this.destinations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("disable", this.disable);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionMonitorTestGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionMonitorTestGroup if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionMonitorTestGroup.
+     */
+    public static ConnectionMonitorTestGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionMonitorTestGroup deserializedConnectionMonitorTestGroup = new ConnectionMonitorTestGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConnectionMonitorTestGroup.name = reader.getString();
+                } else if ("testConfigurations".equals(fieldName)) {
+                    List<String> testConfigurations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectionMonitorTestGroup.testConfigurations = testConfigurations;
+                } else if ("sources".equals(fieldName)) {
+                    List<String> sources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectionMonitorTestGroup.sources = sources;
+                } else if ("destinations".equals(fieldName)) {
+                    List<String> destinations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedConnectionMonitorTestGroup.destinations = destinations;
+                } else if ("disable".equals(fieldName)) {
+                    deserializedConnectionMonitorTestGroup.disable = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionMonitorTestGroup;
+        });
+    }
 }

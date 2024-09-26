@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.storage.common.sas.SasProtocol;
 import java.time.ZoneId;
@@ -88,7 +89,7 @@ public final class Constants {
     public static final String PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION = "AZURE_STORAGE_SAS_SERVICE_VERSION";
 
     public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
-        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2024-08-04");
+        .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2024-11-04");
 
     private Constants() {
     }
@@ -216,12 +217,14 @@ public final class Constants {
          * @deprecated For SAS Service Version use {@link Constants#SAS_SERVICE_VERSION}.
          */
         @Deprecated
-        public static final String TARGET_STORAGE_VERSION = "2024-08-04";
+        public static final String TARGET_STORAGE_VERSION = "2024-11-04";
 
         /**
          * Error code returned from the service.
          */
         public static final String ERROR_CODE = "x-ms-error-code";
+
+        public static final HttpHeaderName ERROR_CODE_HEADER_NAME = HttpHeaderName.fromString(ERROR_CODE);
 
         /**
          * Compression type used on the body.
@@ -235,6 +238,8 @@ public final class Constants {
         public static final String ENCRYPTION_KEY = "x-ms-encryption-key";
 
         public static final String ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
+        public static final HttpHeaderName ENCRYPTION_KEY_SHA256_HEADER_NAME
+            = HttpHeaderName.fromString(ENCRYPTION_KEY_SHA256);
 
         public static final String SERVER_ENCRYPTED = "x-ms-server-encrypted";
 

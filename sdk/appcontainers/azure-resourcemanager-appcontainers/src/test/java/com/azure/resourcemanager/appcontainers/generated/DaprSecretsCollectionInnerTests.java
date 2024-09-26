@@ -13,14 +13,14 @@ public final class DaprSecretsCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DaprSecretsCollectionInner model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"lw\",\"value\":\"ztzp\"},{\"name\":\"ncckw\",\"value\":\"zqwhxxbuyqaxzfeq\"},{\"name\":\"ppriol\",\"value\":\"rjaltolmncw\"}]}")
+            "{\"value\":[{\"name\":\"nhwlrsffrzpwvl\",\"value\":\"q\"},{\"name\":\"iqylihkaetck\",\"value\":\"fcivfsnkym\"}]}")
             .toObject(DaprSecretsCollectionInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprSecretsCollectionInner model = new DaprSecretsCollectionInner()
-            .withValue(Arrays.asList(new DaprSecret(), new DaprSecret(), new DaprSecret()));
+        DaprSecretsCollectionInner model
+            = new DaprSecretsCollectionInner().withValue(Arrays.asList(new DaprSecret(), new DaprSecret()));
         model = BinaryData.fromObject(model).toObject(DaprSecretsCollectionInner.class);
     }
 }

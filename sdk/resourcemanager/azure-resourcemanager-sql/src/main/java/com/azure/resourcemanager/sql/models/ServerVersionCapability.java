@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The server capability. */
+/**
+ * The server capability.
+ */
 @Fluent
-public final class ServerVersionCapability {
+public final class ServerVersionCapability implements JsonSerializable<ServerVersionCapability> {
     /*
      * The server version name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The list of supported database editions.
      */
-    @JsonProperty(value = "supportedEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<EditionCapability> supportedEditions;
 
     /*
      * The list of supported elastic pool editions.
      */
-    @JsonProperty(value = "supportedElasticPoolEditions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ElasticPoolEditionCapability> supportedElasticPoolEditions;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of ServerVersionCapability class. */
+    /**
+     * Creates an instance of ServerVersionCapability class.
+     */
     public ServerVersionCapability() {
     }
 
     /**
      * Get the name property: The server version name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +59,7 @@ public final class ServerVersionCapability {
 
     /**
      * Get the supportedEditions property: The list of supported database editions.
-     *
+     * 
      * @return the supportedEditions value.
      */
     public List<EditionCapability> supportedEditions() {
@@ -65,7 +68,7 @@ public final class ServerVersionCapability {
 
     /**
      * Get the supportedElasticPoolEditions property: The list of supported elastic pool editions.
-     *
+     * 
      * @return the supportedElasticPoolEditions value.
      */
     public List<ElasticPoolEditionCapability> supportedElasticPoolEditions() {
@@ -74,7 +77,7 @@ public final class ServerVersionCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -83,7 +86,7 @@ public final class ServerVersionCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -92,7 +95,7 @@ public final class ServerVersionCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ServerVersionCapability object itself.
      */
@@ -103,7 +106,7 @@ public final class ServerVersionCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -113,5 +116,53 @@ public final class ServerVersionCapability {
         if (supportedElasticPoolEditions() != null) {
             supportedElasticPoolEditions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerVersionCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerVersionCapability if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerVersionCapability.
+     */
+    public static ServerVersionCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerVersionCapability deserializedServerVersionCapability = new ServerVersionCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServerVersionCapability.name = reader.getString();
+                } else if ("supportedEditions".equals(fieldName)) {
+                    List<EditionCapability> supportedEditions
+                        = reader.readArray(reader1 -> EditionCapability.fromJson(reader1));
+                    deserializedServerVersionCapability.supportedEditions = supportedEditions;
+                } else if ("supportedElasticPoolEditions".equals(fieldName)) {
+                    List<ElasticPoolEditionCapability> supportedElasticPoolEditions
+                        = reader.readArray(reader1 -> ElasticPoolEditionCapability.fromJson(reader1));
+                    deserializedServerVersionCapability.supportedElasticPoolEditions = supportedElasticPoolEditions;
+                } else if ("status".equals(fieldName)) {
+                    deserializedServerVersionCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedServerVersionCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerVersionCapability;
+        });
     }
 }

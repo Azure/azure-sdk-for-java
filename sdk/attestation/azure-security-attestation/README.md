@@ -328,7 +328,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [azure_cloud_shell]: https://shell.azure.com/bash
-[http_clients_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients
+[http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fattestation%2Fazure-security-attestation%2FREADME.png)

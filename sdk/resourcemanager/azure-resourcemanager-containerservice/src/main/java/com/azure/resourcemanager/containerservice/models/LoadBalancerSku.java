@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -40,7 +39,6 @@ public final class LoadBalancerSku extends ExpandableStringEnum<LoadBalancerSku>
      * @param name a name to look for.
      * @return the corresponding LoadBalancerSku.
      */
-    @JsonCreator
     public static LoadBalancerSku fromString(String name) {
         return fromString(name, LoadBalancerSku.class);
     }

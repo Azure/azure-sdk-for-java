@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** onlineMeetingPresenters. */
+/**
+ * onlineMeetingPresenters.
+ */
 public final class MicrosoftGraphOnlineMeetingPresenters
     extends ExpandableStringEnum<MicrosoftGraphOnlineMeetingPresenters> {
-    /** Static value everyone for MicrosoftGraphOnlineMeetingPresenters. */
+    /**
+     * Static value everyone for MicrosoftGraphOnlineMeetingPresenters.
+     */
     public static final MicrosoftGraphOnlineMeetingPresenters EVERYONE = fromString("everyone");
 
-    /** Static value organization for MicrosoftGraphOnlineMeetingPresenters. */
+    /**
+     * Static value organization for MicrosoftGraphOnlineMeetingPresenters.
+     */
     public static final MicrosoftGraphOnlineMeetingPresenters ORGANIZATION = fromString("organization");
 
-    /** Static value roleIsPresenter for MicrosoftGraphOnlineMeetingPresenters. */
+    /**
+     * Static value roleIsPresenter for MicrosoftGraphOnlineMeetingPresenters.
+     */
     public static final MicrosoftGraphOnlineMeetingPresenters ROLE_IS_PRESENTER = fromString("roleIsPresenter");
 
-    /** Static value organizer for MicrosoftGraphOnlineMeetingPresenters. */
+    /**
+     * Static value organizer for MicrosoftGraphOnlineMeetingPresenters.
+     */
     public static final MicrosoftGraphOnlineMeetingPresenters ORGANIZER = fromString("organizer");
 
-    /** Static value unknownFutureValue for MicrosoftGraphOnlineMeetingPresenters. */
+    /**
+     * Static value unknownFutureValue for MicrosoftGraphOnlineMeetingPresenters.
+     */
     public static final MicrosoftGraphOnlineMeetingPresenters UNKNOWN_FUTURE_VALUE = fromString("unknownFutureValue");
 
     /**
      * Creates a new instance of MicrosoftGraphOnlineMeetingPresenters value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,18 +48,17 @@ public final class MicrosoftGraphOnlineMeetingPresenters
 
     /**
      * Creates or finds a MicrosoftGraphOnlineMeetingPresenters from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MicrosoftGraphOnlineMeetingPresenters.
      */
-    @JsonCreator
     public static MicrosoftGraphOnlineMeetingPresenters fromString(String name) {
         return fromString(name, MicrosoftGraphOnlineMeetingPresenters.class);
     }
 
     /**
      * Gets known MicrosoftGraphOnlineMeetingPresenters values.
-     *
+     * 
      * @return known MicrosoftGraphOnlineMeetingPresenters values.
      */
     public static Collection<MicrosoftGraphOnlineMeetingPresenters> values() {

@@ -6,59 +6,61 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.JobStepAction;
 import com.azure.resourcemanager.sql.models.JobStepExecutionOptions;
 import com.azure.resourcemanager.sql.models.JobStepOutput;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of a job step. */
+/**
+ * Properties of a job step.
+ */
 @Fluent
-public final class JobStepProperties {
+public final class JobStepProperties implements JsonSerializable<JobStepProperties> {
     /*
      * The job step's index within the job. If not specified when creating the job step, it will be created as the last
      * step. If not specified when updating the job step, the step id is not modified.
      */
-    @JsonProperty(value = "stepId")
     private Integer stepId;
 
     /*
      * The resource ID of the target group that the job step will be executed on.
      */
-    @JsonProperty(value = "targetGroup", required = true)
     private String targetGroup;
 
     /*
      * The resource ID of the job credential that will be used to connect to the targets.
      */
-    @JsonProperty(value = "credential", required = true)
     private String credential;
 
     /*
      * The action payload of the job step.
      */
-    @JsonProperty(value = "action", required = true)
     private JobStepAction action;
 
     /*
      * Output destination properties of the job step.
      */
-    @JsonProperty(value = "output")
     private JobStepOutput output;
 
     /*
      * Execution options for the job step.
      */
-    @JsonProperty(value = "executionOptions")
     private JobStepExecutionOptions executionOptions;
 
-    /** Creates an instance of JobStepProperties class. */
+    /**
+     * Creates an instance of JobStepProperties class.
+     */
     public JobStepProperties() {
     }
 
     /**
      * Get the stepId property: The job step's index within the job. If not specified when creating the job step, it
      * will be created as the last step. If not specified when updating the job step, the step id is not modified.
-     *
+     * 
      * @return the stepId value.
      */
     public Integer stepId() {
@@ -68,7 +70,7 @@ public final class JobStepProperties {
     /**
      * Set the stepId property: The job step's index within the job. If not specified when creating the job step, it
      * will be created as the last step. If not specified when updating the job step, the step id is not modified.
-     *
+     * 
      * @param stepId the stepId value to set.
      * @return the JobStepProperties object itself.
      */
@@ -79,7 +81,7 @@ public final class JobStepProperties {
 
     /**
      * Get the targetGroup property: The resource ID of the target group that the job step will be executed on.
-     *
+     * 
      * @return the targetGroup value.
      */
     public String targetGroup() {
@@ -88,7 +90,7 @@ public final class JobStepProperties {
 
     /**
      * Set the targetGroup property: The resource ID of the target group that the job step will be executed on.
-     *
+     * 
      * @param targetGroup the targetGroup value to set.
      * @return the JobStepProperties object itself.
      */
@@ -99,7 +101,7 @@ public final class JobStepProperties {
 
     /**
      * Get the credential property: The resource ID of the job credential that will be used to connect to the targets.
-     *
+     * 
      * @return the credential value.
      */
     public String credential() {
@@ -108,7 +110,7 @@ public final class JobStepProperties {
 
     /**
      * Set the credential property: The resource ID of the job credential that will be used to connect to the targets.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the JobStepProperties object itself.
      */
@@ -119,7 +121,7 @@ public final class JobStepProperties {
 
     /**
      * Get the action property: The action payload of the job step.
-     *
+     * 
      * @return the action value.
      */
     public JobStepAction action() {
@@ -128,7 +130,7 @@ public final class JobStepProperties {
 
     /**
      * Set the action property: The action payload of the job step.
-     *
+     * 
      * @param action the action value to set.
      * @return the JobStepProperties object itself.
      */
@@ -139,7 +141,7 @@ public final class JobStepProperties {
 
     /**
      * Get the output property: Output destination properties of the job step.
-     *
+     * 
      * @return the output value.
      */
     public JobStepOutput output() {
@@ -148,7 +150,7 @@ public final class JobStepProperties {
 
     /**
      * Set the output property: Output destination properties of the job step.
-     *
+     * 
      * @param output the output value to set.
      * @return the JobStepProperties object itself.
      */
@@ -159,7 +161,7 @@ public final class JobStepProperties {
 
     /**
      * Get the executionOptions property: Execution options for the job step.
-     *
+     * 
      * @return the executionOptions value.
      */
     public JobStepExecutionOptions executionOptions() {
@@ -168,7 +170,7 @@ public final class JobStepProperties {
 
     /**
      * Set the executionOptions property: Execution options for the job step.
-     *
+     * 
      * @param executionOptions the executionOptions value to set.
      * @return the JobStepProperties object itself.
      */
@@ -179,24 +181,21 @@ public final class JobStepProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetGroup() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property targetGroup in model JobStepProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property targetGroup in model JobStepProperties"));
         }
         if (credential() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property credential in model JobStepProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property credential in model JobStepProperties"));
         }
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model JobStepProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model JobStepProperties"));
         } else {
             action().validate();
         }
@@ -209,4 +208,56 @@ public final class JobStepProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobStepProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetGroup", this.targetGroup);
+        jsonWriter.writeStringField("credential", this.credential);
+        jsonWriter.writeJsonField("action", this.action);
+        jsonWriter.writeNumberField("stepId", this.stepId);
+        jsonWriter.writeJsonField("output", this.output);
+        jsonWriter.writeJsonField("executionOptions", this.executionOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobStepProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobStepProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobStepProperties.
+     */
+    public static JobStepProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobStepProperties deserializedJobStepProperties = new JobStepProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetGroup".equals(fieldName)) {
+                    deserializedJobStepProperties.targetGroup = reader.getString();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedJobStepProperties.credential = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedJobStepProperties.action = JobStepAction.fromJson(reader);
+                } else if ("stepId".equals(fieldName)) {
+                    deserializedJobStepProperties.stepId = reader.getNullable(JsonReader::getInt);
+                } else if ("output".equals(fieldName)) {
+                    deserializedJobStepProperties.output = JobStepOutput.fromJson(reader);
+                } else if ("executionOptions".equals(fieldName)) {
+                    deserializedJobStepProperties.executionOptions = JobStepExecutionOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobStepProperties;
+        });
+    }
 }

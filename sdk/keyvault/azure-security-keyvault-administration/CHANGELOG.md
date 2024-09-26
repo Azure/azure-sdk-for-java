@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 4.5.6 (2024-07-29)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`. 
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
 
 ## 4.5.5 (2024-06-27)
 

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the service. */
+/**
+ * The kind of the service.
+ */
 public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
-    /** Static value WebPubSub for ServiceKind. */
+    /**
+     * Static value WebPubSub for ServiceKind.
+     */
     public static final ServiceKind WEB_PUB_SUB = fromString("WebPubSub");
 
-    /** Static value SocketIO for ServiceKind. */
+    /**
+     * Static value SocketIO for ServiceKind.
+     */
     public static final ServiceKind SOCKET_IO = fromString("SocketIO");
 
     /**
      * Creates a new instance of ServiceKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ServiceKind extends ExpandableStringEnum<ServiceKind> {
 
     /**
      * Creates or finds a ServiceKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceKind.
      */
-    @JsonCreator
     public static ServiceKind fromString(String name) {
         return fromString(name, ServiceKind.class);
     }
 
     /**
      * Gets known ServiceKind values.
-     *
+     * 
      * @return known ServiceKind values.
      */
     public static Collection<ServiceKind> values() {

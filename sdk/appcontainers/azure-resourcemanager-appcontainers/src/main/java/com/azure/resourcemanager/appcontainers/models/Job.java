@@ -52,13 +52,6 @@ public interface Job {
     Map<String, String> tags();
 
     /**
-     * Gets the extendedLocation property: The complex type of the extended location.
-     * 
-     * @return the extendedLocation value.
-     */
-    ExtendedLocation extendedLocation();
-
-    /**
      * Gets the identity property: Managed identities needed by a container app job to interact with other Azure
      * services to not maintain any secrets or credentials in code.
      * 
@@ -205,8 +198,8 @@ public interface Job {
          * The stage of the Job definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithIdentity, DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
             DefinitionStages.WithConfiguration, DefinitionStages.WithTemplate {
             /**
              * Executes the create request.
@@ -235,19 +228,6 @@ public interface Job {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the Job definition allowing to specify extendedLocation.
-         */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: The complex type of the extended location..
-             * 
-             * @param extendedLocation The complex type of the extended location.
-             * @return the next definition stage.
-             */
-            WithCreate withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
         /**
@@ -329,8 +309,7 @@ public interface Job {
     /**
      * The template for Job update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithExtendedLocation, UpdateStages.WithIdentity,
-        UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithIdentity, UpdateStages.WithProperties {
         /**
          * Executes the update request.
          * 
@@ -362,19 +341,6 @@ public interface Job {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the Job update allowing to specify extendedLocation.
-         */
-        interface WithExtendedLocation {
-            /**
-             * Specifies the extendedLocation property: The complex type of the extended location..
-             * 
-             * @param extendedLocation The complex type of the extended location.
-             * @return the next definition stage.
-             */
-            Update withExtendedLocation(ExtendedLocation extendedLocation);
         }
 
         /**

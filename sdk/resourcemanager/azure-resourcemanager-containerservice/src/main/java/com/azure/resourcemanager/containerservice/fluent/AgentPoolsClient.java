@@ -16,6 +16,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolAvailableVersionsInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolInner;
 import com.azure.resourcemanager.containerservice.fluent.models.AgentPoolUpgradeProfileInner;
+import com.azure.resourcemanager.containerservice.models.AgentPoolDeleteMachinesParameter;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -529,6 +530,118 @@ public interface AgentPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     AgentPoolUpgradeProfileInner getUpgradeProfile(String resourceGroupName, String resourceName, String agentPoolName);
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteMachinesWithResponseAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines);
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteMachinesAsync(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines);
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteMachines(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines);
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDeleteMachines(String resourceGroupName, String resourceName,
+        String agentPoolName, AgentPoolDeleteMachinesParameter machines, Context context);
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteMachinesAsync(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolDeleteMachinesParameter machines);
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteMachines(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolDeleteMachinesParameter machines);
+
+    /**
+     * Deletes specific machines in an agent pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param agentPoolName The name of the agent pool.
+     * @param machines A list of machines from the agent pool to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteMachines(String resourceGroupName, String resourceName, String agentPoolName,
+        AgentPoolDeleteMachinesParameter machines, Context context);
 
     /**
      * Gets a list of supported Kubernetes versions for the specified agent pool.

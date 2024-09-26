@@ -6,35 +6,35 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Connectivity group item.
  */
 @Fluent
-public final class ConnectivityGroupItem {
+public final class ConnectivityGroupItem implements JsonSerializable<ConnectivityGroupItem> {
     /*
      * Network group Id.
      */
-    @JsonProperty(value = "networkGroupId", required = true)
     private String networkGroupId;
 
     /*
      * Flag if need to use hub gateway.
      */
-    @JsonProperty(value = "useHubGateway")
     private UseHubGateway useHubGateway;
 
     /*
      * Flag if global is supported.
      */
-    @JsonProperty(value = "isGlobal")
     private IsGlobal isGlobal;
 
     /*
      * Group connectivity type.
      */
-    @JsonProperty(value = "groupConnectivity", required = true)
     private GroupConnectivity groupConnectivity;
 
     /**
@@ -142,4 +142,52 @@ public final class ConnectivityGroupItem {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectivityGroupItem.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("networkGroupId", this.networkGroupId);
+        jsonWriter.writeStringField("groupConnectivity",
+            this.groupConnectivity == null ? null : this.groupConnectivity.toString());
+        jsonWriter.writeStringField("useHubGateway", this.useHubGateway == null ? null : this.useHubGateway.toString());
+        jsonWriter.writeStringField("isGlobal", this.isGlobal == null ? null : this.isGlobal.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityGroupItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityGroupItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivityGroupItem.
+     */
+    public static ConnectivityGroupItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityGroupItem deserializedConnectivityGroupItem = new ConnectivityGroupItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkGroupId".equals(fieldName)) {
+                    deserializedConnectivityGroupItem.networkGroupId = reader.getString();
+                } else if ("groupConnectivity".equals(fieldName)) {
+                    deserializedConnectivityGroupItem.groupConnectivity
+                        = GroupConnectivity.fromString(reader.getString());
+                } else if ("useHubGateway".equals(fieldName)) {
+                    deserializedConnectivityGroupItem.useHubGateway = UseHubGateway.fromString(reader.getString());
+                } else if ("isGlobal".equals(fieldName)) {
+                    deserializedConnectivityGroupItem.isGlobal = IsGlobal.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityGroupItem;
+        });
+    }
 }

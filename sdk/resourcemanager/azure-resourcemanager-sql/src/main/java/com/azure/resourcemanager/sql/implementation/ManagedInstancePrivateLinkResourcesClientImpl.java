@@ -34,24 +34,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ManagedInstancePrivateLinkResourcesClient.
  */
 public final class ManagedInstancePrivateLinkResourcesClientImpl implements ManagedInstancePrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagedInstancePrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedInstancePrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagedInstancePrivateLinkResourcesClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ManagedInstancePrivateLinkResourcesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagedInstancePrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,68 +62,53 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientM")
     public interface ManagedInstancePrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstancePrivateLinkListResult>> listByManagedInstance(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedInstancePrivateLinkListResult>> listByManagedInstance(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
-                + "/managedInstances/{managedInstanceName}/privateLinkResources/{groupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/privateLinkResources/{groupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedInstancePrivateLinkInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagedInstancePrivateLinkInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("managedInstanceName") String managedInstanceName,
-            @PathParam("groupName") String groupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("managedInstanceName") String managedInstanceName, @PathParam("groupName") String groupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ManagedInstancePrivateLinkListResult>> listByManagedInstanceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources for SQL server along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>> listByManagedInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName) {
+    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>>
+        listByManagedInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -134,57 +119,37 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByManagedInstance(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ManagedInstancePrivateLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByManagedInstance(this.client.getEndpoint(), resourceGroupName,
+                managedInstanceName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ManagedInstancePrivateLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources for SQL server along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>> listByManagedInstanceSinglePageAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>>
+        listByManagedInstanceSinglePageAsync(String resourceGroupName, String managedInstanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -195,38 +160,23 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
                 .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByManagedInstance(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByManagedInstance(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -234,18 +184,17 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @return the private link resources for SQL server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ManagedInstancePrivateLinkInner> listByManagedInstanceAsync(
-        String resourceGroupName, String managedInstanceName) {
-        return new PagedFlux<>(
-            () -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
+    public PagedFlux<ManagedInstancePrivateLinkInner> listByManagedInstanceAsync(String resourceGroupName,
+        String managedInstanceName) {
+        return new PagedFlux<>(() -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName),
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,8 +203,8 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @return the private link resources for SQL server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ManagedInstancePrivateLinkInner> listByManagedInstanceAsync(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    private PagedFlux<ManagedInstancePrivateLinkInner> listByManagedInstanceAsync(String resourceGroupName,
+        String managedInstanceName, Context context) {
         return new PagedFlux<>(
             () -> listByManagedInstanceSinglePageAsync(resourceGroupName, managedInstanceName, context),
             nextLink -> listByManagedInstanceNextSinglePageAsync(nextLink, context));
@@ -263,9 +212,9 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -273,16 +222,16 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @return the private link resources for SQL server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName) {
+    public PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName) {
         return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName));
     }
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,32 +240,30 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @return the private link resources for SQL server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName, Context context) {
+    public PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName, Context context) {
         return new PagedIterable<>(listByManagedInstanceAsync(resourceGroupName, managedInstanceName, context));
     }
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for SQL server along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a private link resource for SQL server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedInstancePrivateLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String groupName) {
+    public Mono<Response<ManagedInstancePrivateLinkInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String groupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -330,50 +277,36 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            managedInstanceName,
-                            groupName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName,
+                groupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for SQL server along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a private link resource for SQL server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedInstancePrivateLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String groupName, Context context) {
+    private Mono<Response<ManagedInstancePrivateLinkInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String groupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -387,30 +320,20 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                managedInstanceName,
-                groupName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, managedInstanceName, groupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -419,17 +342,17 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @return a private link resource for SQL server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedInstancePrivateLinkInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String groupName) {
+    public Mono<ManagedInstancePrivateLinkInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String groupName) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, groupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @param context The context to associate with this operation.
@@ -439,16 +362,16 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
      * @return a private link resource for SQL server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedInstancePrivateLinkInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String groupName, Context context) {
+    public Response<ManagedInstancePrivateLinkInner> getWithResponse(String resourceGroupName,
+        String managedInstanceName, String groupName, Context context) {
         return getWithResponseAsync(resourceGroupName, managedInstanceName, groupName, context).block();
     }
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,79 +386,58 @@ public final class ManagedInstancePrivateLinkResourcesClientImpl implements Mana
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>> listByManagedInstanceNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>>
+        listByManagedInstanceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByManagedInstanceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedInstancePrivateLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ManagedInstancePrivateLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>> listByManagedInstanceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedInstancePrivateLinkInner>>
+        listByManagedInstanceNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByManagedInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByManagedInstanceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

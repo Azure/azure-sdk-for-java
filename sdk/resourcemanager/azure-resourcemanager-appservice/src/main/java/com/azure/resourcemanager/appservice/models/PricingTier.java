@@ -4,7 +4,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.Collection;
 
 /** Defines App service pricing tiers. */
@@ -121,7 +120,6 @@ public final class PricingTier {
     }
 
     /** @return the underneath sku description */
-    @JsonValue
     public SkuDescription toSkuDescription() {
         return this.skuDescription;
     }

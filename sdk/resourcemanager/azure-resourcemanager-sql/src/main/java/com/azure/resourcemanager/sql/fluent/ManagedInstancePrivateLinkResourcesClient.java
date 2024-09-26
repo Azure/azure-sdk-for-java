@@ -19,9 +19,9 @@ import reactor.core.publisher.Mono;
 public interface ManagedInstancePrivateLinkResourcesClient {
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,14 +29,14 @@ public interface ManagedInstancePrivateLinkResourcesClient {
      * @return the private link resources for SQL server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ManagedInstancePrivateLinkInner> listByManagedInstanceAsync(
-        String resourceGroupName, String managedInstanceName);
+    PagedFlux<ManagedInstancePrivateLinkInner> listByManagedInstanceAsync(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,14 +44,14 @@ public interface ManagedInstancePrivateLinkResourcesClient {
      * @return the private link resources for SQL server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName);
+    PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName);
 
     /**
      * Gets the private link resources for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,31 +60,31 @@ public interface ManagedInstancePrivateLinkResourcesClient {
      * @return the private link resources for SQL server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(
-        String resourceGroupName, String managedInstanceName, Context context);
+    PagedIterable<ManagedInstancePrivateLinkInner> listByManagedInstance(String resourceGroupName,
+        String managedInstanceName, Context context);
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource for SQL server along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a private link resource for SQL server along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ManagedInstancePrivateLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String managedInstanceName, String groupName);
+    Mono<Response<ManagedInstancePrivateLinkInner>> getWithResponseAsync(String resourceGroupName,
+        String managedInstanceName, String groupName);
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,14 +93,14 @@ public interface ManagedInstancePrivateLinkResourcesClient {
      * @return a private link resource for SQL server on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ManagedInstancePrivateLinkInner> getAsync(
-        String resourceGroupName, String managedInstanceName, String groupName);
+    Mono<ManagedInstancePrivateLinkInner> getAsync(String resourceGroupName, String managedInstanceName,
+        String groupName);
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @param context The context to associate with this operation.
@@ -110,14 +110,14 @@ public interface ManagedInstancePrivateLinkResourcesClient {
      * @return a private link resource for SQL server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedInstancePrivateLinkInner> getWithResponse(
-        String resourceGroupName, String managedInstanceName, String groupName, Context context);
+    Response<ManagedInstancePrivateLinkInner> getWithResponse(String resourceGroupName, String managedInstanceName,
+        String groupName, Context context);
 
     /**
      * Gets a private link resource for SQL server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param groupName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

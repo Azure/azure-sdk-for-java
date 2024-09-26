@@ -6,31 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.FilterActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Filter and return results from input array based on the conditions.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FilterActivity.class, visible = true)
-@JsonTypeName("Filter")
 @Fluent
 public final class FilterActivity extends ControlActivity {
     /*
      * Type of activity.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "Filter";
 
     /*
      * Filter activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private FilterActivityTypeProperties innerTypeProperties = new FilterActivityTypeProperties();
 
     /**
@@ -176,4 +173,78 @@ public final class FilterActivity extends ControlActivity {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FilterActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FilterActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FilterActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FilterActivity.
+     */
+    public static FilterActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FilterActivity deserializedFilterActivity = new FilterActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFilterActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedFilterActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedFilterActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedFilterActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedFilterActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedFilterActivity.withUserProperties(userProperties);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedFilterActivity.innerTypeProperties = FilterActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedFilterActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedFilterActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedFilterActivity;
+        });
+    }
 }

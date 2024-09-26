@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network interface and its custom security rules.
  */
 @Fluent
-public final class NetworkInterfaceAssociation {
+public final class NetworkInterfaceAssociation implements JsonSerializable<NetworkInterfaceAssociation> {
     /*
      * Network interface ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Collection of custom security rules.
      */
-    @JsonProperty(value = "securityRules")
     private List<SecurityRuleInner> securityRules;
 
     /**
@@ -70,5 +72,45 @@ public final class NetworkInterfaceAssociation {
         if (securityRules() != null) {
             securityRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("securityRules", this.securityRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceAssociation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceAssociation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceAssociation.
+     */
+    public static NetworkInterfaceAssociation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceAssociation deserializedNetworkInterfaceAssociation = new NetworkInterfaceAssociation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetworkInterfaceAssociation.id = reader.getString();
+                } else if ("securityRules".equals(fieldName)) {
+                    List<SecurityRuleInner> securityRules
+                        = reader.readArray(reader1 -> SecurityRuleInner.fromJson(reader1));
+                    deserializedNetworkInterfaceAssociation.securityRules = securityRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceAssociation;
+        });
     }
 }

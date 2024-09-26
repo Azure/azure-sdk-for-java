@@ -5,80 +5,79 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ReplicationMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** The properties of a distributed availability group. */
+/**
+ * The properties of a distributed availability group.
+ */
 @Fluent
-public final class DistributedAvailabilityGroupProperties {
+public final class DistributedAvailabilityGroupProperties
+    implements JsonSerializable<DistributedAvailabilityGroupProperties> {
     /*
      * The name of the target database
      */
-    @JsonProperty(value = "targetDatabase")
     private String targetDatabase;
 
     /*
      * The source endpoint
      */
-    @JsonProperty(value = "sourceEndpoint")
     private String sourceEndpoint;
 
     /*
      * The primary availability group name
      */
-    @JsonProperty(value = "primaryAvailabilityGroupName")
     private String primaryAvailabilityGroupName;
 
     /*
      * The secondary availability group name
      */
-    @JsonProperty(value = "secondaryAvailabilityGroupName")
     private String secondaryAvailabilityGroupName;
 
     /*
      * The replication mode of a distributed availability group. Parameter will be ignored during link creation.
      */
-    @JsonProperty(value = "replicationMode")
     private ReplicationMode replicationMode;
 
     /*
      * The distributed availability group id
      */
-    @JsonProperty(value = "distributedAvailabilityGroupId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID distributedAvailabilityGroupId;
 
     /*
      * The source replica id
      */
-    @JsonProperty(value = "sourceReplicaId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID sourceReplicaId;
 
     /*
      * The target replica id
      */
-    @JsonProperty(value = "targetReplicaId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID targetReplicaId;
 
     /*
      * The link state
      */
-    @JsonProperty(value = "linkState", access = JsonProperty.Access.WRITE_ONLY)
     private String linkState;
 
     /*
      * The last hardened lsn
      */
-    @JsonProperty(value = "lastHardenedLsn", access = JsonProperty.Access.WRITE_ONLY)
     private String lastHardenedLsn;
 
-    /** Creates an instance of DistributedAvailabilityGroupProperties class. */
+    /**
+     * Creates an instance of DistributedAvailabilityGroupProperties class.
+     */
     public DistributedAvailabilityGroupProperties() {
     }
 
     /**
      * Get the targetDatabase property: The name of the target database.
-     *
+     * 
      * @return the targetDatabase value.
      */
     public String targetDatabase() {
@@ -87,7 +86,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Set the targetDatabase property: The name of the target database.
-     *
+     * 
      * @param targetDatabase the targetDatabase value to set.
      * @return the DistributedAvailabilityGroupProperties object itself.
      */
@@ -98,7 +97,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Get the sourceEndpoint property: The source endpoint.
-     *
+     * 
      * @return the sourceEndpoint value.
      */
     public String sourceEndpoint() {
@@ -107,7 +106,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Set the sourceEndpoint property: The source endpoint.
-     *
+     * 
      * @param sourceEndpoint the sourceEndpoint value to set.
      * @return the DistributedAvailabilityGroupProperties object itself.
      */
@@ -118,7 +117,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Get the primaryAvailabilityGroupName property: The primary availability group name.
-     *
+     * 
      * @return the primaryAvailabilityGroupName value.
      */
     public String primaryAvailabilityGroupName() {
@@ -127,19 +126,19 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Set the primaryAvailabilityGroupName property: The primary availability group name.
-     *
+     * 
      * @param primaryAvailabilityGroupName the primaryAvailabilityGroupName value to set.
      * @return the DistributedAvailabilityGroupProperties object itself.
      */
-    public DistributedAvailabilityGroupProperties withPrimaryAvailabilityGroupName(
-        String primaryAvailabilityGroupName) {
+    public DistributedAvailabilityGroupProperties
+        withPrimaryAvailabilityGroupName(String primaryAvailabilityGroupName) {
         this.primaryAvailabilityGroupName = primaryAvailabilityGroupName;
         return this;
     }
 
     /**
      * Get the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
+     * 
      * @return the secondaryAvailabilityGroupName value.
      */
     public String secondaryAvailabilityGroupName() {
@@ -148,12 +147,12 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Set the secondaryAvailabilityGroupName property: The secondary availability group name.
-     *
+     * 
      * @param secondaryAvailabilityGroupName the secondaryAvailabilityGroupName value to set.
      * @return the DistributedAvailabilityGroupProperties object itself.
      */
-    public DistributedAvailabilityGroupProperties withSecondaryAvailabilityGroupName(
-        String secondaryAvailabilityGroupName) {
+    public DistributedAvailabilityGroupProperties
+        withSecondaryAvailabilityGroupName(String secondaryAvailabilityGroupName) {
         this.secondaryAvailabilityGroupName = secondaryAvailabilityGroupName;
         return this;
     }
@@ -161,7 +160,7 @@ public final class DistributedAvailabilityGroupProperties {
     /**
      * Get the replicationMode property: The replication mode of a distributed availability group. Parameter will be
      * ignored during link creation.
-     *
+     * 
      * @return the replicationMode value.
      */
     public ReplicationMode replicationMode() {
@@ -171,7 +170,7 @@ public final class DistributedAvailabilityGroupProperties {
     /**
      * Set the replicationMode property: The replication mode of a distributed availability group. Parameter will be
      * ignored during link creation.
-     *
+     * 
      * @param replicationMode the replicationMode value to set.
      * @return the DistributedAvailabilityGroupProperties object itself.
      */
@@ -182,7 +181,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Get the distributedAvailabilityGroupId property: The distributed availability group id.
-     *
+     * 
      * @return the distributedAvailabilityGroupId value.
      */
     public UUID distributedAvailabilityGroupId() {
@@ -191,7 +190,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Get the sourceReplicaId property: The source replica id.
-     *
+     * 
      * @return the sourceReplicaId value.
      */
     public UUID sourceReplicaId() {
@@ -200,7 +199,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Get the targetReplicaId property: The target replica id.
-     *
+     * 
      * @return the targetReplicaId value.
      */
     public UUID targetReplicaId() {
@@ -209,7 +208,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Get the linkState property: The link state.
-     *
+     * 
      * @return the linkState value.
      */
     public String linkState() {
@@ -218,7 +217,7 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Get the lastHardenedLsn property: The last hardened lsn.
-     *
+     * 
      * @return the lastHardenedLsn value.
      */
     public String lastHardenedLsn() {
@@ -227,9 +226,75 @@ public final class DistributedAvailabilityGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetDatabase", this.targetDatabase);
+        jsonWriter.writeStringField("sourceEndpoint", this.sourceEndpoint);
+        jsonWriter.writeStringField("primaryAvailabilityGroupName", this.primaryAvailabilityGroupName);
+        jsonWriter.writeStringField("secondaryAvailabilityGroupName", this.secondaryAvailabilityGroupName);
+        jsonWriter.writeStringField("replicationMode",
+            this.replicationMode == null ? null : this.replicationMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DistributedAvailabilityGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DistributedAvailabilityGroupProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DistributedAvailabilityGroupProperties.
+     */
+    public static DistributedAvailabilityGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DistributedAvailabilityGroupProperties deserializedDistributedAvailabilityGroupProperties
+                = new DistributedAvailabilityGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetDatabase".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.targetDatabase = reader.getString();
+                } else if ("sourceEndpoint".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.sourceEndpoint = reader.getString();
+                } else if ("primaryAvailabilityGroupName".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.primaryAvailabilityGroupName
+                        = reader.getString();
+                } else if ("secondaryAvailabilityGroupName".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.secondaryAvailabilityGroupName
+                        = reader.getString();
+                } else if ("replicationMode".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.replicationMode
+                        = ReplicationMode.fromString(reader.getString());
+                } else if ("distributedAvailabilityGroupId".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.distributedAvailabilityGroupId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("sourceReplicaId".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.sourceReplicaId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("targetReplicaId".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.targetReplicaId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("linkState".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.linkState = reader.getString();
+                } else if ("lastHardenedLsn".equals(fieldName)) {
+                    deserializedDistributedAvailabilityGroupProperties.lastHardenedLsn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDistributedAvailabilityGroupProperties;
+        });
     }
 }

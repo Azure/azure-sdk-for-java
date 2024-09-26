@@ -12,7 +12,6 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
-import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.CredentialResult;
@@ -23,6 +22,7 @@ import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
@@ -73,8 +73,9 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
+    @Disabled("Insufficient privileges to create AAD Group with User member.")
     public void testKubernetesClusterAadIntegration() {
-        String clientId = this.clientIdFromFile();
+        String userId = this.azureCliSignedInUser().id();
 
         final String groupName = generateRandomResourceName("group", 16);
 
@@ -84,14 +85,11 @@ public class KubernetesAadTests extends ResourceManagerTestProxyTestBase {
 
         ActiveDirectoryGroup group = null;
         try {
-            ServicePrincipal servicePrincipal = azureResourceManager.accessManagement().servicePrincipals()
-                .getByName(clientId);
-
             // Azure AD integration with AAD group
             group = azureResourceManager.accessManagement().activeDirectoryGroups()
                 .define(groupName)
                 .withEmailAlias(groupName)
-                .withMember(servicePrincipal)
+                .withMember(userId)
                 .create();
 
             // create

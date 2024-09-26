@@ -6,17 +6,21 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters to regenerate the keys within the database account.
  */
 @Fluent
-public final class DatabaseAccountRegenerateKeyParameters {
+public final class DatabaseAccountRegenerateKeyParameters
+    implements JsonSerializable<DatabaseAccountRegenerateKeyParameters> {
     /*
      * The access key to regenerate.
      */
-    @JsonProperty(value = "keyKind", required = true)
     private KeyKind keyKind;
 
     /**
@@ -59,4 +63,42 @@ public final class DatabaseAccountRegenerateKeyParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseAccountRegenerateKeyParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyKind", this.keyKind == null ? null : this.keyKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseAccountRegenerateKeyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseAccountRegenerateKeyParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseAccountRegenerateKeyParameters.
+     */
+    public static DatabaseAccountRegenerateKeyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseAccountRegenerateKeyParameters deserializedDatabaseAccountRegenerateKeyParameters
+                = new DatabaseAccountRegenerateKeyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyKind".equals(fieldName)) {
+                    deserializedDatabaseAccountRegenerateKeyParameters.keyKind = KeyKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseAccountRegenerateKeyParameters;
+        });
+    }
 }

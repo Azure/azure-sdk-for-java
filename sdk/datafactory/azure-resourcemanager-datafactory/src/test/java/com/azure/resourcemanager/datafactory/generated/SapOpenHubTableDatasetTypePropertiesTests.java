@@ -11,16 +11,16 @@ public final class SapOpenHubTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapOpenHubTableDatasetTypeProperties model = BinaryData.fromString(
-            "{\"openHubDestinationName\":\"datadarcb\",\"excludeLastRequest\":\"datawhslxebaja\",\"baseRequestId\":\"datan\"}")
+            "{\"openHubDestinationName\":\"datafqderkr\",\"excludeLastRequest\":\"datadcob\",\"baseRequestId\":\"datagqlwyqznbby\"}")
             .toObject(SapOpenHubTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SapOpenHubTableDatasetTypeProperties model
-            = new SapOpenHubTableDatasetTypeProperties().withOpenHubDestinationName("datadarcb")
-                .withExcludeLastRequest("datawhslxebaja")
-                .withBaseRequestId("datan");
+            = new SapOpenHubTableDatasetTypeProperties().withOpenHubDestinationName("datafqderkr")
+                .withExcludeLastRequest("datadcob")
+                .withBaseRequestId("datagqlwyqznbby");
         model = BinaryData.fromObject(model).toObject(SapOpenHubTableDatasetTypeProperties.class);
     }
 }

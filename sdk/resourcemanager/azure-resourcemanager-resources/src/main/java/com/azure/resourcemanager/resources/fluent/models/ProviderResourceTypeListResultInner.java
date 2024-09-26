@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of resource types of a resource provider.
  */
 @Fluent
-public final class ProviderResourceTypeListResultInner {
+public final class ProviderResourceTypeListResultInner
+    implements JsonSerializable<ProviderResourceTypeListResultInner> {
     /*
      * An array of resource types.
      */
-    @JsonProperty(value = "value")
     private List<ProviderResourceType> value;
 
     /*
      * The URL to use for getting the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +73,46 @@ public final class ProviderResourceTypeListResultInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProviderResourceTypeListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProviderResourceTypeListResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProviderResourceTypeListResultInner.
+     */
+    public static ProviderResourceTypeListResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProviderResourceTypeListResultInner deserializedProviderResourceTypeListResultInner
+                = new ProviderResourceTypeListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProviderResourceType> value
+                        = reader.readArray(reader1 -> ProviderResourceType.fromJson(reader1));
+                    deserializedProviderResourceTypeListResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedProviderResourceTypeListResultInner.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProviderResourceTypeListResultInner;
+        });
     }
 }

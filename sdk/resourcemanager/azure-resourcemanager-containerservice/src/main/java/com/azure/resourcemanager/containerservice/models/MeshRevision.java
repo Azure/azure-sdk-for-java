@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Holds information on upgrades and compatibility for given major.minor mesh release.
  */
 @Fluent
-public class MeshRevision {
+public class MeshRevision implements JsonSerializable<MeshRevision> {
     /*
      * The revision of the mesh release.
      */
-    @JsonProperty(value = "revision")
     private String revision;
 
     /*
      * List of revisions available for upgrade of a specific mesh revision
      */
-    @JsonProperty(value = "upgrades")
     private List<String> upgrades;
 
     /*
      * List of items this revision of service mesh is compatible with, and their associated versions.
      */
-    @JsonProperty(value = "compatibleWith")
     private List<CompatibleVersions> compatibleWith;
 
     /**
@@ -108,5 +109,51 @@ public class MeshRevision {
         if (compatibleWith() != null) {
             compatibleWith().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("revision", this.revision);
+        jsonWriter.writeArrayField("upgrades", this.upgrades, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("compatibleWith", this.compatibleWith,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MeshRevision from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MeshRevision if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MeshRevision.
+     */
+    public static MeshRevision fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MeshRevision deserializedMeshRevision = new MeshRevision();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("revision".equals(fieldName)) {
+                    deserializedMeshRevision.revision = reader.getString();
+                } else if ("upgrades".equals(fieldName)) {
+                    List<String> upgrades = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMeshRevision.upgrades = upgrades;
+                } else if ("compatibleWith".equals(fieldName)) {
+                    List<CompatibleVersions> compatibleWith
+                        = reader.readArray(reader1 -> CompatibleVersions.fromJson(reader1));
+                    deserializedMeshRevision.compatibleWith = compatibleWith;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMeshRevision;
+        });
     }
 }

@@ -59,7 +59,6 @@ import com.azure.resourcemanager.containerservice.models.ServiceMeshMode;
 import com.azure.resourcemanager.containerservice.models.ServiceMeshProfile;
 import com.azure.resourcemanager.containerservice.models.UpgradeOverrideSettings;
 import com.azure.resourcemanager.containerservice.models.WindowsGmsaProfile;
-
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,12 +70,12 @@ import java.util.Map;
 public final class ManagedClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_CRG.json
      */
     /**
      * Sample code: Create Managed Cluster with Capacity Reservation Group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -123,12 +122,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_DualStackNetworking.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with dual-stack networking.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -186,12 +185,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_PodIdentity.json
      */
     /**
      * Sample code: Create Managed Cluster with PodIdentity enabled.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -238,12 +237,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_UserAssignedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with user-assigned NAT gateway as outbound type.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithUserAssignedNATGatewayAsOutboundType(
@@ -287,12 +286,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_Update.json
      */
     /**
      * Sample code: Create/Update Managed Cluster.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateManagedCluster(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -351,12 +350,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_PrivateClusterFQDNSubdomain.json
      */
     /**
      * Sample code: Create Managed Private Cluster with fqdn subdomain specified.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -403,12 +402,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_ManagedNATGateway.json
      */
     /**
      * Sample code: Create Managed Cluster with AKS-managed NAT gateway as outbound type.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithAKSManagedNATGatewayAsOutboundType(
@@ -454,12 +453,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_Premium.json
      */
     /**
      * Sample code: Create Managed Cluster with LongTermSupport.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithLongTermSupport(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -504,12 +503,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_NodePublicIPPrefix.json
      */
     /**
      * Sample code: Create Managed Cluster with Node Public IP Prefix.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -556,12 +555,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_EnableEncryptionAtHost.json
      */
     /**
      * Sample code: Create Managed Cluster with EncryptionAtHost enabled.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -607,12 +606,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_PrivateClusterPublicFQDN.json
      */
     /**
      * Sample code: Create Managed Private Cluster with Public FQDN specified.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -658,12 +657,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_HTTPProxy.json
      */
     /**
      * Sample code: Create Managed Cluster with HTTP proxy configured.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -712,12 +711,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_DedicatedHostGroup.json
      */
     /**
      * Sample code: Create Managed Cluster with Dedicated Host Group.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -763,12 +762,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_EnabledFIPS.json
      */
     /**
      * Sample code: Create Managed Cluster with FIPS enabled OS.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithFIPSEnabledOS(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -813,12 +812,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_SecurityProfile.json
      */
     /**
      * Sample code: Create Managed Cluster with Security Profile configured.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -858,12 +857,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_PPG.json
      */
     /**
      * Sample code: Create Managed Cluster with PPG.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithPPG(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -909,12 +908,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_IngressProfile_WebAppRouting.json
      */
     /**
      * Sample code: Create Managed Cluster with Web App Routing Ingress Profile configured.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithWebAppRoutingIngressProfileConfigured(
@@ -952,12 +951,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_UpdateWithAHUB.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with EnableAHUB.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateManagedClusterWithEnableAHUB(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1007,12 +1006,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_DisableRunCommand.json
      */
     /**
      * Sample code: Create Managed Cluster with RunCommand disabled.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1057,12 +1056,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_Snapshot.json
      */
     /**
      * Sample code: Create Managed Cluster using an agent pool snapshot.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1110,12 +1109,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_AzureServiceMesh.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Azure Service Mesh.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1180,12 +1179,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_AzureKeyvaultSecretsProvider.json
      */
     /**
      * Sample code: Create Managed Cluster with Azure KeyVault Secrets Provider Addon.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithAzureKeyVaultSecretsProviderAddon(
@@ -1237,12 +1236,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_OSSKU.json
      */
     /**
      * Sample code: Create Managed Cluster with OSSKU.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithOSSKU(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1291,12 +1290,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_UpdateWithEnableAzureRBAC.json
      */
     /**
      * Sample code: Create/Update AAD Managed Cluster with EnableAzureRBAC.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1343,12 +1342,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_EnableUltraSSD.json
      */
     /**
      * Sample code: Create Managed Cluster with UltraSSD enabled.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithUltraSSDEnabled(com.azure.resourcemanager.AzureResourceManager azure) {
@@ -1393,12 +1392,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_UpdateWindowsGmsa.json
      */
     /**
      * Sample code: Create/Update Managed Cluster with Windows gMSA enabled.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void
@@ -1449,12 +1448,12 @@ public final class ManagedClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-05-01/examples/
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-07-01/examples/
      * ManagedClustersCreate_GPUMIG.json
      */
     /**
      * Sample code: Create Managed Cluster with GPUMIG.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createManagedClusterWithGPUMIG(com.azure.resourcemanager.AzureResourceManager azure) {

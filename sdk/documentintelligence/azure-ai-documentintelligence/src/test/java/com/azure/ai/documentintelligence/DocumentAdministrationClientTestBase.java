@@ -8,6 +8,7 @@ package com.azure.ai.documentintelligence;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
+import com.azure.ai.documentintelligence.models.ClassifierCopyAuthorization;
 import com.azure.ai.documentintelligence.models.CopyAuthorization;
 import com.azure.ai.documentintelligence.models.DocumentClassifierDetails;
 import com.azure.ai.documentintelligence.models.DocumentModelDetails;
@@ -81,9 +82,17 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         assertNotNull(actualResult.getTargetResourceId());
     }
 
+    static void validateClassifierCopyAuthorizationResult(ClassifierCopyAuthorization actualResult) {
+        assertNotNull(actualResult.getTargetClassifierId());
+        assertNotNull(actualResult.getExpirationDateTime());
+        assertNotNull(actualResult.getTargetResourceRegion());
+        assertNotNull(actualResult.getTargetResourceId());
+        assertNotNull(actualResult.getTargetResourceId());
+    }
+
     static void validateResourceInfo(ResourceDetails actualResourceDetails) {
         assertNotNull(actualResourceDetails.getCustomDocumentModels().getLimit());
-        assertNotNull(actualResourceDetails.getCustomNeuralDocumentModelBuilds().getQuota());
+        assertNotNull(actualResourceDetails.getCustomDocumentModels().getCount());
     }
 
     void validateDocumentModelData(DocumentModelDetails actualCustomModel) {

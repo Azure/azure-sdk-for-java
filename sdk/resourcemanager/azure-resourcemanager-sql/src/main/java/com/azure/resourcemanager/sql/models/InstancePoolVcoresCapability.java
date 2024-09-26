@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The managed instance virtual cores capability. */
+/**
+ * The managed instance virtual cores capability.
+ */
 @Fluent
-public final class InstancePoolVcoresCapability {
+public final class InstancePoolVcoresCapability implements JsonSerializable<InstancePoolVcoresCapability> {
     /*
      * The virtual cores identifier.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The virtual cores value.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Integer value;
 
     /*
      * Storage limit.
      */
-    @JsonProperty(value = "storageLimit", access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeCapability storageLimit;
 
     /*
      * The status of the capability.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /*
      * The reason for the capability not being available.
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of InstancePoolVcoresCapability class. */
+    /**
+     * Creates an instance of InstancePoolVcoresCapability class.
+     */
     public InstancePoolVcoresCapability() {
     }
 
     /**
      * Get the name property: The virtual cores identifier.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +58,7 @@ public final class InstancePoolVcoresCapability {
 
     /**
      * Get the value property: The virtual cores value.
-     *
+     * 
      * @return the value value.
      */
     public Integer value() {
@@ -64,7 +67,7 @@ public final class InstancePoolVcoresCapability {
 
     /**
      * Get the storageLimit property: Storage limit.
-     *
+     * 
      * @return the storageLimit value.
      */
     public MaxSizeCapability storageLimit() {
@@ -73,7 +76,7 @@ public final class InstancePoolVcoresCapability {
 
     /**
      * Get the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     public CapabilityStatus status() {
@@ -82,7 +85,7 @@ public final class InstancePoolVcoresCapability {
 
     /**
      * Get the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -91,7 +94,7 @@ public final class InstancePoolVcoresCapability {
 
     /**
      * Set the reason property: The reason for the capability not being available.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the InstancePoolVcoresCapability object itself.
      */
@@ -102,12 +105,56 @@ public final class InstancePoolVcoresCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageLimit() != null) {
             storageLimit().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reason", this.reason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InstancePoolVcoresCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InstancePoolVcoresCapability if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InstancePoolVcoresCapability.
+     */
+    public static InstancePoolVcoresCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InstancePoolVcoresCapability deserializedInstancePoolVcoresCapability = new InstancePoolVcoresCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedInstancePoolVcoresCapability.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedInstancePoolVcoresCapability.value = reader.getNullable(JsonReader::getInt);
+                } else if ("storageLimit".equals(fieldName)) {
+                    deserializedInstancePoolVcoresCapability.storageLimit = MaxSizeCapability.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedInstancePoolVcoresCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedInstancePoolVcoresCapability.reason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInstancePoolVcoresCapability;
+        });
     }
 }

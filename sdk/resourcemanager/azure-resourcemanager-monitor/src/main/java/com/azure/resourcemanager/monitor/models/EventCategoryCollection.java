@@ -6,8 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,11 +19,10 @@ import java.util.List;
  * Recommendation, Policy.
  */
 @Fluent
-public final class EventCategoryCollection {
+public final class EventCategoryCollection implements JsonSerializable<EventCategoryCollection> {
     /*
      * the list that includes the Azure event categories.
      */
-    @JsonProperty(value = "value", required = true)
     private List<LocalizableStringInner> value;
 
     /**
@@ -55,12 +58,51 @@ public final class EventCategoryCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property value in model EventCategoryCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model EventCategoryCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EventCategoryCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventCategoryCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventCategoryCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventCategoryCollection.
+     */
+    public static EventCategoryCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventCategoryCollection deserializedEventCategoryCollection = new EventCategoryCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LocalizableStringInner> value
+                        = reader.readArray(reader1 -> LocalizableStringInner.fromJson(reader1));
+                    deserializedEventCategoryCollection.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventCategoryCollection;
+        });
+    }
 }

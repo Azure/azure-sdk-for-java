@@ -6,30 +6,31 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * List of routes that control routing from VirtualHub into a virtual network connection.
  */
 @Fluent
-public final class VnetRoute {
+public final class VnetRoute implements JsonSerializable<VnetRoute> {
     /*
      * Configuration for static routes on this HubVnetConnection.
      */
-    @JsonProperty(value = "staticRoutesConfig")
     private StaticRoutesConfig staticRoutesConfig;
 
     /*
      * List of all Static Routes.
      */
-    @JsonProperty(value = "staticRoutes")
     private List<StaticRoute> staticRoutes;
 
     /*
      * The list of references to HubBgpConnection objects.
      */
-    @JsonProperty(value = "bgpConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> bgpConnections;
 
     /**
@@ -99,5 +100,48 @@ public final class VnetRoute {
         if (staticRoutes() != null) {
             staticRoutes().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("staticRoutesConfig", this.staticRoutesConfig);
+        jsonWriter.writeArrayField("staticRoutes", this.staticRoutes, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VnetRoute from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VnetRoute if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the VnetRoute.
+     */
+    public static VnetRoute fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VnetRoute deserializedVnetRoute = new VnetRoute();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("staticRoutesConfig".equals(fieldName)) {
+                    deserializedVnetRoute.staticRoutesConfig = StaticRoutesConfig.fromJson(reader);
+                } else if ("staticRoutes".equals(fieldName)) {
+                    List<StaticRoute> staticRoutes = reader.readArray(reader1 -> StaticRoute.fromJson(reader1));
+                    deserializedVnetRoute.staticRoutes = staticRoutes;
+                } else if ("bgpConnections".equals(fieldName)) {
+                    List<SubResource> bgpConnections = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVnetRoute.bgpConnections = bgpConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVnetRoute;
+        });
     }
 }

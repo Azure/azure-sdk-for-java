@@ -54,7 +54,8 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
     @Test
     public void canCRUDDiskEncryptionSet() {
         Region region = Region.US_EAST;
-        VaultAndKey vaultAndKey = createVaultAndKey(region, rgName, generateRandomResourceName("kv", 15), clientIdFromFile());
+        VaultAndKey vaultAndKey = createVaultAndKey(region, rgName, generateRandomResourceName("kv", 15),
+            azureCliSignedInUser().userPrincipalName());
 
         String name = generateRandomResourceName("des", 15);
         DiskEncryptionSet diskEncryptionSet = computeManager.diskEncryptionSets()
@@ -93,7 +94,7 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         }
     }
 
-    VaultAndKey createVaultAndKey(Region region, String rgName, String name, String clientId) {
+    VaultAndKey createVaultAndKey(Region region, String rgName, String name, String signedInUser) {
         // create vault
         Vault vault = keyVaultManager.vaults().define(name)
             .withRegion(region)
@@ -105,7 +106,7 @@ public class DiskEncryptionSetTests extends ComputeManagementTest {
         // RBAC for this app
         String rbacName = generateRandomUuid();
         authorizationManager.roleAssignments().define(rbacName)
-            .forServicePrincipal(clientId)
+            .forUser(signedInUser)
             .withBuiltInRole(BuiltInRole.KEY_VAULT_ADMINISTRATOR)
             .withResourceScope(vault)
             .create();

@@ -39,7 +39,7 @@ public final class Volume implements JsonSerializable<Volume> {
     private List<SecretVolumeItem> secrets;
 
     /*
-     * Mount options used while mounting the Azure file share or NFS Azure file share. Must be a comma-separated string.
+     * Mount options used while mounting the AzureFile. Must be a comma-separated string.
      */
     private String mountOptions;
 
@@ -132,8 +132,7 @@ public final class Volume implements JsonSerializable<Volume> {
     }
 
     /**
-     * Get the mountOptions property: Mount options used while mounting the Azure file share or NFS Azure file share.
-     * Must be a comma-separated string.
+     * Get the mountOptions property: Mount options used while mounting the AzureFile. Must be a comma-separated string.
      * 
      * @return the mountOptions value.
      */
@@ -142,8 +141,7 @@ public final class Volume implements JsonSerializable<Volume> {
     }
 
     /**
-     * Set the mountOptions property: Mount options used while mounting the Azure file share or NFS Azure file share.
-     * Must be a comma-separated string.
+     * Set the mountOptions property: Mount options used while mounting the AzureFile. Must be a comma-separated string.
      * 
      * @param mountOptions the mountOptions value to set.
      * @return the Volume object itself.

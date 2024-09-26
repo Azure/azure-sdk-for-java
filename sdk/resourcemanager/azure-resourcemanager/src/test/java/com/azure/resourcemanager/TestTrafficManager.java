@@ -3,11 +3,11 @@
 
 package com.azure.resourcemanager;
 
+import com.azure.core.management.Region;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.PublicIpAddresses;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.trafficmanager.models.EndpointType;
 import com.azure.resourcemanager.trafficmanager.models.TargetAzureResourceType;
@@ -16,14 +16,16 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEnd
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerNestedProfileEndpoint;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfile;
 import com.azure.resourcemanager.trafficmanager.models.TrafficManagerProfiles;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.Map;
 
 /** Test of traffic manager management. */
 public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
     private static final ClientLogger LOGGER = new ClientLogger(TestTrafficManager.class);
 
     private final PublicIpAddresses publicIpAddresses;
+    private final boolean isPlaybackMode;
 
     private final String externalEndpointName21 = "external-ep-1";
     private final String externalEndpointName22 = "external-ep-2";
@@ -36,8 +38,9 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
     private final String azureEndpointName = "azure-ep-1";
     private final String nestedProfileEndpointName = "nested-profile-ep-1";
 
-    public TestTrafficManager(PublicIpAddresses publicIpAddresses) {
+    public TestTrafficManager(PublicIpAddresses publicIpAddresses, boolean isPlaybackMode) {
         this.publicIpAddresses = publicIpAddresses;
+        this.isPlaybackMode = isPlaybackMode;
     }
 
     @Override
@@ -206,8 +209,12 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
             if (endpoint.name().equalsIgnoreCase(azureEndpointName)) {
                 Assertions.assertEquals(endpoint.routingPriority(), 3);
                 Assertions.assertNotNull(endpoint.monitorStatus());
-                Assertions.assertEquals(endpoint.targetAzureResourceId(), publicIPAddress.id());
-                Assertions.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
+                if (!isPlaybackMode) {
+                    // targetResourceId sanitized
+                    Assertions.assertEquals(endpoint.targetAzureResourceId(), publicIPAddress.id());
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
+                    Assertions.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
+                }
                 c++;
             }
         }
@@ -220,8 +227,12 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                 Assertions.assertEquals(endpoint.routingPriority(), 4);
                 Assertions.assertNotNull(endpoint.monitorStatus());
                 Assertions.assertEquals(endpoint.minimumChildEndpointCount(), 1);
-                Assertions.assertEquals(endpoint.nestedProfileId(), nestedProfile.id());
-                Assertions.assertEquals(endpoint.sourceTrafficLocation(), Region.INDIA_CENTRAL);
+                if (!isPlaybackMode) {
+                    // targetResourceId sanitized
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
+                    Assertions.assertEquals(endpoint.nestedProfileId(), nestedProfile.id());
+                    Assertions.assertEquals(endpoint.sourceTrafficLocation(), Region.INDIA_CENTRAL);
+                }
                 c++;
             }
         }
@@ -287,7 +298,11 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
             if (endpoint.name().equalsIgnoreCase(azureEndpointName)) {
                 Assertions.assertEquals(endpoint.routingPriority(), 5);
                 Assertions.assertEquals(endpoint.routingWeight(), 2);
-                Assertions.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
+                if (!isPlaybackMode) {
+                    // targetResourceId sanitized
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
+                    Assertions.assertEquals(endpoint.targetResourceType(), TargetAzureResourceType.PUBLICIP);
+                }
                 c++;
             }
         }
@@ -339,10 +354,14 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                     .append("\n\t\t\tType: ")
                     .append(endpoint.endpointType())
                     .append("\n\t\t\tTarget resourceId: ")
-                    .append(endpoint.targetAzureResourceId())
-                    .append("\n\t\t\tTarget resourceType: ")
-                    .append(endpoint.targetResourceType())
-                    .append("\n\t\t\tMonitor status: ")
+                    .append(endpoint.targetAzureResourceId());
+                if (!isPlaybackMode) {
+                    // targetResourceId sanitized
+                    // The specified ID `Sanitized` is not a valid Azure resource ID
+                    info.append("\n\t\t\tTarget resourceType: ")
+                        .append(endpoint.targetResourceType());
+                }
+                info.append("\n\t\t\tMonitor status: ")
                     .append(endpoint.monitorStatus())
                     .append("\n\t\t\tEnabled: ")
                     .append(endpoint.isEnabled())

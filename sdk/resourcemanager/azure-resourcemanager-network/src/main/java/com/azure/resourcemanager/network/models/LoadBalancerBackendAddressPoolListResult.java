@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for ListBackendAddressPool API service call.
  */
 @Fluent
-public final class LoadBalancerBackendAddressPoolListResult {
+public final class LoadBalancerBackendAddressPoolListResult
+    implements JsonSerializable<LoadBalancerBackendAddressPoolListResult> {
     /*
      * A list of backend address pools in a load balancer.
      */
-    @JsonProperty(value = "value")
     private List<BackendAddressPoolInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +73,46 @@ public final class LoadBalancerBackendAddressPoolListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LoadBalancerBackendAddressPoolListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LoadBalancerBackendAddressPoolListResult if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LoadBalancerBackendAddressPoolListResult.
+     */
+    public static LoadBalancerBackendAddressPoolListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LoadBalancerBackendAddressPoolListResult deserializedLoadBalancerBackendAddressPoolListResult
+                = new LoadBalancerBackendAddressPoolListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<BackendAddressPoolInner> value
+                        = reader.readArray(reader1 -> BackendAddressPoolInner.fromJson(reader1));
+                    deserializedLoadBalancerBackendAddressPoolListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedLoadBalancerBackendAddressPoolListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLoadBalancerBackendAddressPoolListResult;
+        });
     }
 }

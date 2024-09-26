@@ -6,31 +6,25 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the Application Group policy.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ApplicationGroupPolicy.class, visible = true)
-@JsonTypeName("ApplicationGroupPolicy")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "ThrottlingPolicy", value = ThrottlingPolicy.class) })
 @Fluent
-public class ApplicationGroupPolicy {
+public class ApplicationGroupPolicy implements JsonSerializable<ApplicationGroupPolicy> {
     /*
      * Application Group Policy types
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private ApplicationGroupPolicyType type = ApplicationGroupPolicyType.fromString("ApplicationGroupPolicy");
 
     /*
      * The Name of this policy
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
@@ -81,4 +75,69 @@ public class ApplicationGroupPolicy {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationGroupPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGroupPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGroupPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGroupPolicy.
+     */
+    public static ApplicationGroupPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ThrottlingPolicy".equals(discriminatorValue)) {
+                    return ThrottlingPolicy.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ApplicationGroupPolicy fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGroupPolicy deserializedApplicationGroupPolicy = new ApplicationGroupPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationGroupPolicy.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGroupPolicy.type = ApplicationGroupPolicyType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGroupPolicy;
+        });
+    }
 }

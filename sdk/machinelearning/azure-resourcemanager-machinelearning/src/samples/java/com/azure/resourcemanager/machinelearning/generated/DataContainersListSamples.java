@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for DataContainers List. */
+/**
+ * Samples for DataContainers List.
+ */
 public final class DataContainersListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/DataContainer/list.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/DataContainer/list.json
      */
     /**
-     * Sample code: List Data Container.
-     *
+     * Sample code: List Workspace Data Container.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void listDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+    public static void
+        listWorkspaceDataContainer(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
         manager.dataContainers().list("testrg123", "workspace123", null, null, com.azure.core.util.Context.NONE);
     }
 }

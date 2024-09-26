@@ -5,34 +5,37 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** workbookChartGridlinesFormat. */
+/**
+ * workbookChartGridlinesFormat.
+ */
 @Fluent
 public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftGraphEntity {
     /*
      * workbookChartLineFormat
      */
-    @JsonProperty(value = "line")
     private MicrosoftGraphWorkbookChartLineFormat line;
 
     /*
      * workbookChartGridlinesFormat
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphWorkbookChartGridlinesFormat class. */
+    /**
+     * Creates an instance of MicrosoftGraphWorkbookChartGridlinesFormat class.
+     */
     public MicrosoftGraphWorkbookChartGridlinesFormat() {
     }
 
     /**
      * Get the line property: workbookChartLineFormat.
-     *
+     * 
      * @return the line value.
      */
     public MicrosoftGraphWorkbookChartLineFormat line() {
@@ -41,7 +44,7 @@ public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftG
 
     /**
      * Set the line property: workbookChartLineFormat.
-     *
+     * 
      * @param line the line value to set.
      * @return the MicrosoftGraphWorkbookChartGridlinesFormat object itself.
      */
@@ -52,35 +55,28 @@ public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftG
 
     /**
      * Get the additionalProperties property: workbookChartGridlinesFormat.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: workbookChartGridlinesFormat.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphWorkbookChartGridlinesFormat object itself.
      */
-    public MicrosoftGraphWorkbookChartGridlinesFormat withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphWorkbookChartGridlinesFormat
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphWorkbookChartGridlinesFormat withId(String id) {
         super.withId(id);
@@ -89,7 +85,7 @@ public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftG
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -98,5 +94,57 @@ public final class MicrosoftGraphWorkbookChartGridlinesFormat extends MicrosoftG
         if (line() != null) {
             line().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("line", this.line);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphWorkbookChartGridlinesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphWorkbookChartGridlinesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphWorkbookChartGridlinesFormat.
+     */
+    public static MicrosoftGraphWorkbookChartGridlinesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphWorkbookChartGridlinesFormat deserializedMicrosoftGraphWorkbookChartGridlinesFormat
+                = new MicrosoftGraphWorkbookChartGridlinesFormat();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartGridlinesFormat.withId(reader.getString());
+                } else if ("line".equals(fieldName)) {
+                    deserializedMicrosoftGraphWorkbookChartGridlinesFormat.line
+                        = MicrosoftGraphWorkbookChartLineFormat.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphWorkbookChartGridlinesFormat.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphWorkbookChartGridlinesFormat;
+        });
     }
 }

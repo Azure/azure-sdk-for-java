@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.BackupRestoreOperationType;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,8 +22,22 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     /*
      * RestoreRequest resource specific properties
      */
-    @JsonProperty(value = "properties")
     private RestoreRequestProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of RestoreRequestInner class.
@@ -31,11 +47,41 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Get the innerProperties property: RestoreRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestoreRequestProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -49,7 +95,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Get the storageAccountUrl property: SAS URL to the container.
-     *
+     * 
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
@@ -58,7 +104,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Set the storageAccountUrl property: SAS URL to the container.
-     *
+     * 
      * @param storageAccountUrl the storageAccountUrl value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -72,7 +118,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Get the blobName property: Name of a blob which contains the backup.
-     *
+     * 
      * @return the blobName value.
      */
     public String blobName() {
@@ -81,7 +127,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Set the blobName property: Name of a blob which contains the backup.
-     *
+     * 
      * @param blobName the blobName value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -97,7 +143,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
      * Get the overwrite property: &lt;code&gt;true&lt;/code&gt; if the restore operation can overwrite target app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;. &lt;code&gt;true&lt;/code&gt; is needed if trying to restore over an
      * existing app.
-     *
+     * 
      * @return the overwrite value.
      */
     public Boolean overwrite() {
@@ -108,7 +154,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
      * Set the overwrite property: &lt;code&gt;true&lt;/code&gt; if the restore operation can overwrite target app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;. &lt;code&gt;true&lt;/code&gt; is needed if trying to restore over an
      * existing app.
-     *
+     * 
      * @param overwrite the overwrite value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -122,7 +168,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Get the siteName property: Name of an app.
-     *
+     * 
      * @return the siteName value.
      */
     public String siteName() {
@@ -131,7 +177,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Set the siteName property: Name of an app.
-     *
+     * 
      * @param siteName the siteName value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -146,7 +192,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     /**
      * Get the databases property: Collection of databases which should be restored. This list has to match the list of
      * databases included in the backup.
-     *
+     * 
      * @return the databases value.
      */
     public List<DatabaseBackupSetting> databases() {
@@ -156,7 +202,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     /**
      * Set the databases property: Collection of databases which should be restored. This list has to match the list of
      * databases included in the backup.
-     *
+     * 
      * @param databases the databases value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -173,7 +219,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
      * &lt;code&gt;true&lt;/code&gt; to remove custom domains automatically. If &lt;code&gt;false&lt;/code&gt;, custom
      * domains are added to
      * the app's object when it is being restored, but that might fail due to conflicts during the operation.
-     *
+     * 
      * @return the ignoreConflictingHostNames value.
      */
     public Boolean ignoreConflictingHostNames() {
@@ -185,7 +231,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
      * &lt;code&gt;true&lt;/code&gt; to remove custom domains automatically. If &lt;code&gt;false&lt;/code&gt;, custom
      * domains are added to
      * the app's object when it is being restored, but that might fail due to conflicts during the operation.
-     *
+     * 
      * @param ignoreConflictingHostNames the ignoreConflictingHostNames value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -199,7 +245,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Get the ignoreDatabases property: Ignore the databases and only restore the site content.
-     *
+     * 
      * @return the ignoreDatabases value.
      */
     public Boolean ignoreDatabases() {
@@ -208,7 +254,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Set the ignoreDatabases property: Ignore the databases and only restore the site content.
-     *
+     * 
      * @param ignoreDatabases the ignoreDatabases value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -222,7 +268,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Get the appServicePlan property: Specify app service plan that will own restored site.
-     *
+     * 
      * @return the appServicePlan value.
      */
     public String appServicePlan() {
@@ -231,7 +277,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Set the appServicePlan property: Specify app service plan that will own restored site.
-     *
+     * 
      * @param appServicePlan the appServicePlan value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -245,7 +291,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Get the operationType property: Operation type.
-     *
+     * 
      * @return the operationType value.
      */
     public BackupRestoreOperationType operationType() {
@@ -254,7 +300,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Set the operationType property: Operation type.
-     *
+     * 
      * @param operationType the operationType value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -269,7 +315,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     /**
      * Get the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
      * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the adjustConnectionStrings value.
      */
     public Boolean adjustConnectionStrings() {
@@ -279,7 +325,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     /**
      * Set the adjustConnectionStrings property: &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
      * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param adjustConnectionStrings the adjustConnectionStrings value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -294,7 +340,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     /**
      * Get the hostingEnvironment property: App Service Environment name, if needed (only when restoring an app to an
      * App Service Environment).
-     *
+     * 
      * @return the hostingEnvironment value.
      */
     public String hostingEnvironment() {
@@ -304,7 +350,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
     /**
      * Set the hostingEnvironment property: App Service Environment name, if needed (only when restoring an app to an
      * App Service Environment).
-     *
+     * 
      * @param hostingEnvironment the hostingEnvironment value to set.
      * @return the RestoreRequestInner object itself.
      */
@@ -318,7 +364,7 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -327,5 +373,51 @@ public final class RestoreRequestInner extends ProxyOnlyResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreRequestInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreRequestInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestoreRequestInner.
+     */
+    public static RestoreRequestInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreRequestInner deserializedRestoreRequestInner = new RestoreRequestInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestoreRequestInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestoreRequestInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestoreRequestInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRestoreRequestInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRestoreRequestInner.innerProperties = RestoreRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreRequestInner;
+        });
     }
 }

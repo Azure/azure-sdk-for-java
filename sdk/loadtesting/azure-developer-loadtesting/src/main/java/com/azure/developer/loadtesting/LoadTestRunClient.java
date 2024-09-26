@@ -18,7 +18,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.LoadTestRunsImpl;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.time.Duration;
 
 /**
@@ -26,9 +26,6 @@ import java.time.Duration;
  */
 @ServiceClient(builder = LoadTestRunClientBuilder.class)
 public final class LoadTestRunClient {
-
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
     @Generated
     private final LoadTestRunsImpl serviceClient;
 
@@ -128,14 +125,12 @@ public final class LoadTestRunClient {
         if (testRunRequestOptions != null) {
             defaultRequestOptions.setContext(testRunRequestOptions.getContext());
         }
-        return SyncPoller.createPoller(Duration.ofSeconds(5), (context) -> {
-            Response<BinaryData> testRunResponse
-                = createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions);
-            return PollingUtils.getTestRunStatus(testRunResponse.getValue(), OBJECT_MAPPER);
-        }, (context) -> {
-            Response<BinaryData> testRunResponse = getTestRunWithResponse(testRunId, defaultRequestOptions);
-            return PollingUtils.getTestRunStatus(testRunResponse.getValue(), OBJECT_MAPPER);
-        }, (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions).getValue(),
+        return SyncPoller.createPoller(Duration.ofSeconds(5),
+            (context) -> PollingUtils.getTestRunStatus(createOrUpdateTestRunWithResponse(testRunId, body, testRunRequestOptions)
+                .getValue()),
+            (context) -> PollingUtils.getTestRunStatus(getTestRunWithResponse(testRunId, defaultRequestOptions)
+                .getValue()),
+            (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions).getValue(),
             (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).getValue());
     }
 

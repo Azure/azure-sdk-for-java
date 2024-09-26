@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AdvancedThreatProtectionName. */
+/**
+ * Defines values for AdvancedThreatProtectionName.
+ */
 public final class AdvancedThreatProtectionName extends ExpandableStringEnum<AdvancedThreatProtectionName> {
-    /** Static value Default for AdvancedThreatProtectionName. */
+    /**
+     * Static value Default for AdvancedThreatProtectionName.
+     */
     public static final AdvancedThreatProtectionName DEFAULT = fromString("Default");
 
     /**
+     * Creates a new instance of AdvancedThreatProtectionName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AdvancedThreatProtectionName() {
+    }
+
+    /**
      * Creates or finds a AdvancedThreatProtectionName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AdvancedThreatProtectionName.
      */
-    @JsonCreator
     public static AdvancedThreatProtectionName fromString(String name) {
         return fromString(name, AdvancedThreatProtectionName.class);
     }
 
     /**
      * Gets known AdvancedThreatProtectionName values.
-     *
+     * 
      * @return known AdvancedThreatProtectionName values.
      */
     public static Collection<AdvancedThreatProtectionName> values() {

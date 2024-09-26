@@ -5,35 +5,38 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** plannerBucketTaskBoardTaskFormat. */
+/**
+ * plannerBucketTaskBoardTaskFormat.
+ */
 @Fluent
 public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends MicrosoftGraphEntity {
     /*
      * Hint used to order tasks in the Bucket view of the Task Board. The format is defined as outlined here.
      */
-    @JsonProperty(value = "orderHint")
     private String orderHint;
 
     /*
      * plannerBucketTaskBoardTaskFormat
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPlannerBucketTaskBoardTaskFormat class. */
+    /**
+     * Creates an instance of MicrosoftGraphPlannerBucketTaskBoardTaskFormat class.
+     */
     public MicrosoftGraphPlannerBucketTaskBoardTaskFormat() {
     }
 
     /**
      * Get the orderHint property: Hint used to order tasks in the Bucket view of the Task Board. The format is defined
      * as outlined here.
-     *
+     * 
      * @return the orderHint value.
      */
     public String orderHint() {
@@ -43,7 +46,7 @@ public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends Micros
     /**
      * Set the orderHint property: Hint used to order tasks in the Bucket view of the Task Board. The format is defined
      * as outlined here.
-     *
+     * 
      * @param orderHint the orderHint value to set.
      * @return the MicrosoftGraphPlannerBucketTaskBoardTaskFormat object itself.
      */
@@ -54,35 +57,28 @@ public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends Micros
 
     /**
      * Get the additionalProperties property: plannerBucketTaskBoardTaskFormat.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: plannerBucketTaskBoardTaskFormat.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPlannerBucketTaskBoardTaskFormat object itself.
      */
-    public MicrosoftGraphPlannerBucketTaskBoardTaskFormat withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphPlannerBucketTaskBoardTaskFormat
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPlannerBucketTaskBoardTaskFormat withId(String id) {
         super.withId(id);
@@ -91,11 +87,62 @@ public final class MicrosoftGraphPlannerBucketTaskBoardTaskFormat extends Micros
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("orderHint", this.orderHint);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPlannerBucketTaskBoardTaskFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPlannerBucketTaskBoardTaskFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPlannerBucketTaskBoardTaskFormat.
+     */
+    public static MicrosoftGraphPlannerBucketTaskBoardTaskFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPlannerBucketTaskBoardTaskFormat deserializedMicrosoftGraphPlannerBucketTaskBoardTaskFormat
+                = new MicrosoftGraphPlannerBucketTaskBoardTaskFormat();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerBucketTaskBoardTaskFormat.withId(reader.getString());
+                } else if ("orderHint".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerBucketTaskBoardTaskFormat.orderHint = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPlannerBucketTaskBoardTaskFormat.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPlannerBucketTaskBoardTaskFormat;
+        });
     }
 }

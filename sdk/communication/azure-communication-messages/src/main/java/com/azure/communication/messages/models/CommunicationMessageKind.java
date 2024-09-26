@@ -5,7 +5,6 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class CommunicationMessageKind extends ExpandableStringEnum<Communi
      * @return the corresponding CommunicationMessageKind.
      */
     @Generated
-    @JsonCreator
     public static CommunicationMessageKind fromString(String name) {
         return fromString(name, CommunicationMessageKind.class);
     }

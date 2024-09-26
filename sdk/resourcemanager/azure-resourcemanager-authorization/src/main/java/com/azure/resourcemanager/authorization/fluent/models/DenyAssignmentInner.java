@@ -5,46 +5,50 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.authorization.models.DenyAssignmentPermission;
 import com.azure.resourcemanager.authorization.models.Principal;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Deny Assignment. */
+/**
+ * Deny Assignment.
+ */
 @Fluent
-public final class DenyAssignmentInner {
+public final class DenyAssignmentInner implements JsonSerializable<DenyAssignmentInner> {
     /*
      * The deny assignment ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The deny assignment name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The deny assignment type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Deny assignment properties.
      */
-    @JsonProperty(value = "properties")
     private DenyAssignmentProperties innerProperties;
 
-    /** Creates an instance of DenyAssignmentInner class. */
+    /**
+     * Creates an instance of DenyAssignmentInner class.
+     */
     public DenyAssignmentInner() {
     }
 
     /**
      * Get the id property: The deny assignment ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -53,7 +57,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the name property: The deny assignment name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +66,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the type property: The deny assignment type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -71,7 +75,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the innerProperties property: Deny assignment properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DenyAssignmentProperties innerProperties() {
@@ -80,7 +84,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the denyAssignmentName property: The display name of the deny assignment.
-     *
+     * 
      * @return the denyAssignmentName value.
      */
     public String denyAssignmentName() {
@@ -89,7 +93,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the denyAssignmentName property: The display name of the deny assignment.
-     *
+     * 
      * @param denyAssignmentName the denyAssignmentName value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -103,7 +107,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the description property: The description of the deny assignment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -112,7 +116,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the description property: The description of the deny assignment.
-     *
+     * 
      * @param description the description value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -126,7 +130,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the permissions property: An array of permissions that are denied by the deny assignment.
-     *
+     * 
      * @return the permissions value.
      */
     public List<DenyAssignmentPermission> permissions() {
@@ -135,7 +139,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the permissions property: An array of permissions that are denied by the deny assignment.
-     *
+     * 
      * @param permissions the permissions value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -149,7 +153,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the scope property: The deny assignment scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -158,7 +162,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the scope property: The deny assignment scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -173,7 +177,7 @@ public final class DenyAssignmentInner {
     /**
      * Get the doNotApplyToChildScopes property: Determines if the deny assignment applies to child scopes. Default
      * value is false.
-     *
+     * 
      * @return the doNotApplyToChildScopes value.
      */
     public Boolean doNotApplyToChildScopes() {
@@ -183,7 +187,7 @@ public final class DenyAssignmentInner {
     /**
      * Set the doNotApplyToChildScopes property: Determines if the deny assignment applies to child scopes. Default
      * value is false.
-     *
+     * 
      * @param doNotApplyToChildScopes the doNotApplyToChildScopes value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -197,7 +201,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the principals property: Array of principals to which the deny assignment applies.
-     *
+     * 
      * @return the principals value.
      */
     public List<Principal> principals() {
@@ -206,7 +210,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the principals property: Array of principals to which the deny assignment applies.
-     *
+     * 
      * @param principals the principals value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -220,7 +224,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the excludePrincipals property: Array of principals to which the deny assignment does not apply.
-     *
+     * 
      * @return the excludePrincipals value.
      */
     public List<Principal> excludePrincipals() {
@@ -229,7 +233,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the excludePrincipals property: Array of principals to which the deny assignment does not apply.
-     *
+     * 
      * @param excludePrincipals the excludePrincipals value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -244,7 +248,7 @@ public final class DenyAssignmentInner {
     /**
      * Get the isSystemProtected property: Specifies whether this deny assignment was created by Azure and cannot be
      * edited or deleted.
-     *
+     * 
      * @return the isSystemProtected value.
      */
     public Boolean isSystemProtected() {
@@ -254,7 +258,7 @@ public final class DenyAssignmentInner {
     /**
      * Set the isSystemProtected property: Specifies whether this deny assignment was created by Azure and cannot be
      * edited or deleted.
-     *
+     * 
      * @param isSystemProtected the isSystemProtected value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -268,9 +272,9 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @return the condition value.
      */
     public String condition() {
@@ -279,9 +283,9 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the condition property: The conditions on the deny assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
+     * to. e.g.: &#064;Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
      * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -295,7 +299,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the conditionVersion property: Version of the condition.
-     *
+     * 
      * @return the conditionVersion value.
      */
     public String conditionVersion() {
@@ -304,7 +308,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Set the conditionVersion property: Version of the condition.
-     *
+     * 
      * @param conditionVersion the conditionVersion value to set.
      * @return the DenyAssignmentInner object itself.
      */
@@ -318,7 +322,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the createdOn property: Time it was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -327,7 +331,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the updatedOn property: Time it was updated.
-     *
+     * 
      * @return the updatedOn value.
      */
     public OffsetDateTime updatedOn() {
@@ -336,7 +340,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the createdBy property: Id of the user who created the assignment.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -345,7 +349,7 @@ public final class DenyAssignmentInner {
 
     /**
      * Get the updatedBy property: Id of the user who updated the assignment.
-     *
+     * 
      * @return the updatedBy value.
      */
     public String updatedBy() {
@@ -354,12 +358,54 @@ public final class DenyAssignmentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DenyAssignmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DenyAssignmentInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DenyAssignmentInner.
+     */
+    public static DenyAssignmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DenyAssignmentInner deserializedDenyAssignmentInner = new DenyAssignmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDenyAssignmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDenyAssignmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDenyAssignmentInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDenyAssignmentInner.innerProperties = DenyAssignmentProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDenyAssignmentInner;
+        });
     }
 }

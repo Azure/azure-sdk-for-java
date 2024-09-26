@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Type of operation: get, read, delete, etc. */
+/**
+ * Type of operation: get, read, delete, etc.
+ */
 @Fluent
-public final class DimensionProperties {
+public final class DimensionProperties implements JsonSerializable<DimensionProperties> {
     /*
      * Name of dimension.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Display name of dimension.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Property to specify whether the dimension should be exported for Shoebox.
      */
-    @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
 
-    /** Creates an instance of DimensionProperties class. */
+    /**
+     * Creates an instance of DimensionProperties class.
+     */
     public DimensionProperties() {
     }
 
     /**
      * Get the name property: Name of dimension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +48,7 @@ public final class DimensionProperties {
 
     /**
      * Set the name property: Name of dimension.
-     *
+     * 
      * @param name the name value to set.
      * @return the DimensionProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class DimensionProperties {
 
     /**
      * Get the displayName property: Display name of dimension.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +68,7 @@ public final class DimensionProperties {
 
     /**
      * Set the displayName property: Display name of dimension.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the DimensionProperties object itself.
      */
@@ -75,7 +80,7 @@ public final class DimensionProperties {
     /**
      * Get the toBeExportedForShoebox property: Property to specify whether the dimension should be exported for
      * Shoebox.
-     *
+     * 
      * @return the toBeExportedForShoebox value.
      */
     public Boolean toBeExportedForShoebox() {
@@ -85,7 +90,7 @@ public final class DimensionProperties {
     /**
      * Set the toBeExportedForShoebox property: Property to specify whether the dimension should be exported for
      * Shoebox.
-     *
+     * 
      * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
      * @return the DimensionProperties object itself.
      */
@@ -96,9 +101,51 @@ public final class DimensionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("toBeExportedForShoebox", this.toBeExportedForShoebox);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DimensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DimensionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DimensionProperties.
+     */
+    public static DimensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DimensionProperties deserializedDimensionProperties = new DimensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDimensionProperties.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedDimensionProperties.displayName = reader.getString();
+                } else if ("toBeExportedForShoebox".equals(fieldName)) {
+                    deserializedDimensionProperties.toBeExportedForShoebox = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDimensionProperties;
+        });
     }
 }

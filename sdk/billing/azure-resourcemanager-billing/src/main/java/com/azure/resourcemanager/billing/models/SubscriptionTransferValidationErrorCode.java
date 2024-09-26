@@ -5,91 +5,174 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Error code of the transfer validation response. */
+/**
+ * Error code of the transfer validation response.
+ */
 public final class SubscriptionTransferValidationErrorCode
     extends ExpandableStringEnum<SubscriptionTransferValidationErrorCode> {
-    /** Static value BillingAccountInactive for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode BILLING_ACCOUNT_INACTIVE =
-        fromString("BillingAccountInactive");
+    /**
+     * Static value Other for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode OTHER = fromString("Other");
 
-    /** Static value CrossBillingAccountNotAllowed for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode CROSS_BILLING_ACCOUNT_NOT_ALLOWED =
-        fromString("CrossBillingAccountNotAllowed");
+    /**
+     * Static value BillingAccountInactive for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode BILLING_ACCOUNT_INACTIVE
+        = fromString("BillingAccountInactive");
 
-    /** Static value DestinationBillingProfileInactive for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode DESTINATION_BILLING_PROFILE_INACTIVE =
-        fromString("DestinationBillingProfileInactive");
+    /**
+     * Static value DestinationBillingProfileInactive for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode DESTINATION_BILLING_PROFILE_INACTIVE
+        = fromString("DestinationBillingProfileInactive");
 
-    /** Static value DestinationBillingProfileNotFound for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode DESTINATION_BILLING_PROFILE_NOT_FOUND =
-        fromString("DestinationBillingProfileNotFound");
+    /**
+     * Static value DestinationBillingProfileNotFound for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode DESTINATION_BILLING_PROFILE_NOT_FOUND
+        = fromString("DestinationBillingProfileNotFound");
 
-    /** Static value DestinationBillingProfilePastDue for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode DESTINATION_BILLING_PROFILE_PAST_DUE =
-        fromString("DestinationBillingProfilePastDue");
+    /**
+     * Static value DestinationBillingProfilePastDue for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode DESTINATION_BILLING_PROFILE_PAST_DUE
+        = fromString("DestinationBillingProfilePastDue");
 
-    /** Static value DestinationInvoiceSectionInactive for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode DESTINATION_INVOICE_SECTION_INACTIVE =
-        fromString("DestinationInvoiceSectionInactive");
+    /**
+     * Static value DestinationInvoiceSectionInactive for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode DESTINATION_INVOICE_SECTION_INACTIVE
+        = fromString("DestinationInvoiceSectionInactive");
 
-    /** Static value DestinationInvoiceSectionNotFound for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode DESTINATION_INVOICE_SECTION_NOT_FOUND =
-        fromString("DestinationInvoiceSectionNotFound");
+    /**
+     * Static value DestinationInvoiceSectionNotFound for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode DESTINATION_INVOICE_SECTION_NOT_FOUND
+        = fromString("DestinationInvoiceSectionNotFound");
 
-    /** Static value InsufficientPermissionOnDestination for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode INSUFFICIENT_PERMISSION_ON_DESTINATION =
-        fromString("InsufficientPermissionOnDestination");
+    /**
+     * Static value InsufficientPermissionOnDestination for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode INSUFFICIENT_PERMISSION_ON_DESTINATION
+        = fromString("InsufficientPermissionOnDestination");
 
-    /** Static value InsufficientPermissionOnSource for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode INSUFFICIENT_PERMISSION_ON_SOURCE =
-        fromString("InsufficientPermissionOnSource");
+    /**
+     * Static value InsufficientPermissionOnSource for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode INSUFFICIENT_PERMISSION_ON_SOURCE
+        = fromString("InsufficientPermissionOnSource");
 
-    /** Static value InvalidDestination for SubscriptionTransferValidationErrorCode. */
+    /**
+     * Static value InvalidDestination for SubscriptionTransferValidationErrorCode.
+     */
     public static final SubscriptionTransferValidationErrorCode INVALID_DESTINATION = fromString("InvalidDestination");
 
-    /** Static value InvalidSource for SubscriptionTransferValidationErrorCode. */
+    /**
+     * Static value InvalidSource for SubscriptionTransferValidationErrorCode.
+     */
     public static final SubscriptionTransferValidationErrorCode INVALID_SOURCE = fromString("InvalidSource");
 
-    /** Static value MarketplaceNotEnabledOnDestination for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode MARKETPLACE_NOT_ENABLED_ON_DESTINATION =
-        fromString("MarketplaceNotEnabledOnDestination");
+    /**
+     * Static value MarketplaceNotEnabledOnDestination for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode MARKETPLACE_NOT_ENABLED_ON_DESTINATION
+        = fromString("MarketplaceNotEnabledOnDestination");
 
-    /** Static value NotAvailableForDestinationMarket for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode NOT_AVAILABLE_FOR_DESTINATION_MARKET =
-        fromString("NotAvailableForDestinationMarket");
-
-    /** Static value ProductInactive for SubscriptionTransferValidationErrorCode. */
+    /**
+     * Static value ProductInactive for SubscriptionTransferValidationErrorCode.
+     */
     public static final SubscriptionTransferValidationErrorCode PRODUCT_INACTIVE = fromString("ProductInactive");
 
-    /** Static value ProductNotFound for SubscriptionTransferValidationErrorCode. */
+    /**
+     * Static value ProductNotFound for SubscriptionTransferValidationErrorCode.
+     */
     public static final SubscriptionTransferValidationErrorCode PRODUCT_NOT_FOUND = fromString("ProductNotFound");
 
-    /** Static value ProductTypeNotSupported for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode PRODUCT_TYPE_NOT_SUPPORTED =
-        fromString("ProductTypeNotSupported");
+    /**
+     * Static value ProductTypeNotSupported for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode PRODUCT_TYPE_NOT_SUPPORTED
+        = fromString("ProductTypeNotSupported");
 
-    /** Static value SourceBillingProfilePastDue for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode SOURCE_BILLING_PROFILE_PAST_DUE =
-        fromString("SourceBillingProfilePastDue");
+    /**
+     * Static value SourceBillingProfilePastDue for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode SOURCE_BILLING_PROFILE_PAST_DUE
+        = fromString("SourceBillingProfilePastDue");
 
-    /** Static value SourceInvoiceSectionInactive for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode SOURCE_INVOICE_SECTION_INACTIVE =
-        fromString("SourceInvoiceSectionInactive");
+    /**
+     * Static value SourceInvoiceSectionInactive for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode SOURCE_INVOICE_SECTION_INACTIVE
+        = fromString("SourceInvoiceSectionInactive");
 
-    /** Static value SubscriptionNotActive for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode SUBSCRIPTION_NOT_ACTIVE =
-        fromString("SubscriptionNotActive");
+    /**
+     * Static value AccountIsLocked for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode ACCOUNT_IS_LOCKED = fromString("AccountIsLocked");
 
-    /** Static value SubscriptionTypeNotSupported for SubscriptionTransferValidationErrorCode. */
-    public static final SubscriptionTransferValidationErrorCode SUBSCRIPTION_TYPE_NOT_SUPPORTED =
-        fromString("SubscriptionTypeNotSupported");
+    /**
+     * Static value AssetHasCap for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode ASSET_HAS_CAP = fromString("AssetHasCap");
+
+    /**
+     * Static value AssetNotActive for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode ASSET_NOT_ACTIVE = fromString("AssetNotActive");
+
+    /**
+     * Static value BillingProfilePastDue for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode BILLING_PROFILE_PAST_DUE
+        = fromString("BillingProfilePastDue");
+
+    /**
+     * Static value CrossBillingAccountNotAllowed for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode CROSS_BILLING_ACCOUNT_NOT_ALLOWED
+        = fromString("CrossBillingAccountNotAllowed");
+
+    /**
+     * Static value NoActiveAzurePlan for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode NO_ACTIVE_AZURE_PLAN = fromString("NoActiveAzurePlan");
+
+    /**
+     * Static value None for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode NONE = fromString("None");
+
+    /**
+     * Static value SubscriptionNotActive for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode SUBSCRIPTION_NOT_ACTIVE
+        = fromString("SubscriptionNotActive");
+
+    /**
+     * Static value SubscriptionHasReservations for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode SUBSCRIPTION_HAS_RESERVATIONS
+        = fromString("SubscriptionHasReservations");
+
+    /**
+     * Static value SubscriptionTypeNotSupported for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode SUBSCRIPTION_TYPE_NOT_SUPPORTED
+        = fromString("SubscriptionTypeNotSupported");
+
+    /**
+     * Static value InvoiceSectionIsRestricted for SubscriptionTransferValidationErrorCode.
+     */
+    public static final SubscriptionTransferValidationErrorCode INVOICE_SECTION_IS_RESTRICTED
+        = fromString("InvoiceSectionIsRestricted");
 
     /**
      * Creates a new instance of SubscriptionTransferValidationErrorCode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -98,18 +181,17 @@ public final class SubscriptionTransferValidationErrorCode
 
     /**
      * Creates or finds a SubscriptionTransferValidationErrorCode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubscriptionTransferValidationErrorCode.
      */
-    @JsonCreator
     public static SubscriptionTransferValidationErrorCode fromString(String name) {
         return fromString(name, SubscriptionTransferValidationErrorCode.class);
     }
 
     /**
      * Gets known SubscriptionTransferValidationErrorCode values.
-     *
+     * 
      * @return known SubscriptionTransferValidationErrorCode values.
      */
     public static Collection<SubscriptionTransferValidationErrorCode> values() {

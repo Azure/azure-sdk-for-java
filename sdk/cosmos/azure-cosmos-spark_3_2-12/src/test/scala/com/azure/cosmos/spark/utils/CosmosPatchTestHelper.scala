@@ -177,7 +177,8 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
     partitionKeyDefinition,
     writeConfigForPatch,
     DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
-    metricsPublisher)
+    metricsPublisher,
+    1)
  }
 
  def getBulkWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
@@ -196,7 +197,8 @@ def getPatchFullTestSchemaWithSubpartitions(): StructType = {
        partitionKeyDefinition,
        writeConfigForPatch,
        DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
-       new TestOutputMetricsPublisher)
+       new TestOutputMetricsPublisher,
+       1)
  }
 
  def getPointWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],

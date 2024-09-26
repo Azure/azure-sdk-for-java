@@ -5,48 +5,46 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Kubelet configurations of agent nodes.
- *
+ * 
  * See [AKS custom node configuration](https://docs.microsoft.com/azure/aks/custom-node-configuration) for more details.
  */
 @Fluent
-public final class KubeletConfig {
+public final class KubeletConfig implements JsonSerializable<KubeletConfig> {
     /*
      * The default is 'none'. See [Kubernetes CPU management
      * policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
      * for more information. Allowed values are 'none' and 'static'.
      */
-    @JsonProperty(value = "cpuManagerPolicy")
     private String cpuManagerPolicy;
 
     /*
      * The default is true.
      */
-    @JsonProperty(value = "cpuCfsQuota")
     private Boolean cpuCfsQuota;
 
     /*
      * The default is '100ms.' Valid values are a sequence of decimal numbers with an optional fraction and a unit
      * suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's', 'm', and 'h'.
      */
-    @JsonProperty(value = "cpuCfsQuotaPeriod")
     private String cpuCfsQuotaPeriod;
 
     /*
      * To disable image garbage collection, set to 100. The default is 85%
      */
-    @JsonProperty(value = "imageGcHighThreshold")
     private Integer imageGcHighThreshold;
 
     /*
      * This cannot be set higher than imageGcHighThreshold. The default is 80%
      */
-    @JsonProperty(value = "imageGcLowThreshold")
     private Integer imageGcLowThreshold;
 
     /*
@@ -54,37 +52,31 @@ public final class KubeletConfig {
      * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
      * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
      */
-    @JsonProperty(value = "topologyManagerPolicy")
     private String topologyManagerPolicy;
 
     /*
      * Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in `*`).
      */
-    @JsonProperty(value = "allowedUnsafeSysctls")
     private List<String> allowedUnsafeSysctls;
 
     /*
      * If set to true it will make the Kubelet fail to start if swap is enabled on the node.
      */
-    @JsonProperty(value = "failSwapOn")
     private Boolean failSwapOn;
 
     /*
      * The maximum size (e.g. 10Mi) of container log file before it is rotated.
      */
-    @JsonProperty(value = "containerLogMaxSizeMB")
     private Integer containerLogMaxSizeMB;
 
     /*
      * The maximum number of container log files that can be present for a container. The number must be ≥ 2.
      */
-    @JsonProperty(value = "containerLogMaxFiles")
     private Integer containerLogMaxFiles;
 
     /*
      * The maximum number of processes per pod.
      */
-    @JsonProperty(value = "podMaxPids")
     private Integer podMaxPids;
 
     /**
@@ -97,7 +89,7 @@ public final class KubeletConfig {
      * Get the cpuManagerPolicy property: The default is 'none'. See [Kubernetes CPU management
      * policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
      * for more information. Allowed values are 'none' and 'static'.
-     *
+     * 
      * @return the cpuManagerPolicy value.
      */
     public String cpuManagerPolicy() {
@@ -108,7 +100,7 @@ public final class KubeletConfig {
      * Set the cpuManagerPolicy property: The default is 'none'. See [Kubernetes CPU management
      * policies](https://kubernetes.io/docs/tasks/administer-cluster/cpu-management-policies/#cpu-management-policies)
      * for more information. Allowed values are 'none' and 'static'.
-     *
+     * 
      * @param cpuManagerPolicy the cpuManagerPolicy value to set.
      * @return the KubeletConfig object itself.
      */
@@ -119,7 +111,7 @@ public final class KubeletConfig {
 
     /**
      * Get the cpuCfsQuota property: The default is true.
-     *
+     * 
      * @return the cpuCfsQuota value.
      */
     public Boolean cpuCfsQuota() {
@@ -128,7 +120,7 @@ public final class KubeletConfig {
 
     /**
      * Set the cpuCfsQuota property: The default is true.
-     *
+     * 
      * @param cpuCfsQuota the cpuCfsQuota value to set.
      * @return the KubeletConfig object itself.
      */
@@ -141,7 +133,7 @@ public final class KubeletConfig {
      * Get the cpuCfsQuotaPeriod property: The default is '100ms.' Valid values are a sequence of decimal numbers with
      * an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's',
      * 'm', and 'h'.
-     *
+     * 
      * @return the cpuCfsQuotaPeriod value.
      */
     public String cpuCfsQuotaPeriod() {
@@ -152,7 +144,7 @@ public final class KubeletConfig {
      * Set the cpuCfsQuotaPeriod property: The default is '100ms.' Valid values are a sequence of decimal numbers with
      * an optional fraction and a unit suffix. For example: '300ms', '2h45m'. Supported units are 'ns', 'us', 'ms', 's',
      * 'm', and 'h'.
-     *
+     * 
      * @param cpuCfsQuotaPeriod the cpuCfsQuotaPeriod value to set.
      * @return the KubeletConfig object itself.
      */
@@ -163,7 +155,7 @@ public final class KubeletConfig {
 
     /**
      * Get the imageGcHighThreshold property: To disable image garbage collection, set to 100. The default is 85%.
-     *
+     * 
      * @return the imageGcHighThreshold value.
      */
     public Integer imageGcHighThreshold() {
@@ -172,7 +164,7 @@ public final class KubeletConfig {
 
     /**
      * Set the imageGcHighThreshold property: To disable image garbage collection, set to 100. The default is 85%.
-     *
+     * 
      * @param imageGcHighThreshold the imageGcHighThreshold value to set.
      * @return the KubeletConfig object itself.
      */
@@ -183,7 +175,7 @@ public final class KubeletConfig {
 
     /**
      * Get the imageGcLowThreshold property: This cannot be set higher than imageGcHighThreshold. The default is 80%.
-     *
+     * 
      * @return the imageGcLowThreshold value.
      */
     public Integer imageGcLowThreshold() {
@@ -192,7 +184,7 @@ public final class KubeletConfig {
 
     /**
      * Set the imageGcLowThreshold property: This cannot be set higher than imageGcHighThreshold. The default is 80%.
-     *
+     * 
      * @param imageGcLowThreshold the imageGcLowThreshold value to set.
      * @return the KubeletConfig object itself.
      */
@@ -205,7 +197,7 @@ public final class KubeletConfig {
      * Get the topologyManagerPolicy property: For more information see [Kubernetes Topology
      * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
      * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
-     *
+     * 
      * @return the topologyManagerPolicy value.
      */
     public String topologyManagerPolicy() {
@@ -216,7 +208,7 @@ public final class KubeletConfig {
      * Set the topologyManagerPolicy property: For more information see [Kubernetes Topology
      * Manager](https://kubernetes.io/docs/tasks/administer-cluster/topology-manager). The default is 'none'. Allowed
      * values are 'none', 'best-effort', 'restricted', and 'single-numa-node'.
-     *
+     * 
      * @param topologyManagerPolicy the topologyManagerPolicy value to set.
      * @return the KubeletConfig object itself.
      */
@@ -227,7 +219,7 @@ public final class KubeletConfig {
 
     /**
      * Get the allowedUnsafeSysctls property: Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in `*`).
-     *
+     * 
      * @return the allowedUnsafeSysctls value.
      */
     public List<String> allowedUnsafeSysctls() {
@@ -236,7 +228,7 @@ public final class KubeletConfig {
 
     /**
      * Set the allowedUnsafeSysctls property: Allowed list of unsafe sysctls or unsafe sysctl patterns (ending in `*`).
-     *
+     * 
      * @param allowedUnsafeSysctls the allowedUnsafeSysctls value to set.
      * @return the KubeletConfig object itself.
      */
@@ -248,7 +240,7 @@ public final class KubeletConfig {
     /**
      * Get the failSwapOn property: If set to true it will make the Kubelet fail to start if swap is enabled on the
      * node.
-     *
+     * 
      * @return the failSwapOn value.
      */
     public Boolean failSwapOn() {
@@ -258,7 +250,7 @@ public final class KubeletConfig {
     /**
      * Set the failSwapOn property: If set to true it will make the Kubelet fail to start if swap is enabled on the
      * node.
-     *
+     * 
      * @param failSwapOn the failSwapOn value to set.
      * @return the KubeletConfig object itself.
      */
@@ -269,7 +261,7 @@ public final class KubeletConfig {
 
     /**
      * Get the containerLogMaxSizeMB property: The maximum size (e.g. 10Mi) of container log file before it is rotated.
-     *
+     * 
      * @return the containerLogMaxSizeMB value.
      */
     public Integer containerLogMaxSizeMB() {
@@ -278,7 +270,7 @@ public final class KubeletConfig {
 
     /**
      * Set the containerLogMaxSizeMB property: The maximum size (e.g. 10Mi) of container log file before it is rotated.
-     *
+     * 
      * @param containerLogMaxSizeMB the containerLogMaxSizeMB value to set.
      * @return the KubeletConfig object itself.
      */
@@ -290,7 +282,7 @@ public final class KubeletConfig {
     /**
      * Get the containerLogMaxFiles property: The maximum number of container log files that can be present for a
      * container. The number must be ≥ 2.
-     *
+     * 
      * @return the containerLogMaxFiles value.
      */
     public Integer containerLogMaxFiles() {
@@ -300,7 +292,7 @@ public final class KubeletConfig {
     /**
      * Set the containerLogMaxFiles property: The maximum number of container log files that can be present for a
      * container. The number must be ≥ 2.
-     *
+     * 
      * @param containerLogMaxFiles the containerLogMaxFiles value to set.
      * @return the KubeletConfig object itself.
      */
@@ -311,7 +303,7 @@ public final class KubeletConfig {
 
     /**
      * Get the podMaxPids property: The maximum number of processes per pod.
-     *
+     * 
      * @return the podMaxPids value.
      */
     public Integer podMaxPids() {
@@ -320,7 +312,7 @@ public final class KubeletConfig {
 
     /**
      * Set the podMaxPids property: The maximum number of processes per pod.
-     *
+     * 
      * @param podMaxPids the podMaxPids value to set.
      * @return the KubeletConfig object itself.
      */
@@ -331,9 +323,77 @@ public final class KubeletConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cpuManagerPolicy", this.cpuManagerPolicy);
+        jsonWriter.writeBooleanField("cpuCfsQuota", this.cpuCfsQuota);
+        jsonWriter.writeStringField("cpuCfsQuotaPeriod", this.cpuCfsQuotaPeriod);
+        jsonWriter.writeNumberField("imageGcHighThreshold", this.imageGcHighThreshold);
+        jsonWriter.writeNumberField("imageGcLowThreshold", this.imageGcLowThreshold);
+        jsonWriter.writeStringField("topologyManagerPolicy", this.topologyManagerPolicy);
+        jsonWriter.writeArrayField("allowedUnsafeSysctls", this.allowedUnsafeSysctls,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("failSwapOn", this.failSwapOn);
+        jsonWriter.writeNumberField("containerLogMaxSizeMB", this.containerLogMaxSizeMB);
+        jsonWriter.writeNumberField("containerLogMaxFiles", this.containerLogMaxFiles);
+        jsonWriter.writeNumberField("podMaxPids", this.podMaxPids);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KubeletConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KubeletConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KubeletConfig.
+     */
+    public static KubeletConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KubeletConfig deserializedKubeletConfig = new KubeletConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("cpuManagerPolicy".equals(fieldName)) {
+                    deserializedKubeletConfig.cpuManagerPolicy = reader.getString();
+                } else if ("cpuCfsQuota".equals(fieldName)) {
+                    deserializedKubeletConfig.cpuCfsQuota = reader.getNullable(JsonReader::getBoolean);
+                } else if ("cpuCfsQuotaPeriod".equals(fieldName)) {
+                    deserializedKubeletConfig.cpuCfsQuotaPeriod = reader.getString();
+                } else if ("imageGcHighThreshold".equals(fieldName)) {
+                    deserializedKubeletConfig.imageGcHighThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("imageGcLowThreshold".equals(fieldName)) {
+                    deserializedKubeletConfig.imageGcLowThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("topologyManagerPolicy".equals(fieldName)) {
+                    deserializedKubeletConfig.topologyManagerPolicy = reader.getString();
+                } else if ("allowedUnsafeSysctls".equals(fieldName)) {
+                    List<String> allowedUnsafeSysctls = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKubeletConfig.allowedUnsafeSysctls = allowedUnsafeSysctls;
+                } else if ("failSwapOn".equals(fieldName)) {
+                    deserializedKubeletConfig.failSwapOn = reader.getNullable(JsonReader::getBoolean);
+                } else if ("containerLogMaxSizeMB".equals(fieldName)) {
+                    deserializedKubeletConfig.containerLogMaxSizeMB = reader.getNullable(JsonReader::getInt);
+                } else if ("containerLogMaxFiles".equals(fieldName)) {
+                    deserializedKubeletConfig.containerLogMaxFiles = reader.getNullable(JsonReader::getInt);
+                } else if ("podMaxPids".equals(fieldName)) {
+                    deserializedKubeletConfig.podMaxPids = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKubeletConfig;
+        });
     }
 }

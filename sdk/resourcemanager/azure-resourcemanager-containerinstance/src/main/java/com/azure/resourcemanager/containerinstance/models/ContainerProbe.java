@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The container probe, for liveness or readiness. */
+/**
+ * The container probe, for liveness or readiness.
+ */
 @Fluent
-public final class ContainerProbe {
+public final class ContainerProbe implements JsonSerializable<ContainerProbe> {
     /*
      * The execution command to probe
      */
-    @JsonProperty(value = "exec")
     private ContainerExec exec;
 
     /*
      * The Http Get settings to probe
      */
-    @JsonProperty(value = "httpGet")
     private ContainerHttpGet httpGet;
 
     /*
      * The initial delay seconds.
      */
-    @JsonProperty(value = "initialDelaySeconds")
     private Integer initialDelaySeconds;
 
     /*
      * The period seconds.
      */
-    @JsonProperty(value = "periodSeconds")
     private Integer periodSeconds;
 
     /*
      * The failure threshold.
      */
-    @JsonProperty(value = "failureThreshold")
     private Integer failureThreshold;
 
     /*
      * The success threshold.
      */
-    @JsonProperty(value = "successThreshold")
     private Integer successThreshold;
 
     /*
      * The timeout seconds.
      */
-    @JsonProperty(value = "timeoutSeconds")
     private Integer timeoutSeconds;
 
-    /** Creates an instance of ContainerProbe class. */
+    /**
+     * Creates an instance of ContainerProbe class.
+     */
     public ContainerProbe() {
     }
 
     /**
      * Get the exec property: The execution command to probe.
-     *
+     * 
      * @return the exec value.
      */
     public ContainerExec exec() {
@@ -67,7 +68,7 @@ public final class ContainerProbe {
 
     /**
      * Set the exec property: The execution command to probe.
-     *
+     * 
      * @param exec the exec value to set.
      * @return the ContainerProbe object itself.
      */
@@ -78,7 +79,7 @@ public final class ContainerProbe {
 
     /**
      * Get the httpGet property: The Http Get settings to probe.
-     *
+     * 
      * @return the httpGet value.
      */
     public ContainerHttpGet httpGet() {
@@ -87,7 +88,7 @@ public final class ContainerProbe {
 
     /**
      * Set the httpGet property: The Http Get settings to probe.
-     *
+     * 
      * @param httpGet the httpGet value to set.
      * @return the ContainerProbe object itself.
      */
@@ -98,7 +99,7 @@ public final class ContainerProbe {
 
     /**
      * Get the initialDelaySeconds property: The initial delay seconds.
-     *
+     * 
      * @return the initialDelaySeconds value.
      */
     public Integer initialDelaySeconds() {
@@ -107,7 +108,7 @@ public final class ContainerProbe {
 
     /**
      * Set the initialDelaySeconds property: The initial delay seconds.
-     *
+     * 
      * @param initialDelaySeconds the initialDelaySeconds value to set.
      * @return the ContainerProbe object itself.
      */
@@ -118,7 +119,7 @@ public final class ContainerProbe {
 
     /**
      * Get the periodSeconds property: The period seconds.
-     *
+     * 
      * @return the periodSeconds value.
      */
     public Integer periodSeconds() {
@@ -127,7 +128,7 @@ public final class ContainerProbe {
 
     /**
      * Set the periodSeconds property: The period seconds.
-     *
+     * 
      * @param periodSeconds the periodSeconds value to set.
      * @return the ContainerProbe object itself.
      */
@@ -138,7 +139,7 @@ public final class ContainerProbe {
 
     /**
      * Get the failureThreshold property: The failure threshold.
-     *
+     * 
      * @return the failureThreshold value.
      */
     public Integer failureThreshold() {
@@ -147,7 +148,7 @@ public final class ContainerProbe {
 
     /**
      * Set the failureThreshold property: The failure threshold.
-     *
+     * 
      * @param failureThreshold the failureThreshold value to set.
      * @return the ContainerProbe object itself.
      */
@@ -158,7 +159,7 @@ public final class ContainerProbe {
 
     /**
      * Get the successThreshold property: The success threshold.
-     *
+     * 
      * @return the successThreshold value.
      */
     public Integer successThreshold() {
@@ -167,7 +168,7 @@ public final class ContainerProbe {
 
     /**
      * Set the successThreshold property: The success threshold.
-     *
+     * 
      * @param successThreshold the successThreshold value to set.
      * @return the ContainerProbe object itself.
      */
@@ -178,7 +179,7 @@ public final class ContainerProbe {
 
     /**
      * Get the timeoutSeconds property: The timeout seconds.
-     *
+     * 
      * @return the timeoutSeconds value.
      */
     public Integer timeoutSeconds() {
@@ -187,7 +188,7 @@ public final class ContainerProbe {
 
     /**
      * Set the timeoutSeconds property: The timeout seconds.
-     *
+     * 
      * @param timeoutSeconds the timeoutSeconds value to set.
      * @return the ContainerProbe object itself.
      */
@@ -198,7 +199,7 @@ public final class ContainerProbe {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -208,5 +209,59 @@ public final class ContainerProbe {
         if (httpGet() != null) {
             httpGet().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("exec", this.exec);
+        jsonWriter.writeJsonField("httpGet", this.httpGet);
+        jsonWriter.writeNumberField("initialDelaySeconds", this.initialDelaySeconds);
+        jsonWriter.writeNumberField("periodSeconds", this.periodSeconds);
+        jsonWriter.writeNumberField("failureThreshold", this.failureThreshold);
+        jsonWriter.writeNumberField("successThreshold", this.successThreshold);
+        jsonWriter.writeNumberField("timeoutSeconds", this.timeoutSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerProbe from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerProbe if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerProbe.
+     */
+    public static ContainerProbe fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerProbe deserializedContainerProbe = new ContainerProbe();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exec".equals(fieldName)) {
+                    deserializedContainerProbe.exec = ContainerExec.fromJson(reader);
+                } else if ("httpGet".equals(fieldName)) {
+                    deserializedContainerProbe.httpGet = ContainerHttpGet.fromJson(reader);
+                } else if ("initialDelaySeconds".equals(fieldName)) {
+                    deserializedContainerProbe.initialDelaySeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("periodSeconds".equals(fieldName)) {
+                    deserializedContainerProbe.periodSeconds = reader.getNullable(JsonReader::getInt);
+                } else if ("failureThreshold".equals(fieldName)) {
+                    deserializedContainerProbe.failureThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("successThreshold".equals(fieldName)) {
+                    deserializedContainerProbe.successThreshold = reader.getNullable(JsonReader::getInt);
+                } else if ("timeoutSeconds".equals(fieldName)) {
+                    deserializedContainerProbe.timeoutSeconds = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerProbe;
+        });
     }
 }

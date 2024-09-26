@@ -5,26 +5,28 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerregistry.fluent.models.ScopeMapInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The result of a request to list scope maps for a container registry.
  */
 @Fluent
-public final class ScopeMapListResult {
+public final class ScopeMapListResult implements JsonSerializable<ScopeMapListResult> {
     /*
      * The list of scope maps. Since this list may be incomplete, the nextLink field should be used to request the next
      * list of scope maps.
      */
-    @JsonProperty(value = "value")
     private List<ScopeMapInner> value;
 
     /*
      * The URI that can be used to request the next list of scope maps.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -84,5 +86,45 @@ public final class ScopeMapListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScopeMapListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScopeMapListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScopeMapListResult.
+     */
+    public static ScopeMapListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScopeMapListResult deserializedScopeMapListResult = new ScopeMapListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ScopeMapInner> value = reader.readArray(reader1 -> ScopeMapInner.fromJson(reader1));
+                    deserializedScopeMapListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedScopeMapListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScopeMapListResult;
+        });
     }
 }

@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,23 +17,20 @@ import java.util.List;
  * Disk.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdateOSDisk {
+public final class VirtualMachineScaleSetUpdateOSDisk implements JsonSerializable<VirtualMachineScaleSetUpdateOSDisk> {
     /*
      * The caching type.
      */
-    @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
      * Specifies whether writeAccelerator should be enabled or disabled on the disk.
      */
-    @JsonProperty(value = "writeAcceleratorEnabled")
     private Boolean writeAcceleratorEnabled;
 
     /*
      * Specifies the ephemeral disk Settings for the operating system disk used by the virtual machine scale set.
      */
-    @JsonProperty(value = "diffDiskSettings")
     private DiffDiskSettings diffDiskSettings;
 
     /*
@@ -37,26 +38,22 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
      * in a virtual machine image. <br><br> diskSizeGB is the number of bytes x 1024^3 for the disk and the value cannot
      * be larger than 1023
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * The Source User Image VirtualHardDisk. This VirtualHardDisk will be copied before using it to attach to the
      * Virtual Machine. If SourceImage is provided, the destination VirtualHardDisk should not exist.
      */
-    @JsonProperty(value = "image")
     private VirtualHardDisk image;
 
     /*
      * The list of virtual hard disk container uris.
      */
-    @JsonProperty(value = "vhdContainers")
     private List<String> vhdContainers;
 
     /*
      * The managed disk parameters.
      */
-    @JsonProperty(value = "managedDisk")
     private VirtualMachineScaleSetManagedDiskParameters managedDisk;
 
     /*
@@ -66,7 +63,6 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
      * retained after VMSS Flex VM is deleted. <br><br> The default value is set to **Delete**. For an Ephemeral OS
      * Disk, the default value is set to **Delete**. User cannot change the delete option for Ephemeral OS Disk.
      */
-    @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
     /**
@@ -272,5 +268,69 @@ public final class VirtualMachineScaleSetUpdateOSDisk {
         if (managedDisk() != null) {
             managedDisk().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("caching", this.caching == null ? null : this.caching.toString());
+        jsonWriter.writeBooleanField("writeAcceleratorEnabled", this.writeAcceleratorEnabled);
+        jsonWriter.writeJsonField("diffDiskSettings", this.diffDiskSettings);
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        jsonWriter.writeJsonField("image", this.image);
+        jsonWriter.writeArrayField("vhdContainers", this.vhdContainers,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdateOSDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdateOSDisk if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetUpdateOSDisk.
+     */
+    public static VirtualMachineScaleSetUpdateOSDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdateOSDisk deserializedVirtualMachineScaleSetUpdateOSDisk
+                = new VirtualMachineScaleSetUpdateOSDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("caching".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.caching
+                        = CachingTypes.fromString(reader.getString());
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.writeAcceleratorEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diffDiskSettings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.diffDiskSettings = DiffDiskSettings.fromJson(reader);
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("image".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.image = VirtualHardDisk.fromJson(reader);
+                } else if ("vhdContainers".equals(fieldName)) {
+                    List<String> vhdContainers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.vhdContainers = vhdContainers;
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.managedDisk
+                        = VirtualMachineScaleSetManagedDiskParameters.fromJson(reader);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateOSDisk.deleteOption
+                        = DiskDeleteOptionTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdateOSDisk;
+        });
     }
 }

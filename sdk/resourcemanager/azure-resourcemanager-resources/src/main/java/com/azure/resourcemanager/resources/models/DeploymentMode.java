@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental mode,
  * resources are deployed without deleting existing resources that are not included in the template. In Complete mode,
@@ -39,7 +36,6 @@ public enum DeploymentMode {
      * @param value the serialized value to parse.
      * @return the parsed DeploymentMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static DeploymentMode fromString(String value) {
         if (value == null) {
             return null;
@@ -56,7 +52,6 @@ public enum DeploymentMode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

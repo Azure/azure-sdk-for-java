@@ -5,37 +5,63 @@
 package com.azure.resourcemanager.keyvault.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmResource;
 import com.azure.resourcemanager.keyvault.models.ManagedHsmSku;
 import com.azure.resourcemanager.keyvault.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.keyvault.models.MhsmPrivateEndpoint;
 import com.azure.resourcemanager.keyvault.models.MhsmPrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.keyvault.models.PrivateEndpointConnectionProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Private endpoint connection resource. */
+/**
+ * Private endpoint connection resource.
+ */
 @Fluent
 public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private MhsmPrivateEndpointConnectionProperties innerProperties;
 
     /*
      * Modified whenever there is a change in the state of private endpoint connection.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of MhsmPrivateEndpointConnectionInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * Metadata pertaining to creation and last modification of the key vault resource.
+     */
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of MhsmPrivateEndpointConnectionInner class.
+     */
     public MhsmPrivateEndpointConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MhsmPrivateEndpointConnectionProperties innerProperties() {
@@ -44,7 +70,7 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Get the etag property: Modified whenever there is a change in the state of private endpoint connection.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -53,7 +79,7 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Set the etag property: Modified whenever there is a change in the state of private endpoint connection.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the MhsmPrivateEndpointConnectionInner object itself.
      */
@@ -62,28 +88,76 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the key vault resource.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MhsmPrivateEndpointConnectionInner withSku(ManagedHsmSku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MhsmPrivateEndpointConnectionInner withIdentity(ManagedServiceIdentity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MhsmPrivateEndpointConnectionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MhsmPrivateEndpointConnectionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +166,7 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Get the privateEndpoint property: Properties of the private endpoint object.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public MhsmPrivateEndpoint privateEndpoint() {
@@ -101,7 +175,7 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Set the privateEndpoint property: Properties of the private endpoint object.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the MhsmPrivateEndpointConnectionInner object itself.
      */
@@ -115,7 +189,7 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Get the privateLinkServiceConnectionState property: Approval state of the private link connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public MhsmPrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -124,12 +198,12 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Set the privateLinkServiceConnectionState property: Approval state of the private link connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the MhsmPrivateEndpointConnectionInner object itself.
      */
-    public MhsmPrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        MhsmPrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public MhsmPrivateEndpointConnectionInner
+        withPrivateLinkServiceConnectionState(MhsmPrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MhsmPrivateEndpointConnectionProperties();
         }
@@ -139,7 +213,7 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Get the provisioningState property: Provisioning state of the private endpoint connection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PrivateEndpointConnectionProvisioningState provisioningState() {
@@ -148,12 +222,12 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Set the provisioningState property: Provisioning state of the private endpoint connection.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the MhsmPrivateEndpointConnectionInner object itself.
      */
-    public MhsmPrivateEndpointConnectionInner withProvisioningState(
-        PrivateEndpointConnectionProvisioningState provisioningState) {
+    public MhsmPrivateEndpointConnectionInner
+        withProvisioningState(PrivateEndpointConnectionProvisioningState provisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MhsmPrivateEndpointConnectionProperties();
         }
@@ -163,7 +237,7 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -172,5 +246,69 @@ public final class MhsmPrivateEndpointConnectionInner extends ManagedHsmResource
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MhsmPrivateEndpointConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MhsmPrivateEndpointConnectionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MhsmPrivateEndpointConnectionInner.
+     */
+    public static MhsmPrivateEndpointConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MhsmPrivateEndpointConnectionInner deserializedMhsmPrivateEndpointConnectionInner
+                = new MhsmPrivateEndpointConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMhsmPrivateEndpointConnectionInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.withSku(ManagedHsmSku.fromJson(reader));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner
+                        .withIdentity(ManagedServiceIdentity.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.innerProperties
+                        = MhsmPrivateEndpointConnectionProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedMhsmPrivateEndpointConnectionInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMhsmPrivateEndpointConnectionInner;
+        });
     }
 }

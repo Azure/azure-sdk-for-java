@@ -5,59 +5,55 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes an Operating System disk.
  */
 @Fluent
-public final class RestorePointSourceVmosDisk {
+public final class RestorePointSourceVmosDisk implements JsonSerializable<RestorePointSourceVmosDisk> {
     /*
      * Gets the Operating System type.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OperatingSystemType osType;
 
     /*
      * Gets the disk encryption settings.
      */
-    @JsonProperty(value = "encryptionSettings", access = JsonProperty.Access.WRITE_ONLY)
     private DiskEncryptionSettings encryptionSettings;
 
     /*
      * Gets the disk name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets the caching type.
      */
-    @JsonProperty(value = "caching", access = JsonProperty.Access.WRITE_ONLY)
     private CachingTypes caching;
 
     /*
      * Gets the disk size in GB.
      */
-    @JsonProperty(value = "diskSizeGB", access = JsonProperty.Access.WRITE_ONLY)
     private Integer diskSizeGB;
 
     /*
      * Gets the managed disk details
      */
-    @JsonProperty(value = "managedDisk")
     private ManagedDiskParameters managedDisk;
 
     /*
      * Contains Disk Restore Point properties.
      */
-    @JsonProperty(value = "diskRestorePoint")
     private DiskRestorePointAttributes diskRestorePoint;
 
     /*
      * Shows true if the disk is write-accelerator enabled.
      */
-    @JsonProperty(value = "writeAcceleratorEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean writeAcceleratorEnabled;
 
     /**
@@ -175,5 +171,58 @@ public final class RestorePointSourceVmosDisk {
         if (diskRestorePoint() != null) {
             diskRestorePoint().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("managedDisk", this.managedDisk);
+        jsonWriter.writeJsonField("diskRestorePoint", this.diskRestorePoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointSourceVmosDisk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointSourceVmosDisk if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointSourceVmosDisk.
+     */
+    public static RestorePointSourceVmosDisk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointSourceVmosDisk deserializedRestorePointSourceVmosDisk = new RestorePointSourceVmosDisk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("osType".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.osType = OperatingSystemType.fromString(reader.getString());
+                } else if ("encryptionSettings".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.encryptionSettings = DiskEncryptionSettings.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.name = reader.getString();
+                } else if ("caching".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.caching = CachingTypes.fromString(reader.getString());
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("managedDisk".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.managedDisk = ManagedDiskParameters.fromJson(reader);
+                } else if ("diskRestorePoint".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.diskRestorePoint
+                        = DiskRestorePointAttributes.fromJson(reader);
+                } else if ("writeAcceleratorEnabled".equals(fieldName)) {
+                    deserializedRestorePointSourceVmosDisk.writeAcceleratorEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointSourceVmosDisk;
+        });
     }
 }

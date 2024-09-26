@@ -5,21 +5,23 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The template object used to create templates.
  */
 @Fluent
-public final class MessageTemplate {
+public final class MessageTemplate implements JsonSerializable<MessageTemplate> {
 
     /*
      * Name of the template.
      */
     @Generated
-    @JsonProperty(value = "name")
     private final String name;
 
     /*
@@ -27,21 +29,18 @@ public final class MessageTemplate {
      * two-letter country code, e.g., 'en' or 'en_US'.
      */
     @Generated
-    @JsonProperty(value = "language")
     private final String language;
 
     /*
      * The template values.
      */
     @Generated
-    @JsonProperty(value = "values")
     private List<MessageTemplateValue> values;
 
     /*
      * The binding object to link values to the template specific locations
      */
     @Generated
-    @JsonProperty(value = "bindings")
     private MessageTemplateBindings bindings;
 
     /**
@@ -51,9 +50,7 @@ public final class MessageTemplate {
      * @param language the language value to set.
      */
     @Generated
-    @JsonCreator
-    public MessageTemplate(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "language") String language) {
+    public MessageTemplate(String name, String language) {
         this.name = name;
         this.language = language;
     }
@@ -121,5 +118,57 @@ public final class MessageTemplate {
     public MessageTemplate setBindings(MessageTemplateBindings bindings) {
         this.bindings = bindings;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("bindings", this.bindings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTemplate from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTemplate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageTemplate.
+     */
+    @Generated
+    public static MessageTemplate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            String language = null;
+            List<MessageTemplateValue> values = null;
+            MessageTemplateBindings bindings = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    values = reader.readArray(reader1 -> MessageTemplateValue.fromJson(reader1));
+                } else if ("bindings".equals(fieldName)) {
+                    bindings = MessageTemplateBindings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageTemplate deserializedMessageTemplate = new MessageTemplate(name, language);
+            deserializedMessageTemplate.values = values;
+            deserializedMessageTemplate.bindings = bindings;
+            return deserializedMessageTemplate;
+        });
     }
 }

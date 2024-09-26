@@ -6,7 +6,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-appconfiguration-config</artifactId>
-  <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;current} -->
+  <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration-config;current} -->
   <name>Spring Cloud Azure Starter App Configuration Config</name>
   <description>Spring Cloud Azure Starter App Configuration Config</description>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -87,12 +87,12 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-appconfiguration-config-web;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>spring-cloud-azure-feature-management-web</artifactId>
-      <version>5.15.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
+      <version>5.17.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-feature-management-web;current} -->
     </dependency>
   </dependencies>
 
@@ -145,21 +145,15 @@
             </manifest>
           </archive>
         </configuration>
-      </plugin>
-      <!-- START: Empty Java Doc and Sources -->
-      <!-- The following code will generate an empty javadoc with just a README.md. This is
-      necessary
-            to pass the required checks on Maven. The way this works is by setting the classesDirectory
-            to a directory that only contains the README.md, which we need to copy. If the classesDirectory
-            is set to the root, where the README.md lives, it still won't have javadocs but the jar file
-            will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
-            and recreated with the README.md being copied every time to guarantee that, when building locally,
-            it'll have the latest copy of the README.md file.
-      -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>3.4.2</version> <!-- {x-version-update;springboot3_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <!-- START: Empty Java Doc and Sources -->
+        <!-- The following code will generate an empty javadoc with just a README.md. This is necessary
+              to pass the required checks on Maven. The way this works is by setting the classesDirectory
+              to a directory that only contains the README.md, which we need to copy. If the classesDirectory
+              is set to the root, where the README.md lives, it still won't have javadocs but the jar file
+              will contain a bunch of files that shouldn't be there. The faux sources directory is deleted
+              and recreated with the README.md being copied every time to guarantee that, when building locally,
+              it'll have the latest copy of the README.md file.
+        -->
         <executions>
           <execution>
             <id>empty-javadoc-jar-with-readme</id>
@@ -223,8 +217,8 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
       <!-- END: Empty Java Doc and Sources -->
+      </plugin>
     </plugins>
   </build>
 </project>

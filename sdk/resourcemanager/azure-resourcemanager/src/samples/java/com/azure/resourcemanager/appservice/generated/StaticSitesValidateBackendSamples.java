@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBacken
  */
 public final class StaticSitesValidateBackendSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ValidateLinkedBackendForStaticSite.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-12-01/examples/ValidateLinkedBackendForStaticSite.
+     * json
      */
     /**
      * Sample code: Validate if backend can be linked to static site.

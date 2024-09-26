@@ -10,8 +10,8 @@ import com.azure.resourcemanager.machinelearning.models.AssetReferenceBase;
 public final class AssetReferenceBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetReferenceBase model =
-            BinaryData.fromString("{\"referenceType\":\"AssetReferenceBase\"}").toObject(AssetReferenceBase.class);
+        AssetReferenceBase model
+            = BinaryData.fromString("{\"referenceType\":\"AssetReferenceBase\"}").toObject(AssetReferenceBase.class);
     }
 
     @org.junit.jupiter.api.Test

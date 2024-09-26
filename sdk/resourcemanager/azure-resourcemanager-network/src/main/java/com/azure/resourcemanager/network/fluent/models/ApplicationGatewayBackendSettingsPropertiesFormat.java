@@ -6,65 +6,61 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Properties of Backend address pool settings of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayBackendSettingsPropertiesFormat {
+public final class ApplicationGatewayBackendSettingsPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayBackendSettingsPropertiesFormat> {
     /*
      * The destination port on the backend.
      */
-    @JsonProperty(value = "port")
     private Integer port;
 
     /*
      * The protocol used to communicate with the backend.
      */
-    @JsonProperty(value = "protocol")
     private ApplicationGatewayProtocol protocol;
 
     /*
      * Connection timeout in seconds. Application Gateway will fail the request if response is not received within
      * ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
      */
-    @JsonProperty(value = "timeout")
     private Integer timeout;
 
     /*
      * Probe resource of an application gateway.
      */
-    @JsonProperty(value = "probe")
     private SubResource probe;
 
     /*
      * Array of references to application gateway trusted root certificates.
      */
-    @JsonProperty(value = "trustedRootCertificates")
     private List<SubResource> trustedRootCertificates;
 
     /*
      * Server name indication to be sent to the backend servers for Tls protocol.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * Whether to pick server name indication from the host name of the backend server for Tls protocol. Default value
      * is false.
      */
-    @JsonProperty(value = "pickHostNameFromBackendAddress")
     private Boolean pickHostnameFromBackendAddress;
 
     /*
      * The provisioning state of the backend HTTP settings resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -75,7 +71,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the port property: The destination port on the backend.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -84,7 +80,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the port property: The destination port on the backend.
-     *
+     * 
      * @param port the port value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -95,7 +91,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the protocol property: The protocol used to communicate with the backend.
-     *
+     * 
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -104,7 +100,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the protocol property: The protocol used to communicate with the backend.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -116,7 +112,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     /**
      * Get the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response is
      * not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -126,7 +122,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     /**
      * Set the timeout property: Connection timeout in seconds. Application Gateway will fail the request if response is
      * not received within ConnectionTimeout. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -137,7 +133,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the probe property: Probe resource of an application gateway.
-     *
+     * 
      * @return the probe value.
      */
     public SubResource probe() {
@@ -146,7 +142,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the probe property: Probe resource of an application gateway.
-     *
+     * 
      * @param probe the probe value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -157,7 +153,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     *
+     * 
      * @return the trustedRootCertificates value.
      */
     public List<SubResource> trustedRootCertificates() {
@@ -166,7 +162,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     *
+     * 
      * @param trustedRootCertificates the trustedRootCertificates value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -178,7 +174,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the hostname property: Server name indication to be sent to the backend servers for Tls protocol.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -187,7 +183,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Set the hostname property: Server name indication to be sent to the backend servers for Tls protocol.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -199,7 +195,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     /**
      * Get the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of the
      * backend server for Tls protocol. Default value is false.
-     *
+     * 
      * @return the pickHostnameFromBackendAddress value.
      */
     public Boolean pickHostnameFromBackendAddress() {
@@ -209,7 +205,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
     /**
      * Set the pickHostnameFromBackendAddress property: Whether to pick server name indication from the host name of the
      * backend server for Tls protocol. Default value is false.
-     *
+     * 
      * @param pickHostnameFromBackendAddress the pickHostnameFromBackendAddress value to set.
      * @return the ApplicationGatewayBackendSettingsPropertiesFormat object itself.
      */
@@ -221,7 +217,7 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -230,9 +226,75 @@ public final class ApplicationGatewayBackendSettingsPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("port", this.port);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeNumberField("timeout", this.timeout);
+        jsonWriter.writeJsonField("probe", this.probe);
+        jsonWriter.writeArrayField("trustedRootCertificates", this.trustedRootCertificates,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeBooleanField("pickHostNameFromBackendAddress", this.pickHostnameFromBackendAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayBackendSettingsPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayBackendSettingsPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayBackendSettingsPropertiesFormat.
+     */
+    public static ApplicationGatewayBackendSettingsPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayBackendSettingsPropertiesFormat deserializedApplicationGatewayBackendSettingsPropertiesFormat
+                = new ApplicationGatewayBackendSettingsPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("port".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.port
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.protocol
+                        = ApplicationGatewayProtocol.fromString(reader.getString());
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.timeout
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("probe".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.probe = SubResource.fromJson(reader);
+                } else if ("trustedRootCertificates".equals(fieldName)) {
+                    List<SubResource> trustedRootCertificates
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.trustedRootCertificates
+                        = trustedRootCertificates;
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.hostname = reader.getString();
+                } else if ("pickHostNameFromBackendAddress".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.pickHostnameFromBackendAddress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendSettingsPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayBackendSettingsPropertiesFormat;
+        });
     }
 }

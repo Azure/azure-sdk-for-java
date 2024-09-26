@@ -69,14 +69,15 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     private static void setupDockerContainersForLocal() {
         logger.info("Setting up local docker containers...");
         network = Network.newNetwork();
-        kafkaContainer = new KafkaContainer(getDockerImageName("kafkaconfluentregistry.azurecr.io/cp-kafka:")
+        kafkaContainer = new KafkaContainer(getDockerImageName(KafkaCosmosTestConfigurations.ACR_NAME + "/cp-kafka:")
             .asCompatibleSubstituteFor("confluentinc/cp-kafka:" + KafkaCosmosTestConfigurations.CONFLUENT_VERSION))
             .withNetwork(network)
             .withNetworkAliases("broker")
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withLogConsumer(new Slf4jLogConsumer(logger));
 
-        schemaRegistryContainer = new KafkaSchemaRegistryContainer(getDockerImageName("kafkaconfluentregistry.azurecr.io/cp-schema-registry:")
+        schemaRegistryContainer = new KafkaSchemaRegistryContainer(
+            getDockerImageName(KafkaCosmosTestConfigurations.ACR_NAME + "/cp-schema-registry:")
             .asCompatibleSubstituteFor("confluentinc/cp-schema-registry:" + KafkaCosmosTestConfigurations.CONFLUENT_VERSION))
             .withNetwork(network)
             .dependsOn(kafkaContainer)
@@ -86,7 +87,8 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
 
         Startables.deepStart(Stream.of(kafkaContainer, schemaRegistryContainer)).join();
 
-        kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("kafkaconfluentregistry.azurecr.io/cp-kafka-connect:")
+        kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(
+            getDockerImageName(KafkaCosmosTestConfigurations.ACR_NAME + "/cp-kafka-connect:")
             .asCompatibleSubstituteFor("confluentinc/cp-kafka-connect:" + KafkaCosmosTestConfigurations.CONFLUENT_VERSION))
             .withNetwork(network)
             .dependsOn(kafkaContainer, schemaRegistryContainer)

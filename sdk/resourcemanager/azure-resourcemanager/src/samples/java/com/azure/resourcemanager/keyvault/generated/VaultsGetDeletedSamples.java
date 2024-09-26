@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-/** Samples for Vaults GetDeleted. */
+/**
+ * Samples for Vaults GetDeleted.
+ */
 public final class VaultsGetDeletedSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/getDeletedVault.json
+     * x-ms-original-file:
+     * specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/getDeletedVault.json
      */
     /**
      * Sample code: Retrieve a deleted vault.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveADeletedVault(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .vaults()
+        azure.vaults()
             .manager()
             .serviceClient()
             .getVaults()

@@ -6,5 +6,5 @@ module com.azure.analytics.defender.easm {
     requires transitive com.azure.core;
     exports com.azure.analytics.defender.easm;
     exports com.azure.analytics.defender.easm.models;
-    opens com.azure.analytics.defender.easm.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.analytics.defender.easm.models to com.azure.core;
 }

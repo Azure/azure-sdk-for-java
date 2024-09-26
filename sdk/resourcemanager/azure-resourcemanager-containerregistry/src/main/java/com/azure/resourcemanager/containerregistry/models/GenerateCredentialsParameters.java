@@ -5,30 +5,33 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The parameters used to generate credentials for a specified token or user of a container registry.
  */
 @Fluent
-public final class GenerateCredentialsParameters {
+public final class GenerateCredentialsParameters implements JsonSerializable<GenerateCredentialsParameters> {
     /*
      * The resource ID of the token for which credentials have to be generated.
      */
-    @JsonProperty(value = "tokenId")
     private String tokenId;
 
     /*
      * The expiry date of the generated credentials after which the credentials become invalid.
      */
-    @JsonProperty(value = "expiry")
     private OffsetDateTime expiry;
 
     /*
      * Specifies name of the password which should be regenerated if any -- password1 or password2.
      */
-    @JsonProperty(value = "name")
     private TokenPasswordName name;
 
     /**
@@ -58,8 +61,7 @@ public final class GenerateCredentialsParameters {
     }
 
     /**
-     * Get the expiry property: The expiry date of the generated credentials after which the credentials become
-     * invalid.
+     * Get the expiry property: The expiry date of the generated credentials after which the credentials become invalid.
      * 
      * @return the expiry value.
      */
@@ -68,8 +70,7 @@ public final class GenerateCredentialsParameters {
     }
 
     /**
-     * Set the expiry property: The expiry date of the generated credentials after which the credentials become
-     * invalid.
+     * Set the expiry property: The expiry date of the generated credentials after which the credentials become invalid.
      * 
      * @param expiry the expiry value to set.
      * @return the GenerateCredentialsParameters object itself.
@@ -107,5 +108,50 @@ public final class GenerateCredentialsParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tokenId", this.tokenId);
+        jsonWriter.writeStringField("expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateCredentialsParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateCredentialsParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateCredentialsParameters.
+     */
+    public static GenerateCredentialsParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateCredentialsParameters deserializedGenerateCredentialsParameters
+                = new GenerateCredentialsParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tokenId".equals(fieldName)) {
+                    deserializedGenerateCredentialsParameters.tokenId = reader.getString();
+                } else if ("expiry".equals(fieldName)) {
+                    deserializedGenerateCredentialsParameters.expiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("name".equals(fieldName)) {
+                    deserializedGenerateCredentialsParameters.name = TokenPasswordName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateCredentialsParameters;
+        });
     }
 }

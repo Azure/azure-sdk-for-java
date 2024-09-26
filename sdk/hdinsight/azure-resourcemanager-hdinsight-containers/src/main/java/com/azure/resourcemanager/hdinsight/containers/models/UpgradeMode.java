@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class UpgradeMode extends ExpandableStringEnum<UpgradeMode> {
      * @param name a name to look for.
      * @return the corresponding UpgradeMode.
      */
-    @JsonCreator
     public static UpgradeMode fromString(String name) {
         return fromString(name, UpgradeMode.class);
     }

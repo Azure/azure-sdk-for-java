@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class SelectorKind extends ExpandableStringEnum<SelectorKind> {
      * @param name a name to look for.
      * @return the corresponding SelectorKind.
      */
-    @JsonCreator
     public static SelectorKind fromString(String name) {
         return fromString(name, SelectorKind.class);
     }

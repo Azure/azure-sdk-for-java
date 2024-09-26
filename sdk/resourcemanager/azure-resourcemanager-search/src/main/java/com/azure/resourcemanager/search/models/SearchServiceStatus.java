@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.search.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The status of the search service. Possible values include: 'running': The search service is running and no
  * provisioning operations are underway. 'provisioning': The search service is being provisioned or scaled up or down.
@@ -18,25 +15,39 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * states are still chargeable based on the number of search units provisioned.
  */
 public enum SearchServiceStatus {
-    /** Enum value running. */
+    /**
+     * Enum value running.
+     */
     RUNNING("running"),
 
-    /** Enum value provisioning. */
+    /**
+     * Enum value provisioning.
+     */
     PROVISIONING("provisioning"),
 
-    /** Enum value deleting. */
+    /**
+     * Enum value deleting.
+     */
     DELETING("deleting"),
 
-    /** Enum value degraded. */
+    /**
+     * Enum value degraded.
+     */
     DEGRADED("degraded"),
 
-    /** Enum value disabled. */
+    /**
+     * Enum value disabled.
+     */
     DISABLED("disabled"),
 
-    /** Enum value error. */
+    /**
+     * Enum value error.
+     */
     ERROR("error");
 
-    /** The actual serialized value for a SearchServiceStatus instance. */
+    /**
+     * The actual serialized value for a SearchServiceStatus instance.
+     */
     private final String value;
 
     SearchServiceStatus(String value) {
@@ -45,11 +56,10 @@ public enum SearchServiceStatus {
 
     /**
      * Parses a serialized value to a SearchServiceStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SearchServiceStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static SearchServiceStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -63,8 +73,9 @@ public enum SearchServiceStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

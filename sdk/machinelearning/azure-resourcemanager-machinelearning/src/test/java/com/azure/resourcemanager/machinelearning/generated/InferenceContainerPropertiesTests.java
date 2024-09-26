@@ -12,32 +12,29 @@ import org.junit.jupiter.api.Assertions;
 public final class InferenceContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InferenceContainerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"livenessRoute\":{\"path\":\"xgqddrih\",\"port\":1351999302},\"readinessRoute\":{\"path\":\"oqcaaewdaomdj\",\"port\":68062218},\"scoringRoute\":{\"path\":\"jxxkzbrmsgei\",\"port\":1985792970}}")
-                .toObject(InferenceContainerProperties.class);
-        Assertions.assertEquals("xgqddrih", model.livenessRoute().path());
-        Assertions.assertEquals(1351999302, model.livenessRoute().port());
-        Assertions.assertEquals("oqcaaewdaomdj", model.readinessRoute().path());
-        Assertions.assertEquals(68062218, model.readinessRoute().port());
-        Assertions.assertEquals("jxxkzbrmsgei", model.scoringRoute().path());
-        Assertions.assertEquals(1985792970, model.scoringRoute().port());
+        InferenceContainerProperties model = BinaryData.fromString(
+            "{\"livenessRoute\":{\"path\":\"lnacgcc\",\"port\":682130924},\"readinessRoute\":{\"path\":\"hxkizvytnrzv\",\"port\":349650849},\"scoringRoute\":{\"path\":\"r\",\"port\":2075017284}}")
+            .toObject(InferenceContainerProperties.class);
+        Assertions.assertEquals("lnacgcc", model.livenessRoute().path());
+        Assertions.assertEquals(682130924, model.livenessRoute().port());
+        Assertions.assertEquals("hxkizvytnrzv", model.readinessRoute().path());
+        Assertions.assertEquals(349650849, model.readinessRoute().port());
+        Assertions.assertEquals("r", model.scoringRoute().path());
+        Assertions.assertEquals(2075017284, model.scoringRoute().port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InferenceContainerProperties model =
-            new InferenceContainerProperties()
-                .withLivenessRoute(new Route().withPath("xgqddrih").withPort(1351999302))
-                .withReadinessRoute(new Route().withPath("oqcaaewdaomdj").withPort(68062218))
-                .withScoringRoute(new Route().withPath("jxxkzbrmsgei").withPort(1985792970));
+        InferenceContainerProperties model
+            = new InferenceContainerProperties().withLivenessRoute(new Route().withPath("lnacgcc").withPort(682130924))
+                .withReadinessRoute(new Route().withPath("hxkizvytnrzv").withPort(349650849))
+                .withScoringRoute(new Route().withPath("r").withPort(2075017284));
         model = BinaryData.fromObject(model).toObject(InferenceContainerProperties.class);
-        Assertions.assertEquals("xgqddrih", model.livenessRoute().path());
-        Assertions.assertEquals(1351999302, model.livenessRoute().port());
-        Assertions.assertEquals("oqcaaewdaomdj", model.readinessRoute().path());
-        Assertions.assertEquals(68062218, model.readinessRoute().port());
-        Assertions.assertEquals("jxxkzbrmsgei", model.scoringRoute().path());
-        Assertions.assertEquals(1985792970, model.scoringRoute().port());
+        Assertions.assertEquals("lnacgcc", model.livenessRoute().path());
+        Assertions.assertEquals(682130924, model.livenessRoute().port());
+        Assertions.assertEquals("hxkizvytnrzv", model.readinessRoute().path());
+        Assertions.assertEquals(349650849, model.readinessRoute().port());
+        Assertions.assertEquals("r", model.scoringRoute().path());
+        Assertions.assertEquals(2075017284, model.scoringRoute().port());
     }
 }

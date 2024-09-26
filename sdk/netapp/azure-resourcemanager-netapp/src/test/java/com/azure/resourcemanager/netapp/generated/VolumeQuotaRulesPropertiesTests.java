@@ -13,21 +13,21 @@ public final class VolumeQuotaRulesPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeQuotaRulesProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Creating\",\"quotaSizeInKiBs\":8172148400531908792,\"quotaType\":\"IndividualGroupQuota\",\"quotaTarget\":\"dw\"}")
+            "{\"provisioningState\":\"Moving\",\"quotaSizeInKiBs\":1238250615620573437,\"quotaType\":\"IndividualUserQuota\",\"quotaTarget\":\"nk\"}")
             .toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(8172148400531908792L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("dw", model.quotaTarget());
+        Assertions.assertEquals(1238250615620573437L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("nk", model.quotaTarget());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(8172148400531908792L)
-            .withQuotaType(Type.INDIVIDUAL_GROUP_QUOTA)
-            .withQuotaTarget("dw");
+        VolumeQuotaRulesProperties model = new VolumeQuotaRulesProperties().withQuotaSizeInKiBs(1238250615620573437L)
+            .withQuotaType(Type.INDIVIDUAL_USER_QUOTA)
+            .withQuotaTarget("nk");
         model = BinaryData.fromObject(model).toObject(VolumeQuotaRulesProperties.class);
-        Assertions.assertEquals(8172148400531908792L, model.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.INDIVIDUAL_GROUP_QUOTA, model.quotaType());
-        Assertions.assertEquals("dw", model.quotaTarget());
+        Assertions.assertEquals(1238250615620573437L, model.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.INDIVIDUAL_USER_QUOTA, model.quotaType());
+        Assertions.assertEquals("nk", model.quotaTarget());
     }
 }

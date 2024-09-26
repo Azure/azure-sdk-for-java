@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -13,17 +17,15 @@ import java.util.List;
  * reservation that is managed by the platform and can change outside of control plane operations.
  */
 @Fluent
-public class CapacityReservationInstanceView {
+public class CapacityReservationInstanceView implements JsonSerializable<CapacityReservationInstanceView> {
     /*
      * Unutilized capacity of the capacity reservation.
      */
-    @JsonProperty(value = "utilizationInfo")
     private CapacityReservationUtilization utilizationInfo;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /**
@@ -84,5 +86,48 @@ public class CapacityReservationInstanceView {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("utilizationInfo", this.utilizationInfo);
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityReservationInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityReservationInstanceView if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityReservationInstanceView.
+     */
+    public static CapacityReservationInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityReservationInstanceView deserializedCapacityReservationInstanceView
+                = new CapacityReservationInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("utilizationInfo".equals(fieldName)) {
+                    deserializedCapacityReservationInstanceView.utilizationInfo
+                        = CapacityReservationUtilization.fromJson(reader);
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedCapacityReservationInstanceView.statuses = statuses;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityReservationInstanceView;
+        });
     }
 }

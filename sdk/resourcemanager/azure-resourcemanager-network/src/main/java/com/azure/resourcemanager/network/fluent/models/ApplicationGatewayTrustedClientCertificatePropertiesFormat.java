@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Trusted client certificates properties of an application gateway.
  */
 @Fluent
-public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
+public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat
+    implements JsonSerializable<ApplicationGatewayTrustedClientCertificatePropertiesFormat> {
     /*
      * Certificate public data.
      */
-    @JsonProperty(value = "data")
     private String data;
 
     /*
      * Validated certificate data.
      */
-    @JsonProperty(value = "validatedCertData", access = JsonProperty.Access.WRITE_ONLY)
     private String validatedCertData;
 
     /*
      * Distinguished name of client certificate issuer.
      */
-    @JsonProperty(value = "clientCertIssuerDN", access = JsonProperty.Access.WRITE_ONLY)
     private String clientCertIssuerDN;
 
     /*
      * The provisioning state of the trusted client certificate resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -96,5 +97,53 @@ public final class ApplicationGatewayTrustedClientCertificatePropertiesFormat {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("data", this.data);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayTrustedClientCertificatePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayTrustedClientCertificatePropertiesFormat if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * ApplicationGatewayTrustedClientCertificatePropertiesFormat.
+     */
+    public static ApplicationGatewayTrustedClientCertificatePropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayTrustedClientCertificatePropertiesFormat deserializedApplicationGatewayTrustedClientCertificatePropertiesFormat
+                = new ApplicationGatewayTrustedClientCertificatePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("data".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedClientCertificatePropertiesFormat.data = reader.getString();
+                } else if ("validatedCertData".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedClientCertificatePropertiesFormat.validatedCertData
+                        = reader.getString();
+                } else if ("clientCertIssuerDN".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedClientCertificatePropertiesFormat.clientCertIssuerDN
+                        = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayTrustedClientCertificatePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayTrustedClientCertificatePropertiesFormat;
+        });
     }
 }

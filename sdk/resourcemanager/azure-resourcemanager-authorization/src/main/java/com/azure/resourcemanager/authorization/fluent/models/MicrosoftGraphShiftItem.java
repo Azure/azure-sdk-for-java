@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** shiftItem. */
+/**
+ * shiftItem.
+ */
 @Fluent
 public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
     /*
      * An incremental part of a shift which can cover details of when and where an employee is during their shift. For
      * example, an assignment or a scheduled break or lunch. Required.
      */
-    @JsonProperty(value = "activities")
     private List<MicrosoftGraphShiftActivity> activities;
 
     /*
      * The shift label of the shiftItem.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The shift notes for the shiftItem.
      */
-    @JsonProperty(value = "notes")
     private String notes;
 
     /*
      * shiftItem
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphShiftItem class. */
+    /**
+     * Creates an instance of MicrosoftGraphShiftItem class.
+     */
     public MicrosoftGraphShiftItem() {
     }
 
     /**
      * Get the activities property: An incremental part of a shift which can cover details of when and where an employee
      * is during their shift. For example, an assignment or a scheduled break or lunch. Required.
-     *
+     * 
      * @return the activities value.
      */
     public List<MicrosoftGraphShiftActivity> activities() {
@@ -58,7 +61,7 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
     /**
      * Set the activities property: An incremental part of a shift which can cover details of when and where an employee
      * is during their shift. For example, an assignment or a scheduled break or lunch. Required.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the MicrosoftGraphShiftItem object itself.
      */
@@ -69,7 +72,7 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
 
     /**
      * Get the displayName property: The shift label of the shiftItem.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -78,7 +81,7 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
 
     /**
      * Set the displayName property: The shift label of the shiftItem.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MicrosoftGraphShiftItem object itself.
      */
@@ -89,7 +92,7 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
 
     /**
      * Get the notes property: The shift notes for the shiftItem.
-     *
+     * 
      * @return the notes value.
      */
     public String notes() {
@@ -98,7 +101,7 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
 
     /**
      * Set the notes property: The shift notes for the shiftItem.
-     *
+     * 
      * @param notes the notes value to set.
      * @return the MicrosoftGraphShiftItem object itself.
      */
@@ -109,17 +112,16 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
 
     /**
      * Get the additionalProperties property: shiftItem.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: shiftItem.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphShiftItem object itself.
      */
@@ -128,29 +130,27 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphShiftItem withEndDateTime(OffsetDateTime endDateTime) {
         super.withEndDateTime(endDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphShiftItem withStartDateTime(OffsetDateTime startDateTime) {
         super.withStartDateTime(startDateTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphShiftItem withTheme(MicrosoftGraphScheduleEntityTheme theme) {
         super.withTheme(theme);
@@ -159,7 +159,7 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -168,5 +168,74 @@ public class MicrosoftGraphShiftItem extends MicrosoftGraphScheduleEntity {
         if (activities() != null) {
             activities().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endDateTime",
+            endDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(endDateTime()));
+        jsonWriter.writeStringField("startDateTime",
+            startDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(startDateTime()));
+        jsonWriter.writeStringField("theme", theme() == null ? null : theme().toString());
+        jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("notes", this.notes);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphShiftItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphShiftItem if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphShiftItem.
+     */
+    public static MicrosoftGraphShiftItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphShiftItem deserializedMicrosoftGraphShiftItem = new MicrosoftGraphShiftItem();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftItem.withEndDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("startDateTime".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftItem.withStartDateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("theme".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftItem
+                        .withTheme(MicrosoftGraphScheduleEntityTheme.fromString(reader.getString()));
+                } else if ("activities".equals(fieldName)) {
+                    List<MicrosoftGraphShiftActivity> activities
+                        = reader.readArray(reader1 -> MicrosoftGraphShiftActivity.fromJson(reader1));
+                    deserializedMicrosoftGraphShiftItem.activities = activities;
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftItem.displayName = reader.getString();
+                } else if ("notes".equals(fieldName)) {
+                    deserializedMicrosoftGraphShiftItem.notes = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphShiftItem.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphShiftItem;
+        });
     }
 }

@@ -6,27 +6,27 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * A pointer to an Azure Action Group.
  */
 @Fluent
-public final class ActivityLogAlertActionGroup {
+public final class ActivityLogAlertActionGroup implements JsonSerializable<ActivityLogAlertActionGroup> {
     /*
      * The resource ID of the Action Group. This cannot be null or empty.
      */
-    @JsonProperty(value = "actionGroupId", required = true)
     private String actionGroupId;
 
     /*
      * the dictionary of custom properties to include with the post operation. These data are appended to the webhook
      * payload.
      */
-    @JsonProperty(value = "webhookProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> webhookProperties;
 
     /**
@@ -56,8 +56,8 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Get the webhookProperties property: the dictionary of custom properties to include with the post operation.
-     * These data are appended to the webhook payload.
+     * Get the webhookProperties property: the dictionary of custom properties to include with the post operation. These
+     * data are appended to the webhook payload.
      * 
      * @return the webhookProperties value.
      */
@@ -66,8 +66,8 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Set the webhookProperties property: the dictionary of custom properties to include with the post operation.
-     * These data are appended to the webhook payload.
+     * Set the webhookProperties property: the dictionary of custom properties to include with the post operation. These
+     * data are appended to the webhook payload.
      * 
      * @param webhookProperties the webhookProperties value to set.
      * @return the ActivityLogAlertActionGroup object itself.
@@ -84,10 +84,53 @@ public final class ActivityLogAlertActionGroup {
      */
     public void validate() {
         if (actionGroupId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property actionGroupId in model ActivityLogAlertActionGroup"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property actionGroupId in model ActivityLogAlertActionGroup"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ActivityLogAlertActionGroup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionGroupId", this.actionGroupId);
+        jsonWriter.writeMapField("webhookProperties", this.webhookProperties,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityLogAlertActionGroup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityLogAlertActionGroup if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActivityLogAlertActionGroup.
+     */
+    public static ActivityLogAlertActionGroup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityLogAlertActionGroup deserializedActivityLogAlertActionGroup = new ActivityLogAlertActionGroup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionGroupId".equals(fieldName)) {
+                    deserializedActivityLogAlertActionGroup.actionGroupId = reader.getString();
+                } else if ("webhookProperties".equals(fieldName)) {
+                    Map<String, String> webhookProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedActivityLogAlertActionGroup.webhookProperties = webhookProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityLogAlertActionGroup;
+        });
+    }
 }

@@ -42,8 +42,7 @@ public interface TelemetryPipelineListener {
         }
 
         @Override
-        public void onException(
-            TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+        public void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
             for (TelemetryPipelineListener delegate : delegates) {
                 delegate.onException(request, errorMessage, throwable);
             }
@@ -68,8 +67,7 @@ public interface TelemetryPipelineListener {
         }
 
         @Override
-        public void onException(
-            TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
+        public void onException(TelemetryPipelineRequest request, String errorMessage, Throwable throwable) {
         }
 
         @Override

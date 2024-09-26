@@ -8,7 +8,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.annotation.LiveOnly;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
@@ -80,7 +79,7 @@ import java.util.stream.Collectors;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST;
+    private final Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -489,7 +488,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .defineAccessPolicy()
-                .forServicePrincipal(clientIdFromFile())
+                .forUser(azureCliSignedInUser().userPrincipalName())
                 .allowSecretAllPermissions()
                 .attach()
                 .withDeploymentEnabled()
@@ -946,25 +945,24 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     }
 
     @Test
-    @LiveOnly
     public void canEnableMSIOnVirtualMachineScaleSetWithoutRoleAssignment() throws Exception {
-        // LiveOnly because test needs to be refactored for storing/evaluating PrincipalId
         final String vmssName = generateRandomResourceName("vmss", 10);
-        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        Region localRegion = Region.US_WEST2;
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(localRegion).create();
 
         Network network =
             this
                 .networkManager
                 .networks()
                 .define("vmssvnet")
-                .withRegion(region)
+                .withRegion(localRegion)
                 .withExistingResourceGroup(resourceGroup)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/28")
                 .create();
 
         LoadBalancer publicLoadBalancer =
-            createInternetFacingLoadBalancer(region, resourceGroup, "1", LoadBalancerSkuType.BASIC);
+            createInternetFacingLoadBalancer(localRegion, resourceGroup, "1", LoadBalancerSkuType.BASIC);
         List<String> backends = new ArrayList<>();
         for (String backend : publicLoadBalancer.backends().keySet()) {
             backends.add(backend);
@@ -976,7 +974,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .computeManager
                 .virtualMachineScaleSets()
                 .define(vmssName)
-                .withRegion(region)
+                .withRegion(localRegion)
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
@@ -1002,21 +1000,24 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         // Ensure role assigned for resource group
         //
-        PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
-        Assertions.assertNotNull(rgRoleAssignments);
-        boolean found = false;
-        for (RoleAssignment roleAssignment : rgRoleAssignments) {
-            if (roleAssignment.principalId() != null
-                && roleAssignment
-                .principalId()
-                .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
-                found = true;
-                break;
+        if (!isPlaybackMode()) {
+            // principalId redacted
+            PagedIterable<RoleAssignment> rgRoleAssignments = authorizationManager.roleAssignments().listByScope(resourceGroup.id());
+            Assertions.assertNotNull(rgRoleAssignments);
+            boolean found = false;
+            for (RoleAssignment roleAssignment : rgRoleAssignments) {
+                if (roleAssignment.principalId() != null
+                    && roleAssignment
+                    .principalId()
+                    .equalsIgnoreCase(virtualMachineScaleSet.systemAssignedManagedServiceIdentityPrincipalId())) {
+                    found = true;
+                    break;
+                }
             }
+            Assertions
+                .assertFalse(
+                    found, "Resource group should not have a role assignment with virtual machine scale set MSI principal");
         }
-        Assertions
-            .assertFalse(
-                found, "Resource group should not have a role assignment with virtual machine scale set MSI principal");
     }
 
     @Test

@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.FlowAccessControlConfiguration;
 import com.azure.resourcemanager.appservice.models.FlowEndpointsConfiguration;
 import com.azure.resourcemanager.appservice.models.ResourceReference;
@@ -13,7 +16,7 @@ import com.azure.resourcemanager.appservice.models.WorkflowProvisioningState;
 import com.azure.resourcemanager.appservice.models.WorkflowResource;
 import com.azure.resourcemanager.appservice.models.WorkflowSku;
 import com.azure.resourcemanager.appservice.models.WorkflowState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -25,8 +28,22 @@ public final class WorkflowVersionInner extends WorkflowResource {
     /*
      * The workflow version properties.
      */
-    @JsonProperty(value = "properties")
     private WorkflowVersionProperties innerProperties;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
      * Creates an instance of WorkflowVersionInner class.
@@ -41,6 +58,36 @@ public final class WorkflowVersionInner extends WorkflowResource {
      */
     private WorkflowVersionProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -264,5 +311,55 @@ public final class WorkflowVersionInner extends WorkflowResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkflowVersionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkflowVersionInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkflowVersionInner.
+     */
+    public static WorkflowVersionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkflowVersionInner deserializedWorkflowVersionInner = new WorkflowVersionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkflowVersionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkflowVersionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkflowVersionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkflowVersionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkflowVersionInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkflowVersionInner.innerProperties = WorkflowVersionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkflowVersionInner;
+        });
     }
 }

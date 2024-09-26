@@ -13,8 +13,7 @@ public final class DiagnoseResponseResultImpl implements DiagnoseResponseResult 
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    DiagnoseResponseResultImpl(
-        DiagnoseResponseResultInner innerObject,
+    DiagnoseResponseResultImpl(DiagnoseResponseResultInner innerObject,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

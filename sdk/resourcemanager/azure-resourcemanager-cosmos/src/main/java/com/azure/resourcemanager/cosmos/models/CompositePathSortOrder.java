@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class CompositePathSortOrder extends ExpandableStringEnum<Composite
      * @param name a name to look for.
      * @return the corresponding CompositePathSortOrder.
      */
-    @JsonCreator
     public static CompositePathSortOrder fromString(String name) {
         return fromString(name, CompositePathSortOrder.class);
     }

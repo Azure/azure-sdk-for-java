@@ -6,32 +6,34 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.PrivateEndpoint;
 import com.azure.resourcemanager.storage.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.storage.models.PrivateLinkServiceConnectionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties of the PrivateEndpointConnectProperties.
  */
 @Fluent
-public final class PrivateEndpointConnectionProperties {
+public final class PrivateEndpointConnectionProperties
+    implements JsonSerializable<PrivateEndpointConnectionProperties> {
     /*
      * The resource of private end point.
      */
-    @JsonProperty(value = "privateEndpoint")
     private PrivateEndpoint privateEndpoint;
 
     /*
      * A collection of information about the state of the connection between service consumer and provider.
      */
-    @JsonProperty(value = "privateLinkServiceConnectionState", required = true)
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
      * The provisioning state of the private endpoint connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private PrivateEndpointConnectionProvisioningState provisioningState;
 
     /**
@@ -111,4 +113,49 @@ public final class PrivateEndpointConnectionProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("privateLinkServiceConnectionState", this.privateLinkServiceConnectionState);
+        jsonWriter.writeJsonField("privateEndpoint", this.privateEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateEndpointConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateEndpointConnectionProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateEndpointConnectionProperties.
+     */
+    public static PrivateEndpointConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateEndpointConnectionProperties deserializedPrivateEndpointConnectionProperties
+                = new PrivateEndpointConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateLinkServiceConnectionState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.privateLinkServiceConnectionState
+                        = PrivateLinkServiceConnectionState.fromJson(reader);
+                } else if ("privateEndpoint".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.privateEndpoint = PrivateEndpoint.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPrivateEndpointConnectionProperties.provisioningState
+                        = PrivateEndpointConnectionProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateEndpointConnectionProperties;
+        });
+    }
 }

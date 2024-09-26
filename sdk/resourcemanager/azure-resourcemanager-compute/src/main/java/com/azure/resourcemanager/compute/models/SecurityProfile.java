@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the Security profile settings for the virtual machine or virtual machine scale set.
  */
 @Fluent
-public final class SecurityProfile {
+public final class SecurityProfile implements JsonSerializable<SecurityProfile> {
     /*
      * Specifies the security settings like secure boot and vTPM used while creating the virtual machine. Minimum
      * api-version: 2020-12-01.
      */
-    @JsonProperty(value = "uefiSettings")
     private UefiSettings uefiSettings;
 
     /*
@@ -25,26 +28,22 @@ public final class SecurityProfile {
      * host itself. The default behavior is: The Encryption at host will be disabled unless this property is set to true
      * for the resource.
      */
-    @JsonProperty(value = "encryptionAtHost")
     private Boolean encryptionAtHost;
 
     /*
      * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable
      * UefiSettings. The default behavior is: UefiSettings will not be enabled unless this property is set.
      */
-    @JsonProperty(value = "securityType")
     private SecurityTypes securityType;
 
     /*
      * Specifies the Managed Identity used by ADE to get access token for keyvault operations.
      */
-    @JsonProperty(value = "encryptionIdentity")
     private EncryptionIdentity encryptionIdentity;
 
     /*
-     * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2024-03-01.
+     * Specifies ProxyAgent settings while creating the virtual machine. Minimum api-version: 2023-09-01.
      */
-    @JsonProperty(value = "proxyAgentSettings")
     private ProxyAgentSettings proxyAgentSettings;
 
     /**
@@ -149,7 +148,7 @@ public final class SecurityProfile {
 
     /**
      * Get the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine. Minimum
-     * api-version: 2024-03-01.
+     * api-version: 2023-09-01.
      * 
      * @return the proxyAgentSettings value.
      */
@@ -159,7 +158,7 @@ public final class SecurityProfile {
 
     /**
      * Set the proxyAgentSettings property: Specifies ProxyAgent settings while creating the virtual machine. Minimum
-     * api-version: 2024-03-01.
+     * api-version: 2023-09-01.
      * 
      * @param proxyAgentSettings the proxyAgentSettings value to set.
      * @return the SecurityProfile object itself.
@@ -184,5 +183,53 @@ public final class SecurityProfile {
         if (proxyAgentSettings() != null) {
             proxyAgentSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("uefiSettings", this.uefiSettings);
+        jsonWriter.writeBooleanField("encryptionAtHost", this.encryptionAtHost);
+        jsonWriter.writeStringField("securityType", this.securityType == null ? null : this.securityType.toString());
+        jsonWriter.writeJsonField("encryptionIdentity", this.encryptionIdentity);
+        jsonWriter.writeJsonField("proxyAgentSettings", this.proxyAgentSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityProfile.
+     */
+    public static SecurityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityProfile deserializedSecurityProfile = new SecurityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uefiSettings".equals(fieldName)) {
+                    deserializedSecurityProfile.uefiSettings = UefiSettings.fromJson(reader);
+                } else if ("encryptionAtHost".equals(fieldName)) {
+                    deserializedSecurityProfile.encryptionAtHost = reader.getNullable(JsonReader::getBoolean);
+                } else if ("securityType".equals(fieldName)) {
+                    deserializedSecurityProfile.securityType = SecurityTypes.fromString(reader.getString());
+                } else if ("encryptionIdentity".equals(fieldName)) {
+                    deserializedSecurityProfile.encryptionIdentity = EncryptionIdentity.fromJson(reader);
+                } else if ("proxyAgentSettings".equals(fieldName)) {
+                    deserializedSecurityProfile.proxyAgentSettings = ProxyAgentSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityProfile;
+        });
     }
 }

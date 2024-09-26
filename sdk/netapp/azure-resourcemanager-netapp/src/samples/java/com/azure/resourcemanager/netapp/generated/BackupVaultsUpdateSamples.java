@@ -14,7 +14,7 @@ import java.util.Map;
 public final class BackupVaultsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-11-01/examples/BackupVaults_Update.json
+     * specification/netapp/resource-manager/Microsoft.NetApp/stable/2024-03-01/examples/BackupVaults_Update.json
      */
     /**
      * Sample code: BackupVaults_Update.

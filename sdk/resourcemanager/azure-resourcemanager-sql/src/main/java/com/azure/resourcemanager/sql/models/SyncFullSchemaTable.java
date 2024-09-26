@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the table in the database full schema. */
+/**
+ * Properties of the table in the database full schema.
+ */
 @Immutable
-public final class SyncFullSchemaTable {
+public final class SyncFullSchemaTable implements JsonSerializable<SyncFullSchemaTable> {
     /*
      * List of columns in the table of database full schema.
      */
-    @JsonProperty(value = "columns", access = JsonProperty.Access.WRITE_ONLY)
     private List<SyncFullSchemaTableColumn> columns;
 
     /*
      * Error id of the table.
      */
-    @JsonProperty(value = "errorId", access = JsonProperty.Access.WRITE_ONLY)
     private String errorId;
 
     /*
      * If there is error in the table.
      */
-    @JsonProperty(value = "hasError", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasError;
 
     /*
      * Name of the table.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Quoted name of the table.
      */
-    @JsonProperty(value = "quotedName", access = JsonProperty.Access.WRITE_ONLY)
     private String quotedName;
 
-    /** Creates an instance of SyncFullSchemaTable class. */
+    /**
+     * Creates an instance of SyncFullSchemaTable class.
+     */
     public SyncFullSchemaTable() {
     }
 
     /**
      * Get the columns property: List of columns in the table of database full schema.
-     *
+     * 
      * @return the columns value.
      */
     public List<SyncFullSchemaTableColumn> columns() {
@@ -56,7 +59,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the errorId property: Error id of the table.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -65,7 +68,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the hasError property: If there is error in the table.
-     *
+     * 
      * @return the hasError value.
      */
     public Boolean hasError() {
@@ -74,7 +77,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the name property: Name of the table.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +86,7 @@ public final class SyncFullSchemaTable {
 
     /**
      * Get the quotedName property: Quoted name of the table.
-     *
+     * 
      * @return the quotedName value.
      */
     public String quotedName() {
@@ -92,12 +95,57 @@ public final class SyncFullSchemaTable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (columns() != null) {
             columns().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SyncFullSchemaTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SyncFullSchemaTable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SyncFullSchemaTable.
+     */
+    public static SyncFullSchemaTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SyncFullSchemaTable deserializedSyncFullSchemaTable = new SyncFullSchemaTable();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("columns".equals(fieldName)) {
+                    List<SyncFullSchemaTableColumn> columns
+                        = reader.readArray(reader1 -> SyncFullSchemaTableColumn.fromJson(reader1));
+                    deserializedSyncFullSchemaTable.columns = columns;
+                } else if ("errorId".equals(fieldName)) {
+                    deserializedSyncFullSchemaTable.errorId = reader.getString();
+                } else if ("hasError".equals(fieldName)) {
+                    deserializedSyncFullSchemaTable.hasError = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedSyncFullSchemaTable.name = reader.getString();
+                } else if ("quotedName".equals(fieldName)) {
+                    deserializedSyncFullSchemaTable.quotedName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSyncFullSchemaTable;
+        });
     }
 }

@@ -5,22 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** plannerAssignedToTaskBoardTaskFormat. */
+/**
+ * plannerAssignedToTaskBoardTaskFormat.
+ */
 @Fluent
 public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends MicrosoftGraphEntity {
     /*
      * plannerOrderHintsByAssignee
      */
-    @JsonProperty(value = "orderHintsByAssignee")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> orderHintsByAssignee;
 
     /*
@@ -28,21 +27,22 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
      * anyone, or if the orderHintsByAssignee dictionary does not provide an order hint for the user the task is
      * assigned to. The format is defined as outlined here.
      */
-    @JsonProperty(value = "unassignedOrderHint")
     private String unassignedOrderHint;
 
     /*
      * plannerAssignedToTaskBoardTaskFormat
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat class. */
+    /**
+     * Creates an instance of MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat class.
+     */
     public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat() {
     }
 
     /**
      * Get the orderHintsByAssignee property: plannerOrderHintsByAssignee.
-     *
+     * 
      * @return the orderHintsByAssignee value.
      */
     public Map<String, Object> orderHintsByAssignee() {
@@ -51,12 +51,12 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
 
     /**
      * Set the orderHintsByAssignee property: plannerOrderHintsByAssignee.
-     *
+     * 
      * @param orderHintsByAssignee the orderHintsByAssignee value to set.
      * @return the MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat object itself.
      */
-    public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat withOrderHintsByAssignee(
-        Map<String, Object> orderHintsByAssignee) {
+    public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat
+        withOrderHintsByAssignee(Map<String, Object> orderHintsByAssignee) {
         this.orderHintsByAssignee = orderHintsByAssignee;
         return this;
     }
@@ -65,7 +65,7 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
      * Get the unassignedOrderHint property: Hint value used to order the task on the AssignedTo view of the Task Board
      * when the task is not assigned to anyone, or if the orderHintsByAssignee dictionary does not provide an order hint
      * for the user the task is assigned to. The format is defined as outlined here.
-     *
+     * 
      * @return the unassignedOrderHint value.
      */
     public String unassignedOrderHint() {
@@ -76,7 +76,7 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
      * Set the unassignedOrderHint property: Hint value used to order the task on the AssignedTo view of the Task Board
      * when the task is not assigned to anyone, or if the orderHintsByAssignee dictionary does not provide an order hint
      * for the user the task is assigned to. The format is defined as outlined here.
-     *
+     * 
      * @param unassignedOrderHint the unassignedOrderHint value to set.
      * @return the MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat object itself.
      */
@@ -87,35 +87,28 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
 
     /**
      * Get the additionalProperties property: plannerAssignedToTaskBoardTaskFormat.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: plannerAssignedToTaskBoardTaskFormat.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat object itself.
      */
-    public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat withAdditionalProperties(
-        Map<String, Object> additionalProperties) {
+    public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat
+        withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat withId(String id) {
         super.withId(id);
@@ -124,11 +117,70 @@ public final class MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat extends Mi
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeMapField("orderHintsByAssignee", this.orderHintsByAssignee,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("unassignedOrderHint", this.unassignedOrderHint);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat.
+     */
+    public static MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat deserializedMicrosoftGraphPlannerAssignedToTaskBoardTaskFormat
+                = new MicrosoftGraphPlannerAssignedToTaskBoardTaskFormat();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerAssignedToTaskBoardTaskFormat.withId(reader.getString());
+                } else if ("orderHintsByAssignee".equals(fieldName)) {
+                    Map<String, Object> orderHintsByAssignee = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMicrosoftGraphPlannerAssignedToTaskBoardTaskFormat.orderHintsByAssignee
+                        = orderHintsByAssignee;
+                } else if ("unassignedOrderHint".equals(fieldName)) {
+                    deserializedMicrosoftGraphPlannerAssignedToTaskBoardTaskFormat.unassignedOrderHint
+                        = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphPlannerAssignedToTaskBoardTaskFormat.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphPlannerAssignedToTaskBoardTaskFormat;
+        });
     }
 }

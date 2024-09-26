@@ -37,10 +37,15 @@ public final class TasksUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksUpdateQuickTask(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().update("myResourceGroup", "myRegistry",
-            "quicktask", new TaskUpdateParameters().withTags(mapOf("testkey", "fakeTokenPlaceholder"))
-                .withStatus(TaskStatus.ENABLED).withLogTemplate("acr/tasks:{{.Run.OS}}"),
-            com.azure.core.util.Context.NONE);
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .update("myResourceGroup", "myRegistry", "quicktask",
+                new TaskUpdateParameters().withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                    .withStatus(TaskStatus.ENABLED)
+                    .withLogTemplate("acr/tasks:{{.Run.OS}}"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -54,22 +59,26 @@ public final class TasksUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksUpdateWithMSICustomCredentials(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().update("myResourceGroup", "myRegistry",
-            "myTask",
-            new TaskUpdateParameters().withTags(mapOf("testkey", "fakeTokenPlaceholder")).withStatus(TaskStatus.ENABLED)
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+                .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
                 .withStep(new DockerBuildStepUpdateParameters().withImageNames(Arrays.asList("azurerest:testtag1"))
                     .withDockerFilePath("src/DockerFile"))
                 .withTrigger(
                     new TriggerUpdateParameters().withSourceTriggers(Arrays.asList(new SourceTriggerUpdateParameters()
-                        .withSourceRepository(
-                            new SourceUpdateParameters().withSourceControlAuthProperties(new AuthInfoUpdateParameters()
-                                .withTokenType(TokenType.PAT).withToken("fakeTokenPlaceholder")))
+                        .withSourceRepository(new SourceUpdateParameters()
+                            .withSourceControlAuthProperties(new AuthInfoUpdateParameters().withTokenType(TokenType.PAT)
+                                .withToken("fakeTokenPlaceholder")))
                         .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                         .withName("mySourceTrigger"))))
                 .withCredentials(new Credentials().withCustomRegistries(
                     mapOf("myregistry.azurecr.io", new CustomRegistryCredentials().withIdentity("[system]")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -83,19 +92,22 @@ public final class TasksUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksUpdateWithKeyVaultCustomCredentials(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().update("myResourceGroup", "myRegistry",
-            "myTask",
-            new TaskUpdateParameters().withTags(mapOf("testkey", "fakeTokenPlaceholder")).withStatus(TaskStatus.ENABLED)
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+                .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
                 .withStep(new DockerBuildStepUpdateParameters().withImageNames(Arrays.asList("azurerest:testtag1"))
                     .withDockerFilePath("src/DockerFile"))
                 .withTrigger(
                     new TriggerUpdateParameters().withSourceTriggers(Arrays.asList(new SourceTriggerUpdateParameters()
-                        .withSourceRepository(
-                            new SourceUpdateParameters().withSourceControlAuthProperties(new AuthInfoUpdateParameters()
-                                .withTokenType(TokenType.PAT).withToken("fakeTokenPlaceholder")))
-                        .withSourceTriggerEvents(
-                            Arrays.asList(SourceTriggerEvent.COMMIT))
+                        .withSourceRepository(new SourceUpdateParameters()
+                            .withSourceControlAuthProperties(new AuthInfoUpdateParameters().withTokenType(TokenType.PAT)
+                                .withToken("fakeTokenPlaceholder")))
+                        .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                         .withName("mySourceTrigger"))))
                 .withCredentials(new Credentials().withCustomRegistries(mapOf("myregistry.azurecr.io",
                     new CustomRegistryCredentials()
@@ -106,7 +118,7 @@ public final class TasksUpdateSamples {
                             new SecretObject().withValue("https://myacbvault.vault.azure.net/secrets/password")
                                 .withType(SecretObjectType.VAULTSECRET))
                         .withIdentity("[system]")))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -120,17 +132,21 @@ public final class TasksUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().update("myResourceGroup", "myRegistry",
-            "myTask",
-            new TaskUpdateParameters().withTags(mapOf("testkey", "fakeTokenPlaceholder")).withStatus(TaskStatus.ENABLED)
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+                .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
                 .withStep(new DockerBuildStepUpdateParameters().withImageNames(Arrays.asList("azurerest:testtag1"))
                     .withDockerFilePath("src/DockerFile"))
                 .withTrigger(
                     new TriggerUpdateParameters().withSourceTriggers(Arrays.asList(new SourceTriggerUpdateParameters()
-                        .withSourceRepository(
-                            new SourceUpdateParameters().withSourceControlAuthProperties(new AuthInfoUpdateParameters()
-                                .withTokenType(TokenType.PAT).withToken("fakeTokenPlaceholder")))
+                        .withSourceRepository(new SourceUpdateParameters()
+                            .withSourceControlAuthProperties(new AuthInfoUpdateParameters().withTokenType(TokenType.PAT)
+                                .withToken("fakeTokenPlaceholder")))
                         .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                         .withName("mySourceTrigger"))))
                 .withCredentials(new Credentials().withCustomRegistries(mapOf("myregistry.azurecr.io",
@@ -140,8 +156,7 @@ public final class TasksUpdateSamples {
                             new SecretObject().withValue("https://myacbvault.vault.azure.net/secrets/password")
                                 .withType(SecretObjectType.VAULTSECRET))
                         .withIdentity("[system]"))))
-                .withLogTemplate("acr/tasks:{{.Run.OS}}"),
-            com.azure.core.util.Context.NONE);
+                .withLogTemplate("acr/tasks:{{.Run.OS}}"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -155,24 +170,28 @@ public final class TasksUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void tasksUpdateWithOpaqueCustomCredentials(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerRegistries().manager().serviceClient().getTasks().update("myResourceGroup", "myRegistry",
-            "myTask",
-            new TaskUpdateParameters().withTags(mapOf("testkey", "fakeTokenPlaceholder")).withStatus(TaskStatus.ENABLED)
+        azure.containerRegistries()
+            .manager()
+            .serviceClient()
+            .getTasks()
+            .update("myResourceGroup", "myRegistry", "myTask", new TaskUpdateParameters()
+                .withTags(mapOf("testkey", "fakeTokenPlaceholder"))
+                .withStatus(TaskStatus.ENABLED)
                 .withAgentConfiguration(new AgentProperties().withCpu(3))
                 .withStep(new DockerBuildStepUpdateParameters().withImageNames(Arrays.asList("azurerest:testtag1"))
                     .withDockerFilePath("src/DockerFile"))
                 .withTrigger(
                     new TriggerUpdateParameters().withSourceTriggers(Arrays.asList(new SourceTriggerUpdateParameters()
-                        .withSourceRepository(
-                            new SourceUpdateParameters().withSourceControlAuthProperties(new AuthInfoUpdateParameters()
-                                .withTokenType(TokenType.PAT).withToken("fakeTokenPlaceholder")))
+                        .withSourceRepository(new SourceUpdateParameters()
+                            .withSourceControlAuthProperties(new AuthInfoUpdateParameters().withTokenType(TokenType.PAT)
+                                .withToken("fakeTokenPlaceholder")))
                         .withSourceTriggerEvents(Arrays.asList(SourceTriggerEvent.COMMIT))
                         .withName("mySourceTrigger"))))
                 .withCredentials(new Credentials().withCustomRegistries(mapOf("myregistry.azurecr.io",
                     new CustomRegistryCredentials()
                         .withUsername(new SecretObject().withValue("username").withType(SecretObjectType.OPAQUE))
                         .withPassword(new SecretObject().withValue("***").withType(SecretObjectType.OPAQUE))))),
-            com.azure.core.util.Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

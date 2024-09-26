@@ -29,11 +29,6 @@ public final class CustomDomainConfiguration implements JsonSerializable<CustomD
     private String dnsSuffix;
 
     /*
-     * Certificate stored in Azure Key Vault.
-     */
-    private CertificateKeyVaultProperties certificateKeyVaultProperties;
-
-    /*
      * PFX or PEM blob
      */
     private byte[] certificateValue;
@@ -90,27 +85,6 @@ public final class CustomDomainConfiguration implements JsonSerializable<CustomD
      */
     public CustomDomainConfiguration withDnsSuffix(String dnsSuffix) {
         this.dnsSuffix = dnsSuffix;
-        return this;
-    }
-
-    /**
-     * Get the certificateKeyVaultProperties property: Certificate stored in Azure Key Vault.
-     * 
-     * @return the certificateKeyVaultProperties value.
-     */
-    public CertificateKeyVaultProperties certificateKeyVaultProperties() {
-        return this.certificateKeyVaultProperties;
-    }
-
-    /**
-     * Set the certificateKeyVaultProperties property: Certificate stored in Azure Key Vault.
-     * 
-     * @param certificateKeyVaultProperties the certificateKeyVaultProperties value to set.
-     * @return the CustomDomainConfiguration object itself.
-     */
-    public CustomDomainConfiguration
-        withCertificateKeyVaultProperties(CertificateKeyVaultProperties certificateKeyVaultProperties) {
-        this.certificateKeyVaultProperties = certificateKeyVaultProperties;
         return this;
     }
 
@@ -187,9 +161,6 @@ public final class CustomDomainConfiguration implements JsonSerializable<CustomD
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (certificateKeyVaultProperties() != null) {
-            certificateKeyVaultProperties().validate();
-        }
     }
 
     /**
@@ -199,7 +170,6 @@ public final class CustomDomainConfiguration implements JsonSerializable<CustomD
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dnsSuffix", this.dnsSuffix);
-        jsonWriter.writeJsonField("certificateKeyVaultProperties", this.certificateKeyVaultProperties);
         jsonWriter.writeBinaryField("certificateValue", this.certificateValue);
         jsonWriter.writeStringField("certificatePassword", this.certificatePassword);
         return jsonWriter.writeEndObject();
@@ -224,9 +194,6 @@ public final class CustomDomainConfiguration implements JsonSerializable<CustomD
                     deserializedCustomDomainConfiguration.customDomainVerificationId = reader.getString();
                 } else if ("dnsSuffix".equals(fieldName)) {
                     deserializedCustomDomainConfiguration.dnsSuffix = reader.getString();
-                } else if ("certificateKeyVaultProperties".equals(fieldName)) {
-                    deserializedCustomDomainConfiguration.certificateKeyVaultProperties
-                        = CertificateKeyVaultProperties.fromJson(reader);
                 } else if ("certificateValue".equals(fieldName)) {
                     deserializedCustomDomainConfiguration.certificateValue = reader.getBinary();
                 } else if ("certificatePassword".equals(fieldName)) {

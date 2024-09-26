@@ -32,9 +32,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.InvocationTargetException;
@@ -159,15 +156,7 @@ public class VirtualMachinesImpl
         return this
             .inner()
             .captureAsync(groupName, name, parameters)
-            .map(
-                captureResultInner -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        return mapper.writeValueAsString(captureResultInner);
-                    } catch (JsonProcessingException ex) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(ex));
-                    }
-                });
+            .map(captureResult -> VirtualMachineImpl.serializeCaptureResult(captureResult, logger));
     }
 
     @Override

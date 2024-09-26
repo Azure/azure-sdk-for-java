@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Close remote Login Access Port
- *
- * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all
+ * 
+ * State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on all
  * nodes of the cluster. Enabled - Indicates that the public ssh port is open on all nodes of the cluster. NotSpecified
  * - Indicates that the public ssh port is closed on all nodes of the cluster if VNet is defined, else is open all
  * public nodes. It can be default only during cluster creation time, after creation it will be either enabled or
  * disabled.
  */
 public final class RemoteLoginPortPublicAccess extends ExpandableStringEnum<RemoteLoginPortPublicAccess> {
-    /** Static value Enabled for RemoteLoginPortPublicAccess. */
+    /**
+     * Static value Enabled for RemoteLoginPortPublicAccess.
+     */
     public static final RemoteLoginPortPublicAccess ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for RemoteLoginPortPublicAccess. */
+    /**
+     * Static value Disabled for RemoteLoginPortPublicAccess.
+     */
     public static final RemoteLoginPortPublicAccess DISABLED = fromString("Disabled");
 
-    /** Static value NotSpecified for RemoteLoginPortPublicAccess. */
+    /**
+     * Static value NotSpecified for RemoteLoginPortPublicAccess.
+     */
     public static final RemoteLoginPortPublicAccess NOT_SPECIFIED = fromString("NotSpecified");
 
     /**
      * Creates a new instance of RemoteLoginPortPublicAccess value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -38,18 +43,17 @@ public final class RemoteLoginPortPublicAccess extends ExpandableStringEnum<Remo
 
     /**
      * Creates or finds a RemoteLoginPortPublicAccess from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RemoteLoginPortPublicAccess.
      */
-    @JsonCreator
     public static RemoteLoginPortPublicAccess fromString(String name) {
         return fromString(name, RemoteLoginPortPublicAccess.class);
     }
 
     /**
      * Gets known RemoteLoginPortPublicAccess values.
-     *
+     * 
      * @return known RemoteLoginPortPublicAccess values.
      */
     public static Collection<RemoteLoginPortPublicAccess> values() {

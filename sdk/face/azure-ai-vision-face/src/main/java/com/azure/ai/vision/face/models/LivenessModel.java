@@ -13,28 +13,10 @@ import java.util.Collection;
 public final class LivenessModel extends ExpandableStringEnum<LivenessModel> {
 
     /**
-     * Static value 2020-02-15-preview.01 for LivenessModel.
-     */
-    @Generated
-    public static final LivenessModel V2020_02_15_PREVIEW_01 = fromString("2020-02-15-preview.01");
-
-    /**
-     * Static value 2021-11-12-preview.03 for LivenessModel.
-     */
-    @Generated
-    public static final LivenessModel V2021_11_12_PREVIEW_03 = fromString("2021-11-12-preview.03");
-
-    /**
      * Static value 2022-10-15-preview.04 for LivenessModel.
      */
     @Generated
     public static final LivenessModel V2022_10_15_PREVIEW_04 = fromString("2022-10-15-preview.04");
-
-    /**
-     * Static value 2023-03-02-preview.05 for LivenessModel.
-     */
-    @Generated
-    public static final LivenessModel V2023_03_02_PREVIEW_05 = fromString("2023-03-02-preview.05");
 
     /**
      * Creates a new instance of LivenessModel value.
@@ -66,4 +48,10 @@ public final class LivenessModel extends ExpandableStringEnum<LivenessModel> {
     public static Collection<LivenessModel> values() {
         return values(LivenessModel.class);
     }
+
+    /**
+     * Static value 2023-12-20-preview.06 for LivenessModel.
+     */
+    @Generated
+    public static final LivenessModel V2023_12_20_PREVIEW_06 = fromString("2023-12-20-preview.06");
 }

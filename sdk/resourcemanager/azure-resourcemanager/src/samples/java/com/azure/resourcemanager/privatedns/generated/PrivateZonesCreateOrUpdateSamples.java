@@ -8,31 +8,30 @@ import com.azure.resourcemanager.privatedns.fluent.models.PrivateZoneInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PrivateZones CreateOrUpdate. */
+/**
+ * Samples for PrivateZones CreateOrUpdate.
+ */
 public final class PrivateZonesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZonePut.json
+     * x-ms-original-file:
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/PrivateZonePut.json
      */
     /**
      * Sample code: PUT Private DNS Zone.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void pUTPrivateDNSZone(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .privateDnsZones()
+        azure.privateDnsZones()
             .manager()
             .serviceClient()
             .getPrivateZones()
-            .createOrUpdate(
-                "resourceGroup1",
-                "privatezone1.com",
-                new PrivateZoneInner().withLocation("Global").withTags(mapOf("key1", "fakeTokenPlaceholder")),
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
+            .createOrUpdate("resourceGroup1", "privatezone1.com",
+                new PrivateZoneInner().withLocation("Global").withTags(mapOf("key1", "fakeTokenPlaceholder")), null,
+                null, com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

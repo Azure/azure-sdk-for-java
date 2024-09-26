@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class DiskState extends ExpandableStringEnum<DiskState> {
      * @param name a name to look for.
      * @return the corresponding DiskState.
      */
-    @JsonCreator
     public static DiskState fromString(String name) {
         return fromString(name, DiskState.class);
     }

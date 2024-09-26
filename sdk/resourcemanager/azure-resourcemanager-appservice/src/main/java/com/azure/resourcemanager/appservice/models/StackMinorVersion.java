@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Application stack minor version.
  */
 @Fluent
-public final class StackMinorVersion {
+public final class StackMinorVersion implements JsonSerializable<StackMinorVersion> {
     /*
      * Application stack minor version (display only).
      */
-    @JsonProperty(value = "displayVersion")
     private String displayVersion;
 
     /*
      * Application stack minor version (runtime only).
      */
-    @JsonProperty(value = "runtimeVersion")
     private String runtimeVersion;
 
     /*
      * <code>true</code> if this is the default minor version; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * <code>true</code> if this supports Remote Debugging, otherwise <code>false</code>.
      */
-    @JsonProperty(value = "isRemoteDebuggingEnabled")
     private Boolean isRemoteDebuggingEnabled;
 
     /**
@@ -132,5 +132,50 @@ public final class StackMinorVersion {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayVersion", this.displayVersion);
+        jsonWriter.writeStringField("runtimeVersion", this.runtimeVersion);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeBooleanField("isRemoteDebuggingEnabled", this.isRemoteDebuggingEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StackMinorVersion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StackMinorVersion if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StackMinorVersion.
+     */
+    public static StackMinorVersion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StackMinorVersion deserializedStackMinorVersion = new StackMinorVersion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayVersion".equals(fieldName)) {
+                    deserializedStackMinorVersion.displayVersion = reader.getString();
+                } else if ("runtimeVersion".equals(fieldName)) {
+                    deserializedStackMinorVersion.runtimeVersion = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedStackMinorVersion.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isRemoteDebuggingEnabled".equals(fieldName)) {
+                    deserializedStackMinorVersion.isRemoteDebuggingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStackMinorVersion;
+        });
     }
 }

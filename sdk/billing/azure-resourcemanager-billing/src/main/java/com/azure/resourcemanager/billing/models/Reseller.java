@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of the reseller. */
+/**
+ * Details of the reseller.
+ */
 @Immutable
-public final class Reseller {
+public class Reseller implements JsonSerializable<Reseller> {
     /*
      * The MPN ID of the reseller.
      */
-    @JsonProperty(value = "resellerId", access = JsonProperty.Access.WRITE_ONLY)
     private String resellerId;
 
     /*
      * The name of the reseller.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of Reseller class. */
+    /**
+     * Creates an instance of Reseller class.
+     */
     public Reseller() {
     }
 
     /**
      * Get the resellerId property: The MPN ID of the reseller.
-     *
+     * 
      * @return the resellerId value.
      */
     public String resellerId() {
@@ -36,8 +42,19 @@ public final class Reseller {
     }
 
     /**
+     * Set the resellerId property: The MPN ID of the reseller.
+     * 
+     * @param resellerId the resellerId value to set.
+     * @return the Reseller object itself.
+     */
+    Reseller withResellerId(String resellerId) {
+        this.resellerId = resellerId;
+        return this;
+    }
+
+    /**
      * Get the description property: The name of the reseller.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -45,10 +62,58 @@ public final class Reseller {
     }
 
     /**
+     * Set the description property: The name of the reseller.
+     * 
+     * @param description the description value to set.
+     * @return the Reseller object itself.
+     */
+    Reseller withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Reseller from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Reseller if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Reseller.
+     */
+    public static Reseller fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Reseller deserializedReseller = new Reseller();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resellerId".equals(fieldName)) {
+                    deserializedReseller.resellerId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedReseller.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReseller;
+        });
     }
 }

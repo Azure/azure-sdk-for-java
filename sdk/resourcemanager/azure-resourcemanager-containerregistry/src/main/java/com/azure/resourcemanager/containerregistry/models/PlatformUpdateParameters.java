@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties for updating the platform configuration.
  */
 @Fluent
-public final class PlatformUpdateParameters {
+public final class PlatformUpdateParameters implements JsonSerializable<PlatformUpdateParameters> {
     /*
      * The operating system type required for the run.
      */
-    @JsonProperty(value = "os")
     private OS os;
 
     /*
      * The OS architecture.
      */
-    @JsonProperty(value = "architecture")
     private Architecture architecture;
 
     /*
      * Variant of the CPU.
      */
-    @JsonProperty(value = "variant")
     private Variant variant;
 
     /**
@@ -102,5 +103,47 @@ public final class PlatformUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("os", this.os == null ? null : this.os.toString());
+        jsonWriter.writeStringField("architecture", this.architecture == null ? null : this.architecture.toString());
+        jsonWriter.writeStringField("variant", this.variant == null ? null : this.variant.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PlatformUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PlatformUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PlatformUpdateParameters.
+     */
+    public static PlatformUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PlatformUpdateParameters deserializedPlatformUpdateParameters = new PlatformUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("os".equals(fieldName)) {
+                    deserializedPlatformUpdateParameters.os = OS.fromString(reader.getString());
+                } else if ("architecture".equals(fieldName)) {
+                    deserializedPlatformUpdateParameters.architecture = Architecture.fromString(reader.getString());
+                } else if ("variant".equals(fieldName)) {
+                    deserializedPlatformUpdateParameters.variant = Variant.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlatformUpdateParameters;
+        });
     }
 }

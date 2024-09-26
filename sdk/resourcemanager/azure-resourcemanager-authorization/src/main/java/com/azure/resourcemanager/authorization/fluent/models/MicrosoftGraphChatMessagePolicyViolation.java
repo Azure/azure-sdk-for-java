@@ -5,58 +5,59 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** chatMessagePolicyViolation. */
+/**
+ * chatMessagePolicyViolation.
+ */
 @Fluent
-public final class MicrosoftGraphChatMessagePolicyViolation {
+public final class MicrosoftGraphChatMessagePolicyViolation
+    implements JsonSerializable<MicrosoftGraphChatMessagePolicyViolation> {
     /*
      * chatMessagePolicyViolationDlpActionTypes
      */
-    @JsonProperty(value = "dlpAction")
     private MicrosoftGraphChatMessagePolicyViolationDlpActionTypes dlpAction;
 
     /*
      * Justification text provided by the sender of the message when overriding a policy violation.
      */
-    @JsonProperty(value = "justificationText")
     private String justificationText;
 
     /*
      * chatMessagePolicyViolationPolicyTip
      */
-    @JsonProperty(value = "policyTip")
     private MicrosoftGraphChatMessagePolicyViolationPolicyTip policyTip;
 
     /*
      * chatMessagePolicyViolationUserActionTypes
      */
-    @JsonProperty(value = "userAction")
     private MicrosoftGraphChatMessagePolicyViolationUserActionTypes userAction;
 
     /*
      * chatMessagePolicyViolationVerdictDetailsTypes
      */
-    @JsonProperty(value = "verdictDetails")
     private MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes verdictDetails;
 
     /*
      * chatMessagePolicyViolation
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of MicrosoftGraphChatMessagePolicyViolation class. */
+    /**
+     * Creates an instance of MicrosoftGraphChatMessagePolicyViolation class.
+     */
     public MicrosoftGraphChatMessagePolicyViolation() {
     }
 
     /**
      * Get the dlpAction property: chatMessagePolicyViolationDlpActionTypes.
-     *
+     * 
      * @return the dlpAction value.
      */
     public MicrosoftGraphChatMessagePolicyViolationDlpActionTypes dlpAction() {
@@ -65,12 +66,12 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
 
     /**
      * Set the dlpAction property: chatMessagePolicyViolationDlpActionTypes.
-     *
+     * 
      * @param dlpAction the dlpAction value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolation object itself.
      */
-    public MicrosoftGraphChatMessagePolicyViolation withDlpAction(
-        MicrosoftGraphChatMessagePolicyViolationDlpActionTypes dlpAction) {
+    public MicrosoftGraphChatMessagePolicyViolation
+        withDlpAction(MicrosoftGraphChatMessagePolicyViolationDlpActionTypes dlpAction) {
         this.dlpAction = dlpAction;
         return this;
     }
@@ -78,7 +79,7 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
     /**
      * Get the justificationText property: Justification text provided by the sender of the message when overriding a
      * policy violation.
-     *
+     * 
      * @return the justificationText value.
      */
     public String justificationText() {
@@ -88,7 +89,7 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
     /**
      * Set the justificationText property: Justification text provided by the sender of the message when overriding a
      * policy violation.
-     *
+     * 
      * @param justificationText the justificationText value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolation object itself.
      */
@@ -99,7 +100,7 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
 
     /**
      * Get the policyTip property: chatMessagePolicyViolationPolicyTip.
-     *
+     * 
      * @return the policyTip value.
      */
     public MicrosoftGraphChatMessagePolicyViolationPolicyTip policyTip() {
@@ -108,19 +109,19 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
 
     /**
      * Set the policyTip property: chatMessagePolicyViolationPolicyTip.
-     *
+     * 
      * @param policyTip the policyTip value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolation object itself.
      */
-    public MicrosoftGraphChatMessagePolicyViolation withPolicyTip(
-        MicrosoftGraphChatMessagePolicyViolationPolicyTip policyTip) {
+    public MicrosoftGraphChatMessagePolicyViolation
+        withPolicyTip(MicrosoftGraphChatMessagePolicyViolationPolicyTip policyTip) {
         this.policyTip = policyTip;
         return this;
     }
 
     /**
      * Get the userAction property: chatMessagePolicyViolationUserActionTypes.
-     *
+     * 
      * @return the userAction value.
      */
     public MicrosoftGraphChatMessagePolicyViolationUserActionTypes userAction() {
@@ -129,19 +130,19 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
 
     /**
      * Set the userAction property: chatMessagePolicyViolationUserActionTypes.
-     *
+     * 
      * @param userAction the userAction value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolation object itself.
      */
-    public MicrosoftGraphChatMessagePolicyViolation withUserAction(
-        MicrosoftGraphChatMessagePolicyViolationUserActionTypes userAction) {
+    public MicrosoftGraphChatMessagePolicyViolation
+        withUserAction(MicrosoftGraphChatMessagePolicyViolationUserActionTypes userAction) {
         this.userAction = userAction;
         return this;
     }
 
     /**
      * Get the verdictDetails property: chatMessagePolicyViolationVerdictDetailsTypes.
-     *
+     * 
      * @return the verdictDetails value.
      */
     public MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes verdictDetails() {
@@ -150,29 +151,28 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
 
     /**
      * Set the verdictDetails property: chatMessagePolicyViolationVerdictDetailsTypes.
-     *
+     * 
      * @param verdictDetails the verdictDetails value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolation object itself.
      */
-    public MicrosoftGraphChatMessagePolicyViolation withVerdictDetails(
-        MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes verdictDetails) {
+    public MicrosoftGraphChatMessagePolicyViolation
+        withVerdictDetails(MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes verdictDetails) {
         this.verdictDetails = verdictDetails;
         return this;
     }
 
     /**
      * Get the additionalProperties property: chatMessagePolicyViolation.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: chatMessagePolicyViolation.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the MicrosoftGraphChatMessagePolicyViolation object itself.
      */
@@ -181,22 +181,79 @@ public final class MicrosoftGraphChatMessagePolicyViolation {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyTip() != null) {
             policyTip().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dlpAction", this.dlpAction == null ? null : this.dlpAction.toString());
+        jsonWriter.writeStringField("justificationText", this.justificationText);
+        jsonWriter.writeJsonField("policyTip", this.policyTip);
+        jsonWriter.writeStringField("userAction", this.userAction == null ? null : this.userAction.toString());
+        jsonWriter.writeStringField("verdictDetails",
+            this.verdictDetails == null ? null : this.verdictDetails.toString());
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MicrosoftGraphChatMessagePolicyViolation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MicrosoftGraphChatMessagePolicyViolation if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MicrosoftGraphChatMessagePolicyViolation.
+     */
+    public static MicrosoftGraphChatMessagePolicyViolation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MicrosoftGraphChatMessagePolicyViolation deserializedMicrosoftGraphChatMessagePolicyViolation
+                = new MicrosoftGraphChatMessagePolicyViolation();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dlpAction".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessagePolicyViolation.dlpAction
+                        = MicrosoftGraphChatMessagePolicyViolationDlpActionTypes.fromString(reader.getString());
+                } else if ("justificationText".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessagePolicyViolation.justificationText = reader.getString();
+                } else if ("policyTip".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessagePolicyViolation.policyTip
+                        = MicrosoftGraphChatMessagePolicyViolationPolicyTip.fromJson(reader);
+                } else if ("userAction".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessagePolicyViolation.userAction
+                        = MicrosoftGraphChatMessagePolicyViolationUserActionTypes.fromString(reader.getString());
+                } else if ("verdictDetails".equals(fieldName)) {
+                    deserializedMicrosoftGraphChatMessagePolicyViolation.verdictDetails
+                        = MicrosoftGraphChatMessagePolicyViolationVerdictDetailsTypes.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMicrosoftGraphChatMessagePolicyViolation.additionalProperties = additionalProperties;
+
+            return deserializedMicrosoftGraphChatMessagePolicyViolation;
+        });
     }
 }

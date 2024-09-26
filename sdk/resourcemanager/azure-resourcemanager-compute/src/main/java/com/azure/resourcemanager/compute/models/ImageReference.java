@@ -6,7 +6,10 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies information about the image to use. You can specify information about platform images, marketplace images,
@@ -19,19 +22,16 @@ public final class ImageReference extends SubResource {
     /*
      * The image publisher.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Specifies the offer of the platform image or marketplace image used to create the virtual machine.
      */
-    @JsonProperty(value = "offer")
     private String offer;
 
     /*
      * The image SKU.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
@@ -44,28 +44,24 @@ public final class ImageReference extends SubResource {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{
      * galleryName}/images/{imageName}' in the 'id' field without version input.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Specifies in decimal numbers, the version of platform image or marketplace image used to create the virtual
      * machine. This readonly field differs from 'version', only if the value specified in 'version' field is 'latest'.
      */
-    @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
     /*
      * Specified the shared gallery image unique id for vm deployment. This can be fetched from shared gallery image GET
      * call.
      */
-    @JsonProperty(value = "sharedGalleryImageId")
     private String sharedGalleryImageId;
 
     /*
      * Specified the community gallery image unique id for vm deployment. This can be fetched from community gallery
      * image GET call.
      */
-    @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
 
     /**
@@ -240,5 +236,61 @@ public final class ImageReference extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("offer", this.offer);
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("sharedGalleryImageId", this.sharedGalleryImageId);
+        jsonWriter.writeStringField("communityGalleryImageId", this.communityGalleryImageId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageReference.
+     */
+    public static ImageReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageReference deserializedImageReference = new ImageReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedImageReference.withId(reader.getString());
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedImageReference.publisher = reader.getString();
+                } else if ("offer".equals(fieldName)) {
+                    deserializedImageReference.offer = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedImageReference.sku = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedImageReference.version = reader.getString();
+                } else if ("exactVersion".equals(fieldName)) {
+                    deserializedImageReference.exactVersion = reader.getString();
+                } else if ("sharedGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.sharedGalleryImageId = reader.getString();
+                } else if ("communityGalleryImageId".equals(fieldName)) {
+                    deserializedImageReference.communityGalleryImageId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageReference;
+        });
     }
 }

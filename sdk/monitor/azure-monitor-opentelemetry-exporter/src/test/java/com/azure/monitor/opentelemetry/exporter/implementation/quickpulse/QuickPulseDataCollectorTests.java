@@ -18,8 +18,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QuickPulseDataCollectorTests {
 
     private static final String FAKE_INSTRUMENTATION_KEY = "fake-instrumentation-key";
-    private static final ConnectionString FAKE_CONNECTION_STRING =
-        ConnectionString.parse("InstrumentationKey=" + FAKE_INSTRUMENTATION_KEY);
+    private static final ConnectionString FAKE_CONNECTION_STRING
+        = ConnectionString.parse("InstrumentationKey=" + FAKE_INSTRUMENTATION_KEY);
 
     @Test
     void initialStateIsDisabled() {
@@ -53,8 +53,7 @@ class QuickPulseDataCollectorTests {
 
         // add a success and peek
         long duration = 112233L;
-        TelemetryItem telemetry =
-            createRequestTelemetry("request-test", new Date(), duration, "200", true);
+        TelemetryItem telemetry = createRequestTelemetry("request-test", new Date(), duration, "200", true);
         telemetry.setConnectionString(FAKE_CONNECTION_STRING);
         collector.add(telemetry);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
@@ -96,8 +95,7 @@ class QuickPulseDataCollectorTests {
 
         // add a success and peek.
         long duration = 112233L;
-        TelemetryItem telemetry =
-            createRemoteDependencyTelemetry("dep-test", "dep-test-cmd", duration, true);
+        TelemetryItem telemetry = createRemoteDependencyTelemetry("dep-test", "dep-test-cmd", duration, true);
         telemetry.setConnectionString(FAKE_CONNECTION_STRING);
         collector.add(telemetry);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
@@ -157,8 +155,8 @@ class QuickPulseDataCollectorTests {
         long count = 456L;
         long duration = 112233L;
         long encoded = QuickPulseDataCollector.Counters.encodeCountAndDuration(count, duration);
-        QuickPulseDataCollector.CountAndDuration inputs =
-            QuickPulseDataCollector.Counters.decodeCountAndDuration(encoded);
+        QuickPulseDataCollector.CountAndDuration inputs
+            = QuickPulseDataCollector.Counters.decodeCountAndDuration(encoded);
         assertThat(inputs.count).isEqualTo(count);
         assertThat(inputs.duration).isEqualTo(duration);
     }
@@ -181,37 +179,13 @@ class QuickPulseDataCollectorTests {
         assertThat(QuickPulseDataCollector.parseDurationToMillis("12:34:56.123456"))
             .isEqualTo(Duration.ofHours(12).plusMinutes(34).plusSeconds(56).plusMillis(123).toMillis());
         assertThat(QuickPulseDataCollector.parseDurationToMillis("1.22:33:44.123456"))
-            .isEqualTo(
-                Duration.ofDays(1)
-                    .plusHours(22)
-                    .plusMinutes(33)
-                    .plusSeconds(44)
-                    .plusMillis(123)
-                    .toMillis());
+            .isEqualTo(Duration.ofDays(1).plusHours(22).plusMinutes(33).plusSeconds(44).plusMillis(123).toMillis());
         assertThat(QuickPulseDataCollector.parseDurationToMillis("11.22:33:44.123456"))
-            .isEqualTo(
-                Duration.ofDays(11)
-                    .plusHours(22)
-                    .plusMinutes(33)
-                    .plusSeconds(44)
-                    .plusMillis(123)
-                    .toMillis());
+            .isEqualTo(Duration.ofDays(11).plusHours(22).plusMinutes(33).plusSeconds(44).plusMillis(123).toMillis());
         assertThat(QuickPulseDataCollector.parseDurationToMillis("111.22:33:44.123456"))
-            .isEqualTo(
-                Duration.ofDays(111)
-                    .plusHours(22)
-                    .plusMinutes(33)
-                    .plusSeconds(44)
-                    .plusMillis(123)
-                    .toMillis());
+            .isEqualTo(Duration.ofDays(111).plusHours(22).plusMinutes(33).plusSeconds(44).plusMillis(123).toMillis());
         assertThat(QuickPulseDataCollector.parseDurationToMillis("1111.22:33:44.123456"))
-            .isEqualTo(
-                Duration.ofDays(1111)
-                    .plusHours(22)
-                    .plusMinutes(33)
-                    .plusSeconds(44)
-                    .plusMillis(123)
-                    .toMillis());
+            .isEqualTo(Duration.ofDays(1111).plusHours(22).plusMinutes(33).plusSeconds(44).plusMillis(123).toMillis());
     }
 
     private static void assertCountersReset(QuickPulseDataCollector.FinalCounters counters) {
@@ -236,8 +210,7 @@ class QuickPulseDataCollectorTests {
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
 
         long duration = 112233L;
-        TelemetryItem telemetry =
-            createRequestTelemetry("request-test", new Date(), duration, "200", true);
+        TelemetryItem telemetry = createRequestTelemetry("request-test", new Date(), duration, "200", true);
         telemetry.setConnectionString(FAKE_CONNECTION_STRING);
         for (int i = 0; i < 1005; i++) {
             collector.add(telemetry);

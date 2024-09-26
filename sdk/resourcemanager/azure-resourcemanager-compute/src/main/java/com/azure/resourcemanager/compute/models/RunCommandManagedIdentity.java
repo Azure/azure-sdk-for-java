@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Contains clientId or objectId (use only one, not both) of a user-assigned managed identity that has access to storage
@@ -17,17 +21,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * https://aka.ms/RunCommandManaged.
  */
 @Fluent
-public final class RunCommandManagedIdentity {
+public final class RunCommandManagedIdentity implements JsonSerializable<RunCommandManagedIdentity> {
     /*
      * Client Id (GUID value) of the user-assigned managed identity. ObjectId should not be used if this is provided.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
      * Object Id (GUID value) of the user-assigned managed identity. ClientId should not be used if this is provided.
      */
-    @JsonProperty(value = "objectId")
     private String objectId;
 
     /**
@@ -86,5 +88,44 @@ public final class RunCommandManagedIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("objectId", this.objectId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandManagedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandManagedIdentity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunCommandManagedIdentity.
+     */
+    public static RunCommandManagedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandManagedIdentity deserializedRunCommandManagedIdentity = new RunCommandManagedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedRunCommandManagedIdentity.clientId = reader.getString();
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedRunCommandManagedIdentity.objectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandManagedIdentity;
+        });
     }
 }

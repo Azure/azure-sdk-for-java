@@ -5,51 +5,51 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies policy and settings for SSH access. */
+/**
+ * Specifies policy and settings for SSH access.
+ */
 @Fluent
-public final class ComputeInstanceSshSettings {
+public final class ComputeInstanceSshSettings implements JsonSerializable<ComputeInstanceSshSettings> {
     /*
-     * Access policy for SSH
-     *
      * State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
      * this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet
      * policy if applicable.
      */
-    @JsonProperty(value = "sshPublicAccess")
     private SshPublicAccess sshPublicAccess;
 
     /*
      * Describes the admin user name.
      */
-    @JsonProperty(value = "adminUserName", access = JsonProperty.Access.WRITE_ONLY)
     private String adminUsername;
 
     /*
      * Describes the port for connecting through SSH.
      */
-    @JsonProperty(value = "sshPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer sshPort;
 
     /*
      * Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b 2048" to generate your SSH key
      * pairs.
      */
-    @JsonProperty(value = "adminPublicKey")
     private String adminPublicKey;
 
-    /** Creates an instance of ComputeInstanceSshSettings class. */
+    /**
+     * Creates an instance of ComputeInstanceSshSettings class.
+     */
     public ComputeInstanceSshSettings() {
     }
 
     /**
-     * Get the sshPublicAccess property: Access policy for SSH
-     *
-     * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
-     * this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet
-     * policy if applicable.
-     *
+     * Get the sshPublicAccess property: State of the public SSH port. Possible values are: Disabled - Indicates that
+     * the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and
+     * accessible according to the VNet/subnet policy if applicable.
+     * 
      * @return the sshPublicAccess value.
      */
     public SshPublicAccess sshPublicAccess() {
@@ -57,12 +57,10 @@ public final class ComputeInstanceSshSettings {
     }
 
     /**
-     * Set the sshPublicAccess property: Access policy for SSH
-     *
-     * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on
-     * this instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet
-     * policy if applicable.
-     *
+     * Set the sshPublicAccess property: State of the public SSH port. Possible values are: Disabled - Indicates that
+     * the public ssh port is closed on this instance. Enabled - Indicates that the public ssh port is open and
+     * accessible according to the VNet/subnet policy if applicable.
+     * 
      * @param sshPublicAccess the sshPublicAccess value to set.
      * @return the ComputeInstanceSshSettings object itself.
      */
@@ -73,7 +71,7 @@ public final class ComputeInstanceSshSettings {
 
     /**
      * Get the adminUsername property: Describes the admin user name.
-     *
+     * 
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -82,7 +80,7 @@ public final class ComputeInstanceSshSettings {
 
     /**
      * Get the sshPort property: Describes the port for connecting through SSH.
-     *
+     * 
      * @return the sshPort value.
      */
     public Integer sshPort() {
@@ -92,7 +90,7 @@ public final class ComputeInstanceSshSettings {
     /**
      * Get the adminPublicKey property: Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b
      * 2048" to generate your SSH key pairs.
-     *
+     * 
      * @return the adminPublicKey value.
      */
     public String adminPublicKey() {
@@ -102,7 +100,7 @@ public final class ComputeInstanceSshSettings {
     /**
      * Set the adminPublicKey property: Specifies the SSH rsa public key file as a string. Use "ssh-keygen -t rsa -b
      * 2048" to generate your SSH key pairs.
-     *
+     * 
      * @param adminPublicKey the adminPublicKey value to set.
      * @return the ComputeInstanceSshSettings object itself.
      */
@@ -113,9 +111,54 @@ public final class ComputeInstanceSshSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sshPublicAccess",
+            this.sshPublicAccess == null ? null : this.sshPublicAccess.toString());
+        jsonWriter.writeStringField("adminPublicKey", this.adminPublicKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceSshSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceSshSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceSshSettings.
+     */
+    public static ComputeInstanceSshSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceSshSettings deserializedComputeInstanceSshSettings = new ComputeInstanceSshSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sshPublicAccess".equals(fieldName)) {
+                    deserializedComputeInstanceSshSettings.sshPublicAccess
+                        = SshPublicAccess.fromString(reader.getString());
+                } else if ("adminUserName".equals(fieldName)) {
+                    deserializedComputeInstanceSshSettings.adminUsername = reader.getString();
+                } else if ("sshPort".equals(fieldName)) {
+                    deserializedComputeInstanceSshSettings.sshPort = reader.getNullable(JsonReader::getInt);
+                } else if ("adminPublicKey".equals(fieldName)) {
+                    deserializedComputeInstanceSshSettings.adminPublicKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceSshSettings;
+        });
     }
 }

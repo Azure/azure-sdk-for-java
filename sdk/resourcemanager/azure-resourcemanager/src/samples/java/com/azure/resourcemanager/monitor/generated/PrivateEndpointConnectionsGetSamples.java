@@ -19,8 +19,11 @@ public final class PrivateEndpointConnectionsGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsPrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateEndpointConnections().getWithResponse(
-            "MyResourceGroup", "MyPrivateLinkScope", "private-endpoint-connection-name",
-            com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateEndpointConnections()
+            .getWithResponse("MyResourceGroup", "MyPrivateLinkScope", "private-endpoint-connection-name",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,7 +52,6 @@ public final class RouteMapActionType extends ExpandableStringEnum<RouteMapActio
      * @param name a name to look for.
      * @return the corresponding RouteMapActionType.
      */
-    @JsonCreator
     public static RouteMapActionType fromString(String name) {
         return fromString(name, RouteMapActionType.class);
     }

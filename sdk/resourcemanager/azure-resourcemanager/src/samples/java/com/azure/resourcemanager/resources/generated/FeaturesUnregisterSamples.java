@@ -9,7 +9,8 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class FeaturesUnregisterSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/unregisterFeature.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Features/stable/2021-07-01/examples/unregisterFeature.json
      */
     /**
      * Sample code: Register feature.

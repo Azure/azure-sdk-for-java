@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Display metadata associated with the operation. */
+/**
+ * Display metadata associated with the operation.
+ */
 @Immutable
-public final class OperationDisplay {
+public final class OperationDisplay implements JsonSerializable<OperationDisplay> {
     /*
      * The localized friendly form of the resource provider name.
      */
-    @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
      * The localized friendly form of the resource type related to this action/operation.
      */
-    @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
      * The localized friendly name for the operation.
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * The localized friendly description for the operation.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 
     /**
      * Get the provider property: The localized friendly form of the resource provider name.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: The localized friendly form of the resource type related to this action/operation.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -58,7 +62,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: The localized friendly name for the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -67,7 +71,7 @@ public final class OperationDisplay {
 
     /**
      * Get the description property: The localized friendly description for the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -76,9 +80,50 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDisplay if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDisplay.
+     */
+    public static OperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDisplay deserializedOperationDisplay = new OperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDisplay;
+        });
     }
 }

@@ -5,47 +5,45 @@
 package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The action detail.
  */
 @Fluent
-public final class ActionDetail {
+public final class ActionDetail implements JsonSerializable<ActionDetail> {
     /*
      * The mechanism type
      */
-    @JsonProperty(value = "MechanismType")
     private String mechanismType;
 
     /*
      * The name of the action
      */
-    @JsonProperty(value = "Name")
     private String name;
 
     /*
      * The status of the action
      */
-    @JsonProperty(value = "Status")
     private String status;
 
     /*
      * The substatus of the action
      */
-    @JsonProperty(value = "SubState")
     private String subState;
 
     /*
      * The send time
      */
-    @JsonProperty(value = "SendTime")
     private String sendTime;
 
     /*
      * The detail of the friendly error message
      */
-    @JsonProperty(value = "Detail")
     private String detail;
 
     /**
@@ -180,5 +178,56 @@ public final class ActionDetail {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("MechanismType", this.mechanismType);
+        jsonWriter.writeStringField("Name", this.name);
+        jsonWriter.writeStringField("Status", this.status);
+        jsonWriter.writeStringField("SubState", this.subState);
+        jsonWriter.writeStringField("SendTime", this.sendTime);
+        jsonWriter.writeStringField("Detail", this.detail);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActionDetail.
+     */
+    public static ActionDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionDetail deserializedActionDetail = new ActionDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("MechanismType".equals(fieldName)) {
+                    deserializedActionDetail.mechanismType = reader.getString();
+                } else if ("Name".equals(fieldName)) {
+                    deserializedActionDetail.name = reader.getString();
+                } else if ("Status".equals(fieldName)) {
+                    deserializedActionDetail.status = reader.getString();
+                } else if ("SubState".equals(fieldName)) {
+                    deserializedActionDetail.subState = reader.getString();
+                } else if ("SendTime".equals(fieldName)) {
+                    deserializedActionDetail.sendTime = reader.getString();
+                } else if ("Detail".equals(fieldName)) {
+                    deserializedActionDetail.detail = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionDetail;
+        });
     }
 }

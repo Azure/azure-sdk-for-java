@@ -5,7 +5,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -70,7 +69,6 @@ public class PrivateLinkSubResourceName extends ExpandableStringEnum<PrivateLink
      * @param name a name to look for.
      * @return the corresponding PrivateLinkSubResourceName.
      */
-    @JsonCreator
     public static PrivateLinkSubResourceName fromString(String name) {
         return fromString(name, PrivateLinkSubResourceName.class);
     }

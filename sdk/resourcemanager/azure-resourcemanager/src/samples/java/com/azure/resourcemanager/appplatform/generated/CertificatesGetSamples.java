@@ -18,7 +18,10 @@ public final class CertificatesGetSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void certificatesGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getCertificates().getWithResponse("myResourceGroup",
-            "myservice", "mycertificate", com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getCertificates()
+            .getWithResponse("myResourceGroup", "myservice", "mycertificate", com.azure.core.util.Context.NONE);
     }
 }

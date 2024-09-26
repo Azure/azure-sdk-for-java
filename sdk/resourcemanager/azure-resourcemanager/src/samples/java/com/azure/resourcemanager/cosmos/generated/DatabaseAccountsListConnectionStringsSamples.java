@@ -9,7 +9,8 @@ package com.azure.resourcemanager.cosmos.generated;
  */
 public final class DatabaseAccountsListConnectionStringsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListConnectionStrings.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBDatabaseAccountListConnectionStrings.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStrings.
@@ -26,7 +27,8 @@ public final class DatabaseAccountsListConnectionStringsSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/CosmosDBDatabaseAccountListConnectionStringsMongo.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
+     * CosmosDBDatabaseAccountListConnectionStringsMongo.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListConnectionStringsMongo.

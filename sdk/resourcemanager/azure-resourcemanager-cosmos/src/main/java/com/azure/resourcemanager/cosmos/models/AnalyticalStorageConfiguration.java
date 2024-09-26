@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Analytical storage specific properties.
  */
 @Fluent
-public final class AnalyticalStorageConfiguration {
+public final class AnalyticalStorageConfiguration implements JsonSerializable<AnalyticalStorageConfiguration> {
     /*
      * Describes the types of schema for analytical storage.
      */
-    @JsonProperty(value = "schemaType")
     private AnalyticalStorageSchemaType schemaType;
 
     /**
@@ -50,5 +53,43 @@ public final class AnalyticalStorageConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("schemaType", this.schemaType == null ? null : this.schemaType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyticalStorageConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyticalStorageConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnalyticalStorageConfiguration.
+     */
+    public static AnalyticalStorageConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalyticalStorageConfiguration deserializedAnalyticalStorageConfiguration
+                = new AnalyticalStorageConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schemaType".equals(fieldName)) {
+                    deserializedAnalyticalStorageConfiguration.schemaType
+                        = AnalyticalStorageSchemaType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalyticalStorageConfiguration;
+        });
     }
 }

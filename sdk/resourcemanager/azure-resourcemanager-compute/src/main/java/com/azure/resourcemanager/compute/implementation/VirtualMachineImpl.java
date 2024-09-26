@@ -18,6 +18,7 @@ import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineCaptureResultInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineUpdateInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
@@ -101,7 +102,6 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -434,14 +434,7 @@ class VirtualMachineImpl
             .serviceClient()
             .getVirtualMachines()
             .captureAsync(this.resourceGroupName(), this.name(), parameters)
-            .map(
-                captureResultInner -> {
-                    try {
-                        return SerializerUtils.getObjectMapper().writeValueAsString(captureResultInner);
-                    } catch (JsonProcessingException ex) {
-                        throw logger.logExceptionAsError(Exceptions.propagate(ex));
-                    }
-                });
+            .map(captureResult -> serializeCaptureResult(captureResult, logger));
     }
 
     @Override
@@ -1610,20 +1603,36 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl enableHibernation() {
-        if (this.innerModel().additionalCapabilities() == null) {
-            this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
-        }
+        ensureAdditionalCapabilities();
         this.innerModel().additionalCapabilities().withHibernationEnabled(true);
         return this;
     }
 
     @Override
     public VirtualMachineImpl disableHibernation() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl enableUltraSsd() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withUltraSsdEnabled(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl disableUltraSsd() {
+        ensureAdditionalCapabilities();
+        this.innerModel().additionalCapabilities().withUltraSsdEnabled(false);
+        return this;
+    }
+
+    public void ensureAdditionalCapabilities() {
         if (this.innerModel().additionalCapabilities() == null) {
             this.innerModel().withAdditionalCapabilities(new AdditionalCapabilities());
         }
-        this.innerModel().additionalCapabilities().withHibernationEnabled(false);
-        return this;
     }
 
     // GETTERS
@@ -1989,6 +1998,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public boolean isUltraSsdEnabled() {
+        return this.innerModel().additionalCapabilities() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().additionalCapabilities().ultraSsdEnabled());
+    }
+
+    @Override
     public SecurityTypes securityType() {
         SecurityProfile securityProfile = this.innerModel().securityProfile();
         if (securityProfile == null) {
@@ -2207,6 +2222,24 @@ class VirtualMachineImpl
     VirtualMachineImpl withExtension(VirtualMachineExtensionImpl extension) {
         this.virtualMachineExtensions.addExtension(extension);
         return this;
+    }
+
+    /*
+     * Serialize VirtualMachineCaptureResultInner and include read-only properties in the result.
+     */
+    static String serializeCaptureResult(VirtualMachineCaptureResultInner captureResultInner, ClientLogger logger) {
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("id", captureResultInner.id());
+        resultMap.put("contentVersion", captureResultInner.contentVersion());
+        resultMap.put("schema", captureResultInner.schema());
+        resultMap.put("resources", captureResultInner.resources());
+        resultMap.put("parameters", captureResultInner.parameters());
+        try {
+            return SerializerFactory.createDefaultManagementSerializerAdapter()
+                .serialize(resultMap, SerializerEncoding.JSON);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(Exceptions.propagate(e));
+        }
     }
 
     private void reset(VirtualMachineInner inner) {

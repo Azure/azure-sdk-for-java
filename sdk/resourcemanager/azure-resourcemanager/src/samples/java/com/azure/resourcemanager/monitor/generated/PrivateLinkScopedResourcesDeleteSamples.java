@@ -19,7 +19,10 @@ public final class PrivateLinkScopedResourcesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deletesAScopedResourceWithAGivenName(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getPrivateLinkScopedResources().delete("MyResourceGroup",
-            "MyPrivateLinkScope", "scoped-resource-name", com.azure.core.util.Context.NONE);
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getPrivateLinkScopedResources()
+            .delete("MyResourceGroup", "MyPrivateLinkScope", "scoped-resource-name", com.azure.core.util.Context.NONE);
     }
 }

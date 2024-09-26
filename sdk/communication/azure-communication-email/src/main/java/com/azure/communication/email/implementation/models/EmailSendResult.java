@@ -6,47 +6,48 @@ package com.azure.communication.email.implementation.models;
 
 import com.azure.communication.email.models.EmailSendStatus;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/** Status of the long running operation. */
+/**
+ * Status of the long running operation.
+ */
 @Fluent
-public final class EmailSendResult {
+public final class EmailSendResult implements JsonSerializable<EmailSendResult> {
     /*
      * The unique id of the operation. Use a UUID.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * Status of operation.
      */
-    @JsonProperty(value = "status", required = true)
-    private EmailSendStatus status;
+    private final EmailSendStatus status;
 
     /*
      * Error details when status is a non-success terminal state.
      */
-    @JsonProperty(value = "error")
     private ErrorDetail error;
 
     /**
      * Creates an instance of EmailSendResult class.
-     *
+     * 
      * @param id the id value to set.
      * @param status the status value to set.
      */
-    @JsonCreator
-    public EmailSendResult(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "status", required = true) EmailSendStatus status) {
+    public EmailSendResult(String id, EmailSendStatus status) {
         this.id = id;
         this.status = status;
     }
 
     /**
      * Get the id property: The unique id of the operation. Use a UUID.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -55,7 +56,7 @@ public final class EmailSendResult {
 
     /**
      * Get the status property: Status of operation.
-     *
+     * 
      * @return the status value.
      */
     public EmailSendStatus getStatus() {
@@ -64,7 +65,7 @@ public final class EmailSendResult {
 
     /**
      * Get the error property: Error details when status is a non-success terminal state.
-     *
+     * 
      * @return the error value.
      */
     public ErrorDetail getError() {
@@ -73,12 +74,75 @@ public final class EmailSendResult {
 
     /**
      * Set the error property: Error details when status is a non-success terminal state.
-     *
+     * 
      * @param error the error value to set.
      * @return the EmailSendResult object itself.
      */
     public EmailSendResult setError(ErrorDetail error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailSendResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailSendResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailSendResult.
+     */
+    public static EmailSendResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean idFound = false;
+            String id = null;
+            boolean statusFound = false;
+            EmailSendStatus status = null;
+            ErrorDetail error = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                    idFound = true;
+                } else if ("status".equals(fieldName)) {
+                    status = EmailSendStatus.fromString(reader.getString());
+                    statusFound = true;
+                } else if ("error".equals(fieldName)) {
+                    error = ErrorDetail.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (idFound && statusFound) {
+                EmailSendResult deserializedEmailSendResult = new EmailSendResult(id, status);
+                deserializedEmailSendResult.error = error;
+
+                return deserializedEmailSendResult;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!idFound) {
+                missingProperties.add("id");
+            }
+            if (!statusFound) {
+                missingProperties.add("status");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

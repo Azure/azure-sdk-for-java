@@ -21,9 +21,14 @@ public final class DeploymentsStartJfrSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deploymentsStartJFR(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.springServices().manager().serviceClient().getDeployments().startJfr(
-            "myResourceGroup", "myservice", "myapp", "mydeployment", new DiagnosticParameters()
-                .withAppInstance("myappinstance").withFilePath("/byos/diagnose").withDuration("60s"),
-            com.azure.core.util.Context.NONE);
+        azure.springServices()
+            .manager()
+            .serviceClient()
+            .getDeployments()
+            .startJfr("myResourceGroup", "myservice", "myapp", "mydeployment",
+                new DiagnosticParameters().withAppInstance("myappinstance")
+                    .withFilePath("/byos/diagnose")
+                    .withDuration("60s"),
+                com.azure.core.util.Context.NONE);
     }
 }

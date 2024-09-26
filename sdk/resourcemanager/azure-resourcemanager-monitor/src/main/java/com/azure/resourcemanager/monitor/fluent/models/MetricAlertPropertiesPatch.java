@@ -5,9 +5,14 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.monitor.models.MetricAlertAction;
 import com.azure.resourcemanager.monitor.models.MetricAlertCriteria;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,86 +21,73 @@ import java.util.List;
  * An alert rule properties for patch.
  */
 @Fluent
-public final class MetricAlertPropertiesPatch {
+public final class MetricAlertPropertiesPatch implements JsonSerializable<MetricAlertPropertiesPatch> {
     /*
      * the description of the metric alert that will be included in the alert email.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Alert severity {0, 1, 2, 3, 4}
      */
-    @JsonProperty(value = "severity")
     private Integer severity;
 
     /*
      * the flag that indicates whether the metric alert is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * the list of resource id's that this metric alert is scoped to.
      */
-    @JsonProperty(value = "scopes")
     private List<String> scopes;
 
     /*
      * how often the metric alert is evaluated represented in ISO 8601 duration format.
      */
-    @JsonProperty(value = "evaluationFrequency")
     private Duration evaluationFrequency;
 
     /*
      * the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
      */
-    @JsonProperty(value = "windowSize")
     private Duration windowSize;
 
     /*
      * the resource type of the target resource(s) on which the alert is created/updated. Mandatory for
      * MultipleResourceMultipleMetricCriteria.
      */
-    @JsonProperty(value = "targetResourceType")
     private String targetResourceType;
 
     /*
      * the region of the target resource(s) on which the alert is created/updated. Mandatory for
      * MultipleResourceMultipleMetricCriteria.
      */
-    @JsonProperty(value = "targetResourceRegion")
     private String targetResourceRegion;
 
     /*
      * defines the specific alert criteria information.
      */
-    @JsonProperty(value = "criteria")
     private MetricAlertCriteria criteria;
 
     /*
      * the flag that indicates whether the alert should be auto resolved or not. The default is true.
      */
-    @JsonProperty(value = "autoMitigate")
     private Boolean autoMitigate;
 
     /*
      * the array of actions that are performed when the alert rule becomes active, and when an alert condition is
      * resolved.
      */
-    @JsonProperty(value = "actions")
     private List<MetricAlertAction> actions;
 
     /*
      * Last time the rule was updated in ISO8601 format.
      */
-    @JsonProperty(value = "lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTime;
 
     /*
      * the value indicating whether this alert rule is migrated.
      */
-    @JsonProperty(value = "isMigrated", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isMigrated;
 
     /**
@@ -315,8 +307,8 @@ public final class MetricAlertPropertiesPatch {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
-     * an alert condition is resolved.
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
      * 
      * @return the actions value.
      */
@@ -325,8 +317,8 @@ public final class MetricAlertPropertiesPatch {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
-     * an alert condition is resolved.
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
      * 
      * @param actions the actions value to set.
      * @return the MetricAlertPropertiesPatch object itself.
@@ -366,5 +358,81 @@ public final class MetricAlertPropertiesPatch {
         if (actions() != null) {
             actions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeNumberField("severity", this.severity);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeArrayField("scopes", this.scopes, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("evaluationFrequency",
+            CoreUtils.durationToStringWithDays(this.evaluationFrequency));
+        jsonWriter.writeStringField("windowSize", CoreUtils.durationToStringWithDays(this.windowSize));
+        jsonWriter.writeStringField("targetResourceType", this.targetResourceType);
+        jsonWriter.writeStringField("targetResourceRegion", this.targetResourceRegion);
+        jsonWriter.writeJsonField("criteria", this.criteria);
+        jsonWriter.writeBooleanField("autoMitigate", this.autoMitigate);
+        jsonWriter.writeArrayField("actions", this.actions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricAlertPropertiesPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricAlertPropertiesPatch if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetricAlertPropertiesPatch.
+     */
+    public static MetricAlertPropertiesPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricAlertPropertiesPatch deserializedMetricAlertPropertiesPatch = new MetricAlertPropertiesPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.description = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.severity = reader.getNullable(JsonReader::getInt);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("scopes".equals(fieldName)) {
+                    List<String> scopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedMetricAlertPropertiesPatch.scopes = scopes;
+                } else if ("evaluationFrequency".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.evaluationFrequency
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("windowSize".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.windowSize
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("targetResourceType".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.targetResourceType = reader.getString();
+                } else if ("targetResourceRegion".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.targetResourceRegion = reader.getString();
+                } else if ("criteria".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.criteria = MetricAlertCriteria.fromJson(reader);
+                } else if ("autoMitigate".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.autoMitigate = reader.getNullable(JsonReader::getBoolean);
+                } else if ("actions".equals(fieldName)) {
+                    List<MetricAlertAction> actions = reader.readArray(reader1 -> MetricAlertAction.fromJson(reader1));
+                    deserializedMetricAlertPropertiesPatch.actions = actions;
+                } else if ("lastUpdatedTime".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.lastUpdatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isMigrated".equals(fieldName)) {
+                    deserializedMetricAlertPropertiesPatch.isMigrated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricAlertPropertiesPatch;
+        });
     }
 }

@@ -17,19 +17,21 @@ import java.util.stream.Stream;
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestHelper {
     public static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS = "AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS";
-    private static final String SERVICE_VERSION_FROM_ENV =
-        Configuration.getGlobalConfiguration().get(AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS);
+    private static final String SERVICE_VERSION_FROM_ENV = Configuration.getGlobalConfiguration()
+        .get(AZURE_DIGITALTWINS_TEST_SERVICE_VERSIONS);
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
         assertRestException(exceptionThrower, ErrorResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends ErrorResponseException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower,
+        Class<? extends ErrorResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail("Expected exception was not thrown");
@@ -42,9 +44,10 @@ public class TestHelper {
         assertRestException(exception, ErrorResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends ErrorResponseException> expectedExceptionType, int expectedStatusCode) {
-        assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((ErrorResponseException) exception).getResponse().getStatusCode());
+    static void assertRestException(Throwable exception, Class<? extends ErrorResponseException> expectedExceptionType,
+        int expectedStatusCode) {
+        ErrorResponseException errorResponseException = assertInstanceOf(ErrorResponseException.class, exception);
+        assertEquals(expectedStatusCode, errorResponseException.getResponse().getStatusCode());
     }
 
     /**
@@ -57,11 +60,9 @@ public class TestHelper {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
-        getHttpClients()
-            .forEach(httpClient -> Arrays
-                .stream(DigitalTwinsServiceVersion.values())
-                .filter(TestHelper::shouldServiceVersionBeTested)
-                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
+        getHttpClients().forEach(httpClient -> Arrays.stream(DigitalTwinsServiceVersion.values())
+            .filter(TestHelper::shouldServiceVersionBeTested)
+            .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 
@@ -89,7 +90,7 @@ public class TestHelper {
             return true;
         }
         String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
-        return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
-            serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+        return Arrays.stream(configuredServiceVersionList)
+            .anyMatch(configuredServiceVersion -> serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }
 }

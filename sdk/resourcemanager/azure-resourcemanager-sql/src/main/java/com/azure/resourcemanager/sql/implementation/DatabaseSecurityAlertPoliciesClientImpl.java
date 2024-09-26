@@ -33,26 +33,28 @@ import com.azure.resourcemanager.sql.models.DatabaseSecurityAlertListResult;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabaseSecurityAlertPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabaseSecurityAlertPoliciesClient.
+ */
 public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSecurityAlertPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatabaseSecurityAlertPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabaseSecurityAlertPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DatabaseSecurityAlertPoliciesClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    DatabaseSecurityAlertPoliciesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(DatabaseSecurityAlertPoliciesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,89 +65,66 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
     public interface DatabaseSecurityAlertPoliciesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/securityAlertPolicies")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseSecurityAlertListResult>> listByDatabase(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("databaseName") String databaseName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DatabaseSecurityAlertListResult>> listByDatabase(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("databaseName") String databaseName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseSecurityAlertPolicyInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<DatabaseSecurityAlertPolicyInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/securityAlertPolicies/{securityAlertPolicyName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
+        Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("securityAlertPolicyName") SecurityAlertPolicyName securityAlertPolicyName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DatabaseSecurityAlertPolicyInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatabaseSecurityAlertListResult>> listByDatabaseNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of database's security alert policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseSecurityAlertPolicyInner>> listByDatabaseSinglePageAsync(
-        String resourceGroupName, String serverName, String databaseName) {
+    private Mono<PagedResponse<DatabaseSecurityAlertPolicyInner>>
+        listByDatabaseSinglePageAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -158,42 +137,23 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDatabase(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatabaseSecurityAlertPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DatabaseSecurityAlertPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param context The context to associate with this operation.
@@ -201,16 +161,14 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of database's security alert policies along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseSecurityAlertPolicyInner>> listByDatabaseSinglePageAsync(
         String resourceGroupName, String serverName, String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -223,39 +181,23 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDatabase(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDatabase(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,18 +206,17 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a list of database's security alert policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName) {
-        return new PagedFlux<>(
-            () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
+    public PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName) {
+        return new PagedFlux<>(() -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName),
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param context The context to associate with this operation.
@@ -285,8 +226,8 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a list of database's security alert policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+    private PagedFlux<DatabaseSecurityAlertPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName, Context context) {
         return new PagedFlux<>(
             () -> listByDatabaseSinglePageAsync(resourceGroupName, serverName, databaseName, context),
             nextLink -> listByDatabaseNextSinglePageAsync(nextLink, context));
@@ -294,9 +235,9 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,16 +246,16 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName) {
+    public PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName));
     }
 
     /**
      * Gets a list of database's security alert policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param context The context to associate with this operation.
@@ -324,16 +265,16 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a list of database's security alert policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context) {
+    public PagedIterable<DatabaseSecurityAlertPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context) {
         return new PagedIterable<>(listByDatabaseAsync(resourceGroupName, serverName, databaseName, context));
     }
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -343,16 +284,11 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName) {
+    public Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -365,39 +301,25 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            securityAlertPolicyName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+                securityAlertPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -408,17 +330,11 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database's security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context) {
+    private Mono<Response<DatabaseSecurityAlertPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -431,36 +347,24 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                securityAlertPolicyName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+            securityAlertPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -470,20 +374,17 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database's security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseSecurityAlertPolicyInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName) {
+    public Mono<DatabaseSecurityAlertPolicyInner> getAsync(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -494,21 +395,17 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database's security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseSecurityAlertPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        Context context) {
+    public Response<DatabaseSecurityAlertPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName, context)
             .block();
     }
 
     /**
      * Gets a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -518,10 +415,7 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database's security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseSecurityAlertPolicyInner get(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
+    public DatabaseSecurityAlertPolicyInner get(String resourceGroupName, String serverName, String databaseName,
         SecurityAlertPolicyName securityAlertPolicyName) {
         return getWithResponse(resourceGroupName, serverName, databaseName, securityAlertPolicyName, Context.NONE)
             .getValue();
@@ -529,9 +423,9 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -542,17 +436,12 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
+    public Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -565,15 +454,12 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -582,28 +468,17 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            databaseName,
-                            securityAlertPolicyName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                databaseName, securityAlertPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -615,18 +490,12 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database security alert policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        DatabaseSecurityAlertPolicyInner parameters,
-        Context context) {
+    private Mono<Response<DatabaseSecurityAlertPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
+        DatabaseSecurityAlertPolicyInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -639,15 +508,12 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (securityAlertPolicyName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter securityAlertPolicyName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -656,25 +522,16 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                databaseName,
-                securityAlertPolicyName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, databaseName,
+            securityAlertPolicyName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept,
+            context);
     }
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -685,22 +542,18 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database security alert policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DatabaseSecurityAlertPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
+    public Mono<DatabaseSecurityAlertPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName,
+            parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -712,23 +565,18 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database security alert policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
-        DatabaseSecurityAlertPolicyInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters, context)
-            .block();
+    public Response<DatabaseSecurityAlertPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
+        String serverName, String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
+        DatabaseSecurityAlertPolicyInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, databaseName, securityAlertPolicyName,
+            parameters, context).block();
     }
 
     /**
      * Creates or updates a database's security alert policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database for which the security alert policy is defined.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -739,27 +587,22 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
      * @return a database security alert policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseSecurityAlertPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        SecurityAlertPolicyName securityAlertPolicyName,
+    public DatabaseSecurityAlertPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, SecurityAlertPolicyName securityAlertPolicyName,
         DatabaseSecurityAlertPolicyInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, serverName, databaseName, securityAlertPolicyName, parameters, Context.NONE)
-            .getValue();
+        return createOrUpdateWithResponse(resourceGroupName, serverName, databaseName, securityAlertPolicyName,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the database's security alert policies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseSecurityAlertPolicyInner>> listByDatabaseNextSinglePageAsync(String nextLink) {
@@ -767,62 +610,42 @@ public final class DatabaseSecurityAlertPoliciesClientImpl implements DatabaseSe
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatabaseSecurityAlertPolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DatabaseSecurityAlertPolicyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the database's security alert policies along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseSecurityAlertPolicyInner>> listByDatabaseNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DatabaseSecurityAlertPolicyInner>> listByDatabaseNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDatabaseNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

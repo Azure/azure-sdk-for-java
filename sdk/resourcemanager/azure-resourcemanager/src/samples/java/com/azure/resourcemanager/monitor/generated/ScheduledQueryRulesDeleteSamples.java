@@ -19,7 +19,10 @@ public final class ScheduledQueryRulesDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAScheduledQueryRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getScheduledQueryRules()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getScheduledQueryRules()
             .deleteWithResponse("QueryResourceGroupName", "heartbeat", com.azure.core.util.Context.NONE);
     }
 }

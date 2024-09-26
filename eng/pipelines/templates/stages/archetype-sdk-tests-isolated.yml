@@ -122,7 +122,7 @@ parameters:
   default: []
 - name: UseFederatedAuth
   type: boolean
-  default: false
+  default: true
 - name: AdditionalSparseCheckoutPaths
   type: object
   default: []

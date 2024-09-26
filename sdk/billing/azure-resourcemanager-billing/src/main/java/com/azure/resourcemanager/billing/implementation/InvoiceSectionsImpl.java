@@ -10,7 +10,9 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.billing.fluent.InvoiceSectionsClient;
+import com.azure.resourcemanager.billing.fluent.models.DeleteInvoiceSectionEligibilityResultInner;
 import com.azure.resourcemanager.billing.fluent.models.InvoiceSectionInner;
+import com.azure.resourcemanager.billing.models.DeleteInvoiceSectionEligibilityResult;
 import com.azure.resourcemanager.billing.models.InvoiceSection;
 import com.azure.resourcemanager.billing.models.InvoiceSections;
 
@@ -21,34 +23,50 @@ public final class InvoiceSectionsImpl implements InvoiceSections {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public InvoiceSectionsImpl(
-        InvoiceSectionsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public InvoiceSectionsImpl(InvoiceSectionsClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<InvoiceSection> listByBillingProfile(String billingAccountName, String billingProfileName) {
-        PagedIterable<InvoiceSectionInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
-        return Utils.mapPage(inner, inner1 -> new InvoiceSectionImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<InvoiceSection> listByBillingProfile(
-        String billingAccountName, String billingProfileName, Context context) {
-        PagedIterable<InvoiceSectionInner> inner =
-            this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName, context);
-        return Utils.mapPage(inner, inner1 -> new InvoiceSectionImpl(inner1, this.manager()));
-    }
-
-    public Response<InvoiceSection> getWithResponse(
+    public Response<DeleteInvoiceSectionEligibilityResult> validateDeleteEligibilityWithResponse(
         String billingAccountName, String billingProfileName, String invoiceSectionName, Context context) {
-        Response<InvoiceSectionInner> inner =
-            this.serviceClient().getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, context);
+        Response<DeleteInvoiceSectionEligibilityResultInner> inner = this.serviceClient()
+            .validateDeleteEligibilityWithResponse(billingAccountName, billingProfileName, invoiceSectionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeleteInvoiceSectionEligibilityResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public DeleteInvoiceSectionEligibilityResult validateDeleteEligibility(String billingAccountName,
+        String billingProfileName, String invoiceSectionName) {
+        DeleteInvoiceSectionEligibilityResultInner inner = this.serviceClient()
+            .validateDeleteEligibility(billingAccountName, billingProfileName, invoiceSectionName);
+        if (inner != null) {
+            return new DeleteInvoiceSectionEligibilityResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void delete(String billingAccountName, String billingProfileName, String invoiceSectionName) {
+        this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName);
+    }
+
+    public void delete(String billingAccountName, String billingProfileName, String invoiceSectionName,
+        Context context) {
+        this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName, context);
+    }
+
+    public Response<InvoiceSection> getWithResponse(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, Context context) {
+        Response<InvoiceSectionInner> inner
+            = this.serviceClient().getWithResponse(billingAccountName, billingProfileName, invoiceSectionName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new InvoiceSectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,8 +74,8 @@ public final class InvoiceSectionsImpl implements InvoiceSections {
     }
 
     public InvoiceSection get(String billingAccountName, String billingProfileName, String invoiceSectionName) {
-        InvoiceSectionInner inner =
-            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName);
+        InvoiceSectionInner inner
+            = this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName);
         if (inner != null) {
             return new InvoiceSectionImpl(inner, this.manager());
         } else {
@@ -65,13 +83,10 @@ public final class InvoiceSectionsImpl implements InvoiceSections {
         }
     }
 
-    public InvoiceSection createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InvoiceSectionInner parameters) {
-        InvoiceSectionInner inner =
-            this.serviceClient().createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters);
+    public InvoiceSection createOrUpdate(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, InvoiceSectionInner parameters) {
+        InvoiceSectionInner inner = this.serviceClient()
+            .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters);
         if (inner != null) {
             return new InvoiceSectionImpl(inner, this.manager());
         } else {
@@ -79,21 +94,30 @@ public final class InvoiceSectionsImpl implements InvoiceSections {
         }
     }
 
-    public InvoiceSection createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        InvoiceSectionInner parameters,
+    public InvoiceSection createOrUpdate(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, InvoiceSectionInner parameters, Context context) {
+        InvoiceSectionInner inner = this.serviceClient()
+            .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters, context);
+        if (inner != null) {
+            return new InvoiceSectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<InvoiceSection> listByBillingProfile(String billingAccountName, String billingProfileName) {
+        PagedIterable<InvoiceSectionInner> inner
+            = this.serviceClient().listByBillingProfile(billingAccountName, billingProfileName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InvoiceSectionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<InvoiceSection> listByBillingProfile(String billingAccountName, String billingProfileName,
+        Boolean includeDeleted, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
         Context context) {
-        InvoiceSectionInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, parameters, context);
-        if (inner != null) {
-            return new InvoiceSectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        PagedIterable<InvoiceSectionInner> inner = this.serviceClient()
+            .listByBillingProfile(billingAccountName, billingProfileName, includeDeleted, filter, orderBy, top, skip,
+                count, search, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InvoiceSectionImpl(inner1, this.manager()));
     }
 
     private InvoiceSectionsClient serviceClient() {

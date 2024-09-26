@@ -19,7 +19,10 @@ public final class ActivityLogAlertsDeleteSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteAnActivityLogAlertRule(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.diagnosticSettings().manager().serviceClient().getActivityLogAlerts()
+        azure.diagnosticSettings()
+            .manager()
+            .serviceClient()
+            .getActivityLogAlerts()
             .deleteWithResponse("MyResourceGroup", "SampleActivityLogAlertRule", com.azure.core.util.Context.NONE);
     }
 }

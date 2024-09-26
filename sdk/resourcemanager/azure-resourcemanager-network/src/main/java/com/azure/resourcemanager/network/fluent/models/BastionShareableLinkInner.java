@@ -6,36 +6,36 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.VM;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Bastion Shareable Link.
  */
 @Fluent
-public final class BastionShareableLinkInner {
+public final class BastionShareableLinkInner implements JsonSerializable<BastionShareableLinkInner> {
     /*
      * Reference of the virtual machine resource.
      */
-    @JsonProperty(value = "vm", required = true)
     private VM vm;
 
     /*
      * The unique Bastion Shareable Link to the virtual machine.
      */
-    @JsonProperty(value = "bsl", access = JsonProperty.Access.WRITE_ONLY)
     private String bsl;
 
     /*
      * The time when the link was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private String createdAt;
 
     /*
      * Optional field indicating the warning or error message related to the vm in case of partial failure.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
@@ -107,4 +107,47 @@ public final class BastionShareableLinkInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BastionShareableLinkInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vm", this.vm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionShareableLinkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionShareableLinkInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BastionShareableLinkInner.
+     */
+    public static BastionShareableLinkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionShareableLinkInner deserializedBastionShareableLinkInner = new BastionShareableLinkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vm".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.vm = VM.fromJson(reader);
+                } else if ("bsl".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.bsl = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.createdAt = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedBastionShareableLinkInner.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionShareableLinkInner;
+        });
+    }
 }
