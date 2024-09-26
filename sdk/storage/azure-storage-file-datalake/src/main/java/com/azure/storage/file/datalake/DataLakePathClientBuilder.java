@@ -422,8 +422,7 @@ public final class DataLakePathClientBuilder implements
      */
     public DataLakePathClientBuilder pathName(String pathName) {
         blobClientBuilder.blobName(pathName);
-        this.pathName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(pathName,
-            "'pathName' cannot be null.")));
+        this.pathName = Objects.requireNonNull(pathName, "'pathName' cannot be null.");
         return this;
     }
 

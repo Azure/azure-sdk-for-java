@@ -14,8 +14,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.sas.AccountSasPermission;
@@ -2225,6 +2227,21 @@ public class DirectoryApiTests extends DataLakeTestBase {
         DataLakeDirectoryClient destClient = client.rename(dataLakeFileSystemClient.getFileSystemName(), generatePathName());
 
         assertNotNull(destClient.getProperties());
+    }
+
+    @Test
+    public void getNonEncodedPathName() {
+        String pathName = "foo/bar";
+        String urlEncodedPathName = Utility.encodeUrlPath(pathName);
+
+        DataLakeDirectoryClient client = getPathClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount()
+            .getDataLakeEndpoint())
+            .fileSystemName(generateFileSystemName())
+            .pathName(urlEncodedPathName)
+            .buildDirectoryClient();
+
+        assertEquals(pathName, client.getDirectoryPath());
+        assertTrue(client.getDirectoryUrl().contains(Utility.urlEncode(pathName)));
     }
 
     @Test
