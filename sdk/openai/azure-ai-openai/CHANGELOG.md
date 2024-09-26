@@ -17,6 +17,7 @@
 
 ### Breaking Changes
 
+- Replaced `FunctionDefintion` by `ChatCompletionsFunctionToolDefinitionFunction` in `ChatCompletionsFunctionToolDefinition` class. `FunctionDefintion` only works for `functions` but not `tools`, which is deprecated.
 - Removed `azure_ml_index` from `AzureChatExtensionConfiguration` class, and its response models `AzureMachineLearningIndexConfiguration` and `AzureMachineLearningIndexChatExtensionParameters`.
 - Removed `role_information` from `AzureSearchChatExtensionParameters`, `ElasticsearchChatExtensionParameters` and `PineconeChatExtensionParameters` classes.
 

@@ -19,6 +19,7 @@ import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
+import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinitionFunction;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
@@ -304,7 +305,7 @@ public final class ReadmeSamples {
                 new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
         );
         ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-                new FunctionDefinition("MyFunctionName"));
+                new ChatCompletionsFunctionToolDefinitionFunction("MyFunctionName"));
 
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));

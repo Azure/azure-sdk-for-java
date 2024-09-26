@@ -36,14 +36,6 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      */
     private BinaryData parameters;
 
-    /*
-     * Whether to enable strict schema adherence when generating the function call. If set to true, the model will
-     * follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is supported when
-     * `strict` is `true`. Learn more about Structured Outputs in the [function calling
-     * guide](docs/guides/function-calling).
-     */
-    private Boolean strict;
-
     /**
      * Creates an instance of FunctionDefinition class.
      *
@@ -111,32 +103,6 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     }
 
     /**
-     * Get the strict property: Whether to enable strict schema adherence when generating the function call. If set to
-     * true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is
-     * supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling
-     * guide](docs/guides/function-calling).
-     *
-     * @return the strict value.
-     */
-    public Boolean isStrict() {
-        return this.strict;
-    }
-
-    /**
-     * Set the strict property: Whether to enable strict schema adherence when generating the function call. If set to
-     * true, the model will follow the exact schema defined in the `parameters` field. Only a subset of JSON Schema is
-     * supported when `strict` is `true`. Learn more about Structured Outputs in the [function calling
-     * guide](docs/guides/function-calling).
-     *
-     * @param strict the strict value to set.
-     * @return the ChatCompletionsFunctionToolDefinitionFunction object itself.
-     */
-    public FunctionDefinition setStrict(Boolean strict) {
-        this.strict = strict;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -145,7 +111,6 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
         jsonWriter.writeRawField("parameters", this.parameters.toString());
-        jsonWriter.writeBooleanField("strict", this.strict);
         return jsonWriter.writeEndObject();
     }
 
@@ -163,7 +128,6 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
             String name = null;
             String description = null;
             BinaryData parameters = null;
-            Boolean strict = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -173,8 +137,6 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
                     description = reader.getString();
                 } else if ("parameters".equals(fieldName)) {
                     parameters = BinaryData.fromObject(reader.readUntyped());
-                } else if ("strict".equals(fieldName)) {
-                    strict = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
@@ -182,7 +144,6 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
             FunctionDefinition deserializedFunctionDefinition = new FunctionDefinition(name);
             deserializedFunctionDefinition.description = description;
             deserializedFunctionDefinition.parameters = parameters;
-            deserializedFunctionDefinition.strict = strict;
             return deserializedFunctionDefinition;
         });
     }
