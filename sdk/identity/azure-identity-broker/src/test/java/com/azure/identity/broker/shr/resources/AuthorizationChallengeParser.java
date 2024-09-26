@@ -81,4 +81,22 @@ public class AuthorizationChallengeParser {
         return parameters;
     }
 
+
+    // Method to extract the nonce parameter from the challenge response
+    public static String extractNonce(String challenge) {
+        // Split the challenge by commas to separate key-value pairs
+        String[] parameters = challenge.split(",");
+
+        // Iterate through the parameters and find the nonce parameter
+        for (String parameter : parameters) {
+            parameter = parameter.trim(); // Remove leading/trailing spaces
+            if (parameter.startsWith("nonce=\"")) {
+                // Extract and return the nonce value (removing leading 'nonce="' and trailing '"')
+                return parameter.substring(7, parameter.length() - 1);
+            }
+        }
+
+        return null; // Return null if nonce is not found
+    }
+
 }

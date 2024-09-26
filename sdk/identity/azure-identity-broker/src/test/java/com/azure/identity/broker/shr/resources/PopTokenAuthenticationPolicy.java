@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static com.azure.identity.broker.shr.resources.AuthorizationChallengeParser.getChallengeParameterFromResponse;
+import static com.azure.identity.broker.shr.resources.AuthorizationChallengeParser.extractNonce;
 
 /**
  * The Pop token authentication policy for use with Azure SDK clients.
@@ -66,7 +66,8 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @return A {@link Mono} containing a {@link Boolean} indicating if the request was authorized.
      */
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
-        popNonce = getChallengeParameterFromResponse(response, "PoP", "nonce");
+        String headerValue = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+        popNonce = extractNonce(headerValue);
         if (CoreUtils.isNullOrEmpty(popNonce)) {
             return Mono.just(false);
         }
@@ -83,7 +84,8 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
      * @return A {@link Boolean} indicating if the request was authorized.
      */
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        popNonce = getChallengeParameterFromResponse(response, "PoP", "nonce");
+        String headerValue = response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+        popNonce = extractNonce(headerValue);
 
         if (CoreUtils.isNullOrEmpty(popNonce)) {
             return false;
@@ -124,7 +126,8 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                     }
                 });
             } else if (authHeader != null) {
-                popNonce = getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
+                String headerValue = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+                popNonce = extractNonce(headerValue);
             }
             return Mono.just(httpResponse);
         });
@@ -142,7 +145,6 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                 "Proof of possession token authentication is not permitted for non TLS-protected (HTTPS) endpoints."));
         } else {
             HttpPipelineNextSyncPolicy nextPolicy = next.clone();
-            this.authorizeRequestSync(context);
             HttpResponse httpResponse = next.processSync();
             String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
             if (httpResponse.getStatusCode() == 401 && authHeader != null) {
@@ -153,7 +155,8 @@ public class PopTokenAuthenticationPolicy implements HttpPipelinePolicy {
                     return httpResponse;
                 }
             } else if (authHeader != null) {
-                popNonce = getChallengeParameterFromResponse(httpResponse, "PoP", "nonce");
+                String headerValue = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+                popNonce = extractNonce(headerValue);
                 return httpResponse;
             } else {
                 return httpResponse;

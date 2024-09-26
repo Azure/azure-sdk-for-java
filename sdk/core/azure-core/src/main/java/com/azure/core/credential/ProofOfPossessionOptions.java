@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.credential;
 
 import com.azure.core.http.HttpMethod;
@@ -10,7 +13,6 @@ import java.net.URL;
 public class ProofOfPossessionOptions {
 
     private String proofOfPossessionNonce;
-    private boolean isProofOfPossessionEnabled;
     private URL requestUrl;
     private HttpMethod requestMethod;
 
@@ -31,26 +33,6 @@ public class ProofOfPossessionOptions {
      */
     public ProofOfPossessionOptions setProofOfPossessionNonce(String proofOfPossessionNonce) {
         this.proofOfPossessionNonce = proofOfPossessionNonce;
-        return this;
-    }
-
-    /**
-     * Checks if proof of possession is enabled.
-     *
-     * @return A boolean indicating whether proof of possession is enabled.
-     */
-    public boolean isProofOfPossessionEnabled() {
-        return isProofOfPossessionEnabled;
-    }
-
-    /**
-     * Sets the proof of possession enabled status.
-     *
-     * @param proofOfPossessionEnabled A boolean indicating whether proof of possession should be enabled.
-     * @return The updated instance of ProofOfPossessionOptions.
-     */
-    public ProofOfPossessionOptions setProofOfPossessionEnabled(boolean proofOfPossessionEnabled) {
-        isProofOfPossessionEnabled = proofOfPossessionEnabled;
         return this;
     }
 

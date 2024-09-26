@@ -3,9 +3,6 @@
 
 package com.azure.core.credential;
 
-import com.azure.core.http.HttpMethod;
-
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
