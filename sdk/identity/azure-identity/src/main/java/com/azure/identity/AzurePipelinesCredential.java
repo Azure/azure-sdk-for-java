@@ -79,10 +79,19 @@ public class AzurePipelinesCredential implements TokenCredential {
                     try (HttpResponse response = httpPipeline.sendSync(request, Context.NONE)) {
                         String responseBody = response.getBodyAsBinaryData().toString();
                         if (response.getStatusCode() != 200) {
-                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token "
+                            String xVssHeader = response.getHeaderValue(HttpHeaderName.fromString("x-vss-e2eid"));
+                            String xMsEdgeRefHeader = response.getHeaderValue(HttpHeaderName.fromString("x-msedge-ref"));
+                            String message = "Failed to get the client assertion token "
                                 + responseBody
-                                + System.lineSeparator()
-                                + "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.", response));
+                                + System.lineSeparator();
+                            if (xVssHeader != null) {
+                                message += "x-vss-e2eid: " + xVssHeader + System.lineSeparator();
+                            }
+                            if (xMsEdgeRefHeader != null) {
+                                message += "x-msedge-ref: " + xMsEdgeRefHeader + System.lineSeparator();
+                            }
+                            message += "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.";
+                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(message, response));
                         }
                         try (JsonReader reader = JsonProviders.createReader(responseBody)) {
                             return OidcTokenResponse.fromJson(reader).getOidcToken();

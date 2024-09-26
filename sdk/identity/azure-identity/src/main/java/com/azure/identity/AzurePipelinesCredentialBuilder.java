@@ -3,6 +3,7 @@
 
 package com.azure.identity;
 
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.ValidationUtil;
@@ -108,6 +109,19 @@ public class AzurePipelinesCredentialBuilder extends AadCredentialBuilderBase<Az
 
         String requestUrl = String.format("%s?api-version=%s&serviceConnectionId=%s",
             oidcEndpoint, OIDC_API_VERSION, serviceConnectionId);
+
+        // We need to make a best effort to log these headers.
+        // If the user gives us options, we'll sneak the headers in, or make an options with them.
+        // If the user gave us a pipeline none of this matters as we can't change a user created pipeline.
+        if (identityClientOptions.getHttpPipeline() != null) {
+            HttpLogOptions options = identityClientOptions.getHttpLogOptions();
+            if (options == null) {
+                options = new HttpLogOptions();
+            }
+            options.addAllowedHeaderName("x-vss-e2eid");
+            options.addAllowedHeaderName("x-msedge-ref");
+            identityClientOptions.setHttpLogOptions(options);
+        }
         return new AzurePipelinesCredential(clientId, tenantId, requestUrl, systemAccessToken, identityClientOptions.clone());
     }
 }
