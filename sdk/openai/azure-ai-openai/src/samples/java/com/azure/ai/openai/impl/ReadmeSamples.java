@@ -41,7 +41,6 @@ import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.FileDeletionStatus;
 import com.azure.ai.openai.models.FileDetails;
 import com.azure.ai.openai.models.FilePurpose;
-import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;

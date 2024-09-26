@@ -362,7 +362,7 @@ List<ChatRequestMessage> chatMessages = Arrays.asList(
         new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
 );
 ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-        new FunctionDefinition("MyFunctionName"));
+        new ChatCompletionsFunctionToolDefinitionFunction("MyFunctionName"));
 
 ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
 chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));

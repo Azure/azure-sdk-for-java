@@ -6,7 +6,6 @@ package com.azure.ai.openai.generated;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
 import com.azure.ai.openai.models.Batch;
 import com.azure.ai.openai.models.PageableList;
 import com.azure.identity.DefaultAzureCredentialBuilder;
