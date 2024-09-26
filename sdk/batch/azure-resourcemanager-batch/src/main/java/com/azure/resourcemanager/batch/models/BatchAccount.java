@@ -133,20 +133,16 @@ public interface BatchAccount {
     EncryptionProperties encryption();
 
     /**
-     * Gets the dedicatedCoreQuota property: The dedicated core quota for the Batch account.
-     * 
-     * For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value
-     * is not returned.
+     * Gets the dedicatedCoreQuota property: For accounts with PoolAllocationMode set to UserSubscription, quota is
+     * managed on the subscription so this value is not returned.
      * 
      * @return the dedicatedCoreQuota value.
      */
     Integer dedicatedCoreQuota();
 
     /**
-     * Gets the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account.
-     * 
-     * For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this value
-     * is not returned.
+     * Gets the lowPriorityCoreQuota property: For accounts with PoolAllocationMode set to UserSubscription, quota is
+     * managed on the subscription so this value is not returned.
      * 
      * @return the lowPriorityCoreQuota value.
      */
@@ -162,12 +158,10 @@ public interface BatchAccount {
     List<VirtualMachineFamilyCoreQuota> dedicatedCoreQuotaPerVMFamily();
 
     /**
-     * Gets the dedicatedCoreQuotaPerVMFamilyEnforced property: A value indicating whether core quotas per Virtual
-     * Machine family are enforced for this account
-     * 
-     * If this flag is true, dedicated core quota is enforced via both the dedicatedCoreQuotaPerVMFamily and
-     * dedicatedCoreQuota properties on the account. If this flag is false, dedicated core quota is enforced only via
-     * the dedicatedCoreQuota property on the account and does not consider Virtual Machine family.
+     * Gets the dedicatedCoreQuotaPerVMFamilyEnforced property: If this flag is true, dedicated core quota is enforced
+     * via both the dedicatedCoreQuotaPerVMFamily and dedicatedCoreQuota properties on the account. If this flag is
+     * false, dedicated core quota is enforced only via the dedicatedCoreQuota property on the account and does not
+     * consider Virtual Machine family.
      * 
      * @return the dedicatedCoreQuotaPerVMFamilyEnforced value.
      */

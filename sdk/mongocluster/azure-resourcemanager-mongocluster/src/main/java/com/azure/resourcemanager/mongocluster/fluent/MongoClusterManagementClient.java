@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for DocumentDBClient class.
+ * The interface for MongoClusterManagementClient class.
  */
-public interface DocumentDBClient {
+public interface MongoClusterManagementClient {
     /**
      * Gets Service host.
      * 

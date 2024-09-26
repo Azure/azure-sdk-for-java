@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties associated with the Application.
  */
 @Fluent
-public final class ApplicationProperties {
+public final class ApplicationProperties implements JsonSerializable<ApplicationProperties> {
     /*
      * The display name for the application.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * A value indicating whether packages within the application may be overwritten using the same version string.
      */
-    @JsonProperty(value = "allowUpdates")
     private Boolean allowUpdates;
 
     /*
-     * The package to use if a client requests the application but does not specify a version. This property can only
-     * be set to the name of an existing package.
+     * The package to use if a client requests the application but does not specify a version. This property can only be
+     * set to the name of an existing package.
      */
-    @JsonProperty(value = "defaultVersion")
     private String defaultVersion;
 
     /**
@@ -107,5 +108,47 @@ public final class ApplicationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("allowUpdates", this.allowUpdates);
+        jsonWriter.writeStringField("defaultVersion", this.defaultVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationProperties.
+     */
+    public static ApplicationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationProperties deserializedApplicationProperties = new ApplicationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedApplicationProperties.displayName = reader.getString();
+                } else if ("allowUpdates".equals(fieldName)) {
+                    deserializedApplicationProperties.allowUpdates = reader.getNullable(JsonReader::getBoolean);
+                } else if ("defaultVersion".equals(fieldName)) {
+                    deserializedApplicationProperties.defaultVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationProperties;
+        });
     }
 }

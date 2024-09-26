@@ -387,7 +387,7 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
         }
         ConnectionString connectionString
             = ConnectionString.parse(configProperties.getString(APPLICATIONINSIGHTS_CONNECTION_STRING));
-        return Objects.requireNonNull(connectionString, "'connectionString' cannot be null");
+        return connectionString;
     }
 
     private HttpPipeline createHttpPipeline() {

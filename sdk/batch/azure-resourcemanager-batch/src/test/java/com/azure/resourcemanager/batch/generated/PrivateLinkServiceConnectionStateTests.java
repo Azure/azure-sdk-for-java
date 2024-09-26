@@ -13,19 +13,19 @@ public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkServiceConnectionState model = BinaryData
-            .fromString(
-                "{\"status\":\"Disconnected\",\"description\":\"podepoo\",\"actionsRequired\":\"nuvamiheogna\"}")
+            .fromString("{\"status\":\"Disconnected\",\"description\":\"asvm\",\"actionsRequired\":\"jqul\"}")
             .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
-        Assertions.assertEquals("podepoo", model.description());
+        Assertions.assertEquals("asvm", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionState model = new PrivateLinkServiceConnectionState()
-            .withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED).withDescription("podepoo");
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                .withDescription("asvm");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED, model.status());
-        Assertions.assertEquals("podepoo", model.description());
+        Assertions.assertEquals("asvm", model.description());
     }
 }

@@ -23,8 +23,8 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.mongocluster.fluent.DocumentDBClient;
 import com.azure.resourcemanager.mongocluster.fluent.FirewallRulesClient;
+import com.azure.resourcemanager.mongocluster.fluent.MongoClusterManagementClient;
 import com.azure.resourcemanager.mongocluster.fluent.MongoClustersClient;
 import com.azure.resourcemanager.mongocluster.fluent.OperationsClient;
 import com.azure.resourcemanager.mongocluster.fluent.PrivateEndpointConnectionsClient;
@@ -40,10 +40,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the DocumentDBClientImpl type.
+ * Initializes a new instance of the MongoClusterManagementClientImpl type.
  */
-@ServiceClient(builder = DocumentDBClientBuilder.class)
-public final class DocumentDBClientImpl implements DocumentDBClient {
+@ServiceClient(builder = MongoClusterManagementClientBuilder.class)
+public final class MongoClusterManagementClientImpl implements MongoClusterManagementClient {
     /**
      * Service host.
      */
@@ -213,7 +213,7 @@ public final class DocumentDBClientImpl implements DocumentDBClient {
     }
 
     /**
-     * Initializes an instance of DocumentDBClient client.
+     * Initializes an instance of MongoClusterManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -222,14 +222,14 @@ public final class DocumentDBClientImpl implements DocumentDBClient {
      * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
-    DocumentDBClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
-        AzureEnvironment environment, String endpoint, String subscriptionId) {
+    MongoClusterManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String endpoint, String subscriptionId) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-06-01-preview";
+        this.apiVersion = "2024-07-01";
         this.operations = new OperationsClientImpl(this);
         this.mongoClusters = new MongoClustersClientImpl(this);
         this.firewallRules = new FirewallRulesClientImpl(this);
@@ -364,5 +364,5 @@ public final class DocumentDBClientImpl implements DocumentDBClient {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DocumentDBClientImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MongoClusterManagementClientImpl.class);
 }

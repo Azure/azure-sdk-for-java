@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Determines how a pool communicates with the Batch service.
  */
@@ -41,7 +38,6 @@ public enum NodeCommunicationMode {
      * @param value the serialized value to parse.
      * @return the parsed NodeCommunicationMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static NodeCommunicationMode fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum NodeCommunicationMode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;
