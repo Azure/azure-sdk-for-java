@@ -109,27 +109,6 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
     private final BinaryData embeddingDependency;
 
     /**
-     * Creates an instance of MongoDBChatExtensionParameters class.
-     *
-     * @param endpoint the endpoint value to set.
-     * @param collectionName the collectionName value to set.
-     * @param databaseName the databaseName value to set.
-     * @param appName the appName value to set.
-     * @param fieldsMapping the fieldsMapping value to set.
-     * @param embeddingDependency the embeddingDependency value to set.
-     */
-    @Generated
-    public MongoDBChatExtensionParameters(String endpoint, String collectionName, String databaseName, String appName,
-        MongoDBChatExtensionParametersFieldsMapping fieldsMapping, BinaryData embeddingDependency) {
-        this.endpoint = endpoint;
-        this.collectionName = collectionName;
-        this.databaseName = databaseName;
-        this.appName = appName;
-        this.fieldsMapping = fieldsMapping;
-        this.embeddingDependency = embeddingDependency;
-    }
-
-    /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
      * Each data source type supports a specific set of available authentication methods; please see the documentation
      * of
@@ -377,6 +356,7 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
         jsonWriter.writeStringField("collection_name", this.collectionName);
         jsonWriter.writeStringField("database_name", this.databaseName);
         jsonWriter.writeStringField("app_name", this.appName);
+        jsonWriter.writeStringField("index_name", this.indexName);
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
         jsonWriter.writeUntypedField("embedding_dependency", this.embeddingDependency.toObject(Object.class));
         jsonWriter.writeJsonField("authentication", this.authentication);
@@ -406,6 +386,7 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
             String collectionName = null;
             String databaseName = null;
             String appName = null;
+            String indexName = null;
             MongoDBChatExtensionParametersFieldsMapping fieldsMapping = null;
             BinaryData embeddingDependency = null;
             OnYourDataAuthenticationOptions authentication = null;
@@ -426,6 +407,8 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
                     databaseName = reader.getString();
                 } else if ("app_name".equals(fieldName)) {
                     appName = reader.getString();
+                } else if ("index_name".equals(fieldName)) {
+                    indexName = reader.getString();
                 } else if ("fields_mapping".equals(fieldName)) {
                     fieldsMapping = MongoDBChatExtensionParametersFieldsMapping.fromJson(reader);
                 } else if ("embedding_dependency".equals(fieldName)) {
@@ -451,8 +434,8 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
                 }
             }
             MongoDBChatExtensionParameters deserializedMongoDBChatExtensionParameters
-                = new MongoDBChatExtensionParameters(endpoint, collectionName, databaseName, appName, fieldsMapping,
-                    embeddingDependency);
+                = new MongoDBChatExtensionParameters(endpoint, collectionName, databaseName, appName, indexName,
+                    fieldsMapping, embeddingDependency);
             deserializedMongoDBChatExtensionParameters.authentication = authentication;
             deserializedMongoDBChatExtensionParameters.topNDocuments = topNDocuments;
             deserializedMongoDBChatExtensionParameters.inScope = inScope;
@@ -462,5 +445,44 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
             deserializedMongoDBChatExtensionParameters.includeContexts = includeContexts;
             return deserializedMongoDBChatExtensionParameters;
         });
+    }
+
+    /*
+     * The name of the MongoDB index.
+     */
+    @Generated
+    private final String indexName;
+
+    /**
+     * Creates an instance of MongoDBChatExtensionParameters class.
+     *
+     * @param endpoint the endpoint value to set.
+     * @param collectionName the collectionName value to set.
+     * @param databaseName the databaseName value to set.
+     * @param appName the appName value to set.
+     * @param indexName the indexName value to set.
+     * @param fieldsMapping the fieldsMapping value to set.
+     * @param embeddingDependency the embeddingDependency value to set.
+     */
+    @Generated
+    public MongoDBChatExtensionParameters(String endpoint, String collectionName, String databaseName, String appName,
+        String indexName, MongoDBChatExtensionParametersFieldsMapping fieldsMapping, BinaryData embeddingDependency) {
+        this.endpoint = endpoint;
+        this.collectionName = collectionName;
+        this.databaseName = databaseName;
+        this.appName = appName;
+        this.indexName = indexName;
+        this.fieldsMapping = fieldsMapping;
+        this.embeddingDependency = embeddingDependency;
+    }
+
+    /**
+     * Get the indexName property: The name of the MongoDB index.
+     *
+     * @return the indexName value.
+     */
+    @Generated
+    public String getIndexName() {
+        return this.indexName;
     }
 }
