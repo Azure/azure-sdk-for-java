@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.concurrent.Exchanger;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
+//@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
 @ActiveProfiles("servicebus-jms-passwordless")
 public class ServiceBusJmsPasswordlessIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsPasswordlessIT.class);
