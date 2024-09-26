@@ -15,7 +15,7 @@ public class UploadsAFile {
             .endpoint("{endpoint}")
             .buildClient();
         // BEGIN:com.azure.ai.openai.generated.uploadfile.uploadsafile
-        OpenAIFile response = openAIClient.uploadFile(null, null, null);
+        OpenAIFile response = openAIClient.uploadFile(null, null);
         // END:com.azure.ai.openai.generated.uploadfile.uploadsafile
     }
 }

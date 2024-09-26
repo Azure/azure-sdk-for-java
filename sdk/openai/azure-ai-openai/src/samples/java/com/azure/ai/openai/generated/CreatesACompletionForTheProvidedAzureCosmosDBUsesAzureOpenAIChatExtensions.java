@@ -14,9 +14,8 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.OnYourDataConnectionStringAuthenticationOptions;
 import com.azure.ai.openai.models.OnYourDataDeploymentNameVectorizationSource;
-import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
+
 import java.util.Arrays;
 
 public class CreatesACompletionForTheProvidedAzureCosmosDBUsesAzureOpenAIChatExtensions {
@@ -26,8 +25,7 @@ public class CreatesACompletionForTheProvidedAzureCosmosDBUsesAzureOpenAIChatExt
             .buildClient();
         // BEGIN:com.azure.ai.openai.generated.getchatcompletions.createsacompletionfortheprovidedazurecosmosdbusesazureopenaichatextensions
         ChatCompletions response = openAIClient.getChatCompletions("<deployment-id>", new ChatCompletionsOptions(
-            Arrays.asList(new ChatRequestUserMessage(
-                BinaryData.fromBytes("can you tell me how to care for a parrot?".getBytes(StandardCharsets.UTF_8)))))
+            Arrays.asList(new ChatRequestUserMessage("can you tell me how to care for a parrot?")))
             .setDataSources(Arrays.asList(new AzureCosmosDBChatExtensionConfiguration(
                 new AzureCosmosDBChatExtensionParameters("vectordb", "azuredocs", "azuredocindex",
                     new AzureCosmosDBFieldMappingOptions(Arrays.asList("content"), Arrays.asList("contentvector")),

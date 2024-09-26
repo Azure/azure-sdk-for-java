@@ -14,9 +14,8 @@ import com.azure.ai.openai.models.OnYourDataDeploymentNameVectorizationSource;
 import com.azure.ai.openai.models.PineconeChatExtensionConfiguration;
 import com.azure.ai.openai.models.PineconeChatExtensionParameters;
 import com.azure.ai.openai.models.PineconeFieldMappingOptions;
-import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
+
 import java.util.Arrays;
 
 public class CreatesACompletionForTheProvidedPineconeResourceUsesAzureOpenAIChatExtensions {
@@ -26,8 +25,7 @@ public class CreatesACompletionForTheProvidedPineconeResourceUsesAzureOpenAIChat
             .buildClient();
         // BEGIN:com.azure.ai.openai.generated.getchatcompletions.createsacompletionfortheprovidedpineconeresourceusesazureopenaichatextensions
         ChatCompletions response = openAIClient.getChatCompletions("<deployment-id>",
-            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage(
-                BinaryData.fromBytes("can you tell me how to care for a parrot?".getBytes(StandardCharsets.UTF_8)))))
+            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("can you tell me how to care for a parrot?")))
                 .setDataSources(Arrays.asList(new PineconeChatExtensionConfiguration(
                     new PineconeChatExtensionParameters("{environment name}", "{index name}",
                         new PineconeFieldMappingOptions(Arrays.asList("content")).setTitleField("title")
