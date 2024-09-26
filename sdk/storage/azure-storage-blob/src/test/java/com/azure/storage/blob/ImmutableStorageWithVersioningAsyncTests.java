@@ -842,7 +842,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                         assertNull(r.hasLegalHold());
                         return Mono.empty();
                     }).then(oldBlob.setLegalHold(false)).then(oldBlob.delete());
-            }));
+                }));
 
         StepVerifier.create(response)
             .verifyComplete();
