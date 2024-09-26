@@ -311,12 +311,12 @@ public final class BlobServiceAsyncClient {
         try {
             options = options == null ? new BlobContainerCreateOptions() : options;
             return createBlobContainerWithResponse(containerName, options.getMetadata(), options.getPublicAccessType(),
-                context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
-                .getStatusCode() == 409, t -> {
-                    HttpResponse response = ((BlobStorageException) t).getResponse();
-                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                        response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
-                });
+                                                   context).onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
+                                                                                                                        .getStatusCode() == 409, t -> {
+                HttpResponse response = ((BlobStorageException) t).getResponse();
+                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                                                      response.getHeaders(), this.getBlobContainerAsyncClient(containerName)));
+            });
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -437,18 +437,8 @@ public final class BlobServiceAsyncClient {
     }
 
     Mono<Response<Boolean>> deleteBlobContainerIfExistsWithResponse(String containerName, Context context) {
-        try {
-            return deleteBlobContainerWithResponse(containerName, context)
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-                    t -> {
-                        HttpResponse response = ((BlobStorageException) t).getResponse();
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), false));
-                    });
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        throwOnAnonymousAccess();
+        return getBlobContainerAsyncClient(containerName).deleteIfExistsWithResponse(null, context);
     }
 
     /**
