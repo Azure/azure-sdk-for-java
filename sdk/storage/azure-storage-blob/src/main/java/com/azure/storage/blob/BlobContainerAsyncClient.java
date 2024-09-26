@@ -364,11 +364,11 @@ public final class BlobContainerAsyncClient {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
             .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-                           t -> {
-                               HttpResponse response = ((BlobStorageException) t).getResponse();
-                               return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                                                                     response.getHeaders(), false));
-                           });
+                t -> {
+                    HttpResponse response = ((BlobStorageException) t).getResponse();
+                    return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                        response.getHeaders(), false));
+                });
     }
 
     /**
@@ -424,10 +424,10 @@ public final class BlobContainerAsyncClient {
     }
 
     Mono<Response<Void>> createWithResponse(Map<String, String> metadata, PublicAccessType accessType,
-                                            Context context) {
+        Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getContainers().createNoCustomHeadersWithResponseAsync(containerName, null,
-                                                                                            metadata, accessType, null, blobContainerEncryptionScope, context);
+            metadata, accessType, null, blobContainerEncryptionScope, context);
     }
 
     Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
