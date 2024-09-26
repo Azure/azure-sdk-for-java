@@ -51,8 +51,8 @@ import java.net.URL;
 public class AzurePipelinesCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredential.class);
     private static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
-    public static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
-    public static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
+    private static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
+    private static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
 
