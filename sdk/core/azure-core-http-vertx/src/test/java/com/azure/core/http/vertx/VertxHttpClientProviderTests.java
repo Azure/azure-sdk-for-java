@@ -36,8 +36,7 @@ public class VertxHttpClientProviderTests {
 
     @Test
     public void nullOptionsReturnsBaseClient() {
-        VertxHttpClient httpClient
-            = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
@@ -73,8 +72,7 @@ public class VertxHttpClientProviderTests {
 
         HttpClientOptions clientOptions = new HttpClientOptions().setProxyOptions(proxyOptions);
 
-        VertxHttpClient httpClient
-            = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 
@@ -101,8 +99,7 @@ public class VertxHttpClientProviderTests {
             .setReadTimeout(timeout)
             .setWriteTimeout(timeout);
 
-        VertxHttpClient httpClient
-            = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientProvider().createInstance(clientOptions);
 
         io.vertx.core.http.HttpClientOptions options = ((HttpClientImpl) httpClient.client).options();
 

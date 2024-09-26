@@ -115,8 +115,7 @@ public class VertxHttpClientBuilderTests {
         proxyOptions.setCredentials("user", "secret");
         proxyOptions.setNonProxyHosts("foo.*|*bar.com|microsoft.com");
 
-        VertxHttpClient httpClient
-            = (VertxHttpClient) new VertxHttpClientBuilder().proxy(proxyOptions).build();
+        VertxHttpClient httpClient = (VertxHttpClient) new VertxHttpClientBuilder().proxy(proxyOptions).build();
 
         HttpClientImpl vertxHttpClientImpl = (HttpClientImpl) httpClient.client;
         io.vertx.core.http.HttpClientOptions options = vertxHttpClientImpl.options();
@@ -185,8 +184,7 @@ public class VertxHttpClientBuilderTests {
     public void buildWithCustomVertx() throws Exception {
         Vertx vertx = Vertx.vertx();
 
-        HttpClient httpClient
-            = new VertxHttpClientBuilder().configuration(Configuration.NONE).vertx(vertx).build();
+        HttpClient httpClient = new VertxHttpClientBuilder().configuration(Configuration.NONE).vertx(vertx).build();
 
         String defaultUrl = SERVER_HTTP_URI + SERVICE_ENDPOINT;
         try {

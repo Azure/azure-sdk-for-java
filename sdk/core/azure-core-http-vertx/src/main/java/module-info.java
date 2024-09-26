@@ -11,7 +11,7 @@ module com.azure.core.http.vertx {
 
     exports com.azure.core.http.vertx;
 
-    provides com.azure.core.http.HttpClientProvider with VertxHttpClientProvider;
+    provides com.azure.core.http.HttpClientProvider with com.azure.core.http.vertx.VertxHttpClientProvider;
 
     uses com.azure.core.http.HttpClientProvider;
     uses com.azure.core.http.vertx.VertxProvider;
