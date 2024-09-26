@@ -31,7 +31,7 @@ jobs:
         displayName: 'Generate FromSource POM for unreleased dependencies'
         inputs:
           scriptPath: 'eng/scripts/generate_from_source_pom.py'
-          arguments: '--artifacts-list $(parameters.ArtifactsList)'
+          arguments: '--artifacts-list ${{ parameters.ArtifactsList }}'
           workingDirectory: '$(System.DefaultWorkingDirectory)'
 #      - script: |
 #          python ./eng/scripts/generate_from_source_pom.py --al com.azure:azure-messaging-servicebus,com.azure:azure-messaging-eventhubs
