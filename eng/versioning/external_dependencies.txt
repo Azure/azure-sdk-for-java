@@ -232,9 +232,9 @@ org.assertj:assertj-core;3.22.0
 org.bouncycastle:bcprov-jdk15to18;1.78.1
 org.bouncycastle:bcprov-jdk18on;1.78.1
 org.bouncycastle:bcpkix-lts8on;2.73.6
-org.eclipse.jetty:jetty-http;9.4.54.v20240208
-org.eclipse.jetty:jetty-server;9.4.54.v20240208
-org.eclipse.jetty:jetty-servlet;9.4.54.v20240208
+org.eclipse.jetty:jetty-http;9.4.56.v20240826
+org.eclipse.jetty:jetty-server;9.4.56.v20240826
+org.eclipse.jetty:jetty-servlet;9.4.56.v20240826
 org.glassfish:javax.json;1.1.4
 org.glassfish:jakarta.el;3.0.4
 org.hamcrest:hamcrest;2.2
