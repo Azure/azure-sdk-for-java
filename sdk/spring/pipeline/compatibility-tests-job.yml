@@ -27,6 +27,9 @@ jobs:
             - 'sdk/jdbc'
             - 'sdk/servicebus'
             - 'sdk/eventhubs'
+      - template: ../../../eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
+        parameters:
+          JobType: 'Build'
       - task: PythonScript@0
         displayName: 'Generate FromSource POM for unreleased dependencies'
         inputs:
