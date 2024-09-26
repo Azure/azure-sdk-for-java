@@ -767,29 +767,30 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
     @Test
     public void testVersionBlobImmutabilityExpiry() {
-        Mono<Void> response = Mono.zip(vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true),
-            vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true))
-            .flatMap(tuple -> {
-                BlobAsyncClient oldBlob = vlwBlob.getVersionClient(tuple.getT1().getVersionId());
-                BlobAsyncClient newBlob = vlwBlob.getVersionClient(tuple.getT2().getVersionId());
+        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
 
-                OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
-                OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
-                BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
-                BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
+        Mono<Void> response = vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .flatMap(r1 -> vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                .flatMap(r2 -> {
+                    BlobAsyncClient oldBlob = vlwBlob.getVersionClient(r1.getVersionId());
+                    BlobAsyncClient newBlob = vlwBlob.getVersionClient(r2.getVersionId());
 
-                return oldBlob.setImmutabilityPolicy(policy1)
-                    .then(newBlob.setImmutabilityPolicy(policy2))
-                    .then(Mono.zip(oldBlob.getProperties(), newBlob.getProperties()))
-                    .flatMap(propTuple -> {
-                        assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
-                            propTuple.getT1().getImmutabilityPolicy().getExpiryTime());
-                        assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
-                            propTuple.getT2().getImmutabilityPolicy().getExpiryTime());
-                        //cleanup
-                        return oldBlob.deleteImmutabilityPolicy().then(oldBlob.delete());
-                    });
-            });
+                    BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
+                    BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
+
+                    return oldBlob.setImmutabilityPolicy(policy1)
+                        .then(newBlob.setImmutabilityPolicy(policy2))
+                        .then(Mono.zip(oldBlob.getProperties(), newBlob.getProperties()))
+                        .flatMap(propTuple -> {
+                            assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                                propTuple.getT1().getImmutabilityPolicy().getExpiryTime());
+                            assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                                propTuple.getT2().getImmutabilityPolicy().getExpiryTime());
+                            //cleanup
+                            return oldBlob.deleteImmutabilityPolicy().then(oldBlob.delete());
+                        });
+                }));
 
         StepVerifier.create(response)
             .verifyComplete();
@@ -798,9 +799,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
     @Test
     public void testImmutabilitySnapshot() {
+        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
+
         Mono<Void> response = vlwBlob.createSnapshot().flatMap(snapshotBlob -> {
-            OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
-            OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
             BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
             BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
 
@@ -824,23 +826,23 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
     @Test
     public void testLegalHoldVersion() {
-        Mono<Void> response = Mono.zip(vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true),
-                vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true))
-            .flatMap(tuple -> {
-                BlobAsyncClient oldBlob = vlwBlob.getVersionClient(tuple.getT1().getVersionId());
-                BlobAsyncClient newBlob = vlwBlob.getVersionClient(tuple.getT2().getVersionId());
+        Mono<Void> response = vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .flatMap(r1 -> vlwBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                .flatMap(r2 -> {
+                    BlobAsyncClient oldBlob = vlwBlob.getVersionClient(r1.getVersionId());
+                    BlobAsyncClient newBlob = vlwBlob.getVersionClient(r2.getVersionId());
 
-                return oldBlob.setLegalHold(true).flatMap(r -> {
-                    assertTrue(r.hasLegalHold());
-                    return Mono.empty();
-                }).then(oldBlob.getProperties()).flatMap(r -> {
-                    assertTrue(r.hasLegalHold());
-                    return Mono.empty();
-                }).then(newBlob.getProperties()).flatMap(r -> {
-                    assertNull(r.hasLegalHold());
-                    return Mono.empty();
-                }).then(oldBlob.setLegalHold(false)).then(oldBlob.delete());
-            });
+                    return oldBlob.setLegalHold(true).flatMap(r -> {
+                        assertTrue(r.hasLegalHold());
+                        return Mono.empty();
+                    }).then(oldBlob.getProperties()).flatMap(r -> {
+                        assertTrue(r.hasLegalHold());
+                        return Mono.empty();
+                    }).then(newBlob.getProperties()).flatMap(r -> {
+                        assertNull(r.hasLegalHold());
+                        return Mono.empty();
+                    }).then(oldBlob.setLegalHold(false)).then(oldBlob.delete());
+            }));
 
         StepVerifier.create(response)
             .verifyComplete();
