@@ -1330,7 +1330,7 @@ public class BlobAsyncClientBase {
         Boolean getMD5, Context context) {
         return azureBlobStorage.getBlobs().downloadNoCustomHeadersWithResponseAsync(containerName, blobName, snapshot,
             versionId, null, range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null,
-            requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
+            null, requestConditions.getIfModifiedSince(), requestConditions.getIfUnmodifiedSince(), eTag,
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             customerProvidedKey, context);
     }
@@ -2760,7 +2760,7 @@ public class BlobAsyncClientBase {
 
         return this.azureBlobStorage.getBlobs().setImmutabilityPolicyWithResponseAsync(containerName, blobName, null,
             null, finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),
-            finalImmutabilityPolicy.getPolicyMode(), context)
+            finalImmutabilityPolicy.getPolicyMode(), snapshot, versionId, context)
             .map(response -> {
                 BlobsSetImmutabilityPolicyHeaders headers = response.getDeserializedHeaders();
                 BlobImmutabilityPolicy responsePolicy = new BlobImmutabilityPolicy()
@@ -2819,7 +2819,8 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> deleteImmutabilityPolicyWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs()
-            .deleteImmutabilityPolicyNoCustomHeadersWithResponseAsync(containerName, blobName, null, null, context);
+            .deleteImmutabilityPolicyNoCustomHeadersWithResponseAsync(containerName, blobName, null, null,
+                snapshot, versionId, context);
     }
 
     /**
@@ -2873,7 +2874,7 @@ public class BlobAsyncClientBase {
     Mono<Response<BlobLegalHoldResult>> setLegalHoldWithResponse(boolean legalHold, Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs().setLegalHoldWithResponseAsync(containerName, blobName,
-            legalHold, null, null, context)
+            legalHold, null, null, snapshot, versionId, context)
             .map(response -> new SimpleResponse<>(response,
                 new InternalBlobLegalHoldResult(response.getDeserializedHeaders().isXMsLegalHold())));
     }

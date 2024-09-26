@@ -1061,4 +1061,45 @@ public class ShareAsyncApiTests extends FileShareTestBase {
         premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @Test
+    public void createShareProvisionedV2() {
+        ShareCreateOptions options = new ShareCreateOptions()
+            .setProvisionedMaxIops(501L)
+            .setProvisionedMaxBandwidthMibps(126L);
+
+        StepVerifier.create(primaryFileServiceAsyncClient.getShareAsyncClient(shareName).createWithResponse(options))
+            .assertNext(r -> {
+                assertEquals("501", r.getHeaders().get(X_MS_SHARE_PROVISIONED_IOPS).getValue());
+                assertEquals("126", r.getHeaders().get(X_MS_SHARE_PROVISIONED_BANDWIDTH_MIBPS).getValue());
+            })
+            .verifyComplete();
+    }
+
+    @PlaybackOnly
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-01-05")
+    @Test
+    public void setAndGetPropertiesShareProvisionedV2() {
+        ShareAsyncClient ac = primaryFileServiceAsyncClient.getShareAsyncClient(shareName);
+
+        ShareSetPropertiesOptions options = new ShareSetPropertiesOptions()
+            .setProvisionedMaxIops(501L)
+            .setProvisionedMaxBandwidthMibps(126L);
+
+        Mono<ShareProperties> response = ac.create()
+            .then(ac.setProperties(options))
+            .then(ac.getProperties());
+
+        StepVerifier.create(response)
+            .assertNext(r -> {
+                assertEquals(501, r.getProvisionedIops());
+                assertEquals(126, r.getProvisionedBandwidthMiBps());
+                assertNotNull(r.getIncludedBurstIops());
+                assertNotNull(r.getMaxBurstCreditsForIops());
+                assertNotNull(r.getNextAllowedProvisionedIopsDowngradeTime());
+                assertNotNull(r.getNextAllowedProvisionedBandwidthDowngradeTime());
+            })
+            .verifyComplete();
+    }
 }
