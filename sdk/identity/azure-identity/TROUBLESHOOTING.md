@@ -290,7 +290,6 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 
 ## Troubleshoot `AzurePipelinesCredential` authentication issues
 
-
 | Error Message |Description| Mitigation |
 |---|---|---|
 | AADSTS900023: Specified tenant identifier `<some tenant ID>` is neither a valid DNS name, nor a valid external domain.|The `tenantId` argument to the `AzurePipelinesCredential` constructor is incorrect| Verify the tenant ID. It must identify the tenant of the user-assigned managed identity or service principal configured for the service connection.|
