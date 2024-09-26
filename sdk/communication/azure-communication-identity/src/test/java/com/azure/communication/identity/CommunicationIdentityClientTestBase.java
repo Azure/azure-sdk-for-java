@@ -10,6 +10,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.InterceptorManager;
@@ -44,7 +45,9 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
     protected static final String SYNC_TEST_SUFFIX = "Sync";
     protected static final List<CommunicationTokenScope> SCOPES = Arrays.asList(CHAT, VOIP);
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+        .get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING",
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
+    private static final HttpHeaderName MS_CV = HttpHeaderName.fromString("MS-CV");
 
     protected HttpClient httpClient;
 
@@ -99,7 +102,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
             .endpoint(communicationEndpoint)
             .httpClient(httpClient);
 
-        builder.credential(getIdentityTestCredential(interceptorManager));
+        builder.credential(getIdentityTestCredential(interceptorManager, httpClient));
         if (interceptorManager.isRecordMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
@@ -160,7 +163,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
                     // Should sanitize printed reponse url
                     LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
-                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue(MS_CV));
                     return Mono.just(bufferedResponse);
                 });
     }
@@ -179,17 +182,18 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
         assertFalse(userIdentifier.getId().isEmpty());
     }
 
-    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
+    public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager,
+        HttpClient httpClient) {
         if (interceptorManager.isPlaybackMode()) {
-            return  new MockTokenCredential();
+            return new MockTokenCredential();
         }
 
         Configuration config = Configuration.getGlobalConfiguration();
 
         ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-            .addLast(new EnvironmentCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build());
+            .addLast(new EnvironmentCredentialBuilder().httpClient(httpClient).build())
+            .addLast(new AzureCliCredentialBuilder().httpClient(httpClient).build())
+            .addLast(new AzureDeveloperCliCredentialBuilder().httpClient(httpClient).build());
 
 
         String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
@@ -203,6 +207,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
             && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
             builder.addLast(new AzurePipelinesCredentialBuilder()
+                .httpClient(httpClient)
                 .systemAccessToken(systemAccessToken)
                 .clientId(clientId)
                 .tenantId(tenantId)
@@ -210,7 +215,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
                 .build());
         }
 
-        builder.addLast(new AzurePowerShellCredentialBuilder().build());
+        builder.addLast(new AzurePowerShellCredentialBuilder().httpClient(httpClient).build());
         return builder.build();
     }
 
