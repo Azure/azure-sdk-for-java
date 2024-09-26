@@ -16,9 +16,9 @@ import java.util.function.Predicate;
  * <p>
  * Avoids having to implement workarounds in the client code to make them available just for testing purposes.
  */
-final class VertxAsyncClientTestHelper {
+final class VertxClientTestHelper {
 
-    private VertxAsyncClientTestHelper() {
+    private VertxClientTestHelper() {
         // Utility class
     }
 

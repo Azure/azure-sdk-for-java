@@ -27,11 +27,11 @@ import static com.azure.core.implementation.util.HttpUtils.getDefaultWriteTimeou
 import static com.azure.core.implementation.util.HttpUtils.getTimeout;
 
 /**
- * Builds a {@link VertxAsyncHttpClient}.
+ * Builds a {@link VertxHttpClient}.
  */
-public class VertxAsyncHttpClientBuilder {
+public class VertxHttpClientBuilder {
 
-    private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClientBuilder.class);
     private static final Pattern NON_PROXY_HOSTS_SPLIT = Pattern.compile("(?<!\\\\)\\|");
     private static final Pattern NON_PROXY_HOST_DESANITIZE = Pattern.compile("(\\?|\\\\|\\(|\\)|\\\\E|\\\\Q|\\.\\.)");
     private static final Pattern NON_PROXY_HOST_DOT_STAR = Pattern.compile("(\\.\\*)");
@@ -46,9 +46,9 @@ public class VertxAsyncHttpClientBuilder {
     private Vertx vertx;
 
     /**
-     * Creates an instance of {@link VertxAsyncHttpClientBuilder}.
+     * Creates an instance of {@link VertxHttpClientBuilder}.
      */
-    public VertxAsyncHttpClientBuilder() {
+    public VertxHttpClientBuilder() {
     }
 
     /**
@@ -67,7 +67,7 @@ public class VertxAsyncHttpClientBuilder {
      * @param connectTimeout Connect timeout duration.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
-    public VertxAsyncHttpClientBuilder connectTimeout(Duration connectTimeout) {
+    public VertxHttpClientBuilder connectTimeout(Duration connectTimeout) {
         // setConnectionTimeout can be null
         this.connectTimeout = connectTimeout;
         return this;
@@ -88,7 +88,7 @@ public class VertxAsyncHttpClientBuilder {
      * @param readTimeout Read timeout duration.
      * @return The updated OkHttpAsyncHttpClientBuilder object.
      */
-    public VertxAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
+    public VertxHttpClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
@@ -107,9 +107,9 @@ public class VertxAsyncHttpClientBuilder {
      * Given OkHttp doesn't have an equivalent timeout for just responses, this is handled manually.
      *
      * @param responseTimeout Response timeout duration.
-     * @return The updated VertxAsyncHttpClientBuilder object.
+     * @return The updated VertxHttpClientBuilder object.
      */
-    public VertxAsyncHttpClientBuilder responseTimeout(Duration responseTimeout) {
+    public VertxHttpClientBuilder responseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
         return this;
     }
@@ -128,9 +128,9 @@ public class VertxAsyncHttpClientBuilder {
      * used.
      *
      * @param writeTimeout Write operation timeout duration.
-     * @return The updated VertxAsyncHttpClientBuilder object.
+     * @return The updated VertxHttpClientBuilder object.
      */
-    public VertxAsyncHttpClientBuilder writeTimeout(Duration writeTimeout) {
+    public VertxHttpClientBuilder writeTimeout(Duration writeTimeout) {
         this.writeTimeout = writeTimeout;
         return this;
     }
@@ -139,9 +139,9 @@ public class VertxAsyncHttpClientBuilder {
      * Sets proxy configuration.
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return The updated VertxAsyncHttpClientBuilder object.
+     * @return The updated VertxHttpClientBuilder object.
      */
-    public VertxAsyncHttpClientBuilder proxy(ProxyOptions proxyOptions) {
+    public VertxHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
         return this;
     }
@@ -154,9 +154,9 @@ public class VertxAsyncHttpClientBuilder {
      * bypass using configuration settings during construction.
      *
      * @param configuration The configuration store.
-     * @return The updated VertxAsyncHttpClientBuilder object.
+     * @return The updated VertxHttpClientBuilder object.
      */
-    public VertxAsyncHttpClientBuilder configuration(Configuration configuration) {
+    public VertxHttpClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -165,9 +165,9 @@ public class VertxAsyncHttpClientBuilder {
      * Sets custom {@link HttpClientOptions} for the constructed {@link io.vertx.core.http.HttpClient}.
      *
      * @param httpClientOptions The options of the web client.
-     * @return The updated VertxAsyncHttpClientBuilder object
+     * @return The updated VertxHttpClientBuilder object
      */
-    public VertxAsyncHttpClientBuilder httpClientOptions(HttpClientOptions httpClientOptions) {
+    public VertxHttpClientBuilder httpClientOptions(HttpClientOptions httpClientOptions) {
         this.httpClientOptions = httpClientOptions;
         return this;
     }
@@ -177,9 +177,9 @@ public class VertxAsyncHttpClientBuilder {
      * with.
      *
      * @param vertx The vertx instance.
-     * @return The updated VertxAsyncHttpClientBuilder object
+     * @return The updated VertxHttpClientBuilder object
      */
-    public VertxAsyncHttpClientBuilder vertx(Vertx vertx) {
+    public VertxHttpClientBuilder vertx(Vertx vertx) {
         this.vertx = vertx;
         return this;
     }
@@ -250,7 +250,7 @@ public class VertxAsyncHttpClientBuilder {
         }
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(buildOptions);
-        return new VertxAsyncHttpClient(client, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
+        return new VertxHttpClient(client, getTimeout(this.responseTimeout, getDefaultResponseTimeout()));
     }
 
     static Vertx getVertx(Iterator<VertxProvider> iterator) {
