@@ -160,7 +160,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
                     // Should sanitize printed reponse url
                     LOGGER.log(LogLevel.VERBOSE, () -> "MS-CV header for " + testName + " request "
-                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS_CV"));
+                            + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
                     return Mono.just(bufferedResponse);
                 });
     }
@@ -181,7 +181,7 @@ public class CommunicationIdentityClientTestBase extends TestProxyTestBase {
 
     public static TokenCredential getIdentityTestCredential(InterceptorManager interceptorManager) {
         if (interceptorManager.isPlaybackMode()) {
-            return new MockTokenCredential();
+            return  new MockTokenCredential();
         }
 
         Configuration config = Configuration.getGlobalConfiguration();
