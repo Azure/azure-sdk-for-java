@@ -29,7 +29,6 @@ import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
