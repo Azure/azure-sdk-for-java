@@ -149,49 +149,10 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         if (isSplitHandlingDisabled) {
             ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
         }
-        CosmosAsyncDatabase database = collectionLink.getDatabase();
-        AsyncDocumentClient clientWrapper =
-            CosmosBridgeInternal.getAsyncDocumentClient(database);
-        Flux<FeedResponse<T>> feedResponseFlux =
-            clientWrapper
-                .getCollectionCache()
-                .resolveByNameAsync(
-                    null,
-                    BridgeInternal.extractContainerSelfLink(collectionLink),
-                    null)
-                .flatMapMany((collection) -> {
-                    if (collection == null) {
-                        throw new IllegalStateException("Collection cannot be null");
-                    }
-
-                    ChangeFeedOperationState state = new ChangeFeedOperationState(
-                        cosmosAsyncDatabaseAccessor.getCosmosAsyncClient(database),
-                        "queryChangeFeed." + collection.getId(),
-                        database.getId(),
-                        collection.getId(),
-                        ResourceType.Document,
-                        OperationType.ReadFeed,
-                        null,
-                        changeFeedRequestOptions,
-                        null);
-
-                    return clientWrapper
-                        .queryDocumentChangeFeedFromPagedFlux(collection, state, Document.class)
-                        .map(response -> {
-                            List<T> results = response.getResults()
-                                                             .stream()
-                                                             .map(document -> document.toObject(klass))
-                                                             .collect(Collectors.toList());
-                            return BridgeInternal.toFeedResponsePage(
-                                results,
-                                response.getResponseHeaders(),
-                                ImplementationBridgeHelpers
-                                    .FeedResponseHelper
-                                    .getFeedResponseAccessor().getNoChanges(response),
-                                response.getCosmosDiagnostics());
-                        });
-                });
-        return feedResponseFlux.publishOn(this.scheduler);
+        return collectionLink
+            .queryChangeFeed(changeFeedRequestOptions, klass)
+            .byPage()
+            .publishOn(this.scheduler);
     }
 
     @Override
