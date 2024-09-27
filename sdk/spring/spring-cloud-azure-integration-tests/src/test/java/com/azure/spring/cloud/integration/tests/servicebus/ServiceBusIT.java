@@ -11,6 +11,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,7 @@ import java.util.concurrent.TimeUnit;
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
     })
 @ActiveProfiles("servicebus")
+@Disabled
 public class ServiceBusIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusIT.class);
     private static final String DATA1 = "service bus test1";

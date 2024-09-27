@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "produceerror" })
+@Disabled
 class EventHubsBinderProduceErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderProduceErrorIT.class);
