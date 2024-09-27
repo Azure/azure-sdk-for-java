@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PopTokenTest {
 
@@ -35,7 +35,7 @@ public class PopTokenTest {
             HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy).build();
             HttpRequest request = new HttpRequest(HttpMethod.GET, "https://graph.microsoft.com/v1.0/me");
             HttpResponse httpResponse = pipeline.sendSync(request, Context.NONE);
-            assertTrue(httpResponse.getStatusCode() == 200);
+            assertEquals(200, httpResponse.getStatusCode());
         });
     }
 }
