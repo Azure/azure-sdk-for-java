@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.8 (2024-09-23)
+## 4.8.8 (2024-09-27)
 
 ### Other Changes
 

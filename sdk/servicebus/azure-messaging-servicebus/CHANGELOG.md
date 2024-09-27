@@ -1,6 +1,6 @@
 # Release History
 
-## 7.17.4 (2024-09-23)
+## 7.17.4 (2024-09-27)
 
 ### Other Changes
 
