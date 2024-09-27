@@ -217,8 +217,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
             ChatRequestAssistantMessage deserializedChatRequestAssistantMessage
                 = new ChatRequestAssistantMessage(content);
             deserializedChatRequestAssistantMessage.role = role;
-            deserializedChatRequestAssistantMessage
-                .setRefusal(refusal)
+            deserializedChatRequestAssistantMessage.setRefusal(refusal)
                 .setName(name)
                 .setToolCalls(toolCalls)
                 .setFunctionCall(functionCall);
