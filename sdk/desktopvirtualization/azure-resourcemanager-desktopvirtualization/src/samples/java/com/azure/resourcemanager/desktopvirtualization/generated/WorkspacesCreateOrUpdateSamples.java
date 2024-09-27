@@ -7,20 +7,23 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces CreateOrUpdate. */
+/**
+ * Samples for Workspaces CreateOrUpdate.
+ */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/Workspace_Create.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * Workspace_Create.json
      */
     /**
      * Sample code: Workspace_Create.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
-    public static void workspaceCreate(
-        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager
-            .workspaces()
+    public static void
+        workspaceCreate(com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
+        manager.workspaces()
             .define("workspace1")
             .withRegion("centralus")
             .withExistingResourceGroup("resourceGroup1")

@@ -493,7 +493,10 @@
         "AICLIP",
         "TLARGE",
         "TBASE",
-        "TGIANT"
+        "TGIANT",
+        "tiktoken",
+        "AITOKENS",
+        "Matryoshka"
       ]
     },
     {
@@ -834,6 +837,13 @@
       "filename": "/sdk/agrifood/**",
       "words": [
         "NDVI"
+      ]
+    },
+    {
+      "filename": "/sdk/ai/**",
+      "words": [
+        "ubinary",
+        "UBINARY"
       ]
     },
     {

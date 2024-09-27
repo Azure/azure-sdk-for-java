@@ -143,6 +143,31 @@ public final class FlowLogInformationInner implements JsonSerializable<FlowLogIn
     }
 
     /**
+     * Get the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     * 
+     * @return the enabledFilteringCriteria value.
+     */
+    public String enabledFilteringCriteria() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabledFilteringCriteria();
+    }
+
+    /**
+     * Set the enabledFilteringCriteria property: Optional field to filter network traffic logs based on SrcIP, SrcPort,
+     * DstIP, DstPort, Protocol, Encryption, Direction and Action. If not specified, all network traffic will be logged.
+     * 
+     * @param enabledFilteringCriteria the enabledFilteringCriteria value to set.
+     * @return the FlowLogInformationInner object itself.
+     */
+    public FlowLogInformationInner withEnabledFilteringCriteria(String enabledFilteringCriteria) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FlowLogProperties();
+        }
+        this.innerProperties().withEnabledFilteringCriteria(enabledFilteringCriteria);
+        return this;
+    }
+
+    /**
      * Get the enabled property: Flag to enable/disable flow logging.
      * 
      * @return the enabled value.

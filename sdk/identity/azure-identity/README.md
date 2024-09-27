@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.13.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -226,6 +226,34 @@ public void createManagedIdentityCredential() {
 ```
 
 ```java
+public void createManagedIdentityCredentialWithResourceId() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .resourceId("/subscriptions/<subscriptionID>/resourcegroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<MI name>") // only required for user-assigned
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
+```java
+public void createManagedIdentityCredentialWithObjectId() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .objectId("<USER-ASSIGNED MANAGED IDENTITY OBJECT ID>") // only required for user-assigned
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
+```java
 /**
  * Authenticate with a system-assigned managed identity.
  */
@@ -268,9 +296,11 @@ SecretClient client = new SecretClientBuilder()
     .buildClient();
 ```
 
-## Cloud configuration
+## Sovereign cloud configuration
 
-Credentials default to authenticating to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `authorityHost` argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds:
+By default, credentials authenticate to the Microsoft Entra endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure US Government or a private cloud, use one of the following solutions:
+
+1. Configure credentials with the `authorityHost` method. For example:
 
 ```java
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
@@ -278,7 +308,11 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
     .build();
 ```
 
-Not all credentials require this configuration. Credentials that authenticate through a development tool, such as `AzureCliCredential`, use that tool's configuration. Similarly, `VisualStudioCodeCredential` accepts an `authority` argument but defaults to the authority matching VS Code's "Azure: Cloud" setting.
+[AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds.
+
+2. Set the `AZURE_AUTHORITY_HOST` environment variable to the appropriate authority host URL. For example, `https://login.microsoftonline.us/`. Note that this setting affects all credentials in the environment. Use the previous solution to set the authority host on a specific credential.
+
+Not all credentials honor this configuration. Credentials that authenticate through a development tool, such as `AzureCliCredential`, use that tool's configuration. Similarly, `VisualStudioCodeCredential` accepts an `authority` argument but defaults to the authority matching VS Code's "Azure: Cloud" setting.
 
 ## Credential classes
 

@@ -21,7 +21,6 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
 
     private String managedIdentityClientId;
     private String managedIdentityResourceId;
-
     /**
      * Creates an instance of a AzureApplicationCredentialBuilder.
      */
@@ -105,7 +104,7 @@ class AzureApplicationCredentialBuilder extends CredentialBuilderBase<AzureAppli
     private ArrayList<TokenCredential> getCredentialsChain() {
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(2);
         output.add(new EnvironmentCredential(identityClientOptions));
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null, identityClientOptions));
         return output;
     }
 }

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class ElasticSansGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * ElasticSans_Get_MinimumSet_Gen.json
      */
     /**
@@ -18,12 +18,12 @@ public final class ElasticSansGetByResourceGroupSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void elasticSansGetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.elasticSans().getByResourceGroupWithResponse("resourcegroupname", "elasticsanname",
-            com.azure.core.util.Context.NONE);
+        manager.elasticSans()
+            .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * ElasticSans_Get_MaximumSet_Gen.json
      */
     /**
@@ -32,7 +32,7 @@ public final class ElasticSansGetByResourceGroupSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void elasticSansGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.elasticSans().getByResourceGroupWithResponse("resourcegroupname", "elasticsanname",
-            com.azure.core.util.Context.NONE);
+        manager.elasticSans()
+            .getByResourceGroupWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
     }
 }

@@ -31,8 +31,10 @@ public final class ElasticSanPropertiesTests {
     public void testSerialize() throws Exception {
         ElasticSanProperties model
             = new ElasticSanProperties().withSku(new Sku().withName(SkuName.PREMIUM_LRS).withTier(SkuTier.PREMIUM))
-                .withAvailabilityZones(Arrays.asList("uigdtopbobjog", "m", "w")).withBaseSizeTiB(1066773928950935617L)
-                .withExtendedCapacitySizeTiB(5337187329855698822L).withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+                .withAvailabilityZones(Arrays.asList("uigdtopbobjog", "m", "w"))
+                .withBaseSizeTiB(1066773928950935617L)
+                .withExtendedCapacitySizeTiB(5337187329855698822L)
+                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanProperties.class);
         Assertions.assertEquals(SkuName.PREMIUM_LRS, model.sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.sku().tier());

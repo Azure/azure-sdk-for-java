@@ -13,6 +13,8 @@ import java.security.GeneralSecurityException;
 import java.util.Map;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_MODE;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 
 abstract class Encryptor {
     private static final ClientLogger LOGGER = new ClientLogger(Encryptor.class);
@@ -40,7 +42,9 @@ abstract class Encryptor {
             case V1:
                 return new EncryptorV1(aesKey);
             case V2:
-                return new EncryptorV2(aesKey, encryptionOptions);
+                return new EncryptorV2(aesKey, encryptionOptions, ENCRYPTION_PROTOCOL_V2);
+            case V2_1:
+                return new EncryptorV2(aesKey, encryptionOptions, ENCRYPTION_PROTOCOL_V2_1);
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid encryption version: "
                     + version));

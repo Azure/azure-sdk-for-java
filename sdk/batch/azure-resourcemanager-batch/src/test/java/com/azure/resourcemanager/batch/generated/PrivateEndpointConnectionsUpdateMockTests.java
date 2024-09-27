@@ -6,60 +6,59 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.batch.BatchManager;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.batch.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"dnhxmsi\"},\"groupIds\":[\"miloxggdufiqndie\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"fjchvc\",\"actionsRequired\":\"ys\"}},\"etag\":\"dotcubiipuip\",\"id\":\"oqonma\",\"name\":\"jeknizshq\",\"type\":\"cimpevfg\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"vumwmxqh\"},\"groupIds\":[\"noamldsehaohdj\",\"hflzokxco\",\"pelnjetag\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"oatftgzpnpbswvef\",\"actionsRequired\":\"ccsrmozihmipgaw\"}},\"etag\":\"xp\",\"tags\":{\"fmpcycilrmca\":\"cxcjxgry\",\"t\":\"kggnoxu\",\"cpfnznthjtwkja\":\"ksxwpnd\",\"tcqiosmg\":\"srxuzvoam\"},\"id\":\"zah\",\"name\":\"xqdlyrtltlapr\",\"type\":\"tz\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
-        BatchManager manager = BatchManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BatchManager manager = BatchManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateEndpointConnection response
-            = manager.privateEndpointConnections().update("ajjziuxxpshne", "kulfg", "lqubkwdlen",
-                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
-                        .withDescription("rxgibbd")),
-                "biorktal", com.azure.core.util.Context.NONE);
+            = manager.privateEndpointConnections()
+                .update("wemxswvruunzz", "gehkfkimrtixokff", "yinljqe",
+                    new PrivateEndpointConnectionInner().withTags(mapOf("rsbycucrwn", "lxqzvn", "qbsms", "mikzeb"))
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateLinkServiceConnectionStatus.PENDING)
+                            .withDescription("o")),
+                    "ycjsx", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("cxcjxgry", response.tags().get("fmpcycilrmca"));
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
             response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("fjchvc", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("oatftgzpnpbswvef", response.privateLinkServiceConnectionState().description());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.25.0-beta.1 (Unreleased)
+## 4.26.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.25.0 (2024-09-20)
+
+### Features Added
+- Added `WithResponse` methods to sender and receiver clients, allowing for more control of requests and more inspection of responses. [#41879](https://github.com/Azure/azure-sdk-for-java/pull/41879)
+- Added new field on `StorageLifecyclePolicyCompletedEventData` for details of a policy action. [#41886](https://github.com/Azure/azure-sdk-for-java/pull/41886)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
 
 ## 4.24.0 (2024-08-20)
 

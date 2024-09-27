@@ -5,31 +5,32 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Elastic San update properties.
  */
 @Fluent
-public final class ElasticSanUpdateProperties {
+public final class ElasticSanUpdateProperties implements JsonSerializable<ElasticSanUpdateProperties> {
     /*
      * Base size of the Elastic San appliance in TiB.
      */
-    @JsonProperty(value = "baseSizeTiB")
     private Long baseSizeTiB;
 
     /*
      * Extended size of the Elastic San appliance in TiB.
      */
-    @JsonProperty(value = "extendedCapacitySizeTiB")
     private Long extendedCapacitySizeTiB;
 
     /*
      * Allow or disallow public network access to ElasticSan Account. Value is optional but if passed in, must be
      * 'Enabled' or 'Disabled'.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /**
@@ -106,5 +107,50 @@ public final class ElasticSanUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("baseSizeTiB", this.baseSizeTiB);
+        jsonWriter.writeNumberField("extendedCapacitySizeTiB", this.extendedCapacitySizeTiB);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticSanUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticSanUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticSanUpdateProperties.
+     */
+    public static ElasticSanUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticSanUpdateProperties deserializedElasticSanUpdateProperties = new ElasticSanUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("baseSizeTiB".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.baseSizeTiB = reader.getNullable(JsonReader::getLong);
+                } else if ("extendedCapacitySizeTiB".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.extendedCapacitySizeTiB
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedElasticSanUpdateProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticSanUpdateProperties;
+        });
     }
 }

@@ -26,23 +26,20 @@
     </site>
   </distributionManagement>
 
- <scm>
+  <scm>
     <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
     <tag>HEAD</tag>
   </scm>
 
-   <properties>
-     <!-- require minimal code coverage until tests are added -->
-     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-     <checkstyle.skip>true</checkstyle.skip>
-     <codesnippet.skip>false</codesnippet.skip>
-     <javadocDoclet></javadocDoclet>
-     <javadocDocletOptions></javadocDocletOptions>
-     <javaModulesSurefireArgLine>
-     --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-     --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-     </javaModulesSurefireArgLine>
+  <properties>
+    <!-- require minimal code coverage until tests are added -->
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <checkstyle.skip>true</checkstyle.skip>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -59,7 +56,6 @@
     </dependency>
 
 
-
     <!-- Test Dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -70,23 +66,43 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.27.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
-
+      <version>12.28.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
+  <profiles>
+    <profile>
+      <id>java12plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+          <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+    </profile>
+  </profiles>
 </project>
