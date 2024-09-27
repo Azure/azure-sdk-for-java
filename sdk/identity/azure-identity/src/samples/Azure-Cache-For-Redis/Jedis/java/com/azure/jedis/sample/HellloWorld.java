@@ -4,8 +4,6 @@
 package com.azure.jedis.sample;
 
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.identity.AzureCliCredential;
-import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.google.gson.JsonObject;
@@ -53,13 +51,11 @@ public class HellloWorld {
         String[] parts = token.split("\\.");
         String base64 = parts[1];
 
-        switch (base64.length() % 4) {
-            case 2:
-                base64 += "==";
-                break;
-            case 3:
-                base64 += "=";
-                break;
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
         }
 
         byte[] jsonBytes = Base64.getDecoder().decode(base64);

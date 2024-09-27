@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Change the default `ExecutorService` used by `JdkHttpClientBuilder` from using what the JDK `HttpClient` instatiates
+  to using `SharedExecutorService` if `JdkHttpClientBuilder.executor` isn't set.
+
 ### Bugs Fixed
 
 ### Other Changes

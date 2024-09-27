@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
+import com.azure.data.schemaregistry.SchemaRegistryClient;
 
 import java.util.Objects;
 
@@ -23,6 +24,7 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
     private JsonSchemaGenerator jsonSchemaGenerator;
     private String schemaGroup;
     private SchemaRegistryAsyncClient schemaRegistryAsyncClient;
+    private SchemaRegistryClient schemaRegistryClient;
     private JsonSerializer jsonSerializer;
 
     /**
@@ -86,6 +88,19 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
     }
 
     /**
+     * The {@link SchemaRegistryClient} to use to interact with the Schema Registry service.
+     *
+     * @param schemaRegistryClient The {@link SchemaRegistryClient}.
+     *
+     * @return updated {@link SchemaRegistryJsonSchemaSerializerBuilder} instance.
+     */
+    public SchemaRegistryJsonSchemaSerializerBuilder schemaRegistryClient(
+        SchemaRegistryClient schemaRegistryClient) {
+        this.schemaRegistryClient = schemaRegistryClient;
+        return this;
+    }
+
+    /**
      * A JSON schema aware class that can generate and validate JSON schema for objects.
      *
      * @param jsonSchemaGenerator The JSON schema generator.
@@ -102,14 +117,16 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
      *
      * @return A new instance of {@link SchemaRegistryJsonSchemaSerializer}.
      *
-     * @throws NullPointerException if {@link #schemaRegistryClient(SchemaRegistryAsyncClient)} or
-     *     {@link #jsonSchemaGenerator(JsonSchemaGenerator)} is {@code null}.
+     * @throws NullPointerException if {@link #jsonSchemaGenerator(JsonSchemaGenerator)} is {@code null}. Or if both
+     *      {@link #schemaRegistryClient(SchemaRegistryAsyncClient)} and
+     *      {@link #schemaRegistryClient(SchemaRegistryClient)} are not set.
      * @throws IllegalStateException if {@link #autoRegisterSchemas(boolean)} is true but
      *     {@link #schemaGroup(String)} is not set.
      */
     public SchemaRegistryJsonSchemaSerializer buildSerializer() {
-        if (Objects.isNull(schemaRegistryAsyncClient)) {
-            throw LOGGER.logExceptionAsError(new NullPointerException("'schemaRegistryAsyncClient' cannot be null."));
+        if (Objects.isNull(schemaRegistryAsyncClient) && Objects.isNull(schemaRegistryClient)) {
+            throw LOGGER.logExceptionAsError(new NullPointerException(
+                "'schemaRegistryAsyncClient' or 'schemaRegistryClient' is required.'"));
         }
 
         if (Objects.isNull(jsonSchemaGenerator)) {
@@ -136,7 +153,8 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
         final SerializerOptions options = new SerializerOptions(schemaGroup, isAutoRegister, 100,
             serializerAdapterToUse);
 
-        return new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient, jsonSchemaGenerator, options);
+        return new SchemaRegistryJsonSchemaSerializer(schemaRegistryAsyncClient, schemaRegistryClient,
+            jsonSchemaGenerator, options);
     }
 }
 

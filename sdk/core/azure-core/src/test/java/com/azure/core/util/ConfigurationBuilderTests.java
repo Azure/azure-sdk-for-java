@@ -17,7 +17,7 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void buildRoot() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource().put("foo", "bar"));
+        ConfigurationBuilder builder = createBuilder(new TestConfigurationSource().put("foo", "bar"));
         assertEquals("bar", builder.build().get(FOO_PROPERTY));
 
         // check if we can get root again
@@ -29,8 +29,7 @@ public class ConfigurationBuilderTests {
     @Test
     public void buildRootWithPath() {
         ConfigurationBuilder builder
-            = new ConfigurationBuilder(new TestConfigurationSource().put("az.foo", "az").put("xyz.foo", "xyz"))
-                .root("az");
+            = createBuilder(new TestConfigurationSource().put("az.foo", "az").put("xyz.foo", "xyz")).root("az");
         assertEquals("az", builder.build().get(FOO_PROPERTY));
 
         builder.root("xyz");
@@ -39,8 +38,9 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void buildSection() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(
-            new TestConfigurationSource().put("az.foo", "az").put("az.local.bar", "az.local")).root("az");
+        ConfigurationBuilder builder
+            = createBuilder(new TestConfigurationSource().put("az.foo", "az").put("az.local.bar", "az.local"))
+                .root("az");
 
         ConfigurationProperty<String> bar = ConfigurationPropertyBuilder.ofString("bar").build();
         assertEquals("az.local", builder.buildSection("local").get(bar));
@@ -51,8 +51,7 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void nullOrEmptyProps() {
-        Configuration config
-            = new ConfigurationBuilder(new TestConfigurationSource().put("null", null).put("empty", "")).build();
+        Configuration config = createBuilder(new TestConfigurationSource().put("null", null).put("empty", "")).build();
         assertFalse(config.contains("null"));
         assertFalse(config.contains("empty"));
     }
@@ -64,7 +63,7 @@ public class ConfigurationBuilderTests {
 
     @Test
     public void nullSection() {
-        ConfigurationBuilder builder = new ConfigurationBuilder(new TestConfigurationSource());
+        ConfigurationBuilder builder = createBuilder(new TestConfigurationSource());
         assertThrows(NullPointerException.class, () -> builder.buildSection(null));
     }
 
@@ -95,8 +94,7 @@ public class ConfigurationBuilderTests {
     @Test
     public void sourceAddPropertyBuildSection() {
         ConfigurationBuilder builder
-            = new ConfigurationBuilder(new TestConfigurationSource().put("az.foo1", "bar1"), EMPTY_SOURCE, EMPTY_SOURCE)
-                .putProperty("az.foo2", "bar2");
+            = createBuilder(new TestConfigurationSource().put("az.foo1", "bar1")).putProperty("az.foo2", "bar2");
         assertEquals("bar1", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo1").build()));
         assertEquals("bar2", builder.buildSection("az").get(ConfigurationPropertyBuilder.ofString("foo2").build()));
         assertEquals("bar2", builder.buildSection("az").get("az.foo2"));
@@ -105,7 +103,7 @@ public class ConfigurationBuilderTests {
     @Test
     public void sourceAddPropertySameName() {
         ConfigurationBuilder builder
-            = new ConfigurationBuilder(new TestConfigurationSource().put("foo", "bar1")).putProperty("foo", "bar2");
+            = createBuilder(new TestConfigurationSource().put("foo", "bar1")).putProperty("foo", "bar2");
         assertEquals("bar2", builder.build().get(FOO_PROPERTY));
         assertEquals("bar2", builder.build().get("foo"));
     }
@@ -178,5 +176,9 @@ public class ConfigurationBuilderTests {
                 .build();
 
         assertFalse(configuration.contains(ConfigurationPropertyBuilder.ofString("keyNullValue").build()));
+    }
+
+    private static ConfigurationBuilder createBuilder(TestConfigurationSource mutableSource) {
+        return new ConfigurationBuilder(mutableSource, EMPTY_SOURCE, EMPTY_SOURCE);
     }
 }

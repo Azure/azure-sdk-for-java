@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema for MSIX Package Dependencies properties. */
+/**
+ * Schema for MSIX Package Dependencies properties.
+ */
 @Fluent
-public final class MsixPackageDependencies {
+public final class MsixPackageDependencies implements JsonSerializable<MsixPackageDependencies> {
     /*
      * Name of package dependency.
      */
-    @JsonProperty(value = "dependencyName")
     private String dependencyName;
 
     /*
      * Name of dependency publisher.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * Dependency version required.
      */
-    @JsonProperty(value = "minVersion")
     private String minVersion;
 
-    /** Creates an instance of MsixPackageDependencies class. */
+    /**
+     * Creates an instance of MsixPackageDependencies class.
+     */
     public MsixPackageDependencies() {
     }
 
     /**
      * Get the dependencyName property: Name of package dependency.
-     *
+     * 
      * @return the dependencyName value.
      */
     public String dependencyName() {
@@ -43,7 +48,7 @@ public final class MsixPackageDependencies {
 
     /**
      * Set the dependencyName property: Name of package dependency.
-     *
+     * 
      * @param dependencyName the dependencyName value to set.
      * @return the MsixPackageDependencies object itself.
      */
@@ -54,7 +59,7 @@ public final class MsixPackageDependencies {
 
     /**
      * Get the publisher property: Name of dependency publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -63,7 +68,7 @@ public final class MsixPackageDependencies {
 
     /**
      * Set the publisher property: Name of dependency publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the MsixPackageDependencies object itself.
      */
@@ -74,7 +79,7 @@ public final class MsixPackageDependencies {
 
     /**
      * Get the minVersion property: Dependency version required.
-     *
+     * 
      * @return the minVersion value.
      */
     public String minVersion() {
@@ -83,7 +88,7 @@ public final class MsixPackageDependencies {
 
     /**
      * Set the minVersion property: Dependency version required.
-     *
+     * 
      * @param minVersion the minVersion value to set.
      * @return the MsixPackageDependencies object itself.
      */
@@ -94,9 +99,51 @@ public final class MsixPackageDependencies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dependencyName", this.dependencyName);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("minVersion", this.minVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MsixPackageDependencies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MsixPackageDependencies if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MsixPackageDependencies.
+     */
+    public static MsixPackageDependencies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MsixPackageDependencies deserializedMsixPackageDependencies = new MsixPackageDependencies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dependencyName".equals(fieldName)) {
+                    deserializedMsixPackageDependencies.dependencyName = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedMsixPackageDependencies.publisher = reader.getString();
+                } else if ("minVersion".equals(fieldName)) {
+                    deserializedMsixPackageDependencies.minVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMsixPackageDependencies;
+        });
     }
 }

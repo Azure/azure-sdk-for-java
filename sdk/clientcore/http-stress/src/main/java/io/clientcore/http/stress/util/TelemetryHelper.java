@@ -34,7 +34,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.io.UncheckedIOException;
-import java.time.Instant;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
@@ -48,15 +48,30 @@ import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.OKHTTP;
 public class TelemetryHelper {
     private final Tracer tracer;
     private final ClientLogger logger;
-    private static final AttributeKey<String> SCENARIO_NAME_ATTRIBUTE = AttributeKey.stringKey("scenario_name");
     private static final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
     private static final AttributeKey<Boolean> SAMPLE_IN_ATTRIBUTE = AttributeKey.booleanKey("sample.in");
+    private static final AttributeKey<Long> DURATION_SEC_ATTRIBUTE = AttributeKey.longKey("durationSec");
+    private static final AttributeKey<Long> DURATION_MS_ATTRIBUTE = AttributeKey.longKey("durationMs");
+    private static final AttributeKey<String> SCENARIO_NAME_ATTRIBUTE = AttributeKey.stringKey("scenarioName");
+    private static final AttributeKey<Long> CONCURRENCY_ATTRIBUTE = AttributeKey.longKey("concurrency");
+    private static final AttributeKey<Boolean> SYNC_ATTRIBUTE = AttributeKey.booleanKey("sync");
+    private static final AttributeKey<Long> SIZE_ATTRIBUTE = AttributeKey.longKey("size");
+    private static final AttributeKey<String> HOSTNAME_ATTRIBUTE = AttributeKey.stringKey("hostname");
+    private static final AttributeKey<String> SERVICE_ENDPOINT_ATTRIBUTE = AttributeKey.stringKey("serviceEndpoint");
+    private static final AttributeKey<String> HTTP_CLIENT_ATTRIBUTE = AttributeKey.stringKey("httpClient");
+    private static final AttributeKey<String> JRE_VERSION_ATTRIBUTE = AttributeKey.stringKey("jreVersion");
+    private static final AttributeKey<String> JRE_VENDOR_ATTRIBUTE = AttributeKey.stringKey("jreVendor");
+    private static final AttributeKey<String> GIT_COMMIT_ATTRIBUTE = AttributeKey.stringKey("gitCommit");
+    private static final AttributeKey<Boolean> COMPLETEABLE_FUTURE_ATTRIBUTE = AttributeKey.booleanKey(
+        "completeableFuture");
+    private static final AttributeKey<Boolean> EXECUTOR_SERVICE_ATTRIBUTE = AttributeKey.booleanKey("executorService");
+    private static final AttributeKey<Boolean> VIRTUAL_THREAD_ATTRIBUTE = AttributeKey.booleanKey("virtualThread");
     private final Attributes commonAttributes;
     private final Attributes canceledAttributes;
 
     private final String scenarioName;
-    private final Meter meter;
     private final DoubleHistogram runDuration;
+
     static {
         // enables micrometer metrics from Reactor schedulers allowing to monitor thread pool usage and starvation
         Schedulers.enableMetrics();
@@ -64,18 +79,18 @@ public class TelemetryHelper {
 
     /**
      * Creates a telemetry helper for a given scenario class.
+     *
      * @param scenarioClass the scenario class
      */
     public TelemetryHelper(Class<?> scenarioClass) {
         this.scenarioName = scenarioClass.getName();
         this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
-        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
+        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE,
+            "cancelled");
         this.tracer = GlobalOpenTelemetry.getTracer(scenarioName);
-        this.meter = GlobalOpenTelemetry.getMeter(scenarioName);
+        Meter meter = GlobalOpenTelemetry.getMeter(scenarioName);
         this.logger = new ClientLogger(scenarioName);
-        this.runDuration = meter.histogramBuilder("test.run.duration")
-            .setUnit("s")
-            .build();
+        this.runDuration = meter.histogramBuilder("test.run.duration").setUnit("s").build();
     }
 
     /**
@@ -85,9 +100,7 @@ public class TelemetryHelper {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder()
-                .connectionString(applicationInsightsConnectionString)
-                .install(sdkBuilder);
+            new AzureMonitorExporterBuilder().connectionString(applicationInsightsConnectionString).install(sdkBuilder);
         } else {
             System.setProperty("otel.traces.exporter", "none");
             System.setProperty("otel.logs.exporter", "none");
@@ -95,25 +108,23 @@ public class TelemetryHelper {
         }
 
         OpenTelemetry otel = sdkBuilder
-                // in case of multi-container test, customize instance id to distinguish telemetry from different containers
-                //.addResourceCustomizer((resource, props) -> resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), "container-name-1").build())
-                .addSamplerCustomizer((sampler, props) -> new Sampler() {
-                    @Override
-                    public SamplingResult shouldSample(Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
-                        if (Boolean.TRUE.equals(attributes.get(SAMPLE_IN_ATTRIBUTE))) {
-                            return SamplingResult.recordAndSample();
-                        }
-                        return sampler.shouldSample(parentContext, traceId, name, spanKind, attributes, parentLinks);
+            // in case of multi-container test, customize instance id to distinguish telemetry from different containers
+            //.addResourceCustomizer((resource, props) -> resource.toBuilder().put(AttributeKey.stringKey("service.instance.id"), "container-name-1").build())
+            .addSamplerCustomizer((sampler, props) -> new Sampler() {
+                @Override
+                public SamplingResult shouldSample(Context parentContext, String traceId, String name,
+                    SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
+                    if (Boolean.TRUE.equals(attributes.get(SAMPLE_IN_ATTRIBUTE))) {
+                        return SamplingResult.recordAndSample();
                     }
+                    return sampler.shouldSample(parentContext, traceId, name, spanKind, attributes, parentLinks);
+                }
 
-                    @Override
-                    public String getDescription() {
-                        return sampler.getDescription();
-                    }
-                })
-                .setResultAsGlobal()
-                .build()
-                .getOpenTelemetrySdk();
+                @Override
+                public String getDescription() {
+                    return sampler.getDescription();
+                }
+            }).setResultAsGlobal().build().getOpenTelemetrySdk();
         Classes.registerObservers(otel);
         Cpu.registerObservers(otel);
         MemoryPools.registerObservers(otel);
@@ -124,17 +135,20 @@ public class TelemetryHelper {
 
     /**
      * Instruments a runnable: records runnable duration along with the status (success, error, cancellation),
+     *
      * @param oneRun the runnable to instrument
      */
     @SuppressWarnings("try")
     public void instrumentRun(Runnable oneRun) {
-        Instant start = Instant.now();
+        long start = System.currentTimeMillis();
         Span span = tracer.spanBuilder("run").startSpan();
         try (Scope s = span.makeCurrent()) {
             oneRun.run();
             trackSuccess(start, span);
         } catch (Throwable e) {
-            if (e.getMessage().contains("Timeout on blocking read") || e instanceof InterruptedException || e instanceof TimeoutException) {
+            if (e.getMessage().contains("Timeout on blocking read")
+                || e instanceof InterruptedException
+                || e instanceof TimeoutException) {
                 trackCancellation(start, span);
             } else {
                 trackFailure(start, e, span);
@@ -144,35 +158,44 @@ public class TelemetryHelper {
 
     /**
      * Instruments a Mono: records mono duration along with the status (success, error, cancellation),
+     *
      * @param runAsync the mono to instrument
      * @return the instrumented mono
      */
     @SuppressWarnings("try")
     public Mono<Void> instrumentRunAsync(Mono<Void> runAsync) {
         return Mono.defer(() -> {
-            Instant start = Instant.now();
+            long start = System.currentTimeMillis();
             Span span = tracer.spanBuilder("runAsync").startSpan();
             try (Scope s = span.makeCurrent()) {
                 return runAsync.doOnError(e -> trackFailure(start, e, span))
                     .doOnCancel(() -> trackCancellation(start, span))
                     .doOnSuccess(v -> trackSuccess(start, span))
-                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
+                    .contextWrite(
+                        reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY,
+                            io.opentelemetry.context.Context.current()));
             }
         });
     }
 
     /**
      * Instruments a CompletableFuture: records future duration along with the status (success, error, cancellation),
+     *
      * @param runAsyncFuture the future to instrument
      * @return the instrumented future
      */
     @SuppressWarnings("try")
     public CompletableFuture<Void> instrumentRunAsyncWithCompletableFuture(CompletableFuture<Void> runAsyncFuture) {
-        Instant start = Instant.now();
-        Span span = tracer.spanBuilder("runAsyncCompletableFuture").startSpan();
+        return CompletableFuture.supplyAsync(() -> {
+            long start = System.currentTimeMillis();
+            Span span = tracer.spanBuilder("runAsyncCompletableFuture").startSpan();
 
-        CompletableFuture<Void> instrumentedFuture = runAsyncFuture
-            .whenComplete((result, throwable) -> {
+            return new AbstractMap.SimpleImmutableEntry<>(start, span);
+        }).thenCompose(startAndSpan -> {
+            long start = startAndSpan.getKey();
+            Span span = startAndSpan.getValue();
+
+            return runAsyncFuture.whenComplete((result, throwable) -> {
                 try (Scope s = span.makeCurrent()) {
                     if (throwable != null) {
                         trackFailure(start, throwable, span);
@@ -183,19 +206,19 @@ public class TelemetryHelper {
                     span.end();
                 }
             });
-
-        return instrumentedFuture;
+        });
     }
 
     /**
-     * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation),
+     * Instruments a Runnable: records runnable duration along with the status (success, error, cancellation).
+     *
      * @param task the runnable to instrument
-     * @return
+     * @return A {@link Runnable} with instrumentation wrapping the {@code task}.
      */
     @SuppressWarnings("try")
     public Runnable instrumentRunAsyncWithRunnable(Runnable task) {
         return () -> {
-            Instant start = Instant.now();
+            long start = System.currentTimeMillis();
             Span span = tracer.spanBuilder("runAsyncRunnable").startSpan();
             try (Scope s = span.makeCurrent()) {
                 try {
@@ -210,18 +233,15 @@ public class TelemetryHelper {
         };
     }
 
-    private void trackSuccess(Instant start, Span span) {
-        logger.atInfo()
-            .log("run ended");
+    private void trackSuccess(long start, Span span) {
+        logger.atInfo().log("run ended");
 
         runDuration.record(getDuration(start), commonAttributes);
         span.end();
     }
 
-    private void trackCancellation(Instant start, Span span) {
-        logger.atWarning()
-            .addKeyValue("error.type", "cancelled")
-            .log("run ended");
+    private void trackCancellation(long start, Span span) {
+        logger.atWarning().addKeyValue("error.type", "cancelled").log("run ended");
 
         runDuration.record(getDuration(start), canceledAttributes);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, "cancelled");
@@ -229,7 +249,7 @@ public class TelemetryHelper {
         span.end();
     }
 
-    private void trackFailure(Instant start, Throwable e, Span span) {
+    private void trackFailure(long start, Throwable e, Span span) {
         Throwable unwrapped = Exceptions.unwrap(e);
         if (unwrapped instanceof UncheckedIOException) {
             unwrapped = unwrapped.getCause();
@@ -239,53 +259,54 @@ public class TelemetryHelper {
         span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
 
         String errorType = unwrapped.getClass().getName();
-        logger.atError()
-            .addKeyValue("error.type", errorType)
-            .log("run ended", unwrapped);
+        logger.atError().addKeyValue("error.type", errorType).log("run ended", unwrapped);
 
-        Attributes errorAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
+        Attributes errorAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE,
+            errorType);
         runDuration.record(getDuration(start), errorAttributes, io.opentelemetry.context.Context.current().with(span));
         span.end();
     }
 
     /**
      * Records an event representing the start of a test along with test options.
+     *
      * @param options test parameters
      */
     public void recordStart(StressOptions options) {
         Span before = startSampledInSpan("before run");
-        before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());
-        before.setAttribute(AttributeKey.stringKey("scenarioName"), scenarioName);
-        before.setAttribute(AttributeKey.longKey("concurrency"), options.getParallel());
+        before.setAttribute(DURATION_SEC_ATTRIBUTE, options.getDuration());
+        before.setAttribute(SCENARIO_NAME_ATTRIBUTE, scenarioName);
+        before.setAttribute(CONCURRENCY_ATTRIBUTE, options.getParallel());
 
-        before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
-        before.setAttribute(AttributeKey.longKey("size"), options.getSize());
-        before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
-        before.setAttribute(AttributeKey.stringKey("serviceEndpoint"), options.getServiceEndpoint());
+        before.setAttribute(SYNC_ATTRIBUTE, options.isSync());
+        before.setAttribute(SIZE_ATTRIBUTE, options.getSize());
+        before.setAttribute(HOSTNAME_ATTRIBUTE, System.getenv().get("HOSTNAME"));
+        before.setAttribute(SERVICE_ENDPOINT_ATTRIBUTE, options.getServiceEndpoint());
         if (options.getHttpClient() == JDK) {
-            before.setAttribute(AttributeKey.stringKey("httpClient"), "jdk");
+            before.setAttribute(HTTP_CLIENT_ATTRIBUTE, "jdk");
         } else if (options.getHttpClient() == OKHTTP) {
-            before.setAttribute(AttributeKey.stringKey("httpClient"), "okhttp");
+            before.setAttribute(HTTP_CLIENT_ATTRIBUTE, "okhttp");
         } else {
-            before.setAttribute(AttributeKey.stringKey("httpClient"), "default");
+            before.setAttribute(HTTP_CLIENT_ATTRIBUTE, "default");
         }
-        before.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
-        before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
-        before.setAttribute(AttributeKey.stringKey("gitCommit"), System.getenv("GIT_COMMIT"));
-        before.setAttribute(AttributeKey.booleanKey("completeableFuture"), options.isCompletableFuture());
-        before.setAttribute(AttributeKey.booleanKey("executorservice"), options.isExecutorService());
-        before.setAttribute(AttributeKey.booleanKey("virtualthread"), options.isVirtualThread());
+        before.setAttribute(JRE_VERSION_ATTRIBUTE, System.getProperty("java.version"));
+        before.setAttribute(JRE_VENDOR_ATTRIBUTE, System.getProperty("java.vendor"));
+        before.setAttribute(GIT_COMMIT_ATTRIBUTE, System.getenv("GIT_COMMIT"));
+        before.setAttribute(COMPLETEABLE_FUTURE_ATTRIBUTE, options.isCompletableFuture());
+        before.setAttribute(EXECUTOR_SERVICE_ATTRIBUTE, options.isExecutorService());
+        before.setAttribute(VIRTUAL_THREAD_ATTRIBUTE, options.isVirtualThread());
 
         before.end();
     }
 
     /**
      * Records an event representing the end of the test.
+     *
      * @param startTime the start time of the test
      */
-    public void recordEnd(Instant startTime) {
+    public void recordEnd(long startTime) {
         Span after = startSampledInSpan("after run");
-        after.setAttribute(AttributeKey.longKey("durationMs"), Instant.now().toEpochMilli() - startTime.toEpochMilli());
+        after.setAttribute(DURATION_MS_ATTRIBUTE, System.currentTimeMillis() - startTime);
         after.end();
     }
 
@@ -293,11 +314,10 @@ public class TelemetryHelper {
         return tracer.spanBuilder(name)
             // guarantee that we have before/after spans sampled in
             // and record duration/result of the test
-            .setAttribute(SAMPLE_IN_ATTRIBUTE, true)
-            .startSpan();
+            .setAttribute(SAMPLE_IN_ATTRIBUTE, true).startSpan();
     }
 
-    private static double getDuration(Instant start) {
-        return Math.max(0d, Instant.now().toEpochMilli() - start.toEpochMilli()) / 1000d;
+    private static double getDuration(long start) {
+        return Math.max(0L, System.currentTimeMillis() - start) / 1000.0D;
     }
 }

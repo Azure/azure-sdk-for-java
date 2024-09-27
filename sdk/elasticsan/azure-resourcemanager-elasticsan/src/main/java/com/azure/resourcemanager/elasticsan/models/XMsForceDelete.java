@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class XMsForceDelete extends ExpandableStringEnum<XMsForceDelete> {
      * @param name a name to look for.
      * @return the corresponding XMsForceDelete.
      */
-    @JsonCreator
     public static XMsForceDelete fromString(String name) {
         return fromString(name, XMsForceDelete.class);
     }

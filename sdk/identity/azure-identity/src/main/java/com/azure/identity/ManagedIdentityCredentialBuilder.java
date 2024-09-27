@@ -29,8 +29,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
  *
  * <!-- src_embed com.azure.identity.credential.managedidentitycredential.construct -->
  * <pre>
- * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.managedidentitycredential.construct -->
  *
@@ -46,8 +45,8 @@ import com.azure.identity.implementation.util.ValidationUtil;
  *
  * <!-- src_embed com.azure.identity.credential.managedidentitycredential.userassigned.construct -->
  * <pre>
- * TokenCredential managedIdentityCredentialUserAssigned = new ManagedIdentityCredentialBuilder&#40;&#41;
- *     .clientId&#40;clientId&#41; &#47;&#47; specify client id of user-assigned managed identity.
+ * TokenCredential managedIdentityCredentialUserAssigned = new ManagedIdentityCredentialBuilder&#40;&#41;.clientId&#40;
+ *         clientId&#41; &#47;&#47; specify client id of user-assigned managed identity.
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.managedidentitycredential.userassigned.construct -->

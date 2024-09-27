@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * session hosts must be turned on using rampUpAutoStartHosts or by turning them on manually.
  */
 public final class SetStartVMOnConnect extends ExpandableStringEnum<SetStartVMOnConnect> {
-    /** Static value Enable for SetStartVMOnConnect. */
+    /**
+     * Static value Enable for SetStartVMOnConnect.
+     */
     public static final SetStartVMOnConnect ENABLE = fromString("Enable");
 
-    /** Static value Disable for SetStartVMOnConnect. */
+    /**
+     * Static value Disable for SetStartVMOnConnect.
+     */
     public static final SetStartVMOnConnect DISABLE = fromString("Disable");
 
     /**
      * Creates a new instance of SetStartVMOnConnect value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class SetStartVMOnConnect extends ExpandableStringEnum<SetStartVMOn
 
     /**
      * Creates or finds a SetStartVMOnConnect from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SetStartVMOnConnect.
      */
-    @JsonCreator
     public static SetStartVMOnConnect fromString(String name) {
         return fromString(name, SetStartVMOnConnect.class);
     }
 
     /**
      * Gets known SetStartVMOnConnect values.
-     *
+     * 
      * @return known SetStartVMOnConnect values.
      */
     public static Collection<SetStartVMOnConnect> values() {
