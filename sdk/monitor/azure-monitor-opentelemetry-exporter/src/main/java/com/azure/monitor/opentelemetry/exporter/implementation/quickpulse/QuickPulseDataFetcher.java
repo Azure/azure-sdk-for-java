@@ -150,8 +150,14 @@ class QuickPulseDataFetcher {
         metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Dependency Calls Succeeded/Sec",
             counters.rdds - counters.unsuccessfulRdds, 1));
         metricsList.add(new QuickPulseMetrics("\\ApplicationInsights\\Exceptions/Sec", counters.exceptions, 1));
-        metricsList.add(new QuickPulseMetrics("\\Memory\\Committed Bytes", counters.memoryCommitted, 1));
-        metricsList.add(new QuickPulseMetrics("\\Processor(_Total)\\% Processor Time", counters.cpuUsage, 1));
+        // TODO: remove old memory counter name when service side makes the UI change
+        metricsList.add(new QuickPulseMetrics("\\Memory\\Committed Bytes", counters.processPhysicalMemory, 1));
+        metricsList.add(new QuickPulseMetrics("\\Process\\Physical Bytes", counters.processPhysicalMemory, 1));
+        // TODO: remove old cpu counter name when service side makes the UI change
+        metricsList
+            .add(new QuickPulseMetrics("\\Processor(_Total)\\% Processor Time", counters.processNormalizedCpuUsage, 1));
+        metricsList.add(
+            new QuickPulseMetrics("\\% Process\\Processor Time Normalized", counters.processNormalizedCpuUsage, 1));
 
         return metricsList;
     }
