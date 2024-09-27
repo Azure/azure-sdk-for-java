@@ -7,6 +7,7 @@ import com.azure.ai.openai.MyFunctionCallArguments;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
+import com.azure.ai.openai.implementation.Parameters;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -20,6 +21,8 @@ import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinition;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolDefinitionFunction;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormat;
+import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
@@ -391,6 +394,19 @@ public final class ReadmeSamples {
         // Cancel a batch
         Batch cancelledBatch = client.cancelBatch(batch.getId());
         // END: readme-sample-batchOperations
+    }
+
+    public void structuredOutputs() {
+        // BEGIN: readme-sample-structuredOutputsResponseFormat
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+            // Previously, the response_format parameter was only available to specify that the model should return a valid JSON.
+            // In addition to this, we are introducing a new way of specifying which JSON schema to follow.
+            .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+                new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather")
+                    .setStrict(true)
+                    .setDescription("Fetches the weather in the given location")
+                    .setSchema(BinaryData.fromObject(new Parameters()))));
+        // END: readme-sample-structuredOutputsResponseFormat
     }
 
     public void enableHttpLogging() {

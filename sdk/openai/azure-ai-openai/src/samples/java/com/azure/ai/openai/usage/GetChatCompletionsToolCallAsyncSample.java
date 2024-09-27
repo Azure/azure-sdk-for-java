@@ -124,6 +124,11 @@ public class GetChatCompletionsToolCallAsyncSample {
         functionDefinition.setDescription("Get the future temperature for a given location and date.");
         FutureTemperatureParameters parameters = new FutureTemperatureParameters();
         functionDefinition.setParameters(BinaryData.fromObject(parameters));
+        // Function calling remains similar, but with the new parameter strict: true, you can now ensure that the schema
+        // provided for the functions is strictly followed. We are not setting strict to true, so the model can handle
+        // the parameters as it sees fit.
+        //
+        // functionDefinition.setStrict(true);
         return functionDefinition;
     }
 
