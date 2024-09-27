@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- `createTableIfNotExists` now returns a table client for the table that already exists instead of null when the table is
+present within the service.
+
 ### Other Changes
 
 ## 12.4.3 (2024-07-26)
