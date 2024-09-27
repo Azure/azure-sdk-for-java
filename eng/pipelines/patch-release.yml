@@ -16,10 +16,6 @@ extends:
       groupId: com.azure
       safeName: azuredataappconfiguration
       ServiceDirectory: appconfiguration
-    - name: azure-messaging-eventhubs
-      groupId: com.azure
-      safeName: azuremessagingeventhubs
-      ServiceDirectory: eventhubs
     - name: azure-mixedreality-authentication
       groupId: com.azure
       safeName: azuremixedrealityauthentication
@@ -48,10 +44,6 @@ extends:
       groupId: com.azure
       safeName: azuredatatables
       ServiceDirectory: tables
-    - name: azure-data-schemaregistry-apacheavro
-      groupId: com.azure
-      safeName: azuredataschemaregistryapacheavro
-      ServiceDirectory: schemaregistry
     - name: azure-security-keyvault-keys
       groupId: com.azure
       safeName: azuresecuritykeyvaultkeys
@@ -72,10 +64,6 @@ extends:
       groupId: com.azure
       safeName: azureiotdeviceupdate
       ServiceDirectory: deviceupdate
-    - name: azure-messaging-servicebus
-      groupId: com.azure
-      safeName: azuremessagingservicebus
-      ServiceDirectory: servicebus
     - name: azure-monitor-ingestion
       groupId: com.azure
       safeName: azuremonitoringestion
@@ -84,10 +72,6 @@ extends:
       groupId: com.azure
       safeName: azuremonitorquery
       ServiceDirectory: monitor
-    - name: azure-messaging-eventhubs-checkpointstore-blob
-      groupId: com.azure
-      safeName: azuremessagingeventhubscheckpointstoreblob
-      ServiceDirectory: eventhubs
     - name: azure-developer-loadtesting
       groupId: com.azure
       safeName: azuredeveloperloadtesting
@@ -152,8 +136,4 @@ extends:
       groupId: com.azure
       safeName: azureaimetricsadvisor
       ServiceDirectory: metricsadvisor
-    - name: azure-data-schemaregistry
-      groupId: com.azure
-      safeName: azuredataschemaregistry
-      ServiceDirectory: schemaregistry
 
