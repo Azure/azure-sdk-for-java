@@ -12,17 +12,19 @@ import java.util.Collection;
  */
 public final class HighAvailabilityMode extends ExpandableStringEnum<HighAvailabilityMode> {
     /**
-     * Static value Disabled for HighAvailabilityMode.
+     * High availability mode is disabled. This mode is can see availability impact during faults or maintenance and is
+     * not recommended for production.
      */
     public static final HighAvailabilityMode DISABLED = fromString("Disabled");
 
     /**
-     * Static value SameZone for HighAvailabilityMode.
+     * High availability mode is enabled, where each server in a shard is placed in the same availability zone.
      */
     public static final HighAvailabilityMode SAME_ZONE = fromString("SameZone");
 
     /**
-     * Static value ZoneRedundantPreferred for HighAvailabilityMode.
+     * High availability mode is enabled and preferences ZoneRedundant if availability zones capacity is available in
+     * the region, otherwise falls-back to provisioning with SameZone.
      */
     public static final HighAvailabilityMode ZONE_REDUNDANT_PREFERRED = fromString("ZoneRedundantPreferred");
 

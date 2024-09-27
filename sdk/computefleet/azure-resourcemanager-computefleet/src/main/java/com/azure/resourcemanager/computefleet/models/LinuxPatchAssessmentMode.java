@@ -16,12 +16,12 @@ import java.util.Collection;
  */
 public final class LinuxPatchAssessmentMode extends ExpandableStringEnum<LinuxPatchAssessmentMode> {
     /**
-     * Static value ImageDefault for LinuxPatchAssessmentMode.
+     * You control the timing of patch assessments on a virtual machine.
      */
     public static final LinuxPatchAssessmentMode IMAGE_DEFAULT = fromString("ImageDefault");
 
     /**
-     * Static value AutomaticByPlatform for LinuxPatchAssessmentMode.
+     * The platform will trigger periodic patch assessments.The property provisionVMAgent must be true.
      */
     public static final LinuxPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 

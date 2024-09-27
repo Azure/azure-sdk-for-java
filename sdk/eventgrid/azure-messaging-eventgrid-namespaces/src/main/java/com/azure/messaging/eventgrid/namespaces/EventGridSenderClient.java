@@ -14,10 +14,10 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridSenderClientImpl;
 import java.util.List;
-import com.azure.core.models.CloudEvent;
 
 /**
  * Initializes a new instance of the synchronous EventGridSenderClient type.
@@ -45,7 +45,8 @@ public final class EventGridSenderClient {
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     source: String (Required)
@@ -58,13 +59,17 @@ public final class EventGridSenderClient {
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
@@ -85,7 +90,8 @@ public final class EventGridSenderClient {
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -100,13 +106,17 @@ public final class EventGridSenderClient {
      *         subject: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.

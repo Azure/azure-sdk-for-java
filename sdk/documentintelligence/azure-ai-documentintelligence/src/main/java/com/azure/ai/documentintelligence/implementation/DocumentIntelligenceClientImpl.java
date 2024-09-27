@@ -299,12 +299,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -360,12 +362,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -421,12 +425,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -484,12 +490,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -547,12 +555,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -612,12 +622,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -677,7 +689,8 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -691,7 +704,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -747,7 +761,8 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -761,7 +776,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -817,7 +833,8 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -831,7 +848,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -890,7 +908,8 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -904,7 +923,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -963,7 +983,8 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -977,7 +998,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1037,7 +1059,8 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     azureBlobSource (Optional): {
      *         containerUrl: String (Required)
@@ -1051,7 +1074,8 @@ public final class DocumentIntelligenceClientImpl {
      *     resultPrefix: String (Optional)
      *     overwriteExisting: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1082,9 +1106,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1108,9 +1134,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated searchable PDF output from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1133,9 +1161,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1160,9 +1190,11 @@ public final class DocumentIntelligenceClientImpl {
      * Gets the generated cropped image of specified figure from document analysis.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param resultId Analyze operation result ID.
@@ -1198,12 +1230,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1240,12 +1274,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1281,12 +1317,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1329,12 +1367,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1377,12 +1417,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.
@@ -1426,12 +1468,14 @@ public final class DocumentIntelligenceClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     urlSource: String (Optional)
      *     base64Source: byte[] (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param classifyRequest Classify request parameters.

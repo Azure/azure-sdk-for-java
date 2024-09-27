@@ -72,8 +72,9 @@ public final class EventGridReceiverAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -96,7 +97,8 @@ public final class EventGridReceiverAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -120,18 +122,21 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully acknowledged events
      * will no longer be available to be received by any consumer.
      * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
@@ -154,7 +159,8 @@ public final class EventGridReceiverAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -188,18 +194,21 @@ public final class EventGridReceiverAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
@@ -222,7 +231,8 @@ public final class EventGridReceiverAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -247,18 +257,21 @@ public final class EventGridReceiverAsyncClient {
      * with other failed lock tokens with their corresponding error information. Successfully rejected events will be
      * dead-lettered and can no longer be received by a consumer.
      * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
@@ -281,7 +294,8 @@ public final class EventGridReceiverAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
@@ -306,18 +320,21 @@ public final class EventGridReceiverAsyncClient {
      * along with other failed lock tokens with their corresponding error information. Successfully renewed locks will
      * ensure that the associated event is only available to the consumer that holds the renewed lock.
      * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     lockTokens (Required): [
      *         String (Required)
      *     ]
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     failedLockTokens (Required): [
      *          (Required){
@@ -340,7 +357,8 @@ public final class EventGridReceiverAsyncClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param eventSubscriptionName Event Subscription Name.
