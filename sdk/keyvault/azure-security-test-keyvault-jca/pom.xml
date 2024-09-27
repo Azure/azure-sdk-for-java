@@ -19,6 +19,7 @@
 
   <properties>
     <spotbugs.skip>true</spotbugs.skip>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

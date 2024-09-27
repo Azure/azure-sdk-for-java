@@ -40,6 +40,7 @@
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.secrets/com.azure.security.keyvault.secrets.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

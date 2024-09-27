@@ -43,7 +43,7 @@ Licensed under the MIT License.
     <revapi.skip>true</revapi.skip>
 
     <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
-    <doclint>all,-missing</doclint>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

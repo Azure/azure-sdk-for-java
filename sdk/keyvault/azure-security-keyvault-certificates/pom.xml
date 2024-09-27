@@ -41,6 +41,7 @@
       --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>
