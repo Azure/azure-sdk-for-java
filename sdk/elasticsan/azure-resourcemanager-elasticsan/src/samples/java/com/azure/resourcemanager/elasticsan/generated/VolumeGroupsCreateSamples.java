@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * VolumeGroups_Create_MinimumSet_Gen.json
      */
     /**
@@ -33,12 +33,14 @@ public final class VolumeGroupsCreateSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsCreateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().define("volumegroupname").withExistingElasticSan("resourcegroupname", "elasticsanname")
+        manager.volumeGroups()
+            .define("volumegroupname")
+            .withExistingElasticSan("resourcegroupname", "elasticsanname")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * VolumeGroups_Create_MaximumSet_Gen.json
      */
     /**
@@ -47,19 +49,23 @@ public final class VolumeGroupsCreateSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsCreateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeGroups().define("volumegroupname").withExistingElasticSan("resourcegroupname", "elasticsanname")
+        manager.volumeGroups()
+            .define("volumegroupname")
+            .withExistingElasticSan("resourcegroupname", "elasticsanname")
             .withIdentity(new Identity().withType(IdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("key7482", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(mapOf("key1006", new UserAssignedIdentity())))
             .withProtocolType(StorageTargetType.ISCSI)
-            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_MANAGED_KEY)
+            .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_PLATFORM_KEY)
             .withEncryptionProperties(new EncryptionProperties()
                 .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
-                    .withKeyVersion("fakeTokenPlaceholder").withKeyVaultUri("fakeTokenPlaceholder"))
-                .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("im")))
-            .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays.asList(new VirtualNetworkRule()
-                .withVirtualNetworkResourceId(
-                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}")
-                .withAction(Action.ALLOW))))
+                    .withKeyVersion("fakeTokenPlaceholder")
+                    .withKeyVaultUri("fakeTokenPlaceholder"))
+                .withEncryptionIdentity(
+                    new EncryptionIdentity().withEncryptionUserAssignedIdentity("gfhkfbozahmmwluqndfgxunssafa")))
+            .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(
+                Arrays.asList(new VirtualNetworkRule().withVirtualNetworkResourceId("bkhwaiqvvaguymsmnzzbzz")
+                    .withAction(Action.ALLOW))))
+            .withEnforceDataIntegrityCheckForIscsi(true)
             .create();
     }
 

@@ -12,7 +12,7 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
@@ -161,8 +161,8 @@ public class RestProxyImpl extends RestProxyBase {
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
 
-            if (returnValueWireType == Base64Url.class) {
-                responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
+            if (returnValueWireType == Base64Uri.class) {
+                responseBodyBytes = new Base64Uri(responseBodyBytes).decodedBytes();
             }
 
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;

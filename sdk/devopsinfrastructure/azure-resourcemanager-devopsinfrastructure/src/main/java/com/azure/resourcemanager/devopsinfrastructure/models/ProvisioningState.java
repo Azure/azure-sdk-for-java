@@ -12,37 +12,37 @@ import java.util.Collection;
  */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /**
-     * Static value Succeeded for ProvisioningState.
+     * Represents a succeeded operation.
      */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value Failed for ProvisioningState.
+     * Represents a failed operation.
      */
     public static final ProvisioningState FAILED = fromString("Failed");
 
     /**
-     * Static value Canceled for ProvisioningState.
+     * Represents a canceled operation.
      */
     public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Static value Provisioning for ProvisioningState.
+     * Represents a pending operation.
      */
     public static final ProvisioningState PROVISIONING = fromString("Provisioning");
 
     /**
-     * Static value Updating for ProvisioningState.
+     * Represents a pending operation.
      */
     public static final ProvisioningState UPDATING = fromString("Updating");
 
     /**
-     * Static value Deleting for ProvisioningState.
+     * Represents an operation under deletion.
      */
     public static final ProvisioningState DELETING = fromString("Deleting");
 
     /**
-     * Static value Accepted for ProvisioningState.
+     * Represents an accepted operation.
      */
     public static final ProvisioningState ACCEPTED = fromString("Accepted");
 

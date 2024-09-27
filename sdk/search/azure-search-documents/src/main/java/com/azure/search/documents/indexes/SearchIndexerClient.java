@@ -476,7 +476,7 @@ public class SearchIndexerClient {
         }
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getDataSources()
             .createOrUpdateWithResponse(dataSource.getName(), dataSource, ifMatch, null,
-                null, context), LOGGER);
+                ignoreResetRequirements, null, context), LOGGER);
     }
 
     /**
@@ -882,8 +882,8 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexers()
-            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, null,
-                context), LOGGER);
+            .createOrUpdateWithResponse(indexer.getName(), indexer, ifMatch, null, ignoreResetRequirements,
+                disableCacheReprocessingChangeDetection, null, context), LOGGER);
 
     }
 
@@ -1560,8 +1560,8 @@ public class SearchIndexerClient {
         }
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         return Utility.executeRestCallWithExceptionHandling(() -> restClient.getSkillsets()
-            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null, null,
-                context), LOGGER);
+            .createOrUpdateWithResponse(skillset.getName(), skillset, ifMatch, null,
+                ignoreResetRequirements, disableCacheReprocessingChangeDetection, null, context), LOGGER);
     }
 
     /**

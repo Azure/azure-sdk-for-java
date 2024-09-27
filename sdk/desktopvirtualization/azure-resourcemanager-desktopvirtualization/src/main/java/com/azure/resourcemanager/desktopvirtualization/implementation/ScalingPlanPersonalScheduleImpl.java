@@ -175,29 +175,24 @@ public final class ScalingPlanPersonalScheduleImpl
     }
 
     public ScalingPlanPersonalSchedule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPersonalSchedules()
-                .createWithResponse(
-                    resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPersonalSchedules()
+            .createWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlanPersonalSchedule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPersonalSchedules()
-                .createWithResponse(
-                    resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPersonalSchedules()
+            .createWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ScalingPlanPersonalScheduleImpl(
-        String name, com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
+    ScalingPlanPersonalScheduleImpl(String name,
+        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = new ScalingPlanPersonalScheduleInner();
         this.serviceManager = serviceManager;
         this.scalingPlanScheduleName = name;
@@ -209,58 +204,45 @@ public final class ScalingPlanPersonalScheduleImpl
     }
 
     public ScalingPlanPersonalSchedule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPersonalSchedules()
-                .updateWithResponse(
-                    resourceGroupName,
-                    scalingPlanName,
-                    scalingPlanScheduleName,
-                    updateScalingPlanSchedule,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPersonalSchedules()
+            .updateWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, updateScalingPlanSchedule,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlanPersonalSchedule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPersonalSchedules()
-                .updateWithResponse(
-                    resourceGroupName, scalingPlanName, scalingPlanScheduleName, updateScalingPlanSchedule, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPersonalSchedules()
+            .updateWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, updateScalingPlanSchedule,
+                context)
+            .getValue();
         return this;
     }
 
-    ScalingPlanPersonalScheduleImpl(
-        ScalingPlanPersonalScheduleInner innerObject,
+    ScalingPlanPersonalScheduleImpl(ScalingPlanPersonalScheduleInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.scalingPlanName = Utils.getValueFromIdByName(innerObject.id(), "scalingPlans");
-        this.scalingPlanScheduleName = Utils.getValueFromIdByName(innerObject.id(), "personalSchedules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.scalingPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "scalingPlans");
+        this.scalingPlanScheduleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "personalSchedules");
     }
 
     public ScalingPlanPersonalSchedule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPersonalSchedules()
-                .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPersonalSchedules()
+            .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ScalingPlanPersonalSchedule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getScalingPlanPersonalSchedules()
-                .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getScalingPlanPersonalSchedules()
+            .getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, context)
+            .getValue();
         return this;
     }
 
@@ -304,8 +286,8 @@ public final class ScalingPlanPersonalScheduleImpl
         }
     }
 
-    public ScalingPlanPersonalScheduleImpl withRampUpActionOnDisconnect(
-        SessionHandlingOperation rampUpActionOnDisconnect) {
+    public ScalingPlanPersonalScheduleImpl
+        withRampUpActionOnDisconnect(SessionHandlingOperation rampUpActionOnDisconnect) {
         if (isInCreateMode()) {
             this.innerModel().withRampUpActionOnDisconnect(rampUpActionOnDisconnect);
             return this;
@@ -315,8 +297,8 @@ public final class ScalingPlanPersonalScheduleImpl
         }
     }
 
-    public ScalingPlanPersonalScheduleImpl withRampUpMinutesToWaitOnDisconnect(
-        Integer rampUpMinutesToWaitOnDisconnect) {
+    public ScalingPlanPersonalScheduleImpl
+        withRampUpMinutesToWaitOnDisconnect(Integer rampUpMinutesToWaitOnDisconnect) {
         if (isInCreateMode()) {
             this.innerModel().withRampUpMinutesToWaitOnDisconnect(rampUpMinutesToWaitOnDisconnect);
             return this;
@@ -426,8 +408,8 @@ public final class ScalingPlanPersonalScheduleImpl
         }
     }
 
-    public ScalingPlanPersonalScheduleImpl withRampDownActionOnDisconnect(
-        SessionHandlingOperation rampDownActionOnDisconnect) {
+    public ScalingPlanPersonalScheduleImpl
+        withRampDownActionOnDisconnect(SessionHandlingOperation rampDownActionOnDisconnect) {
         if (isInCreateMode()) {
             this.innerModel().withRampDownActionOnDisconnect(rampDownActionOnDisconnect);
             return this;
@@ -437,8 +419,8 @@ public final class ScalingPlanPersonalScheduleImpl
         }
     }
 
-    public ScalingPlanPersonalScheduleImpl withRampDownMinutesToWaitOnDisconnect(
-        Integer rampDownMinutesToWaitOnDisconnect) {
+    public ScalingPlanPersonalScheduleImpl
+        withRampDownMinutesToWaitOnDisconnect(Integer rampDownMinutesToWaitOnDisconnect) {
         if (isInCreateMode()) {
             this.innerModel().withRampDownMinutesToWaitOnDisconnect(rampDownMinutesToWaitOnDisconnect);
             return this;
@@ -488,8 +470,8 @@ public final class ScalingPlanPersonalScheduleImpl
         }
     }
 
-    public ScalingPlanPersonalScheduleImpl withOffPeakActionOnDisconnect(
-        SessionHandlingOperation offPeakActionOnDisconnect) {
+    public ScalingPlanPersonalScheduleImpl
+        withOffPeakActionOnDisconnect(SessionHandlingOperation offPeakActionOnDisconnect) {
         if (isInCreateMode()) {
             this.innerModel().withOffPeakActionOnDisconnect(offPeakActionOnDisconnect);
             return this;
@@ -499,8 +481,8 @@ public final class ScalingPlanPersonalScheduleImpl
         }
     }
 
-    public ScalingPlanPersonalScheduleImpl withOffPeakMinutesToWaitOnDisconnect(
-        Integer offPeakMinutesToWaitOnDisconnect) {
+    public ScalingPlanPersonalScheduleImpl
+        withOffPeakMinutesToWaitOnDisconnect(Integer offPeakMinutesToWaitOnDisconnect) {
         if (isInCreateMode()) {
             this.innerModel().withOffPeakMinutesToWaitOnDisconnect(offPeakMinutesToWaitOnDisconnect);
             return this;

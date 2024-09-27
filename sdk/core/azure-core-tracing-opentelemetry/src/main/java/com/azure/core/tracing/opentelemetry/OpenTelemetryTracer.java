@@ -5,6 +5,7 @@ package com.azure.core.tracing.opentelemetry;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.StartSpanOptions;
@@ -41,7 +42,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static final StartSpanOptions DEFAULT_SPAN_START_OPTIONS
         = new StartSpanOptions(com.azure.core.util.tracing.SpanKind.INTERNAL);
     private static final TextMapPropagator TRACE_CONTEXT_FORMAT = W3CTraceContextPropagator.getInstance();
-    private static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.23.1";
+    private static final String DEFAULT_SCHEMA_URL = "https://opentelemetry.io/schemas/1.23.1";
     private static final ClientLogger LOGGER = new ClientLogger(OpenTelemetryTracer.class);
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
@@ -92,7 +93,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      *
      */
     public OpenTelemetryTracer() {
-        this("azure-core", null, null, null);
+        this(new LibraryTelemetryOptions("azure-core"), null);
     }
 
     /**
@@ -100,14 +101,15 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      * {@link GlobalOpenTelemetry#getTracer(String)}
      *
      */
-    OpenTelemetryTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
+    OpenTelemetryTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
 
-        TracerProvider otelProvider = getTracerProvider(options);
-        this.isEnabled = (options == null || options.isEnabled()) && otelProvider != TracerProvider.noop();
-        this.azNamespace = azNamespace;
-        this.tracer = otelProvider.tracerBuilder(libraryName)
-            .setInstrumentationVersion(libraryVersion)
-            .setSchemaUrl(SCHEMA_URL)
+        TracerProvider otelProvider = getTracerProvider(applicationOptions);
+        this.isEnabled
+            = (applicationOptions == null || applicationOptions.isEnabled()) && otelProvider != TracerProvider.noop();
+        this.azNamespace = libraryOptions.getResourceProviderNamespace();
+        this.tracer = otelProvider.tracerBuilder(libraryOptions.getLibraryName())
+            .setInstrumentationVersion(libraryOptions.getLibraryVersion())
+            .setSchemaUrl(libraryOptions.getSchemaUrl() != null ? libraryOptions.getSchemaUrl() : DEFAULT_SCHEMA_URL)
             .build();
     }
 

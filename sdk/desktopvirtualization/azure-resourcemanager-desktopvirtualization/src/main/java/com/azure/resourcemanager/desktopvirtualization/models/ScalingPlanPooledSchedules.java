@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ScalingPlanPooledSchedules. */
+/**
+ * Resource collection API of ScalingPlanPooledSchedules.
+ */
 public interface ScalingPlanPooledSchedules {
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -22,12 +24,12 @@ public interface ScalingPlanPooledSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a ScalingPlanPooledSchedule along with {@link Response}.
      */
-    Response<ScalingPlanPooledSchedule> getWithResponse(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context);
+    Response<ScalingPlanPooledSchedule> getWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, Context context);
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -40,7 +42,7 @@ public interface ScalingPlanPooledSchedules {
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -50,12 +52,12 @@ public interface ScalingPlanPooledSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName,
+        Context context);
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -67,7 +69,7 @@ public interface ScalingPlanPooledSchedules {
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +81,7 @@ public interface ScalingPlanPooledSchedules {
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -91,17 +93,12 @@ public interface ScalingPlanPooledSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return scalingPlanPooledScheduleList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ScalingPlanPooledSchedule> list(
-        String resourceGroupName,
-        String scalingPlanName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<ScalingPlanPooledSchedule> list(String resourceGroupName, String scalingPlanName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -112,7 +109,7 @@ public interface ScalingPlanPooledSchedules {
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +121,7 @@ public interface ScalingPlanPooledSchedules {
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,7 +131,7 @@ public interface ScalingPlanPooledSchedules {
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +143,7 @@ public interface ScalingPlanPooledSchedules {
 
     /**
      * Begins definition for a new ScalingPlanPooledSchedule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ScalingPlanPooledSchedule definition.
      */

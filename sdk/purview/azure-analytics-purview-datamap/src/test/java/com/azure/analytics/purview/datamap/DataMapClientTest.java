@@ -10,7 +10,6 @@ package com.azure.analytics.purview.datamap;
 
 import com.azure.analytics.purview.datamap.models.AtlasEntityDef;
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -40,7 +39,7 @@ class DataMapClientTest extends TestProxyTestBase {
     protected void beforeTest() {
         DataMapClientBuilder entityClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             entityClientbuilder.httpClient(interceptorManager.getPlaybackClient())
@@ -55,7 +54,7 @@ class DataMapClientTest extends TestProxyTestBase {
 
         DataMapClientBuilder glossaryClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             glossaryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
@@ -70,7 +69,7 @@ class DataMapClientTest extends TestProxyTestBase {
 
         DataMapClientBuilder discoveryClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             discoveryClientbuilder.httpClient(interceptorManager.getPlaybackClient())
@@ -85,7 +84,7 @@ class DataMapClientTest extends TestProxyTestBase {
 
         DataMapClientBuilder lineageClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             lineageClientbuilder.httpClient(interceptorManager.getPlaybackClient())
@@ -100,7 +99,7 @@ class DataMapClientTest extends TestProxyTestBase {
 
         DataMapClientBuilder relationshipClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             relationshipClientbuilder.httpClient(interceptorManager.getPlaybackClient())
@@ -115,7 +114,7 @@ class DataMapClientTest extends TestProxyTestBase {
 
         DataMapClientBuilder typeDefinitionClientbuilder
             = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             typeDefinitionClientbuilder.httpClient(interceptorManager.getPlaybackClient())

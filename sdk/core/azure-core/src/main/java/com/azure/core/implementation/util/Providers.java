@@ -4,17 +4,17 @@ package com.azure.core.implementation.util;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.function.Function;
 
 /**
  * Helper class that unifies SPI instances creation.
- * 
+ *
  * @param <TProvider> Service Provider interface.
  * @param <TInstance> Service interface type.
  */
@@ -44,30 +44,39 @@ public final class Providers<TProvider, TInstance> {
         // System classloader to load TProvider classes.
         ServiceLoader<TProvider> serviceLoader = ServiceLoader.load(providerClass, Providers.class.getClassLoader());
 
-        availableProviders = new HashMap<>();
-        // Use the first provider found in the service loader iterator.
+        TProvider defaultProvider = null;
+        String defaultProviderName = null;
+        this.availableProviders = new HashMap<>();
+
+        // Load all provider instances.
         Iterator<TProvider> it = serviceLoader.iterator();
-        if (it.hasNext()) {
-            defaultProvider = it.next();
-            defaultProviderName = defaultProvider.getClass().getName();
-            availableProviders.put(defaultProviderName, defaultProvider);
-            LOGGER.log(LogLevel.VERBOSE,
-                () -> "Using " + defaultProviderName + " as the default " + providerClass.getName() + ".");
-        } else {
-            defaultProvider = null;
-            defaultProviderName = null;
-        }
-
         while (it.hasNext()) {
-            TProvider additionalProvider = it.next();
-            String additionalProviderName = additionalProvider.getClass().getName();
-            availableProviders.put(additionalProviderName, additionalProvider);
-            LOGGER.log(LogLevel.VERBOSE, () -> "Additional provider found on the classpath: " + additionalProviderName);
+            try {
+                TProvider provider = it.next();
+                String providerName = provider.getClass().getName();
+                availableProviders.put(providerName, provider);
+                if (defaultProvider == null) {
+                    defaultProvider = provider;
+                    defaultProviderName = providerName;
+                    LOGGER.atVerbose()
+                        .addKeyValue("providerName", providerName)
+                        .addKeyValue("providerClass", providerClass.getName())
+                        .log("Loaded default provider.");
+                } else {
+                    LOGGER.atVerbose()
+                        .addKeyValue("providerName", providerName)
+                        .log("Additional provider found on the classpath");
+                }
+            } catch (LinkageError | ServiceConfigurationError error) {
+                LOGGER.atWarning().log(() -> "Failed to load a provider instance.", error);
+            }
         }
 
-        defaultImplementation = defaultImplementationName;
-        noDefaultImplementation = CoreUtils.isNullOrEmpty(defaultImplementation);
-        noProviderMessage = noProviderErrorMessage;
+        this.defaultProvider = defaultProvider;
+        this.defaultProviderName = defaultProviderName;
+        this.defaultImplementation = defaultImplementationName;
+        this.noDefaultImplementation = CoreUtils.isNullOrEmpty(defaultImplementation);
+        this.noProviderMessage = noProviderErrorMessage;
     }
 
     private String formatNoSpecificProviderErrorMessage(String selectedImplementation) {

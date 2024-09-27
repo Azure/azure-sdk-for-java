@@ -19,6 +19,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -88,6 +89,7 @@ public class OpenTelemetryHttpPolicyTests {
     private static final String EXPECTED_URL_REDACTED = "https://httpbin.org/hello?n=REDACTED&api-version=1.2.3";
     private static final String ORIGINAL_URL_NO_QUERY = "https://httpbin.org/hello";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private static final LibraryTelemetryOptions DEFAULT_TELEMETRY_OPTIONS = new LibraryTelemetryOptions("test");
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
     private OpenTelemetry openTelemetry;
@@ -102,7 +104,7 @@ public class OpenTelemetryHttpPolicyTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        azTracer = new OpenTelemetryTracer("test", null, null,
+        azTracer = new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS,
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
         tracer = openTelemetry.getTracer(testInfo.getDisplayName());
     }
@@ -201,7 +203,7 @@ public class OpenTelemetryHttpPolicyTests {
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, ORIGINAL_URL_WITH_QUERY);
         try (Scope scope = tracer.spanBuilder("test").startSpan().makeCurrent()) {
             createHttpPipeline(DEFAULT_CLIENT_OPTIONS,
-                new OpenTelemetryTracer("test", null, null,
+                new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS,
                     new OpenTelemetryTracingOptions()
                         .setOpenTelemetry(OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build())))
                             .send(request)
@@ -251,7 +253,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS, options);
 
         List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -319,7 +321,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS, options);
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -349,7 +351,7 @@ public class OpenTelemetryHttpPolicyTests {
     public void exceptionEventIsNotRecorded() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS, options);
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -378,7 +380,7 @@ public class OpenTelemetryHttpPolicyTests {
         AtomicInteger attemptCount = new AtomicInteger();
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS, options);
 
         List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -423,7 +425,7 @@ public class OpenTelemetryHttpPolicyTests {
 
     @Test
     public void connectionErrorAfterResponseCodeIsTraced() {
-        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null,
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS,
             new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
 
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -453,7 +455,7 @@ public class OpenTelemetryHttpPolicyTests {
     public void cancelIsTraced() {
         OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
-        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
+        com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer(DEFAULT_TELEMETRY_OPTIONS, options);
 
         List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);

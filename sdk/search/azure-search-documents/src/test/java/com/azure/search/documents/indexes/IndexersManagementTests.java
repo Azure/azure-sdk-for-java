@@ -121,6 +121,14 @@ public class IndexersManagementTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupSharedResources() {
+        sharedSkillset = createSkillsetObject();
+        sharedDatasource = createSharedDataSource();
+        sharedIndex = createTestIndexForLiveDatasource();
+
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return;
+        }
+
         sharedIndexerClient = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
@@ -130,15 +138,9 @@ public class IndexersManagementTests extends SearchTestBase {
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
-        sharedSkillset = createSkillsetObject();
-        sharedDatasource = createSharedDataSource();
-        sharedIndex = createTestIndexForLiveDatasource();
-
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            sharedSkillset = sharedIndexerClient.createSkillset(sharedSkillset);
-            sharedDatasource = sharedIndexerClient.createOrUpdateDataSourceConnection(sharedDatasource);
-            sharedIndex = sharedIndexClient.createIndex(sharedIndex);
-        }
+        sharedSkillset = sharedIndexerClient.createSkillset(sharedSkillset);
+        sharedDatasource = sharedIndexerClient.createOrUpdateDataSourceConnection(sharedDatasource);
+        sharedIndex = sharedIndexClient.createIndex(sharedIndex);
     }
 
     @AfterAll

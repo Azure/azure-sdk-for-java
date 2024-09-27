@@ -65,7 +65,8 @@ public final class FaceSessionAsyncClient {
      * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
@@ -75,16 +76,19 @@ public final class FaceSessionAsyncClient {
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -127,7 +131,8 @@ public final class FaceSessionAsyncClient {
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -184,7 +189,8 @@ public final class FaceSessionAsyncClient {
      *         verifyImageHash: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -218,7 +224,8 @@ public final class FaceSessionAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -229,7 +236,8 @@ public final class FaceSessionAsyncClient {
      *         authTokenTimeToLiveInSeconds: Integer (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -260,7 +268,8 @@ public final class FaceSessionAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: long (Required)
@@ -310,7 +319,8 @@ public final class FaceSessionAsyncClient {
      *         verifyImageHash: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -336,7 +346,8 @@ public final class FaceSessionAsyncClient {
      * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
@@ -348,11 +359,13 @@ public final class FaceSessionAsyncClient {
      *     returnVerifyImageHash: Boolean (Optional)
      *     verifyConfidenceThreshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
@@ -366,7 +379,8 @@ public final class FaceSessionAsyncClient {
      *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -392,7 +406,8 @@ public final class FaceSessionAsyncClient {
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
@@ -406,7 +421,8 @@ public final class FaceSessionAsyncClient {
      *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -454,7 +470,8 @@ public final class FaceSessionAsyncClient {
      * more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -511,7 +528,8 @@ public final class FaceSessionAsyncClient {
      *         verifyImageHash: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -547,7 +565,8 @@ public final class FaceSessionAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -558,7 +577,8 @@ public final class FaceSessionAsyncClient {
      *         authTokenTimeToLiveInSeconds: Integer (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -589,7 +609,8 @@ public final class FaceSessionAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: long (Required)
@@ -639,7 +660,8 @@ public final class FaceSessionAsyncClient {
      *         verifyImageHash: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1030,7 +1052,7 @@ public final class FaceSessionAsyncClient {
                 .end()
                 .getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(CreateLivenessWithVerifySessionResult.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(CreateLivenessWithVerifySessionResult.class));
     }
 
     /**
@@ -1067,15 +1089,18 @@ public final class FaceSessionAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionImageId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         faceId: String (Optional)
@@ -1173,7 +1198,8 @@ public final class FaceSessionAsyncClient {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param detectFromSessionImageRequest The detectFromSessionImageRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1196,9 +1222,11 @@ public final class FaceSessionAsyncClient {
      * details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param sessionImageId The request ID of the image to be retrieved.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

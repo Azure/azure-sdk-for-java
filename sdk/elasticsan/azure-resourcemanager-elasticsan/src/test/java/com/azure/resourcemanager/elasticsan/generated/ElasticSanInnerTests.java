@@ -36,8 +36,10 @@ public final class ElasticSanInnerTests {
         ElasticSanInner model = new ElasticSanInner().withLocation("qeojnxqbzvddntw")
             .withTags(mapOf("vuhrhcffcyddgl", "icbtwnpzao"))
             .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
-            .withAvailabilityZones(Arrays.asList("izgazxu", "izuckyfihrfidfvz")).withBaseSizeTiB(2309073457131020260L)
-            .withExtendedCapacitySizeTiB(3785168823699765982L).withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+            .withAvailabilityZones(Arrays.asList("izgazxu", "izuckyfihrfidfvz"))
+            .withBaseSizeTiB(2309073457131020260L)
+            .withExtendedCapacitySizeTiB(3785168823699765982L)
+            .withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanInner.class);
         Assertions.assertEquals("qeojnxqbzvddntw", model.location());
         Assertions.assertEquals("icbtwnpzao", model.tags().get("vuhrhcffcyddgl"));

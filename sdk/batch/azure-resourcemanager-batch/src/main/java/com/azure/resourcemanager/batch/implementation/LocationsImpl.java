@@ -62,18 +62,6 @@ public final class LocationsImpl implements Locations {
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName) {
-        PagedIterable<SupportedSkuInner> inner = this.serviceClient().listSupportedCloudServiceSkus(locationName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName, Integer maxresults,
-        String filter, Context context) {
-        PagedIterable<SupportedSkuInner> inner
-            = this.serviceClient().listSupportedCloudServiceSkus(locationName, maxresults, filter, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
-    }
-
     public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(String locationName,
         CheckNameAvailabilityParameters parameters, Context context) {
         Response<CheckNameAvailabilityResultInner> inner

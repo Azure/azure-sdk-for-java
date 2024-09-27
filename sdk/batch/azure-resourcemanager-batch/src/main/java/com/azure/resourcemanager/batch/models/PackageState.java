@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The current state of the application package.
  */
@@ -36,7 +33,6 @@ public enum PackageState {
      * @param value the serialized value to parse.
      * @return the parsed PackageState object, or null if unable to parse.
      */
-    @JsonCreator
     public static PackageState fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum PackageState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

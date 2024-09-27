@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
+import com.azure.resourcemanager.network.models.PrivateEndpointVNetPolicies;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
@@ -93,6 +94,11 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
      * A collection of references to flow log resources.
      */
     private List<FlowLogInner> flowLogs;
+
+    /*
+     * Private Endpoint VNet Policies.
+     */
+    private PrivateEndpointVNetPolicies privateEndpointVNetPolicies;
 
     /**
      * Creates an instance of VirtualNetworkPropertiesFormat class.
@@ -361,6 +367,27 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
     }
 
     /**
+     * Get the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     * 
+     * @return the privateEndpointVNetPolicies value.
+     */
+    public PrivateEndpointVNetPolicies privateEndpointVNetPolicies() {
+        return this.privateEndpointVNetPolicies;
+    }
+
+    /**
+     * Set the privateEndpointVNetPolicies property: Private Endpoint VNet Policies.
+     * 
+     * @param privateEndpointVNetPolicies the privateEndpointVNetPolicies value to set.
+     * @return the VirtualNetworkPropertiesFormat object itself.
+     */
+    public VirtualNetworkPropertiesFormat
+        withPrivateEndpointVNetPolicies(PrivateEndpointVNetPolicies privateEndpointVNetPolicies) {
+        this.privateEndpointVNetPolicies = privateEndpointVNetPolicies;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -407,6 +434,8 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
         jsonWriter.writeJsonField("bgpCommunities", this.bgpCommunities);
         jsonWriter.writeJsonField("encryption", this.encryption);
         jsonWriter.writeArrayField("ipAllocations", this.ipAllocations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("privateEndpointVNetPolicies",
+            this.privateEndpointVNetPolicies == null ? null : this.privateEndpointVNetPolicies.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -464,6 +493,9 @@ public final class VirtualNetworkPropertiesFormat implements JsonSerializable<Vi
                 } else if ("flowLogs".equals(fieldName)) {
                     List<FlowLogInner> flowLogs = reader.readArray(reader1 -> FlowLogInner.fromJson(reader1));
                     deserializedVirtualNetworkPropertiesFormat.flowLogs = flowLogs;
+                } else if ("privateEndpointVNetPolicies".equals(fieldName)) {
+                    deserializedVirtualNetworkPropertiesFormat.privateEndpointVNetPolicies
+                        = PrivateEndpointVNetPolicies.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -4,20 +4,45 @@
 
 package com.azure.resourcemanager.mongocluster.generated;
 
+import com.azure.resourcemanager.mongocluster.models.AdministratorProperties;
+import com.azure.resourcemanager.mongocluster.models.ComputeProperties;
 import com.azure.resourcemanager.mongocluster.models.CreateMode;
+import com.azure.resourcemanager.mongocluster.models.HighAvailabilityMode;
+import com.azure.resourcemanager.mongocluster.models.HighAvailabilityProperties;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterProperties;
+import com.azure.resourcemanager.mongocluster.models.MongoClusterReplicaParameters;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterRestoreParameters;
-import com.azure.resourcemanager.mongocluster.models.NodeGroupSpec;
-import com.azure.resourcemanager.mongocluster.models.NodeKind;
+import com.azure.resourcemanager.mongocluster.models.ShardingProperties;
+import com.azure.resourcemanager.mongocluster.models.StorageProperties;
 import java.time.OffsetDateTime;
-import java.util.Arrays;
 
 /**
  * Samples for MongoClusters CreateOrUpdate.
  */
 public final class MongoClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-03-01-preview/MongoClusters_CreatePITR.json
+     * x-ms-original-file: 2024-07-01/MongoClusters_CreateGeoReplica.json
+     */
+    /**
+     * Sample code: Creates a replica Mongo Cluster resource from a source resource.
+     * 
+     * @param manager Entry point to MongoClusterManager.
+     */
+    public static void createsAReplicaMongoClusterResourceFromASourceResource(
+        com.azure.resourcemanager.mongocluster.MongoClusterManager manager) {
+        manager.mongoClusters()
+            .define("myReplicaMongoCluster")
+            .withRegion("centralus")
+            .withExistingResourceGroup("TestResourceGroup")
+            .withProperties(new MongoClusterProperties().withCreateMode(CreateMode.GEO_REPLICA)
+                .withReplicaParameters(new MongoClusterReplicaParameters().withSourceResourceId(
+                    "/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/mySourceMongoCluster")
+                    .withSourceLocation("eastus")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file: 2024-07-01/MongoClusters_CreatePITR.json
      */
     /**
      * Sample code: Creates a Mongo Cluster resource from a point in time restore.
@@ -39,7 +64,7 @@ public final class MongoClustersCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: 2024-03-01-preview/MongoClusters_Create.json
+     * x-ms-original-file: 2024-07-01/MongoClusters_Create.json
      */
     /**
      * Sample code: Creates a new Mongo Cluster resource.
@@ -52,14 +77,14 @@ public final class MongoClustersCreateOrUpdateSamples {
             .define("myMongoCluster")
             .withRegion("westus2")
             .withExistingResourceGroup("TestResourceGroup")
-            .withProperties(new MongoClusterProperties().withAdministratorLogin("mongoAdmin")
-                .withAdministratorLoginPassword("fakeTokenPlaceholder")
+            .withProperties(new MongoClusterProperties()
+                .withAdministrator(
+                    new AdministratorProperties().withUserName("mongoAdmin").withPassword("fakeTokenPlaceholder"))
                 .withServerVersion("5.0")
-                .withNodeGroupSpecs(Arrays.asList(new NodeGroupSpec().withSku("M30")
-                    .withDiskSizeGB(128L)
-                    .withEnableHa(true)
-                    .withKind(NodeKind.SHARD)
-                    .withNodeCount(1))))
+                .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.SAME_ZONE))
+                .withStorage(new StorageProperties().withSizeGb(128L))
+                .withSharding(new ShardingProperties().withShardCount(1))
+                .withCompute(new ComputeProperties().withTier("M30")))
             .create();
     }
 }
