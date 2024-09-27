@@ -27,7 +27,7 @@ public class DeviceUpdateClientSyncStackTests extends TestProxyTestBase {
         DeviceUpdateClientBuilder clientBuilder = new DeviceUpdateClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", TestData.ACCOUNT_ENDPOINT))
             .instanceId(Configuration.getGlobalConfiguration().get("INSTANCEID", TestData.INSTANCE_ID))
-            .httpClient(buildSyncAssertingClient(HttpClient.createDefault()))
+            .httpClient(buildSyncAssertingClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null))))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(buildSyncAssertingClient(interceptorManager.getPlaybackClient()));

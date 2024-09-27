@@ -493,7 +493,10 @@
         "AICLIP",
         "TLARGE",
         "TBASE",
-        "TGIANT"
+        "TGIANT",
+        "tiktoken",
+        "AITOKENS",
+        "Matryoshka"
       ]
     },
     {

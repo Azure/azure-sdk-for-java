@@ -31,7 +31,8 @@ public final class PrivateEndpointConnectionPropertiesTests {
             = new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                        .withDescription("unqecanoae").withActionsRequired("fhyhltrpmopjmcma"))
+                        .withDescription("unqecanoae")
+                        .withActionsRequired("fhyhltrpmopjmcma"))
                 .withGroupIds(Arrays.asList("kthfui"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,

@@ -66,6 +66,7 @@ Span span = tracer.spanBuilder("spanName").startSpan();
 // Make the span the current span
 try (Scope scope = span.makeCurrent()) {
     // Your application logic here
+    applicationLogic();
 } catch (Throwable t) {
     span.recordException(t);
     throw t;

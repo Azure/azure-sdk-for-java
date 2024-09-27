@@ -268,8 +268,8 @@ public abstract class TestBase {
                     httpClientProvider.getClass().getSimpleName().toLowerCase(Locale.ROOT))) {
                     httpClientsToTest.add(httpClientProvider.createInstance());
                 }
-            } catch (ServiceConfigurationError | UnsupportedClassVersionError error) {
-                LOGGER.atWarning().log(() -> "Skipping HttpClientProvider due to UnsupportedClassVersionError.", error);
+            } catch (ServiceConfigurationError | LinkageError error) {
+                LOGGER.atWarning().log(() -> "Skipping HttpClientProvider due to LinkageError.", error);
             }
         }
 

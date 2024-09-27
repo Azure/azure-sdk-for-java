@@ -26,6 +26,11 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
      */
     private String description;
 
+    /*
+     * Name of the connection string.
+     */
+    private String name;
+
     /**
      * Creates an instance of ConnectionString class.
      */
@@ -48,6 +53,15 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
      */
     public String description() {
         return this.description;
+    }
+
+    /**
+     * Get the name property: Name of the connection string.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -86,6 +100,8 @@ public final class ConnectionString implements JsonSerializable<ConnectionString
                     deserializedConnectionString.connectionString = reader.getString();
                 } else if ("description".equals(fieldName)) {
                     deserializedConnectionString.description = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectionString.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -4,6 +4,7 @@
 package com.azure.core.metrics.opentelemetry;
 
 import com.azure.core.util.MetricsOptions;
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
 
@@ -21,6 +22,22 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * Creates an instance of {@link OpenTelemetryMeterProvider}.
      */
     public OpenTelemetryMeterProvider() {
+    }
+
+    /**
+     * Creates named and versioned OpenTelemetry-based implementation of {@link Meter}
+     *
+     * @param libraryName Azure client library package name
+     * @param libraryVersion Azure client library version
+     * @param applicationOptions instance of {@link MetricsOptions} provided by the application.
+     * @return a meter instance.
+     */
+    @Override
+    public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions applicationOptions) {
+        Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
+        final LibraryTelemetryOptions libraryOptions
+            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion);
+        return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }
 
     /**
@@ -103,14 +120,14 @@ public final class OpenTelemetryMeterProvider implements MeterProvider {
      * </pre>
      * <!-- end com.azure.core.util.metrics.OpenTelemetryMeterProvider.createMeter#custom -->
      *
-     * @param libraryName Azure client library package name
-     * @param libraryVersion Azure client library version
-     * @param options instance of {@link MetricsOptions}
+     * @param libraryOptions Library-specific telemetry options.
+     * @param applicationOptions instance of {@link MetricsOptions} provided by the application.
      * @return a meter instance.
      */
     @Override
-    public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
-        Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
-        return new OpenTelemetryMeter(libraryName, libraryVersion, options);
+    public Meter createMeter(LibraryTelemetryOptions libraryOptions, MetricsOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+
+        return new OpenTelemetryMeter(libraryOptions, applicationOptions);
     }
 }

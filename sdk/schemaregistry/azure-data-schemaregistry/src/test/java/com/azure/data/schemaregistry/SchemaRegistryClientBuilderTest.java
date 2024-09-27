@@ -7,11 +7,13 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -63,6 +65,7 @@ public class SchemaRegistryClientBuilderTest {
         Assertions.assertNotNull(new SchemaRegistryClientBuilder()
             .credential(credential)
             .fullyQualifiedNamespace("https://localhost")
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient());
     }
 
