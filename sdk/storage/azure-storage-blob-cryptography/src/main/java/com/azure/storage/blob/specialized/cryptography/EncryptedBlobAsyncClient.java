@@ -13,7 +13,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -61,7 +60,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -70,8 +68,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_KEY;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AGENT_METADATA_VALUE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.EncryptedBlobLength.computeUnencryptedBlobLength;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -736,14 +733,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
         if (EncryptedBlobClient.isRangeRequest(range)) {
             return populateRequestConditionsAndContext(requestConditions,
-                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5), false);
+                () -> super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5));
         } else {
             return super.downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5);
         }
     }
 
     private <T> Mono<T> populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
-        Supplier<Mono<T>> downloadCall, Boolean isDownloadToFile) {
+        Supplier<Mono<T>> downloadCall) {
         return this.getPropertiesWithResponse(requestConditions)
             .flatMap(response -> {
                 BlobRequestConditions requestConditionsFinal = requestConditions == null
@@ -754,38 +751,16 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
                 String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(response.getValue().getMetadata());
                 if (encryptionDataKey != null) {
-                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY,
-                        EncryptionData.getAndValidateEncryptionData(encryptionDataKey, requiresEncryption)));
+                    EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(encryptionDataKey,
+                        requiresEncryption);
+
+                    result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY, encryptionData))
+                        .contextWrite(context -> context.put(Constants.ADJUSTED_BLOB_LENGTH_KEY,
+                            computeUnencryptedBlobLength(encryptionData)));
                 }
-                if (isDownloadToFile) {
-                    result = result.contextWrite(context -> context.put("rangeAdjustment", adjustRangeThroughContext()));
-                }
+
                 return result;
             });
-    }
-
-    private BiFunction<BlobDownloadAsyncResponse, Long, Long> adjustRangeThroughContext() {
-        return (response, totalLength) -> {
-            long newLength = totalLength;
-            String metadetaString = response.getDeserializedHeaders().getMetadata().get("encryptiondata");
-            if (metadetaString == null) {
-                return newLength;
-            }
-            EncryptionData encryptionData;
-            try (JsonReader jsonReader = JsonProviders.createReader(metadetaString)) {
-                encryptionData = EncryptionData.fromJson(jsonReader);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            //if the blob is encrypted using V2, use the unencrypted length for range calculations
-            if ("2.0".equals(encryptionData.getEncryptionAgent().getProtocol())) {
-                long regionLength = getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes();
-                long region = Math.floorDiv(totalLength, regionLength);
-                long offset = (NONCE_LENGTH + TAG_LENGTH) * region;
-                newLength = totalLength - offset;
-            }
-            return newLength;
-        };
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -794,7 +769,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         return populateRequestConditionsAndContext(requestConditions,
-            () -> super.downloadContentWithResponse(options, requestConditions), false);
+            () -> super.downloadContentWithResponse(options, requestConditions));
     }
 
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -847,7 +822,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions());
         return populateRequestConditionsAndContext(options.getRequestConditions(),
-            () -> super.downloadToFileWithResponse(options), true);
+            () -> super.downloadToFileWithResponse(options));
     }
 
     /**

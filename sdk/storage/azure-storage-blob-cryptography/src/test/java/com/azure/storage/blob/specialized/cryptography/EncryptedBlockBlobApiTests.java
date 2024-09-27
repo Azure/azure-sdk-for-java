@@ -14,6 +14,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -47,6 +48,7 @@ import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlobClientBase;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
@@ -106,6 +108,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
+import static com.azure.storage.common.test.shared.StorageCommonTestUtils.convertInputStreamToByteArray;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -1892,8 +1895,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     private static Stream<Arguments> uploadAndDownloadFileDifferentRegionLengthSupplier() {
         return Stream.of(
-//            Arguments.of(4 * Constants.KB, 4 * Constants.MB), // add these back once issue #41709 is resolved
-//            Arguments.of(Constants.KB, 8 * Constants.MB), // add these back once issue #41709 is resolved
+            Arguments.of(4 * Constants.KB, 4 * Constants.MB), // tests 4MB V2 download bug
+            Arguments.of(Constants.KB, 8 * Constants.MB), // tests 4MB V2 download bug
             Arguments.of(10 * Constants.KB, 4 * Constants.MB), // unaligned
             Arguments.of(16, Constants.KB), // minimum boundary
             Arguments.of(25, Constants.KB), // unaligned
@@ -1979,11 +1982,13 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("fourMBUploadsV2Supplier")
     public void fourMBUploadsV2(int fileSize) throws IOException {
-        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
             .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
             .credential(ENV.getPrimaryAccount().getCredential())
             .endpoint(cc.getBlobContainerUrl())
             .blobName(generateBlobName())
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(5 * Constants.MB))
             .buildEncryptedBlobClient();
 
         File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
@@ -2023,5 +2028,27 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             .verifyComplete();
 
         compareFiles(file, outFile, 0, file.length());
+    }
+
+    @ParameterizedTest
+    @MethodSource("fourMBUploadsV2Supplier")
+    public void fourMBUploadsOpenInputStreamV2(int fileSize) throws IOException {
+        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
+            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .buildEncryptedBlobClient();
+
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+
+        file.deleteOnExit();
+
+        byte[] data = getRandomByteArray(fileSize);
+        Files.write(file.toPath(), data);
+
+        bec2.uploadFromFile(file.toPath().toString(), true);
+        BlobInputStream stream = bec2.openInputStream(new BlobRange(0, (long) fileSize), null);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(stream), data);
     }
 }

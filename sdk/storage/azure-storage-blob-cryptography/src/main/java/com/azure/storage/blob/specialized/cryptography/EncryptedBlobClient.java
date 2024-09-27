@@ -11,13 +11,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -44,7 +41,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -54,11 +50,9 @@ import java.time.Duration;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.BiFunction;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.EncryptedBlobLength.computeUnencryptedBlobLength;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -407,8 +401,7 @@ public class EncryptedBlobClient extends BlobClient {
     @Override
     public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
         Context context) {
-        context = context == null ? new Context("rangeAdjustment", adjustRangeThroughContext())
-            : context.addData("rangeAdjustment", adjustRangeThroughContext());
+        context = context == null ? Context.NONE : context;
         options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
             : options.getRequestConditions());
         context = populateRequestConditionsAndContext(options.getRequestConditions(), timeout, context);
@@ -497,9 +490,14 @@ public class EncryptedBlobClient extends BlobClient {
 
         String encryptionDataKey = StorageImplUtils.getEncryptionDataKey(initialProperties.getMetadata());
         if (encryptionDataKey != null) {
-            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
-                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired()));
+            EncryptionData encryptionData = EncryptionData.getAndValidateEncryptionData(
+                encryptionDataKey, encryptedBlobAsyncClient.isEncryptionRequired());
+
+            context = context.addData(ENCRYPTION_DATA_KEY, encryptionData)
+                .addData(Constants.ADJUSTED_BLOB_LENGTH_KEY,
+                    computeUnencryptedBlobLength(encryptionData));
         }
+
         return context;
     }
 
@@ -579,29 +577,5 @@ public class EncryptedBlobClient extends BlobClient {
 
     BlobClientSideEncryptionOptions getClientSideEncryptionOptions() {
         return encryptedBlobAsyncClient.getClientSideEncryptionOptions();
-    }
-
-    private BiFunction<BlobDownloadAsyncResponse, Long, Long> adjustRangeThroughContext() {
-        return (response, totalLength) -> {
-            long newLength = totalLength;
-            String metadetaString = response.getDeserializedHeaders().getMetadata().get("encryptiondata");
-            if (metadetaString == null) {
-                return newLength;
-            }
-            EncryptionData encryptionData;
-            try (JsonReader jsonReader = JsonProviders.createReader(metadetaString)) {
-                encryptionData = EncryptionData.fromJson(jsonReader);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            //if the blob is encrypted using V2, use the unencrypted length for range calculations
-            if ("2.0".equals(encryptionData.getEncryptionAgent().getProtocol())) {
-                long regionLength = getClientSideEncryptionOptions().getAuthenticatedRegionDataLengthInBytes();
-                long region = Math.floorDiv(totalLength, regionLength);
-                long offset = (NONCE_LENGTH + TAG_LENGTH) * region;
-                newLength = totalLength - offset;
-            }
-            return newLength;
-        };
     }
 }
