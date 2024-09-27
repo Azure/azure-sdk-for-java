@@ -8,6 +8,7 @@
   <version>1.0.0</version>
 
   <modules>
+    <module>../../../eng/code-quality-reports/pom.xml</module>
     <module>../../../common/perf-test-core/pom.xml</module>
     <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-blob/pom.xml</module>
     <module>../../eventhubs/azure-messaging-eventhubs-checkpointstore-jedis/pom.xml</module>
