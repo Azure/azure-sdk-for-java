@@ -986,17 +986,15 @@ public class EventHubClientBuilder implements
             prefetchCount = DEFAULT_PREFETCH_COUNT;
         }
 
-        final Meter meter = MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
-            clientOptions == null ? null : clientOptions.getMetricsOptions());
-
+        final Meter meter = createMeter();
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final ConnectionCacheWrapper processor;
         if (isSharedConnection.get()) {
             synchronized (connectionLock) {
                 if (eventHubConnectionProcessor == null) {
-                    final boolean useSessionChannelCache = true; // v2StackSupport.isSessionChannelCacheEnabled(configuration);
                     if (v2StackSupport.isV2StackEnabled(configuration)) {
+                        final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
                         eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
                     } else {
                         eventHubConnectionProcessor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
@@ -1010,7 +1008,7 @@ public class EventHubClientBuilder implements
             LOGGER.info("# of open clients with shared connection: {}", numberOfOpenClients);
         } else {
             if (v2StackSupport.isV2StackEnabled(configuration)) {
-                final boolean useSessionChannelCache = true; // v2StackSupport.isSessionChannelCacheEnabled(configuration);
+                final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
                 processor = new ConnectionCacheWrapper(buildConnectionCache(messageSerializer, meter, useSessionChannelCache));
             } else {
                 processor = new ConnectionCacheWrapper(buildConnectionProcessor(messageSerializer, meter));
@@ -1089,6 +1087,11 @@ public class EventHubClientBuilder implements
     Tracer createTracer() {
         return TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
             AZ_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
+    }
+
+    Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+            clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {

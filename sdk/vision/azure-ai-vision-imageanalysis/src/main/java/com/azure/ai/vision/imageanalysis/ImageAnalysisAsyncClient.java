@@ -30,18 +30,29 @@ import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 
 /**
  * Initializes a new instance of the asynchronous ImageAnalysisClient type.
- *
- * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client -->
+ * 
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client-api-key-auth -->
  * <pre>
  * &#47;&#47;
- * &#47;&#47; Create an asynchronous Image Analysis client.
+ * &#47;&#47; Create an asynchronous Image Analysis client with API key authentication.
  * &#47;&#47;
  * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
  *     .endpoint&#40;endpoint&#41;
  *     .credential&#40;new KeyCredential&#40;key&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.vision.imageanalysis.async-client -->
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client-api-key-auth -->
+ * <!-- src_embed com.azure.ai.vision.imageanalysis.async-client-entra-id-auth -->
+ * <pre>
+ * &#47;&#47;
+ * &#47;&#47; Create an asynchronous Image Analysis client with Entra ID authentication.
+ * &#47;&#47;
+ * ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.vision.imageanalysis.async-client-entra-id-auth -->
  */
 @ServiceClient(builder = ImageAnalysisClientBuilder.class, isAsync = true)
 public final class ImageAnalysisAsyncClient {
@@ -89,15 +100,15 @@ public final class ImageAnalysisAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -319,13 +330,13 @@ public final class ImageAnalysisAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * BinaryData
      * }</pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>{@code
      * {
      *     captionResult (Optional): {

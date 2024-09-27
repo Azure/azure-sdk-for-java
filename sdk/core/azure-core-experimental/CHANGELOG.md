@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.53 (Unreleased)
+## 1.0.0-beta.54 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,18 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.53 (2024-09-12)
+
+### Features Added
+
+- Added support for SHR PoP. ([#41554](https://github.com/Azure/azure-sdk-for-java/pull/41554))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 1.0.0-beta.52 (2024-07-31)
 

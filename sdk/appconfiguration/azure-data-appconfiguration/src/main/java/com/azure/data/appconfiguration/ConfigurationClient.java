@@ -292,7 +292,8 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * @see ConfigurationClientBuilder
  * @see ConfigurationSetting
  */
-@ServiceClient(builder = ConfigurationClientBuilder.class,
+@ServiceClient(
+    builder = ConfigurationClientBuilder.class,
     serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
 public final class ConfigurationClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
@@ -432,9 +433,8 @@ public final class ConfigurationClient {
         // This service method call is similar to setConfigurationSetting except we're passing If-Not-Match = "*".
         // If the service finds any existing configuration settings, then its e-tag will match and the service will
         // return an error.
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response =
-            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), null, ETAG_ANY,
-                toKeyValue(setting), context);
+        final ResponseBase<PutKeyValueHeaders, KeyValue> response = serviceClient.putKeyValueWithResponse(
+            setting.getKey(), setting.getLabel(), null, ETAG_ANY, toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -578,9 +578,8 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
         validateSetting(setting);
-        final ResponseBase<PutKeyValueHeaders, KeyValue> response =
-            serviceClient.putKeyValueWithResponse(setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting),
-                null, toKeyValue(setting), context);
+        final ResponseBase<PutKeyValueHeaders, KeyValue> response = serviceClient.putKeyValueWithResponse(
+            setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting), null, toKeyValue(setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -723,10 +722,9 @@ public final class ConfigurationClient {
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
         validateSetting(setting);
         try {
-            final ResponseBase<GetKeyValueHeaders, KeyValue> response =
-                serviceClient.getKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                    acceptDateTime == null ? null : acceptDateTime.toString(), null, getETag(ifChanged, setting), null,
-                    context);
+            final ResponseBase<GetKeyValueHeaders, KeyValue> response = serviceClient.getKeyValueWithResponse(
+                setting.getKey(), setting.getLabel(), acceptDateTime == null ? null : acceptDateTime.toString(), null,
+                getETag(ifChanged, setting), null, context);
             return toConfigurationSettingWithResponse(response);
         } catch (HttpResponseException ex) {
             final HttpResponse httpResponse = ex.getResponse();
@@ -762,8 +760,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSetting deleteConfigurationSetting(String key, String label) {
-        return deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label),
-            false, Context.NONE).getValue();
+        return deleteConfigurationSettingWithResponse(new ConfigurationSetting().setKey(key).setLabel(label), false,
+            Context.NONE).getValue();
     }
 
     /**
@@ -850,9 +848,8 @@ public final class ConfigurationClient {
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
         validateSetting(setting);
-        final ResponseBase<DeleteKeyValueHeaders, KeyValue> response =
-            serviceClient.deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(),
-                getETag(ifUnchanged, setting), context);
+        final ResponseBase<DeleteKeyValueHeaders, KeyValue> response = serviceClient
+            .deleteKeyValueWithResponse(setting.getKey(), setting.getLabel(), getETag(ifUnchanged, setting), context);
         return toConfigurationSettingWithResponse(response);
     }
 
@@ -1062,29 +1059,25 @@ public final class ConfigurationClient {
         final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
 
         AtomicInteger pageETagIndex = new AtomicInteger(0);
-        return new PagedIterable<>(
-                () -> {
-                    PagedResponse<KeyValue> pagedResponse;
-                    try {
-                        pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
-                            settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
-                            tagsFilter, context);
-                    } catch (HttpResponseException ex) {
-                        return handleNotModifiedErrorToValidResponse(ex, LOGGER);
-                    }
-                    return toConfigurationSettingWithPagedResponse(pagedResponse);
-                },
-                nextLink -> {
-                    PagedResponse<KeyValue> pagedResponse;
-                    try {
-                        pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
-                            getPageETag(matchConditionsList, pageETagIndex), context);
-                    } catch (HttpResponseException ex) {
-                        return handleNotModifiedErrorToValidResponse(ex, LOGGER);
-                    }
-                    return toConfigurationSettingWithPagedResponse(pagedResponse);
-                }
-        );
+        return new PagedIterable<>(() -> {
+            PagedResponse<KeyValue> pagedResponse;
+            try {
+                pagedResponse = serviceClient.getKeyValuesSinglePage(keyFilter, labelFilter, null, acceptDateTime,
+                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter, context);
+            } catch (HttpResponseException ex) {
+                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+            }
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        }, nextLink -> {
+            PagedResponse<KeyValue> pagedResponse;
+            try {
+                pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, acceptDateTime, null,
+                    getPageETag(matchConditionsList, pageETagIndex), context);
+            } catch (HttpResponseException ex) {
+                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+            }
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        });
     }
 
     /**
@@ -1148,8 +1141,8 @@ public final class ConfigurationClient {
                 fields, snapshotName, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink, null, null,
-                null, context);
+            final PagedResponse<KeyValue> pagedResponse
+                = serviceClient.getKeyValuesNextSinglePage(nextLink, null, null, null, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
     }
@@ -1224,11 +1217,11 @@ public final class ConfigurationClient {
             final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(
                 selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
                 null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()),
-                    selector == null ? null : selector.getTagsFilter(), context);
+                selector == null ? null : selector.getTagsFilter(), context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         }, nextLink -> {
-            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(nextLink,
-                acceptDateTime, context);
+            final PagedResponse<KeyValue> pagedResponse
+                = serviceClient.getRevisionsNextSinglePage(nextLink, acceptDateTime, context);
             return toConfigurationSettingWithPagedResponse(pagedResponse);
         });
     }
@@ -1265,8 +1258,8 @@ public final class ConfigurationClient {
      * has failed. The completed operation returns a {@link ConfigurationSnapshot}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(
-        String snapshotName, ConfigurationSnapshot snapshot, Context context) {
+    public SyncPoller<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(String snapshotName,
+        ConfigurationSnapshot snapshot, Context context) {
         return createSnapshotUtilClient.beginCreateSnapshot(snapshotName, snapshot, context);
     }
 
@@ -1324,9 +1317,9 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSnapshot> getSnapshotWithResponse(String snapshotName, List<SnapshotFields> fields,
-                                                                          Context context) {
-        final ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> response =
-            serviceClient.getSnapshotWithResponse(snapshotName, null, null, fields, context);
+        Context context) {
+        final ResponseBase<GetSnapshotHeaders, ConfigurationSnapshot> response
+            = serviceClient.getSnapshotWithResponse(snapshotName, null, null, fields, context);
         return new SimpleResponse<>(response, response.getValue());
     }
 
@@ -1349,8 +1342,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSnapshot archiveSnapshot(String snapshotName) {
-        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.ARCHIVED, serviceClient,
-            Context.NONE).getValue();
+        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.ARCHIVED, serviceClient, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1408,8 +1401,8 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSnapshot recoverSnapshot(String snapshotName) {
-        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.READY, serviceClient,
-            Context.NONE).getValue();
+        return updateSnapshotSync(snapshotName, null, ConfigurationSnapshotStatus.READY, serviceClient, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1496,9 +1489,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSnapshot> listSnapshots(SnapshotSelector selector, Context context) {
-        return new PagedIterable<>(() -> serviceClient.getSnapshotsSinglePage(
-            selector == null ? null : selector.getNameFilter(), null, selector == null ? null : selector.getFields(),
-            selector == null ? null : selector.getStatus(), context),
+        return new PagedIterable<>(
+            () -> serviceClient.getSnapshotsSinglePage(selector == null ? null : selector.getNameFilter(), null,
+                selector == null ? null : selector.getFields(), selector == null ? null : selector.getStatus(),
+                context),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink, context));
     }
 
@@ -1580,7 +1574,8 @@ public final class ConfigurationClient {
     public PagedIterable<SettingLabel> listLabels(SettingLabelSelector selector, Context context) {
         final String labelNameFilter = selector == null ? null : selector.getNameFilter();
         final String acceptDatetime = selector == null
-            ? null : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
+            ? null
+            : selector.getAcceptDateTime() == null ? null : selector.getAcceptDateTime().toString();
         final List<SettingLabelFields> labelFields = selector == null ? null : selector.getFields();
         return serviceClient.getLabels(labelNameFilter, null, acceptDatetime, labelFields, context);
     }

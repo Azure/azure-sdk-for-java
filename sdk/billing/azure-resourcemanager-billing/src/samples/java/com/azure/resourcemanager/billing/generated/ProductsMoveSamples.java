@@ -4,27 +4,27 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.resourcemanager.billing.models.TransferProductRequestProperties;
+import com.azure.resourcemanager.billing.models.MoveProductRequest;
 
-/** Samples for Products Move. */
+/**
+ * Samples for Products Move.
+ */
 public final class ProductsMoveSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/MoveProduct.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/productMove.json
      */
     /**
-     * Sample code: MoveProduct.
-     *
+     * Sample code: ProductMove.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void moveProduct(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .products()
-            .moveWithResponse(
-                "{billingAccountName}",
-                "{productName}",
-                new TransferProductRequestProperties()
-                    .withDestinationInvoiceSectionId(
-                        "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoiceSections/{newInvoiceSectionName}"),
+    public static void productMove(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.products()
+            .move("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31",
+                "6b96d3f2-9008-4a9d-912f-f87744185aa3",
+                new MoveProductRequest().withDestinationInvoiceSectionId(
+                    "/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
                 com.azure.core.util.Context.NONE);
     }
 }

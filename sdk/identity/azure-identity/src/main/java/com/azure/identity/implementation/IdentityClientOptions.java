@@ -80,7 +80,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean brokerEnabled;
     private boolean enableMsaPassthrough;
     private boolean useDefaultBrokerAccount;
-
     private boolean useImdsRetryStrategy;
 
     /**

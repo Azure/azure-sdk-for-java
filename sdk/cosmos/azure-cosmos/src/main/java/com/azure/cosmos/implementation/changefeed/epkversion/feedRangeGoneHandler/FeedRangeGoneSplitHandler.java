@@ -114,7 +114,7 @@ public class FeedRangeGoneSplitHandler implements FeedRangeGoneHandler {
                     childLeaseFeedRange,
                     childLeaseFeedRange.getRange());
             effectiveFeedRangeContinuation.replaceContinuation(
-                    changeFeedState.getContinuation().getCurrentContinuationToken().getToken());
+                    changeFeedState.getContinuation().getCurrentContinuationToken().getToken(), true);
 
             changeFeedState.setContinuation(effectiveFeedRangeContinuation);
             childLeaseCT = changeFeedState.toString();

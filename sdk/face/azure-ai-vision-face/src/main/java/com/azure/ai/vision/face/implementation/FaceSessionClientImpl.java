@@ -379,28 +379,61 @@ public final class FaceSessionClientImpl {
         Response<BinaryData> getLivenessWithVerifySessionAuditEntriesSync(@HostParam("endpoint") String endpoint,
             @HostParam("apiVersion") String apiVersion, @PathParam("sessionId") String sessionId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Post("/detect")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> detectFromSessionImage(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData detectFromSessionImageRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Post("/detect")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> detectFromSessionImageSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @HeaderParam("content-type") String contentType,
+            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData detectFromSessionImageRequest, RequestOptions requestOptions,
+            Context context);
+
+        @Get("/session/sessionImages/{sessionImageId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> getSessionImage(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @PathParam("sessionImageId") String sessionImageId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/session/sessionImages/{sessionImageId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSessionImageSync(@HostParam("endpoint") String endpoint,
+            @HostParam("apiVersion") String apiVersion, @PathParam("sessionImageId") String sessionImageId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Create a new detect liveness session.
      * 
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     * 
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLiveness/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     * 
-     * &gt; [!NOTE]
-     * &gt; Client access can be revoked by deleting the session using the Delete Liveness Session operation. To
-     * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
-     * resource, use the List Liveness Session Audit Entries.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-session for
+     * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
@@ -410,16 +443,19 @@ public final class FaceSessionClientImpl {
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -442,23 +478,12 @@ public final class FaceSessionClientImpl {
     /**
      * Create a new detect liveness session.
      * 
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     * 
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLiveness/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     * 
-     * &gt; [!NOTE]
-     * &gt; Client access can be revoked by deleting the session using the Delete Liveness Session operation. To
-     * retrieve a result, use the Get Liveness Session. To audit the individual requests that a client has made to your
-     * resource, use the List Liveness Session Audit Entries.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-session for
+     * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
@@ -468,16 +493,19 @@ public final class FaceSessionClientImpl {
      *     deviceCorrelationId: String (Optional)
      *     authTokenTimeToLiveInSeconds: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -498,11 +526,8 @@ public final class FaceSessionClientImpl {
     /**
      * Delete all session related information for matching the specified session id.
      * 
-     * &gt; [!NOTE]
-     * &gt; Deleting a session deactivates the Session Auth Token by blocking future API calls made with that Auth
-     * Token. While this can be used to remove any access for that token, those requests will still count towards
-     * overall resource rate limits. It's best to leverage TokenTTL to limit length of tokens in the case that it is
-     * misused.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/delete-liveness-session for
+     * more details.
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -523,11 +548,8 @@ public final class FaceSessionClientImpl {
     /**
      * Delete all session related information for matching the specified session id.
      * 
-     * &gt; [!NOTE]
-     * &gt; Deleting a session deactivates the Session Auth Token by blocking future API calls made with that Auth
-     * Token. While this can be used to remove any access for that token, those requests will still count towards
-     * overall resource rate limits. It's best to leverage TokenTTL to limit length of tokens in the case that it is
-     * misused.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/delete-liveness-session for
+     * more details.
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -545,10 +567,12 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Get session result of detectLiveness/singleModal call.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-result
+     * for more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -605,7 +629,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -613,8 +638,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detectLiveness/singleModal call along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return session result of detect liveness along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLivenessSessionResultWithResponseAsync(String sessionId,
@@ -625,10 +649,12 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Get session result of detectLiveness/singleModal call.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-result
+     * for more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -685,7 +711,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -693,7 +720,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detectLiveness/singleModal call along with {@link Response}.
+     * @return session result of detect liveness along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLivenessSessionResultWithResponse(String sessionId, RequestOptions requestOptions) {
@@ -705,9 +732,8 @@ public final class FaceSessionClientImpl {
     /**
      * Lists sessions for /detectLiveness/SingleModal.
      * 
-     * List sessions from the last sessionId greater than the 'start'.
-     * 
-     * The result should be ordered by sessionId in ascending order.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-sessions for
+     * more details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -720,7 +746,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -731,7 +758,8 @@ public final class FaceSessionClientImpl {
      *         authTokenTimeToLiveInSeconds: Integer (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -750,9 +778,8 @@ public final class FaceSessionClientImpl {
     /**
      * Lists sessions for /detectLiveness/SingleModal.
      * 
-     * List sessions from the last sessionId greater than the 'start'.
-     * 
-     * The result should be ordered by sessionId in ascending order.
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-sessions for
+     * more details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -765,7 +792,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -776,7 +804,8 @@ public final class FaceSessionClientImpl {
      *         authTokenTimeToLiveInSeconds: Integer (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -793,7 +822,9 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Gets session requests and response body for the session.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-audit-entries for more
+     * details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -806,7 +837,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: long (Required)
@@ -856,7 +888,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -864,8 +897,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session requests and response body for the session along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLivenessSessionAuditEntriesWithResponseAsync(String sessionId,
@@ -876,7 +908,9 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Gets session requests and response body for the session.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-session-audit-entries for more
+     * details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -889,7 +923,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: long (Required)
@@ -939,7 +974,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -947,7 +983,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session requests and response body for the session along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLivenessSessionAuditEntriesWithResponse(String sessionId,
@@ -961,31 +997,13 @@ public final class FaceSessionClientImpl {
      * Create a new liveness session with verify. Client device submits VerifyImage during the
      * /detectLivenessWithVerify/singleModal call.
      * 
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     * 
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
-     * operation.
-     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
-     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
-     * Verify Session Audit Entries.
-     * 
-     * Alternative Option: Client device submits VerifyImage during the /detectLivenessWithVerify/singleModal call.
-     * &gt; [!NOTE]
-     * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session for
+     * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
@@ -997,11 +1015,13 @@ public final class FaceSessionClientImpl {
      *     returnVerifyImageHash: Boolean (Optional)
      *     verifyConfidenceThreshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
@@ -1015,7 +1035,8 @@ public final class FaceSessionClientImpl {
      *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1039,31 +1060,13 @@ public final class FaceSessionClientImpl {
      * Create a new liveness session with verify. Client device submits VerifyImage during the
      * /detectLivenessWithVerify/singleModal call.
      * 
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     * 
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
-     * operation.
-     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
-     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
-     * Verify Session Audit Entries.
-     * 
-     * Alternative Option: Client device submits VerifyImage during the /detectLivenessWithVerify/singleModal call.
-     * &gt; [!NOTE]
-     * &gt; Extra measures should be taken to validate that the client is sending the expected VerifyImage.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session for
+     * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     livenessOperationMode: String(Passive/PassiveActive) (Required)
      *     sendResultsToClient: Boolean (Optional)
@@ -1075,11 +1078,13 @@ public final class FaceSessionClientImpl {
      *     returnVerifyImageHash: Boolean (Optional)
      *     verifyConfidenceThreshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
@@ -1093,7 +1098,8 @@ public final class FaceSessionClientImpl {
      *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1115,29 +1121,13 @@ public final class FaceSessionClientImpl {
     /**
      * Create a new liveness session with verify. Provide the verify image during session creation.
      * 
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     * 
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
-     * operation.
-     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
-     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
-     * Verify Session Audit Entries.
-     * 
-     * Recommended Option: VerifyImage is provided during session creation.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session-with-verify-image
+     * for more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
@@ -1151,7 +1141,8 @@ public final class FaceSessionClientImpl {
      *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1175,29 +1166,13 @@ public final class FaceSessionClientImpl {
     /**
      * Create a new liveness session with verify. Provide the verify image during session creation.
      * 
-     * A session is best for client device scenarios where developers want to authorize a client device to perform only
-     * a liveness detection without granting full access to their resource. Created sessions have a limited life span
-     * and only authorize clients to perform the desired action before access is expired.
-     * 
-     * Permissions includes...
-     * &gt;
-     * *
-     * * Ability to call /detectLivenessWithVerify/singleModal for up to 3 retries.
-     * * A token lifetime of 10 minutes.
-     * 
-     * &gt; [!NOTE]
-     * &gt;
-     * &gt; *
-     * &gt; * Client access can be revoked by deleting the session using the Delete Liveness With Verify Session
-     * operation.
-     * &gt; * To retrieve a result, use the Get Liveness With Verify Session.
-     * &gt; * To audit the individual requests that a client has made to your resource, use the List Liveness With
-     * Verify Session Audit Entries.
-     * 
-     * Recommended Option: VerifyImage is provided during session creation.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/create-liveness-with-verify-session-with-verify-image
+     * for more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     sessionId: String (Required)
      *     authToken: String (Required)
@@ -1211,7 +1186,8 @@ public final class FaceSessionClientImpl {
      *         qualityForRecognition: String(low/medium/high) (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Request content of liveness with verify session creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1233,11 +1209,9 @@ public final class FaceSessionClientImpl {
     /**
      * Delete all session related information for matching the specified session id.
      * 
-     * &gt; [!NOTE]
-     * &gt; Deleting a session deactivates the Session Auth Token by blocking future API calls made with that Auth
-     * Token. While this can be used to remove any access for that token, those requests will still count towards
-     * overall resource rate limits. It's best to leverage TokenTTL to limit length of tokens in the case that it is
-     * misused.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/delete-liveness-with-verify-session for
+     * more details.
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1258,11 +1232,9 @@ public final class FaceSessionClientImpl {
     /**
      * Delete all session related information for matching the specified session id.
      * 
-     * &gt; [!NOTE]
-     * &gt; Deleting a session deactivates the Session Auth Token by blocking future API calls made with that Auth
-     * Token. While this can be used to remove any access for that token, those requests will still count towards
-     * overall resource rate limits. It's best to leverage TokenTTL to limit length of tokens in the case that it is
-     * misused.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/delete-liveness-with-verify-session for
+     * more details.
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1280,10 +1252,13 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Get session result of detectLivenessWithVerify/singleModal call.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-result for
+     * more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -1340,7 +1315,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1348,8 +1324,8 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detectLivenessWithVerify/singleModal call along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return session result of detect liveness with verify along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLivenessWithVerifySessionResultWithResponseAsync(String sessionId,
@@ -1360,10 +1336,13 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Get session result of detectLivenessWithVerify/singleModal call.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-result for
+     * more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -1420,7 +1399,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1428,7 +1408,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session result of detectLivenessWithVerify/singleModal call along with {@link Response}.
+     * @return session result of detect liveness with verify along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLivenessWithVerifySessionResultWithResponse(String sessionId,
@@ -1441,9 +1421,9 @@ public final class FaceSessionClientImpl {
     /**
      * Lists sessions for /detectLivenessWithVerify/SingleModal.
      * 
-     * List sessions from the last sessionId greater than the "start".
-     * 
-     * The result should be ordered by sessionId in ascending order.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-sessions for more
+     * details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1456,7 +1436,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -1467,7 +1448,8 @@ public final class FaceSessionClientImpl {
      *         authTokenTimeToLiveInSeconds: Integer (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1486,9 +1468,9 @@ public final class FaceSessionClientImpl {
     /**
      * Lists sessions for /detectLivenessWithVerify/SingleModal.
      * 
-     * List sessions from the last sessionId greater than the "start".
-     * 
-     * The result should be ordered by sessionId in ascending order.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-sessions for more
+     * details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1501,7 +1483,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -1512,7 +1495,8 @@ public final class FaceSessionClientImpl {
      *         authTokenTimeToLiveInSeconds: Integer (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1529,7 +1513,9 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Gets session requests and response body for the session.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-audit-entries
+     * for more details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1542,7 +1528,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: long (Required)
@@ -1592,7 +1579,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1600,8 +1588,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session requests and response body for the session along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getLivenessWithVerifySessionAuditEntriesWithResponseAsync(String sessionId,
@@ -1612,7 +1599,9 @@ public final class FaceSessionClientImpl {
     }
 
     /**
-     * Gets session requests and response body for the session.
+     * Please refer to
+     * https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-liveness-with-verify-session-audit-entries
+     * for more details.
      * <p><strong>Query Parameters</strong></p>
      * <table border="1">
      * <caption>Query Parameters</caption>
@@ -1625,7 +1614,8 @@ public final class FaceSessionClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: long (Required)
@@ -1675,7 +1665,8 @@ public final class FaceSessionClientImpl {
      *         verifyImageHash: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sessionId The unique ID to reference this session.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1683,7 +1674,7 @@ public final class FaceSessionClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return session requests and response body for the session along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLivenessWithVerifySessionAuditEntriesWithResponse(String sessionId,
@@ -1691,5 +1682,385 @@ public final class FaceSessionClientImpl {
         final String accept = "application/json";
         return service.getLivenessWithVerifySessionAuditEntriesSync(this.getEndpoint(),
             this.getServiceVersion().getVersion(), sessionId, accept, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     * 
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-session-image-id
+     * for more details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
+     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
+     * value is 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64
+     * pixels) and rotated face orientations. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
+     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
+     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
+     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
+     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
+     * "recognition_04".</td></tr>
+     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
+     * value is true.</td></tr>
+     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
+     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
+     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
+     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
+     * not. The default value is false.</td></tr>
+     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
+     * value is false. This is only applicable when returnFaceId = true.</td></tr>
+     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
+     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sessionImageId: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         faceId: String (Optional)
+     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
+     *         faceRectangle (Required): {
+     *             top: int (Required)
+     *             left: int (Required)
+     *             width: int (Required)
+     *             height: int (Required)
+     *         }
+     *         faceLandmarks (Optional): {
+     *             pupilLeft (Required): {
+     *                 x: double (Required)
+     *                 y: double (Required)
+     *             }
+     *             pupilRight (Required): (recursive schema, see pupilRight above)
+     *             noseTip (Required): (recursive schema, see noseTip above)
+     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
+     *             mouthRight (Required): (recursive schema, see mouthRight above)
+     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
+     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
+     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
+     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
+     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
+     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
+     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
+     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
+     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
+     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
+     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
+     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
+     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
+     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
+     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
+     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
+     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
+     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
+     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
+     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
+     *             underLipTop (Required): (recursive schema, see underLipTop above)
+     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
+     *         }
+     *         faceAttributes (Optional): {
+     *             age: Double (Optional)
+     *             smile: Double (Optional)
+     *             facialHair (Optional): {
+     *                 moustache: double (Required)
+     *                 beard: double (Required)
+     *                 sideburns: double (Required)
+     *             }
+     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
+     *             headPose (Optional): {
+     *                 pitch: double (Required)
+     *                 roll: double (Required)
+     *                 yaw: double (Required)
+     *             }
+     *             hair (Optional): {
+     *                 bald: double (Required)
+     *                 invisible: boolean (Required)
+     *                 hairColor (Required): [
+     *                      (Required){
+     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
+     *                         confidence: double (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             occlusion (Optional): {
+     *                 foreheadOccluded: boolean (Required)
+     *                 eyeOccluded: boolean (Required)
+     *                 mouthOccluded: boolean (Required)
+     *             }
+     *             accessories (Optional): [
+     *                  (Optional){
+     *                     type: String(headwear/glasses/mask) (Required)
+     *                     confidence: double (Required)
+     *                 }
+     *             ]
+     *             blur (Optional): {
+     *                 blurLevel: String(low/medium/high) (Required)
+     *                 value: double (Required)
+     *             }
+     *             exposure (Optional): {
+     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
+     *                 value: double (Required)
+     *             }
+     *             noise (Optional): {
+     *                 noiseLevel: String(low/medium/high) (Required)
+     *                 value: double (Required)
+     *             }
+     *             mask (Optional): {
+     *                 noseAndMouthCovered: boolean (Required)
+     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
+     *             }
+     *             qualityForRecognition: String(low/medium/high) (Optional)
+     *         }
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param detectFromSessionImageRequest The detectFromSessionImageRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> detectFromSessionImageWithResponseAsync(BinaryData detectFromSessionImageRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.detectFromSessionImage(this.getEndpoint(), this.getServiceVersion().getVersion(),
+                contentType, accept, detectFromSessionImageRequest, requestOptions, context));
+    }
+
+    /**
+     * Detect human faces in an image, return face rectangles, and optionally with faceIds, landmarks, and attributes.
+     * 
+     * Please refer to https://learn.microsoft.com/rest/api/face/face-detection-operations/detect-from-session-image-id
+     * for more details.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>detectionModel</td><td>String</td><td>No</td><td>The 'detectionModel' associated with the detected
+     * faceIds. Supported 'detectionModel' values include 'detection_01', 'detection_02' and 'detection_03'. The default
+     * value is 'detection_01'. 'detection_03' is recommended since its accuracy is improved on smaller faces (64x64
+     * pixels) and rotated face orientations. Allowed values: "detection_01", "detection_02", "detection_03".</td></tr>
+     * <tr><td>recognitionModel</td><td>String</td><td>No</td><td>The 'recognitionModel' associated with the detected
+     * faceIds. Supported 'recognitionModel' values include 'recognition_01', 'recognition_02', 'recognition_03' or
+     * 'recognition_04'. The default value is 'recognition_01'. 'recognition_04' is recommended since its accuracy is
+     * improved on faces wearing masks compared with 'recognition_03', and its overall accuracy is improved compared
+     * with 'recognition_01' and 'recognition_02'. Allowed values: "recognition_01", "recognition_02", "recognition_03",
+     * "recognition_04".</td></tr>
+     * <tr><td>returnFaceId</td><td>Boolean</td><td>No</td><td>Return faceIds of the detected faces or not. The default
+     * value is true.</td></tr>
+     * <tr><td>returnFaceAttributes</td><td>List&lt;String&gt;</td><td>No</td><td>Analyze and return the one or more
+     * specified face attributes in the comma-separated string like 'returnFaceAttributes=headPose,glasses'. Face
+     * attribute analysis has additional computational and time cost. In the form of "," separated string.</td></tr>
+     * <tr><td>returnFaceLandmarks</td><td>Boolean</td><td>No</td><td>Return face landmarks of the detected faces or
+     * not. The default value is false.</td></tr>
+     * <tr><td>returnRecognitionModel</td><td>Boolean</td><td>No</td><td>Return 'recognitionModel' or not. The default
+     * value is false. This is only applicable when returnFaceId = true.</td></tr>
+     * <tr><td>faceIdTimeToLive</td><td>Integer</td><td>No</td><td>The number of seconds for the face ID being cached.
+     * Supported range from 60 seconds up to 86400 seconds. The default value is 86400 (24 hours).</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     sessionImageId: String (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * [
+     *      (Required){
+     *         faceId: String (Optional)
+     *         recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
+     *         faceRectangle (Required): {
+     *             top: int (Required)
+     *             left: int (Required)
+     *             width: int (Required)
+     *             height: int (Required)
+     *         }
+     *         faceLandmarks (Optional): {
+     *             pupilLeft (Required): {
+     *                 x: double (Required)
+     *                 y: double (Required)
+     *             }
+     *             pupilRight (Required): (recursive schema, see pupilRight above)
+     *             noseTip (Required): (recursive schema, see noseTip above)
+     *             mouthLeft (Required): (recursive schema, see mouthLeft above)
+     *             mouthRight (Required): (recursive schema, see mouthRight above)
+     *             eyebrowLeftOuter (Required): (recursive schema, see eyebrowLeftOuter above)
+     *             eyebrowLeftInner (Required): (recursive schema, see eyebrowLeftInner above)
+     *             eyeLeftOuter (Required): (recursive schema, see eyeLeftOuter above)
+     *             eyeLeftTop (Required): (recursive schema, see eyeLeftTop above)
+     *             eyeLeftBottom (Required): (recursive schema, see eyeLeftBottom above)
+     *             eyeLeftInner (Required): (recursive schema, see eyeLeftInner above)
+     *             eyebrowRightInner (Required): (recursive schema, see eyebrowRightInner above)
+     *             eyebrowRightOuter (Required): (recursive schema, see eyebrowRightOuter above)
+     *             eyeRightInner (Required): (recursive schema, see eyeRightInner above)
+     *             eyeRightTop (Required): (recursive schema, see eyeRightTop above)
+     *             eyeRightBottom (Required): (recursive schema, see eyeRightBottom above)
+     *             eyeRightOuter (Required): (recursive schema, see eyeRightOuter above)
+     *             noseRootLeft (Required): (recursive schema, see noseRootLeft above)
+     *             noseRootRight (Required): (recursive schema, see noseRootRight above)
+     *             noseLeftAlarTop (Required): (recursive schema, see noseLeftAlarTop above)
+     *             noseRightAlarTop (Required): (recursive schema, see noseRightAlarTop above)
+     *             noseLeftAlarOutTip (Required): (recursive schema, see noseLeftAlarOutTip above)
+     *             noseRightAlarOutTip (Required): (recursive schema, see noseRightAlarOutTip above)
+     *             upperLipTop (Required): (recursive schema, see upperLipTop above)
+     *             upperLipBottom (Required): (recursive schema, see upperLipBottom above)
+     *             underLipTop (Required): (recursive schema, see underLipTop above)
+     *             underLipBottom (Required): (recursive schema, see underLipBottom above)
+     *         }
+     *         faceAttributes (Optional): {
+     *             age: Double (Optional)
+     *             smile: Double (Optional)
+     *             facialHair (Optional): {
+     *                 moustache: double (Required)
+     *                 beard: double (Required)
+     *                 sideburns: double (Required)
+     *             }
+     *             glasses: String(noGlasses/readingGlasses/sunglasses/swimmingGoggles) (Optional)
+     *             headPose (Optional): {
+     *                 pitch: double (Required)
+     *                 roll: double (Required)
+     *                 yaw: double (Required)
+     *             }
+     *             hair (Optional): {
+     *                 bald: double (Required)
+     *                 invisible: boolean (Required)
+     *                 hairColor (Required): [
+     *                      (Required){
+     *                         color: String(unknown/white/gray/blond/brown/red/black/other) (Required)
+     *                         confidence: double (Required)
+     *                     }
+     *                 ]
+     *             }
+     *             occlusion (Optional): {
+     *                 foreheadOccluded: boolean (Required)
+     *                 eyeOccluded: boolean (Required)
+     *                 mouthOccluded: boolean (Required)
+     *             }
+     *             accessories (Optional): [
+     *                  (Optional){
+     *                     type: String(headwear/glasses/mask) (Required)
+     *                     confidence: double (Required)
+     *                 }
+     *             ]
+     *             blur (Optional): {
+     *                 blurLevel: String(low/medium/high) (Required)
+     *                 value: double (Required)
+     *             }
+     *             exposure (Optional): {
+     *                 exposureLevel: String(underExposure/goodExposure/overExposure) (Required)
+     *                 value: double (Required)
+     *             }
+     *             noise (Optional): {
+     *                 noiseLevel: String(low/medium/high) (Required)
+     *                 value: double (Required)
+     *             }
+     *             mask (Optional): {
+     *                 noseAndMouthCovered: boolean (Required)
+     *                 type: String(faceMask/noMask/otherMaskOrOcclusion/uncertain) (Required)
+     *             }
+     *             qualityForRecognition: String(low/medium/high) (Optional)
+     *         }
+     *     }
+     * ]
+     * }
+     * </pre>
+     * 
+     * @param detectFromSessionImageRequest The detectFromSessionImageRequest parameter.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> detectFromSessionImageWithResponse(BinaryData detectFromSessionImageRequest,
+        RequestOptions requestOptions) {
+        final String contentType = "application/json";
+        final String accept = "application/json";
+        return service.detectFromSessionImageSync(this.getEndpoint(), this.getServiceVersion().getVersion(),
+            contentType, accept, detectFromSessionImageRequest, requestOptions, Context.NONE);
+    }
+
+    /**
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-session-image for more
+     * details.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param sessionImageId The request ID of the image to be retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getSessionImageWithResponseAsync(String sessionImageId,
+        RequestOptions requestOptions) {
+        final String accept = "application/octet-stream";
+        return FluxUtil.withContext(context -> service.getSessionImage(this.getEndpoint(),
+            this.getServiceVersion().getVersion(), sessionImageId, accept, requestOptions, context));
+    }
+
+    /**
+     * Please refer to https://learn.microsoft.com/rest/api/face/liveness-session-operations/get-session-image for more
+     * details.
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * BinaryData
+     * }
+     * </pre>
+     * 
+     * @param sessionImageId The request ID of the image to be retrieved.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> getSessionImageWithResponse(String sessionImageId, RequestOptions requestOptions) {
+        final String accept = "application/octet-stream";
+        return service.getSessionImageSync(this.getEndpoint(), this.getServiceVersion().getVersion(), sessionImageId,
+            accept, requestOptions, Context.NONE);
     }
 }

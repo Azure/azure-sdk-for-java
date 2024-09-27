@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
-import com.azure.resourcemanager.billing.models.BillingProfileSpendingLimit;
-import com.azure.resourcemanager.billing.models.BillingProfileStatus;
-import com.azure.resourcemanager.billing.models.BillingProfileStatusReasonCode;
 import com.azure.resourcemanager.billing.models.BillingProperty;
+import com.azure.resourcemanager.billing.models.BillingPropertyProperties;
+import java.util.Collections;
+import java.util.Map;
 
 public final class BillingPropertyImpl implements BillingProperty {
     private BillingPropertyInner innerObject;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    BillingPropertyImpl(
-        BillingPropertyInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    BillingPropertyImpl(BillingPropertyInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -33,72 +34,21 @@ public final class BillingPropertyImpl implements BillingProperty {
         return this.innerModel().type();
     }
 
-    public String accountAdminNotificationEmailAddress() {
-        return this.innerModel().accountAdminNotificationEmailAddress();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
-    public String billingTenantId() {
-        return this.innerModel().billingTenantId();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public String billingAccountId() {
-        return this.innerModel().billingAccountId();
-    }
-
-    public String billingAccountDisplayName() {
-        return this.innerModel().billingAccountDisplayName();
-    }
-
-    public String billingProfileId() {
-        return this.innerModel().billingProfileId();
-    }
-
-    public String billingProfileDisplayName() {
-        return this.innerModel().billingProfileDisplayName();
-    }
-
-    public BillingProfileStatus billingProfileStatus() {
-        return this.innerModel().billingProfileStatus();
-    }
-
-    public BillingProfileStatusReasonCode billingProfileStatusReasonCode() {
-        return this.innerModel().billingProfileStatusReasonCode();
-    }
-
-    public BillingProfileSpendingLimit billingProfileSpendingLimit() {
-        return this.innerModel().billingProfileSpendingLimit();
-    }
-
-    public String costCenter() {
-        return this.innerModel().costCenter();
-    }
-
-    public String invoiceSectionId() {
-        return this.innerModel().invoiceSectionId();
-    }
-
-    public String invoiceSectionDisplayName() {
-        return this.innerModel().invoiceSectionDisplayName();
-    }
-
-    public Boolean isAccountAdmin() {
-        return this.innerModel().isAccountAdmin();
-    }
-
-    public String productId() {
-        return this.innerModel().productId();
-    }
-
-    public String productName() {
-        return this.innerModel().productName();
-    }
-
-    public String skuId() {
-        return this.innerModel().skuId();
-    }
-
-    public String skuDescription() {
-        return this.innerModel().skuDescription();
+    public BillingPropertyProperties properties() {
+        return this.innerModel().properties();
     }
 
     public BillingPropertyInner innerModel() {

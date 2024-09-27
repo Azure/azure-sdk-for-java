@@ -21,6 +21,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.Ordered;
+import org.springframework.core.PriorityOrdered;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
 
@@ -40,7 +42,7 @@ import static com.azure.spring.cloud.service.implementation.identity.credential.
 /**
  * {@link BeanPostProcessor} to enhance jdbc connection string.
  */
-class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware, ApplicationContextAware {
+class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware, ApplicationContextAware, PriorityOrdered {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
     private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME = SpringTokenCredentialProvider.class.getName();
@@ -48,6 +50,12 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private GenericApplicationContext applicationContext;
     private Environment environment;
+
+    @Override
+    public int getOrder() {
+        // Runs before JdbcConnectionDetailsBeanPostProcessor
+        return Ordered.HIGHEST_PRECEDENCE + 3;
+    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

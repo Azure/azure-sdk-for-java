@@ -85,7 +85,7 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-identity</artifactId>
-  <version>1.13.1</version>
+  <version>1.13.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -330,7 +330,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md

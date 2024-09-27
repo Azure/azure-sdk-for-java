@@ -49,8 +49,7 @@ import reactor.core.publisher.Mono;
  *
  * <!-- src_embed com.azure.identity.credential.azuredeveloperclicredential.construct -->
  * <pre>
- * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential azureDevCliCredential = new AzureDeveloperCliCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.azuredeveloperclicredential.construct -->
  *

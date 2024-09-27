@@ -9,10 +9,13 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
+import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -22,6 +25,8 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -52,9 +57,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -665,6 +672,163 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void split_only_notModified() throws Exception {
+        // This test is used to reproduce and regression test a bug identified in the split handling
+        // Background
+        // Container.queryChangeFeed can result in hang when a continuation token consists of multiple sub-ranges,
+        // there are no more change for any of the sub-ranges, but a split is happening on the first sub-range after
+        // the sub-range where we saw a 304 the first time.
+        // This effectively results in an endless-loop because we identify whether all sub-ranges are drained by
+        // capturing teh first subrange we see a 304 on and then loop through sub-ranges until we hit the same
+        // subrange without seeing anything but 304. When there is an even number of sub-ranges and a to-be-split
+        // sub-range is the last one - we never exit the loop after the split.
+        // This test is reproducing this edge case - and used both to validate the hotfix and to protect against
+        // regressing the scenario again.
+        //
+        // SAMPLE CONTINUATION TOKEN
+        // {
+        //    "V": 1,
+        //    "Rid": "0xljAKk+nBE=",
+        //    "Mode": "INCREMENTAL",
+        //    "StartFrom": {
+        //        "Type": "NOW"
+        //    },
+        //    "Continuation": {
+        //        "V": 1,
+        //        "Rid": "0xljAKk+nBE=",
+        //        "Continuation": [
+        //            {
+        //                "token": "\"46037\"",
+        //                "range": {
+        //                    "min": "",
+        //                    "max": "15555555555555555555555555555555"
+        //                }
+        //            },
+        //            {
+        //                "token": "\"9223372036854775797\"",
+        //                "range": {
+        //                    "min": "15555555555555555555555555555555",
+        //                    "max": "FF"
+        //                }
+        //            }
+        //        ],
+        //        "Range": {
+        //            "min": "",
+        //            "max": "FF"
+        //        }
+        //    }
+        // }
+        //
+        // SEQUENCE OF EVENTS
+        // - CF request for first sub-range returns 304 - now we have a bug where we capture the next sub-ranges MIN
+        //   range as the first one (doesn't really matter - we eventually just want to ensure we visited any subrange
+        //   and all return 304)
+        // - So, FeedRangeCompositeContinuationImpl.initialNoResultsRange is set to the MinRange of the second
+        //   sub-range, which is to-be-split
+        // - Split is processed and instead of the parent range two new child ranges are added at the end
+        // - Another bug currently is that we don't go to the next sub-range but the next-thereafter. So, the child
+        //   sub-range starting with the MinRange of the parent range (in position 1) is skipped
+        // - Since we always move to the second-next (and peek to the third token), we now have three sub-ranges
+        //   and only ever send CF requests for one sub-range in an endless loop.
+
+        this.createContainer(
+            (cp) -> {
+
+                // Ensuring we always use Hash V2 here
+                PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+                ArrayList<String> paths = new ArrayList<>();
+                paths.add("/mypk");
+                partitionKeyDef.setPaths(paths);
+                partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+                cp.setPartitionKeyDefinition(partitionKeyDef);
+
+                // To reproduce easily we need at least 3 physical partitions
+                return cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy());
+            },
+            18_000
+        );
+        insertDocuments(20, 7);
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange());
+
+        String continuation = drainAndValidateChangeFeedResults(options, null, 0);
+        ChangeFeedState stateRaw = ChangeFeedState.fromString(continuation);
+        assertThat(stateRaw).isNotNull();
+        assertThat(stateRaw).isInstanceOf(ChangeFeedStateV1.class);
+        ChangeFeedStateV1 state = (ChangeFeedStateV1)stateRaw;
+        assertThat(state.getContinuation()).isNotNull();
+        assertThat(state.getContinuation().getCompositeContinuationTokens()).isNotNull();
+
+        logger.info("Continuation token after first iteration {}", state.toJson());
+
+        Queue<CompositeContinuationToken> tokens = state.getContinuation().getCompositeContinuationTokens();
+        assertThat(tokens).isNotNull();
+
+        // Validate that we don't clone the tokens in the property getter - otherwise the test code below wouldn't work.
+        assertThat(tokens).isSameAs(state.getContinuation().getCompositeContinuationTokens());
+
+        assertThat(tokens).hasSize(3);
+
+        List<CompositeContinuationToken> tokenList = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            tokenList.add(tokens.poll());
+        }
+
+        tokenList.sort(Comparator.comparing(o -> o.getRange().getMin()));
+
+        CompositeContinuationToken firstToken = tokenList.get(0);
+        assertThat(firstToken).isNotNull();
+
+        CompositeContinuationToken secondToken = tokenList.get(1);
+        assertThat(secondToken).isNotNull();
+
+        CompositeContinuationToken thirdToken = tokenList.get(2);
+        assertThat(thirdToken).isNotNull();
+
+        assertThat(secondToken.getRange().getMax()).isEqualTo(thirdToken.getRange().getMin());
+
+        assertThat(tokens).hasSize(0);
+
+        // Add the first two tokens as is
+        tokens.add(firstToken);
+
+        // generate a merged token for 3rd and 4th partition
+        String newToken = "\"" + (Long.MAX_VALUE - 10L) + "\"";
+        CompositeContinuationToken newMergedToken = new CompositeContinuationToken(
+            newToken,
+            new Range<>(
+                secondToken.getRange().getMin(),
+                thirdToken.getRange().getMax(),
+                true,
+                false)
+        );
+
+        tokens.add(newMergedToken);
+
+        // Add the second and third token after the merged one - this is necessary to make sure the
+        // next token after hitting 304 on the merged token is not the first child sub-range
+        // then the hang would not be reproducible
+        //tokens.add(secondToken);
+
+        logger.info("New modified continuation to provoke the hang {}", state.toJson());
+
+        assertThat(state.getContinuation().getCompositeContinuationTokens()).hasSize(2);
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(state.toString());
+
+        String continuationAfterLastDrainAttempt =
+            drainAndValidateChangeFeedResults(options, null, 0);
+        ChangeFeedState stateAfterLastDrainAttemptRaw = ChangeFeedState.fromString(continuationAfterLastDrainAttempt);
+        assertThat(stateAfterLastDrainAttemptRaw).isNotNull();
+        assertThat(stateAfterLastDrainAttemptRaw).isInstanceOf(ChangeFeedStateV1.class);
+        ChangeFeedStateV1 stateAfterLastDrainAttempt = (ChangeFeedStateV1)stateAfterLastDrainAttemptRaw;
+        assertThat(stateAfterLastDrainAttempt.getContinuation()).isNotNull();
+        assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).isNotNull();
+        assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
+    }
+
     void insertDocuments(
         int partitionCount,
         int documentCount) {
@@ -888,6 +1052,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     private void createContainer(
         Function<CosmosContainerProperties, CosmosContainerProperties> onInitialization) {
 
+        createContainer(onInitialization, 10100);
+    }
+
+    private void createContainer(
+        Function<CosmosContainerProperties, CosmosContainerProperties> onInitialization,
+        int throughput) {
+
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
@@ -896,7 +1067,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
 
         CosmosContainerResponse containerResponse =
-            createdDatabase.createContainer(containerProperties, 10100, null);
+            createdDatabase.createContainer(containerProperties, throughput, null);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
 

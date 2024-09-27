@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class VolumeSnapshotsGetSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * VolumeSnapshots_Get_MaximumSet_Gen.json
      */
     /**
@@ -18,12 +18,13 @@ public final class VolumeSnapshotsGetSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeSnapshotsGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeSnapshots().getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
-            "snapshotname", com.azure.core.util.Context.NONE);
+        manager.volumeSnapshots()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname", "snapshotname",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * VolumeSnapshots_Get_MinimumSet_Gen.json
      */
     /**
@@ -32,7 +33,8 @@ public final class VolumeSnapshotsGetSamples {
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeSnapshotsGetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.volumeSnapshots().getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname",
-            "snapshotname", com.azure.core.util.Context.NONE);
+        manager.volumeSnapshots()
+            .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname", "snapshotname",
+                com.azure.core.util.Context.NONE);
     }
 }

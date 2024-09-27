@@ -206,6 +206,16 @@ class KeyVaultEnvironmentPostProcessorTests {
     }
 
     @Test
+    void duplicatePropertySourceNameTest() {
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].name", "test");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].endpoint", ENDPOINT_0);
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].name", "test");
+        environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[1].endpoint", ENDPOINT_1);
+        assertThrows(IllegalStateException.class, () -> processor.postProcessEnvironment(environment, application));
+    }
+
+    @Test
     void keyVaultPropertySourceHasHighestPriorityIfEnvironmentPropertySourceNotExistTest() {
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
         environment.setProperty("spring.cloud.azure.keyvault.secret.property-sources[0].enabled", "true");

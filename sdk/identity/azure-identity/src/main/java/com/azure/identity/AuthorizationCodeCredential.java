@@ -40,8 +40,8 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * <!-- src_embed com.azure.identity.credential.authorizationcodecredential.construct -->
  * <pre>
- * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;
- *     .authorizationCode&#40;&quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
+ * TokenCredential authorizationCodeCredential = new AuthorizationCodeCredentialBuilder&#40;&#41;.authorizationCode&#40;
+ *         &quot;&#123;authorization-code-received-at-redirectURL&#125;&quot;&#41;
  *     .redirectUrl&#40;&quot;&#123;redirectUrl-where-authorization-code-is-received&#125;&quot;&#41;
  *     .clientId&#40;&quot;&#123;clientId-of-application-being-authenticated&quot;&#41;
  *     .build&#40;&#41;;

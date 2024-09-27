@@ -63,6 +63,7 @@ import java.lang.reflect.Field;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -72,6 +73,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -250,7 +252,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             GlobalEndpointManager globalEndpointManager = documentClient.getGlobalEndpointManager();
 
             DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
-            this.writeRegions = new ArrayList<>(this.getRegionMap(databaseAccount, true).keySet());
+
+            this.writeRegions = new ArrayList<>(this.getAccountLevelLocationContext(databaseAccount, true).serviceOrderedWriteableRegions);
 
             CosmosAsyncDatabase sharedAsyncDatabase = getSharedCosmosDatabase(testClient);
             CosmosAsyncContainer sharedMultiPartitionCosmosContainerWithIdAsPartitionKey = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(testClient);
@@ -3400,6 +3403,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
         CosmosClientBuilder clientBuilder = getClientBuilder().multipleWriteRegionsEnabled(true).preferredRegions(preferredRegions);
 
+
+        boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+        if (shouldInjectEmptyPreferredRegions) {
+            clientBuilder = clientBuilder
+                .preferredRegions(Collections.emptyList());
+        }
+
         System.setProperty(
             "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG",
             "{\"isPartitionLevelCircuitBreakerEnabled\": true, "
@@ -3720,6 +3731,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
             }
 
+
+            boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+            if (shouldInjectEmptyPreferredRegions) {
+                clientBuilder = clientBuilder
+                    .preferredRegions(Collections.emptyList());
+            }
+
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             operationInvocationParamsWrapper.asyncContainer = asyncContainer;
             operationInvocationParamsWrapper.partitionKeyForReadAllOperation = new PartitionKey(testObjects.get(0).getMypk());
@@ -3830,6 +3849,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
             }
 
+
+            boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+            if (shouldInjectEmptyPreferredRegions) {
+                clientBuilder = clientBuilder
+                    .preferredRegions(Collections.emptyList());
+            }
+
             asyncClient = clientBuilder.buildAsyncClient();
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             operationInvocationParamsWrapper.asyncContainer = asyncContainer;
@@ -3923,6 +3950,13 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                     .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
             }
 
+            boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+            if (shouldInjectEmptyPreferredRegions) {
+                clientBuilder = clientBuilder
+                    .preferredRegions(Collections.emptyList());
+            }
+
             asyncClient = clientBuilder.buildAsyncClient();
             CosmosAsyncContainer asyncContainer = asyncClient.getDatabase(this.sharedAsyncDatabaseId).getContainer(operationInvocationParamsWrapper.containerIdToTarget);
             operationInvocationParamsWrapper.asyncContainer = asyncContainer;
@@ -4012,6 +4046,14 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
              if (regionSwitchHint != null) {
                  clientBuilder = clientBuilder
                      .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+             }
+
+
+             boolean shouldInjectEmptyPreferredRegions = ThreadLocalRandom.current().nextBoolean();
+
+             if (shouldInjectEmptyPreferredRegions) {
+                 clientBuilder = clientBuilder
+                     .preferredRegions(Collections.emptyList());
              }
 
              asyncClient = clientBuilder.buildAsyncClient();
@@ -4472,18 +4514,31 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         }
     }
 
-    private static Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
+    private AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
             writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
+
+        List<String> serviceOrderedReadableRegions = new ArrayList<>();
+        List<String> serviceOrderedWriteableRegions = new ArrayList<>();
         Map<String, String> regionMap = new ConcurrentHashMap<>();
 
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             regionMap.put(accountLocation.getName(), accountLocation.getEndpoint());
+
+            if (writeOnly) {
+                serviceOrderedWriteableRegions.add(accountLocation.getName());
+            } else {
+                serviceOrderedReadableRegions.add(accountLocation.getName());
+            }
         }
 
-        return regionMap;
+        return new AccountLevelLocationContext(
+            serviceOrderedReadableRegions,
+            serviceOrderedWriteableRegions,
+            regionMap);
     }
+
 
     private static List<FaultInjectionRule> buildServiceUnavailableFaultInjectionRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
 
@@ -4882,5 +4937,21 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
 
     private enum QueryType {
         READ_MANY, READ_ALL
+    }
+
+    private static class AccountLevelLocationContext {
+        private final List<String> serviceOrderedReadableRegions;
+        private final List<String> serviceOrderedWriteableRegions;
+        private final Map<String, String> regionNameToEndpoint;
+
+        public AccountLevelLocationContext(
+            List<String> serviceOrderedReadableRegions,
+            List<String> serviceOrderedWriteableRegions,
+            Map<String, String> regionNameToEndpoint) {
+
+            this.serviceOrderedReadableRegions = serviceOrderedReadableRegions;
+            this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
+            this.regionNameToEndpoint = regionNameToEndpoint;
+        }
     }
 }

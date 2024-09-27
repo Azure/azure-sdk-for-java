@@ -145,7 +145,38 @@ public final class FormRecognizerClientBuilder implements
      * @return A FormRecognizerClient with the options set from the builder.
      */
     public FormRecognizerClient buildClient() {
-        return new FormRecognizerClient(buildAsyncClient());
+        // Endpoint cannot be null, which is required in request authentication
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+        if (audience == null) {
+            audience = FormRecognizerAudience.AZURE_PUBLIC_CLOUD;
+        }
+        // Global Env configuration store
+        final Configuration buildConfiguration = (configuration == null)
+            ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        // Service Version
+        final FormRecognizerServiceVersion serviceVersion =
+            version != null ? version : FormRecognizerServiceVersion.getLatest();
+
+        HttpPipeline pipeline = httpPipeline;
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = buildHttpPipeline(
+                clientOptions,
+                httpLogOptions,
+                buildConfiguration,
+                retryPolicy,
+                retryOptions,
+                azureKeyCredential,
+                tokenCredential,
+                audience,
+                perCallPolicies,
+                perRetryPolicies,
+                httpClient);
+        }
+
+        return new FormRecognizerClient(new FormRecognizerClientImpl(pipeline, endpoint,
+            serviceVersion.getVersion()), serviceVersion);
     }
 
     /**

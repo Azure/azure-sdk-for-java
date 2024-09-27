@@ -4,16 +4,20 @@
 
 package com.azure.resourcemanager.billing.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.billing.fluent.models.BillingRoleAssignmentInner;
 import com.azure.resourcemanager.billing.models.BillingRoleAssignment;
+import com.azure.resourcemanager.billing.models.BillingRoleAssignmentProperties;
+import java.util.Collections;
+import java.util.Map;
 
 public final class BillingRoleAssignmentImpl implements BillingRoleAssignment {
     private BillingRoleAssignmentInner innerObject;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    BillingRoleAssignmentImpl(
-        BillingRoleAssignmentInner innerObject, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    BillingRoleAssignmentImpl(BillingRoleAssignmentInner innerObject,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,44 +34,21 @@ public final class BillingRoleAssignmentImpl implements BillingRoleAssignment {
         return this.innerModel().type();
     }
 
-    public String createdOn() {
-        return this.innerModel().createdOn();
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
-    public String createdByPrincipalTenantId() {
-        return this.innerModel().createdByPrincipalTenantId();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
-    public String createdByPrincipalId() {
-        return this.innerModel().createdByPrincipalId();
-    }
-
-    public String createdByUserEmailAddress() {
-        return this.innerModel().createdByUserEmailAddress();
-    }
-
-    public String principalId() {
-        return this.innerModel().principalId();
-    }
-
-    public String principalTenantId() {
-        return this.innerModel().principalTenantId();
-    }
-
-    public String roleDefinitionId() {
-        return this.innerModel().roleDefinitionId();
-    }
-
-    public String scope() {
-        return this.innerModel().scope();
-    }
-
-    public String userAuthenticationType() {
-        return this.innerModel().userAuthenticationType();
-    }
-
-    public String userEmailAddress() {
-        return this.innerModel().userEmailAddress();
+    public BillingRoleAssignmentProperties properties() {
+        return this.innerModel().properties();
     }
 
     public BillingRoleAssignmentInner innerModel() {

@@ -1,1 +1,1 @@
-com.azure.core.http.vertx.VertxAsyncHttpClientProvider
+com.azure.core.http.vertx.VertxHttpClientProvider

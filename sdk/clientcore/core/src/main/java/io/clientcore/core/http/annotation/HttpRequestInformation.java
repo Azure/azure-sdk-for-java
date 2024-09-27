@@ -59,10 +59,10 @@ public @interface HttpRequestInformation {
     Class<?> returnValueWireType() default Void.class;
 
     /**
-     * Get the query parameters to be appended to the request URL. Elements in the array shall be written in the format
+     * Get the query parameters to be appended to the request URI. Elements in the array shall be written in the format
      * of 'key=value'.
      *
-     * @return The query parameters to be appended to the request URL.
+     * @return The query parameters to be appended to the request URI.
      */
     String[] queryParams() default {};
 }

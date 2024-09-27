@@ -4,7 +4,6 @@
 package com.azure.iot.deviceupdate;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
@@ -24,7 +23,7 @@ public class DeviceManagementClientTests extends TestProxyTestBase {
         DeviceManagementClientBuilder clientBuilder = new DeviceManagementClientBuilder()
             .endpoint(TestData.ACCOUNT_ENDPOINT)
             .instanceId(TestData.INSTANCE_ID)
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());

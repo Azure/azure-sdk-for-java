@@ -19,11 +19,11 @@ public final class Base64Util {
     }
 
     /**
-     * Encodes a byte array to base64 URL format.
+     * Encodes a byte array to base64 URI format.
      * @param src the byte array to encode
-     * @return the base64 URL encoded bytes
+     * @return the base64 URI encoded bytes
      */
-    public static byte[] encodeURLWithoutPadding(byte[] src) {
+    public static byte[] encodeURIWithoutPadding(byte[] src) {
         return src == null ? null : Base64.getUrlEncoder().withoutPadding().encode(src);
     }
 
@@ -46,11 +46,11 @@ public final class Base64Util {
     }
 
     /**
-     * Decodes a byte array in base64 URL format.
+     * Decodes a byte array in base64 URI format.
      * @param src the byte array to decode
      * @return the decoded byte array
      */
-    public static byte[] decodeURL(byte[] src) {
+    public static byte[] decodeURI(byte[] src) {
         return src == null ? null : Base64.getUrlDecoder().decode(src);
     }
 

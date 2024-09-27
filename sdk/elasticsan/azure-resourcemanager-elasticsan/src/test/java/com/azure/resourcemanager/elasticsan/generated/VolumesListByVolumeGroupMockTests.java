@@ -6,52 +6,34 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VolumesListByVolumeGroupMockTests {
     @Test
     public void testListByVolumeGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"value\":[{\"properties\":{\"volumeId\":\"x\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"idoamciodhkha\"},\"sizeGiB\":4852560903522204647,\"storageTarget\":{\"targetIqn\":\"zbonlwnt\",\"targetPortalHostname\":\"gokdwbwhks\",\"targetPortalPort\":2115458799,\"provisioningState\":\"Canceled\",\"status\":\"Unhealthy\"},\"managedBy\":{\"resourceId\":\"tvb\"},\"provisioningState\":\"Creating\"},\"id\":\"frao\",\"name\":\"zkoowtlmnguxawqa\",\"type\":\"dsyuuximerqfob\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ElasticSanManager manager = ElasticSanManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Volume> response = manager.volumes().listByVolumeGroup("waezkojvd", "pzfoqoui", "ybxarzgszu",
-            com.azure.core.util.Context.NONE);
+        PagedIterable<Volume> response = manager.volumes()
+            .listByVolumeGroup("waezkojvd", "pzfoqoui", "ybxarzgszu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT,
             response.iterator().next().creationData().createSource());

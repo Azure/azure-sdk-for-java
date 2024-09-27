@@ -7,10 +7,12 @@ package com.azure.resourcemanager.privatedns.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.privatedns.models.ProvisioningState;
+import com.azure.resourcemanager.privatedns.models.ResolutionPolicy;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLinkState;
 import java.io.IOException;
 import java.util.Map;
@@ -31,9 +33,9 @@ public final class VirtualNetworkLinkInner extends Resource {
     private VirtualNetworkLinkProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -41,9 +43,9 @@ public final class VirtualNetworkLinkInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of VirtualNetworkLinkInner class.
@@ -81,13 +83,13 @@ public final class VirtualNetworkLinkInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -101,13 +103,13 @@ public final class VirtualNetworkLinkInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -177,6 +179,33 @@ public final class VirtualNetworkLinkInner extends Resource {
     }
 
     /**
+     * Get the resolutionPolicy property: The resolution policy on the virtual network link. Only applicable for virtual
+     * network links to privatelink zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS
+     * resolver falls back to public resolution if private dns query resolution results in non-existent domain response.
+     * 
+     * @return the resolutionPolicy value.
+     */
+    public ResolutionPolicy resolutionPolicy() {
+        return this.innerProperties() == null ? null : this.innerProperties().resolutionPolicy();
+    }
+
+    /**
+     * Set the resolutionPolicy property: The resolution policy on the virtual network link. Only applicable for virtual
+     * network links to privatelink zones, and for A,AAAA,CNAME queries. When set to 'NxDomainRedirect', Azure DNS
+     * resolver falls back to public resolution if private dns query resolution results in non-existent domain response.
+     * 
+     * @param resolutionPolicy the resolutionPolicy value to set.
+     * @return the VirtualNetworkLinkInner object itself.
+     */
+    public VirtualNetworkLinkInner withResolutionPolicy(ResolutionPolicy resolutionPolicy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkLinkProperties();
+        }
+        this.innerProperties().withResolutionPolicy(resolutionPolicy);
+        return this;
+    }
+
+    /**
      * Get the virtualNetworkLinkState property: The status of the virtual network link to the Private DNS zone.
      * Possible values are 'InProgress' and 'Done'. This is a read-only property and any attempt to set this value will
      * be ignored.
@@ -206,7 +235,14 @@ public final class VirtualNetworkLinkInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model VirtualNetworkLinkInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkLinkInner.class);
 
     /**
      * {@inheritDoc}

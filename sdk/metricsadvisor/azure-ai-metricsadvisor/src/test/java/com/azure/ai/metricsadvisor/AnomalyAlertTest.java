@@ -13,6 +13,7 @@ import com.azure.ai.metricsadvisor.models.MetricsAdvisorResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -20,6 +21,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -99,7 +101,10 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     @DoNotRecord
     public void getAnomalyAlertNullId() {
         // Arrange
-        client = getNonRecordAdminClient().buildClient();
+        client = getNonRecordAdminClient()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildClient();
+
         // Act & Assert
         Exception exception = assertThrows(NullPointerException.class, () ->
             client.getAlertConfig(null));
@@ -113,7 +118,9 @@ public final class AnomalyAlertTest extends AnomalyAlertTestBase {
     @DoNotRecord
     public void getAnomalyAlertInvalidId() {
         // Arrange
-        client = getNonRecordAdminClient().buildClient();
+        client = getNonRecordAdminClient()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+            .buildClient();
 
         // Act & Assert
         Exception exception = assertThrows(IllegalArgumentException.class, () ->

@@ -8,6 +8,7 @@ import com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.batch.models.PrivateLinkResource;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public final class PrivateLinkResourceImpl implements PrivateLinkResource {
     private PrivateLinkResourceInner innerObject;
@@ -34,6 +35,15 @@ public final class PrivateLinkResourceImpl implements PrivateLinkResource {
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String groupId() {

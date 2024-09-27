@@ -10,6 +10,9 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.BrowserCustomizationOptions;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -19,6 +22,7 @@ import java.io.UncheckedIOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 
 public final class IdentityUtil {
@@ -110,6 +114,47 @@ public final class IdentityUtil {
             throw new UncheckedIOException(ex);
         }
         return outputStream.toByteArray();
+    }
+
+
+    /**
+     * Parses the "access_token" field out of a response body.
+     * @param json the response body to parse.
+     * @return the access_token value
+     * @throws IOException
+     */
+    public static String getAccessToken(String json) throws IOException {
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+            return jsonReader.readObject(reader -> {
+                while (reader.nextToken() != com.azure.json.JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+                    if ("access_token".equals(fieldName)) {
+                        return reader.getString();
+                    }
+                }
+                return null;
+            });
+        }
+    }
+
+    /**
+     * Parses a json string into a key:value map. Doesn't do anything smart for nested objects or arrays.
+     * @param json
+     * @return a map of the json fields
+     * @throws IOException
+     */
+    public static Map<String, String> parseJsonIntoMap(String json) throws IOException {
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+
+            return jsonReader.readObject(reader -> jsonReader.readMap(mapReader -> {
+                if (mapReader.currentToken() == JsonToken.START_ARRAY || mapReader.currentToken() == JsonToken.START_OBJECT) {
+                    return mapReader.readChildren();
+                } else {
+                    return mapReader.getString();
+                }
+            }));
+        }
     }
 
 

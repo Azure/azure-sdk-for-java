@@ -330,7 +330,8 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     translation (Optional): {
      *         String (Required): {
@@ -377,7 +378,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -429,7 +431,8 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     translation (Optional): {
      *         String (Required): {
@@ -476,7 +479,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -554,17 +558,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -597,7 +604,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param targetLanguages Specifies the language of the output text. The target language must be one of the
      * supported languages included
@@ -684,17 +692,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -727,7 +738,8 @@ public final class TextTranslationClientImpl {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param targetLanguages Specifies the language of the output text. The target language must be one of the
      * supported languages included
@@ -765,24 +777,28 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         script: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -823,24 +839,28 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         script: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -890,17 +910,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -912,7 +935,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -953,17 +977,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -975,7 +1002,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1005,17 +1033,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1039,7 +1070,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1074,17 +1106,20 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1108,7 +1143,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1143,18 +1179,21 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         translation: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1171,7 +1210,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1206,18 +1246,21 @@ public final class TextTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         translation: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -1234,7 +1277,8 @@ public final class TextTranslationClientImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.

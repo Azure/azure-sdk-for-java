@@ -10,7 +10,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpoint;
 public final class PrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"tynqgoul\"}").toObject(PrivateEndpoint.class);
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"fqawrlyxw\"}").toObject(PrivateEndpoint.class);
     }
 
     @org.junit.jupiter.api.Test

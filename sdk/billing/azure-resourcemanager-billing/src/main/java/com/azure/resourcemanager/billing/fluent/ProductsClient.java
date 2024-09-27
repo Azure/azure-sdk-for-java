@@ -8,83 +8,73 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.billing.fluent.models.MoveProductEligibilityResultInner;
 import com.azure.resourcemanager.billing.fluent.models.ProductInner;
-import com.azure.resourcemanager.billing.fluent.models.ValidateProductTransferEligibilityResultInner;
-import com.azure.resourcemanager.billing.models.ProductsMoveResponse;
-import com.azure.resourcemanager.billing.models.TransferProductRequestProperties;
+import com.azure.resourcemanager.billing.models.MoveProductRequest;
+import com.azure.resourcemanager.billing.models.ProductPatch;
 
-/** An instance of this class provides access to all the operations defined in ProductsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProductsClient.
+ */
 public interface ProductsClient {
     /**
-     * Lists the products for a customer. These don't include products billed based on usage.The operation is supported
-     * only for billing accounts with agreement type Microsoft Partner Agreement.
-     *
+     * Lists the products for an invoice section. These don't include products billed based on usage. The operation is
+     * supported only for billing accounts with agreement type Microsoft Customer Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductInner> listByCustomer(String billingAccountName, String customerName);
+    PagedIterable<ProductInner> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName);
 
     /**
-     * Lists the products for a customer. These don't include products billed based on usage.The operation is supported
-     * only for billing accounts with agreement type Microsoft Partner Agreement.
-     *
+     * Lists the products for an invoice section. These don't include products billed based on usage. The operation is
+     * supported only for billing accounts with agreement type Microsoft Customer Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param customerName The ID that uniquely identifies a customer.
+     * @param billingProfileName The ID that uniquely identifies a billing profile.
+     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductInner> listByCustomer(String billingAccountName, String customerName, Context context);
-
-    /**
-     * Lists the products for a billing account. These don't include products billed based on usage. The operation is
-     * supported for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductInner> listByBillingAccount(String billingAccountName);
-
-    /**
-     * Lists the products for a billing account. These don't include products billed based on usage. The operation is
-     * supported for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
-     *     It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value
-     *     are separated by a colon (:).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductInner> listByBillingAccount(String billingAccountName, String filter, Context context);
+    PagedIterable<ProductInner> listByInvoiceSection(String billingAccountName, String billingProfileName,
+        String invoiceSectionName, String filter, String orderBy, Long top, Long skip, Boolean count, String search,
+        Context context);
 
     /**
      * Lists the products for a billing profile. These don't include products billed based on usage. The operation is
      * supported for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProductInner> listByBillingProfile(String billingAccountName, String billingProfileName);
@@ -92,66 +82,178 @@ public interface ProductsClient {
     /**
      * Lists the products for a billing profile. These don't include products billed based on usage. The operation is
      * supported for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
-     *     It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value
-     *     are separated by a colon (:).
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductInner> listByBillingProfile(
-        String billingAccountName, String billingProfileName, String filter, Context context);
+    PagedIterable<ProductInner> listByBillingProfile(String billingAccountName, String billingProfileName,
+        String filter, String orderBy, Long top, Long skip, Boolean count, String search, Context context);
 
     /**
-     * Lists the products for an invoice section. These don't include products billed based on usage. The operation is
-     * supported only for billing accounts with agreement type Microsoft Customer Agreement.
-     *
+     * Lists the products for a customer. These don't include products billed based on usage.The operation is supported
+     * only for billing accounts with agreement type Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
+     * @param customerName The ID that uniquely identifies a customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductInner> listByInvoiceSection(
-        String billingAccountName, String billingProfileName, String invoiceSectionName);
+    PagedIterable<ProductInner> listByCustomer(String billingAccountName, String customerName);
 
     /**
-     * Lists the products for an invoice section. These don't include products billed based on usage. The operation is
-     * supported only for billing accounts with agreement type Microsoft Customer Agreement.
-     *
+     * Lists the products for a customer. These don't include products billed based on usage.The operation is supported
+     * only for billing accounts with agreement type Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param billingProfileName The ID that uniquely identifies a billing profile.
-     * @param invoiceSectionName The ID that uniquely identifies an invoice section.
-     * @param filter May be used to filter by product type. The filter supports 'eq', 'lt', 'gt', 'le', 'ge', and 'and'.
-     *     It does not currently support 'ne', 'or', or 'not'. Tag filter is a key value pair string where key and value
-     *     are separated by a colon (:).
+     * @param customerName The ID that uniquely identifies a customer.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of products as paginated response with {@link PagedIterable}.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductInner> listByInvoiceSection(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String filter,
-        Context context);
+    PagedIterable<ProductInner> listByCustomer(String billingAccountName, String customerName, String filter,
+        String orderBy, Long top, Long skip, Boolean count, String search, Context context);
+
+    /**
+     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
+     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
+     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters The properties of the product to initiate a transfer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a product.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ProductInner>, ProductInner> beginMove(String billingAccountName, String productName,
+        MoveProductRequest parameters);
+
+    /**
+     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
+     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
+     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters The properties of the product to initiate a transfer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a product.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<ProductInner>, ProductInner> beginMove(String billingAccountName, String productName,
+        MoveProductRequest parameters, Context context);
+
+    /**
+     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
+     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
+     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters The properties of the product to initiate a transfer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a product.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ProductInner move(String billingAccountName, String productName, MoveProductRequest parameters);
+
+    /**
+     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
+     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
+     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters The properties of the product to initiate a transfer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a product.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ProductInner move(String billingAccountName, String productName, MoveProductRequest parameters, Context context);
+
+    /**
+     * Validates if a product's charges can be moved to a new invoice section. This operation is supported only for
+     * products that are purchased with a recurring charge and for billing accounts with agreement type Microsoft
+     * Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters The properties of the product to initiate a transfer.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the transfer eligibility validation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MoveProductEligibilityResultInner> validateMoveEligibilityWithResponse(String billingAccountName,
+        String productName, MoveProductRequest parameters, Context context);
+
+    /**
+     * Validates if a product's charges can be moved to a new invoice section. This operation is supported only for
+     * products that are purchased with a recurring charge and for billing accounts with agreement type Microsoft
+     * Customer Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param productName The ID that uniquely identifies a product.
+     * @param parameters The properties of the product to initiate a transfer.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the transfer eligibility validation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MoveProductEligibilityResultInner validateMoveEligibility(String billingAccountName, String productName,
+        MoveProductRequest parameters);
 
     /**
      * Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
      * Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param productName The ID that uniquely identifies a product.
      * @param context The context to associate with this operation.
@@ -166,7 +268,7 @@ public interface ProductsClient {
     /**
      * Gets a product by ID. The operation is supported only for billing accounts with agreement type Microsoft Customer
      * Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param productName The ID that uniquely identifies a product.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,10 +282,10 @@ public interface ProductsClient {
     /**
      * Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
      * billing accounts with agreement type Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the update product operation.
+     * @param parameters A product.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,90 +293,60 @@ public interface ProductsClient {
      * @return a product along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProductInner> updateWithResponse(
-        String billingAccountName, String productName, ProductInner parameters, Context context);
+    Response<ProductInner> updateWithResponse(String billingAccountName, String productName, ProductPatch parameters,
+        Context context);
 
     /**
      * Updates the properties of a Product. Currently, auto renew can be updated. The operation is supported only for
      * billing accounts with agreement type Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the update product operation.
+     * @param parameters A product.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a product.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductInner update(String billingAccountName, String productName, ProductInner parameters);
+    ProductInner update(String billingAccountName, String productName, ProductPatch parameters);
 
     /**
-     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
-     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
-     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
-     *
+     * Lists the products for a billing account. These don't include products billed based on usage. The operation is
+     * supported for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the move product operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ProductInner> listByBillingAccount(String billingAccountName);
+
+    /**
+     * Lists the products for a billing account. These don't include products billed based on usage. The operation is
+     * supported for billing accounts with agreement type Microsoft Customer Agreement or Microsoft Partner Agreement.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
+     * @param filter The filter query option allows clients to filter a collection of resources that are addressed by a
+     * request URL.
+     * @param orderBy The orderby query option allows clients to request resources in a particular order.
+     * @param top The top query option requests the number of items in the queried collection to be included in the
+     * result. The maximum supported value for top is 50.
+     * @param skip The skip query option requests the number of items in the queried collection that are to be skipped
+     * and not included in the result.
+     * @param count The count query option allows clients to request a count of the matching resources included with the
+     * resources in the response.
+     * @param search The search query option allows clients to request items within a collection matching a free-text
+     * search expression. search is only supported for string fields.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductsMoveResponse moveWithResponse(
-        String billingAccountName, String productName, TransferProductRequestProperties parameters, Context context);
-
-    /**
-     * Moves a product's charges to a new invoice section. The new invoice section must belong to the same billing
-     * profile as the existing invoice section. This operation is supported only for products that are purchased with a
-     * recurring charge and for billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the move product operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a product.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductInner move(String billingAccountName, String productName, TransferProductRequestProperties parameters);
-
-    /**
-     * Validates if a product's charges can be moved to a new invoice section. This operation is supported only for
-     * products that are purchased with a recurring charge and for billing accounts with agreement type Microsoft
-     * Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the validate move eligibility operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the product transfer eligibility validation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ValidateProductTransferEligibilityResultInner> validateMoveWithResponse(
-        String billingAccountName, String productName, TransferProductRequestProperties parameters, Context context);
-
-    /**
-     * Validates if a product's charges can be moved to a new invoice section. This operation is supported only for
-     * products that are purchased with a recurring charge and for billing accounts with agreement type Microsoft
-     * Customer Agreement.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param productName The ID that uniquely identifies a product.
-     * @param parameters Request parameters that are provided to the validate move eligibility operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the product transfer eligibility validation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateProductTransferEligibilityResultInner validateMove(
-        String billingAccountName, String productName, TransferProductRequestProperties parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ProductInner> listByBillingAccount(String billingAccountName, String filter, String orderBy, Long top,
+        Long skip, Boolean count, String search, Context context);
 }

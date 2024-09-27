@@ -5,21 +5,42 @@
 package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.billing.fluent.models.InvoiceProperties;
+import com.azure.resourcemanager.billing.models.InvoiceProperties;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesAmountDue;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesAzurePrepaymentApplied;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesBilledAmount;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesCreditAmount;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesFreeAzureCreditApplied;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesRebillDetails;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesRefundDetails;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesSubTotal;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesTaxAmount;
+import com.azure.resourcemanager.billing.models.InvoicePropertiesTotalAmount;
+import com.azure.resourcemanager.billing.models.RefundDetailsSummaryAmountRefunded;
+import com.azure.resourcemanager.billing.models.RefundDetailsSummaryAmountRequested;
 
 public final class InvoicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InvoiceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dueDate\":\"2021-09-06T23:25:45Z\",\"invoiceDate\":\"2021-11-18T11:14:43Z\",\"status\":\"Due\",\"amountDue\":{\"currency\":\"rthzvaytdwkqbrqu\",\"value\":67.445885},\"azurePrepaymentApplied\":{\"currency\":\"exiili\",\"value\":42.678963},\"billedAmount\":{\"currency\":\"irqtdqoa\",\"value\":4.6766224},\"creditAmount\":{\"currency\":\"fgsqu\",\"value\":38.977768},\"freeAzureCreditApplied\":{\"currency\":\"xleptramx\",\"value\":16.920918},\"subTotal\":{\"currency\":\"wnwxuqlcvyd\",\"value\":76.745186},\"taxAmount\":{\"currency\":\"ooaojkniodkooebw\",\"value\":34.47978},\"totalAmount\":{\"currency\":\"mmsbvdkcrodtjin\",\"value\":99.528564},\"invoicePeriodStartDate\":\"2021-11-16T20:55:55Z\",\"invoicePeriodEndDate\":\"2021-06-24T17:33:05Z\",\"invoiceType\":\"AzureSupport\",\"isMonthlyInvoice\":true,\"billingProfileId\":\"efkdlf\",\"billingProfileDisplayName\":\"kggkfpa\",\"purchaseOrderNumber\":\"owpulpq\",\"documents\":[{\"kind\":\"Invoice\",\"url\":\"xkqjnsjervt\",\"source\":\"DRS\"},{\"kind\":\"VoidNote\",\"url\":\"sz\",\"source\":\"ENF\"},{\"kind\":\"VoidNote\",\"url\":\"zkfzbeyv\",\"source\":\"DRS\"}],\"payments\":[{\"paymentType\":\"invkjjxdxrbuu\",\"amount\":{\"currency\":\"lewyhmlwpaz\",\"value\":41.111607},\"date\":\"2021-01-30T03:38:42Z\",\"paymentMethodFamily\":\"None\",\"paymentMethodType\":\"kwyfzqwhxxbuyqax\"},{\"paymentType\":\"eqz\",\"amount\":{\"currency\":\"riolxorjalt\",\"value\":80.87304},\"date\":\"2021-02-06T08:10:47Z\",\"paymentMethodFamily\":\"CheckWire\",\"paymentMethodType\":\"bqwcsdbnwdcf\"},{\"paymentType\":\"cqdpfuv\",\"amount\":{\"currency\":\"bjj\",\"value\":36.3222},\"date\":\"2021-05-27T00:53:27Z\",\"paymentMethodFamily\":\"None\",\"paymentMethodType\":\"vudutncor\"},{\"paymentType\":\"lxqtvcofudfl\",\"amount\":{\"currency\":\"jub\",\"value\":57.222305},\"date\":\"2021-10-26T17:09:29Z\",\"paymentMethodFamily\":\"None\",\"paymentMethodType\":\"aznqntoru\"}],\"rebillDetails\":{\"aeburuvdmo\":{\"creditNoteDocumentId\":\"a\",\"invoiceDocumentId\":\"kycgrauwj\",\"rebillDetails\":{}},\"fkifr\":{\"creditNoteDocumentId\":\"mz\",\"invoiceDocumentId\":\"wabm\",\"rebillDetails\":{}},\"ujitcjedftww\":{\"creditNoteDocumentId\":\"puqujmqlgkfbtn\",\"invoiceDocumentId\":\"aongbj\",\"rebillDetails\":{}},\"oqouicybxarzgszu\":{\"creditNoteDocumentId\":\"zkoj\",\"invoiceDocumentId\":\"c\",\"rebillDetails\":{}}},\"documentType\":\"Invoice\",\"billedDocumentId\":\"iqopidoamciod\",\"creditForDocumentId\":\"haz\",\"subscriptionId\":\"hnzbonl\"}")
-                .toObject(InvoiceProperties.class);
+        InvoiceProperties model = BinaryData.fromString(
+            "{\"amountDue\":{\"currency\":\"idisczskosw\",\"value\":74.71487},\"azurePrepaymentApplied\":{\"currency\":\"zugamxzkrrcoiis\",\"value\":73.20618},\"billedAmount\":{\"currency\":\"pccekuztdsbezaxy\",\"value\":31.759613},\"billedDocumentId\":\"xuizhyhnepkpet\",\"billingProfileDisplayName\":\"rx\",\"billingProfileId\":\"ubxdukecpxdazvdh\",\"creditAmount\":{\"currency\":\"mkoszudbl\",\"value\":66.54765},\"creditForDocumentId\":\"rpcaqkiofkbtf\",\"documents\":[{\"documentNumbers\":[\"nldpvcbhhezyquwu\",\"qxutrpbrruyuua\",\"vlm\"],\"externalUrl\":\"wcolbmxl\",\"kind\":\"TaxReceipt\",\"name\":\"pcpahprzrvxhmtf\",\"url\":\"cnxzcmj\",\"source\":\"ENF\"}],\"documentType\":\"TaxReceipt\",\"dueDate\":\"2021-09-29T12:00:56Z\",\"failedPayments\":[{\"date\":\"2021-11-30T21:38:03Z\",\"failedPaymentReason\":\"Other\"},{\"date\":\"2021-08-16T03:52:55Z\",\"failedPaymentReason\":\"Other\"},{\"date\":\"2021-02-13T15:58:39Z\",\"failedPaymentReason\":\"CardExpired\"}],\"freeAzureCreditApplied\":{\"currency\":\"idwhepfw\",\"value\":57.815914},\"invoiceDate\":\"2021-05-13T01:39:31Z\",\"invoicePeriodEndDate\":\"2020-12-22T04:54:50Z\",\"invoicePeriodStartDate\":\"2021-11-13T15:05:10Z\",\"invoiceType\":\"AzureServices\",\"isMonthlyInvoice\":true,\"payments\":[{\"amount\":{\"currency\":\"ky\",\"value\":54.800594},\"date\":\"2021-02-04T04:36:41Z\",\"paymentMethodId\":\"hnegknj\",\"paymentMethodFamily\":\"CheckWire\",\"paymentMethodType\":\"t\",\"paymentType\":\"plvukaobrlbpg\"},{\"amount\":{\"currency\":\"agnchjhgemuowaky\",\"value\":31.04565},\"date\":\"2021-05-09T15:29:15Z\",\"paymentMethodId\":\"m\",\"paymentMethodFamily\":\"CreditCard\",\"paymentMethodType\":\"tagdrc\",\"paymentType\":\"soljome\"}],\"purchaseOrderNumber\":\"fycnlb\",\"rebillDetails\":{\"invoiceDocumentId\":\"codkkgj\",\"creditNoteDocumentId\":\"ytssikiz\",\"rebillDetails\":{\"invoiceDocumentId\":\"fqb\",\"creditNoteDocumentId\":\"tnrgmqsorhce\",\"rebillDetails\":{\"invoiceDocumentId\":\"nl\",\"creditNoteDocumentId\":\"mxcpwzvmdoks\",\"rebillDetails\":{\"invoiceDocumentId\":\"iw\",\"creditNoteDocumentId\":\"xlbonc\",\"rebillDetails\":{\"invoiceDocumentId\":\"zqicqchygtvxbyja\",\"creditNoteDocumentId\":\"pubdpkx\",\"rebillDetails\":{}}}}}},\"status\":\"Locked\",\"subscriptionDisplayName\":\"i\",\"subscriptionId\":\"detv\",\"specialTaxationType\":\"InvoiceLevel\",\"subTotal\":{\"currency\":\"xuwsai\",\"value\":2.1083474},\"taxAmount\":{\"currency\":\"osbz\",\"value\":7.057774},\"totalAmount\":{\"currency\":\"vkbcknjolgjyyxp\",\"value\":57.560802},\"refundDetails\":{\"requestedOn\":\"2021-03-19T01:41:25Z\",\"approvedOn\":\"2021-11-08T11:46:39Z\",\"completedOn\":\"2021-10-28T04:16:21Z\",\"amountRequested\":{\"currency\":\"o\",\"value\":33.21297},\"amountRefunded\":{\"currency\":\"xwaljgl\",\"value\":89.85446},\"rebillInvoiceId\":\"qwaafrqulhm\",\"transactionCount\":288058260,\"refundStatus\":\"Other\",\"refundOperationId\":\"vafjrqpjiyrqj\",\"refundReason\":\"AccidentalPurchase\"}}")
+            .toObject(InvoiceProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InvoiceProperties model = new InvoiceProperties();
+        InvoiceProperties model = new InvoiceProperties().withAmountDue(new InvoicePropertiesAmountDue())
+            .withAzurePrepaymentApplied(new InvoicePropertiesAzurePrepaymentApplied())
+            .withBilledAmount(new InvoicePropertiesBilledAmount())
+            .withCreditAmount(new InvoicePropertiesCreditAmount())
+            .withFreeAzureCreditApplied(new InvoicePropertiesFreeAzureCreditApplied())
+            .withRebillDetails(new InvoicePropertiesRebillDetails())
+            .withSubTotal(new InvoicePropertiesSubTotal())
+            .withTaxAmount(new InvoicePropertiesTaxAmount())
+            .withTotalAmount(new InvoicePropertiesTotalAmount())
+            .withRefundDetails(
+                new InvoicePropertiesRefundDetails().withAmountRequested(new RefundDetailsSummaryAmountRequested())
+                    .withAmountRefunded(new RefundDetailsSummaryAmountRefunded()));
         model = BinaryData.fromObject(model).toObject(InvoiceProperties.class);
     }
 }

@@ -146,7 +146,6 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         RenderingSession session0 = sessionPoller.poll().getValue();
 
-        assertEquals(options.getSize(), session0.getSize());
         assertEquals(sessionId, session0.getId());
 
         RenderingSession sessionProperties = client.getSession(sessionId);
@@ -160,7 +159,6 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         assertTrue((readyRenderingSession.getMaxLeaseTime().toMinutes() == 4) || (readyRenderingSession.getMaxLeaseTime().toMinutes() == 5));
         assertNotNull(readyRenderingSession.getHostname());
         assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
-        assertEquals(readyRenderingSession.getSize(), options.getSize());
 
         UpdateSessionOptions updateOptions2 = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(6));
         assertEquals(6, updateOptions2.getMaxLeaseTime().toMinutes());

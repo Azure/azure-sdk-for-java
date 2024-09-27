@@ -47,6 +47,7 @@ public class SearchClientBuilderTests {
             .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
             .serviceVersion(API_VERSION)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(client);
@@ -59,6 +60,7 @@ public class SearchClientBuilderTests {
             .endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(client);
@@ -72,6 +74,7 @@ public class SearchClientBuilderTests {
             .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
             .serviceVersion(API_VERSION)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -84,6 +87,7 @@ public class SearchClientBuilderTests {
             .endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(client);
@@ -96,6 +100,7 @@ public class SearchClientBuilderTests {
             .endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertEquals(SEARCH_ENDPOINT, client.getEndpoint());
@@ -105,6 +110,7 @@ public class SearchClientBuilderTests {
             .endpoint(SEARCH_ENDPOINT)
             .credential(SEARCH_CREDENTIAL)
             .indexName(INDEX_NAME)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertEquals(SEARCH_ENDPOINT, asyncClient.getEndpoint());
@@ -214,6 +220,7 @@ public class SearchClientBuilderTests {
             .serviceVersion(API_VERSION)
             .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient());
     }
 }

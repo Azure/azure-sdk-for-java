@@ -5,23 +5,40 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The policy that controls whether Azure marketplace purchases are allowed for a billing profile. */
+/**
+ * The policy that controls whether Azure marketplace purchases are allowed.
+ */
 public final class MarketplacePurchasesPolicy extends ExpandableStringEnum<MarketplacePurchasesPolicy> {
-    /** Static value AllAllowed for MarketplacePurchasesPolicy. */
+    /**
+     * Static value Other for MarketplacePurchasesPolicy.
+     */
+    public static final MarketplacePurchasesPolicy OTHER = fromString("Other");
+
+    /**
+     * Static value AllAllowed for MarketplacePurchasesPolicy.
+     */
     public static final MarketplacePurchasesPolicy ALL_ALLOWED = fromString("AllAllowed");
 
-    /** Static value OnlyFreeAllowed for MarketplacePurchasesPolicy. */
-    public static final MarketplacePurchasesPolicy ONLY_FREE_ALLOWED = fromString("OnlyFreeAllowed");
+    /**
+     * Static value Disabled for MarketplacePurchasesPolicy.
+     */
+    public static final MarketplacePurchasesPolicy DISABLED = fromString("Disabled");
 
-    /** Static value NotAllowed for MarketplacePurchasesPolicy. */
+    /**
+     * Static value NotAllowed for MarketplacePurchasesPolicy.
+     */
     public static final MarketplacePurchasesPolicy NOT_ALLOWED = fromString("NotAllowed");
 
     /**
+     * Static value OnlyFreeAllowed for MarketplacePurchasesPolicy.
+     */
+    public static final MarketplacePurchasesPolicy ONLY_FREE_ALLOWED = fromString("OnlyFreeAllowed");
+
+    /**
      * Creates a new instance of MarketplacePurchasesPolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +47,17 @@ public final class MarketplacePurchasesPolicy extends ExpandableStringEnum<Marke
 
     /**
      * Creates or finds a MarketplacePurchasesPolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MarketplacePurchasesPolicy.
      */
-    @JsonCreator
     public static MarketplacePurchasesPolicy fromString(String name) {
         return fromString(name, MarketplacePurchasesPolicy.class);
     }
 
     /**
      * Gets known MarketplacePurchasesPolicy values.
-     *
+     * 
      * @return known MarketplacePurchasesPolicy values.
      */
     public static Collection<MarketplacePurchasesPolicy> values() {
