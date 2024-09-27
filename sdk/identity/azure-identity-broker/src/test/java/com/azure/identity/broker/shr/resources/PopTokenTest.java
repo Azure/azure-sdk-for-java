@@ -7,6 +7,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.identity.InteractiveBrowserCredential;
 import com.azure.identity.broker.InteractiveBrowserBrokerCredentialBuilder;
@@ -16,12 +17,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PopTokenTest {
 
     @Test
     @Disabled("Manual Test requires Interactive flow")
-    public void canEnableLegacyMsa() {
+    public void testPopTokenAuth() {
 
         assertDoesNotThrow(() -> {
             WinDef.HWND hwnd = User32.INSTANCE.GetForegroundWindow();
@@ -32,7 +34,8 @@ public class PopTokenTest {
             PopTokenAuthenticationPolicy policy = new PopTokenAuthenticationPolicy(interactiveBrowserCredential, "https://graph.microsoft.com/.default");
             HttpPipeline pipeline = new HttpPipelineBuilder().policies(policy).build();
             HttpRequest request = new HttpRequest(HttpMethod.GET, "https://graph.microsoft.com/v1.0/me");
-            pipeline.sendSync(request, Context.NONE);
+            HttpResponse httpResponse = pipeline.sendSync(request, Context.NONE);
+            assertTrue(httpResponse.getStatusCode() == 200);
         });
     }
 }
