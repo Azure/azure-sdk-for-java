@@ -22,7 +22,7 @@ import java.util.List;
  * This test will resume running after 2024-04-20 .
  */
 @DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_IT_SKIPRUNNING", matches = "skipRunning")
-@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
+//@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
 class PasswordlessMySQLIT {
