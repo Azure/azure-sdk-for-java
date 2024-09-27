@@ -1,14 +1,197 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.1.0-beta.2 (2024-09-27)
+
+- Azure Resource Manager RedisEnterprise client library for Java. This package contains Microsoft Azure SDK for RedisEnterprise Management SDK. REST API for managing Redis Enterprise resources in Azure. Package tag package-preview-2024-09. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+* `models.AccessKeysAuthentication` was added
 
-### Bugs Fixed
+* `models.AccessPolicyAssignment$DefinitionStages` was added
 
-### Other Changes
+* `models.HighAvailability` was added
+
+* `models.AccessPolicyAssignments` was added
+
+* `models.AccessPolicyAssignment$Definition` was added
+
+* `models.AccessPolicyAssignmentPropertiesUser` was added
+
+* `models.AccessPolicyAssignment$UpdateStages` was added
+
+* `models.RedundancyMode` was added
+
+* `models.AccessPolicyAssignmentList` was added
+
+* `models.AccessPolicyAssignment` was added
+
+* `models.AccessPolicyAssignment$Update` was added
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withHighAvailability(models.HighAvailability)` was added
+* `highAvailability()` was added
+* `redundancyMode()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ForceUnlinkParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateLinkResourceListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatabaseUpdate` was modified
+
+* `withAccessKeysAuthentication(models.AccessKeysAuthentication)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `accessKeysAuthentication()` was added
+
+#### `models.Module` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withHighAvailability(models.HighAvailability)` was added
+
+#### `models.PrivateEndpoint` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Sku` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPropertiesEncryption` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatabasePropertiesGeoReplication` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.RegenerateKeyParameters` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.LinkedDatabase` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `RedisEnterpriseManager` was modified
+
+* `accessPolicyAssignments()` was added
+
+#### `models.PrivateLinkServiceConnectionState` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.PrivateEndpointConnectionListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Database$Definition` was modified
+
+* `withAccessKeysAuthentication(models.AccessKeysAuthentication)` was added
+
+#### `models.ImportClusterParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withHighAvailability(models.HighAvailability)` was added
+
+#### `models.Database$Update` was modified
+
+* `withAccessKeysAuthentication(models.AccessKeysAuthentication)` was added
+
+#### `models.ForceLinkParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FlushParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Database` was modified
+
+* `accessKeysAuthentication()` was added
+* `systemData()` was added
+
+#### `models.ClusterList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ExportClusterParameters` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Persistence` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DatabaseList` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ClusterPropertiesEncryptionCustomerManagedKeyEncryption` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Cluster` was modified
+
+* `highAvailability()` was added
+* `redundancyMode()` was added
 
 ## 2.1.0-beta.1 (2024-05-20)
 
