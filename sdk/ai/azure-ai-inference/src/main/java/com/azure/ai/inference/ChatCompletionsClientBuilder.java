@@ -327,6 +327,7 @@ public final class ChatCompletionsClientBuilder implements HttpTrait<ChatComplet
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
+            policies.add(new KeyCredentialPolicy("Authorization", keyCredential));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, this.scopes));
