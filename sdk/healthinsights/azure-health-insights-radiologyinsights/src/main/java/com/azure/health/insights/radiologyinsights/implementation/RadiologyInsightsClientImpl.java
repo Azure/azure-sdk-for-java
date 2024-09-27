@@ -197,7 +197,8 @@ public final class RadiologyInsightsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -428,11 +429,13 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -663,7 +666,8 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
@@ -698,7 +702,8 @@ public final class RadiologyInsightsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -929,11 +934,13 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -1164,7 +1171,8 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
@@ -1198,7 +1206,8 @@ public final class RadiologyInsightsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -1429,11 +1438,13 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -1664,7 +1675,8 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
@@ -1705,7 +1717,8 @@ public final class RadiologyInsightsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -1936,11 +1949,13 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -2171,7 +2186,8 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
@@ -2212,7 +2228,8 @@ public final class RadiologyInsightsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -2443,11 +2460,13 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -2678,7 +2697,8 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
@@ -2720,7 +2740,8 @@ public final class RadiologyInsightsClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -2951,11 +2972,13 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     jobData (Optional): {
      *         patients (Required): [
@@ -3186,7 +3209,8 @@ public final class RadiologyInsightsClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id The unique ID of the job.
      * @param resource The resource instance.
