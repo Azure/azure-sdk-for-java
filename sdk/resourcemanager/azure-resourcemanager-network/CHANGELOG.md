@@ -1,6 +1,6 @@
 # Release History
 
-## 2.43.0-beta.1 (Unreleased)
+## 2.43.0 (2024-09-27)
 
 ### Other Changes
 
