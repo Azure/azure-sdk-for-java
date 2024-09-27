@@ -63,8 +63,8 @@ public class HttpLogOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH
-        = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
+        + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
     static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList("x-ms-request-id", "x-ms-client-request-id",
         "x-ms-return-client-request-id", "traceparent", "MS-CV",
@@ -118,7 +118,6 @@ public class HttpLogOptions {
 
     /**
      * Sets the given allowed headers that should be logged.
-     *
      * <p>
      * This method sets the provided header names to be the allowed header names which will be logged for all HTTP
      * requests and responses, overwriting any previously configured headers. Additionally, users can use {@link
@@ -176,9 +175,7 @@ public class HttpLogOptions {
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
-        this.getClass().getName();
         return this;
-
     }
 
     /**
@@ -196,12 +193,9 @@ public class HttpLogOptions {
      * Sets the custom application specific id supplied by the user of the client library.
      *
      * @param applicationId The user specified application id.
-     *
      * @return The updated HttpLogOptions object.
-     *
      * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
      * length.
-     *
      * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
     @Deprecated
@@ -223,7 +217,10 @@ public class HttpLogOptions {
      * Gets flag to allow pretty printing of message bodies.
      *
      * @return true if pretty printing of message bodies is allowed.
+     * @deprecated Use {@link #setRequestLogger(HttpRequestLogger)} and {@link #setResponseLogger(HttpResponseLogger)}
+     * to configure how requests and responses should be logged at a granular level instead.
      */
+    @Deprecated
     public boolean isPrettyPrintBody() {
         return prettyPrintBody;
     }
@@ -234,7 +231,10 @@ public class HttpLogOptions {
      * @param prettyPrintBody If true, pretty prints message bodies when logging. If the detailLevel does not include
      * body logging, this flag does nothing.
      * @return The updated HttpLogOptions object.
+     * @deprecated Use {@link #setRequestLogger(HttpRequestLogger)} and {@link #setResponseLogger(HttpResponseLogger)}
+     * to configure how requests and responses should be logged at a granular level instead.
      */
+    @Deprecated
     public HttpLogOptions setPrettyPrintBody(boolean prettyPrintBody) {
         this.prettyPrintBody = prettyPrintBody;
         return this;
@@ -291,11 +291,11 @@ public class HttpLogOptions {
     /**
      * Sets the flag that controls if header names which value is redacted should be logged.
      * <p>
-     * Applies only if logging request and response headers is enabled. See {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} for details.
-     * Defaults to `false` - redacted header names are logged.
+     * Applies only if logging request and response headers is enabled. See {@link #setLogLevel(HttpLogDetailLevel)} for
+     * details. Defaults to false - redacted header names are logged.
      *
      * @param disableRedactedHeaderLogging If true, redacted header names are not logged.
-     * Otherwise, they are logged as a comma separated list under `redactedHeaders` property.
+     * Otherwise, they are logged as a comma separated list under redactedHeaders property.
      * @return The updated HttpLogOptions object.
      */
     public HttpLogOptions disableRedactedHeaderLogging(boolean disableRedactedHeaderLogging) {
