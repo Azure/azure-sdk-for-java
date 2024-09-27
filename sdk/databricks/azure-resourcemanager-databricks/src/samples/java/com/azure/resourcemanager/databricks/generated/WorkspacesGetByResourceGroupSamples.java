@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.databricks.generated;
 
-/** Samples for Workspaces GetByResourceGroup. */
+/**
+ * Samples for Workspaces GetByResourceGroup.
+ */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceGet.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/preview/2024-09-01-preview/examples/WorkspaceGet.
+     * json
      */
     /**
      * Sample code: Get a workspace.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void getAWorkspace(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
@@ -19,11 +23,13 @@ public final class WorkspacesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceManagedDiskEncryptionGet.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/preview/2024-09-01-preview/examples/
+     * WorkspaceManagedDiskEncryptionGet.json
      */
     /**
      * Sample code: Get a workspace with Customer-Managed Key (CMK) encryption for Managed Disks.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
     public static void getAWorkspaceWithCustomerManagedKeyCMKEncryptionForManagedDisks(
@@ -32,15 +38,32 @@ public final class WorkspacesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceGetParameters.json
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/preview/2024-09-01-preview/examples/
+     * WorkspaceEnhancedSecurityComplianceGet.json
+     */
+    /**
+     * Sample code: Get a workspace with Enhanced Security &amp; Compliance Add-On.
+     * 
+     * @param manager Entry point to AzureDatabricksManager.
+     */
+    public static void getAWorkspaceWithEnhancedSecurityComplianceAddOn(
+        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+        manager.workspaces().getByResourceGroupWithResponse("rg", "myWorkspace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/databricks/resource-manager/Microsoft.Databricks/preview/2024-09-01-preview/examples/
+     * WorkspaceGetParameters.json
      */
     /**
      * Sample code: Get a workspace with custom parameters.
-     *
+     * 
      * @param manager Entry point to AzureDatabricksManager.
      */
-    public static void getAWorkspaceWithCustomParameters(
-        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+    public static void
+        getAWorkspaceWithCustomParameters(com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
         manager.workspaces().getByResourceGroupWithResponse("rg", "myWorkspace", com.azure.core.util.Context.NONE);
     }
 }

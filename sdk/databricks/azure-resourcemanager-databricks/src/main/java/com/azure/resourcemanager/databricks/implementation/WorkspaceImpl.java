@@ -10,6 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.databricks.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.databricks.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.databricks.models.CreatedBy;
+import com.azure.resourcemanager.databricks.models.DefaultCatalogProperties;
+import com.azure.resourcemanager.databricks.models.DefaultStorageFirewall;
+import com.azure.resourcemanager.databricks.models.EnhancedSecurityComplianceDefinition;
 import com.azure.resourcemanager.databricks.models.ManagedIdentityConfiguration;
 import com.azure.resourcemanager.databricks.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.databricks.models.ProvisioningState;
@@ -18,6 +21,7 @@ import com.azure.resourcemanager.databricks.models.RequiredNsgRules;
 import com.azure.resourcemanager.databricks.models.Sku;
 import com.azure.resourcemanager.databricks.models.Workspace;
 import com.azure.resourcemanager.databricks.models.WorkspaceCustomParameters;
+import com.azure.resourcemanager.databricks.models.WorkspacePropertiesAccessConnector;
 import com.azure.resourcemanager.databricks.models.WorkspacePropertiesEncryption;
 import com.azure.resourcemanager.databricks.models.WorkspaceProviderAuthorization;
 import com.azure.resourcemanager.databricks.models.WorkspaceUpdate;
@@ -126,15 +130,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().encryption();
     }
 
+    public EnhancedSecurityComplianceDefinition enhancedSecurityCompliance() {
+        return this.innerModel().enhancedSecurityCompliance();
+    }
+
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -146,6 +151,22 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public RequiredNsgRules requiredNsgRules() {
         return this.innerModel().requiredNsgRules();
+    }
+
+    public DefaultCatalogProperties defaultCatalog() {
+        return this.innerModel().defaultCatalog();
+    }
+
+    public Boolean isUcEnabled() {
+        return this.innerModel().isUcEnabled();
+    }
+
+    public WorkspacePropertiesAccessConnector accessConnector() {
+        return this.innerModel().accessConnector();
+    }
+
+    public DefaultStorageFirewall defaultStorageFirewall() {
+        return this.innerModel().defaultStorageFirewall();
     }
 
     public Region region() {
@@ -180,20 +201,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Workspace create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
         return this;
     }
 
@@ -209,48 +226,40 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .update(resourceGroupName, workspaceName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .update(resourceGroupName, workspaceName, updateParameters, Context.NONE);
         return this;
     }
 
     public Workspace apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .update(resourceGroupName, workspaceName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .update(resourceGroupName, workspaceName, updateParameters, context);
         return this;
     }
 
-    WorkspaceImpl(
-        WorkspaceInner innerObject, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
+    WorkspaceImpl(WorkspaceInner innerObject,
+        com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
     public Workspace refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workspace refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
+            .getValue();
         return this;
     }
 
@@ -324,6 +333,12 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
+    public WorkspaceImpl
+        withEnhancedSecurityCompliance(EnhancedSecurityComplianceDefinition enhancedSecurityCompliance) {
+        this.innerModel().withEnhancedSecurityCompliance(enhancedSecurityCompliance);
+        return this;
+    }
+
     public WorkspaceImpl withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.innerModel().withPublicNetworkAccess(publicNetworkAccess);
         return this;
@@ -331,6 +346,21 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public WorkspaceImpl withRequiredNsgRules(RequiredNsgRules requiredNsgRules) {
         this.innerModel().withRequiredNsgRules(requiredNsgRules);
+        return this;
+    }
+
+    public WorkspaceImpl withDefaultCatalog(DefaultCatalogProperties defaultCatalog) {
+        this.innerModel().withDefaultCatalog(defaultCatalog);
+        return this;
+    }
+
+    public WorkspaceImpl withAccessConnector(WorkspacePropertiesAccessConnector accessConnector) {
+        this.innerModel().withAccessConnector(accessConnector);
+        return this;
+    }
+
+    public WorkspaceImpl withDefaultStorageFirewall(DefaultStorageFirewall defaultStorageFirewall) {
+        this.innerModel().withDefaultStorageFirewall(defaultStorageFirewall);
         return this;
     }
 

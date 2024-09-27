@@ -8,17 +8,19 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Workspaces. */
+/**
+ * Resource collection API of Workspaces.
+ */
 public interface Workspaces {
     /**
      * Gets the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace along with {@link Response}.
      */
@@ -26,12 +28,12 @@ public interface Workspaces {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace.
      */
@@ -39,36 +41,38 @@ public interface Workspaces {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByResourceGroup(String resourceGroupName, String workspaceName);
+    void delete(String resourceGroupName, String workspaceName);
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param forceDeletion Optional parameter to retain default unity catalog data. By default the data will retained
+     * if Uc is enabled on the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String workspaceName, Context context);
+    void delete(String resourceGroupName, String workspaceName, Boolean forceDeletion, Context context);
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a resource group as paginated response with {@link PagedIterable}.
      */
@@ -76,12 +80,12 @@ public interface Workspaces {
 
     /**
      * Gets all the workspaces within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a resource group as paginated response with {@link PagedIterable}.
      */
@@ -89,9 +93,9 @@ public interface Workspaces {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a subscription as paginated response with {@link PagedIterable}.
      */
@@ -99,11 +103,11 @@ public interface Workspaces {
 
     /**
      * Gets all the workspaces within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the workspaces within a subscription as paginated response with {@link PagedIterable}.
      */
@@ -111,11 +115,11 @@ public interface Workspaces {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace along with {@link Response}.
      */
@@ -123,12 +127,12 @@ public interface Workspaces {
 
     /**
      * Gets the workspace.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace along with {@link Response}.
      */
@@ -136,30 +140,32 @@ public interface Workspaces {
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void deleteById(String id);
 
     /**
      * Deletes the workspace.
-     *
+     * 
      * @param id the resource ID.
+     * @param forceDeletion Optional parameter to retain default unity catalog data. By default the data will retained
+     * if Uc is enabled on the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    void deleteByIdWithResponse(String id, Boolean forceDeletion, Context context);
 
     /**
      * Begins definition for a new Workspace resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Workspace definition.
      */
