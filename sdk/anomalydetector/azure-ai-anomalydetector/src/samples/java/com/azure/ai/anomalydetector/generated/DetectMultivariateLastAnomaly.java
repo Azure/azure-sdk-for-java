@@ -71,8 +71,7 @@ public class DetectMultivariateLastAnomaly {
                         0.029261872151168933, 0.6261499548828445, 0.45850782028563386, 0.8275006940083313,
                         0.032760268834037376, 0.4485202784055029, 0.8915691008748384, 0.891669051517807,
                         0.9469979353323046, 0.115293087370132, 0.08818772518459506, 0.7426286620589166,
-                        0.32372247468990756, 0.936268139507417))))
-                .setTopContributorCount(10));
+                        0.32372247468990756, 0.936268139507417)))).setTopContributorCount(10));
         // END:com.azure.ai.anomalydetector.generated.multivariatedetectmultivariatelastanomaly.detectmultivariatelastanomaly
     }
 }

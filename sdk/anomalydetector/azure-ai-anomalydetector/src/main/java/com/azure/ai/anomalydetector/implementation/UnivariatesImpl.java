@@ -144,7 +144,8 @@ public final class UnivariatesImpl {
      * user an overall status of the time series.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -160,11 +161,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
@@ -189,7 +192,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -218,7 +222,8 @@ public final class UnivariatesImpl {
      * user an overall status of the time series.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -234,11 +239,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
@@ -263,7 +270,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -289,7 +297,8 @@ public final class UnivariatesImpl {
      * and based on all data to determine whether the last point is anomalous.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -305,11 +314,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
@@ -321,7 +332,8 @@ public final class UnivariatesImpl {
      *     isPositiveAnomaly: boolean (Required)
      *     severity: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -348,7 +360,8 @@ public final class UnivariatesImpl {
      * and based on all data to determine whether the last point is anomalous.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -364,11 +377,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
@@ -380,7 +395,8 @@ public final class UnivariatesImpl {
      *     isPositiveAnomaly: boolean (Required)
      *     severity: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -405,7 +421,8 @@ public final class UnivariatesImpl {
      * Evaluate the change point score of every series point.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -419,11 +436,13 @@ public final class UnivariatesImpl {
      *     stableTrendWindow: Integer (Optional)
      *     threshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: Integer (Optional)
      *     isChangePoint (Optional): [
@@ -433,7 +452,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -458,7 +478,8 @@ public final class UnivariatesImpl {
      * Evaluate the change point score of every series point.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -472,11 +493,13 @@ public final class UnivariatesImpl {
      *     stableTrendWindow: Integer (Optional)
      *     threshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: Integer (Optional)
      *     isChangePoint (Optional): [
@@ -486,7 +509,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

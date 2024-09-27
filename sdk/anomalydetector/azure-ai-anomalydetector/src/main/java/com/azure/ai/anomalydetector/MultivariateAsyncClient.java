@@ -55,7 +55,8 @@ public final class MultivariateAsyncClient {
      * resultId value that the BatchDetectAnomaly API returns.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -107,7 +108,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -145,7 +147,8 @@ public final class MultivariateAsyncClient {
      * modelInfo object.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     dataSchema: String(OneTable/MultiTable) (Optional)
@@ -191,11 +194,13 @@ public final class MultivariateAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -246,7 +251,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -277,7 +283,8 @@ public final class MultivariateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -328,7 +335,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -369,7 +377,8 @@ public final class MultivariateAsyncClient {
      * and variables used in the model.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -420,7 +429,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelId Model identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -450,18 +460,21 @@ public final class MultivariateAsyncClient {
      * Storage folder or points to a CSV file in Azure Blob Storage.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     topContributorCount: Integer (Optional)
      *     startTime: OffsetDateTime (Required)
      *     endTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -513,7 +526,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelId Model identifier.
      * @param options Request of multivariate anomaly detection.
@@ -541,7 +555,8 @@ public final class MultivariateAsyncClient {
      * immediately in the response body.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variables (Required): [
      *          (Required){
@@ -556,11 +571,13 @@ public final class MultivariateAsyncClient {
      *     ]
      *     topContributorCount: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variableStates (Optional): [
      *          (Optional){
@@ -599,7 +616,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelId Model identifier.
      * @param options Request of the last detection.

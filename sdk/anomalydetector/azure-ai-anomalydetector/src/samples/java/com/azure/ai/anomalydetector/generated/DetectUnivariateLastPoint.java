@@ -73,11 +73,11 @@ public class DetectUnivariateLastPoint {
                     new TimeSeriesPoint(827.0).setTimestamp(OffsetDateTime.parse("1975-10-01T00:00:00Z")),
                     new TimeSeriesPoint(797.0).setTimestamp(OffsetDateTime.parse("1975-11-01T00:00:00Z")),
                     new TimeSeriesPoint(843.0).setTimestamp(OffsetDateTime.parse("1975-12-01T00:00:00Z"))))
-                .setGranularity(TimeGranularity.MONTHLY)
-                .setMaxAnomalyRatio(0.25D)
-                .setSensitivity(95)
-                .setImputeMode(ImputeMode.FIXED)
-                .setImputeFixedValue(800.0D));
+                        .setGranularity(TimeGranularity.MONTHLY)
+                        .setMaxAnomalyRatio(0.25D)
+                        .setSensitivity(95)
+                        .setImputeMode(ImputeMode.FIXED)
+                        .setImputeFixedValue(800.0D));
         // END:com.azure.ai.anomalydetector.generated.univariatedetectunivariatelastpoint.detectunivariatelastpoint
     }
 }
