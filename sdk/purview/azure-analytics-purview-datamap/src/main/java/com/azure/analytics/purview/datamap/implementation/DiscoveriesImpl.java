@@ -140,7 +140,8 @@ public final class DiscoveriesImpl {
      * Get data using search.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
@@ -166,7 +167,8 @@ public final class DiscoveriesImpl {
      *         facet (Optional): (recursive schema, see facet above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -214,7 +216,7 @@ public final class DiscoveriesImpl {
      *     value (Optional): [
      *          (Optional){
      *             &#64;search.score: Double (Optional)
-     *             @search.highlights (Optional): {
+     *             &#64;search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -297,7 +299,8 @@ public final class DiscoveriesImpl {
      * Get data using search.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
@@ -323,7 +326,8 @@ public final class DiscoveriesImpl {
      *         facet (Optional): (recursive schema, see facet above)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -371,7 +375,7 @@ public final class DiscoveriesImpl {
      *     value (Optional): [
      *          (Optional){
      *             &#64;search.score: Double (Optional)
-     *             @search.highlights (Optional): {
+     *             &#64;search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -454,13 +458,15 @@ public final class DiscoveriesImpl {
      * Get search suggestions by query criteria.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
      *     filter: Object (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -470,7 +476,7 @@ public final class DiscoveriesImpl {
      *     value (Optional): [
      *          (Optional){
      *             &#64;search.score: Double (Optional)
-     *             @search.text: String (Optional)
+     *             &#64;search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -538,13 +544,15 @@ public final class DiscoveriesImpl {
      * Get search suggestions by query criteria.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
      *     filter: Object (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
@@ -554,7 +562,7 @@ public final class DiscoveriesImpl {
      *     value (Optional): [
      *          (Optional){
      *             &#64;search.score: Double (Optional)
-     *             @search.text: String (Optional)
+     *             &#64;search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -621,17 +629,20 @@ public final class DiscoveriesImpl {
      * Get auto complete options.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
      *     filter: Object (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -640,7 +651,8 @@ public final class DiscoveriesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -662,17 +674,20 @@ public final class DiscoveriesImpl {
      * Get auto complete options.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     keywords: String (Optional)
      *     limit: Integer (Optional)
      *     filter: Object (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -681,7 +696,8 @@ public final class DiscoveriesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

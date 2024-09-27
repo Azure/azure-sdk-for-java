@@ -4,14 +4,19 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.implementation.BatchClientImpl;
+import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
+import com.azure.compute.batch.implementation.task.TaskManager;
+import com.azure.compute.batch.implementation.task.TaskSubmitter;
 import com.azure.compute.batch.models.AutoScaleRun;
 import com.azure.compute.batch.models.BatchApplication;
+import com.azure.compute.batch.models.BatchClientParallelOptions;
 import com.azure.compute.batch.models.BatchJob;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchJobDisableContent;
 import com.azure.compute.batch.models.BatchJobPreparationAndReleaseTaskStatus;
 import com.azure.compute.batch.models.BatchJobSchedule;
 import com.azure.compute.batch.models.BatchJobScheduleCreateContent;
+import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
 import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobTerminateContent;
 import com.azure.compute.batch.models.BatchJobUpdateContent;
@@ -28,6 +33,7 @@ import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateContent;
 import com.azure.compute.batch.models.BatchPoolEnableAutoScaleContent;
 import com.azure.compute.batch.models.BatchPoolEvaluateAutoScaleContent;
+import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.BatchPoolNodeCounts;
 import com.azure.compute.batch.models.BatchPoolReplaceContent;
 import com.azure.compute.batch.models.BatchPoolResizeContent;
@@ -40,34 +46,6 @@ import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
 import com.azure.compute.batch.models.BatchTaskCountsResult;
 import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskGroup;
-import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
-import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
-import com.azure.core.annotation.Generated;
-import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceClient;
-import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.exception.ResourceModifiedException;
-import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.RequestConditions;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import com.azure.core.util.DateTimeRfc1123;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-import com.azure.compute.batch.implementation.task.SyncTaskSubmitter;
-import com.azure.compute.batch.implementation.task.TaskManager;
-import com.azure.compute.batch.implementation.task.TaskSubmitter;
-import com.azure.compute.batch.models.BatchClientParallelOptions;
-import com.azure.compute.batch.models.BatchJobScheduleExistsOptions;
-import com.azure.compute.batch.models.BatchPoolExistsOptions;
 import com.azure.compute.batch.models.CreateBatchJobOptions;
 import com.azure.compute.batch.models.CreateBatchJobScheduleOptions;
 import com.azure.compute.batch.models.CreateBatchNodeUserOptions;
@@ -136,6 +114,28 @@ import com.azure.compute.batch.models.UpdateBatchJobOptions;
 import com.azure.compute.batch.models.UpdateBatchJobScheduleOptions;
 import com.azure.compute.batch.models.UpdateBatchPoolOptions;
 import com.azure.compute.batch.models.UploadBatchNodeLogsOptions;
+import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
+import com.azure.compute.batch.models.UploadBatchServiceLogsResult;
+import com.azure.core.annotation.Generated;
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.RequestConditions;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Initializes a new instance of the synchronous BatchClient type.
@@ -3112,7 +3112,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3120,7 +3121,8 @@ public final class BatchClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3175,7 +3177,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3183,7 +3186,8 @@ public final class BatchClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3217,7 +3221,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3225,7 +3230,8 @@ public final class BatchClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3277,7 +3283,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Required)
@@ -3285,7 +3292,8 @@ public final class BatchClient {
      *         String (Required)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param applicationId The ID of the Application.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3335,7 +3343,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -3343,7 +3352,8 @@ public final class BatchClient {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3423,7 +3433,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -3431,7 +3442,8 @@ public final class BatchClient {
      *     vmSize: String (Required)
      *     totalCoreHours: double (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3463,7 +3475,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -3716,7 +3729,8 @@ public final class BatchClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3764,7 +3778,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -3986,7 +4001,8 @@ public final class BatchClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param pool The Pool to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4024,7 +4040,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -4346,7 +4363,8 @@ public final class BatchClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4413,7 +4431,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -4735,7 +4754,8 @@ public final class BatchClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4940,9 +4960,11 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5032,9 +5054,11 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5087,7 +5111,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -5409,7 +5434,8 @@ public final class BatchClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5512,7 +5538,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -5803,7 +5830,8 @@ public final class BatchClient {
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5857,7 +5885,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -5915,7 +5944,8 @@ public final class BatchClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -6012,7 +6042,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -6070,7 +6101,8 @@ public final class BatchClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param pool The pool properties to update.
@@ -6192,12 +6224,14 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for enabling automatic scaling.
@@ -6296,12 +6330,14 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Optional)
      *     autoScaleEvaluationInterval: Duration (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for enabling automatic scaling.
@@ -6335,15 +6371,18 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     timestamp: OffsetDateTime (Required)
      *     results: String (Optional)
@@ -6358,7 +6397,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param content The options to use for evaluating the automatic scaling formula.
@@ -6411,16 +6451,19 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     autoScaleFormula: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     timestamp: OffsetDateTime (Required)
      *     results: String (Optional)
@@ -6435,7 +6478,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
      * @param parameters The options to use for evaluating the automatic scaling formula.
@@ -6495,14 +6539,16 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for resizing the pool.
@@ -6601,14 +6647,16 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for resizing the pool.
@@ -6789,7 +6837,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -6847,7 +6896,8 @@ public final class BatchClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -6898,7 +6948,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     startTask (Optional): {
      *         commandLine: String (Required)
@@ -6956,7 +7007,8 @@ public final class BatchClient {
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to update.
      * @param pool The options to use for replacing properties on the pool.
@@ -7012,7 +7064,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeList (Required): [
      *         String (Required)
@@ -7020,7 +7073,8 @@ public final class BatchClient {
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param content The options to use for removing the node.
@@ -7116,7 +7170,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeList (Required): [
      *         String (Required)
@@ -7124,7 +7179,8 @@ public final class BatchClient {
      *     resizeTimeout: Duration (Optional)
      *     nodeDeallocationOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool to get.
      * @param parameters The options to use for removing the node.
@@ -7159,7 +7215,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -7177,7 +7234,8 @@ public final class BatchClient {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7233,7 +7291,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeAgentSKUId: String (Required)
      *     imageReference (Required): {
@@ -7251,7 +7310,8 @@ public final class BatchClient {
      *     batchSupportEndOfLife: OffsetDateTime (Optional)
      *     verificationType: String(verified/unverified) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7287,7 +7347,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7309,7 +7370,8 @@ public final class BatchClient {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7367,7 +7429,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Required)
      *     dedicated (Optional): {
@@ -7389,7 +7452,8 @@ public final class BatchClient {
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -7593,7 +7657,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -7995,7 +8060,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8098,7 +8164,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -8471,7 +8538,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -8525,7 +8593,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
@@ -8796,7 +8865,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -8892,7 +8962,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     priority: Integer (Optional)
      *     allowTaskPreemption: Boolean (Optional)
@@ -9134,7 +9205,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job The options to use for updating the Job.
@@ -9189,7 +9261,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -9591,7 +9664,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -9688,7 +9762,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -10061,7 +10136,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job whose properties you want to update.
      * @param job A job with updated properties.
@@ -10121,11 +10197,13 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     disableTasks: String(requeue/terminate/wait) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to disable.
      * @param content The options to use for disabling the Job.
@@ -10225,11 +10303,13 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     disableTasks: String(requeue/terminate/wait) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to disable.
      * @param parameters The options to use for disabling the Job.
@@ -10414,7 +10494,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -10775,7 +10856,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -10827,7 +10909,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -11159,7 +11242,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param job The Job to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -11197,7 +11281,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -11599,7 +11684,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -11666,7 +11752,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -12068,7 +12155,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -12105,7 +12193,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -12507,7 +12596,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -12575,7 +12665,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -12977,7 +13068,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule from which you want to get a list of Jobs.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13021,7 +13113,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -13065,7 +13158,8 @@ public final class BatchClient {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13137,7 +13231,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     poolId: String (Optional)
      *     nodeId: String (Optional)
@@ -13181,7 +13276,8 @@ public final class BatchClient {
      *         result: String(success/failure) (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13215,7 +13311,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     taskCounts (Required): {
      *         active: int (Required)
@@ -13232,7 +13329,8 @@ public final class BatchClient {
      *         failed: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13284,7 +13382,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     taskCounts (Required): {
      *         active: int (Required)
@@ -13301,7 +13400,8 @@ public final class BatchClient {
      *         failed: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13351,9 +13451,11 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13443,9 +13545,11 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * boolean
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -13643,7 +13747,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -14048,7 +14153,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14151,7 +14257,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -14527,7 +14634,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to get.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -14583,7 +14691,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     schedule (Optional): {
      *         doNotRunUntil: OffsetDateTime (Optional)
@@ -14954,7 +15063,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -15053,7 +15163,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     schedule (Optional): {
      *         doNotRunUntil: OffsetDateTime (Optional)
@@ -15395,7 +15506,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule The options to use for updating the Job Schedule.
@@ -15453,7 +15565,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -15858,7 +15971,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -15957,7 +16071,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -16333,7 +16448,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobScheduleId The ID of the Job Schedule to update.
      * @param jobSchedule A Job Schedule with updated properties.
@@ -16767,7 +16883,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -17140,7 +17257,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -17184,7 +17302,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -17528,7 +17647,8 @@ public final class BatchClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobSchedule The Job Schedule to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -17566,7 +17686,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -17971,7 +18092,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -18038,7 +18160,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -18443,7 +18566,8 @@ public final class BatchClient {
      *         waitTime: Duration (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -18474,7 +18598,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -18597,7 +18722,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -18646,7 +18772,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     displayName: String (Optional)
@@ -18769,7 +18896,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task is to be created.
      * @param task The Task to be created.
@@ -18812,7 +18940,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -18990,7 +19119,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19062,7 +19192,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -19240,7 +19371,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -19283,7 +19415,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -19410,11 +19543,13 @@ public final class BatchClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -19439,7 +19574,8 @@ public final class BatchClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -19497,7 +19633,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -19624,12 +19761,14 @@ public final class BatchClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Optional): [
      *          (Optional){
@@ -19654,7 +19793,8 @@ public final class BatchClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to which the Task collection is to be added.
      * @param taskCollection The Tasks to be added.
@@ -19860,7 +20000,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20038,7 +20179,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -20149,7 +20291,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20327,7 +20470,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task to get information about.
@@ -20381,7 +20525,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20559,7 +20704,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -20653,7 +20799,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     displayName: String (Optional)
@@ -20831,7 +20978,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job containing the Task.
      * @param taskId The ID of the Task to update.
@@ -21258,9 +21406,11 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -21345,9 +21495,11 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose file you want to retrieve.
@@ -21502,7 +21654,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -21515,7 +21668,8 @@ public final class BatchClient {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -21580,7 +21734,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -21593,7 +21748,8 @@ public final class BatchClient {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job that contains the Task.
      * @param taskId The ID of the Task whose files you want to list.
@@ -21626,7 +21782,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     isAdmin: Boolean (Optional)
@@ -21634,7 +21791,8 @@ public final class BatchClient {
      *     password: String (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -21684,7 +21842,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     isAdmin: Boolean (Optional)
@@ -21692,7 +21851,8 @@ public final class BatchClient {
      *     password: String (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to create a user Account.
@@ -21804,13 +21964,15 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     password: String (Optional)
      *     expiryTime: OffsetDateTime (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -21864,13 +22026,15 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     password: String (Optional)
      *     expiryTime: OffsetDateTime (Optional)
      *     sshPublicKey: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
@@ -21904,7 +22068,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -22046,7 +22211,8 @@ public final class BatchClient {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -22097,7 +22263,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -22238,7 +22405,8 @@ public final class BatchClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to get information about.
@@ -22345,12 +22513,14 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -22404,12 +22574,14 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     remoteLoginIPAddress: String (Required)
      *     remoteLoginPort: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -22445,7 +22617,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     containerUrl: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -22454,16 +22627,19 @@ public final class BatchClient {
      *         resourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     virtualDirectoryName: String (Required)
      *     numberOfFilesUploaded: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
@@ -22516,7 +22692,8 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     containerUrl: String (Required)
      *     startTime: OffsetDateTime (Required)
@@ -22525,17 +22702,20 @@ public final class BatchClient {
      *         resourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     virtualDirectoryName: String (Required)
      *     numberOfFilesUploaded: int (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
@@ -22574,7 +22754,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -22716,7 +22897,8 @@ public final class BatchClient {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22778,7 +22960,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     url: String (Optional)
@@ -22920,7 +23103,8 @@ public final class BatchClient {
      *         scaleSetVmResourceId: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool from which you want to list Compute Nodes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -22950,7 +23134,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -22986,7 +23171,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -23039,7 +23225,8 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -23075,7 +23262,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that contains the extensions.
@@ -23111,7 +23299,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -23147,7 +23336,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -23204,7 +23394,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     provisioningState: String (Optional)
      *     vmExtension (Optional): {
@@ -23240,7 +23431,8 @@ public final class BatchClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains Compute Node.
      * @param nodeId The ID of the Compute Node that you want to list extensions.
@@ -23371,9 +23563,11 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node.
@@ -23458,9 +23652,11 @@ public final class BatchClient {
      * <p>
      * <strong>Response Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * byte[]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node from which you want to delete the file.
@@ -23613,7 +23809,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -23626,7 +23823,8 @@ public final class BatchClient {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -23690,7 +23888,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     url: String (Optional)
@@ -23703,7 +23902,8 @@ public final class BatchClient {
      *         fileMode: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node whose files you want to list.
@@ -26482,11 +26682,13 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     terminateReason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26584,11 +26786,13 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     terminateReason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job to terminate.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -26626,11 +26830,13 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeRebootOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -26678,11 +26884,13 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeRebootOption: String(requeue/terminate/taskcompletion/retaineddata) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -26722,11 +26930,13 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeDisableSchedulingOption: String(requeue/terminate/taskcompletion) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -26775,11 +26985,13 @@ public final class BatchClient {
      * <p>
      * <strong>Request Body Schema</strong>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     nodeDisableSchedulingOption: String(requeue/terminate/taskcompletion) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node on which you want to disable Task scheduling.
@@ -26885,7 +27097,8 @@ public final class BatchClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -26921,7 +27134,8 @@ public final class BatchClient {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.
@@ -26973,7 +27187,8 @@ public final class BatchClient {
      * <strong>Response Body Schema</strong>
      * </p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: Integer (Optional)
      *     nodeInfo (Optional): {
@@ -27009,7 +27224,8 @@ public final class BatchClient {
      *     previousStateTransitionTime: OffsetDateTime (Optional)
      *     result: String(success/failure) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param jobId The ID of the Job.
      * @param taskId The ID of the Task.

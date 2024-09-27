@@ -12,47 +12,47 @@ import java.util.Collection;
  */
 public final class OperationState extends ExpandableStringEnum<OperationState> {
     /**
-     * Static value Unknown for OperationState.
+     * The default value for the operation state enum.
      */
     public static final OperationState UNKNOWN = fromString("Unknown");
 
     /**
-     * Static value PendingScheduling for OperationState.
+     * Operations that are pending scheduling.
      */
     public static final OperationState PENDING_SCHEDULING = fromString("PendingScheduling");
 
     /**
-     * Static value Scheduled for OperationState.
+     * Operations that have been scheduled.
      */
     public static final OperationState SCHEDULED = fromString("Scheduled");
 
     /**
-     * Static value PendingExecution for OperationState.
+     * Operations that are waiting to be executed.
      */
     public static final OperationState PENDING_EXECUTION = fromString("PendingExecution");
 
     /**
-     * Static value Executing for OperationState.
+     * Operations that are in the process of being executed.
      */
     public static final OperationState EXECUTING = fromString("Executing");
 
     /**
-     * Static value Succeeded for OperationState.
+     * Operations that suceeded.
      */
     public static final OperationState SUCCEEDED = fromString("Succeeded");
 
     /**
-     * Static value Failed for OperationState.
+     * Operations that have failed.
      */
     public static final OperationState FAILED = fromString("Failed");
 
     /**
-     * Static value Cancelled for OperationState.
+     * Operations that have been cancelled by the user.
      */
     public static final OperationState CANCELLED = fromString("Cancelled");
 
     /**
-     * Static value Blocked for OperationState.
+     * Operations that are blocked.
      */
     public static final OperationState BLOCKED = fromString("Blocked");
 
