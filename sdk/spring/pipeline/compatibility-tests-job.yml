@@ -39,6 +39,10 @@ jobs:
             - 'sdk/jdbc'
             - 'sdk/servicebus'
             - 'sdk/eventhubs'
+            - 'common/perf-test-core'
+            - 'sdk/monitor/azure-monitor-opentelemetry-exporter'
+            - 'sdk/parents/azure-perf-test-parent'
+            - 'sdk/parents/azure-sdk-parent'
 #      - template: ../../../eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
 #        parameters:
 #          JobType: 'Build'
