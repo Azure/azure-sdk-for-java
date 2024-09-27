@@ -315,6 +315,7 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
+            policies.add(new KeyCredentialPolicy("Authorization", keyCredential));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
