@@ -1982,13 +1982,11 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @MethodSource("fourMBUploadsV2Supplier")
     public void fourMBUploadsV2(int fileSize) throws IOException {
-        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
+        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
             .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
             .credential(ENV.getPrimaryAccount().getCredential())
             .endpoint(cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
-                .setAuthenticatedRegionDataLengthInBytes(5 * Constants.MB))
             .buildEncryptedBlobClient();
 
         File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
