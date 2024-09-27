@@ -290,7 +290,6 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
