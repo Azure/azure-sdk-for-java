@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
 /**
  * Default HTTP response for Vert.x.
  */
-public final class VertxHttpAsyncResponse extends VertxHttpResponseBase {
+public final class VertxHttpResponse extends VertxHttpResponseBase {
     private volatile boolean closed;
 
     /**
@@ -23,7 +23,7 @@ public final class VertxHttpAsyncResponse extends VertxHttpResponseBase {
      * @param azureHttpRequest the original azure http request
      * @param vertxHttpResponse the vertx http response
      */
-    public VertxHttpAsyncResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
+    public VertxHttpResponse(HttpRequest azureHttpRequest, HttpClientResponse vertxHttpResponse) {
         super(azureHttpRequest, vertxHttpResponse.pause());
     }
 

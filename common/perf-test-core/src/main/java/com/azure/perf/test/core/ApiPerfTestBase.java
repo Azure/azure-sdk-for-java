@@ -11,12 +11,11 @@ import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.vertx.VertxAsyncHttpClientBuilder;
-import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+import io.vertx.core.http.HttpClientOptions;
 import okhttp3.OkHttpClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -133,12 +132,12 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             }
         } else if (httpClientType.equals(VERTX)) {
             if (options.isInsecure()) {
-                io.vertx.core.http.HttpClientOptions vertxOptions = new io.vertx.core.http.HttpClientOptions()
+                HttpClientOptions vertxOptions = new io.vertx.core.http.HttpClientOptions()
                     .setSsl(true)
                     .setTrustAll(true);
-                return new VertxAsyncHttpClientBuilder().httpClientOptions(vertxOptions).build();
+                return createVertxReflectivelyUntilNameChangeReleases(vertxOptions);
             } else {
-                httpClientProvider = VertxAsyncHttpClientProvider.class;
+                httpClientProvider = getVertxClientProviderReflectivelyUntilNameChangeReleases();
             }
         }
 
@@ -151,6 +150,50 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
         } catch (Throwable e) {
             throw new IllegalArgumentException("Could not create HttpClient from given provider: " + httpClientType, e);
         }
+    }
+
+    private static HttpClient createVertxReflectivelyUntilNameChangeReleases(HttpClientOptions vertxOptions) {
+        Object httpClientBuilder;
+        try {
+            httpClientBuilder = Class.forName("com.azure.core.http.vertx.VertxHttpClientBuilder")
+                .getDeclaredConstructor()
+                .newInstance();
+        } catch (ReflectiveOperationException ex) {
+            try {
+                httpClientBuilder = Class.forName("com.azure.core.http.vertx.VertxAsyncHttpClientBuilder")
+                    .getDeclaredConstructor()
+                    .newInstance();
+            } catch (ReflectiveOperationException ex2) {
+                ex2.addSuppressed(ex);
+                throw new RuntimeException(ex2);
+            }
+        }
+
+        try {
+            httpClientBuilder.getClass().getDeclaredMethod("httpClientOptions", HttpClientOptions.class)
+                .invoke(httpClientBuilder, vertxOptions);
+
+            return (HttpClient) httpClientBuilder.getClass().getDeclaredMethod("build").invoke(httpClientBuilder);
+        } catch (ReflectiveOperationException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Class<? extends HttpClientProvider> getVertxClientProviderReflectivelyUntilNameChangeReleases() {
+        Class<?> clazz;
+        try {
+            clazz = Class.forName("com.azure.core.http.vertx.VertxHttpClientProvider");
+        } catch (ClassNotFoundException ex) {
+            try {
+                clazz = Class.forName("com.azure.core.http.vertx.VertxAsyncHttpClientProvider");
+            } catch (ClassNotFoundException ex2) {
+                ex2.addSuppressed(ex);
+                throw new RuntimeException(ex2);
+            }
+        }
+
+        return (Class<? extends HttpClientProvider>) clazz;
     }
 
     @SuppressWarnings("unchecked")
