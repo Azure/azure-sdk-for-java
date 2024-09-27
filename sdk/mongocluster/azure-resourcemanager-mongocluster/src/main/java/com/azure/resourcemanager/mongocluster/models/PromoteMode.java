@@ -12,7 +12,8 @@ import java.util.Collection;
  */
 public final class PromoteMode extends ExpandableStringEnum<PromoteMode> {
     /**
-     * Static value Switchover for PromoteMode.
+     * Promotion will switch the current replica cluster to the primary role and the original primary will be switched
+     * to a replica role, maintaining the replication link.
      */
     public static final PromoteMode SWITCHOVER = fromString("Switchover");
 

@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole> {
     /**
-     * Static value Primary for ReplicationRole.
+     * The cluster is a primary replica.
      */
     public static final ReplicationRole PRIMARY = fromString("Primary");
 
     /**
-     * Static value AsyncReplica for ReplicationRole.
+     * The cluster is a local asynchronous replica.
      */
     public static final ReplicationRole ASYNC_REPLICA = fromString("AsyncReplica");
 
     /**
-     * Static value GeoAsyncReplica for ReplicationRole.
+     * The cluster is a geo-asynchronous replica.
      */
     public static final ReplicationRole GEO_ASYNC_REPLICA = fromString("GeoAsyncReplica");
 

@@ -13,22 +13,22 @@ import java.util.Collection;
 public final class WindowsVMGuestPatchAutomaticByPlatformRebootSetting
     extends ExpandableStringEnum<WindowsVMGuestPatchAutomaticByPlatformRebootSetting> {
     /**
-     * Static value Unknown for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     * Unknown Reboot setting.
      */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting UNKNOWN = fromString("Unknown");
 
     /**
-     * Static value IfRequired for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     * IfRequired Reboot setting.
      */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting IF_REQUIRED = fromString("IfRequired");
 
     /**
-     * Static value Never for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     * Never Reboot setting.
      */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting NEVER = fromString("Never");
 
     /**
-     * Static value Always for WindowsVMGuestPatchAutomaticByPlatformRebootSetting.
+     * Always Reboot setting.
      */
     public static final WindowsVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 
