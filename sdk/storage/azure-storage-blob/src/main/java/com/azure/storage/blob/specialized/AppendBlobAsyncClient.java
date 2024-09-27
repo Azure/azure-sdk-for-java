@@ -472,8 +472,8 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
             appendBlobRequestConditions.getMaxSize(), appendBlobRequestConditions.getAppendPosition(),
             appendBlobRequestConditions.getIfModifiedSince(), appendBlobRequestConditions.getIfUnmodifiedSince(),
             appendBlobRequestConditions.getIfMatch(), appendBlobRequestConditions.getIfNoneMatch(),
-            appendBlobRequestConditions.getTagsConditions(), null, getCustomerProvidedKey(), encryptionScope,
-            context)
+            appendBlobRequestConditions.getTagsConditions(), null, null, null,
+            getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 AppendBlobsAppendBlockHeaders hd = rb.getDeserializedHeaders();
                 AppendBlobItem item = new AppendBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

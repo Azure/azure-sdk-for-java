@@ -1236,7 +1236,7 @@ public class ShareFileAsyncClient {
         Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
         String rangeString = range == null ? null : range.toHeaderValue();
         return azureFileStorageClient.getFiles().downloadWithResponseAsync(shareName, filePath, null,
-            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(), context);
+            rangeString, rangeGetContentMD5, null, requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -2291,8 +2291,8 @@ public class ShareFileAsyncClient {
 
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
-                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), data,
-                context)
+                options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(),
+                null, null, data, context)
             .map(ModelHelper::uploadRangeHeadersToShareFileInfo);
     }
 
@@ -2568,7 +2568,8 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
-                0L, null, null, requestConditions.getLeaseId(), null, (Flux<ByteBuffer>) null, context)
+                0L, null, null, requestConditions.getLeaseId(), null,
+                null, null, (Flux<ByteBuffer>) null, context)
             .map(ModelHelper::transformUploadResponse);
     }
 

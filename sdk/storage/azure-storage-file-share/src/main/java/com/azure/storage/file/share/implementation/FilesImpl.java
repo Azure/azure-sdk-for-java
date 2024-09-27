@@ -197,6 +197,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -209,6 +210,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -221,6 +223,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -233,6 +236,7 @@ public final class FilesImpl {
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot, @QueryParam("timeout") Integer timeout,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-range") String range,
             @HeaderParam("x-ms-range-get-content-md5") Boolean rangeGetContentMD5,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
             @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
@@ -425,6 +429,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -440,6 +446,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") Flux<ByteBuffer> optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -455,6 +463,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -470,6 +480,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -485,6 +497,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -500,6 +514,8 @@ public final class FilesImpl {
             @HeaderParam("x-ms-file-last-write-time") FileLastWrittenMode fileLastWrittenMode,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
+            @HeaderParam("x-ms-structured-body") String structuredBodyType,
+            @HeaderParam("x-ms-structured-content-length") Long structuredContentLength,
             @BodyParam("application/octet-stream") BinaryData optionalbody, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -1863,6 +1879,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1871,12 +1889,13 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(String shareName,
-        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId) {
+        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType,
+        String leaseId) {
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.download(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
-                this.client.getFileRequestIntent(), accept, context))
+                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5,
+                structuredBodyType, leaseId, this.client.getFileRequestIntent(), accept, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1891,6 +1910,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1900,119 +1921,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(String shareName,
-        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
+        String fileName, Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType,
+        String leaseId, Context context) {
         final String accept = "application/xml";
         return service
             .download(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(), timeout,
-                this.client.getVersion(), range, rangeGetContentMD5, leaseId, this.client.getFileRequestIntent(),
-                accept, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
-        Boolean rangeGetContentMD5, String leaseId) {
-        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, leaseId)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
-        Boolean rangeGetContentMD5, String leaseId, Context context) {
-        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, leaseId, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId) {
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.downloadNoCustomHeaders(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
-                this.client.getFileRequestIntent(), accept, context))
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
-    }
-
-    /**
-     * Reads or downloads a file from the system, including its metadata and properties.
-     *
-     * @param shareName The name of the target share.
-     * @param fileName The path of the target file.
-     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
-     * Timeouts for File Service Operations.&lt;/a&gt;.
-     * @param range Return file data only from the specified byte range.
-     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
-     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
-     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
-        Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
-        final String accept = "application/xml";
-        return service
-            .downloadNoCustomHeaders(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
-                timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
+                this.client.getVersion(), range, rangeGetContentMD5, structuredBodyType, leaseId,
                 this.client.getFileRequestIntent(), accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
@@ -2028,6 +1942,125 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
+        Boolean rangeGetContentMD5, String structuredBodyType, String leaseId) {
+        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
+            leaseId).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Flux<ByteBuffer> downloadAsync(String shareName, String fileName, Integer timeout, String range,
+        Boolean rangeGetContentMD5, String structuredBodyType, String leaseId, Context context) {
+        return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
+            leaseId, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
+        Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId) {
+        final String accept = "application/xml";
+        return FluxUtil
+            .withContext(context -> service.downloadNoCustomHeaders(this.client.getUrl(), shareName, fileName,
+                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5,
+                structuredBodyType, leaseId, this.client.getFileRequestIntent(), accept, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<StreamResponse> downloadNoCustomHeadersWithResponseAsync(String shareName, String fileName,
+        Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId,
+        Context context) {
+        final String accept = "application/xml";
+        return service
+            .downloadNoCustomHeaders(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
+                timeout, this.client.getVersion(), range, rangeGetContentMD5, structuredBodyType, leaseId,
+                this.client.getFileRequestIntent(), accept, context)
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+    }
+
+    /**
+     * Reads or downloads a file from the system, including its metadata and properties.
+     *
+     * @param shareName The name of the target share.
+     * @param fileName The path of the target file.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
+     * Timeouts for File Service Operations.&lt;/a&gt;.
+     * @param range Return file data only from the specified byte range.
+     * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
+     * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2037,11 +2070,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesDownloadHeaders, InputStream> downloadWithResponse(String shareName, String fileName,
-        Integer timeout, String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
+        Integer timeout, String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId,
+        Context context) {
         final String accept = "application/xml";
         try {
             return service.downloadSync(this.client.getUrl(), shareName, fileName, this.client.isAllowTrailingDot(),
-                timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
+                timeout, this.client.getVersion(), range, rangeGetContentMD5, structuredBodyType, leaseId,
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
@@ -2059,6 +2093,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -2067,10 +2103,10 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream download(String shareName, String fileName, Integer timeout, String range,
-        Boolean rangeGetContentMD5, String leaseId) {
+        Boolean rangeGetContentMD5, String structuredBodyType, String leaseId) {
         try {
-            return downloadWithResponse(shareName, fileName, timeout, range, rangeGetContentMD5, leaseId, Context.NONE)
-                .getValue();
+            return downloadWithResponse(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
+                leaseId, Context.NONE).getValue();
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -2087,6 +2123,8 @@ public final class FilesImpl {
      * @param range Return file data only from the specified byte range.
      * @param rangeGetContentMD5 When this header is set to true and specified together with the Range header, the
      * service returns the MD5 hash for the range, as long as the range is less than or equal to 4 MB in size.
+     * @param structuredBodyType Specifies the response content should be returned as a structured message and specifies
+     * the message schema version and properties.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2096,12 +2134,12 @@ public final class FilesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> downloadNoCustomHeadersWithResponse(String shareName, String fileName, Integer timeout,
-        String range, Boolean rangeGetContentMD5, String leaseId, Context context) {
+        String range, Boolean rangeGetContentMD5, String structuredBodyType, String leaseId, Context context) {
         final String accept = "application/xml";
         try {
             return service.downloadNoCustomHeadersSync(this.client.getUrl(), shareName, fileName,
-                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5, leaseId,
-                this.client.getFileRequestIntent(), accept, context);
+                this.client.isAllowTrailingDot(), timeout, this.client.getVersion(), range, rangeGetContentMD5,
+                structuredBodyType, leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -3222,6 +3260,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3231,15 +3273,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody) {
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return FluxUtil
             .withContext(context -> service.uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range,
                 fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3268,6 +3311,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3278,15 +3325,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody,
-        Context context) {
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite, contentLength,
                 contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3315,6 +3363,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3324,9 +3376,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        Flux<ByteBuffer> optionalbody) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody)
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -3356,6 +3409,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3366,10 +3423,11 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody, Context context) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        Flux<ByteBuffer> optionalbody, Context context) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody,
+            context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3398,6 +3456,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3407,15 +3469,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody) {
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return FluxUtil
             .withContext(context -> service.uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
                 timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3444,6 +3507,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3454,14 +3521,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, Flux<ByteBuffer> optionalbody, Context context) {
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, Flux<ByteBuffer> optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite,
                 contentLength, contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3490,6 +3559,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3499,15 +3572,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody) {
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return FluxUtil
             .withContext(context -> service.uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range,
                 fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3536,6 +3610,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3546,15 +3624,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<FilesUploadRangeHeaders, Void>> uploadRangeWithResponseAsync(String shareName,
         String fileName, String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout,
-        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody,
-        Context context) {
+        byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRange(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite, contentLength,
                 contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3583,6 +3662,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3592,9 +3675,10 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        BinaryData optionalbody) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody)
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -3624,6 +3708,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3634,10 +3722,11 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> uploadRangeAsync(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        BinaryData optionalbody, Context context) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
-            contentMD5, leaseId, fileLastWrittenMode, optionalbody, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+            contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody,
+            context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
             .flatMap(ignored -> Mono.empty());
     }
 
@@ -3666,6 +3755,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3675,15 +3768,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody) {
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return FluxUtil
             .withContext(context -> service.uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp,
                 timeout, range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context))
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3712,6 +3806,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3722,14 +3820,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadRangeNoCustomHeadersWithResponseAsync(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         return service
             .uploadRangeNoCustomHeaders(this.client.getUrl(), shareName, fileName, comp, timeout, range, fileRangeWrite,
                 contentLength, contentMD5Converted, this.client.getVersion(), leaseId, fileLastWrittenMode,
-                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody, accept, context)
+                this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), structuredBodyType,
+                structuredContentLength, optionalbody, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3758,6 +3858,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3768,15 +3872,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<FilesUploadRangeHeaders, Void> uploadRangeWithResponse(String shareName, String fileName,
         String range, ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5,
-        String leaseId, FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
+        String leaseId, FileLastWrittenMode fileLastWrittenMode, String structuredBodyType,
+        Long structuredContentLength, BinaryData optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         try {
             return service.uploadRangeSync(this.client.getUrl(), shareName, fileName, comp, timeout, range,
                 fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context);
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -3807,6 +3912,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -3815,9 +3924,9 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadRange(String shareName, String fileName, String range, ShareFileRangeWriteType fileRangeWrite,
         long contentLength, Integer timeout, byte[] contentMD5, String leaseId, FileLastWrittenMode fileLastWrittenMode,
-        BinaryData optionalbody) {
+        String structuredBodyType, Long structuredContentLength, BinaryData optionalbody) {
         uploadRangeWithResponse(shareName, fileName, range, fileRangeWrite, contentLength, timeout, contentMD5, leaseId,
-            fileLastWrittenMode, optionalbody, Context.NONE);
+            fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody, Context.NONE);
     }
 
     /**
@@ -3845,6 +3954,10 @@ public final class FilesImpl {
      * code 400 (Bad Request).
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param fileLastWrittenMode If the file last write time should be preserved or overwritten.
+     * @param structuredBodyType Required if the request body is a structured message. Specifies the message schema
+     * version and properties.
+     * @param structuredContentLength Required if the request body is a structured message. Specifies the length of the
+     * blob/file content inside the message body. Will always be smaller than Content-Length.
      * @param optionalbody Initial data.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3855,15 +3968,16 @@ public final class FilesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadRangeNoCustomHeadersWithResponse(String shareName, String fileName, String range,
         ShareFileRangeWriteType fileRangeWrite, long contentLength, Integer timeout, byte[] contentMD5, String leaseId,
-        FileLastWrittenMode fileLastWrittenMode, BinaryData optionalbody, Context context) {
+        FileLastWrittenMode fileLastWrittenMode, String structuredBodyType, Long structuredContentLength,
+        BinaryData optionalbody, Context context) {
         final String comp = "range";
         final String accept = "application/xml";
         String contentMD5Converted = Base64Util.encodeToString(contentMD5);
         try {
             return service.uploadRangeNoCustomHeadersSync(this.client.getUrl(), shareName, fileName, comp, timeout,
                 range, fileRangeWrite, contentLength, contentMD5Converted, this.client.getVersion(), leaseId,
-                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(), optionalbody,
-                accept, context);
+                fileLastWrittenMode, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
+                structuredBodyType, structuredContentLength, optionalbody, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
