@@ -12,23 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceProviderAuthorizationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceProviderAuthorization model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"4fd517cd-d648-4f01-9053-54d0c89de410\",\"roleDefinitionId\":\"ffb05287-7804-4938-b591-9b5921328ff7\"}")
-                .toObject(WorkspaceProviderAuthorization.class);
-        Assertions.assertEquals(UUID.fromString("4fd517cd-d648-4f01-9053-54d0c89de410"), model.principalId());
-        Assertions.assertEquals(UUID.fromString("ffb05287-7804-4938-b591-9b5921328ff7"), model.roleDefinitionId());
+        WorkspaceProviderAuthorization model = BinaryData.fromString(
+            "{\"principalId\":\"4b834440-268f-4150-8a2b-a3891a20408b\",\"roleDefinitionId\":\"3997084f-69bd-4ee3-b913-50006e110654\"}")
+            .toObject(WorkspaceProviderAuthorization.class);
+        Assertions.assertEquals(UUID.fromString("4b834440-268f-4150-8a2b-a3891a20408b"), model.principalId());
+        Assertions.assertEquals(UUID.fromString("3997084f-69bd-4ee3-b913-50006e110654"), model.roleDefinitionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceProviderAuthorization model =
-            new WorkspaceProviderAuthorization()
-                .withPrincipalId(UUID.fromString("4fd517cd-d648-4f01-9053-54d0c89de410"))
-                .withRoleDefinitionId(UUID.fromString("ffb05287-7804-4938-b591-9b5921328ff7"));
+        WorkspaceProviderAuthorization model = new WorkspaceProviderAuthorization()
+            .withPrincipalId(UUID.fromString("4b834440-268f-4150-8a2b-a3891a20408b"))
+            .withRoleDefinitionId(UUID.fromString("3997084f-69bd-4ee3-b913-50006e110654"));
         model = BinaryData.fromObject(model).toObject(WorkspaceProviderAuthorization.class);
-        Assertions.assertEquals(UUID.fromString("4fd517cd-d648-4f01-9053-54d0c89de410"), model.principalId());
-        Assertions.assertEquals(UUID.fromString("ffb05287-7804-4938-b591-9b5921328ff7"), model.roleDefinitionId());
+        Assertions.assertEquals(UUID.fromString("4b834440-268f-4150-8a2b-a3891a20408b"), model.principalId());
+        Assertions.assertEquals(UUID.fromString("3997084f-69bd-4ee3-b913-50006e110654"), model.roleDefinitionId());
     }
 }
