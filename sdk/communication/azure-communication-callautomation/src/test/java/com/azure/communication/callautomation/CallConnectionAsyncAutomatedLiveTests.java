@@ -24,7 +24,6 @@ import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import org.eclipse.jetty.http.HttpStatus;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -264,7 +263,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             MuteParticipantResult muteParticipantResult = muteResponse.getValue();
             assertNotNull(muteParticipantResult);
             assertEquals(CALL_OPERATION_CONTEXT, muteParticipantResult.getOperationContext());
-            assertEquals(HttpStatus.OK_200, muteResponse.getStatusCode());
+            assertEquals(200, muteResponse.getStatusCode());
 
             sleepIfRunningAgainstService(4000);
 
