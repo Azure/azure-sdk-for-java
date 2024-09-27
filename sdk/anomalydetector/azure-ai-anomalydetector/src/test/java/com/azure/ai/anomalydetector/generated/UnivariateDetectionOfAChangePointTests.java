@@ -281,9 +281,9 @@ public final class UnivariateDetectionOfAChangePointTests extends AnomalyDetecto
                     new TimeSeriesPoint(3233500.0).setTimestamp(OffsetDateTime.parse("2017-01-02T04:00:00Z")),
                     new TimeSeriesPoint(3233500.0).setTimestamp(OffsetDateTime.parse("2017-01-02T04:05:00Z"))),
                 TimeGranularity.PER_MINUTE).setCustomInterval(5)
-                .setPeriod(0)
-                .setStableTrendWindow(10)
-                .setThreshold(0.99D));
+                    .setPeriod(0)
+                    .setStableTrendWindow(10)
+                    .setThreshold(0.99D));
 
         // response assertion
         Assertions.assertNotNull(response);

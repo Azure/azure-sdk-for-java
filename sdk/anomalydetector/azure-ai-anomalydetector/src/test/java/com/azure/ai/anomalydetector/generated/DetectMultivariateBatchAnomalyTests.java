@@ -27,7 +27,7 @@ public final class DetectMultivariateBatchAnomalyTests extends AnomalyDetectorCl
                 new MultivariateBatchDetectionOptions(
                     "https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv",
                     OffsetDateTime.parse("2019-04-01T00:15:00Z"), OffsetDateTime.parse("2019-04-01T00:40:00Z"))
-                    .setTopContributorCount(10));
+                        .setTopContributorCount(10));
 
         // response assertion
         Assertions.assertNotNull(response);
