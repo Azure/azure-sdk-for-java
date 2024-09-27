@@ -130,7 +130,7 @@ public class LocalTestServer {
             || serverState.equals(AbstractLifeCycle.STOPPING)
             || serverState.equals(AbstractLifeCycle.STOPPED)) {
             throw new RuntimeException(
-                "Server state has reached an unexpected state while waiting for it to start: " + serverState);
+                "Server has reached an unexpected state while waiting for it to start: " + serverState);
         }
 
         return serverState.equals(AbstractLifeCycle.STARTED) || serverState.equals(AbstractLifeCycle.RUNNING);
