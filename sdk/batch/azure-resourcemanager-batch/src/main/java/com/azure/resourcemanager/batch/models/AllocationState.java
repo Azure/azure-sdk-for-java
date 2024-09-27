@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Whether the pool is resizing.
  */
@@ -41,7 +38,6 @@ public enum AllocationState {
      * @param value the serialized value to parse.
      * @return the parsed AllocationState object, or null if unable to parse.
      */
-    @JsonCreator
     public static AllocationState fromString(String value) {
         if (value == null) {
             return null;
@@ -58,7 +54,6 @@ public enum AllocationState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

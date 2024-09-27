@@ -75,8 +75,9 @@ public final class UnivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectUnivariateEntireSeries(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/timeseries/entire/detect")
         @ExpectedResponses({ 200 })
@@ -85,8 +86,9 @@ public final class UnivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectUnivariateEntireSeriesSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/timeseries/last/detect")
         @ExpectedResponses({ 200 })
@@ -95,8 +97,9 @@ public final class UnivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectUnivariateLastPoint(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/timeseries/last/detect")
         @ExpectedResponses({ 200 })
@@ -105,8 +108,9 @@ public final class UnivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectUnivariateLastPointSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/timeseries/changepoint/detect")
         @ExpectedResponses({ 200 })
@@ -115,8 +119,9 @@ public final class UnivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectUnivariateChangePoint(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
 
         @Post("/timeseries/changepoint/detect")
         @ExpectedResponses({ 200 })
@@ -125,8 +130,9 @@ public final class UnivariatesImpl {
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> detectUnivariateChangePointSync(@HostParam("Endpoint") String endpoint,
-            @HostParam("ApiVersion") String apiVersion, @HeaderParam("accept") String accept,
-            @BodyParam("application/json") BinaryData options, RequestOptions requestOptions, Context context);
+            @HostParam("ApiVersion") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData options,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -138,7 +144,8 @@ public final class UnivariatesImpl {
      * user an overall status of the time series.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -154,11 +161,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
@@ -183,7 +192,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -197,9 +207,10 @@ public final class UnivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectUnivariateEntireSeriesWithResponseAsync(BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.detectUnivariateEntireSeries(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, options, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, context));
     }
 
     /**
@@ -211,7 +222,8 @@ public final class UnivariatesImpl {
      * user an overall status of the time series.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -227,11 +239,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     expectedValues (Required): [
@@ -256,7 +270,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -269,9 +284,10 @@ public final class UnivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectUnivariateEntireSeriesWithResponse(BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.detectUnivariateEntireSeriesSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, options, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, Context.NONE);
     }
 
     /**
@@ -281,7 +297,8 @@ public final class UnivariatesImpl {
      * and based on all data to determine whether the last point is anomalous.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -297,11 +314,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
@@ -313,7 +332,8 @@ public final class UnivariatesImpl {
      *     isPositiveAnomaly: boolean (Required)
      *     severity: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -327,9 +347,10 @@ public final class UnivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectUnivariateLastPointWithResponseAsync(BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.detectUnivariateLastPoint(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, options, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, context));
     }
 
     /**
@@ -339,7 +360,8 @@ public final class UnivariatesImpl {
      * and based on all data to determine whether the last point is anomalous.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -355,11 +377,13 @@ public final class UnivariatesImpl {
      *     imputeMode: String(auto/previous/linear/fixed/zero/notFill) (Optional)
      *     imputeFixedValue: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: int (Required)
      *     suggestedWindow: int (Required)
@@ -371,7 +395,8 @@ public final class UnivariatesImpl {
      *     isPositiveAnomaly: boolean (Required)
      *     severity: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -384,9 +409,10 @@ public final class UnivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectUnivariateLastPointWithResponse(BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.detectUnivariateLastPointSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, options, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, Context.NONE);
     }
 
     /**
@@ -395,7 +421,8 @@ public final class UnivariatesImpl {
      * Evaluate the change point score of every series point.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -409,11 +436,13 @@ public final class UnivariatesImpl {
      *     stableTrendWindow: Integer (Optional)
      *     threshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: Integer (Optional)
      *     isChangePoint (Optional): [
@@ -423,7 +452,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -436,9 +466,10 @@ public final class UnivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> detectUnivariateChangePointWithResponseAsync(BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.detectUnivariateChangePoint(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, options, requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, context));
     }
 
     /**
@@ -447,7 +478,8 @@ public final class UnivariatesImpl {
      * Evaluate the change point score of every series point.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     series (Required): [
      *          (Required){
@@ -461,11 +493,13 @@ public final class UnivariatesImpl {
      *     stableTrendWindow: Integer (Optional)
      *     threshold: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     period: Integer (Optional)
      *     isChangePoint (Optional): [
@@ -475,7 +509,8 @@ public final class UnivariatesImpl {
      *         double (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param options Method of univariate anomaly detection.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -488,8 +523,9 @@ public final class UnivariatesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> detectUnivariateChangePointWithResponse(BinaryData options,
         RequestOptions requestOptions) {
+        final String contentType = "application/json";
         final String accept = "application/json";
         return service.detectUnivariateChangePointSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), accept, options, requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, accept, options, requestOptions, Context.NONE);
     }
 }

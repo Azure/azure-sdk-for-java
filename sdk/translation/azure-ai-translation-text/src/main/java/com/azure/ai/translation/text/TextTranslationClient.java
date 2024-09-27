@@ -10,9 +10,11 @@ import com.azure.ai.translation.text.models.DictionaryExampleTextItem;
 import com.azure.ai.translation.text.models.DictionaryLookupItem;
 import com.azure.ai.translation.text.models.GetSupportedLanguagesResult;
 import com.azure.ai.translation.text.models.InputTextItem;
+import com.azure.ai.translation.text.models.LanguageScope;
 import com.azure.ai.translation.text.models.ProfanityAction;
 import com.azure.ai.translation.text.models.ProfanityMarker;
 import com.azure.ai.translation.text.models.TextType;
+import com.azure.ai.translation.text.models.TranslateOptions;
 import com.azure.ai.translation.text.models.TranslatedTextItem;
 import com.azure.ai.translation.text.models.TransliteratedText;
 import com.azure.core.annotation.Generated;
@@ -31,8 +33,6 @@ import com.azure.core.util.serializer.TypeReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import com.azure.ai.translation.text.models.LanguageScope;
-import com.azure.ai.translation.text.models.TranslateOptions;
 
 /**
  * Initializes a new instance of the synchronous TextTranslationClient type.
@@ -116,17 +116,20 @@ public final class TextTranslationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -159,7 +162,8 @@ public final class TextTranslationClient {
      *         }
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param targetLanguages Specifies the language of the output text. The target language must be one of the
      * supported languages included
@@ -193,24 +197,28 @@ public final class TextTranslationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         script: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param language Specifies the language of the text to convert from one script to another.
      * Possible languages are listed in the transliteration scope obtained by querying the service
@@ -259,17 +267,20 @@ public final class TextTranslationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         detectedLanguage (Optional): {
@@ -281,7 +292,8 @@ public final class TextTranslationClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param body Defines the content of the request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -309,17 +321,20 @@ public final class TextTranslationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -343,7 +358,8 @@ public final class TextTranslationClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -377,18 +393,21 @@ public final class TextTranslationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         text: String (Required)
      *         translation: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         normalizedSource: String (Required)
@@ -405,7 +424,8 @@ public final class TextTranslationClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param sourceLanguage Specifies the language of the input text.
      * The source language must be one of the supported languages included in the dictionary scope.
@@ -1050,7 +1070,8 @@ public final class TextTranslationClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     translation (Optional): {
      *         String (Required): {
@@ -1097,7 +1118,8 @@ public final class TextTranslationClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

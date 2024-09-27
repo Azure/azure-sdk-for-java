@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Workspace properties that can be patched. */
+/**
+ * Workspace properties that can be patched.
+ */
 @Fluent
-public final class WorkspacePatchProperties {
+public final class WorkspacePatchProperties implements JsonSerializable<WorkspacePatchProperties> {
     /*
      * Description of Workspace.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Friendly name of Workspace.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * List of applicationGroup links.
      */
-    @JsonProperty(value = "applicationGroupReferences")
     private List<String> applicationGroupReferences;
 
     /*
      * Enabled to allow this resource to be access from the public network
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
-    /** Creates an instance of WorkspacePatchProperties class. */
+    /**
+     * Creates an instance of WorkspacePatchProperties class.
+     */
     public WorkspacePatchProperties() {
     }
 
     /**
      * Get the description property: Description of Workspace.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -51,7 +55,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the description property: Description of Workspace.
-     *
+     * 
      * @param description the description value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -62,7 +66,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Get the friendlyName property: Friendly name of Workspace.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -71,7 +75,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the friendlyName property: Friendly name of Workspace.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Get the applicationGroupReferences property: List of applicationGroup links.
-     *
+     * 
      * @return the applicationGroupReferences value.
      */
     public List<String> applicationGroupReferences() {
@@ -91,7 +95,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the applicationGroupReferences property: List of applicationGroup links.
-     *
+     * 
      * @param applicationGroupReferences the applicationGroupReferences value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Get the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -111,7 +115,7 @@ public final class WorkspacePatchProperties {
 
     /**
      * Set the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspacePatchProperties object itself.
      */
@@ -122,9 +126,58 @@ public final class WorkspacePatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeArrayField("applicationGroupReferences", this.applicationGroupReferences,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspacePatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspacePatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkspacePatchProperties.
+     */
+    public static WorkspacePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspacePatchProperties deserializedWorkspacePatchProperties = new WorkspacePatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.description = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.friendlyName = reader.getString();
+                } else if ("applicationGroupReferences".equals(fieldName)) {
+                    List<String> applicationGroupReferences = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkspacePatchProperties.applicationGroupReferences = applicationGroupReferences;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedWorkspacePatchProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspacePatchProperties;
+        });
     }
 }

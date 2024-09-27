@@ -79,7 +79,7 @@
         "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "VertxAsyncHttpClientProvider",
+      "AZURE_TEST_HTTP_CLIENTS": "VertxHttpClientProvider",
       "TestFromSource": false
     }
   ]

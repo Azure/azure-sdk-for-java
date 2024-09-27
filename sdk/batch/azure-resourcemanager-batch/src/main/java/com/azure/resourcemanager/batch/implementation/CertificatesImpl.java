@@ -36,8 +36,8 @@ public final class CertificatesImpl implements Certificates {
 
     public PagedIterable<Certificate> listByBatchAccount(String resourceGroupName, String accountName,
         Integer maxresults, String select, String filter, Context context) {
-        PagedIterable<CertificateInner> inner = this.serviceClient().listByBatchAccount(resourceGroupName, accountName,
-            maxresults, select, filter, context);
+        PagedIterable<CertificateInner> inner = this.serviceClient()
+            .listByBatchAccount(resourceGroupName, accountName, maxresults, select, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 

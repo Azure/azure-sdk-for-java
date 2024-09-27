@@ -392,8 +392,6 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     }
 
     /**
-     * List StandbyVirtualMachineResource resources by StandbyVirtualMachinePoolResource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -423,8 +421,6 @@ public final class StandbyVirtualMachinesClientImpl implements StandbyVirtualMac
     }
 
     /**
-     * List StandbyVirtualMachineResource resources by StandbyVirtualMachinePoolResource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

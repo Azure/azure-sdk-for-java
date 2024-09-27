@@ -6,34 +6,58 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolPatchProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** HostPool properties that can be patched. */
+/**
+ * HostPool properties that can be patched.
+ */
 @Fluent
 public final class HostPoolPatch extends ProxyResource {
     /*
      * tags to be updated
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * HostPool properties that can be patched.
      */
-    @JsonProperty(value = "properties")
     private HostPoolPatchProperties innerProperties;
 
-    /** Creates an instance of HostPoolPatch class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of HostPoolPatch class.
+     */
     public HostPoolPatch() {
     }
 
     /**
      * Get the tags property: tags to be updated.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -42,7 +66,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the tags property: tags to be updated.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -53,7 +77,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the innerProperties property: HostPool properties that can be patched.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HostPoolPatchProperties innerProperties() {
@@ -61,8 +85,47 @@ public final class HostPoolPatch extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the friendlyName property: Friendly name of HostPool.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -71,7 +134,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the friendlyName property: Friendly name of HostPool.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -85,7 +148,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the description property: Description of HostPool.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -94,7 +157,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the description property: Description of HostPool.
-     *
+     * 
      * @param description the description value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -108,7 +171,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the customRdpProperty property: Custom rdp property of HostPool.
-     *
+     * 
      * @return the customRdpProperty value.
      */
     public String customRdpProperty() {
@@ -117,7 +180,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the customRdpProperty property: Custom rdp property of HostPool.
-     *
+     * 
      * @param customRdpProperty the customRdpProperty value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -131,7 +194,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the maxSessionLimit property: The max session limit of HostPool.
-     *
+     * 
      * @return the maxSessionLimit value.
      */
     public Integer maxSessionLimit() {
@@ -140,7 +203,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the maxSessionLimit property: The max session limit of HostPool.
-     *
+     * 
      * @param maxSessionLimit the maxSessionLimit value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -154,7 +217,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the personalDesktopAssignmentType property: PersonalDesktopAssignment type for HostPool.
-     *
+     * 
      * @return the personalDesktopAssignmentType value.
      */
     public PersonalDesktopAssignmentType personalDesktopAssignmentType() {
@@ -163,12 +226,12 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the personalDesktopAssignmentType property: PersonalDesktopAssignment type for HostPool.
-     *
+     * 
      * @param personalDesktopAssignmentType the personalDesktopAssignmentType value to set.
      * @return the HostPoolPatch object itself.
      */
-    public HostPoolPatch withPersonalDesktopAssignmentType(
-        PersonalDesktopAssignmentType personalDesktopAssignmentType) {
+    public HostPoolPatch
+        withPersonalDesktopAssignmentType(PersonalDesktopAssignmentType personalDesktopAssignmentType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HostPoolPatchProperties();
         }
@@ -178,7 +241,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the loadBalancerType property: The type of the load balancer.
-     *
+     * 
      * @return the loadBalancerType value.
      */
     public LoadBalancerType loadBalancerType() {
@@ -187,7 +250,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the loadBalancerType property: The type of the load balancer.
-     *
+     * 
      * @param loadBalancerType the loadBalancerType value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -201,7 +264,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the ring property: The ring number of HostPool.
-     *
+     * 
      * @return the ring value.
      */
     public Integer ring() {
@@ -210,7 +273,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the ring property: The ring number of HostPool.
-     *
+     * 
      * @param ring the ring value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -224,7 +287,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the validationEnvironment property: Is validation environment.
-     *
+     * 
      * @return the validationEnvironment value.
      */
     public Boolean validationEnvironment() {
@@ -233,7 +296,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the validationEnvironment property: Is validation environment.
-     *
+     * 
      * @param validationEnvironment the validationEnvironment value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -247,7 +310,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the registrationInfo property: The registration info of HostPool.
-     *
+     * 
      * @return the registrationInfo value.
      */
     public RegistrationInfoPatch registrationInfo() {
@@ -256,7 +319,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the registrationInfo property: The registration info of HostPool.
-     *
+     * 
      * @param registrationInfo the registrationInfo value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -270,7 +333,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the vmTemplate property: VM template for sessionhosts configuration within hostpool.
-     *
+     * 
      * @return the vmTemplate value.
      */
     public String vmTemplate() {
@@ -279,7 +342,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the vmTemplate property: VM template for sessionhosts configuration within hostpool.
-     *
+     * 
      * @param vmTemplate the vmTemplate value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -293,7 +356,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the ssoadfsAuthority property: URL to customer ADFS server for signing WVD SSO certificates.
-     *
+     * 
      * @return the ssoadfsAuthority value.
      */
     public String ssoadfsAuthority() {
@@ -302,7 +365,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the ssoadfsAuthority property: URL to customer ADFS server for signing WVD SSO certificates.
-     *
+     * 
      * @param ssoadfsAuthority the ssoadfsAuthority value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -316,7 +379,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the ssoClientId property: ClientId for the registered Relying Party used to issue WVD SSO certificates.
-     *
+     * 
      * @return the ssoClientId value.
      */
     public String ssoClientId() {
@@ -325,7 +388,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the ssoClientId property: ClientId for the registered Relying Party used to issue WVD SSO certificates.
-     *
+     * 
      * @param ssoClientId the ssoClientId value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -340,7 +403,7 @@ public final class HostPoolPatch extends ProxyResource {
     /**
      * Get the ssoClientSecretKeyVaultPath property: Path to Azure KeyVault storing the secret used for communication to
      * ADFS.
-     *
+     * 
      * @return the ssoClientSecretKeyVaultPath value.
      */
     public String ssoClientSecretKeyVaultPath() {
@@ -350,7 +413,7 @@ public final class HostPoolPatch extends ProxyResource {
     /**
      * Set the ssoClientSecretKeyVaultPath property: Path to Azure KeyVault storing the secret used for communication to
      * ADFS.
-     *
+     * 
      * @param ssoClientSecretKeyVaultPath the ssoClientSecretKeyVaultPath value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -364,7 +427,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the ssoSecretType property: The type of single sign on Secret Type.
-     *
+     * 
      * @return the ssoSecretType value.
      */
     public SsoSecretType ssoSecretType() {
@@ -373,7 +436,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the ssoSecretType property: The type of single sign on Secret Type.
-     *
+     * 
      * @param ssoSecretType the ssoSecretType value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -388,7 +451,7 @@ public final class HostPoolPatch extends ProxyResource {
     /**
      * Get the preferredAppGroupType property: The type of preferred application group type, default to Desktop
      * Application Group.
-     *
+     * 
      * @return the preferredAppGroupType value.
      */
     public PreferredAppGroupType preferredAppGroupType() {
@@ -398,7 +461,7 @@ public final class HostPoolPatch extends ProxyResource {
     /**
      * Set the preferredAppGroupType property: The type of preferred application group type, default to Desktop
      * Application Group.
-     *
+     * 
      * @param preferredAppGroupType the preferredAppGroupType value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -412,7 +475,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the startVMOnConnect property: The flag to turn on/off StartVMOnConnect feature.
-     *
+     * 
      * @return the startVMOnConnect value.
      */
     public Boolean startVMOnConnect() {
@@ -421,7 +484,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the startVMOnConnect property: The flag to turn on/off StartVMOnConnect feature.
-     *
+     * 
      * @param startVMOnConnect the startVMOnConnect value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -435,7 +498,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Get the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public HostpoolPublicNetworkAccess publicNetworkAccess() {
@@ -444,7 +507,7 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Set the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -459,7 +522,7 @@ public final class HostPoolPatch extends ProxyResource {
     /**
      * Get the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
      * component.
-     *
+     * 
      * @return the agentUpdate value.
      */
     public AgentUpdatePatchProperties agentUpdate() {
@@ -469,7 +532,7 @@ public final class HostPoolPatch extends ProxyResource {
     /**
      * Set the agentUpdate property: The session host configuration for updating agent, monitoring agent, and stack
      * component.
-     *
+     * 
      * @param agentUpdate the agentUpdate value to set.
      * @return the HostPoolPatch object itself.
      */
@@ -483,12 +546,61 @@ public final class HostPoolPatch extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostPoolPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostPoolPatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HostPoolPatch.
+     */
+    public static HostPoolPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostPoolPatch deserializedHostPoolPatch = new HostPoolPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHostPoolPatch.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHostPoolPatch.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHostPoolPatch.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedHostPoolPatch.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHostPoolPatch.innerProperties = HostPoolPatchProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedHostPoolPatch.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostPoolPatch;
+        });
     }
 }

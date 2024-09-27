@@ -7,7 +7,6 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.experimental.credential.PopTokenRequestContext;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -944,7 +943,7 @@ public abstract class IdentityClientBase {
     abstract Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext);
 
 
-    HttpPipeline setupPipeline(HttpClient httpClient) {
+    HttpPipeline setupPipeline() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
@@ -976,7 +975,9 @@ public abstract class IdentityClientBase {
         policies.addAll(options.getPerRetryPolicies());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder().httpClient(httpClient)
+        // if the user has not supplied an httpClient, the builder will create a default using localClientOptions.
+        // If the user has supplied an HttpClient, it will be used as is.
+        return new HttpPipelineBuilder().httpClient(options.getHttpClient())
             .clientOptions(localClientOptions)
             .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
@@ -1002,9 +1003,9 @@ public abstract class IdentityClientBase {
             return this.httpPipeline;
         }
 
-        // if the user has supplied an HttpClient, use it
-        HttpClient httpClient = options.getHttpClient();
-        this.httpPipeline = setupPipeline(httpClient != null ? httpClient : HttpClient.createDefault());
+        // setupPipeline will use the user's HttpClient and HttpClientOptions if they're set
+        // otherwise it will use defaults.
+        this.httpPipeline = setupPipeline();
         return this.httpPipeline;
     }
 

@@ -21,7 +21,7 @@ param(
     [string]$TestLogsArtifactName
 )
 
-$testLogs = Get-ChildItem -Path . -Recurse -Filter test.log -File -Depth 4
+$testLogs = Get-ChildItem -Path . -Recurse -Filter *test.log -File -Depth 4
 
 if ($testLogs.Count -gt 0) {
     if (-not (Test-Path "$StagingDirectory/troubleshooting")) {

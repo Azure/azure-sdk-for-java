@@ -60,13 +60,15 @@ public final class LargeFaceListAsyncClient {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     userData: String (Optional)
      *     recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param createRequest1 The createRequest1 parameter.
@@ -117,14 +119,16 @@ public final class LargeFaceListAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     userData: String (Optional)
      *     recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
      *     largeFaceListId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -146,12 +150,14 @@ public final class LargeFaceListAsyncClient {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param updateRequest1 The updateRequest1 parameter.
@@ -188,7 +194,8 @@ public final class LargeFaceListAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         name: String (Required)
@@ -197,7 +204,8 @@ public final class LargeFaceListAsyncClient {
      *         largeFaceListId: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -218,7 +226,8 @@ public final class LargeFaceListAsyncClient {
      * details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     status: String(notStarted/running/succeeded/failed) (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -226,7 +235,8 @@ public final class LargeFaceListAsyncClient {
      *     lastSuccessfulTrainingDateTime: OffsetDateTime (Required)
      *     message: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -284,19 +294,23 @@ public final class LargeFaceListAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     persistedFaceId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param addFaceFromUrlRequest1 The addFaceFromUrlRequest1 parameter.
@@ -336,17 +350,21 @@ public final class LargeFaceListAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     persistedFaceId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param imageContent The image to be analyzed.
@@ -389,12 +407,14 @@ public final class LargeFaceListAsyncClient {
      * details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     persistedFaceId: String (Required)
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param persistedFaceId Face ID of the face.
@@ -417,11 +437,13 @@ public final class LargeFaceListAsyncClient {
      * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param persistedFaceId Face ID of the face.
@@ -458,14 +480,16 @@ public final class LargeFaceListAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         persistedFaceId: String (Required)
      *         userData: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

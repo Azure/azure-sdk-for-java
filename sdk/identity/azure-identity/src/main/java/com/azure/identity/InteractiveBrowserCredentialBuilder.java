@@ -41,9 +41,8 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.interactivebrowsercredential.construct -->
  * <pre>
- * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
- *     .redirectUrl&#40;&quot;http:&#47;&#47;localhost:8765&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.redirectUrl&#40;
+ *     &quot;http:&#47;&#47;localhost:8765&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.interactivebrowsercredential.construct -->
  *
