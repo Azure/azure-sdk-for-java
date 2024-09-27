@@ -9,7 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
-import com.azure.core.http.vertx.implementation.VertxHttpAsyncResponse;
+import com.azure.core.http.vertx.implementation.VertxHttpResponse;
 import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.http.vertx.implementation.VertxUtils;
 import com.azure.core.implementation.util.BinaryDataContent;
@@ -46,18 +46,18 @@ import java.util.concurrent.TimeUnit;
 /**
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
-class VertxAsyncHttpClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClient.class);
+class VertxHttpClient implements HttpClient {
+    private static final ClientLogger LOGGER = new ClientLogger(VertxHttpClient.class);
 
     final io.vertx.core.http.HttpClient client;
     private final Duration responseTimeout;
 
     /**
-     * Constructs a {@link VertxAsyncHttpClient}.
+     * Constructs a {@link VertxHttpClient}.
      *
      * @param client The Vert.x {@link io.vertx.core.http.HttpClient}
      */
-    VertxAsyncHttpClient(io.vertx.core.http.HttpClient client, Duration responseTimeout) {
+    VertxHttpClient(io.vertx.core.http.HttpClient client, Duration responseTimeout) {
         this.client = Objects.requireNonNull(client, "client cannot be null");
         this.responseTimeout = responseTimeout;
     }
@@ -162,7 +162,7 @@ class VertxAsyncHttpClient implements HttpClient {
             } else {
                 responseFuture.andThen(responseResult -> {
                     if (responseResult.succeeded()) {
-                        promise.complete(new VertxHttpAsyncResponse(request, responseResult.result()));
+                        promise.complete(new VertxHttpResponse(request, responseResult.result()));
                     } else {
                         promise.fail(responseResult.cause());
                     }
