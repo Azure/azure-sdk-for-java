@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
@@ -99,10 +100,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -2068,45 +2071,6 @@ public class ShareFileClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link ShareFileUploadInfo file upload info}
      */
-//    public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options,
-//        Duration timeout, Context context) {
-//        StorageImplUtils.assertNotNull("options", options);
-//        ShareRequestConditions validatedRequestConditions = options.getRequestConditions() == null
-//            ? new ShareRequestConditions()
-//            : options.getRequestConditions();
-//        final ParallelTransferOptions validatedParallelTransferOptions =
-//            ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
-//        long validatedOffset = options.getOffset() == null ? 0 : options.getOffset();
-//        int chunkSize = (int) Math.min(validatedParallelTransferOptions.getBlockSizeLong(), Integer.MAX_VALUE);
-//
-//        Callable<Response<ShareFileUploadInfo>> operation = () -> {
-//            try (InputStream dataStream = options.getDataStream()) {
-//                long currentOffset = validatedOffset;
-//                byte[] buffer = new byte[chunkSize];
-//                int readBytes;
-//                Response<ShareFileUploadInfo> response = null;
-//                while ((readBytes = dataStream.read(buffer)) != -1) {
-//                    // Since we are using InputStream, we need to handle partial reads
-//                    if (readBytes < buffer.length) {
-//                        buffer = Arrays.copyOf(buffer, readBytes);
-//                    }
-//
-//                    InputStream bufferStream = new ByteArrayInputStream(buffer);
-//                    ShareFileUploadRangeOptions rangeOptions = new ShareFileUploadRangeOptions(bufferStream, readBytes)
-//                        .setOffset(currentOffset)
-//                        .setRequestConditions(validatedRequestConditions);
-//
-//                    response = this.uploadRangeWithResponse(rangeOptions, timeout, context);
-//                    currentOffset += readBytes;
-//                }
-//                return response;
-//            } catch (IOException e) {
-//                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-//            }
-//        };
-//        return sendRequest(operation, timeout, ShareStorageException.class);
-//    }
-
     public Response<ShareFileUploadInfo> uploadWithResponse(ShareFileUploadOptions options,
                                                             Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
@@ -2124,14 +2088,32 @@ public class ShareFileClient {
         List<Future<Response<ShareFileUploadInfo>>> futures = new ArrayList<>();
 
         Callable<Response<ShareFileUploadInfo>> uploadOperation = () -> {
+            long totalBytesUploaded = 0; // Track the total bytes uploaded
+
             try (InputStream dataStream = options.getDataStream()) {
                 byte[] buffer = new byte[(int) blockSize];
                 int readBytes;
                 long currentOffset = validatedOffset;
+
+                // Read and upload data in chunks
                 while ((readBytes = dataStream.read(buffer)) != -1) {
+                    totalBytesUploaded += readBytes; // Track bytes as we read
+
+                    // Validate byte count immediately against the expected length
+                    if (options.getLength() != null) {
+                        if (totalBytesUploaded > options.getLength()) {
+                            throw LOGGER.logExceptionAsError(
+                                new UnexpectedLengthException(String.format(
+                                    "Request body emitted %d bytes, more than the expected %d bytes.",
+                                    totalBytesUploaded, options.getLength()), totalBytesUploaded, options.getLength()));
+                        }
+                    }
+
                     final long chunkOffset = currentOffset;
                     final byte[] chunkData = Arrays.copyOf(buffer, readBytes);
                     final int finalReadBytes = readBytes;
+
+                    // Submit each chunk to be uploaded in parallel
                     futures.add(executor.submit(() -> {
                         InputStream chunkStream = new ByteArrayInputStream(chunkData);
                         ShareFileUploadRangeOptions rangeOptions = new ShareFileUploadRangeOptions(chunkStream, finalReadBytes)
@@ -2139,26 +2121,33 @@ public class ShareFileClient {
                             .setRequestConditions(validatedRequestConditions);
                         return uploadRangeWithResponse(rangeOptions, timeout, context);
                     }));
+
                     currentOffset += readBytes;
                 }
 
-                Response<ShareFileUploadInfo> lastResponse = null;
-                System.out.println("number of futures: " + futures.size());
-                for (Future<Response<ShareFileUploadInfo>> future : futures) {
-//                    try {
-                        //lastResponse = future.get();
-                        lastResponse = sendRequestFuture(future, null, ShareStorageException.class);
-//                    } catch (InterruptedException | ExecutionException |TimeoutException e) {
-//                        // Handle failed upload or retry logic
-//                        System.out.println("in here");
-//                        throw LOGGER.logExceptionAsError(new RuntimeException(e));
-//                    }
+                // Validate total bytes at the end of the upload
+                if (options.getLength() != null && totalBytesUploaded < options.getLength()) {
+                    throw LOGGER.logExceptionAsError(
+                        new UnexpectedLengthException(String.format(
+                            "Request body emitted %d bytes, less than the expected %d bytes.",
+                            totalBytesUploaded, options.getLength()), totalBytesUploaded, options.getLength()));
                 }
+
+                Response<ShareFileUploadInfo> lastResponse = null;
+                for (Future<Response<ShareFileUploadInfo>> future : futures) {
+                    lastResponse = future.get();
+                }
+
                 return lastResponse;
 
             } catch (IOException e) {
                 throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
-                // Handle IO Exceptions appropriately
+            } catch (InterruptedException | ExecutionException e) {
+                Throwable cause = e.getCause();
+                if (cause instanceof ShareStorageException) {
+                    throw (ShareStorageException) cause; // Re-throw ShareStorageException
+                }
+                throw LOGGER.logExceptionAsError(new RuntimeException(e));
             } finally {
                 executor.shutdown();
                 try {
@@ -2174,6 +2163,7 @@ public class ShareFileClient {
 
         return sendRequest(uploadOperation, timeout, ShareStorageException.class);
     }
+
 
     /**
      * Uploads a range of bytes to the specified offset of a file in storage file service. Upload operations perform an
@@ -2243,8 +2233,6 @@ public class ShareFileClient {
         Context finalContext = context == null ? Context.NONE : context;
 
         BinaryData binaryData = BinaryData.fromStream(options.getDataStream());
-        System.out.println(range.toString());
-        System.out.println(options.getLength());
 
         Callable<ResponseBase<FilesUploadRangeHeaders, Void>> operation = () ->
             azureFileStorageClient.getFiles().uploadRangeWithResponse(shareName, filePath, range.toString(),
