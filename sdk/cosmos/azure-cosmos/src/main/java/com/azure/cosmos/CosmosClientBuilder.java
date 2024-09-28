@@ -1271,6 +1271,10 @@ public class CosmosClientBuilder implements
     private void validateConfig() {
         URI uri;
         try {
+            // split the serviceEndpoint in case of a connection string being passed in
+            String[] serviceEndpointParts = serviceEndpoint.replace(";", "")
+                .replace("AccountKey=", "").replace("https://","").split("/");
+            serviceEndpoint = "https://" + serviceEndpointParts[0];
             uri = new URI(serviceEndpoint);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("invalid serviceEndpoint", e);
