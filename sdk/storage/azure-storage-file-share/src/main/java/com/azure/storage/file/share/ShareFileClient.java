@@ -105,7 +105,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -114,7 +113,6 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
-import static com.azure.storage.common.implementation.StorageImplUtils.sendRequestFuture;
 
 /**
  * This class provides a client that contains all the operations for interacting files under Azure Storage File Service.
