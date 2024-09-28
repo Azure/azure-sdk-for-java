@@ -5,6 +5,7 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -61,6 +62,7 @@ public final class CallConnectionStateModelInternal extends ExpandableStringEnum
      * @param name a name to look for.
      * @return the corresponding CallConnectionStateModelInternal.
      */
+    @JsonCreator
     public static CallConnectionStateModelInternal fromString(String name) {
         return fromString(name, CallConnectionStateModelInternal.class);
     }

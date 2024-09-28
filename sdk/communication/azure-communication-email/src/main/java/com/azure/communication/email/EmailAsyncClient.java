@@ -8,7 +8,6 @@ import com.azure.communication.email.implementation.AzureCommunicationEmailServi
 import com.azure.communication.email.implementation.EmailsImpl;
 import com.azure.communication.email.implementation.models.EmailContent;
 import com.azure.communication.email.implementation.models.EmailRecipients;
-import com.azure.communication.email.models.EmailAddress;
 import com.azure.communication.email.models.EmailAttachment;
 import com.azure.communication.email.models.EmailMessage;
 import com.azure.communication.email.models.EmailSendResult;
@@ -23,6 +22,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,10 +74,6 @@ public final class EmailAsyncClient {
             );
         }
 
-        verifyRecipientEmailAddressesNotNull(message.getToRecipients());
-        verifyRecipientEmailAddressesNotNull(message.getCcRecipients());
-        verifyRecipientEmailAddressesNotNull(message.getBccRecipients());
-
         EmailContent content = new EmailContent(message.getSubject())
             .setHtml(message.getBodyHtml())
             .setPlainText(message.getBodyPlainText());
@@ -92,21 +88,11 @@ public final class EmailAsyncClient {
         if (message.getAttachments() != null) {
             attachmentsImpl = new ArrayList<>();
             for (EmailAttachment attachment: message.getAttachments()) {
-                com.azure.communication.email.implementation.models.EmailAttachment attachmentImpl = null;
-
-                attachmentImpl = new com.azure.communication.email.implementation.models.EmailAttachment(
+                attachmentsImpl.add(new com.azure.communication.email.implementation.models.EmailAttachment(
                     attachment.getName(),
                     attachment.getContentType(),
-                    attachment.getContentInBase64()
-                );
-
-                String contentId = attachment.getContentId();
-
-                if (contentId != null) {
-                    attachmentImpl.setContentId(contentId);
-                }
-
-                attachmentsImpl.add(attachmentImpl);
+                    Base64.getEncoder().encodeToString(attachment.getContent().toBytes())
+                ));
             }
         }
 
@@ -130,14 +116,5 @@ public final class EmailAsyncClient {
                 context),
             TypeReference.createInstance(EmailSendResult.class),
             TypeReference.createInstance(EmailSendResult.class));
-    }
-
-    void verifyRecipientEmailAddressesNotNull(List<EmailAddress> recipients) {
-        if (recipients != null) {
-            for (EmailAddress recipient : recipients) {
-                Objects.requireNonNull(recipient, "recipient 'EmailAddress' cannot be null.");
-                Objects.requireNonNull(recipient.getAddress(), "EmailAddress 'address' cannot be null.");
-            }
-        }
     }
 }

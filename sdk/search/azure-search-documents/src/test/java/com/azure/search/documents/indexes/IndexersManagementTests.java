@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.indexes;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchTestBase;
-import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexerExecutionResult;
 import com.azure.search.documents.indexes.models.IndexerExecutionStatus;
@@ -123,11 +123,11 @@ public class IndexersManagementTests extends SearchTestBase {
     public static void setupSharedResources() {
         sharedIndexerClient = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(TestHelpers.getTestTokenCredential())
+            .credential(new AzureKeyCredential(API_KEY))
             .buildClient();
         sharedIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(TestHelpers.getTestTokenCredential())
+            .credential(new AzureKeyCredential(API_KEY))
             .buildClient();
 
         sharedSkillset = createSkillsetObject();

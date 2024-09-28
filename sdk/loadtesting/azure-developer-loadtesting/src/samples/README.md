@@ -52,6 +52,7 @@ try {
 ```
 
 <!-- LINKS -->
+<!-- FIX LINK BRANCH AFTER PR MERGE -->
 [sample_helloWorld]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/HelloWorld.java
 [sample_list]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/ListOperations.java
 [sample_listAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples/java/com/azure/developer/loadtesting/ListOperationsAsync.java

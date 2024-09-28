@@ -25,19 +25,6 @@ public final class RenderingSessionStatus extends ExpandableStringEnum<Rendering
     public static final RenderingSessionStatus STOPPED = fromString("Stopped");
 
     /**
-     * Creates a new instance of {@link RenderingSessionStatus} without a {@link #toString()} value.
-     * <p>
-     * This constructor shouldn't be called as it will produce a {@link RenderingSessionStatus} which doesn't
-     * have a String enum value.
-     *
-     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RenderingSessionStatus() {
-
-    }
-
-    /**
      * Creates or finds a SessionStatus from its string representation.
      *
      * @param name a name to look for.
@@ -47,11 +34,7 @@ public final class RenderingSessionStatus extends ExpandableStringEnum<Rendering
         return fromString(name, RenderingSessionStatus.class);
     }
 
-    /**
-     * Gets known SessionStatus values.
-     *
-     * @return known SessionStatus values.
-     */
+    /** @return known SessionStatus values. */
     public static Collection<RenderingSessionStatus> values() {
         return values(RenderingSessionStatus.class);
     }

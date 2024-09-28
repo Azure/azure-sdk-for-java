@@ -55,45 +55,47 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        final Map<String, IntegrationTestEventData> integrationTestData = getTestData();
-        for (Map.Entry<String, IntegrationTestEventData> entry : integrationTestData.entrySet()) {
-            testData = entry.getValue();
+        if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
+            final Map<String, IntegrationTestEventData> integrationTestData = getTestData();
+            for (Map.Entry<String, IntegrationTestEventData> entry : integrationTestData.entrySet()) {
+                testData = entry.getValue();
 
-            logger.log(LogLevel.VERBOSE, () -> "Getting entry for: " + testData.getPartitionId());
-            break;
-        }
+                logger.log(LogLevel.VERBOSE, () -> "Getting entry for: " + testData.getPartitionId());
+                break;
+            }
 
-        logger.info("Receiving the events we sent.");
-        final EventHubConsumerClient testConsumer = toClose(createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .buildConsumerClient());
-        numberOfEvents = testData.getEvents().size() - 1;
+            logger.info("Receiving the events we sent.");
+            final EventHubConsumerClient consumer = toClose(createBuilder()
+                .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
+                .buildConsumerClient());
+            numberOfEvents = testData.getEvents().size() - 1;
 
-        final EventPosition startingPosition = EventPosition.fromSequenceNumber(
-            testData.getPartitionProperties().getLastEnqueuedSequenceNumber());
-        final List<EventData> received;
-        try {
-            final IterableStream<PartitionEvent> partitionEvents = testConsumer.receiveFromPartition(
-                testData.getPartitionId(), numberOfEvents, startingPosition, TIMEOUT);
+            final EventPosition startingPosition = EventPosition.fromSequenceNumber(
+                testData.getPartitionProperties().getLastEnqueuedSequenceNumber());
+            final List<EventData> received;
+            try {
+                final IterableStream<PartitionEvent> partitionEvents = consumer.receiveFromPartition(
+                    testData.getPartitionId(), numberOfEvents, startingPosition, TIMEOUT);
 
-            Assertions.assertNotNull(partitionEvents, "'partitionEvents' should not be null.");
+                Assertions.assertNotNull(partitionEvents, "'partitionEvents' should not be null.");
 
-            received = partitionEvents.stream().map(PartitionEvent::getData).collect(Collectors.toList());
-        } finally {
-            dispose(testConsumer);
-        }
+                received = partitionEvents.stream().map(PartitionEvent::getData).collect(Collectors.toList());
+            } finally {
+                dispose(consumer);
+            }
 
-        Assertions.assertNotNull(received);
-        Assertions.assertEquals(numberOfEvents, received.size());
+            Assertions.assertNotNull(received);
+            Assertions.assertEquals(numberOfEvents, received.size());
 
-        receivedEvents = received.toArray(new EventData[0]);
-        for (int i = 0; i < received.size(); i++) {
-            logger.atInfo()
-                .addKeyValue("index", i)
-                .addKeyValue("sequenceNo", receivedEvents[i].getSequenceNumber())
-                .addKeyValue("offset", receivedEvents[i].getOffset())
-                .addKeyValue("enqueued", receivedEvents[i].getEnqueuedTime())
-                .log("receivedEvents");
+            receivedEvents = received.toArray(new EventData[0]);
+            for (int i = 0; i < received.size(); i++) {
+                logger.atInfo()
+                    .addKeyValue("index", i)
+                    .addKeyValue("sequenceNo", receivedEvents[i].getSequenceNumber())
+                    .addKeyValue("offset", receivedEvents[i].getOffset())
+                    .addKeyValue("enqueued", receivedEvents[i].getEnqueuedTime())
+                    .log("receivedEvents");
+            }
         }
 
         Assertions.assertNotNull(testData, "testData should not be null. Or we have set this up incorrectly.");

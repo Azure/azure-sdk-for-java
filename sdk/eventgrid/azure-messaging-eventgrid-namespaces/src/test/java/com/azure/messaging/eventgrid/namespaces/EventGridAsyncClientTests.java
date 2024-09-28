@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
 public class EventGridAsyncClientTests extends EventGridClientTestBase {
 
     @Override
@@ -42,14 +43,18 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
 
         EventGridSenderAsyncClient client = buildSenderAsyncClient();
 
-        client.send(getCloudEvent()).as(StepVerifier::create).verifyComplete();
+        client.send(getCloudEvent())
+            .as(StepVerifier::create)
+            .verifyComplete();
     }
 
     @Test
     void sendBatch() {
         EventGridSenderAsyncClient client = buildSenderAsyncClient();
 
-        client.send(Arrays.asList(getCloudEvent(), getCloudEvent())).as(StepVerifier::create).verifyComplete();
+        client.send(Arrays.asList(getCloudEvent(), getCloudEvent()))
+            .as(StepVerifier::create)
+            .verifyComplete();
     }
 
     @Test
@@ -74,15 +79,19 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
 
-        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10))).flatMap(receiveResult -> {
-            return client
-                .acknowledge(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
-        }).as(StepVerifier::create).assertNext(receiveResult -> {
-            assertNotNull(receiveResult);
-            assertTrue(receiveResult.getFailedLockTokens().isEmpty());
-            assertFalse(receiveResult.getSucceededLockTokens().isEmpty());
-        }).verifyComplete();
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
+            .flatMap(receiveResult -> {
+                return client.acknowledge(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+            })
+            .as(StepVerifier::create)
+            .assertNext(receiveResult -> {
+                assertNotNull(receiveResult);
+                assertTrue(receiveResult.getFailedLockTokens().isEmpty());
+                assertFalse(receiveResult.getSucceededLockTokens().isEmpty());
+            })
+            .verifyComplete();
     }
+
 
     @Test
     void releaseBatch() {
@@ -90,14 +99,17 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
 
-        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10))).flatMap(receiveResult -> {
-            return client
-                .release(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
-        }).as(StepVerifier::create).assertNext(result -> {
-            assertNotNull(result);
-            assertTrue(result.getFailedLockTokens().isEmpty());
-            assertFalse(result.getSucceededLockTokens().isEmpty());
-        }).verifyComplete();
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
+            .flatMap(receiveResult -> {
+                return client.release(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+            })
+            .as(StepVerifier::create)
+            .assertNext(result -> {
+                assertNotNull(result);
+                assertTrue(result.getFailedLockTokens().isEmpty());
+                assertFalse(result.getSucceededLockTokens().isEmpty());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -106,14 +118,18 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
 
-        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10))).flatMap(receiveResult -> {
-            return client.release(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()),
-                ReleaseDelay.TEN_SECONDS);
-        }).as(StepVerifier::create).assertNext(result -> {
-            assertNotNull(result);
-            assertTrue(result.getFailedLockTokens().isEmpty());
-            assertFalse(result.getSucceededLockTokens().isEmpty());
-        }).verifyComplete();
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
+            .flatMap(receiveResult -> {
+                return client.release(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()), ReleaseDelay.TEN_SECONDS);
+            })
+            .as(StepVerifier::create)
+            .assertNext(result -> {
+                assertNotNull(result);
+                assertTrue(result.getFailedLockTokens().isEmpty());
+                assertFalse(result.getSucceededLockTokens().isEmpty());
+            })
+            .verifyComplete();
+
 
     }
 
@@ -123,13 +139,17 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
 
-        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10))).flatMap(receiveResult -> {
-            return client.reject(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
-        }).as(StepVerifier::create).assertNext(result -> {
-            assertNotNull(result);
-            assertTrue(result.getFailedLockTokens().isEmpty());
-            assertFalse(result.getSucceededLockTokens().isEmpty());
-        }).verifyComplete();
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
+            .flatMap(receiveResult -> {
+                return client.reject(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+            })
+            .as(StepVerifier::create)
+            .assertNext(result -> {
+                assertNotNull(result);
+                assertTrue(result.getFailedLockTokens().isEmpty());
+                assertFalse(result.getSucceededLockTokens().isEmpty());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -138,13 +158,16 @@ public class EventGridAsyncClientTests extends EventGridClientTestBase {
         EventGridReceiverAsyncClient client = buildReceiverAsyncClient();
         EventGridSenderAsyncClient senderClient = buildSenderAsyncClient();
 
-        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10))).flatMap(receiveResult -> {
-            return client
-                .renewLocks(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
-        }).as(StepVerifier::create).assertNext(result -> {
-            assertNotNull(result);
-            assertTrue(result.getFailedLockTokens().isEmpty());
-            assertFalse(result.getSucceededLockTokens().isEmpty());
-        }).verifyComplete();
+        senderClient.send(getCloudEvent()).then(client.receive(1, Duration.ofSeconds(10)))
+            .flatMap(receiveResult -> {
+                return client.renewLocks(Arrays.asList(receiveResult.getDetails().get(0).getBrokerProperties().getLockToken()));
+            })
+            .as(StepVerifier::create)
+            .assertNext(result -> {
+                assertNotNull(result);
+                assertTrue(result.getFailedLockTokens().isEmpty());
+                assertFalse(result.getSucceededLockTokens().isEmpty());
+            })
+            .verifyComplete();
     }
 }

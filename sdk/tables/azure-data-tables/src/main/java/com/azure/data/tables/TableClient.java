@@ -468,10 +468,11 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableItem> createTableWithResponse(Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
         Supplier<Response<TableItem>> callable = () ->
             new SimpleResponse<>(tablesImplementation.getTables().createWithResponse(properties, null,
-            ResponseFormat.RETURN_NO_CONTENT, null, context),
+            ResponseFormat.RETURN_NO_CONTENT, null, contextValue),
                 TableItemAccessHelper.createItem(new TableResponseProperties().setTableName(tableName)));
 
         return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger);
@@ -521,8 +522,10 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         Supplier<Response<Void>> callable = () -> new SimpleResponse<>(tablesImplementation.getTables()
-            .deleteWithResponse(tableName, null, context), null);
+            .deleteWithResponse(tableName, null, contextValue), null);
 
         try {
             return hasTimeout(timeout)
@@ -609,6 +612,8 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createEntityWithResponse(TableEntity entity, Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -617,7 +622,7 @@ public final class TableClient {
         Supplier<Response<Void>> callable = () -> {
             Response<Map<String, Object>> response = tablesImplementation.getTables().insertEntityWithResponse(
                 tableName, null, null, ResponseFormat.RETURN_NO_CONTENT,
-                entity.getProperties(), null, context);
+                entity.getProperties(), null, contextValue);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
         };
 
@@ -695,6 +700,8 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> upsertEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -708,11 +715,11 @@ public final class TableClient {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables().updateEntityWithResponse(
                     tableName, partitionKey, rowKey, null, null, null,
-                    entity.getProperties(), null, context);
+                    entity.getProperties(), null, contextValue);
             } else {
                 return tablesImplementation.getTables().mergeEntityWithResponse(
                     tableName, partitionKey, rowKey, null, null, null,
-                    entity.getProperties(), null, context);
+                    entity.getProperties(), null, contextValue);
             }
         };
 
@@ -834,6 +841,8 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateEntityWithResponse(TableEntity entity, TableEntityUpdateMode updateMode,
                                                    boolean ifUnchanged, Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         if (entity == null) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'entity' cannot be null."));
         }
@@ -848,11 +857,11 @@ public final class TableClient {
             if (updateMode == TableEntityUpdateMode.REPLACE) {
                 return tablesImplementation.getTables()
                     .updateEntityWithResponse(tableName, partitionKey, rowKey, null, null, eTag,
-                        entity.getProperties(), null, context);
+                        entity.getProperties(), null, contextValue);
             } else {
                 return tablesImplementation.getTables()
                     .mergeEntityWithResponse(tableName, partitionKey, rowKey, null, null, eTag,
-                        entity.getProperties(), null, context);
+                        entity.getProperties(), null, contextValue);
             }
         };
 
@@ -953,6 +962,8 @@ public final class TableClient {
 
     private Response<Void> deleteEntityWithResponse(String partitionKey, String rowKey, String eTag, boolean ifUnchanged,
                                             Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         String finalETag = ifUnchanged ? eTag : "*";
 
         if (partitionKey == null || rowKey == null) {
@@ -961,7 +972,7 @@ public final class TableClient {
 
         Supplier<Response<Void>> callable = () -> tablesImplementation.getTables().deleteEntityWithResponse(
             tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), finalETag,
-            null, null, null, context);
+            null, null, null, contextValue);
 
         try {
             return hasTimeout(timeout)
@@ -1077,6 +1088,7 @@ public final class TableClient {
     private <T extends TableEntity> PagedResponse<T> listEntities(String nextPartitionKey, String nextRowKey,
                                                                   Context context, ListEntitiesOptions options,
                                                                   Class<T> resultType) {
+        Context contextValue = TableUtils.setContext(context, true);
         String select = null;
 
         if (options.getSelect() != null) {
@@ -1092,7 +1104,7 @@ public final class TableClient {
 
         final ResponseBase<TablesQueryEntitiesHeaders, TableEntityQueryResponse> response =
             tablesImplementation.getTables().queryEntitiesWithResponse(tableName, null, null,
-            nextPartitionKey, nextRowKey, queryOptions, context);
+            nextPartitionKey, nextRowKey, queryOptions, contextValue);
 
         final TableEntityQueryResponse tablesQueryEntityResponse = response.getValue();
 
@@ -1190,6 +1202,8 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableEntity> getEntityWithResponse(String partitionKey, String rowKey, List<String> select,
                                                        Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         QueryOptions queryOptions = new QueryOptions()
             .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
 
@@ -1206,7 +1220,7 @@ public final class TableClient {
             ResponseBase<TablesQueryEntityWithPartitionAndRowKeyHeaders, Map<String, Object>> response =
                 tablesImplementation.getTables().queryEntityWithPartitionAndRowKeyWithResponse(
                 tableName, TableUtils.escapeSingleQuotes(partitionKey), TableUtils.escapeSingleQuotes(rowKey), null,
-                    null, queryOptions, context);
+                    null, queryOptions, contextValue);
 
             final Map<String, Object> matchingEntity = response.getValue();
 
@@ -1289,9 +1303,11 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableAccessPolicies> getAccessPoliciesWithResponse(Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         Supplier<Response<TableAccessPolicies>> callable = () -> {
             ResponseBase<TablesGetAccessPolicyHeaders, SignedIdentifierWrapper> response =
-                tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, context);
+                tablesImplementation.getTables().getAccessPolicyWithResponse(tableName, null, null, contextValue);
             return new SimpleResponse<>(response,
                 new TableAccessPolicies(response.getValue() == null ? null : response.getValue().items().stream()
                     .map(TableUtils::toTableSignedIdentifier)
@@ -1383,6 +1399,7 @@ public final class TableClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPoliciesWithResponse(List<TableSignedIdentifier> tableSignedIdentifiers,
                                                         Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
         List<SignedIdentifier> signedIdentifiers = null;
 
         if (tableSignedIdentifiers != null) {
@@ -1417,7 +1434,7 @@ public final class TableClient {
         Supplier<Response<Void>> callable = () -> {
             ResponseBase<TablesSetAccessPolicyHeaders, Void> response = tablesImplementation.getTables()
                 .setAccessPolicyWithResponse(tableName, null, null,
-                    finalSignedIdentifiers, context);
+                    finalSignedIdentifiers, contextValue);
             return new SimpleResponse<>(response, response.getValue());
         };
 
@@ -1607,6 +1624,8 @@ public final class TableClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableTransactionResult> submitTransactionWithResponse(List<TableTransactionAction> transactionActions, Duration timeout, Context context) {
+        Context contextValue = TableUtils.setContext(context, true);
+
         if (transactionActions.isEmpty()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("A transaction must contain at least one operation."));
@@ -1663,7 +1682,7 @@ public final class TableClient {
 
             ResponseBase<TransactionalBatchSubmitBatchHeaders, TableTransactionActionResponse[]> response =
                 transactionalBatchImplementation
-                    .submitTransactionalBatchWithRestResponse(requestBody, null, context);
+                    .submitTransactionalBatchWithRestResponse(requestBody, null, contextValue);
 
             Response<List<TableTransactionActionResponse>> parsedResponse = parseResponse(requestBody, response);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),

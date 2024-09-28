@@ -4,6 +4,7 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -21,6 +22,7 @@ public final class VoiceKind extends ExpandableStringEnum<VoiceKind> {
      * @param name a name to look for.
      * @return the corresponding VoiceKind.
      */
+    @JsonCreator
     public static VoiceKind fromString(String name) {
         return fromString(name, VoiceKind.class);
     }

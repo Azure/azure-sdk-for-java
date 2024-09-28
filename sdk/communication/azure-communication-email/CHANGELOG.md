@@ -1,14 +1,30 @@
 # Release History
 
-## 1.1.0-beta.1 (2024-08-14)
+## 1.0.17 (2024-09-27)
 
-### Features Added
+### Other Changes
 
-- Consumers can now provide a value for the `ContentId` property when sending emails with attachments.
-  This allows consumers to reference attachments in the email body using the `cid` scheme. The `ContentId` property can be set on the `EmailAttachment` object.
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-communication-common` from `1.3.5` to version `1.3.7`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+
+## 1.0.16 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.4` to version `1.3.5`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+
 
 ## 1.0.15 (2024-07-26)
 
+### Other Changes
 
 #### Dependency Updates
 
@@ -23,7 +39,7 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` from `1.3.3` to version `1.3.4`.
+- Upgraded `azure-communication-common` from `1.3.2` to version `1.3.3`.
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
 
@@ -36,7 +52,7 @@
 
 - Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
 - Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
-- Upgraded `azure-communication-common` from `1.3.2` to version `1.3.3`.
+- Upgraded `azure-communication-common` from `1.3.1` to version `1.3.2`.
 
 
 ## 1.0.12 (2024-04-23)
@@ -56,9 +72,8 @@
 
 #### Dependency Updates
 
-- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
-- Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
 
 ## 1.0.10 (2024-02-20)

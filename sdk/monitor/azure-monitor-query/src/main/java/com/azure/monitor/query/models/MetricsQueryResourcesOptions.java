@@ -23,8 +23,7 @@ public final class MetricsQueryResourcesOptions {
     /**
      * Creates an instance of MetricsQueryResourcesOptions.
      */
-    public MetricsQueryResourcesOptions() {
-    }
+    public MetricsQueryResourcesOptions() { }
 
     private String rollupBy;
 

@@ -60,8 +60,6 @@ public class ChatClientTestBase extends TestProxyTestBase {
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
-            // Remove the sanitizer `id` from the list of common sanitizers
-            interceptorManager.removeSanitizers("AZSDK3430");
         }
 
         return builder;
@@ -90,8 +88,6 @@ public class ChatClientTestBase extends TestProxyTestBase {
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
-            // Remove the sanitizer `id` from the list of common sanitizers
-            interceptorManager.removeSanitizers("AZSDK3430");
         }
 
         return builder;
@@ -114,8 +110,6 @@ public class ChatClientTestBase extends TestProxyTestBase {
         if (!interceptorManager.isLiveMode()) {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("token", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
-            // Remove the sanitizer `id` from the list of common sanitizers
-            interceptorManager.removeSanitizers("AZSDK3430");
         }
         return builder;
     }

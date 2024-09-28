@@ -9,6 +9,6 @@ module com.azure.data.schemaregistry.apacheavro {
 
     exports com.azure.data.schemaregistry.apacheavro;
 
-    opens com.azure.data.schemaregistry.apacheavro to com.azure.core;
+    opens com.azure.data.schemaregistry.apacheavro to com.fasterxml.jackson.databind, com.azure.core;
 
 }

@@ -26,7 +26,10 @@ public class UtilsTest {
         ExecutorService threadPool = Executors.newFixedThreadPool(1);
         Thread hook = Utils.registerShutdownHook(threadPool, timeoutSec);
 
-        Stream<Integer> stream = IntStream.of(100, 4000).boxed().parallel().map(this::task);
+        Stream<Integer> stream = IntStream.of(100, 4000)
+            .boxed()
+            .parallel()
+            .map(this::task);
 
         Future<List<Integer>> tasks = threadPool.submit(() -> stream.collect(Collectors.toList()));
 
@@ -34,10 +37,9 @@ public class UtilsTest {
 
         assertTrue(threadPool.isShutdown());
         assertTrue(threadPool.isTerminated());
-        assertArrayEquals(new Integer[] { 100, -1 }, tasks.get().toArray());
+        assertArrayEquals(new Integer[] {100, -1}, tasks.get().toArray());
 
-        assertThrows(RejectedExecutionException.class,
-            () -> threadPool.submit(() -> stream.collect(Collectors.toList())));
+        assertThrows(RejectedExecutionException.class, () -> threadPool.submit(() -> stream.collect(Collectors.toList())));
     }
 
     @Test

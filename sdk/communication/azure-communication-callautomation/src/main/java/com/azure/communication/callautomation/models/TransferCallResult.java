@@ -5,18 +5,13 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallTransferAccepted;
-import com.azure.communication.callautomation.models.events.CallTransferFailed;
 import com.azure.core.annotation.Immutable;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /** The TransferCallResult model. */
 @Immutable
-public final class TransferCallResult extends ResultWithEventHandling<TransferCallToParticipantEventResult> {
+public final class TransferCallResult {
     /*
      * The operation context provided by client.
      */
@@ -58,33 +53,5 @@ public final class TransferCallResult extends ResultWithEventHandling<TransferCa
      */
     public String getOperationContext() {
         return this.operationContext;
-    }
-
-    @Override
-    public Mono<TransferCallToParticipantEventResult> waitForEventProcessorAsync(Duration timeout) {
-        if (eventProcessor == null) {
-            return Mono.empty();
-        }
-
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CallTransferAccepted.class || event.getClass() == CallTransferFailed.class), timeout)
-            ).flatMap(event -> Mono.just(getReturnedEvent(event)));
-    }
-
-    @Override
-    protected TransferCallToParticipantEventResult getReturnedEvent(CallAutomationEventBase event) {
-        TransferCallToParticipantEventResult result = null;
-
-        if (event.getClass() == CallTransferAccepted.class) {
-            result = new TransferCallToParticipantEventResult(true, (CallTransferAccepted) event, null);
-        } else if (event.getClass() == CallTransferFailed.class) {
-            result = new TransferCallToParticipantEventResult(false, null, (CallTransferFailed) event);
-        }
-
-        return result;
     }
 }

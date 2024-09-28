@@ -29,46 +29,48 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
+    public void eventRouteLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws InterruptedException {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
 
         // CREATE
         DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
         eventRouteToCreate.setFilter(FILTER);
-        StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate)).verifyComplete();
+        StepVerifier.create(asyncClient.createOrReplaceEventRoute(eventRouteId, eventRouteToCreate))
+            .verifyComplete();
 
-        sleepIfRunningAgainstService(5000);
+        waitIfLive();
 
         try {
             // GET
             StepVerifier.create(asyncClient.getEventRoute(eventRouteId))
-                .assertNext((retrievedEventRoute) -> assertEventRoutesEqual(eventRouteToCreate, eventRouteId,
-                    retrievedEventRoute))
+                .assertNext((retrievedEventRoute) -> assertEventRoutesEqual(eventRouteToCreate, eventRouteId, retrievedEventRoute))
                 .verifyComplete();
 
             // LIST
             StepVerifier.create(asyncClient.listEventRoutes())
-                .thenConsumeWhile((eventRoute) -> eventRoute != null, (retrievedEventRoute) -> {
-                    // There may be other event routes in place, so ignore them if they aren't the event route
-                    // that was just created. We only need to see that the newly created event route is present in the
-                    // list of all event routes.
-                    if (retrievedEventRoute.getEventRouteId().equals(eventRouteToCreate.getEventRouteId())) {
-                        assertEventRoutesEqual(eventRouteToCreate, eventRouteId, retrievedEventRoute);
-                    }
-                })
+                .thenConsumeWhile(
+                    (eventRoute) -> eventRoute != null,
+                    (retrievedEventRoute) -> {
+                        // There may be other event routes in place, so ignore them if they aren't the event route
+                        // that was just created. We only need to see that the newly created event route is present in the
+                        // list of all event routes.
+                        if (retrievedEventRoute.getEventRouteId().equals(eventRouteToCreate.getEventRouteId())) {
+                            assertEventRoutesEqual(eventRouteToCreate, eventRouteId, retrievedEventRoute);
+                        }
+                    })
                 .verifyComplete();
         } finally {
             // DELETE
-            StepVerifier.create(asyncClient.deleteEventRoute(eventRouteId)).verifyComplete();
+            StepVerifier.create(asyncClient.deleteEventRoute(eventRouteId))
+                .verifyComplete();
         }
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient,
-        DigitalTwinsServiceVersion serviceVersion) {
+    public void getEventRouteThrowsIfEventRouteDoesNotExist(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
 
@@ -79,8 +81,7 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.digitaltwins.core.TestHelper#getTestParameters")
     @Override
-    public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient,
-        DigitalTwinsServiceVersion serviceVersion) {
+    public void createEventRouteThrowsIfFilterIsMalformed(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsAsyncClient asyncClient = getAsyncClient(httpClient, serviceVersion);
         String eventRouteId = testResourceNamer.randomUuid();
         DigitalTwinsEventRoute eventRouteToCreate = new DigitalTwinsEventRoute(EVENT_ROUTE_ENDPOINT_NAME);
@@ -109,17 +110,16 @@ public class EventRoutesAsyncTest extends EventRoutesTestBase {
 
         // list event routes by page, make sure that all non-final pages have the expected page size
         AtomicInteger pageCount = new AtomicInteger(0);
-        ListDigitalTwinsEventRoutesOptions listEventRoutesOptions
-            = (new ListDigitalTwinsEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
+        ListDigitalTwinsEventRoutesOptions listEventRoutesOptions = (new ListDigitalTwinsEventRoutesOptions()).setMaxItemsPerPage(expectedPageSize);
         StepVerifier.create(asyncClient.listEventRoutes(listEventRoutesOptions).byPage())
-            .thenConsumeWhile((pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,
+            .thenConsumeWhile(
+                (pagedResponseOfEventRoute) -> pagedResponseOfEventRoute != null,
                 (pagedResponseOfEventRoute) -> {
                     pageCount.incrementAndGet();
 
                     // Any page of results with a continuation token should be a non-final page, and should have the exact page size that we specified above
                     if (pagedResponseOfEventRoute.getContinuationToken() != null) {
-                        assertEquals(expectedPageSize, pagedResponseOfEventRoute.getValue().size(),
-                            "Unexpected page size for a non-terminal page");
+                        assertEquals(expectedPageSize, pagedResponseOfEventRoute.getValue().size(), "Unexpected page size for a non-terminal page");
                     }
                 })
             .verifyComplete();

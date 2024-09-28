@@ -1,8 +1,7 @@
 trigger: none
 
-extends:
-  template: /sdk/communication/communication-tests-template.yml
-  parameters:
-      PackageName: azure-communication-jobrouter
-      SafeName: azurecommunicationjobrouter
-      UseFederatedAuth: true
+stages:
+    - template: /sdk/communication/communication-tests-template.yml
+      parameters:
+          PackageName: azure-communication-jobrouter
+          SafeName: azurecommunicationjobrouter

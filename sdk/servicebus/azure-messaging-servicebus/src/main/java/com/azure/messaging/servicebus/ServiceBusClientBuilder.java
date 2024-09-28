@@ -970,10 +970,9 @@ public final class ServiceBusClientBuilder implements
 
                     // For the V1-Stack, tell the connection to continue creating receivers on v1 stack.
                     final boolean isV2 = false;
-                    final boolean useSessionChannelCache = false;
                     return (ServiceBusAmqpConnection) new ServiceBusReactorAmqpConnection(connectionId,
                         connectionOptions, provider, handlerProvider, linkProvider, tokenManagerProvider, serializer,
-                        crossEntityTransactions, isV2, useSessionChannelCache);
+                        crossEntityTransactions, isV2);
                 }).repeat();
 
                 sharedConnection = connectionFlux.subscribeWith(new ServiceBusConnectionProcessor(
@@ -1038,8 +1037,8 @@ public final class ServiceBusClientBuilder implements
     }
 
     // Connection-caching for the V2-Stack.
-    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer, Meter meter, boolean useSessionChannelCache) {
-        return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions, meter, useSessionChannelCache);
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer, Meter meter) {
+        return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions, meter);
     }
 
     private static boolean isNullOrEmpty(String item) {
@@ -1178,14 +1177,6 @@ public final class ServiceBusClientBuilder implements
             .build();
         private final AtomicReference<Boolean> sessionSyncReceiveFlag = new AtomicReference<>();
 
-        private static final String SESSION_CHANNEL_CACHE_KEY = "com.azure.core.amqp.cache";
-        private static final ConfigurationProperty<Boolean> SESSION_CHANNEL_CACHE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SESSION_CHANNEL_CACHE_KEY)
-            .environmentVariableName(SESSION_CHANNEL_CACHE_KEY)
-            .defaultValue(false) // "SessionCache" and "RequestResponseChannelCache" requires explicit opt in along with v2 stack opt in.
-            .shared(true)
-            .build();
-        private final AtomicReference<Boolean> sessionChannelCacheFlag = new AtomicReference<>();
-
         private final Object connectionLock = new Object();
         private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
         private final AtomicInteger openClients = new AtomicInteger();
@@ -1251,22 +1242,12 @@ public final class ServiceBusClientBuilder implements
             return !isOptedOut(configuration, SESSION_SYNC_RECEIVE_PROPERTY, sessionSyncReceiveFlag);
         }
 
-        /**
-         * SessionCache and RequestResponseChannelCache not opted-in default, but the application may opt in.
-         *
-         * @param configuration the client configuration.
-         * @return true if SessionCache and RequestResponseChannelCache is opted-in.
-         */
-        boolean isSessionChannelCacheEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
-        }
-
         // Obtain the shared connection-cache based on the V2-Stack.
         ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(ConnectionOptions connectionOptions,
-            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter, boolean useSessionChannelCache) {
+            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter) {
             synchronized (connectionLock) {
                 if (sharedConnectionCache == null) {
-                    sharedConnectionCache = createConnectionCache(connectionOptions, serializer, crossEntityTransactions, meter, useSessionChannelCache);
+                    sharedConnectionCache = createConnectionCache(connectionOptions, serializer, crossEntityTransactions, meter);
                 }
             }
 
@@ -1363,9 +1344,8 @@ public final class ServiceBusClientBuilder implements
             return choiceFlag.get();
         }
 
-        // Creates connection-cache for V2-Stack.
         private static ReactorConnectionCache<ServiceBusReactorAmqpConnection> createConnectionCache(ConnectionOptions connectionOptions,
-            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter, boolean useSessionChannelCache) {
+            MessageSerializer serializer, boolean crossEntityTransactions, Meter meter) {
             final Supplier<ServiceBusReactorAmqpConnection> connectionSupplier = () -> {
                 final String connectionId = StringUtil.getRandomString("MF");
                 final ReactorProvider provider = new ReactorProvider();
@@ -1378,7 +1358,7 @@ public final class ServiceBusClientBuilder implements
                 //For the v2 stack, tell the connection to create receivers using the v2 stack.
                 final boolean isV2 = true;
                 return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions, provider, handlerProvider,
-                    linkProvider, tokenManagerProvider, serializer, crossEntityTransactions, isV2, useSessionChannelCache);
+                    linkProvider, tokenManagerProvider, serializer, crossEntityTransactions, isV2);
             };
 
             final String fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
@@ -1448,8 +1428,7 @@ public final class ServiceBusClientBuilder implements
             final Meter meter = createMeter(clientOptions);
             if (isSenderOnV2) {
                 // Sender Client (async|sync) on the V2-Stack.
-                final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
                 connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
@@ -2092,8 +2071,7 @@ public final class ServiceBusClientBuilder implements
                 clientIdentifier = UUID.randomUUID().toString();
             }
             final Meter meter = createMeter(clientOptions);
-            final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
-            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
+            final ConnectionCacheWrapper connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
 
             final ServiceBusSessionAcquirer sessionAcquirer = new ServiceBusSessionAcquirer(logger, clientIdentifier,
                 entityPath, entityType, receiveMode, retryOptions.getTryTimeout(), connectionCacheWrapper);
@@ -2126,7 +2104,7 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusSessionReceiverAsyncClient buildAsyncClient() {
             final boolean isSessionReactorReceiveOnV2 = v2StackSupport.isSessionReactorAsyncReceiveEnabled(configuration);
-            return buildAsyncClient(true, isSessionReactorReceiveOnV2);
+            return buildAsyncClient(true, false, isSessionReactorReceiveOnV2);
         }
 
         /**
@@ -2145,13 +2123,13 @@ public final class ServiceBusClientBuilder implements
         public ServiceBusSessionReceiverClient buildClient() {
             final boolean isSessionSyncReceiveOnV2 = v2StackSupport.isSessionSyncReceiveEnabled(configuration);
             final boolean isPrefetchDisabled = prefetchCount == 0;
-            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, isSessionSyncReceiveOnV2),
+            return new ServiceBusSessionReceiverClient(buildAsyncClient(false, true, isSessionSyncReceiveOnV2),
                 isPrefetchDisabled,
                 MessageUtils.getTotalTimeout(retryOptions));
         }
 
         // Common function to build Session-Enabled Receiver-Client - For Async[Reactor]Client Or to back SyncClient.
-        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean isV2) {
+        private ServiceBusSessionReceiverAsyncClient buildAsyncClient(boolean isAutoCompleteAllowed, boolean syncConsumer, boolean isV2) {
             final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, topicName,
                 queueName);
             final String entityPath = getEntityPath(entityType, queueName, topicName, subscriptionName,
@@ -2174,8 +2152,7 @@ public final class ServiceBusClientBuilder implements
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             if (isV2) {
-                final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
                 connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
@@ -2752,8 +2729,7 @@ public final class ServiceBusClientBuilder implements
                 final boolean syncReceiveOnV2 = v2StackSupport.isNonSessionSyncReceiveEnabled(configuration);
                 if (syncReceiveOnV2) {
                     // "Non-Session" Sync Receiver-Client on the V2-Stack.
-                    final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
                 } else {
                     connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
@@ -2763,8 +2739,7 @@ public final class ServiceBusClientBuilder implements
                 final boolean asyncReceiveOnV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
                 if (asyncReceiveOnV2) {
                     // "Non-Session" Async[Reactor|Processor] Receiver-Client on the V2-Stack.
-                    final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
-                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                    connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                     onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
                 } else {
                     connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));
@@ -2849,8 +2824,7 @@ public final class ServiceBusClientBuilder implements
             final boolean isManageRulesOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
             if (isManageRulesOnV2) {
                 // RuleManager Client (async|sync) on the V2-Stack.
-                final boolean useSessionChannelCache = v2StackSupport.isSessionChannelCacheEnabled(configuration);
-                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter, useSessionChannelCache));
+                connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer, meter));
                 onClientClose = ServiceBusClientBuilder.this.v2StackSupport::onClientClose;
             } else {
                 connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionProcessor(messageSerializer, meter));

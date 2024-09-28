@@ -5,42 +5,47 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The TextSourceInternal model.
  */
 @Fluent
-public final class TextSourceInternal implements JsonSerializable<TextSourceInternal> {
+public final class TextSourceInternal {
     /*
      * Text for the cognitive service to be played
      */
+    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Source language locale to be played
-     * Refer to available locales here: <seealso href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
+     * Refer to available locales here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * />
      */
+    @JsonProperty(value = "sourceLocale")
     private String sourceLocale;
 
     /*
      * Voice kind type
      */
+    @JsonProperty(value = "voiceKind")
     private VoiceKindInternal voiceKind;
 
     /*
      * Voice name to be played
-     * Refer to available Text-to-speech voices here: <seealso href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts" />
+     * Refer to available Text-to-speech voices here: <seealso
+     * href="https://learn.microsoft.com/en-us/azure/cognitive-services/speech-service/language-support?tabs=stt-tts"
+     * />
      */
+    @JsonProperty(value = "voiceName")
     private String voiceName;
 
     /*
      * Endpoint where the custom voice was deployed.
      */
+    @JsonProperty(value = "customVoiceEndpointId")
     private String customVoiceEndpointId;
 
     /**
@@ -159,54 +164,5 @@ public final class TextSourceInternal implements JsonSerializable<TextSourceInte
     public TextSourceInternal setCustomVoiceEndpointId(String customVoiceEndpointId) {
         this.customVoiceEndpointId = customVoiceEndpointId;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeStringField("sourceLocale", this.sourceLocale);
-        jsonWriter.writeStringField("voiceKind", this.voiceKind == null ? null : this.voiceKind.toString());
-        jsonWriter.writeStringField("voiceName", this.voiceName);
-        jsonWriter.writeStringField("customVoiceEndpointId", this.customVoiceEndpointId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TextSourceInternal from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TextSourceInternal if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TextSourceInternal.
-     */
-    public static TextSourceInternal fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            TextSourceInternal deserializedTextSourceInternal = new TextSourceInternal();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("text".equals(fieldName)) {
-                    deserializedTextSourceInternal.text = reader.getString();
-                } else if ("sourceLocale".equals(fieldName)) {
-                    deserializedTextSourceInternal.sourceLocale = reader.getString();
-                } else if ("voiceKind".equals(fieldName)) {
-                    deserializedTextSourceInternal.voiceKind = VoiceKindInternal.fromString(reader.getString());
-                } else if ("voiceName".equals(fieldName)) {
-                    deserializedTextSourceInternal.voiceName = reader.getString();
-                } else if ("customVoiceEndpointId".equals(fieldName)) {
-                    deserializedTextSourceInternal.customVoiceEndpointId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedTextSourceInternal;
-        });
     }
 }
