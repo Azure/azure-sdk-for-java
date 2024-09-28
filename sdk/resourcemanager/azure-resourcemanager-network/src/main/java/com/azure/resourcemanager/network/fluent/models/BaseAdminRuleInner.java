@@ -31,14 +31,9 @@ public class BaseAdminRuleInner extends ChildResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private String etag;
 
     /*
      * The type of the resource.
@@ -46,9 +41,14 @@ public class BaseAdminRuleInner extends ChildResource {
     private String type;
 
     /*
-     * A unique read-only string that changes whenever the resource is updated.
+     * The name of the resource.
      */
-    private String etag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of BaseAdminRuleInner class.
@@ -86,23 +86,13 @@ public class BaseAdminRuleInner extends ChildResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      * 
-     * @return the id value.
+     * @return the etag value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    public String etag() {
+        return this.etag;
     }
 
     /**
@@ -116,13 +106,23 @@ public class BaseAdminRuleInner extends ChildResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Get the name property: The name of the resource.
      * 
-     * @return the etag value.
+     * @return the name value.
      */
     @Override
-    public String etag() {
-        return this.etag;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -132,7 +132,6 @@ public class BaseAdminRuleInner extends ChildResource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

@@ -34,8 +34,7 @@ import java.util.List;
  *
  * <!-- src_embed com.azure.identity.credential.intellijcredential.construct -->
  * <pre>
- * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential intelliJCredential = new IntelliJCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.intellijcredential.construct -->
  *

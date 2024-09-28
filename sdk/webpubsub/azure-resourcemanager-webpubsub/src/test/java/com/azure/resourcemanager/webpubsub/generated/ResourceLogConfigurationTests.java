@@ -13,27 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceLogConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceLogConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"categories\":[{\"name\":\"jitcjedftwwaez\",\"enabled\":\"jvdcpzfoqouic\"},{\"name\":\"xarzgszufoxciq\",\"enabled\":\"idoamciodhkha\"},{\"name\":\"khnzbonlw\",\"enabled\":\"oegokdwbwh\"}]}")
-                .toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("jitcjedftwwaez", model.categories().get(0).name());
-        Assertions.assertEquals("jvdcpzfoqouic", model.categories().get(0).enabled());
+        ResourceLogConfiguration model = BinaryData.fromString(
+            "{\"categories\":[{\"name\":\"wpusdsttwvogv\",\"enabled\":\"ejdcngqqmoakuf\"},{\"name\":\"jzrwrdgrtw\",\"enabled\":\"nuuzkopbm\"},{\"name\":\"rfdwoyu\",\"enabled\":\"ziuiefozbhdm\"}]}")
+            .toObject(ResourceLogConfiguration.class);
+        Assertions.assertEquals("wpusdsttwvogv", model.categories().get(0).name());
+        Assertions.assertEquals("ejdcngqqmoakuf", model.categories().get(0).enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceLogConfiguration model =
-            new ResourceLogConfiguration()
-                .withCategories(
-                    Arrays
-                        .asList(
-                            new ResourceLogCategory().withName("jitcjedftwwaez").withEnabled("jvdcpzfoqouic"),
-                            new ResourceLogCategory().withName("xarzgszufoxciq").withEnabled("idoamciodhkha"),
-                            new ResourceLogCategory().withName("khnzbonlw").withEnabled("oegokdwbwh")));
+        ResourceLogConfiguration model = new ResourceLogConfiguration().withCategories(
+            Arrays.asList(new ResourceLogCategory().withName("wpusdsttwvogv").withEnabled("ejdcngqqmoakuf"),
+                new ResourceLogCategory().withName("jzrwrdgrtw").withEnabled("nuuzkopbm"),
+                new ResourceLogCategory().withName("rfdwoyu").withEnabled("ziuiefozbhdm")));
         model = BinaryData.fromObject(model).toObject(ResourceLogConfiguration.class);
-        Assertions.assertEquals("jitcjedftwwaez", model.categories().get(0).name());
-        Assertions.assertEquals("jvdcpzfoqouic", model.categories().get(0).enabled());
+        Assertions.assertEquals("wpusdsttwvogv", model.categories().get(0).name());
+        Assertions.assertEquals("ejdcngqqmoakuf", model.categories().get(0).enabled());
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.desktopvirtualization.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ExpandMsixImageInner;
 import com.azure.resourcemanager.desktopvirtualization.models.ExpandMsixImage;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageApplications;
@@ -17,8 +18,7 @@ public final class ExpandMsixImageImpl implements ExpandMsixImage {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    ExpandMsixImageImpl(
-        ExpandMsixImageInner innerObject,
+    ExpandMsixImageImpl(ExpandMsixImageInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -34,6 +34,10 @@ public final class ExpandMsixImageImpl implements ExpandMsixImage {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String packageAlias() {
@@ -96,6 +100,14 @@ public final class ExpandMsixImageImpl implements ExpandMsixImage {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public String certificateName() {
+        return this.innerModel().certificateName();
+    }
+
+    public OffsetDateTime certificateExpiry() {
+        return this.innerModel().certificateExpiry();
     }
 
     public ExpandMsixImageInner innerModel() {

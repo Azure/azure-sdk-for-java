@@ -9,9 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Test;
 
-
 public class MultivariateAnomalyDetectorClientTest extends AnomalyDetectorClientTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(MultivariateAnomalyDetectorClientTest.class);
+
     private MultivariateClient getClient() {
         return getClientBuilder().buildMultivariateClient();
     }

@@ -51,7 +51,10 @@ class AzureMetadataService implements Runnable {
         // Querying Azure Metadata Service is required for every 15 mins since VM id will get updated
         // frequently.
         // Starting and restarting a VM will generate a new VM id each time.
-        scheduledExecutor.scheduleWithFixedDelay(this, 60, interval, TimeUnit.SECONDS);
+        // Statsbeat can be shutdown before this call, so check if it is still running.
+        if (!scheduledExecutor.isShutdown() && !scheduledExecutor.isTerminated()) {
+            scheduledExecutor.scheduleWithFixedDelay(this, 60, interval, TimeUnit.SECONDS);
+        }
     }
 
     void shutdown() {

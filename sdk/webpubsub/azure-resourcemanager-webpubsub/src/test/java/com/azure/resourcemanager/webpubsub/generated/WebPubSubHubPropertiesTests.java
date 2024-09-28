@@ -19,65 +19,48 @@ import org.junit.jupiter.api.Assertions;
 public final class WebPubSubHubPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebPubSubHubProperties model =
-            BinaryData
-                .fromString(
-                    "{\"eventHandlers\":[{\"urlTemplate\":\"ronzmyhgfip\",\"userEventPattern\":\"xkmcwaekrrjre\",\"systemEvents\":[\"tsgumhj\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"wslolbqp\"}}},{\"urlTemplate\":\"uzlm\",\"userEventPattern\":\"elfk\",\"systemEvents\":[\"lcrpw\",\"xeznoi\",\"brnjwmw\",\"pn\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"joqkagfhsxt\"}}},{\"urlTemplate\":\"augzxnfaazpxdtn\",\"userEventPattern\":\"mkqjj\",\"systemEvents\":[\"envrkpyouaibrebq\",\"aysjkixqtnqttez\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"akpjpqqmtedlt\"}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"hyeozphvwau\"}")
-                .toObject(WebPubSubHubProperties.class);
-        Assertions.assertEquals("ronzmyhgfip", model.eventHandlers().get(0).urlTemplate());
-        Assertions.assertEquals("xkmcwaekrrjre", model.eventHandlers().get(0).userEventPattern());
-        Assertions.assertEquals("tsgumhj", model.eventHandlers().get(0).systemEvents().get(0));
+        WebPubSubHubProperties model = BinaryData.fromString(
+            "{\"eventHandlers\":[{\"urlTemplate\":\"w\",\"userEventPattern\":\"kpnb\",\"systemEvents\":[\"ejjoqkagfhsxtta\",\"gzxnfaazpxdtnk\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"lwuenvrkp\"}}},{\"urlTemplate\":\"ou\",\"userEventPattern\":\"bre\",\"systemEvents\":[\"aysjkixqtnqttez\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"akpjpqqmtedlt\"}}},{\"urlTemplate\":\"mjihyeozphv\",\"userEventPattern\":\"uyqncygupkvipmd\",\"systemEvents\":[\"xqupevzhf\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"ojujbyp\"}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"uvhixbjxyfwn\",\"webSocketKeepAliveIntervalInSeconds\":156258046}")
+            .toObject(WebPubSubHubProperties.class);
+        Assertions.assertEquals("w", model.eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("kpnb", model.eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.eventHandlers().get(0).systemEvents().get(0));
         Assertions.assertEquals(UpstreamAuthType.NONE, model.eventHandlers().get(0).auth().type());
-        Assertions.assertEquals("wslolbqp", model.eventHandlers().get(0).auth().managedIdentity().resource());
-        Assertions.assertEquals("hyeozphvwau", model.anonymousConnectPolicy());
+        Assertions.assertEquals("lwuenvrkp", model.eventHandlers().get(0).auth().managedIdentity().resource());
+        Assertions.assertEquals("uvhixbjxyfwn", model.anonymousConnectPolicy());
+        Assertions.assertEquals(156258046, model.webSocketKeepAliveIntervalInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebPubSubHubProperties model =
-            new WebPubSubHubProperties()
-                .withEventHandlers(
-                    Arrays
-                        .asList(
-                            new EventHandler()
-                                .withUrlTemplate("ronzmyhgfip")
-                                .withUserEventPattern("xkmcwaekrrjre")
-                                .withSystemEvents(Arrays.asList("tsgumhj"))
-                                .withAuth(
-                                    new UpstreamAuthSettings()
-                                        .withType(UpstreamAuthType.NONE)
-                                        .withManagedIdentity(new ManagedIdentitySettings().withResource("wslolbqp"))),
-                            new EventHandler()
-                                .withUrlTemplate("uzlm")
-                                .withUserEventPattern("elfk")
-                                .withSystemEvents(Arrays.asList("lcrpw", "xeznoi", "brnjwmw", "pn"))
-                                .withAuth(
-                                    new UpstreamAuthSettings()
-                                        .withType(UpstreamAuthType.NONE)
-                                        .withManagedIdentity(
-                                            new ManagedIdentitySettings().withResource("joqkagfhsxt"))),
-                            new EventHandler()
-                                .withUrlTemplate("augzxnfaazpxdtn")
-                                .withUserEventPattern("mkqjj")
-                                .withSystemEvents(Arrays.asList("envrkpyouaibrebq", "aysjkixqtnqttez"))
-                                .withAuth(
-                                    new UpstreamAuthSettings()
-                                        .withType(UpstreamAuthType.NONE)
-                                        .withManagedIdentity(
-                                            new ManagedIdentitySettings().withResource("akpjpqqmtedlt")))))
-                .withEventListeners(
-                    Arrays
-                        .asList(
-                            new EventListener()
-                                .withFilter(new EventListenerFilter())
-                                .withEndpoint(new EventListenerEndpoint())))
-                .withAnonymousConnectPolicy("hyeozphvwau");
+        WebPubSubHubProperties model = new WebPubSubHubProperties()
+            .withEventHandlers(Arrays.asList(
+                new EventHandler().withUrlTemplate("w")
+                    .withUserEventPattern("kpnb")
+                    .withSystemEvents(Arrays.asList("ejjoqkagfhsxtta", "gzxnfaazpxdtnk"))
+                    .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.NONE)
+                        .withManagedIdentity(new ManagedIdentitySettings().withResource("lwuenvrkp"))),
+                new EventHandler().withUrlTemplate("ou")
+                    .withUserEventPattern("bre")
+                    .withSystemEvents(Arrays.asList("aysjkixqtnqttez"))
+                    .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.NONE)
+                        .withManagedIdentity(new ManagedIdentitySettings().withResource("akpjpqqmtedlt"))),
+                new EventHandler().withUrlTemplate("mjihyeozphv")
+                    .withUserEventPattern("uyqncygupkvipmd")
+                    .withSystemEvents(Arrays.asList("xqupevzhf"))
+                    .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.NONE)
+                        .withManagedIdentity(new ManagedIdentitySettings().withResource("ojujbyp")))))
+            .withEventListeners(Arrays.asList(
+                new EventListener().withFilter(new EventListenerFilter()).withEndpoint(new EventListenerEndpoint())))
+            .withAnonymousConnectPolicy("uvhixbjxyfwn")
+            .withWebSocketKeepAliveIntervalInSeconds(156258046);
         model = BinaryData.fromObject(model).toObject(WebPubSubHubProperties.class);
-        Assertions.assertEquals("ronzmyhgfip", model.eventHandlers().get(0).urlTemplate());
-        Assertions.assertEquals("xkmcwaekrrjre", model.eventHandlers().get(0).userEventPattern());
-        Assertions.assertEquals("tsgumhj", model.eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals("w", model.eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("kpnb", model.eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("ejjoqkagfhsxtta", model.eventHandlers().get(0).systemEvents().get(0));
         Assertions.assertEquals(UpstreamAuthType.NONE, model.eventHandlers().get(0).auth().type());
-        Assertions.assertEquals("wslolbqp", model.eventHandlers().get(0).auth().managedIdentity().resource());
-        Assertions.assertEquals("hyeozphvwau", model.anonymousConnectPolicy());
+        Assertions.assertEquals("lwuenvrkp", model.eventHandlers().get(0).auth().managedIdentity().resource());
+        Assertions.assertEquals("uvhixbjxyfwn", model.anonymousConnectPolicy());
+        Assertions.assertEquals(156258046, model.webSocketKeepAliveIntervalInSeconds());
     }
 }

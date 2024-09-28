@@ -7,8 +7,10 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed bug about intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).
 
- - Fixed bug about intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).
+### Features Added
+- Use the Container App recommended method to obtain the managed identity access token. [#32280](https://github.com/Azure/azure-sdk-for-java/issues/32280).
 
 ### Other Changes
 

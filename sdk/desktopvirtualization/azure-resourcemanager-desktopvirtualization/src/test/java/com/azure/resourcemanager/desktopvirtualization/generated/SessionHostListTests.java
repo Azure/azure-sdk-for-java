@@ -16,90 +16,69 @@ import org.junit.jupiter.api.Assertions;
 public final class SessionHostListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SessionHostList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"objectId\":\"ygvjayvblmh\",\"lastHeartBeat\":\"2021-07-26T11:14:50Z\",\"sessions\":2100624724,\"agentVersion\":\"xvvy\",\"allowNewSession\":false,\"virtualMachineId\":\"pbyrqufegxu\",\"resourceId\":\"zfbn\",\"assignedUser\":\"mctlpdngitv\",\"friendlyName\":\"mhrixkwmyijejve\",\"status\":\"NeedsAssistance\",\"statusTimestamp\":\"2021-09-18T06:49:11Z\",\"osVersion\":\"aixexccbdreaxh\",\"sxSStackVersion\":\"xdrrvqahqkghtp\",\"updateState\":\"Initial\",\"lastUpdateTime\":\"2021-03-19T04:26:57Z\",\"updateErrorMessage\":\"jsvfycxzbfvoowv\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"WebRTCRedirectorCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}}]},\"id\":\"pyostronzmyhgfi\",\"name\":\"nsxkmcwaekrrjr\",\"type\":\"afxtsgum\"},{\"properties\":{\"objectId\":\"ikkx\",\"lastHeartBeat\":\"2021-05-16T06:07:50Z\",\"sessions\":1513768261,\"agentVersion\":\"qpvuzlmvfelf\",\"allowNewSession\":true,\"virtualMachineId\":\"lcrpw\",\"resourceId\":\"eznoig\",\"assignedUser\":\"njwmwkpnbsazejj\",\"friendlyName\":\"kagfhsxtt\",\"status\":\"Available\",\"statusTimestamp\":\"2021-04-24T19:56:55Z\",\"osVersion\":\"faazpxdtnkdmkqjj\",\"sxSStackVersion\":\"uenvrkp\",\"updateState\":\"Failed\",\"lastUpdateTime\":\"2021-06-02T18:39:14Z\",\"updateErrorMessage\":\"rebqaaysjk\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"SxSStackListenerCheck\",\"healthCheckResult\":\"HealthCheckSucceeded\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"UrlsAccessibleCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}}]},\"id\":\"ffiakp\",\"name\":\"pqqmted\",\"type\":\"tmmjihyeozph\"},{\"properties\":{\"objectId\":\"y\",\"lastHeartBeat\":\"2021-05-03T13:45:25Z\",\"sessions\":1385853585,\"agentVersion\":\"p\",\"allowNewSession\":false,\"virtualMachineId\":\"mdscwxqupev\",\"resourceId\":\"f\",\"assignedUser\":\"otxhojujby\",\"friendlyName\":\"lmcuvhixb\",\"status\":\"NeedsAssistance\",\"statusTimestamp\":\"2021-03-04T07:09:13Z\",\"osVersion\":\"yl\",\"sxSStackVersion\":\"ool\",\"updateState\":\"Started\",\"lastUpdateTime\":\"2021-01-29T16:46:41Z\",\"updateErrorMessage\":\"w\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"MetaDataServiceCheck\",\"healthCheckResult\":\"HealthCheckFailed\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"DomainTrustCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"SupportedEncryptionCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"MetaDataServiceCheck\",\"healthCheckResult\":\"HealthCheckFailed\",\"additionalFailureDetails\":{}}]},\"id\":\"wiithtywub\",\"name\":\"cbihwqk\",\"type\":\"fdntwjchrdgoih\"},{\"properties\":{\"objectId\":\"ctondz\",\"lastHeartBeat\":\"2021-05-20T02:25:29Z\",\"sessions\":382280149,\"agentVersion\":\"dlwggytsbwtovv\",\"allowNewSession\":true,\"virtualMachineId\":\"inqfiufxqknpirgn\",\"resourceId\":\"ttwqmsni\",\"assignedUser\":\"cdm\",\"friendlyName\":\"r\",\"status\":\"Disconnected\",\"statusTimestamp\":\"2021-07-05T10:57:07Z\",\"osVersion\":\"nkrxfrddhcr\",\"sxSStackVersion\":\"izzronasxiftozqy\",\"updateState\":\"Failed\",\"lastUpdateTime\":\"2021-07-28T03:20:11Z\",\"updateErrorMessage\":\"sgogczhonnxk\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"DomainReachable\",\"healthCheckResult\":\"SessionHostShutdown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"WebRTCRedirectorCheck\",\"healthCheckResult\":\"HealthCheckSucceeded\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"WebRTCRedirectorCheck\",\"healthCheckResult\":\"SessionHostShutdown\",\"additionalFailureDetails\":{}}]},\"id\":\"gh\",\"name\":\"jbdhqxvc\",\"type\":\"gf\"}],\"nextLink\":\"dsofbshrns\"}")
-                .toObject(SessionHostList.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T11:14:50Z"), model.value().get(0).lastHeartBeat());
-        Assertions.assertEquals(2100624724, model.value().get(0).sessions());
-        Assertions.assertEquals("xvvy", model.value().get(0).agentVersion());
+        SessionHostList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"objectId\":\"tpwijnh\",\"lastHeartBeat\":\"2021-01-19T12:23:33Z\",\"sessions\":3385554,\"agentVersion\":\"cxzbfvoowvr\",\"allowNewSession\":false,\"virtualMachineId\":\"jqppyostronzmy\",\"resourceId\":\"fipns\",\"assignedUser\":\"mcwaekrrjr\",\"friendlyName\":\"fxtsgum\",\"status\":\"NotJoinedToDomain\",\"statusTimestamp\":\"2021-02-02T04:40:45Z\",\"osVersion\":\"kxw\",\"sxSStackVersion\":\"olbq\",\"updateState\":\"Pending\",\"lastUpdateTime\":\"2021-11-30T16:53:07Z\",\"updateErrorMessage\":\"vfelfktgplcrpwj\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"MonitoringAgentCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"UrlsAccessibleCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}}]},\"id\":\"kpnb\",\"name\":\"azej\",\"type\":\"oqkag\"},{\"properties\":{\"objectId\":\"xttaugzxnfaaz\",\"lastHeartBeat\":\"2021-02-27T11:39:37Z\",\"sessions\":159219307,\"agentVersion\":\"dm\",\"allowNewSession\":false,\"virtualMachineId\":\"lwuenvrkp\",\"resourceId\":\"uaibrebqaaysj\",\"assignedUser\":\"xqtnq\",\"friendlyName\":\"ezl\",\"status\":\"SxSStackListenerNotReady\",\"statusTimestamp\":\"2021-09-28T01:26:01Z\",\"osVersion\":\"kpj\",\"sxSStackVersion\":\"qmt\",\"updateState\":\"Pending\",\"lastUpdateTime\":\"2021-09-01T21:15:43Z\",\"updateErrorMessage\":\"jihy\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"SupportedEncryptionCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}}]},\"id\":\"y\",\"name\":\"ncyg\",\"type\":\"p\"},{\"properties\":{\"objectId\":\"p\",\"lastHeartBeat\":\"2021-05-01T10:24:09Z\",\"sessions\":497556076,\"agentVersion\":\"qupevzh\",\"allowNewSession\":true,\"virtualMachineId\":\"txhojujb\",\"resourceId\":\"elmcuvhixbjxyfw\",\"assignedUser\":\"lrcoolsttpki\",\"friendlyName\":\"kbnujr\",\"status\":\"FSLogixNotHealthy\",\"statusTimestamp\":\"2021-06-06T05:18:15Z\",\"osVersion\":\"bfpncurdo\",\"sxSStackVersion\":\"iithtywu\",\"updateState\":\"Initial\",\"lastUpdateTime\":\"2021-01-21T06:01:17Z\",\"updateErrorMessage\":\"wqknfdn\",\"sessionHostHealthCheckResults\":[{\"healthCheckName\":\"DomainTrustCheck\",\"healthCheckResult\":\"SessionHostShutdown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"UrlsAccessibleCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"UrlsAccessibleCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}},{\"healthCheckName\":\"MonitoringAgentCheck\",\"healthCheckResult\":\"Unknown\",\"additionalFailureDetails\":{}}]},\"id\":\"udfdlwgg\",\"name\":\"tsbwtovvtgse\",\"type\":\"nqfiufxqknpi\"}],\"nextLink\":\"nepttwqmsni\"}")
+            .toObject(SessionHostList.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T12:23:33Z"), model.value().get(0).lastHeartBeat());
+        Assertions.assertEquals(3385554, model.value().get(0).sessions());
+        Assertions.assertEquals("cxzbfvoowvr", model.value().get(0).agentVersion());
         Assertions.assertEquals(false, model.value().get(0).allowNewSession());
-        Assertions.assertEquals("mctlpdngitv", model.value().get(0).assignedUser());
-        Assertions.assertEquals("mhrixkwmyijejve", model.value().get(0).friendlyName());
-        Assertions.assertEquals(Status.NEEDS_ASSISTANCE, model.value().get(0).status());
-        Assertions.assertEquals("aixexccbdreaxh", model.value().get(0).osVersion());
-        Assertions.assertEquals("xdrrvqahqkghtp", model.value().get(0).sxSStackVersion());
-        Assertions.assertEquals(UpdateState.INITIAL, model.value().get(0).updateState());
-        Assertions.assertEquals("jsvfycxzbfvoowv", model.value().get(0).updateErrorMessage());
+        Assertions.assertEquals("mcwaekrrjr", model.value().get(0).assignedUser());
+        Assertions.assertEquals("fxtsgum", model.value().get(0).friendlyName());
+        Assertions.assertEquals(Status.NOT_JOINED_TO_DOMAIN, model.value().get(0).status());
+        Assertions.assertEquals("kxw", model.value().get(0).osVersion());
+        Assertions.assertEquals("olbq", model.value().get(0).sxSStackVersion());
+        Assertions.assertEquals(UpdateState.PENDING, model.value().get(0).updateState());
+        Assertions.assertEquals("vfelfktgplcrpwj", model.value().get(0).updateErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SessionHostList model =
-            new SessionHostList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SessionHostInner()
-                                .withLastHeartBeat(OffsetDateTime.parse("2021-07-26T11:14:50Z"))
-                                .withSessions(2100624724)
-                                .withAgentVersion("xvvy")
-                                .withAllowNewSession(false)
-                                .withAssignedUser("mctlpdngitv")
-                                .withFriendlyName("mhrixkwmyijejve")
-                                .withStatus(Status.NEEDS_ASSISTANCE)
-                                .withOsVersion("aixexccbdreaxh")
-                                .withSxSStackVersion("xdrrvqahqkghtp")
-                                .withUpdateState(UpdateState.INITIAL)
-                                .withUpdateErrorMessage("jsvfycxzbfvoowv"),
-                            new SessionHostInner()
-                                .withLastHeartBeat(OffsetDateTime.parse("2021-05-16T06:07:50Z"))
-                                .withSessions(1513768261)
-                                .withAgentVersion("qpvuzlmvfelf")
-                                .withAllowNewSession(true)
-                                .withAssignedUser("njwmwkpnbsazejj")
-                                .withFriendlyName("kagfhsxtt")
-                                .withStatus(Status.AVAILABLE)
-                                .withOsVersion("faazpxdtnkdmkqjj")
-                                .withSxSStackVersion("uenvrkp")
-                                .withUpdateState(UpdateState.FAILED)
-                                .withUpdateErrorMessage("rebqaaysjk"),
-                            new SessionHostInner()
-                                .withLastHeartBeat(OffsetDateTime.parse("2021-05-03T13:45:25Z"))
-                                .withSessions(1385853585)
-                                .withAgentVersion("p")
-                                .withAllowNewSession(false)
-                                .withAssignedUser("otxhojujby")
-                                .withFriendlyName("lmcuvhixb")
-                                .withStatus(Status.NEEDS_ASSISTANCE)
-                                .withOsVersion("yl")
-                                .withSxSStackVersion("ool")
-                                .withUpdateState(UpdateState.STARTED)
-                                .withUpdateErrorMessage("w"),
-                            new SessionHostInner()
-                                .withLastHeartBeat(OffsetDateTime.parse("2021-05-20T02:25:29Z"))
-                                .withSessions(382280149)
-                                .withAgentVersion("dlwggytsbwtovv")
-                                .withAllowNewSession(true)
-                                .withAssignedUser("cdm")
-                                .withFriendlyName("r")
-                                .withStatus(Status.DISCONNECTED)
-                                .withOsVersion("nkrxfrddhcr")
-                                .withSxSStackVersion("izzronasxiftozqy")
-                                .withUpdateState(UpdateState.FAILED)
-                                .withUpdateErrorMessage("sgogczhonnxk")));
+        SessionHostList model = new SessionHostList().withValue(Arrays.asList(
+            new SessionHostInner().withLastHeartBeat(OffsetDateTime.parse("2021-01-19T12:23:33Z"))
+                .withSessions(3385554)
+                .withAgentVersion("cxzbfvoowvr")
+                .withAllowNewSession(false)
+                .withAssignedUser("mcwaekrrjr")
+                .withFriendlyName("fxtsgum")
+                .withStatus(Status.NOT_JOINED_TO_DOMAIN)
+                .withOsVersion("kxw")
+                .withSxSStackVersion("olbq")
+                .withUpdateState(UpdateState.PENDING)
+                .withUpdateErrorMessage("vfelfktgplcrpwj"),
+            new SessionHostInner().withLastHeartBeat(OffsetDateTime.parse("2021-02-27T11:39:37Z"))
+                .withSessions(159219307)
+                .withAgentVersion("dm")
+                .withAllowNewSession(false)
+                .withAssignedUser("xqtnq")
+                .withFriendlyName("ezl")
+                .withStatus(Status.SX_SSTACK_LISTENER_NOT_READY)
+                .withOsVersion("kpj")
+                .withSxSStackVersion("qmt")
+                .withUpdateState(UpdateState.PENDING)
+                .withUpdateErrorMessage("jihy"),
+            new SessionHostInner().withLastHeartBeat(OffsetDateTime.parse("2021-05-01T10:24:09Z"))
+                .withSessions(497556076)
+                .withAgentVersion("qupevzh")
+                .withAllowNewSession(true)
+                .withAssignedUser("lrcoolsttpki")
+                .withFriendlyName("kbnujr")
+                .withStatus(Status.FSLOGIX_NOT_HEALTHY)
+                .withOsVersion("bfpncurdo")
+                .withSxSStackVersion("iithtywu")
+                .withUpdateState(UpdateState.INITIAL)
+                .withUpdateErrorMessage("wqknfdn")));
         model = BinaryData.fromObject(model).toObject(SessionHostList.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T11:14:50Z"), model.value().get(0).lastHeartBeat());
-        Assertions.assertEquals(2100624724, model.value().get(0).sessions());
-        Assertions.assertEquals("xvvy", model.value().get(0).agentVersion());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-19T12:23:33Z"), model.value().get(0).lastHeartBeat());
+        Assertions.assertEquals(3385554, model.value().get(0).sessions());
+        Assertions.assertEquals("cxzbfvoowvr", model.value().get(0).agentVersion());
         Assertions.assertEquals(false, model.value().get(0).allowNewSession());
-        Assertions.assertEquals("mctlpdngitv", model.value().get(0).assignedUser());
-        Assertions.assertEquals("mhrixkwmyijejve", model.value().get(0).friendlyName());
-        Assertions.assertEquals(Status.NEEDS_ASSISTANCE, model.value().get(0).status());
-        Assertions.assertEquals("aixexccbdreaxh", model.value().get(0).osVersion());
-        Assertions.assertEquals("xdrrvqahqkghtp", model.value().get(0).sxSStackVersion());
-        Assertions.assertEquals(UpdateState.INITIAL, model.value().get(0).updateState());
-        Assertions.assertEquals("jsvfycxzbfvoowv", model.value().get(0).updateErrorMessage());
+        Assertions.assertEquals("mcwaekrrjr", model.value().get(0).assignedUser());
+        Assertions.assertEquals("fxtsgum", model.value().get(0).friendlyName());
+        Assertions.assertEquals(Status.NOT_JOINED_TO_DOMAIN, model.value().get(0).status());
+        Assertions.assertEquals("kxw", model.value().get(0).osVersion());
+        Assertions.assertEquals("olbq", model.value().get(0).sxSStackVersion());
+        Assertions.assertEquals(UpdateState.PENDING, model.value().get(0).updateState());
+        Assertions.assertEquals("vfelfktgplcrpwj", model.value().get(0).updateErrorMessage());
     }
 }

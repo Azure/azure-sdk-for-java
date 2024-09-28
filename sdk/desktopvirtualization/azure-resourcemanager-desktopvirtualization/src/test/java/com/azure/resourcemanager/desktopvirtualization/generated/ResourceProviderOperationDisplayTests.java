@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceProviderOperationDisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceProviderOperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"ryrtihfxtijbpzv\",\"resource\":\"wzsymglzufcy\",\"operation\":\"ohdbihanufh\",\"description\":\"bj\"}")
-                .toObject(ResourceProviderOperationDisplay.class);
+        ResourceProviderOperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"ryrtihfxtijbpzv\",\"resource\":\"wzsymglzufcy\",\"operation\":\"ohdbihanufh\",\"description\":\"bj\"}")
+            .toObject(ResourceProviderOperationDisplay.class);
         Assertions.assertEquals("ryrtihfxtijbpzv", model.provider());
         Assertions.assertEquals("wzsymglzufcy", model.resource());
         Assertions.assertEquals("ohdbihanufh", model.operation());
@@ -24,12 +22,10 @@ public final class ResourceProviderOperationDisplayTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceProviderOperationDisplay model =
-            new ResourceProviderOperationDisplay()
-                .withProvider("ryrtihfxtijbpzv")
-                .withResource("wzsymglzufcy")
-                .withOperation("ohdbihanufh")
-                .withDescription("bj");
+        ResourceProviderOperationDisplay model = new ResourceProviderOperationDisplay().withProvider("ryrtihfxtijbpzv")
+            .withResource("wzsymglzufcy")
+            .withOperation("ohdbihanufh")
+            .withDescription("bj");
         model = BinaryData.fromObject(model).toObject(ResourceProviderOperationDisplay.class);
         Assertions.assertEquals("ryrtihfxtijbpzv", model.provider());
         Assertions.assertEquals("wzsymglzufcy", model.resource());
