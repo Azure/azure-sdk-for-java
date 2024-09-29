@@ -32,15 +32,10 @@ jobs:
             - 'sdk/parents/azure-sdk-parent'
             - 'eng/code-quality-reports'
       - task: Maven@4
-        displayName: 'Build for From Source run'
+        displayName: 'Install Non Released Dependencies'
         inputs:
           mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
           goals: 'install'
-          # Build and install every track 2, client, library. The purpose is to have all the libraries installed on the
-          # machine, so we can simply run tests with the -amd switch and we can remove the SNAFU of dependencies that
-          # bloated the ci.yml files' AdditionalModules because we ended up having to list every transitive azure client
-          # dependency. Note: The -T 1C says spin up a build thread per core. Since we're building
-          # all the track 2, client, libraries (which is now over 100) this effectively cuts the build time in half.
           options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
