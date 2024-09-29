@@ -2,7 +2,9 @@
 
 ## 2.43.0 (2024-09-27)
 
-### Other Changes
+### Features Added
+
+- Supported Quota Request Operator related roles to `BuiltInRole`.
 
 #### Dependency Updates
 
