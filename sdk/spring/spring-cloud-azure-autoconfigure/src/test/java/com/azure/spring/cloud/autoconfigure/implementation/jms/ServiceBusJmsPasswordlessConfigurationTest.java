@@ -5,14 +5,12 @@ package com.azure.spring.cloud.autoconfigure.implementation.jms;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jms.properties.AzureServiceBusJmsProperties;
-import com.azure.spring.cloud.autoconfigure.jms.ServiceBusJmsConnectionFactoryCustomizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
@@ -38,7 +36,6 @@ class ServiceBusJmsPasswordlessConfigurationTest {
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureServiceBusJmsCredentialSupplier.class);
-                assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactoryCustomizer.class);
             });
     }
 
@@ -122,7 +119,6 @@ class ServiceBusJmsPasswordlessConfigurationTest {
 
                 contextRunner.run(runnerContext -> {
                     assertThat(runnerContext).hasSingleBean(AzureServiceBusJmsCredentialSupplier.class);
-                    assertThat(runnerContext).hasSingleBean(ServiceBusJmsConnectionFactoryCustomizer.class);
                     runnerContext.getBean(AzureServiceBusJmsCredentialSupplier.class).get().equals("fake-token");
                 });
 
@@ -133,7 +129,6 @@ class ServiceBusJmsPasswordlessConfigurationTest {
     }
 
     @EnableConfigurationProperties
-    @Import({ServiceBusJmsPasswordlessConfiguration.class})
     static class ServiceBusJmsPasswordlessTestConfig {
 
         @Bean

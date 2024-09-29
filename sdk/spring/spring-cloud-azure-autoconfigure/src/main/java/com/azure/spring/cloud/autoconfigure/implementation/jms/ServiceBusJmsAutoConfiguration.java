@@ -61,6 +61,9 @@ public class ServiceBusJmsAutoConfiguration {
         return mergeAzureProperties(azureGlobalProperties, properties);
     }
 
+    /**
+     * Standard tier does not support the property "com.microsoft:is-client-provider", so remove it.
+     */
     @Bean
     @ConditionalOnExpression("'standard'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
     @SuppressWarnings("unchecked")
