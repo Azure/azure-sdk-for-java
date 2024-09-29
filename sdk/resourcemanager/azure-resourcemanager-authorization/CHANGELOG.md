@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Supported Quota Request Operator related roles to `BuiltInRole`.
+- Supported Quota Request Operator role to `BuiltInRole`.
 
 #### Dependency Updates
 
