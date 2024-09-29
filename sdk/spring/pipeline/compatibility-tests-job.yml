@@ -32,7 +32,7 @@ jobs:
             - 'sdk/parents/azure-sdk-parent'
             - 'eng/code-quality-reports'
       - task: Maven@4
-        displayName: 'Install Non Released Dependencies'
+        displayName: 'Install Unreleased Dependencies'
         inputs:
           mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
           goals: 'install'
