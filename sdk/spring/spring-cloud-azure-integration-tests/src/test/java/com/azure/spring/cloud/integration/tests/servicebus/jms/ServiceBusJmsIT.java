@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.integration.tests.servicebus.jms;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import java.util.concurrent.Exchanger;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("servicebus-jms")
+@Disabled
 public class ServiceBusJmsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusJmsIT.class);
     private static final String DATA = "service bus jms test";

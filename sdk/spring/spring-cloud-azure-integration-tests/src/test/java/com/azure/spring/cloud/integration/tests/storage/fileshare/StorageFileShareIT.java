@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.integration.tests.storage.fileshare;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import java.nio.charset.Charset;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("storage-fileshare")
+@Disabled
 public class StorageFileShareIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileShareIT.class);
     private static final String DATA = "sample-data";

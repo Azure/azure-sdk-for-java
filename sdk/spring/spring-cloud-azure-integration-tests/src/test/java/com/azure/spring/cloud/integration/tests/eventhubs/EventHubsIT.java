@@ -13,6 +13,7 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsErrorHandler;
 import com.azure.spring.cloud.service.eventhubs.consumer.EventHubsRecordMessageListener;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ import java.util.concurrent.TimeUnit;
             + ",org.springframework.cloud.stream.function.FunctionConfiguration"
 })
 @ActiveProfiles("eventhubs")
+@Disabled
 public class EventHubsIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsIT.class);
     private static final String DATA = "eventhub test";

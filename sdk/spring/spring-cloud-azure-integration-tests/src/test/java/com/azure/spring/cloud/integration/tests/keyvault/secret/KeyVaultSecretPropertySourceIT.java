@@ -14,7 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
-@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
+//@Disabled("Auth by workload identity is not supported now. Track issue: https://github.com/Azure/azure-sdk-for-java/issues/40897")
 @ActiveProfiles("keyvault-secret-property-source")
 public class KeyVaultSecretPropertySourceIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretPropertySourceIT.class);

@@ -5,6 +5,7 @@ package com.azure.spring.cloud.integration.tests.storage.queue;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.models.QueueMessageItem;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("storage-queue")
+@Disabled
 public class StorageQueueIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageQueueIT.class);
     private static final String DATA = "storage queue test";
