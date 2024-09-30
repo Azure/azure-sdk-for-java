@@ -34,13 +34,11 @@ public class TrafficControllerManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        trafficControllerManager = TrafficControllerManager
-            .configure()
+        trafficControllerManager = TrafficControllerManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,10 +49,7 @@ public class TrafficControllerManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -79,8 +74,13 @@ public class TrafficControllerManagerTests extends TestBase {
                 .create();
             // @embedEnd
             Assertions.assertEquals(interfaceName, trafficController.name());
-            Assertions.assertEquals(trafficController.name(), trafficControllerManager.trafficControllerInterfaces().getById(trafficController.id()).name());
-            Assertions.assertTrue(trafficControllerManager.trafficControllerInterfaces().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(trafficController.name(),
+                trafficControllerManager.trafficControllerInterfaces().getById(trafficController.id()).name());
+            Assertions.assertTrue(trafficControllerManager.trafficControllerInterfaces()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (trafficController != null) {
                 trafficControllerManager.trafficControllerInterfaces().deleteById(trafficController.id());
