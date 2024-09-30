@@ -13,18 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontendUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendUpdate model = BinaryData
-            .fromString("{\"tags\":{\"po\":\"ajionpimexgstxg\",\"djwzrlov\":\"gmaajrm\",\"qsqsy\":\"clwhijcoejctbz\"}}")
-            .toObject(FrontendUpdate.class);
-        Assertions.assertEquals("ajionpimexgstxg", model.tags().get("po"));
+        FrontendUpdate model = BinaryData.fromString("{\"tags\":{\"w\":\"m\"}}").toObject(FrontendUpdate.class);
+        Assertions.assertEquals("m", model.tags().get("w"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendUpdate model = new FrontendUpdate()
-            .withTags(mapOf("po", "ajionpimexgstxg", "djwzrlov", "gmaajrm", "qsqsy", "clwhijcoejctbz"));
+        FrontendUpdate model = new FrontendUpdate().withTags(mapOf("w", "m"));
         model = BinaryData.fromObject(model).toObject(FrontendUpdate.class);
-        Assertions.assertEquals("ajionpimexgstxg", model.tags().get("po"));
+        Assertions.assertEquals("m", model.tags().get("w"));
     }
 
     // Use "Map.of" if available

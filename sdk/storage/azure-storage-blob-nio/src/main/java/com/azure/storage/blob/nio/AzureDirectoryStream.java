@@ -20,11 +20,9 @@ import java.util.Set;
 
 /**
  * A type for iterating over the contents of a directory.
- *
+ * <p>
  * This type is asynchronously closeable, i.e. closing the stream from any thread will cause the stream to stop
  * returning elements at that point.
- *
- * {@inheritDoc}
  */
 public final class AzureDirectoryStream implements DirectoryStream<Path> {
     private static final ClientLogger LOGGER = new ClientLogger(AzureDirectoryStream.class);

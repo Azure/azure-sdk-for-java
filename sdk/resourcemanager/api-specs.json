@@ -295,5 +295,11 @@
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
     "args": "--tag=package-changes-2022-05 --graalvm-config-suffix=change --rename-model=ChangeType:ResourceChangeType,PropertyChangeType:ResourcePropertyChangeType"
+  },
+  "databoundaries": {
+    "dir": "azure-resourcemanager-resources",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.azure.resourcemanager.resources",
+    "args": "--tag=package-databoundaries-2024-08 --title=DataBoundariesManagementClient --graalvm-config-suffix=databoundary --remove-operation-group=Operations"
   }
 }
