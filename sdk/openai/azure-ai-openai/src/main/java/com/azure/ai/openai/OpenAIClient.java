@@ -2413,10 +2413,18 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
-        return this.serviceClient.createUploadWithResponse(requestBody, requestOptions);
+    public Response<Upload> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
+        Response<BinaryData> createUploadWithResponse;
+        if (openAIServiceClient != null) {
+            createUploadWithResponse = this.openAIServiceClient.createUploadWithResponse(requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            createUploadWithResponse = this.serviceClient.createUploadWithResponse(requestBody, requestOptions);
+        }
+        return new SimpleResponse<>(createUploadWithResponse,
+            createUploadWithResponse.getValue().toObject(Upload.class));
     }
 
     /**
@@ -2446,13 +2454,21 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
+    Response<UploadPart> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
         RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'addUploadPart'
         // is 'multipart/form-data'
-        return this.serviceClient.addUploadPartWithResponse(uploadId, requestBody, requestOptions);
+        Response<BinaryData> addUploadPartWithResponse;
+        if (openAIServiceClient != null) {
+            addUploadPartWithResponse = this.openAIServiceClient.addUploadPartWithResponse(uploadId, requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            addUploadPartWithResponse = this.serviceClient.addUploadPartWithResponse(uploadId, requestBody, requestOptions);
+        }
+        return new SimpleResponse<>(addUploadPartWithResponse,
+            addUploadPartWithResponse.getValue().toObject(UploadPart.class));
     }
 
     /**
@@ -2510,11 +2526,19 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> completeUploadWithResponse(String uploadId, BinaryData requestBody,
+    public Response<Upload> completeUploadWithResponse(String uploadId, BinaryData requestBody,
         RequestOptions requestOptions) {
-        return this.serviceClient.completeUploadWithResponse(uploadId, requestBody, requestOptions);
+        Response<BinaryData> completeUploadWithResponse;
+        if (openAIServiceClient != null) {
+            completeUploadWithResponse = this.openAIServiceClient.completeUploadWithResponse(uploadId, requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            completeUploadWithResponse = this.serviceClient.completeUploadWithResponse(uploadId, requestBody, requestOptions);
+        }
+        return new SimpleResponse<>(completeUploadWithResponse,
+            completeUploadWithResponse.getValue().toObject(Upload.class));
     }
 
     /**
@@ -2552,10 +2576,18 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelUploadWithResponse(String uploadId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelUploadWithResponse(uploadId, requestOptions);
+    public Response<Upload> cancelUploadWithResponse(String uploadId, RequestOptions requestOptions) {
+        Response<BinaryData> cancelUploadWithResponse;
+        if (openAIServiceClient != null) {
+            cancelUploadWithResponse = this.openAIServiceClient.cancelUploadWithResponse(uploadId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            cancelUploadWithResponse = this.serviceClient.cancelUploadWithResponse(uploadId, requestOptions);
+        }
+        return new SimpleResponse<>(cancelUploadWithResponse,
+            cancelUploadWithResponse.getValue().toObject(Upload.class));
     }
 
     /**
@@ -2580,13 +2612,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Upload object can accept byte chunks in the form of Parts.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Upload createUpload(CreateUploadRequest requestBody) {
         // Generated convenience method for createUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createUploadWithResponse(BinaryData.fromObject(requestBody), requestOptions).getValue()
-            .toObject(Upload.class);
+        return createUploadWithResponse(BinaryData.fromObject(requestBody), requestOptions).getValue();
     }
 
     /**
@@ -2607,7 +2637,6 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the upload Part represents a chunk of bytes we can add to an Upload object.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadPart addUploadPart(String uploadId, AddUploadPartRequest requestBody) {
         // Generated convenience method for addUploadPartWithResponse
@@ -2618,7 +2647,7 @@ public final class OpenAIClient {
                     requestBody.getData().getFilename())
                 .end()
                 .getRequestBody(),
-            requestOptions).getValue().toObject(UploadPart.class);
+            requestOptions).getValue();
     }
 
     /**
@@ -2642,13 +2671,11 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Upload object can accept byte chunks in the form of Parts.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Upload completeUpload(String uploadId, CompleteUploadRequest requestBody) {
         // Generated convenience method for completeUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return completeUploadWithResponse(uploadId, BinaryData.fromObject(requestBody), requestOptions).getValue()
-            .toObject(Upload.class);
+        return completeUploadWithResponse(uploadId, BinaryData.fromObject(requestBody), requestOptions).getValue();
     }
 
     /**
@@ -2663,11 +2690,10 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Upload object can accept byte chunks in the form of Parts.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Upload cancelUpload(String uploadId) {
         // Generated convenience method for cancelUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelUploadWithResponse(uploadId, requestOptions).getValue().toObject(Upload.class);
+        return cancelUploadWithResponse(uploadId, requestOptions).getValue();
     }
 }

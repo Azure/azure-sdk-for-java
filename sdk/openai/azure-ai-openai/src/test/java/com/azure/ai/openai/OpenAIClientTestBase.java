@@ -7,6 +7,7 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.implementation.FutureTemperatureArguments;
 import com.azure.ai.openai.implementation.FutureTemperatureParameters;
 import com.azure.ai.openai.implementation.Parameters;
+import com.azure.ai.openai.models.AddUploadPartRequest;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -47,6 +48,9 @@ import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
 import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
 import com.azure.ai.openai.models.ContentFilterSeverity;
+import com.azure.ai.openai.models.CreateUploadRequest;
+import com.azure.ai.openai.models.CreateUploadRequestPurpose;
+import com.azure.ai.openai.models.DataFileDetails;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -112,6 +116,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     private static final String BATCH_TASKS = "batch_tasks.jsonl";
     private static final String BATCH_TASKS_AZURE = "batch_tasks_azure.jsonl";
+
+    private static final String LARGE_FILE = "large_file.txt";
 
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
@@ -426,6 +432,36 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         String fileName = BATCH_TASKS_AZURE;
         FileDetails fileDetails = new FileDetails(BinaryData.fromFile(openResourceFile(fileName)), fileName);
         testRunner.accept(fileDetails, FilePurpose.BATCH);
+    }
+
+    // Upload large files in multiple parts
+    private static int getFileSize(Path path) {
+        return (int) path.toFile().length();
+    }
+
+    void uploadCreationRunner(Consumer<CreateUploadRequest> testRunner) {
+        Path path = openResourceFile(JAVA_SDK_TESTS_FILES_TXT);
+        Path path2 = openResourceFile(JAVA_SDK_TESTS_FINE_TUNING_JSON);
+
+        int fileSize = getFileSize(path);
+        int fileSize2 = getFileSize(path2);
+
+        CreateUploadRequest createUploadRequest = new CreateUploadRequest(LARGE_FILE, CreateUploadRequestPurpose.ASSISTANTS,
+            fileSize + fileSize2, "text/plain");
+
+        testRunner.accept(createUploadRequest);
+    }
+
+    void addUploadPartRequestRunner(BiConsumer<AddUploadPartRequest, AddUploadPartRequest> testRunner) {
+        Path path = openResourceFile(JAVA_SDK_TESTS_FILES_TXT);
+        Path path2 = openResourceFile(JAVA_SDK_TESTS_FINE_TUNING_JSON);
+
+        AddUploadPartRequest addUploadPartRequest = new AddUploadPartRequest(
+            new DataFileDetails(BinaryData.fromFile(path)).setFilename(JAVA_SDK_TESTS_FILES_TXT));
+        AddUploadPartRequest addUploadPartRequest2 = new AddUploadPartRequest(
+            new DataFileDetails(BinaryData.fromFile(path2)).setFilename(JAVA_SDK_TESTS_FINE_TUNING_JSON));
+
+        testRunner.accept(addUploadPartRequest, addUploadPartRequest2);
     }
 
     private static AudioTranslationOptions getAudioTranslationOptions(String fileName) {
