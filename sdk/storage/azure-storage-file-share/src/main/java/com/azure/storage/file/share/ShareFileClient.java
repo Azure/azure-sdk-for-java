@@ -2143,7 +2143,7 @@ public class ShareFileClient {
             } catch (InterruptedException | ExecutionException e) {
                 Throwable cause = e.getCause();
                 if (cause instanceof ShareStorageException) {
-                    throw (ShareStorageException) cause; // Re-throw ShareStorageException
+                    throw LOGGER.logExceptionAsError((ShareStorageException) cause); // Re-throw ShareStorageException
                 }
                 throw LOGGER.logExceptionAsError(new RuntimeException(e));
             } finally {
