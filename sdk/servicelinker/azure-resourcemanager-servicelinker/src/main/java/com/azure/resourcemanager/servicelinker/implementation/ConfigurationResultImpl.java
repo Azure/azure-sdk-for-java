@@ -4,19 +4,18 @@
 
 package com.azure.resourcemanager.servicelinker.implementation;
 
-import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner;
+import com.azure.resourcemanager.servicelinker.fluent.models.ConfigurationResultInner;
+import com.azure.resourcemanager.servicelinker.models.ConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.SourceConfiguration;
-import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
 import java.util.Collections;
 import java.util.List;
 
-public final class SourceConfigurationResultImpl implements SourceConfigurationResult {
-    private SourceConfigurationResultInner innerObject;
+public final class ConfigurationResultImpl implements ConfigurationResult {
+    private ConfigurationResultInner innerObject;
 
     private final com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager;
 
-    SourceConfigurationResultImpl(
-        SourceConfigurationResultInner innerObject,
+    ConfigurationResultImpl(ConfigurationResultInner innerObject,
         com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -31,7 +30,7 @@ public final class SourceConfigurationResultImpl implements SourceConfigurationR
         }
     }
 
-    public SourceConfigurationResultInner innerModel() {
+    public ConfigurationResultInner innerModel() {
         return this.innerObject;
     }
 

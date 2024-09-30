@@ -5,26 +5,51 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A configuration item for source resource. */
+/**
+ * A configuration item for source resource.
+ */
 @Fluent
-public final class SourceConfiguration {
+public final class SourceConfiguration implements JsonSerializable<SourceConfiguration> {
     /*
      * The name of setting.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The value of setting
      */
-    @JsonProperty(value = "value")
     private String value;
+
+    /*
+     * The type of setting
+     */
+    private LinkerConfigurationType configType;
+
+    /*
+     * The identity for key vault reference, system or user-assigned managed identity ID
+     */
+    private String keyVaultReferenceIdentity;
+
+    /*
+     * Descriptive information for the configuration
+     */
+    private String description;
+
+    /**
+     * Creates an instance of SourceConfiguration class.
+     */
+    public SourceConfiguration() {
+    }
 
     /**
      * Get the name property: The name of setting.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +58,7 @@ public final class SourceConfiguration {
 
     /**
      * Set the name property: The name of setting.
-     *
+     * 
      * @param name the name value to set.
      * @return the SourceConfiguration object itself.
      */
@@ -44,7 +69,7 @@ public final class SourceConfiguration {
 
     /**
      * Get the value property: The value of setting.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -53,7 +78,7 @@ public final class SourceConfiguration {
 
     /**
      * Set the value property: The value of setting.
-     *
+     * 
      * @param value the value value to set.
      * @return the SourceConfiguration object itself.
      */
@@ -63,10 +88,108 @@ public final class SourceConfiguration {
     }
 
     /**
+     * Get the configType property: The type of setting.
+     * 
+     * @return the configType value.
+     */
+    public LinkerConfigurationType configType() {
+        return this.configType;
+    }
+
+    /**
+     * Get the keyVaultReferenceIdentity property: The identity for key vault reference, system or user-assigned managed
+     * identity ID.
+     * 
+     * @return the keyVaultReferenceIdentity value.
+     */
+    public String keyVaultReferenceIdentity() {
+        return this.keyVaultReferenceIdentity;
+    }
+
+    /**
+     * Set the keyVaultReferenceIdentity property: The identity for key vault reference, system or user-assigned managed
+     * identity ID.
+     * 
+     * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
+     * @return the SourceConfiguration object itself.
+     */
+    public SourceConfiguration withKeyVaultReferenceIdentity(String keyVaultReferenceIdentity) {
+        this.keyVaultReferenceIdentity = keyVaultReferenceIdentity;
+        return this;
+    }
+
+    /**
+     * Get the description property: Descriptive information for the configuration.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
+     * Set the description property: Descriptive information for the configuration.
+     * 
+     * @param description the description value to set.
+     * @return the SourceConfiguration object itself.
+     */
+    public SourceConfiguration withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("keyVaultReferenceIdentity", this.keyVaultReferenceIdentity);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceConfiguration.
+     */
+    public static SourceConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceConfiguration deserializedSourceConfiguration = new SourceConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSourceConfiguration.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedSourceConfiguration.value = reader.getString();
+                } else if ("configType".equals(fieldName)) {
+                    deserializedSourceConfiguration.configType = LinkerConfigurationType.fromString(reader.getString());
+                } else if ("keyVaultReferenceIdentity".equals(fieldName)) {
+                    deserializedSourceConfiguration.keyVaultReferenceIdentity = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSourceConfiguration.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceConfiguration;
+        });
     }
 }
