@@ -2425,7 +2425,7 @@ public final class OpenAIAsyncClient {
      * For guidance on the proper filename extensions for each purpose, please follow the documentation on creating a
      * File.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     filename: String (Required)
@@ -2434,9 +2434,9 @@ public final class OpenAIAsyncClient {
      *     mime_type: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2471,16 +2471,15 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Upload>> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
-
         Mono<Response<BinaryData>> createUploadWithResponse;
         if (openAIServiceClient != null) {
-            createUploadWithResponse = this.openAIServiceClient.createUploadWithResponseAsync(requestBody, requestOptions);
+            createUploadWithResponse
+                = this.openAIServiceClient.createUploadWithResponseAsync(requestBody, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
             createUploadWithResponse = this.serviceClient.createUploadWithResponseAsync(requestBody, requestOptions);
         }
-
         return createUploadWithResponse
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
     }
@@ -2493,7 +2492,7 @@ public final class OpenAIAsyncClient {
      * It is possible to add multiple Parts in parallel. You can decide the intended order of the Parts when you
      * complete the Upload.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2520,11 +2519,13 @@ public final class OpenAIAsyncClient {
         // is 'multipart/form-data'
         Mono<Response<BinaryData>> addUploadPartWithResponse;
         if (openAIServiceClient != null) {
-            addUploadPartWithResponse = this.openAIServiceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+            addUploadPartWithResponse
+                = this.openAIServiceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
-            addUploadPartWithResponse = this.serviceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+            addUploadPartWithResponse
+                = this.serviceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
         }
         return addUploadPartWithResponse
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(UploadPart.class)));
@@ -2541,7 +2542,7 @@ public final class OpenAIAsyncClient {
      * The number of bytes uploaded upon completion must match the number of bytes initially specified when creating the
      * Upload object. No Parts may be added after an Upload is completed.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     part_ids (Required): [
@@ -2550,9 +2551,9 @@ public final class OpenAIAsyncClient {
      *     md5: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2591,11 +2592,13 @@ public final class OpenAIAsyncClient {
         RequestOptions requestOptions) {
         Mono<Response<BinaryData>> completeUploadWithResponse;
         if (openAIServiceClient != null) {
-            completeUploadWithResponse = this.openAIServiceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
+            completeUploadWithResponse
+                = this.openAIServiceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
         } else {
             addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
                 serviceClient.getServiceVersion());
-            completeUploadWithResponse = this.serviceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
+            completeUploadWithResponse
+                = this.serviceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
         }
         return completeUploadWithResponse
             .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
@@ -2604,7 +2607,7 @@ public final class OpenAIAsyncClient {
     /**
      * Cancels the Upload. No Parts may be added after an Upload is cancelled.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>{@code
      * {
      *     id: String (Required)

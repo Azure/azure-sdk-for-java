@@ -3163,6 +3163,7 @@ public final class OpenAIClientImpl {
      *     created_at: long (Required)
      *     upload_id: String (Required)
      *     object: String (Required)
+     *     azure_block_id: String (Optional)
      * }
      * }</pre>
      * 
@@ -3200,6 +3201,7 @@ public final class OpenAIClientImpl {
      *     created_at: long (Required)
      *     upload_id: String (Required)
      *     object: String (Required)
+     *     azure_block_id: String (Optional)
      * }
      * }</pre>
      * 

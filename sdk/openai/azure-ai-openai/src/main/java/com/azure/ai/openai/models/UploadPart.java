@@ -113,6 +113,7 @@ public final class UploadPart implements JsonSerializable<UploadPart> {
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeStringField("upload_id", this.uploadId);
         jsonWriter.writeStringField("object", this.object);
+        jsonWriter.writeStringField("azure_block_id", this.azureBlockId);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,6 +132,7 @@ public final class UploadPart implements JsonSerializable<UploadPart> {
             String id = null;
             OffsetDateTime createdAt = null;
             String uploadId = null;
+            String azureBlockId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -140,11 +142,31 @@ public final class UploadPart implements JsonSerializable<UploadPart> {
                     createdAt = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("upload_id".equals(fieldName)) {
                     uploadId = reader.getString();
+                } else if ("azure_block_id".equals(fieldName)) {
+                    azureBlockId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new UploadPart(id, createdAt, uploadId);
+            UploadPart deserializedUploadPart = new UploadPart(id, createdAt, uploadId);
+            deserializedUploadPart.azureBlockId = azureBlockId;
+            return deserializedUploadPart;
         });
+    }
+
+    /*
+     * Azure only field.
+     */
+    @Generated
+    private String azureBlockId;
+
+    /**
+     * Get the azureBlockId property: Azure only field.
+     *
+     * @return the azureBlockId value.
+     */
+    @Generated
+    public String getAzureBlockId() {
+        return this.azureBlockId;
     }
 }
