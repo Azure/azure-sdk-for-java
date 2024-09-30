@@ -25,6 +25,7 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [File operations sample](#file-operations "File Operations")
 * [Batch operations sample](#batch-operations "Batch Operations")
 * [Structured Outputs](#structured-outputs "Structured Outputs")
+* [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -46,7 +47,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.11</version>
+    <version>1.0.0-beta.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -108,7 +109,7 @@ Authentication with AAD requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.13.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -164,6 +165,7 @@ The following sections provide several code snippets covering some of the most c
 * [File operations sample](#file-operations "File Operations")
 * [Batch operations sample](#batch-operations "Batch Operations")
 * [Structured Outputs](#structured-outputs "Structured Outputs")
+* [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
 
 ### Legacy completions
 
