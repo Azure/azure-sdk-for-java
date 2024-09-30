@@ -18,6 +18,7 @@ import com.azure.ai.inference.models.ChatRequestUserMessage;
 import com.azure.ai.inference.models.ChatResponseMessage;
 import com.azure.ai.inference.models.EmbeddingItem;
 import com.azure.ai.inference.models.EmbeddingsResult;
+import com.azure.ai.inference.models.ModelInfo;
 import com.azure.ai.inference.models.StreamingChatResponseMessageUpdate;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -130,6 +131,14 @@ public final class ReadmeSamples {
             }
         }
         // END: readme-sample-getEmbedding
+    }
+
+    public void getModelInfo() {
+        // BEGIN: readme-sample-getModelInfo
+        ModelInfo modelInfo = client.getModelInfo();
+
+        System.out.printf("modelName: %s, modelNameProvider: %s", modelInfo.getModelName(), modelInfo.getModelProviderName());
+        // END: readme-sample-getModelInfo
     }
 
     public void chatWithImageFile() {

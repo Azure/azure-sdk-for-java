@@ -6,7 +6,6 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
@@ -16,10 +15,8 @@ public final class GetModelInfoSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        //String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
-        //String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
-        String key = "uPWdOEhLTgu6fibrX6lbxJd2QE5MI8do";
-        String endpoint = "https://mistral-small-ofgon-serverless.eastus2.inference.ai.azure.com";
+        String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
 
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
             .credential(new AzureKeyCredential(key))

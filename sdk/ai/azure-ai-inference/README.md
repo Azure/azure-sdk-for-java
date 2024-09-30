@@ -216,6 +216,14 @@ For a complete sample example, see sample [Function Calls][sample_function_calls
 
 For a complete sample example, see sample [Streaming Function Calls][sample_streaming_function_calls].
 
+### Get Model information
+
+```java readme-sample-getModelInfo
+ModelInfo modelInfo = client.getModelInfo();
+
+System.out.printf("modelName: %s, modelNameProvider: %s", modelInfo.getModelName(), modelInfo.getModelProviderName());
+```
+
 ### Service API versions
 
 The client library targets the latest service API version by default.
