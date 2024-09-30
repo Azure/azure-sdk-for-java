@@ -119,7 +119,7 @@ public final class DataBoundariesManagementClientImpl extends AzureServiceClient
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-08-01";
+        this.apiVersion = "2024-03-01";
         this.dataBoundaries = new DataBoundariesClientImpl(this);
     }
 }
