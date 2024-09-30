@@ -4,9 +4,6 @@
 package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.client.traits.ConnectionStringTrait;
-import com.azure.core.client.traits.HttpTrait;
-import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -42,7 +39,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.PropertyHel
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.TempDirs;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.VersionGenerator;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.ResourceParser;
-import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
 import io.opentelemetry.sdk.metrics.export.MetricExporter;
@@ -62,13 +58,12 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * Low level API to create OpenTelemetry span, log record and metric exporters for Azure. With OpenTelemetry autoconfiguration ({@link AutoConfiguredOpenTelemetrySdkBuilder}), we recommend using {@link com.azure.monitor.opentelemetry.AzureMonitor}.
+ * Class allowing you to create options to configure the Azure Monitor export.
  */
 @Fluent
-public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<AzureMonitorExporterBuilder>,
-    TokenCredentialTrait<AzureMonitorExporterBuilder>, HttpTrait<AzureMonitorExporterBuilder> {
+public final class AzureMonitorExporterOptions {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterOptions.class);
 
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
@@ -100,9 +95,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
     private StatsbeatModule statsbeatModule;
 
     /**
-     * Creates an instance of {@link AzureMonitorExporterBuilder}.
+     * Creates an instance of {@link AzureMonitorExporterOptions}.
      */
-    public AzureMonitorExporterBuilder() {
+    public AzureMonitorExporterOptions() {
     }
 
     /**
@@ -116,10 +111,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      */
-    @Override
-    public AzureMonitorExporterBuilder pipeline(HttpPipeline pipeline) {
+    public AzureMonitorExporterOptions pipeline(HttpPipeline pipeline) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpPipeline cannot be changed after any of the build methods have been called"));
@@ -139,10 +133,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param httpClient The {@link HttpClient} to use for requests.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      */
-    @Override
-    public AzureMonitorExporterBuilder httpClient(HttpClient httpClient) {
+    public AzureMonitorExporterOptions httpClient(HttpClient httpClient) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpClient cannot be changed after any of the build methods have been called"));
@@ -164,10 +157,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      */
-    @Override
-    public AzureMonitorExporterBuilder httpLogOptions(HttpLogOptions logOptions) {
+    public AzureMonitorExporterOptions httpLogOptions(HttpLogOptions logOptions) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpLogOptions cannot be changed after any of the build methods have been called"));
@@ -188,10 +180,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      *
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      */
-    @Override
-    public AzureMonitorExporterBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
+    public AzureMonitorExporterOptions addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "httpPipelinePolicy cannot be added after any of the build methods have been called"));
@@ -211,10 +202,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      */
-    @Override
-    public AzureMonitorExporterBuilder retryOptions(RetryOptions retryOptions) {
+    public AzureMonitorExporterOptions retryOptions(RetryOptions retryOptions) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "retryOptions cannot be changed after any of the build methods have been called"));
@@ -238,11 +228,10 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      * @see HttpClientOptions
      */
-    @Override
-    public AzureMonitorExporterBuilder clientOptions(ClientOptions clientOptions) {
+    public AzureMonitorExporterOptions clientOptions(ClientOptions clientOptions) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "clientOptions cannot be changed after any of the build methods have been called"));
@@ -255,12 +244,11 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * Sets the connection string to use for exporting telemetry events to Azure Monitor.
      *
      * @param connectionString The connection string for the Azure Monitor resource.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      * @throws NullPointerException If the connection string is {@code null}.
      * @throws IllegalArgumentException If the connection string is invalid.
      */
-    @Override
-    public AzureMonitorExporterBuilder connectionString(String connectionString) {
+    public AzureMonitorExporterOptions connectionString(String connectionString) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "connectionString cannot be changed after any of the build methods have been called"));
@@ -273,10 +261,9 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
      * Sets the token credential required for authentication with the ingestion endpoint service.
      *
      * @param credential The Azure Identity TokenCredential.
-     * @return The updated {@link AzureMonitorExporterBuilder} object.
+     * @return The updated {@link AzureMonitorExporterOptions} object.
      */
-    @Override
-    public AzureMonitorExporterBuilder credential(TokenCredential credential) {
+    public AzureMonitorExporterOptions credential(TokenCredential credential) {
         if (frozen) {
             throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "credential cannot be changed after any of the build methods have been called"));
@@ -285,31 +272,13 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
         return this;
     }
 
-    /**
-     * Creates an Azure Monitor span exporter based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link SpanExporter}.
-     *
-     * @param configProperties The OpenTelemetry configuration properties.
-     * @return An instance of {@link SpanExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    public SpanExporter buildSpanExporter(ConfigProperties configProperties) {
+    SpanExporter buildSpanExporter(ConfigProperties configProperties) {
         internalBuildAndFreeze(configProperties);
         return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
             statsbeatModule);
     }
 
-    /**
-     * Creates an Azure Monitor log record exporter based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link LogRecordExporter}.
-     *
-     * @param configProperties The OpenTelemetry configuration properties.
-     * @return An instance of {@link LogRecordExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    public LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
+    LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
         internalBuildAndFreeze(configProperties);
         return new AzureMonitorLogRecordExporter(
             new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
@@ -333,19 +302,7 @@ public final class AzureMonitorExporterBuilder implements ConnectionStringTrait<
         }
     }
 
-    /**
-     * Creates an Azure monitor metric exporter based on the options set in the builder. This
-     * exporter is an implementation of OpenTelemetry {@link MetricExporter}.
-     *
-     * <p>When a new {@link MetricExporter} is created, it will automatically start {@link
-     * HeartbeatExporter}.
-     *
-     * @param configProperties The OpenTelemetry configuration properties.
-     * @return An instance of {@link MetricExporter}.
-     * @throws NullPointerException if the connection string is not set on this builder or if the
-     * environment variable "APPLICATIONINSIGHTS_CONNECTION_STRING" is not set.
-     */
-    public MetricExporter buildMetricExporter(ConfigProperties configProperties) {
+    MetricExporter buildMetricExporter(ConfigProperties configProperties) {
         internalBuildAndFreeze(configProperties);
         HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties),
             builtTelemetryItemExporter::send);

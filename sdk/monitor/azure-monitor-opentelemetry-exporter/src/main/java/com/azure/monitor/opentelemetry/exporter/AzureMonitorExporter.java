@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry;
+package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
@@ -19,9 +18,9 @@ import java.util.Map;
 /**
  * Class to enable Azure Monitor for OpenTelemetry autoconfiguration.
  */
-public final class AzureMonitor {
+public final class AzureMonitorExporter {
 
-    private AzureMonitor() {
+    private AzureMonitorExporter() {
     }
 
     /**
@@ -30,8 +29,8 @@ public final class AzureMonitor {
      * @param autoConfigurationCustomizer The OpenTelemetry autoconfiguration to set up.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer) {
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
-        customize(autoConfigurationCustomizer, azureMonitorExporterBuilder);
+        AzureMonitorExporterOptions exporterOptions = new AzureMonitorExporterOptions();
+        customize(autoConfigurationCustomizer, exporterOptions);
     }
 
     /**
@@ -40,18 +39,18 @@ public final class AzureMonitor {
      * @param connectionString The connection string to connect to an Application Insights resource.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer, String connectionString) {
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder
-            = new AzureMonitorExporterBuilder().connectionString(connectionString);
-        customize(autoConfigurationCustomizer, azureMonitorExporterBuilder);
+        AzureMonitorExporterOptions exporterOptions
+            = new AzureMonitorExporterOptions().connectionString(connectionString);
+        customize(autoConfigurationCustomizer, exporterOptions);
     }
 
     /**
      * Customizes an {@link AutoConfigurationCustomizer} for Azure Monitor.
      * @param autoConfigurationCustomizer the {@link AutoConfigurationCustomizer} object.
-     * @param azureMonitorExporterBuilder Advanced configuration to send the data to Azure Monitor.
+     * @param exporterOptions Advanced configuration to send the data to Azure Monitor.
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer,
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder) {
+        AzureMonitorExporterOptions exporterOptions) {
         autoConfigurationCustomizer.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
@@ -62,19 +61,19 @@ public final class AzureMonitor {
         });
         autoConfigurationCustomizer.addSpanExporterCustomizer((spanExporter, configProperties) -> {
             if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                spanExporter = azureMonitorExporterBuilder.buildSpanExporter(configProperties);
+                spanExporter = exporterOptions.buildSpanExporter(configProperties);
             }
             return spanExporter;
         });
         autoConfigurationCustomizer.addMetricExporterCustomizer((metricExporter, configProperties) -> {
             if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                metricExporter = azureMonitorExporterBuilder.buildMetricExporter(configProperties);
+                metricExporter = exporterOptions.buildMetricExporter(configProperties);
             }
             return metricExporter;
         });
         autoConfigurationCustomizer.addLogRecordExporterCustomizer((logRecordExporter, configProperties) -> {
             if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                logRecordExporter = azureMonitorExporterBuilder.buildLogRecordExporter(configProperties);
+                logRecordExporter = exporterOptions.buildLogRecordExporter(configProperties);
             }
             return logRecordExporter;
         });
