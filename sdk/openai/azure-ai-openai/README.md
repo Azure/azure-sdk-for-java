@@ -24,6 +24,7 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Text To Speech sample](#text-to-speech "Text To Speech")
 * [File operations sample](#file-operations "File Operations")
 * [Batch operations sample](#batch-operations "Batch Operations")
+* [Structured Outputs](#structured-outputs "Structured Outputs")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -162,6 +163,7 @@ The following sections provide several code snippets covering some of the most c
 * [Text To Speech sample](#text-to-speech "Text To Speech")
 * [File operations sample](#file-operations "File Operations")
 * [Batch operations sample](#batch-operations "Batch Operations")
+* [Structured Outputs](#structured-outputs "Structured Outputs")
 
 ### Legacy completions
 
@@ -362,7 +364,7 @@ List<ChatRequestMessage> chatMessages = Arrays.asList(
         new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
 );
 ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-        new FunctionDefinition("MyFunctionName"));
+        new ChatCompletionsFunctionToolDefinitionFunction("MyFunctionName"));
 
 ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
 chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
@@ -460,6 +462,24 @@ Batch cancelledBatch = client.cancelBatch(batch.getId());
 ```
 For a complete sample example, see sample [Batch Operations][sample_batch_operations].
 
+### Structured Outputs
+
+Structured Outputs can be enabled by setting the parameter `strict: true` in an API call with either a defined 
+`response format` or `function definitions`. 
+```java readme-sample-structuredOutputsResponseFormat
+ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+    // Previously, the response_format parameter was only available to specify that the model should return a valid JSON.
+    // In addition to this, we are introducing a new way of specifying which JSON schema to follow.
+    .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+        new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather")
+            .setStrict(true)
+            .setDescription("Fetches the weather in the given location")
+            .setSchema(BinaryData.fromObject(new Parameters()))));
+```
+
+For a complete sample example, see sample [Structured Output: Response Format][sample_chat_completions_json_schema].
+For more details see the [OpenAI structured output documentation](https://platform.openai.com/docs/guides/structured-output).
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -516,6 +536,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_batch_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/BatchOperationsSample.java
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsFunctionCall.java
 [sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
+[sample_chat_completions_json_schema]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/StructuredOutputsResponseFormat.java
 [sample_file_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FileOperationsSample.java
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java

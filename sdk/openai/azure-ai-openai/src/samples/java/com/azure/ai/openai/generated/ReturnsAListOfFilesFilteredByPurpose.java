@@ -6,9 +6,11 @@ package com.azure.ai.openai.generated;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.implementation.models.FileListResponse;
 import com.azure.ai.openai.models.FilePurpose;
+import com.azure.ai.openai.models.OpenAIFile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.List;
 
 public class ReturnsAListOfFilesFilteredByPurpose {
     public static void main(String[] args) {
@@ -16,7 +18,7 @@ public class ReturnsAListOfFilesFilteredByPurpose {
             .endpoint("{endpoint}")
             .buildClient();
         // BEGIN:com.azure.ai.openai.generated.listfiles.returnsalistoffilesfilteredbypurpose
-        FileListResponse response = openAIClient.listFiles(FilePurpose.ASSISTANTS);
+        List<OpenAIFile> response = openAIClient.listFiles(FilePurpose.ASSISTANTS);
         // END:com.azure.ai.openai.generated.listfiles.returnsalistoffilesfilteredbypurpose
     }
 }

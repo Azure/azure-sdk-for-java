@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import com.azure.core.util.BinaryData;
 
 /**
  * The ChatCompletionsJsonSchemaResponseFormatJsonSchema model.
@@ -34,8 +35,7 @@ public final class ChatCompletionsJsonSchemaResponseFormatJsonSchema
     /*
      * The schema property.
      */
-    @Generated
-    private Object schema;
+    private BinaryData schema;
 
     /*
      * Whether to enable strict schema adherence when generating the output. If set to true, the model will always
@@ -95,8 +95,7 @@ public final class ChatCompletionsJsonSchemaResponseFormatJsonSchema
      *
      * @return the schema value.
      */
-    @Generated
-    public Object getSchema() {
+    public BinaryData getSchema() {
         return this.schema;
     }
 
@@ -106,8 +105,7 @@ public final class ChatCompletionsJsonSchemaResponseFormatJsonSchema
      * @param schema the schema value to set.
      * @return the ChatCompletionsJsonSchemaResponseFormatJsonSchema object itself.
      */
-    @Generated
-    public ChatCompletionsJsonSchemaResponseFormatJsonSchema setSchema(Object schema) {
+    public ChatCompletionsJsonSchemaResponseFormatJsonSchema setSchema(BinaryData schema) {
         this.schema = schema;
         return this;
     }
@@ -143,13 +141,12 @@ public final class ChatCompletionsJsonSchemaResponseFormatJsonSchema
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeRawField("schema", this.schema.toString());
         jsonWriter.writeBooleanField("strict", this.strict);
         return jsonWriter.writeEndObject();
     }
@@ -163,12 +160,11 @@ public final class ChatCompletionsJsonSchemaResponseFormatJsonSchema
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatCompletionsJsonSchemaResponseFormatJsonSchema.
      */
-    @Generated
     public static ChatCompletionsJsonSchemaResponseFormatJsonSchema fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
             String description = null;
-            Object schema = null;
+            BinaryData schema = null;
             Boolean strict = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -178,7 +174,7 @@ public final class ChatCompletionsJsonSchemaResponseFormatJsonSchema
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
                 } else if ("schema".equals(fieldName)) {
-                    schema = reader.readUntyped();
+                    schema = BinaryData.fromObject(reader.readUntyped());
                 } else if ("strict".equals(fieldName)) {
                     strict = reader.getNullable(JsonReader::getBoolean);
                 } else {

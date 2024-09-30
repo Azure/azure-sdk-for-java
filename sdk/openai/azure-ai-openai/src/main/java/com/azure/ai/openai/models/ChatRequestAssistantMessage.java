@@ -161,6 +161,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
             jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
         }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
+        jsonWriter.writeStringField("refusal", this.refusal);
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("function_call", this.functionCall);
@@ -180,6 +181,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
             ChatRole role = ChatRole.ASSISTANT;
+            String refusal = null;
             String name = null;
             List<ChatCompletionsToolCall> toolCalls = null;
             FunctionCall functionCall = null;
@@ -200,6 +202,8 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
                     }
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
+                } else if ("refusal".equals(fieldName)) {
+                    refusal = reader.getString();
                 } else if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("tool_calls".equals(fieldName)) {
@@ -213,9 +217,10 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
             ChatRequestAssistantMessage deserializedChatRequestAssistantMessage
                 = new ChatRequestAssistantMessage(content);
             deserializedChatRequestAssistantMessage.role = role;
-            deserializedChatRequestAssistantMessage.name = name;
-            deserializedChatRequestAssistantMessage.toolCalls = toolCalls;
-            deserializedChatRequestAssistantMessage.functionCall = functionCall;
+            deserializedChatRequestAssistantMessage.setRefusal(refusal)
+                .setName(name)
+                .setToolCalls(toolCalls)
+                .setFunctionCall(functionCall);
             return deserializedChatRequestAssistantMessage;
         });
     }

@@ -12,9 +12,8 @@ import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ElasticsearchChatExtensionConfiguration;
 import com.azure.ai.openai.models.ElasticsearchChatExtensionParameters;
 import com.azure.ai.openai.models.OnYourDataKeyAndKeyIdAuthenticationOptions;
-import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.charset.StandardCharsets;
+
 import java.util.Arrays;
 
 public class CreatesACompletionForTheProvidedElasticsearchUsesAzureOpenAIChatExtensions {
@@ -24,8 +23,7 @@ public class CreatesACompletionForTheProvidedElasticsearchUsesAzureOpenAIChatExt
             .buildClient();
         // BEGIN:com.azure.ai.openai.generated.getchatcompletions.createsacompletionfortheprovidedelasticsearchusesazureopenaichatextensions
         ChatCompletions response = openAIClient.getChatCompletions("<deployment-id>",
-            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage(
-                BinaryData.fromBytes("can you tell me how to care for a parrot?".getBytes(StandardCharsets.UTF_8)))))
+            new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("can you tell me how to care for a parrot?")))
                 .setDataSources(
                     Arrays.asList(new ElasticsearchChatExtensionConfiguration(new ElasticsearchChatExtensionParameters(
                         "https://your-elasticsearch-endpoint.eastus.azurecontainer.io", "{index name}")

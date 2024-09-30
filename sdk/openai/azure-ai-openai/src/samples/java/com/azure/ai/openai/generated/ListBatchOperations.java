@@ -6,7 +6,8 @@ package com.azure.ai.openai.generated;
 
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
-import com.azure.ai.openai.implementation.models.OpenAIPageableListOfBatch;
+import com.azure.ai.openai.models.Batch;
+import com.azure.ai.openai.models.PageableList;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ListBatchOperations {
@@ -15,7 +16,7 @@ public class ListBatchOperations {
             .endpoint("https://aoairesource.openai.azure.com")
             .buildClient();
         // BEGIN:com.azure.ai.openai.generated.listbatches.listbatchoperations
-        OpenAIPageableListOfBatch response = openAIClient.listBatches(null, null);
+        PageableList<Batch> response = openAIClient.listBatches(null, null);
         // END:com.azure.ai.openai.generated.listbatches.listbatchoperations
     }
 }

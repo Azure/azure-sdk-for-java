@@ -253,6 +253,20 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testStructuredOutputInResponseFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsStructuredOutputInResponseFormatRunnerForNonAzure((deploymentId, chatCompletionsOptions) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, chatCompletionsOptions))
+                .assertNext(resultChatCompletions -> {
+                    assertNotNull(resultChatCompletions.getUsage());
+                    assertChatCompletions(1, resultChatCompletions);
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getEmbeddingRunnerForNonAzure((modelId, embeddingsOptions) -> {
@@ -802,6 +816,51 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                         assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
                     }).verifyComplete();
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsToolCallForStrictStructuredOutput(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatWithToolCallStructuredOutputRunnerForNonAzure(((modelId, chatCompletionsOptions) -> {
+            chatCompletionsOptions.setToolChoice(new ChatCompletionsToolSelection(ChatCompletionsToolSelectionPreset.AUTO));
+            StepVerifier.create(
+                client.getChatCompletionsWithResponse(modelId, chatCompletionsOptions, new RequestOptions())
+                    .flatMap(response -> {
+                        assertNotNull(response);
+                        assertTrue(response.getStatusCode() >= 200 && response.getStatusCode() < 300);
+                        ChatCompletions chatCompletions = response.getValue();
+                        assertNotNull(chatCompletions);
+
+                        assertTrue(chatCompletions.getChoices() != null && !chatCompletions.getChoices().isEmpty());
+                        ChatChoice chatChoice = chatCompletions.getChoices().get(0);
+                        assertEquals(chatChoice.getFinishReason(), CompletionsFinishReason.TOOL_CALLS);
+
+                        ChatResponseMessage responseMessage = chatChoice.getMessage();
+                        assertNotNull(responseMessage);
+                        assertTrue(responseMessage.getContent() == null || responseMessage.getContent().isEmpty());
+                        assertFalse(responseMessage.getToolCalls() == null || responseMessage.getToolCalls().isEmpty());
+
+                        ChatCompletionsFunctionToolCall functionToolCall = (ChatCompletionsFunctionToolCall) responseMessage.getToolCalls().get(0);
+                        assertNotNull(functionToolCall);
+                        assertFalse(functionToolCall.getFunction().getArguments() == null
+                            || functionToolCall.getFunction().getArguments().isEmpty());
+
+                        // we should be passing responseMessage.getContent()) instead of ""; but it's null and Azure does not accept that
+                        return client.getChatCompletions(modelId, getChatCompletionsOptionWithToolCallFollowUp(
+                            functionToolCall, ""));
+                    })).assertNext(followUpChatCompletions -> {
+                        assertNotNull(followUpChatCompletions);
+                        assertNotNull(followUpChatCompletions.getChoices());
+                        ChatChoice followUpChatChoice = followUpChatCompletions.getChoices().get(0);
+                        assertNotNull(followUpChatChoice);
+                        assertNotNull(followUpChatChoice.getMessage());
+                        String content = followUpChatChoice.getMessage().getContent();
+                        assertFalse(content == null || content.isEmpty());
+                        assertEquals(followUpChatChoice.getMessage().getRole(), ChatRole.ASSISTANT);
+                        assertEquals(followUpChatChoice.getFinishReason(), CompletionsFinishReason.STOPPED);
+                    }).verifyComplete();
+        }));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

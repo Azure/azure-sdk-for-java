@@ -56,6 +56,7 @@ Cookbook:
 - [Streaming Chat][cookbook_streaming_chat]
 - [Summarize Text][cookbook_summarize_text]
 - [Streaming Tool Call][cookbook_streaming_tool_call]
+- [Structured Output: Response Format][cookbook_structured_output_response_format]
 
 ## Troubleshooting
 Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
@@ -105,4 +106,5 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [cookbook_streaming_chat]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StreamingChatSample.java
 [cookbook_summarize_text]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/SummarizeTextSample.java
 [cookbook_streaming_tool_call]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StreamingToolCall.java
+[cookbook_structured_output_response_format]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StructuredOutputsResponseFormat.java
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fazure-ai-openai%2FREADME.png)
