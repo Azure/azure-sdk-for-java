@@ -14,16 +14,19 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.mongocluster.models.AdministratorProperties;
+import com.azure.resourcemanager.mongocluster.models.ComputeProperties;
+import com.azure.resourcemanager.mongocluster.models.HighAvailabilityMode;
+import com.azure.resourcemanager.mongocluster.models.HighAvailabilityProperties;
 import com.azure.resourcemanager.mongocluster.models.MongoCluster;
 import com.azure.resourcemanager.mongocluster.models.MongoClusterProperties;
-import com.azure.resourcemanager.mongocluster.models.NodeGroupSpec;
-import com.azure.resourcemanager.mongocluster.models.NodeKind;
 import com.azure.resourcemanager.mongocluster.models.PublicNetworkAccess;
+import com.azure.resourcemanager.mongocluster.models.ShardingProperties;
+import com.azure.resourcemanager.mongocluster.models.StorageProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class MongoClusterManagerTests extends TestBase {
@@ -85,17 +88,12 @@ public class MongoClusterManagerTests extends TestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withProperties(
                     new MongoClusterProperties()
-                        .withAdministratorLogin(loginUser)
-                        .withAdministratorLoginPassword(loginPwd)
+                        .withAdministrator(new AdministratorProperties().withUserName(loginUser).withPassword(loginPwd))
                         .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                        .withNodeGroupSpecs(Arrays.asList(
-                            new NodeGroupSpec()
-                                .withKind(NodeKind.SHARD)
-                                .withSku("M30")
-                                .withDiskSizeGB(128L)
-                                .withEnableHa(true)
-                                .withNodeCount(1)
-                            ))
+                        .withStorage(new StorageProperties().withSizeGb(128L))
+                        .withCompute(new ComputeProperties().withTier("M30"))
+                        .withHighAvailability(new HighAvailabilityProperties().withTargetMode(HighAvailabilityMode.DISABLED))
+                        .withSharding(new ShardingProperties().withShardCount(1))
                         .withServerVersion("7.0")
                     )
                 .create();

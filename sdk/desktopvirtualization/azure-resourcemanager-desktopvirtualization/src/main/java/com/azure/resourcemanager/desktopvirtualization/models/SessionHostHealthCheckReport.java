@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The report for session host information. */
+/**
+ * The report for session host information.
+ */
 @Immutable
-public final class SessionHostHealthCheckReport {
+public final class SessionHostHealthCheckReport implements JsonSerializable<SessionHostHealthCheckReport> {
     /*
      * Represents the name of the health check operation performed.
      */
-    @JsonProperty(value = "healthCheckName", access = JsonProperty.Access.WRITE_ONLY)
     private HealthCheckName healthCheckName;
 
     /*
      * Represents the Health state of the health check we performed.
      */
-    @JsonProperty(value = "healthCheckResult", access = JsonProperty.Access.WRITE_ONLY)
     private HealthCheckResult healthCheckResult;
 
     /*
      * Additional detailed information on the failure.
      */
-    @JsonProperty(value = "additionalFailureDetails", access = JsonProperty.Access.WRITE_ONLY)
     private SessionHostHealthCheckFailureDetails additionalFailureDetails;
 
-    /** Creates an instance of SessionHostHealthCheckReport class. */
+    /**
+     * Creates an instance of SessionHostHealthCheckReport class.
+     */
     public SessionHostHealthCheckReport() {
     }
 
     /**
      * Get the healthCheckName property: Represents the name of the health check operation performed.
-     *
+     * 
      * @return the healthCheckName value.
      */
     public HealthCheckName healthCheckName() {
@@ -43,7 +48,7 @@ public final class SessionHostHealthCheckReport {
 
     /**
      * Get the healthCheckResult property: Represents the Health state of the health check we performed.
-     *
+     * 
      * @return the healthCheckResult value.
      */
     public HealthCheckResult healthCheckResult() {
@@ -52,7 +57,7 @@ public final class SessionHostHealthCheckReport {
 
     /**
      * Get the additionalFailureDetails property: Additional detailed information on the failure.
-     *
+     * 
      * @return the additionalFailureDetails value.
      */
     public SessionHostHealthCheckFailureDetails additionalFailureDetails() {
@@ -61,12 +66,54 @@ public final class SessionHostHealthCheckReport {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (additionalFailureDetails() != null) {
             additionalFailureDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SessionHostHealthCheckReport from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SessionHostHealthCheckReport if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SessionHostHealthCheckReport.
+     */
+    public static SessionHostHealthCheckReport fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SessionHostHealthCheckReport deserializedSessionHostHealthCheckReport = new SessionHostHealthCheckReport();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthCheckName".equals(fieldName)) {
+                    deserializedSessionHostHealthCheckReport.healthCheckName
+                        = HealthCheckName.fromString(reader.getString());
+                } else if ("healthCheckResult".equals(fieldName)) {
+                    deserializedSessionHostHealthCheckReport.healthCheckResult
+                        = HealthCheckResult.fromString(reader.getString());
+                } else if ("additionalFailureDetails".equals(fieldName)) {
+                    deserializedSessionHostHealthCheckReport.additionalFailureDetails
+                        = SessionHostHealthCheckFailureDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSessionHostHealthCheckReport;
+        });
     }
 }

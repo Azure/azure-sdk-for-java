@@ -11,8 +11,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 /**
  * A sample to demonstrate setting and getting a config from Azure Application Configuration operations using GraalVM.
  */
-public class AppConfigurationSample {
-    private static final String AZURE_APP_CONFIGURATION_CONNECTION_STRING = System.getenv("AZURE_APP_CONFIGURATION_CONNECTION_STRING");
+public final class AppConfigurationSample {
+    private static final String AZURE_APP_CONFIGURATION_CONNECTION_STRING
+        = System.getenv("AZURE_APP_CONFIGURATION_CONNECTION_STRING");
 
     /**
      * The method to run the app configuration sample.
@@ -42,5 +43,8 @@ public class AppConfigurationSample {
         System.out.println("\n================================================================");
         System.out.println(" App Configuration Sample Complete");
         System.out.println("================================================================");
+    }
+
+    private AppConfigurationSample() {
     }
 }

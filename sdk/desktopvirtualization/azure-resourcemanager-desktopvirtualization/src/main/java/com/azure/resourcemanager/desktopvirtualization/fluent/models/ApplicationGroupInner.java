@@ -7,94 +7,180 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySet;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents a ApplicationGroup definition. */
+/**
+ * Represents a ApplicationGroup definition.
+ */
 @Fluent
 public final class ApplicationGroupInner extends ResourceModelWithAllowedPropertySet {
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * Detailed properties for ApplicationGroup
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private ApplicationGroupProperties innerProperties = new ApplicationGroupProperties();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
     private SystemData systemData;
 
     /*
-     * Detailed properties for ApplicationGroup
+     * The etag field is *not* required. If it is provided in the response body, it must also be provided as a header
+     * per the normal etag convention. Entity tags are used for comparing two or more entities from the same requested
+     * resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section
+     * 14.26), and If-Range (section 14.27) header fields.
      */
-    @JsonProperty(value = "properties", required = true)
-    private ApplicationGroupProperties innerProperties = new ApplicationGroupProperties();
+    private String etag;
 
-    /** Creates an instance of ApplicationGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApplicationGroupInner class.
+     */
     public ApplicationGroupInner() {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the innerProperties property: Detailed properties for ApplicationGroup.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGroupProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the etag property: The etag field is *not* required. If it is provided in the response body, it must also be
+     * provided as a header per the normal etag convention. Entity tags are used for comparing two or more entities from
+     * the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24),
+     * If-None-Match (section 14.26), and If-Range (section 14.27) header fields.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGroupInner withManagedBy(String managedBy) {
         super.withManagedBy(managedBy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGroupInner withKind(String kind) {
         super.withKind(kind);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGroupInner withIdentity(ResourceModelWithAllowedPropertySetIdentity identity) {
         super.withIdentity(identity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGroupInner withSku(ResourceModelWithAllowedPropertySetSku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGroupInner withPlan(ResourceModelWithAllowedPropertySetPlan plan) {
         super.withPlan(plan);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGroupInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGroupInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,7 +189,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the objectId property: ObjectId of ApplicationGroup. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -112,7 +198,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the description property: Description of ApplicationGroup.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -121,7 +207,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Set the description property: Description of ApplicationGroup.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -135,7 +221,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the friendlyName property: Friendly name of ApplicationGroup.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -144,7 +230,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Set the friendlyName property: Friendly name of ApplicationGroup.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -158,7 +244,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the hostPoolArmPath property: HostPool arm path of ApplicationGroup.
-     *
+     * 
      * @return the hostPoolArmPath value.
      */
     public String hostPoolArmPath() {
@@ -167,7 +253,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Set the hostPoolArmPath property: HostPool arm path of ApplicationGroup.
-     *
+     * 
      * @param hostPoolArmPath the hostPoolArmPath value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -181,7 +267,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the workspaceArmPath property: Workspace arm path of ApplicationGroup.
-     *
+     * 
      * @return the workspaceArmPath value.
      */
     public String workspaceArmPath() {
@@ -190,7 +276,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the applicationGroupType property: Resource Type of ApplicationGroup.
-     *
+     * 
      * @return the applicationGroupType value.
      */
     public ApplicationGroupType applicationGroupType() {
@@ -199,7 +285,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Set the applicationGroupType property: Resource Type of ApplicationGroup.
-     *
+     * 
      * @param applicationGroupType the applicationGroupType value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -213,7 +299,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the cloudPcResource property: Is cloud pc resource.
-     *
+     * 
      * @return the cloudPcResource value.
      */
     public Boolean cloudPcResource() {
@@ -222,7 +308,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
-     *
+     * 
      * @return the showInFeed value.
      */
     public Boolean showInFeed() {
@@ -231,7 +317,7 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
-     *
+     * 
      * @param showInFeed the showInFeed value to set.
      * @return the ApplicationGroupInner object itself.
      */
@@ -245,21 +331,99 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ApplicationGroupInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ApplicationGroupInner"));
         } else {
             innerProperties().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (plan() != null) {
+            plan().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationGroupInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("managedBy", managedBy());
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("identity", identity());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeJsonField("plan", plan());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGroupInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGroupInner.
+     */
+    public static ApplicationGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGroupInner deserializedApplicationGroupInner = new ApplicationGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGroupInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationGroupInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationGroupInner.withTags(tags);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedApplicationGroupInner.withManagedBy(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedApplicationGroupInner.withKind(reader.getString());
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGroupInner.etag = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    deserializedApplicationGroupInner
+                        .withIdentity(ResourceModelWithAllowedPropertySetIdentity.fromJson(reader));
+                } else if ("sku".equals(fieldName)) {
+                    deserializedApplicationGroupInner.withSku(ResourceModelWithAllowedPropertySetSku.fromJson(reader));
+                } else if ("plan".equals(fieldName)) {
+                    deserializedApplicationGroupInner
+                        .withPlan(ResourceModelWithAllowedPropertySetPlan.fromJson(reader));
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplicationGroupInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGroupInner.innerProperties = ApplicationGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGroupInner;
+        });
+    }
 }

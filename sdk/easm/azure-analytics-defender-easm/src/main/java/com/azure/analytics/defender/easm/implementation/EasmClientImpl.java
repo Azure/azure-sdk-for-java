@@ -855,7 +855,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -882,7 +883,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -919,7 +921,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -946,7 +949,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1001,7 +1005,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1028,7 +1033,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1063,7 +1069,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1090,7 +1097,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1132,7 +1140,8 @@ public final class EasmClientImpl {
      * Update labels on assets matching the provided filter.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
      *     externalId: String (Optional)
@@ -1141,11 +1150,13 @@ public final class EasmClientImpl {
      *     }
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -1158,7 +1169,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filter An expression on the resource type that selects the resources to be returned.
      * @param body Body parameter.
@@ -1182,7 +1194,8 @@ public final class EasmClientImpl {
      * Update labels on assets matching the provided filter.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     state: String(candidate/confirmed/dismissed/candidateInvestigate/associatedPartner/associatedThirdparty) (Optional)
      *     externalId: String (Optional)
@@ -1191,11 +1204,13 @@ public final class EasmClientImpl {
      *     }
      *     transfers: String(as/contact/domain/host/ipAddress/ipBlock/page/sslCert) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -1208,7 +1223,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filter An expression on the resource type that selects the resources to be returned.
      * @param body Body parameter.
@@ -1232,7 +1248,8 @@ public final class EasmClientImpl {
      * Retrieve an asset by assetId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1259,7 +1276,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assetId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1281,7 +1299,8 @@ public final class EasmClientImpl {
      * Retrieve an asset by assetId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -1308,7 +1327,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param assetId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1337,7 +1357,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1352,7 +1373,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1384,7 +1406,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1399,7 +1422,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1449,7 +1473,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1464,7 +1489,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1494,7 +1520,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1509,7 +1536,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1551,7 +1579,8 @@ public final class EasmClientImpl {
      * Validate a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1559,11 +1588,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -1578,7 +1609,8 @@ public final class EasmClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1602,7 +1634,8 @@ public final class EasmClientImpl {
      * Validate a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1610,11 +1643,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -1629,7 +1664,8 @@ public final class EasmClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1651,7 +1687,8 @@ public final class EasmClientImpl {
      * Retrieve a data connection with a given dataConnectionName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1666,7 +1703,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1688,7 +1726,8 @@ public final class EasmClientImpl {
      * Retrieve a data connection with a given dataConnectionName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1703,7 +1742,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1725,7 +1765,8 @@ public final class EasmClientImpl {
      * Create or replace a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1733,11 +1774,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1752,7 +1795,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -1777,7 +1821,8 @@ public final class EasmClientImpl {
      * Create or replace a data connection with a given dataConnectionName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     name: String (Optional)
@@ -1785,11 +1830,13 @@ public final class EasmClientImpl {
      *     frequency: String(daily/weekly/monthly) (Optional)
      *     frequencyOffset: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -1804,7 +1851,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param dataConnectionName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -1874,7 +1922,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -1914,7 +1963,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1947,7 +1997,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -1987,7 +2038,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2038,7 +2090,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2078,7 +2131,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2109,7 +2163,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2149,7 +2204,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2191,7 +2247,8 @@ public final class EasmClientImpl {
      * Validate a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2211,11 +2268,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -2230,7 +2289,8 @@ public final class EasmClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2254,7 +2314,8 @@ public final class EasmClientImpl {
      * Validate a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2274,11 +2335,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     error (Optional): {
      *         code: String (Required)
@@ -2293,7 +2356,8 @@ public final class EasmClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2315,7 +2379,8 @@ public final class EasmClientImpl {
      * Retrieve a discovery group with a given groupName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2355,7 +2420,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2376,7 +2442,8 @@ public final class EasmClientImpl {
      * Retrieve a discovery group with a given groupName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2416,7 +2483,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2437,7 +2505,8 @@ public final class EasmClientImpl {
      * Create a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2457,11 +2526,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2501,7 +2572,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -2525,7 +2597,8 @@ public final class EasmClientImpl {
      * Create a discovery group with a given groupName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     description: String (Optional)
@@ -2545,11 +2618,13 @@ public final class EasmClientImpl {
      *     ]
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -2589,7 +2664,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -2658,7 +2734,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2679,7 +2756,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2712,7 +2790,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2733,7 +2812,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2785,7 +2865,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2806,7 +2887,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2838,7 +2920,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -2859,7 +2942,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param groupName The unique identifier for the discovery group.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2911,7 +2995,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -2931,7 +3016,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2964,7 +3050,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -2984,7 +3071,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3035,7 +3123,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3055,7 +3144,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3086,7 +3176,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3106,7 +3197,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3148,7 +3240,8 @@ public final class EasmClientImpl {
      * Retrieve a disco template with a given templateId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3168,7 +3261,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param templateId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3191,7 +3285,8 @@ public final class EasmClientImpl {
      * Retrieve a disco template with a given templateId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -3211,7 +3306,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param templateId The system generated unique id for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3232,7 +3328,8 @@ public final class EasmClientImpl {
      * Get billable assets summary for the workspace.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3247,7 +3344,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3268,7 +3366,8 @@ public final class EasmClientImpl {
      * Get billable assets summary for the workspace.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3283,7 +3382,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3303,18 +3403,21 @@ public final class EasmClientImpl {
      * Get the most recent snapshot of asset summary values for the snapshot request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metric: String (Optional)
      *     labelName: String (Optional)
      *     size: Integer (Optional)
      *     page: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     displayName: String (Optional)
      *     metric: String (Optional)
@@ -3355,7 +3458,8 @@ public final class EasmClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3378,18 +3482,21 @@ public final class EasmClientImpl {
      * Get the most recent snapshot of asset summary values for the snapshot request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metric: String (Optional)
      *     labelName: String (Optional)
      *     size: Integer (Optional)
      *     page: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     displayName: String (Optional)
      *     metric: String (Optional)
@@ -3430,7 +3537,8 @@ public final class EasmClientImpl {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3452,7 +3560,8 @@ public final class EasmClientImpl {
      * Get asset summary details for the summary request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metricCategories (Optional): [
      *         String (Optional)
@@ -3467,11 +3576,13 @@ public final class EasmClientImpl {
      *     segmentBy: String (Optional)
      *     labelName: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3490,7 +3601,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3513,7 +3625,8 @@ public final class EasmClientImpl {
      * Get asset summary details for the summary request.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     metricCategories (Optional): [
      *         String (Optional)
@@ -3528,11 +3641,13 @@ public final class EasmClientImpl {
      *     segmentBy: String (Optional)
      *     labelName: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     assetSummaries (Optional): [
      *          (Optional){
@@ -3551,7 +3666,8 @@ public final class EasmClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3582,7 +3698,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3590,7 +3707,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3623,7 +3741,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3631,7 +3750,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3682,7 +3802,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3690,7 +3811,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3721,7 +3843,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3729,7 +3852,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3771,7 +3895,8 @@ public final class EasmClientImpl {
      * Retrieve a saved filter by filterName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3779,7 +3904,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3801,7 +3927,8 @@ public final class EasmClientImpl {
      * Retrieve a saved filter by filterName.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3809,7 +3936,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3830,16 +3958,19 @@ public final class EasmClientImpl {
      * Create or replace a saved filter with a given filterName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3847,7 +3978,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -3871,16 +4003,19 @@ public final class EasmClientImpl {
      * Create or replace a saved filter with a given filterName.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filter: String (Required)
      *     description: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -3888,7 +4023,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param filterName The caller provided unique name for the resource.
      * @param body Body parameter.
@@ -3959,7 +4095,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -3972,7 +4109,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4006,7 +4144,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4019,7 +4158,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4072,7 +4212,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4085,7 +4226,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4118,7 +4260,8 @@ public final class EasmClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4131,7 +4274,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -4173,7 +4317,8 @@ public final class EasmClientImpl {
      * Retrieve a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4186,7 +4331,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4207,7 +4353,8 @@ public final class EasmClientImpl {
      * Retrieve a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4220,7 +4367,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4241,7 +4389,8 @@ public final class EasmClientImpl {
      * Cancel a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4254,7 +4403,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4275,7 +4425,8 @@ public final class EasmClientImpl {
      * Cancel a task by taskId.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4288,7 +4439,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param taskId The unique identifier of the task.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4306,12 +4458,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of assets for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -4338,7 +4489,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4361,12 +4513,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of assets for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Required)
@@ -4393,7 +4544,8 @@ public final class EasmClientImpl {
      *     ]
      *     reason: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4413,12 +4565,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of data connections.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -4433,7 +4584,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4455,12 +4607,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of data connections.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String (Required)
      *     id: String (Optional)
@@ -4475,7 +4626,8 @@ public final class EasmClientImpl {
      *     active: Boolean (Optional)
      *     inactiveMessage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4495,12 +4647,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of discovery group for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4540,7 +4691,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4563,12 +4715,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of discovery group for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4608,7 +4759,8 @@ public final class EasmClientImpl {
      *     createdDate: OffsetDateTime (Optional)
      *     templateId: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4628,12 +4780,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -4654,7 +4805,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4675,12 +4827,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a collection of discovery run results for a discovery group with a given groupName.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     submittedDate: OffsetDateTime (Optional)
      *     startedDate: OffsetDateTime (Optional)
@@ -4701,7 +4852,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4721,12 +4873,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of disco templates for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -4746,7 +4897,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4769,12 +4921,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of disco templates for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     name: String (Optional)
@@ -4794,7 +4945,8 @@ public final class EasmClientImpl {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4814,12 +4966,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of saved filters for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4827,7 +4978,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4850,12 +5002,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of saved filters for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Required)
@@ -4863,7 +5014,8 @@ public final class EasmClientImpl {
      *     filter: String (Optional)
      *     description: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4883,12 +5035,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of tasks for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4901,7 +5052,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -4922,12 +5074,11 @@ public final class EasmClientImpl {
     }
 
     /**
-     * Retrieve a list of tasks for the provided search parameters.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     startedAt: OffsetDateTime (Optional)
@@ -4940,7 +5091,8 @@ public final class EasmClientImpl {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

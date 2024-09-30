@@ -7,8 +7,10 @@ import com.azure.core.cryptography.KeyEncryptionKey;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.security.keyvault.keys.TestUtils;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -22,6 +24,7 @@ public class KeyEncryptionKeyClientBuilderTest {
     public void buildKeyEncryptionKey() {
         KeyEncryptionKey keyEncryptionKey = new KeyEncryptionKeyClientBuilder()
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildKeyEncryptionKey(KEY_ID);
 
         assertNotNull(keyEncryptionKey);
@@ -34,6 +37,7 @@ public class KeyEncryptionKeyClientBuilderTest {
             .credential(new TestUtils.TestCredential())
             .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
             .retryPolicy(new RetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildKeyEncryptionKey(KEY_ID));
     }
 }

@@ -38,8 +38,7 @@ import java.net.URL;
  * &#47;&#47; You may choose another name for this variable.
  *
  * String systemAccessToken = System.getenv&#40;&quot;SYSTEM_ACCESSTOKEN&quot;&#41;;
- * AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder&#40;&#41;
- *     .clientId&#40;clientId&#41;
+ * AzurePipelinesCredential credential = new AzurePipelinesCredentialBuilder&#40;&#41;.clientId&#40;clientId&#41;
  *     .tenantId&#40;tenantId&#41;
  *     .serviceConnectionId&#40;serviceConnectionId&#41;
  *     .systemAccessToken&#40;systemAccessToken&#41;
@@ -51,6 +50,9 @@ import java.net.URL;
 @Immutable
 public class AzurePipelinesCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(AzurePipelinesCredential.class);
+    private static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
+    private static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
+    private static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
     private final IdentityClient identityClient;
     private final IdentitySyncClient identitySyncClient;
 
@@ -76,13 +78,23 @@ public class AzurePipelinesCredential implements TokenCredential {
                     HttpRequest request = new HttpRequest(HttpMethod.POST, url);
                     request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + systemAccessToken);
                     request.setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+                    // Prevents the service from responding with a redirect HTTP status code (useful for automation).
+                    request.setHeader(X_TFS_FED_AUTH_REDIRECT, "Suppress");
                     try (HttpResponse response = httpPipeline.sendSync(request, Context.NONE)) {
                         String responseBody = response.getBodyAsBinaryData().toString();
                         if (response.getStatusCode() != 200) {
-                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException("Failed to get the client assertion token "
-                                + responseBody
-                                + System.lineSeparator()
-                                + "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.", response));
+                            String xVssHeader = response.getHeaderValue(X_VSS_E2EID);
+                            String xMsEdgeRefHeader = response.getHeaderValue(X_MSEDGE_REF);
+                            String message = "Failed to get the client assertion token "
+                                + responseBody + ".";
+                            if (xVssHeader != null) {
+                                message += " x-vss-e2eid: " + xVssHeader + ".";
+                            }
+                            if (xMsEdgeRefHeader != null) {
+                                message += " x-msedge-ref: " + xMsEdgeRefHeader + ".";
+                            }
+                            message += "For troubleshooting information see https://aka.ms/azsdk/java/identity/azurepipelinescredential/troubleshoot.";
+                            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(message, response));
                         }
                         try (JsonReader reader = JsonProviders.createReader(responseBody)) {
                             return OidcTokenResponse.fromJson(reader).getOidcToken();

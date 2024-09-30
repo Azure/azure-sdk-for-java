@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -67,7 +66,6 @@ public final class OperationalStatus extends ExpandableStringEnum<OperationalSta
      * @param name a name to look for.
      * @return the corresponding OperationalStatus.
      */
-    @JsonCreator
     public static OperationalStatus fromString(String name) {
         return fromString(name, OperationalStatus.class);
     }

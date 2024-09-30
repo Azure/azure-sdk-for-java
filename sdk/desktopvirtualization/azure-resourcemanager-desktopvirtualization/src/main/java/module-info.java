@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.desktopvirtualization {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.desktopvirtualization;
     exports com.azure.resourcemanager.desktopvirtualization.fluent;
     exports com.azure.resourcemanager.desktopvirtualization.fluent.models;
     exports com.azure.resourcemanager.desktopvirtualization.models;
-
-    opens com.azure.resourcemanager.desktopvirtualization.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.desktopvirtualization.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.desktopvirtualization.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.desktopvirtualization.models to com.azure.core;
 }

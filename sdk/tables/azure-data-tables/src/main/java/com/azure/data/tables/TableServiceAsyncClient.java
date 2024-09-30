@@ -425,7 +425,8 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableAsyncClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
@@ -450,7 +451,8 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableAsyncClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
@@ -483,7 +485,7 @@ public final class TableServiceAsyncClient {
             e -> {
                 HttpResponse response = ((TableServiceException) e).getResponse();
                 return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
+                    response.getHeaders(), getTableClient(tableName)));
             });
     }
 

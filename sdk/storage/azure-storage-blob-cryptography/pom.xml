@@ -50,6 +50,7 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>
@@ -89,8 +90,8 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <groupId>com.fasterxml.jackson.dataformat</groupId>
-          <artifactId>jackson-dataformats-xml</artifactId>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -137,37 +138,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.8.7</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>5.9.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.12.3</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.21</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
+      <version>4.8.8</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

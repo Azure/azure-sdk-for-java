@@ -8,25 +8,27 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateEndpointConnections. */
+/**
+ * Resource collection API of PrivateEndpointConnections.
+ */
 public interface PrivateEndpointConnections {
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnectionWithSystemData> listByWorkspace(
-        String resourceGroupName, String workspaceName);
+    PagedIterable<PrivateEndpointConnectionWithSystemData> listByWorkspace(String resourceGroupName,
+        String workspaceName);
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -34,65 +36,65 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnectionWithSystemData> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<PrivateEndpointConnectionWithSystemData> listByWorkspace(String resourceGroupName,
+        String workspaceName, Context context);
 
     /**
      * Get a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionWithSystemData> getByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionWithSystemData> getByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, String privateEndpointConnectionName, Context context);
 
     /**
      * Get a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    PrivateEndpointConnectionWithSystemData getByWorkspace(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionWithSystemData getByWorkspace(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName);
 
     /**
      * Remove a connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context);
+    Response<Void> deleteByWorkspaceWithResponse(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Remove a connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -101,11 +103,11 @@ public interface PrivateEndpointConnections {
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param connection Object containing the updated connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,49 +115,43 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Private Endpoint Connection resource along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionWithSystemData> updateByWorkspaceWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnection connection,
+    Response<PrivateEndpointConnectionWithSystemData> updateByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, String privateEndpointConnectionName, PrivateEndpointConnection connection,
         Context context);
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param connection Object containing the updated connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Private Endpoint Connection resource.
      */
-    PrivateEndpointConnectionWithSystemData updateByWorkspace(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnection connection);
+    PrivateEndpointConnectionWithSystemData updateByWorkspace(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnection connection);
 
     /**
      * List private endpoint connections associated with hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnectionWithSystemData> listByHostPool(
-        String resourceGroupName, String hostPoolName);
+    PagedIterable<PrivateEndpointConnectionWithSystemData> listByHostPool(String resourceGroupName,
+        String hostPoolName);
 
     /**
      * List private endpoint connections associated with hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -166,70 +162,65 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of private endpoint connection associated with the specified storage account as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnectionWithSystemData> listByHostPool(
-        String resourceGroupName,
-        String hostPoolName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<PrivateEndpointConnectionWithSystemData> listByHostPool(String resourceGroupName, String hostPoolName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * Get a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionWithSystemData> getByHostPoolWithResponse(
-        String resourceGroupName, String hostPoolName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionWithSystemData> getByHostPoolWithResponse(String resourceGroupName,
+        String hostPoolName, String privateEndpointConnectionName, Context context);
 
     /**
      * Get a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection.
      */
-    PrivateEndpointConnectionWithSystemData getByHostPool(
-        String resourceGroupName, String hostPoolName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionWithSystemData getByHostPool(String resourceGroupName, String hostPoolName,
+        String privateEndpointConnectionName);
 
     /**
      * Remove a connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByHostPoolWithResponse(
-        String resourceGroupName, String hostPoolName, String privateEndpointConnectionName, Context context);
+    Response<Void> deleteByHostPoolWithResponse(String resourceGroupName, String hostPoolName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Remove a connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -238,11 +229,11 @@ public interface PrivateEndpointConnections {
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param connection Object containing the updated connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,29 +241,23 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Private Endpoint Connection resource along with {@link Response}.
      */
-    Response<PrivateEndpointConnectionWithSystemData> updateByHostPoolWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnection connection,
+    Response<PrivateEndpointConnectionWithSystemData> updateByHostPoolWithResponse(String resourceGroupName,
+        String hostPoolName, String privateEndpointConnectionName, PrivateEndpointConnection connection,
         Context context);
 
     /**
      * Approve or reject a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param connection Object containing the updated connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Private Endpoint Connection resource.
      */
-    PrivateEndpointConnectionWithSystemData updateByHostPool(
-        String resourceGroupName,
-        String hostPoolName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnection connection);
+    PrivateEndpointConnectionWithSystemData updateByHostPool(String resourceGroupName, String hostPoolName,
+        String privateEndpointConnectionName, PrivateEndpointConnection connection);
 }

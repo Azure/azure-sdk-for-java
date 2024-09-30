@@ -12,27 +12,27 @@ import java.util.Collection;
  */
 public final class DataPointsObservabilityMode extends ExpandableStringEnum<DataPointsObservabilityMode> {
     /**
-     * Static value none for DataPointsObservabilityMode.
+     * No mapping to OpenTelemetry.
      */
     public static final DataPointsObservabilityMode NONE = fromString("none");
 
     /**
-     * Static value counter for DataPointsObservabilityMode.
+     * Map as counter to OpenTelemetry.
      */
     public static final DataPointsObservabilityMode COUNTER = fromString("counter");
 
     /**
-     * Static value gauge for DataPointsObservabilityMode.
+     * Map as gauge to OpenTelemetry.
      */
     public static final DataPointsObservabilityMode GAUGE = fromString("gauge");
 
     /**
-     * Static value histogram for DataPointsObservabilityMode.
+     * Map as histogram to OpenTelemetry.
      */
     public static final DataPointsObservabilityMode HISTOGRAM = fromString("histogram");
 
     /**
-     * Static value log for DataPointsObservabilityMode.
+     * Map as log to OpenTelemetry.
      */
     public static final DataPointsObservabilityMode LOG = fromString("log");
 

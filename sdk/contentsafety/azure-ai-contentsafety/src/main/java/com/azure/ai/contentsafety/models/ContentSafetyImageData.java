@@ -5,12 +5,12 @@ package com.azure.ai.contentsafety.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import com.azure.core.util.BinaryData;
 
 /**
  * The image can be either base64 encoded bytes or a blob URL. You can choose only one of these options. If both are

@@ -46,7 +46,6 @@ import java.util.StringJoiner;
 import static com.azure.data.tables.TestUtils.assertPropertiesEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -178,6 +177,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
 
         //Act & Assert
         StepVerifier.create(serviceClient.createTableIfNotExists(tableName))
+            .assertNext(Assertions::assertNotNull)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
     }
@@ -209,7 +209,7 @@ public class TableServiceAsyncClientTest extends TableServiceClientTestBase {
         StepVerifier.create(serviceClient.createTableIfNotExistsWithResponse(tableName))
             .assertNext(response -> {
                 assertEquals(expectedStatusCode, response.getStatusCode());
-                assertNull(response.getValue());
+                assertNotNull(response.getValue());
             })
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

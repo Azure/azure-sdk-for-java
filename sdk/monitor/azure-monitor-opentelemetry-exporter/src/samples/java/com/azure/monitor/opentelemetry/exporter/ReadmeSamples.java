@@ -105,6 +105,7 @@ public class ReadmeSamples {
         // Make the span the current span
         try (Scope scope = span.makeCurrent()) {
             // Your application logic here
+            applicationLogic();
         } catch (Throwable t) {
             span.recordException(t);
             throw t;
@@ -112,6 +113,9 @@ public class ReadmeSamples {
             span.end();
         }
         // END: readme-sample-create-span
+    }
+
+    private void applicationLogic() {
     }
 
     // BEGIN: readme-sample-span-processor

@@ -14,11 +14,11 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.namespaces.implementation.EventGridSenderClientImpl;
 import java.util.List;
 import reactor.core.publisher.Mono;
-import com.azure.core.models.CloudEvent;
 
 /**
  * Initializes a new instance of the asynchronous EventGridSenderClient type.
@@ -46,7 +46,8 @@ public final class EventGridSenderAsyncClient {
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     source: String (Required)
@@ -59,13 +60,17 @@ public final class EventGridSenderAsyncClient {
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
@@ -86,7 +91,8 @@ public final class EventGridSenderAsyncClient {
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -101,13 +107,17 @@ public final class EventGridSenderAsyncClient {
      *         subject: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      *
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.

@@ -11,9 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceProperties model = BinaryData.fromString(
-            "{\"groupId\":\"uhrzayvvt\",\"requiredMembers\":[\"dfgiot\",\"ftutqxlngxlefgu\"],\"requiredZoneNames\":[\"krxd\",\"mi\"]}")
+        PrivateLinkResourceProperties model = BinaryData
+            .fromString("{\"groupId\":\"bob\",\"requiredMembers\":[\"hm\",\"w\"],\"requiredZoneNames\":[\"a\"]}")
             .toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("krxd", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("a", model.requiredZoneNames().get(0));
     }
 }

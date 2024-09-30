@@ -488,17 +488,12 @@ public class IdentitySyncClient extends IdentityClientBase {
 
             AccessToken accessToken = authenticateWithExchangeTokenSync(trc);
 
-            Supplier<TokenProviderResult> tokenProviderResultSupplier = () -> {
-                TokenProviderResult result = new TokenProviderResult();
-                result.setAccessToken(accessToken.getToken());
-                result.setTenantId(trc.getTenantId());
-                result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                return result;
-            };
+            TokenProviderResult result = new TokenProviderResult();
+            result.setAccessToken(accessToken.getToken());
+            result.setTenantId(trc.getTenantId());
+            result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
 
-            return options.getExecutorService() != null
-                ? CompletableFuture.supplyAsync(tokenProviderResultSupplier, options.getExecutorService())
-                : CompletableFuture.supplyAsync(tokenProviderResultSupplier);
+            return CompletableFuture.completedFuture(result);
         };
     }
 

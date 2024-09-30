@@ -43,7 +43,6 @@ class Authenticator {
                     authenticationInfo.getAuthToken());
             }
             lock.unlock();
-            return;
         } else {
             authenticationInfo = getAuthInfo(false);
             if (authenticationInfo.isShouldAuthenticate()) {
@@ -79,13 +78,11 @@ class Authenticator {
         String[] parts = token.split("\\.");
         String base64 = parts[1];
 
-        switch (base64.length() % 4) {
-            case 2:
-                base64 += "==";
-                break;
-            case 3:
-                base64 += "=";
-                break;
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
         }
 
         byte[] jsonBytes = Base64.getDecoder().decode(base64);

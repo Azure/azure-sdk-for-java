@@ -57,25 +57,25 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of MongoClustersClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MongoClustersClientImpl(DocumentDBClientImpl client) {
+    MongoClustersClientImpl(MongoClusterManagementClientImpl client) {
         this.service
             = RestProxy.create(MongoClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientMongoClusters to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for MongoClusterManagementClientMongoClusters to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientMong")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface MongoClustersService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}")
@@ -1714,8 +1714,6 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1744,8 +1742,6 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given resource group.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1774,8 +1770,6 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -1802,8 +1796,6 @@ public final class MongoClustersClientImpl implements MongoClustersClient {
     }
 
     /**
-     * List all the mongo clusters in a given subscription.
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
