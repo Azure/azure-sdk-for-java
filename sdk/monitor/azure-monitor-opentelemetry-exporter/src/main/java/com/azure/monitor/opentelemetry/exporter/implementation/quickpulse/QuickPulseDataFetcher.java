@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMonitoringDataPoints;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.MDC;
@@ -123,9 +124,9 @@ class QuickPulseDataFetcher {
         postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
         postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters));
         envelopes.add(postEnvelope);
-
+        QuickPulseMonitoringDataPoints points = new QuickPulseMonitoringDataPoints(envelopes);
         // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
-        return postEnvelope.toJsonString().replace("/", "\\/");
+        return points.toJsonString().replace("/", "\\/");
     }
 
     private static List<QuickPulseMetrics>
