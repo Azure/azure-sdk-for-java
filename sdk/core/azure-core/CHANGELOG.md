@@ -10,6 +10,7 @@
   scheduled-based execution. ([#41885](https://github.com/Azure/azure-sdk-for-java/pull/41885))
 - Allow passing `schemaUrl` when creating a `Meter` or `Tracer` using `MeterProvider` and `TracerProvider`. ([#41789](https://github.com/Azure/azure-sdk-for-java/pull/41789))
 - Added `Binary.writeTo(JsonWriter)` to enable `BinaryData` to better integrate with `azure-json`. ([#42107](https://github.com/Azure/azure-sdk-for-java/pull/42107))
+- Added `ProofOfPossessionOptions` and a field to `TokenRequestContext` to indicate its use. ([#41852](https://github.com/Azure/azure-sdk-for-java/pull/41852))
 
 ### Other Changes
 
