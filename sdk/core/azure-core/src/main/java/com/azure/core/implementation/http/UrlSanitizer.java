@@ -28,14 +28,13 @@ public final class UrlSanitizer {
      * @param allowedQueryParamNames A collection of query parameter names that should not be redacted.
      */
     public UrlSanitizer(Collection<String> allowedQueryParamNames) {
-        if (allowedQueryParamNames == null) {
+        if (CoreUtils.isNullOrEmpty(allowedQueryParamNames)) {
             this.canLogQueryParam = "api-version"::equalsIgnoreCase;
-        } else if (allowedQueryParamNames.isEmpty()) {
-            this.canLogQueryParam = ignored -> false;
         } else {
             Set<String> lowercasedAllowedQueryParamNames = allowedQueryParamNames.stream()
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());
+            lowercasedAllowedQueryParamNames.add("api-version");
             this.canLogQueryParam
                 = paramName -> lowercasedAllowedQueryParamNames.contains(paramName.toLowerCase(Locale.ROOT));
         }
