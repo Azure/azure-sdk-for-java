@@ -34,7 +34,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,8 +46,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase {
     private ChatCompletionsClient client;
-    private static String FUNCTION_NAME = "FutureTemperature";
-    private static String FUNCTION_RETURN = "-7";
+    private static String functionName = "FutureTemperature";
+    private static String functionReturn = "-7";
 
     private ChatCompletionsClient getChatCompletionsClient(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
@@ -181,7 +180,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         }
 
         assertNotNull(functionName);
-        assertTrue(functionName.contentEquals(FUNCTION_NAME));
+        assertTrue(functionName.contentEquals(functionName));
         assertNotNull(toolCallId);
 
         // We verify that the LLM wants us to call the function we advertised in the original request
@@ -232,23 +231,23 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
                     finalResult.append(choice.getDelta().getContent());
                 }
             }
-            assertTrue(finalResult.toString().contains(FUNCTION_RETURN));
+            assertTrue(finalResult.toString().contains(functionReturn));
         }
     }
 
     private static String futureTemperature(String locationName, String data) {
-        return String.format("%s C", FUNCTION_RETURN);
+        return String.format("%s C", functionReturn);
     }
 
     private static FunctionDefinition getFutureTemperatureFunctionDefinition() {
-        FunctionDefinition functionDefinition = new FunctionDefinition(FUNCTION_NAME);
+        FunctionDefinition functionDefinition = new FunctionDefinition(functionName);
         functionDefinition.setDescription("Get the future temperature for a given location and date.");
         FutureTemperatureParameters parameters = new FutureTemperatureParameters();
         functionDefinition.setParameters(BinaryData.fromObject(parameters));
         return functionDefinition;
     }
 
-    public static class FunctionArguments implements JsonSerializable<FunctionArguments> {
+    public static final class FunctionArguments implements JsonSerializable<FunctionArguments> {
         @JsonProperty(value = "location_name")
         private String locationName;
 
@@ -288,7 +287,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         }
     }
 
-    private static class FutureTemperatureParameters implements JsonSerializable<FutureTemperatureParameters> {
+    private static final class FutureTemperatureParameters implements JsonSerializable<FutureTemperatureParameters> {
         @JsonProperty(value = "type")
         private String type = "object";
 
@@ -296,8 +295,8 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         private FutureTemperatureProperties properties;
 
         private FutureTemperatureParameters() {
-           this.type = "object";
-           this.properties = new FutureTemperatureProperties();
+            this.type = "object";
+            this.properties = new FutureTemperatureProperties();
         }
 
         private FutureTemperatureParameters(String type, FutureTemperatureProperties properties) {
@@ -333,7 +332,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
         }
     }
 
-    private static class FutureTemperatureProperties implements JsonSerializable<FutureTemperatureProperties>{
+    private static final class FutureTemperatureProperties implements JsonSerializable<FutureTemperatureProperties> {
         private String unitString = "Temperature unit. Can be either Celsius or Fahrenheit. Defaults to Celsius.";
         @JsonProperty(value = "unit")
         StringField unit = new StringField(unitString);
