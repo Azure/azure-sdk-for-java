@@ -1,18 +1,12 @@
 # Release History
 
-## 2.9.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.9.0 (2024-09-30)
 
 ### Bugs Fixed
 - Fixed bug about intermediate certificate not loaded. [#39715](https://github.com/Azure/azure-sdk-for-java/issues/39715).
 
 ### Features Added
 - Use the Container App recommended method to obtain the managed identity access token. [#32280](https://github.com/Azure/azure-sdk-for-java/issues/32280).
-
-### Other Changes
 
 ## 2.9.0-beta.2 (2024-07-09)
 
@@ -35,6 +29,11 @@
 
 #### Dependency Updates
 - Upgraded `conscrypt-openjdk-uber` from `2.2.1` to version `2.5.2`.
+
+## 2.8.2 (2024-07-17)
+
+### Bugs Fixed
+- Fix bug: AccessTokenUtil does not urlencode its parameters when getting an access token [#40616](https://github.com/Azure/azure-sdk-for-java/issues/40616).
 
 ## 2.8.1 (2023-12-04)
 
