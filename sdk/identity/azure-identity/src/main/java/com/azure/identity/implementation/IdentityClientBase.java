@@ -480,9 +480,9 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        ManagedIdentitySourceType managedIdentitySourceType = getManagedIdentitySourceType();
+        ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
 
-        if (managedIdentitySourceType.compareTo(ManagedIdentitySourceType.DEFAULT_TO_IMDS) == 0) {
+        if (managedIdentitySourceType.equals(ManagedIdentitySourceType.DEFAULT_TO_IMDS)) {
             options.setUseImdsRetryStrategy();
         }
 
@@ -499,14 +499,6 @@ public abstract class IdentityClientBase {
 
         return miBuilder.build();
     }
-
-
-    // temporary workaround until msal4j fixes a bug.
-    public static ManagedIdentitySourceType getManagedIdentitySourceType() {
-        return ManagedIdentityApplication.builder(ManagedIdentityId.systemAssigned())
-            .build().getManagedIdentitySource();
-    }
-
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
         String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
             + "/" + tenantId;
