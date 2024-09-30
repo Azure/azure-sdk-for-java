@@ -111,7 +111,11 @@ public final class SerializableContent extends BinaryDataContent {
     public void writeTo(JsonWriter jsonWriter) throws IOException {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeRawValue(toString());
+        if (content == null) {
+            jsonWriter.writeNull();
+        } else {
+            jsonWriter.writeRawValue(toString());
+        }
     }
 
     @Override
