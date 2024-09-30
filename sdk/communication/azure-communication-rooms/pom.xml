@@ -51,8 +51,7 @@
       com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

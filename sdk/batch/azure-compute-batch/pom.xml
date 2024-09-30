@@ -50,6 +50,8 @@
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
   <dependencies>
     <dependency>

@@ -43,6 +43,7 @@
 
       --add-opens com.azure.data.schemaregistry.jsonschema/com.azure.data.schemaregistry.jsonschema=com.fasterxml.jackson.databind,ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

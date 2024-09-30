@@ -19,6 +19,7 @@
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <parent>

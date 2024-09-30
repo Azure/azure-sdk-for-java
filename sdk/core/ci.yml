@@ -99,7 +99,6 @@ extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: core
-    JavadocSafeJavaBuildVersion: '1.21'
     TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
