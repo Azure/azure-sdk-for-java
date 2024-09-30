@@ -17,6 +17,12 @@ public class ProofOfPossessionOptions {
     private HttpMethod requestMethod;
 
     /**
+     * Creates a new instance of {@link ProofOfPossessionOptions}.
+     */
+    public ProofOfPossessionOptions() {
+    }
+
+    /**
      * Gets the proof of possession nonce.
      *
      * @return A string representing the proof of possession nonce.
