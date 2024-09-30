@@ -1278,6 +1278,8 @@ public class CosmosClientBuilder implements
             uri = new URI(serviceEndpoint);
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("invalid serviceEndpoint", e);
+        } catch (IndexOutOfBoundsException e) {
+            throw new IllegalArgumentException("invalid serviceEndpoint", e);
         }
 
         if (preferredRegions != null) {
