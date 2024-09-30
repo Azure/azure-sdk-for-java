@@ -3,12 +3,14 @@
 ## 1.0.0-beta.12 (Unreleased)
 
 ### Features Added
-- Added support for service API version, `2024-08-01-preview`.
+- Added support for service API version `2024-08-01-preview`.
 - Structured Outputs can be enabled by setting the parameter `strict: true` in an API call with either a defined response format or function definitions.
-  - Added `refusal` property in `ChatChoiceLogProbabilityInfo`, `ChatMessageContentItem`, `ChatResponseMessage` classes
-    and a new type of content item class `ChatMessageRefusalContentItem` to support refusal. `refusal` is only works with Structured output.
+  - Added `refusal` property in `ChatChoiceLogProbabilityInfo`, `ChatMessageContentItem`, `ChatResponseMessage` classes,
+    and a new type of content item class `ChatMessageRefusalContentItem` to support refusal. `refusal` is only works with structured output.
   - Added `json_schema` property in `ChatCompletionsResponseFormat` class to support JSON schema.
     New classes `ChatCompletionsJsonSchemaResponseFormat` and `ChatCompletionsJsonSchemaResponseFormatJsonSchema` are added to support JSON schema response format.
+- Added support for uploading large files in multiple parts. New client methods `createUpload`, `addUploadPart`,
+  `completeUpload` and `cancelUpload` introduced in `OpenAIClient` and `OpenAIAsyncClient` classes.
 - Updated `ChatRequestMessages` derived classes, 
   - `ChatRequestSystemMessage` content: `String` or `ChatMessageTextContentItem[]`.
   - `ChatRequestAssistantMessage` content: `String`, `ChatMessageTextContentItem[]`, `ChatMessageRefusalContentItem[]` or `null`.

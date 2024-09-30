@@ -8,6 +8,7 @@ import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.ai.openai.OpenAIClient;
 import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.implementation.Parameters;
+import com.azure.ai.openai.models.AddUploadPartRequest;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -35,9 +36,13 @@ import com.azure.ai.openai.models.ChatRequestToolMessage;
 import com.azure.ai.openai.models.ChatRequestUserMessage;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.Choice;
+import com.azure.ai.openai.models.CompleteUploadRequest;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CreateUploadRequest;
+import com.azure.ai.openai.models.CreateUploadRequestPurpose;
+import com.azure.ai.openai.models.DataFileDetails;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -51,6 +56,8 @@ import com.azure.ai.openai.models.OpenAIFile;
 import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
+import com.azure.ai.openai.models.Upload;
+import com.azure.ai.openai.models.UploadPart;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -407,6 +414,33 @@ public final class ReadmeSamples {
                     .setDescription("Fetches the weather in the given location")
                     .setSchema(BinaryData.fromObject(new Parameters()))));
         // END: readme-sample-structuredOutputsResponseFormat
+    }
+
+    public void uploadLargeFilesMultipleParts() {
+        int totalFilesSize = 0;
+        Path path = null;
+        Path path2 = null;
+
+        // BEGIN: readme-sample-uploadsLargeFilesMultipleParts
+        CreateUploadRequest createUploadRequest = new CreateUploadRequest("{fileNameToCreate}", CreateUploadRequestPurpose.ASSISTANTS,
+            totalFilesSize, "text/plain");
+        Upload upload = client.createUpload(createUploadRequest);
+        String uploadId = upload.getId();
+
+        UploadPart uploadPartAdded = client.addUploadPart(uploadId,
+            new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path)).setFilename("{fileName}")));
+        String uploadPartAddedId = uploadPartAdded.getId();
+        System.out.println("Upload part added, upload part ID = " + uploadPartAddedId);
+
+        UploadPart uploadPartAdded2 = client.addUploadPart(uploadId,
+            new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path2)).setFilename("{fileName2}")));
+        String uploadPartAddedId2 = uploadPartAdded2.getId();
+        System.out.println("Upload part 2 added, upload part ID = " + uploadPartAddedId2);
+
+        CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
+        Upload completeUpload = client.completeUpload(uploadId, completeUploadRequest);
+        System.out.println("Upload completed, upload ID = " + completeUpload.getId());
+        // END: readme-sample-uploadsLargeFilesMultipleParts
     }
 
     public void enableHttpLogging() {

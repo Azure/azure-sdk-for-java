@@ -2469,10 +2469,20 @@ public final class OpenAIAsyncClient {
      * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
-        return this.serviceClient.createUploadWithResponseAsync(requestBody, requestOptions);
+    public Mono<Response<Upload>> createUploadWithResponse(BinaryData requestBody, RequestOptions requestOptions) {
+
+        Mono<Response<BinaryData>> createUploadWithResponse;
+        if (openAIServiceClient != null) {
+            createUploadWithResponse = this.openAIServiceClient.createUploadWithResponseAsync(requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            createUploadWithResponse = this.serviceClient.createUploadWithResponseAsync(requestBody, requestOptions);
+        }
+
+        return createUploadWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
     }
 
     /**
@@ -2503,13 +2513,21 @@ public final class OpenAIAsyncClient {
      * @return the upload Part represents a chunk of bytes we can add to an Upload object along with {@link Response} on
      * successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
+    Mono<Response<UploadPart>> addUploadPartWithResponse(String uploadId, BinaryData requestBody,
         RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation 'addUploadPart'
         // is 'multipart/form-data'
-        return this.serviceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+        Mono<Response<BinaryData>> addUploadPartWithResponse;
+        if (openAIServiceClient != null) {
+            addUploadPartWithResponse = this.openAIServiceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            addUploadPartWithResponse = this.serviceClient.addUploadPartWithResponseAsync(uploadId, requestBody, requestOptions);
+        }
+        return addUploadPartWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(UploadPart.class)));
     }
 
     /**
@@ -2568,11 +2586,19 @@ public final class OpenAIAsyncClient {
      * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> completeUploadWithResponse(String uploadId, BinaryData requestBody,
+    public Mono<Response<Upload>> completeUploadWithResponse(String uploadId, BinaryData requestBody,
         RequestOptions requestOptions) {
-        return this.serviceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
+        Mono<Response<BinaryData>> completeUploadWithResponse;
+        if (openAIServiceClient != null) {
+            completeUploadWithResponse = this.openAIServiceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            completeUploadWithResponse = this.serviceClient.completeUploadWithResponseAsync(uploadId, requestBody, requestOptions);
+        }
+        return completeUploadWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
     }
 
     /**
@@ -2611,10 +2637,18 @@ public final class OpenAIAsyncClient {
      * @return the Upload object can accept byte chunks in the form of Parts along with {@link Response} on successful
      * completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelUploadWithResponse(String uploadId, RequestOptions requestOptions) {
-        return this.serviceClient.cancelUploadWithResponseAsync(uploadId, requestOptions);
+    public Mono<Response<Upload>> cancelUploadWithResponse(String uploadId, RequestOptions requestOptions) {
+        Mono<Response<BinaryData>> cancelUploadWithResponse;
+        if (openAIServiceClient != null) {
+            cancelUploadWithResponse = this.openAIServiceClient.cancelUploadWithResponseAsync(uploadId, requestOptions);
+        } else {
+            addAzureVersionToRequestOptions(serviceClient.getEndpoint(), requestOptions,
+                serviceClient.getServiceVersion());
+            cancelUploadWithResponse = this.serviceClient.cancelUploadWithResponseAsync(uploadId, requestOptions);
+        }
+        return cancelUploadWithResponse
+            .map(response -> new SimpleResponse<>(response, response.getValue().toObject(Upload.class)));
     }
 
     /**
@@ -2639,13 +2673,11 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Upload object can accept byte chunks in the form of Parts on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Upload> createUpload(CreateUploadRequest requestBody) {
         // Generated convenience method for createUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return createUploadWithResponse(BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Upload.class));
+        return createUploadWithResponse(BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2667,7 +2699,6 @@ public final class OpenAIAsyncClient {
      * @return the upload Part represents a chunk of bytes we can add to an Upload object on successful completion of
      * {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadPart> addUploadPart(String uploadId, AddUploadPartRequest requestBody) {
         // Generated convenience method for addUploadPartWithResponse
@@ -2678,8 +2709,7 @@ public final class OpenAIAsyncClient {
                     requestBody.getData().getFilename())
                 .end()
                 .getRequestBody(),
-            requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(UploadPart.class));
+            requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2703,14 +2733,12 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Upload object can accept byte chunks in the form of Parts on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Upload> completeUpload(String uploadId, CompleteUploadRequest requestBody) {
         // Generated convenience method for completeUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return completeUploadWithResponse(uploadId, BinaryData.fromObject(requestBody), requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Upload.class));
+            .flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -2725,12 +2753,10 @@ public final class OpenAIAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Upload object can accept byte chunks in the form of Parts on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Upload> cancelUpload(String uploadId) {
         // Generated convenience method for cancelUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelUploadWithResponse(uploadId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Upload.class));
+        return cancelUploadWithResponse(uploadId, requestOptions).flatMap(FluxUtil::toMono);
     }
 }

@@ -26,6 +26,7 @@ import com.azure.ai.openai.models.ChatCompletionsToolSelectionPreset;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
+import com.azure.ai.openai.models.CompleteUploadRequest;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
@@ -42,6 +43,8 @@ import com.azure.ai.openai.models.OnYourDataContextProperty;
 import com.azure.ai.openai.models.OpenAIFile;
 import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationResponseFormat;
+import com.azure.ai.openai.models.Upload;
+import com.azure.ai.openai.models.UploadPart;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -60,11 +63,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -1435,5 +1440,54 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 //            assertTrue(deletionStatus.isDeleted());
 //            assertEquals(deletionStatus.getId(), file.getId());
         }));
+    }
+
+    // Upload large file in parts
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testUploadLargesFilesInPartsOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        AtomicReference<String> uploadId = new AtomicReference<>();
+        uploadCreationRunner(createUploadRequest -> {
+            // Upload file
+            Upload upload = client.createUpload(createUploadRequest);
+            uploadId.set(upload.getId());
+            assertNotNull(uploadId.get());
+        });
+
+        addUploadPartRequestRunner((part1, part2) -> {
+            String uploadedId = uploadId.get();
+            assertNotNull(uploadedId);
+            UploadPart uploadPartAdded = client.addUploadPart(uploadedId, part1);
+            String uploadPartAddedId = uploadPartAdded.getId();
+            assertNotNull(uploadPartAddedId);
+
+            UploadPart uploadPartAdded2 = client.addUploadPart(uploadedId, part2);
+            String uploadPartAddedId2 = uploadPartAdded2.getId();
+            assertNotNull(uploadPartAddedId2);
+
+            assertNotEquals(uploadPartAddedId, uploadPartAddedId2);
+
+            CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
+
+            Upload completeUpload = client.completeUpload(uploadedId, completeUploadRequest);
+            assertEquals(uploadedId, completeUpload.getId());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testCancelUploadLargesFilesInParts(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        uploadCreationRunner(createUploadRequest -> {
+            // Upload file
+            Upload upload = client.createUpload(createUploadRequest);
+            String uploadId = upload.getId();
+            assertNotNull(uploadId);
+
+            Upload cancelUpload = client.cancelUpload(uploadId);
+            assertEquals(uploadId, cancelUpload.getId());
+        });
     }
 }

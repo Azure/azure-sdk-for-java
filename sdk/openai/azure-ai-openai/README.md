@@ -480,6 +480,33 @@ ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Array
 For a complete sample example, see sample [Structured Output: Response Format][sample_chat_completions_json_schema].
 For more details see the [OpenAI structured output documentation](https://platform.openai.com/docs/guides/structured-output).
 
+### Upload large files in multiple parts
+
+`uploads` allows you to upload large files in multiple parts.
+
+```java readme-sample-uploadsLargeFilesMultipleParts
+CreateUploadRequest createUploadRequest = new CreateUploadRequest("{fileNameToCreate}", CreateUploadRequestPurpose.ASSISTANTS,
+    totalFilesSize, "text/plain");
+Upload upload = client.createUpload(createUploadRequest);
+String uploadId = upload.getId();
+
+UploadPart uploadPartAdded = client.addUploadPart(uploadId,
+    new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path)).setFilename("{fileName}")));
+String uploadPartAddedId = uploadPartAdded.getId();
+System.out.println("Upload part added, upload part ID = " + uploadPartAddedId);
+
+UploadPart uploadPartAdded2 = client.addUploadPart(uploadId,
+    new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path2)).setFilename("{fileName2}")));
+String uploadPartAddedId2 = uploadPartAdded2.getId();
+System.out.println("Upload part 2 added, upload part ID = " + uploadPartAddedId2);
+
+CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
+Upload completeUpload = client.completeUpload(uploadId, completeUploadRequest);
+System.out.println("Upload completed, upload ID = " + completeUpload.getId());
+```
+For a complete sample example, see sample [Upload large files in multiple parts][sample_uploads_in_multi_parts].
+For more details see the [OpenAI uploads documentation](https://platform.openai.com/docs/api-reference/uploads).
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -549,6 +576,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
 [sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
 [sample_text_to_speech]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/TextToSpeechSample.java
+[sample_uploads_in_multi_parts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/UploadLargeFileInPartsSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java
