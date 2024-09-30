@@ -18,6 +18,8 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens java.xml/jdk.xml.internal=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
+      --add-exports com.azure.core/com.azure.core.implementation=com.azure.identity.broker
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
@@ -34,12 +36,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
       <version>1.14.0-beta.3</version> <!-- {x-version-update;com.azure:azure-identity;current} -->
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.53</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
     </dependency>
 
     <dependency>
