@@ -13,7 +13,7 @@ import java.util.Map;
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
      * TrafficControllerPut.json
      */
     /**
@@ -23,8 +23,12 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
      */
     public static void
         putTrafficController(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().define("tc1").withRegion("NorthCentralUS")
-            .withExistingResourceGroup("rg1").withTags(mapOf("key1", "fakeTokenPlaceholder")).create();
+        manager.trafficControllerInterfaces()
+            .define("tc1")
+            .withRegion("NorthCentralUS")
+            .withExistingResourceGroup("rg1")
+            .withTags(mapOf("key1", "fakeTokenPlaceholder"))
+            .create();
     }
 
     // Use "Map.of" if available
