@@ -5,8 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonWriter;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMonitoringDataPoints;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
@@ -14,8 +12,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.MDC;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
