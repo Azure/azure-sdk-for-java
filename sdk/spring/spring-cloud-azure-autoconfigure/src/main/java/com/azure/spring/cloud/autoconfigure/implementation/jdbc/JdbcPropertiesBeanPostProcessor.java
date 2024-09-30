@@ -97,11 +97,11 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             try {
                 JdbcConnectionStringEnhancer enhancer = new JdbcConnectionStringEnhancer(connectionString);
-                enhancer.enhanceProperties(buildEnhancedProperties(databaseType, properties));
+                enhancer.enhanceProperties(buildEnhancedProperties(databaseType, properties), true);
                 enhanceUserAgent(databaseType, enhancer);
                 ((DataSourceProperties) bean).setUrl(enhancer.getJdbcUrl());
             } catch (IllegalArgumentException e) {
-                LOGGER.debug("Inconsistent properties detected, skip enhancing jdbc url.");
+                LOGGER.error("Inconsistent properties detected, skip enhancing jdbc url.", e);
             }
         }
         return bean;

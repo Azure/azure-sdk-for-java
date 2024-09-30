@@ -5,6 +5,11 @@
 ### Features Added
 
 ### Breaking Changes
+- When creating a `DataLakeFileClient` or `DataLakeDirectoryClient` via `DataLakePathClientBuilder.pathName(String pathName)`,
+  the path name will be stored exactly as passed in and will not be URL-encoded. For example, if the path name is 
+  "foo/bar" and `DataLakeDirectoryClient` is created via `DataLakePathClientBuilder.pathName("foo/bar")`, 
+  `DataLakeDirectoryClient.getDirectoryPath()` will return "foo/bar" and the path's url will result in
+  “https://account.dfs.core.windows.net/filesystemname/foo%2Fbar”.
 
 ### Bugs Fixed
 
