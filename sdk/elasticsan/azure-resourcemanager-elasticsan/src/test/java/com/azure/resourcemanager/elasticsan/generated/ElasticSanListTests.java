@@ -39,7 +39,8 @@ public final class ElasticSanListTests {
                 "jgzjaoyfhrtx", "kcprbnw", "fqawrlyxw"))
             .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
             .withAvailabilityZones(Arrays.asList("xhocdgeablgphuti", "ndv", "aozwyiftyhxhu", "okftyxolniwpwcuk"))
-            .withBaseSizeTiB(5413928169725328380L).withExtendedCapacitySizeTiB(6655543031987188756L)
+            .withBaseSizeTiB(5413928169725328380L)
+            .withExtendedCapacitySizeTiB(6655543031987188756L)
             .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)));
         model = BinaryData.fromObject(model).toObject(ElasticSanList.class);
         Assertions.assertEquals("wgcu", model.value().get(0).location());

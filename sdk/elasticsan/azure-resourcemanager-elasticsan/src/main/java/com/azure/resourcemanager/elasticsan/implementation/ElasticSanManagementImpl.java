@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.elasticsan.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -12,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -29,8 +30,8 @@ import com.azure.resourcemanager.elasticsan.fluent.PrivateEndpointConnectionsCli
 import com.azure.resourcemanager.elasticsan.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.elasticsan.fluent.SkusClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumeGroupsClient;
-import com.azure.resourcemanager.elasticsan.fluent.VolumeSnapshotsClient;
 import com.azure.resourcemanager.elasticsan.fluent.VolumesClient;
+import com.azure.resourcemanager.elasticsan.fluent.VolumeSnapshotsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -258,7 +259,7 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-01-01";
+        this.apiVersion = "2024-05-01";
         this.operations = new OperationsClientImpl(this);
         this.skus = new SkusClientImpl(this);
         this.elasticSans = new ElasticSansClientImpl(this);
@@ -329,8 +330,8 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -371,7 +372,7 @@ public final class ElasticSanManagementImpl implements ElasticSanManagement {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

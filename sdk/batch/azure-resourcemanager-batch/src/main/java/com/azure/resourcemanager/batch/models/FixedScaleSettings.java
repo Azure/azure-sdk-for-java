@@ -5,46 +5,39 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * Fixed scale settings for the pool.
  */
 @Fluent
-public final class FixedScaleSettings {
+public final class FixedScaleSettings implements JsonSerializable<FixedScaleSettings> {
     /*
-     * The timeout for allocation of compute nodes to the pool.
-     * 
      * The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The
      * minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
      * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      */
-    @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
 
     /*
-     * The desired number of dedicated compute nodes in the pool.
-     * 
      * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      */
-    @JsonProperty(value = "targetDedicatedNodes")
     private Integer targetDedicatedNodes;
 
     /*
-     * The desired number of Spot/low-priority compute nodes in the pool.
-     * 
      * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      */
-    @JsonProperty(value = "targetLowPriorityNodes")
     private Integer targetLowPriorityNodes;
 
     /*
-     * Determines what to do with a node and its running task(s) after it has been selected for deallocation.
-     * 
      * If omitted, the default value is Requeue.
      */
-    @JsonProperty(value = "nodeDeallocationOption")
     private ComputeNodeDeallocationOption nodeDeallocationOption;
 
     /**
@@ -54,11 +47,10 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Get the resizeTimeout property: The timeout for allocation of compute nodes to the pool.
-     * 
-     * The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The
-     * minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
-     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * Get the resizeTimeout property: The default value is 15 minutes. Timeout values use ISO 8601 format. For example,
+     * use PT10M for 10 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch
+     * service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400
+     * (Bad Request).
      * 
      * @return the resizeTimeout value.
      */
@@ -67,11 +59,10 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Set the resizeTimeout property: The timeout for allocation of compute nodes to the pool.
-     * 
-     * The default value is 15 minutes. Timeout values use ISO 8601 format. For example, use PT10M for 10 minutes. The
-     * minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch service rejects the request
-     * with an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * Set the resizeTimeout property: The default value is 15 minutes. Timeout values use ISO 8601 format. For example,
+     * use PT10M for 10 minutes. The minimum value is 5 minutes. If you specify a value less than 5 minutes, the Batch
+     * service rejects the request with an error; if you are calling the REST API directly, the HTTP status code is 400
+     * (Bad Request).
      * 
      * @param resizeTimeout the resizeTimeout value to set.
      * @return the FixedScaleSettings object itself.
@@ -82,9 +73,7 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Get the targetDedicatedNodes property: The desired number of dedicated compute nodes in the pool.
-     * 
-     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * Get the targetDedicatedNodes property: At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      * 
      * @return the targetDedicatedNodes value.
      */
@@ -93,9 +82,7 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Set the targetDedicatedNodes property: The desired number of dedicated compute nodes in the pool.
-     * 
-     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * Set the targetDedicatedNodes property: At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
      * 
      * @param targetDedicatedNodes the targetDedicatedNodes value to set.
      * @return the FixedScaleSettings object itself.
@@ -106,9 +93,8 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Get the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool.
-     * 
-     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * Get the targetLowPriorityNodes property: At least one of targetDedicatedNodes, targetLowPriorityNodes must be
+     * set.
      * 
      * @return the targetLowPriorityNodes value.
      */
@@ -117,9 +103,8 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Set the targetLowPriorityNodes property: The desired number of Spot/low-priority compute nodes in the pool.
-     * 
-     * At least one of targetDedicatedNodes, targetLowPriorityNodes must be set.
+     * Set the targetLowPriorityNodes property: At least one of targetDedicatedNodes, targetLowPriorityNodes must be
+     * set.
      * 
      * @param targetLowPriorityNodes the targetLowPriorityNodes value to set.
      * @return the FixedScaleSettings object itself.
@@ -130,10 +115,7 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Get the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
-     * been selected for deallocation.
-     * 
-     * If omitted, the default value is Requeue.
+     * Get the nodeDeallocationOption property: If omitted, the default value is Requeue.
      * 
      * @return the nodeDeallocationOption value.
      */
@@ -142,10 +124,7 @@ public final class FixedScaleSettings {
     }
 
     /**
-     * Set the nodeDeallocationOption property: Determines what to do with a node and its running task(s) after it has
-     * been selected for deallocation.
-     * 
-     * If omitted, the default value is Requeue.
+     * Set the nodeDeallocationOption property: If omitted, the default value is Requeue.
      * 
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
      * @return the FixedScaleSettings object itself.
@@ -161,5 +140,53 @@ public final class FixedScaleSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resizeTimeout", CoreUtils.durationToStringWithDays(this.resizeTimeout));
+        jsonWriter.writeNumberField("targetDedicatedNodes", this.targetDedicatedNodes);
+        jsonWriter.writeNumberField("targetLowPriorityNodes", this.targetLowPriorityNodes);
+        jsonWriter.writeStringField("nodeDeallocationOption",
+            this.nodeDeallocationOption == null ? null : this.nodeDeallocationOption.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FixedScaleSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FixedScaleSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FixedScaleSettings.
+     */
+    public static FixedScaleSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FixedScaleSettings deserializedFixedScaleSettings = new FixedScaleSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resizeTimeout".equals(fieldName)) {
+                    deserializedFixedScaleSettings.resizeTimeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("targetDedicatedNodes".equals(fieldName)) {
+                    deserializedFixedScaleSettings.targetDedicatedNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("targetLowPriorityNodes".equals(fieldName)) {
+                    deserializedFixedScaleSettings.targetLowPriorityNodes = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeDeallocationOption".equals(fieldName)) {
+                    deserializedFixedScaleSettings.nodeDeallocationOption
+                        = ComputeNodeDeallocationOption.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFixedScaleSettings;
+        });
     }
 }

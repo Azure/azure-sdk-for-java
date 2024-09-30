@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Renamed `VertxAsyncHttpClient` to `VertxHttpClient`, `VertxAsyncHttpClientBuilder` to `VertxHttpClientBuilder`, and
+  `VertxAsyncHttpClientProvider` to `VertxHttpClientProvider`.
+
 ### Bugs Fixed
 
 ### Other Changes

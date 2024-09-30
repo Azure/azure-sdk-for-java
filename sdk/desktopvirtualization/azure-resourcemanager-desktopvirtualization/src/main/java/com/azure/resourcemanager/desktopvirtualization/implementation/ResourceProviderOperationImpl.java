@@ -14,8 +14,7 @@ public final class ResourceProviderOperationImpl implements ResourceProviderOper
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    ResourceProviderOperationImpl(
-        ResourceProviderOperationInner innerObject,
+    ResourceProviderOperationImpl(ResourceProviderOperationInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

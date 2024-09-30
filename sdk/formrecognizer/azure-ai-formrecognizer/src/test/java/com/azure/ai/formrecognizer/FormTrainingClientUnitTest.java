@@ -10,8 +10,10 @@ import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.test.SyncAsyncExtension;
 import com.azure.core.test.annotation.SyncAsyncTest;
+import com.azure.core.test.http.MockHttpResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientBuilderTest.TEST_FILE;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_MODEL_ID;
@@ -33,6 +35,7 @@ public class FormTrainingClientUnitTest {
     @BeforeAll
     protected static void beforeTest() {
         FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(VALID_HTTPS_LOCALHOST)
             .credential(new AzureKeyCredential("fakeKey"));
 

@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** PersonalDesktopAssignment type for HostPool. */
+/**
+ * PersonalDesktopAssignment type for HostPool.
+ */
 public final class PersonalDesktopAssignmentType extends ExpandableStringEnum<PersonalDesktopAssignmentType> {
-    /** Static value Automatic for PersonalDesktopAssignmentType. */
+    /**
+     * Static value Automatic for PersonalDesktopAssignmentType.
+     */
     public static final PersonalDesktopAssignmentType AUTOMATIC = fromString("Automatic");
 
-    /** Static value Direct for PersonalDesktopAssignmentType. */
+    /**
+     * Static value Direct for PersonalDesktopAssignmentType.
+     */
     public static final PersonalDesktopAssignmentType DIRECT = fromString("Direct");
 
     /**
      * Creates a new instance of PersonalDesktopAssignmentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class PersonalDesktopAssignmentType extends ExpandableStringEnum<Pe
 
     /**
      * Creates or finds a PersonalDesktopAssignmentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PersonalDesktopAssignmentType.
      */
-    @JsonCreator
     public static PersonalDesktopAssignmentType fromString(String name) {
         return fromString(name, PersonalDesktopAssignmentType.class);
     }
 
     /**
      * Gets known PersonalDesktopAssignmentType values.
-     *
+     * 
      * @return known PersonalDesktopAssignmentType values.
      */
     public static Collection<PersonalDesktopAssignmentType> values() {

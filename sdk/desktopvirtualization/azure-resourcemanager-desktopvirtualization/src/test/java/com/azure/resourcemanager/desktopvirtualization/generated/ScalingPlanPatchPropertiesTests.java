@@ -18,176 +18,145 @@ import org.junit.jupiter.api.Assertions;
 public final class ScalingPlanPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScalingPlanPatchProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"axdbabph\",\"friendlyName\":\"rqlfktsthsucocmn\",\"timeZone\":\"azt\",\"exclusionTag\":\"twwrqp\",\"schedules\":[{\"name\":\"kzywbiex\",\"daysOfWeek\":[\"Monday\",\"Saturday\",\"Tuesday\",\"Thursday\"],\"rampUpStartTime\":{\"hour\":537783371,\"minute\":712970145},\"rampUpLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampUpMinimumHostsPct\":1757218598,\"rampUpCapacityThresholdPct\":954772002,\"peakStartTime\":{\"hour\":913520848,\"minute\":2089644825},\"peakLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownStartTime\":{\"hour\":1122495677,\"minute\":978941807},\"rampDownLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownMinimumHostsPct\":1637273093,\"rampDownCapacityThresholdPct\":556709719,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroSessions\",\"rampDownWaitTimeMinutes\":539118010,\"rampDownNotificationMessage\":\"xrhdwbavxbniwdjs\",\"offPeakStartTime\":{\"hour\":1721819579,\"minute\":44682703},\"offPeakLoadBalancingAlgorithm\":\"BreadthFirst\"},{\"name\":\"gnxytxhpzxbz\",\"daysOfWeek\":[\"Tuesday\",\"Saturday\",\"Sunday\"],\"rampUpStartTime\":{\"hour\":687811406,\"minute\":2112719993},\"rampUpLoadBalancingAlgorithm\":\"DepthFirst\",\"rampUpMinimumHostsPct\":1070511980,\"rampUpCapacityThresholdPct\":767485321,\"peakStartTime\":{\"hour\":683096645,\"minute\":228169976},\"peakLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownStartTime\":{\"hour\":1091212098,\"minute\":1229662931},\"rampDownLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownMinimumHostsPct\":507562638,\"rampDownCapacityThresholdPct\":1271650742,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroActiveSessions\",\"rampDownWaitTimeMinutes\":338198941,\"rampDownNotificationMessage\":\"osvmk\",\"offPeakStartTime\":{\"hour\":979826416,\"minute\":941863244},\"offPeakLoadBalancingAlgorithm\":\"DepthFirst\"},{\"name\":\"kfplgmgsxnk\",\"daysOfWeek\":[\"Friday\"],\"rampUpStartTime\":{\"hour\":1802573976,\"minute\":1649575445},\"rampUpLoadBalancingAlgorithm\":\"DepthFirst\",\"rampUpMinimumHostsPct\":909915522,\"rampUpCapacityThresholdPct\":566835679,\"peakStartTime\":{\"hour\":1665401728,\"minute\":1601345404},\"peakLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownStartTime\":{\"hour\":2017228559,\"minute\":1973154307},\"rampDownLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownMinimumHostsPct\":1060544654,\"rampDownCapacityThresholdPct\":413325201,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroActiveSessions\",\"rampDownWaitTimeMinutes\":1370468424,\"rampDownNotificationMessage\":\"nyqupedeojnabck\",\"offPeakStartTime\":{\"hour\":598884844,\"minute\":611656940},\"offPeakLoadBalancingAlgorithm\":\"DepthFirst\"}],\"hostPoolReferences\":[{\"hostPoolArmPath\":\"btfhvpesaps\",\"scalingPlanEnabled\":false}]}")
-                .toObject(ScalingPlanPatchProperties.class);
-        Assertions.assertEquals("axdbabph", model.description());
-        Assertions.assertEquals("rqlfktsthsucocmn", model.friendlyName());
-        Assertions.assertEquals("azt", model.timeZone());
-        Assertions.assertEquals("twwrqp", model.exclusionTag());
-        Assertions.assertEquals("kzywbiex", model.schedules().get(0).name());
-        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.MONDAY, model.schedules().get(0).daysOfWeek().get(0));
-        Assertions.assertEquals(537783371, model.schedules().get(0).rampUpStartTime().hour());
-        Assertions.assertEquals(712970145, model.schedules().get(0).rampUpStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-                model.schedules().get(0).rampUpLoadBalancingAlgorithm());
-        Assertions.assertEquals(1757218598, model.schedules().get(0).rampUpMinimumHostsPct());
-        Assertions.assertEquals(954772002, model.schedules().get(0).rampUpCapacityThresholdPct());
-        Assertions.assertEquals(913520848, model.schedules().get(0).peakStartTime().hour());
-        Assertions.assertEquals(2089644825, model.schedules().get(0).peakStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, model.schedules().get(0).peakLoadBalancingAlgorithm());
-        Assertions.assertEquals(1122495677, model.schedules().get(0).rampDownStartTime().hour());
-        Assertions.assertEquals(978941807, model.schedules().get(0).rampDownStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
-                model.schedules().get(0).rampDownLoadBalancingAlgorithm());
-        Assertions.assertEquals(1637273093, model.schedules().get(0).rampDownMinimumHostsPct());
-        Assertions.assertEquals(556709719, model.schedules().get(0).rampDownCapacityThresholdPct());
+        ScalingPlanPatchProperties model = BinaryData.fromString(
+            "{\"description\":\"xpkd\",\"friendlyName\":\"baiuebbaumny\",\"timeZone\":\"ped\",\"exclusionTag\":\"jn\",\"schedules\":[{\"name\":\"hsmtxpsiebtfhvp\",\"daysOfWeek\":[\"Friday\",\"Wednesday\"],\"rampUpStartTime\":{\"hour\":2062643229,\"minute\":915471474},\"rampUpLoadBalancingAlgorithm\":\"DepthFirst\",\"rampUpMinimumHostsPct\":1631031599,\"rampUpCapacityThresholdPct\":136140206,\"peakStartTime\":{\"hour\":871941711,\"minute\":1056627326},\"peakLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownStartTime\":{\"hour\":400091584,\"minute\":1644974889},\"rampDownLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownMinimumHostsPct\":1677238877,\"rampDownCapacityThresholdPct\":1210562441,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroActiveSessions\",\"rampDownWaitTimeMinutes\":1152812045,\"rampDownNotificationMessage\":\"lxotogtwrupq\",\"offPeakStartTime\":{\"hour\":767248190,\"minute\":823053391},\"offPeakLoadBalancingAlgorithm\":\"BreadthFirst\"},{\"name\":\"ykvceoveil\",\"daysOfWeek\":[\"Wednesday\",\"Tuesday\",\"Friday\",\"Friday\"],\"rampUpStartTime\":{\"hour\":914615331,\"minute\":1045744686},\"rampUpLoadBalancingAlgorithm\":\"DepthFirst\",\"rampUpMinimumHostsPct\":197964626,\"rampUpCapacityThresholdPct\":1452176185,\"peakStartTime\":{\"hour\":949474495,\"minute\":95653514},\"peakLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownStartTime\":{\"hour\":657781919,\"minute\":1907592616},\"rampDownLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownMinimumHostsPct\":1501927720,\"rampDownCapacityThresholdPct\":1284749235,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroActiveSessions\",\"rampDownWaitTimeMinutes\":1979421186,\"rampDownNotificationMessage\":\"mclfplphoxuscr\",\"offPeakStartTime\":{\"hour\":2037546368,\"minute\":2003410398},\"offPeakLoadBalancingAlgorithm\":\"DepthFirst\"},{\"name\":\"sbj\",\"daysOfWeek\":[\"Saturday\"],\"rampUpStartTime\":{\"hour\":2075352957,\"minute\":2003590668},\"rampUpLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampUpMinimumHostsPct\":1245972135,\"rampUpCapacityThresholdPct\":604467332,\"peakStartTime\":{\"hour\":737814385,\"minute\":1011039859},\"peakLoadBalancingAlgorithm\":\"BreadthFirst\",\"rampDownStartTime\":{\"hour\":224913714,\"minute\":1039812081},\"rampDownLoadBalancingAlgorithm\":\"DepthFirst\",\"rampDownMinimumHostsPct\":640895390,\"rampDownCapacityThresholdPct\":1148622887,\"rampDownForceLogoffUsers\":false,\"rampDownStopHostsWhen\":\"ZeroActiveSessions\",\"rampDownWaitTimeMinutes\":991595077,\"rampDownNotificationMessage\":\"laocqxtccmg\",\"offPeakStartTime\":{\"hour\":1054992005,\"minute\":435564330},\"offPeakLoadBalancingAlgorithm\":\"BreadthFirst\"}],\"hostPoolReferences\":[{\"hostPoolArmPath\":\"yrxvwfudwpznt\",\"scalingPlanEnabled\":false},{\"hostPoolArmPath\":\"hl\",\"scalingPlanEnabled\":true},{\"hostPoolArmPath\":\"hckfrlhrx\",\"scalingPlanEnabled\":false},{\"hostPoolArmPath\":\"vpycanuzbp\",\"scalingPlanEnabled\":false}]}")
+            .toObject(ScalingPlanPatchProperties.class);
+        Assertions.assertEquals("xpkd", model.description());
+        Assertions.assertEquals("baiuebbaumny", model.friendlyName());
+        Assertions.assertEquals("ped", model.timeZone());
+        Assertions.assertEquals("jn", model.exclusionTag());
+        Assertions.assertEquals("hsmtxpsiebtfhvp", model.schedules().get(0).name());
+        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.FRIDAY, model.schedules().get(0).daysOfWeek().get(0));
+        Assertions.assertEquals(2062643229, model.schedules().get(0).rampUpStartTime().hour());
+        Assertions.assertEquals(915471474, model.schedules().get(0).rampUpStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
+            model.schedules().get(0).rampUpLoadBalancingAlgorithm());
+        Assertions.assertEquals(1631031599, model.schedules().get(0).rampUpMinimumHostsPct());
+        Assertions.assertEquals(136140206, model.schedules().get(0).rampUpCapacityThresholdPct());
+        Assertions.assertEquals(871941711, model.schedules().get(0).peakStartTime().hour());
+        Assertions.assertEquals(1056627326, model.schedules().get(0).peakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            model.schedules().get(0).peakLoadBalancingAlgorithm());
+        Assertions.assertEquals(400091584, model.schedules().get(0).rampDownStartTime().hour());
+        Assertions.assertEquals(1644974889, model.schedules().get(0).rampDownStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            model.schedules().get(0).rampDownLoadBalancingAlgorithm());
+        Assertions.assertEquals(1677238877, model.schedules().get(0).rampDownMinimumHostsPct());
+        Assertions.assertEquals(1210562441, model.schedules().get(0).rampDownCapacityThresholdPct());
         Assertions.assertEquals(false, model.schedules().get(0).rampDownForceLogoffUsers());
-        Assertions.assertEquals(StopHostsWhen.ZERO_SESSIONS, model.schedules().get(0).rampDownStopHostsWhen());
-        Assertions.assertEquals(539118010, model.schedules().get(0).rampDownWaitTimeMinutes());
-        Assertions.assertEquals("xrhdwbavxbniwdjs", model.schedules().get(0).rampDownNotificationMessage());
-        Assertions.assertEquals(1721819579, model.schedules().get(0).offPeakStartTime().hour());
-        Assertions.assertEquals(44682703, model.schedules().get(0).offPeakStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-                model.schedules().get(0).offPeakLoadBalancingAlgorithm());
-        Assertions.assertEquals("btfhvpesaps", model.hostPoolReferences().get(0).hostPoolArmPath());
+        Assertions.assertEquals(StopHostsWhen.ZERO_ACTIVE_SESSIONS, model.schedules().get(0).rampDownStopHostsWhen());
+        Assertions.assertEquals(1152812045, model.schedules().get(0).rampDownWaitTimeMinutes());
+        Assertions.assertEquals("lxotogtwrupq", model.schedules().get(0).rampDownNotificationMessage());
+        Assertions.assertEquals(767248190, model.schedules().get(0).offPeakStartTime().hour());
+        Assertions.assertEquals(823053391, model.schedules().get(0).offPeakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            model.schedules().get(0).offPeakLoadBalancingAlgorithm());
+        Assertions.assertEquals("yrxvwfudwpznt", model.hostPoolReferences().get(0).hostPoolArmPath());
         Assertions.assertEquals(false, model.hostPoolReferences().get(0).scalingPlanEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScalingPlanPatchProperties model =
-            new ScalingPlanPatchProperties()
-                .withDescription("axdbabph")
-                .withFriendlyName("rqlfktsthsucocmn")
-                .withTimeZone("azt")
-                .withExclusionTag("twwrqp")
-                .withSchedules(
-                    Arrays
-                        .asList(
-                            new ScalingSchedule()
-                                .withName("kzywbiex")
-                                .withDaysOfWeek(
-                                    Arrays
-                                        .asList(
-                                            ScalingScheduleDaysOfWeekItem.MONDAY,
-                                            ScalingScheduleDaysOfWeekItem.SATURDAY,
-                                            ScalingScheduleDaysOfWeekItem.TUESDAY,
-                                            ScalingScheduleDaysOfWeekItem.THURSDAY))
-                                .withRampUpStartTime(new Time().withHour(537783371).withMinute(712970145))
-                                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                                .withRampUpMinimumHostsPct(1757218598)
-                                .withRampUpCapacityThresholdPct(954772002)
-                                .withPeakStartTime(new Time().withHour(913520848).withMinute(2089644825))
-                                .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                                .withRampDownStartTime(new Time().withHour(1122495677).withMinute(978941807))
-                                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                                .withRampDownMinimumHostsPct(1637273093)
-                                .withRampDownCapacityThresholdPct(556709719)
-                                .withRampDownForceLogoffUsers(false)
-                                .withRampDownStopHostsWhen(StopHostsWhen.ZERO_SESSIONS)
-                                .withRampDownWaitTimeMinutes(539118010)
-                                .withRampDownNotificationMessage("xrhdwbavxbniwdjs")
-                                .withOffPeakStartTime(new Time().withHour(1721819579).withMinute(44682703))
-                                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST),
-                            new ScalingSchedule()
-                                .withName("gnxytxhpzxbz")
-                                .withDaysOfWeek(
-                                    Arrays
-                                        .asList(
-                                            ScalingScheduleDaysOfWeekItem.TUESDAY,
-                                            ScalingScheduleDaysOfWeekItem.SATURDAY,
-                                            ScalingScheduleDaysOfWeekItem.SUNDAY))
-                                .withRampUpStartTime(new Time().withHour(687811406).withMinute(2112719993))
-                                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                                .withRampUpMinimumHostsPct(1070511980)
-                                .withRampUpCapacityThresholdPct(767485321)
-                                .withPeakStartTime(new Time().withHour(683096645).withMinute(228169976))
-                                .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                                .withRampDownStartTime(new Time().withHour(1091212098).withMinute(1229662931))
-                                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                                .withRampDownMinimumHostsPct(507562638)
-                                .withRampDownCapacityThresholdPct(1271650742)
-                                .withRampDownForceLogoffUsers(false)
-                                .withRampDownStopHostsWhen(StopHostsWhen.ZERO_ACTIVE_SESSIONS)
-                                .withRampDownWaitTimeMinutes(338198941)
-                                .withRampDownNotificationMessage("osvmk")
-                                .withOffPeakStartTime(new Time().withHour(979826416).withMinute(941863244))
-                                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST),
-                            new ScalingSchedule()
-                                .withName("kfplgmgsxnk")
-                                .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.FRIDAY))
-                                .withRampUpStartTime(new Time().withHour(1802573976).withMinute(1649575445))
-                                .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
-                                .withRampUpMinimumHostsPct(909915522)
-                                .withRampUpCapacityThresholdPct(566835679)
-                                .withPeakStartTime(new Time().withHour(1665401728).withMinute(1601345404))
-                                .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                                .withRampDownStartTime(new Time().withHour(2017228559).withMinute(1973154307))
-                                .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
-                                .withRampDownMinimumHostsPct(1060544654)
-                                .withRampDownCapacityThresholdPct(413325201)
-                                .withRampDownForceLogoffUsers(false)
-                                .withRampDownStopHostsWhen(StopHostsWhen.ZERO_ACTIVE_SESSIONS)
-                                .withRampDownWaitTimeMinutes(1370468424)
-                                .withRampDownNotificationMessage("nyqupedeojnabck")
-                                .withOffPeakStartTime(new Time().withHour(598884844).withMinute(611656940))
-                                .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)))
-                .withHostPoolReferences(
-                    Arrays
-                        .asList(
-                            new ScalingHostPoolReference()
-                                .withHostPoolArmPath("btfhvpesaps")
-                                .withScalingPlanEnabled(false)));
+        ScalingPlanPatchProperties model
+            = new ScalingPlanPatchProperties().withDescription("xpkd")
+                .withFriendlyName("baiuebbaumny")
+                .withTimeZone("ped")
+                .withExclusionTag("jn")
+                .withSchedules(Arrays.asList(
+                    new ScalingSchedule().withName("hsmtxpsiebtfhvp")
+                        .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.FRIDAY,
+                            ScalingScheduleDaysOfWeekItem.WEDNESDAY))
+                        .withRampUpStartTime(new Time().withHour(2062643229).withMinute(915471474))
+                        .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                        .withRampUpMinimumHostsPct(1631031599)
+                        .withRampUpCapacityThresholdPct(136140206)
+                        .withPeakStartTime(new Time().withHour(871941711).withMinute(1056627326))
+                        .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+                        .withRampDownStartTime(new Time().withHour(400091584).withMinute(1644974889))
+                        .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+                        .withRampDownMinimumHostsPct(1677238877)
+                        .withRampDownCapacityThresholdPct(1210562441)
+                        .withRampDownForceLogoffUsers(false)
+                        .withRampDownStopHostsWhen(StopHostsWhen.ZERO_ACTIVE_SESSIONS)
+                        .withRampDownWaitTimeMinutes(1152812045)
+                        .withRampDownNotificationMessage("lxotogtwrupq")
+                        .withOffPeakStartTime(new Time().withHour(767248190).withMinute(823053391))
+                        .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST),
+                    new ScalingSchedule().withName("ykvceoveil")
+                        .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.WEDNESDAY,
+                            ScalingScheduleDaysOfWeekItem.TUESDAY, ScalingScheduleDaysOfWeekItem.FRIDAY,
+                            ScalingScheduleDaysOfWeekItem.FRIDAY))
+                        .withRampUpStartTime(new Time().withHour(914615331).withMinute(1045744686))
+                        .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                        .withRampUpMinimumHostsPct(197964626)
+                        .withRampUpCapacityThresholdPct(1452176185)
+                        .withPeakStartTime(new Time().withHour(949474495).withMinute(95653514))
+                        .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                        .withRampDownStartTime(new Time().withHour(657781919).withMinute(1907592616))
+                        .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+                        .withRampDownMinimumHostsPct(1501927720)
+                        .withRampDownCapacityThresholdPct(1284749235)
+                        .withRampDownForceLogoffUsers(false)
+                        .withRampDownStopHostsWhen(StopHostsWhen.ZERO_ACTIVE_SESSIONS)
+                        .withRampDownWaitTimeMinutes(1979421186)
+                        .withRampDownNotificationMessage("mclfplphoxuscr")
+                        .withOffPeakStartTime(new Time().withHour(2037546368).withMinute(2003410398))
+                        .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST),
+                    new ScalingSchedule().withName("sbj")
+                        .withDaysOfWeek(Arrays.asList(ScalingScheduleDaysOfWeekItem.SATURDAY))
+                        .withRampUpStartTime(new Time().withHour(2075352957).withMinute(2003590668))
+                        .withRampUpLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+                        .withRampUpMinimumHostsPct(1245972135)
+                        .withRampUpCapacityThresholdPct(604467332)
+                        .withPeakStartTime(new Time().withHour(737814385).withMinute(1011039859))
+                        .withPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)
+                        .withRampDownStartTime(new Time().withHour(224913714).withMinute(1039812081))
+                        .withRampDownLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST)
+                        .withRampDownMinimumHostsPct(640895390)
+                        .withRampDownCapacityThresholdPct(1148622887)
+                        .withRampDownForceLogoffUsers(false)
+                        .withRampDownStopHostsWhen(StopHostsWhen.ZERO_ACTIVE_SESSIONS)
+                        .withRampDownWaitTimeMinutes(991595077)
+                        .withRampDownNotificationMessage("laocqxtccmg")
+                        .withOffPeakStartTime(new Time().withHour(1054992005).withMinute(435564330))
+                        .withOffPeakLoadBalancingAlgorithm(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST)))
+                .withHostPoolReferences(Arrays.asList(
+                    new ScalingHostPoolReference().withHostPoolArmPath("yrxvwfudwpznt").withScalingPlanEnabled(false),
+                    new ScalingHostPoolReference().withHostPoolArmPath("hl").withScalingPlanEnabled(true),
+                    new ScalingHostPoolReference().withHostPoolArmPath("hckfrlhrx").withScalingPlanEnabled(false),
+                    new ScalingHostPoolReference().withHostPoolArmPath("vpycanuzbp").withScalingPlanEnabled(false)));
         model = BinaryData.fromObject(model).toObject(ScalingPlanPatchProperties.class);
-        Assertions.assertEquals("axdbabph", model.description());
-        Assertions.assertEquals("rqlfktsthsucocmn", model.friendlyName());
-        Assertions.assertEquals("azt", model.timeZone());
-        Assertions.assertEquals("twwrqp", model.exclusionTag());
-        Assertions.assertEquals("kzywbiex", model.schedules().get(0).name());
-        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.MONDAY, model.schedules().get(0).daysOfWeek().get(0));
-        Assertions.assertEquals(537783371, model.schedules().get(0).rampUpStartTime().hour());
-        Assertions.assertEquals(712970145, model.schedules().get(0).rampUpStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-                model.schedules().get(0).rampUpLoadBalancingAlgorithm());
-        Assertions.assertEquals(1757218598, model.schedules().get(0).rampUpMinimumHostsPct());
-        Assertions.assertEquals(954772002, model.schedules().get(0).rampUpCapacityThresholdPct());
-        Assertions.assertEquals(913520848, model.schedules().get(0).peakStartTime().hour());
-        Assertions.assertEquals(2089644825, model.schedules().get(0).peakStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.DEPTH_FIRST, model.schedules().get(0).peakLoadBalancingAlgorithm());
-        Assertions.assertEquals(1122495677, model.schedules().get(0).rampDownStartTime().hour());
-        Assertions.assertEquals(978941807, model.schedules().get(0).rampDownStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
-                model.schedules().get(0).rampDownLoadBalancingAlgorithm());
-        Assertions.assertEquals(1637273093, model.schedules().get(0).rampDownMinimumHostsPct());
-        Assertions.assertEquals(556709719, model.schedules().get(0).rampDownCapacityThresholdPct());
+        Assertions.assertEquals("xpkd", model.description());
+        Assertions.assertEquals("baiuebbaumny", model.friendlyName());
+        Assertions.assertEquals("ped", model.timeZone());
+        Assertions.assertEquals("jn", model.exclusionTag());
+        Assertions.assertEquals("hsmtxpsiebtfhvp", model.schedules().get(0).name());
+        Assertions.assertEquals(ScalingScheduleDaysOfWeekItem.FRIDAY, model.schedules().get(0).daysOfWeek().get(0));
+        Assertions.assertEquals(2062643229, model.schedules().get(0).rampUpStartTime().hour());
+        Assertions.assertEquals(915471474, model.schedules().get(0).rampUpStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.DEPTH_FIRST,
+            model.schedules().get(0).rampUpLoadBalancingAlgorithm());
+        Assertions.assertEquals(1631031599, model.schedules().get(0).rampUpMinimumHostsPct());
+        Assertions.assertEquals(136140206, model.schedules().get(0).rampUpCapacityThresholdPct());
+        Assertions.assertEquals(871941711, model.schedules().get(0).peakStartTime().hour());
+        Assertions.assertEquals(1056627326, model.schedules().get(0).peakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            model.schedules().get(0).peakLoadBalancingAlgorithm());
+        Assertions.assertEquals(400091584, model.schedules().get(0).rampDownStartTime().hour());
+        Assertions.assertEquals(1644974889, model.schedules().get(0).rampDownStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            model.schedules().get(0).rampDownLoadBalancingAlgorithm());
+        Assertions.assertEquals(1677238877, model.schedules().get(0).rampDownMinimumHostsPct());
+        Assertions.assertEquals(1210562441, model.schedules().get(0).rampDownCapacityThresholdPct());
         Assertions.assertEquals(false, model.schedules().get(0).rampDownForceLogoffUsers());
-        Assertions.assertEquals(StopHostsWhen.ZERO_SESSIONS, model.schedules().get(0).rampDownStopHostsWhen());
-        Assertions.assertEquals(539118010, model.schedules().get(0).rampDownWaitTimeMinutes());
-        Assertions.assertEquals("xrhdwbavxbniwdjs", model.schedules().get(0).rampDownNotificationMessage());
-        Assertions.assertEquals(1721819579, model.schedules().get(0).offPeakStartTime().hour());
-        Assertions.assertEquals(44682703, model.schedules().get(0).offPeakStartTime().minute());
-        Assertions
-            .assertEquals(
-                SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
-                model.schedules().get(0).offPeakLoadBalancingAlgorithm());
-        Assertions.assertEquals("btfhvpesaps", model.hostPoolReferences().get(0).hostPoolArmPath());
+        Assertions.assertEquals(StopHostsWhen.ZERO_ACTIVE_SESSIONS, model.schedules().get(0).rampDownStopHostsWhen());
+        Assertions.assertEquals(1152812045, model.schedules().get(0).rampDownWaitTimeMinutes());
+        Assertions.assertEquals("lxotogtwrupq", model.schedules().get(0).rampDownNotificationMessage());
+        Assertions.assertEquals(767248190, model.schedules().get(0).offPeakStartTime().hour());
+        Assertions.assertEquals(823053391, model.schedules().get(0).offPeakStartTime().minute());
+        Assertions.assertEquals(SessionHostLoadBalancingAlgorithm.BREADTH_FIRST,
+            model.schedules().get(0).offPeakLoadBalancingAlgorithm());
+        Assertions.assertEquals("yrxvwfudwpznt", model.hostPoolReferences().get(0).hostPoolArmPath());
         Assertions.assertEquals(false, model.hostPoolReferences().get(0).scalingPlanEnabled());
     }
 }

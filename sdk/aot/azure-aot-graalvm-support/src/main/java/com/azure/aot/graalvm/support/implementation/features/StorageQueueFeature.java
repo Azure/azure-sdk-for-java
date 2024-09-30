@@ -20,11 +20,9 @@ public class StorageQueueFeature implements GraalVMFeature {
 
     @Override
     public Set<String[]> getDynamicProxies() {
-        return setsOf(
-                interfaces("com.azure.storage.queue.implementation.MessageIdsImpl$MessageIdsService"),
-                interfaces("com.azure.storage.queue.implementation.MessagesImpl$MessagesService"),
-                interfaces("com.azure.storage.queue.implementation.QueuesImpl$QueuesService"),
-                interfaces("com.azure.storage.queue.implementation.ServicesImpl$ServicesService")
-        );
+        return setsOf(interfaces("com.azure.storage.queue.implementation.MessageIdsImpl$MessageIdsService"),
+            interfaces("com.azure.storage.queue.implementation.MessagesImpl$MessagesService"),
+            interfaces("com.azure.storage.queue.implementation.QueuesImpl$QueuesService"),
+            interfaces("com.azure.storage.queue.implementation.ServicesImpl$ServicesService"));
     }
 }

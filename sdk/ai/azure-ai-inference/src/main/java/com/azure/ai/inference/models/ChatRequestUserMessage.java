@@ -6,13 +6,13 @@ package com.azure.ai.inference.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
+import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.List;
-import com.azure.json.JsonProviders;
 import java.io.StringReader;
+import java.util.List;
 
 /**
  * A request chat message representing user input to the assistant.
@@ -48,8 +48,7 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      * @param content the string content value to set.
      */
     public ChatRequestUserMessage(String content) {
-        String contentString = String.format("\"%s\"", content);
-        this.content = BinaryData.fromString(contentString);
+        this.content = BinaryData.fromObject(content);
     }
 
     /**

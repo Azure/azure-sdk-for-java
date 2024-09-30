@@ -15,24 +15,24 @@ public final class CertificateReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CertificateReference model = BinaryData.fromString(
-            "{\"id\":\"cqqudf\",\"storeLocation\":\"LocalMachine\",\"storeName\":\"baaa\",\"visibility\":[\"Task\",\"RemoteUser\",\"RemoteUser\"]}")
+            "{\"id\":\"u\",\"storeLocation\":\"CurrentUser\",\"storeName\":\"qlgkfbtn\",\"visibility\":[\"StartTask\",\"Task\"]}")
             .toObject(CertificateReference.class);
-        Assertions.assertEquals("cqqudf", model.id());
-        Assertions.assertEquals(CertificateStoreLocation.LOCAL_MACHINE, model.storeLocation());
-        Assertions.assertEquals("baaa", model.storeName());
-        Assertions.assertEquals(CertificateVisibility.TASK, model.visibility().get(0));
+        Assertions.assertEquals("u", model.id());
+        Assertions.assertEquals(CertificateStoreLocation.CURRENT_USER, model.storeLocation());
+        Assertions.assertEquals("qlgkfbtn", model.storeName());
+        Assertions.assertEquals(CertificateVisibility.START_TASK, model.visibility().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateReference model
-            = new CertificateReference().withId("cqqudf").withStoreLocation(CertificateStoreLocation.LOCAL_MACHINE)
-                .withStoreName("baaa").withVisibility(Arrays.asList(CertificateVisibility.TASK,
-                    CertificateVisibility.REMOTE_USER, CertificateVisibility.REMOTE_USER));
+        CertificateReference model = new CertificateReference().withId("u")
+            .withStoreLocation(CertificateStoreLocation.CURRENT_USER)
+            .withStoreName("qlgkfbtn")
+            .withVisibility(Arrays.asList(CertificateVisibility.START_TASK, CertificateVisibility.TASK));
         model = BinaryData.fromObject(model).toObject(CertificateReference.class);
-        Assertions.assertEquals("cqqudf", model.id());
-        Assertions.assertEquals(CertificateStoreLocation.LOCAL_MACHINE, model.storeLocation());
-        Assertions.assertEquals("baaa", model.storeName());
-        Assertions.assertEquals(CertificateVisibility.TASK, model.visibility().get(0));
+        Assertions.assertEquals("u", model.id());
+        Assertions.assertEquals(CertificateStoreLocation.CURRENT_USER, model.storeLocation());
+        Assertions.assertEquals("qlgkfbtn", model.storeName());
+        Assertions.assertEquals(CertificateVisibility.START_TASK, model.visibility().get(0));
     }
 }

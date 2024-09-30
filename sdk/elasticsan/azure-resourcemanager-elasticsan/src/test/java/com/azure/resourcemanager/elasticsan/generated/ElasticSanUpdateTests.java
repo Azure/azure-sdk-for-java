@@ -26,7 +26,8 @@ public final class ElasticSanUpdateTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSanUpdate model = new ElasticSanUpdate().withTags(mapOf("ksymd", "ureximoryocfs", "kiiuxhqyudxor", "ys"))
-            .withBaseSizeTiB(1438278296562022676L).withExtendedCapacitySizeTiB(9026620259515350080L)
+            .withBaseSizeTiB(1438278296562022676L)
+            .withExtendedCapacitySizeTiB(9026620259515350080L)
             .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdate.class);
         Assertions.assertEquals("ureximoryocfs", model.tags().get("ksymd"));

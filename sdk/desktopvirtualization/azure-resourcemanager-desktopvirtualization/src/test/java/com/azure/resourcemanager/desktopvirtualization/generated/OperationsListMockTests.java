@@ -6,93 +6,44 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceProviderOperation;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"bzdixzmq\",\"display\":{\"provider\":\"d\",\"resource\":\"opqhewjptmc\",\"operation\":\"bostzel\",\"description\":\"la\"},\"isDataAction\":true,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"ojlvfhrbbpneqvc\",\"displayName\":\"yyurmochpprprsnm\",\"blobDuration\":\"ayzejnhlbkpbz\"},{\"name\":\"piljhahzvech\",\"displayName\":\"bnwieholew\",\"blobDuration\":\"iuubwefqsf\"}]}}}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"vuzhyr\",\"display\":{\"provider\":\"ipmve\",\"resource\":\"xukuqgsj\",\"operation\":\"undxgketw\",\"description\":\"hzjhf\"},\"isDataAction\":true,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"gpmuneqsxvmhfbuz\",\"displayName\":\"ihsasb\",\"blobDuration\":\"dyp\"}]}}}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        DesktopVirtualizationManager manager =
-            DesktopVirtualizationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DesktopVirtualizationManager manager = DesktopVirtualizationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ResourceProviderOperation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vuzhyr", response.iterator().next().name());
-        Assertions.assertEquals("ipmve", response.iterator().next().display().provider());
-        Assertions.assertEquals("xukuqgsj", response.iterator().next().display().resource());
-        Assertions.assertEquals("undxgketw", response.iterator().next().display().operation());
-        Assertions.assertEquals("hzjhf", response.iterator().next().display().description());
+        Assertions.assertEquals("bzdixzmq", response.iterator().next().name());
+        Assertions.assertEquals("d", response.iterator().next().display().provider());
+        Assertions.assertEquals("opqhewjptmc", response.iterator().next().display().resource());
+        Assertions.assertEquals("bostzel", response.iterator().next().display().operation());
+        Assertions.assertEquals("la", response.iterator().next().display().description());
         Assertions.assertEquals(true, response.iterator().next().isDataAction());
-        Assertions
-            .assertEquals(
-                "gpmuneqsxvmhfbuz",
-                response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions
-            .assertEquals(
-                "ihsasb",
-                response
-                    .iterator()
-                    .next()
-                    .properties()
-                    .serviceSpecification()
-                    .logSpecifications()
-                    .get(0)
-                    .displayName());
-        Assertions
-            .assertEquals(
-                "dyp",
-                response
-                    .iterator()
-                    .next()
-                    .properties()
-                    .serviceSpecification()
-                    .logSpecifications()
-                    .get(0)
-                    .blobDuration());
+        Assertions.assertEquals("ojlvfhrbbpneqvc",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("yyurmochpprprsnm",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("ayzejnhlbkpbz",
+            response.iterator().next().properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }

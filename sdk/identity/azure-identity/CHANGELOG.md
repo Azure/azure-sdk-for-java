@@ -1,6 +1,18 @@
 # Release History
 
-## 1.14.0-beta.2 (2024-09-19)
+## 1.14.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed the request sent in `AzurePipelinesCredential` so it doesn't result in a redirect response when an invalid system access token is provided. 
+
+### Other Changes
+- Allow certain response headers to be logged in `AzurePipelinesCredential` for diagnostics and include them in the exception message.
+
+## 1.14.0-beta.2 (2024-09-20)
 
 ### Features Added
 - Added object id support in `ManagedIdentityCredential`. It can be configured via `ManagedIdentityCredentialBuilder`.
