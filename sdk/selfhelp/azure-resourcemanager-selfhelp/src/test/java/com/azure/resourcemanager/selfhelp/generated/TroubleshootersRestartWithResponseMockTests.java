@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class TroubleshootersRestartWithResponseMockTests {
     @Test
     public void testRestartWithResponse() throws Exception {
-        String responseStr = "{\"troubleshooterResourceName\":\"ctymoxoftp\"}";
+        String responseStr = "{\"troubleshooterResourceName\":\"avgrvkffovjz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class TroubleshootersRestartWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RestartTroubleshooterResponse response = manager.troubleshooters()
-            .restartWithResponse("snrbgyefrymsgao", "fmwncotmrfh", com.azure.core.util.Context.NONE)
+            .restartWithResponse("xtqmieoxor", "gufhyaomtbg", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

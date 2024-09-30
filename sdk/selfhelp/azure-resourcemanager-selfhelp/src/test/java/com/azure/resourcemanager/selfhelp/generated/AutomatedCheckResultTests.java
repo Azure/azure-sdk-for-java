@@ -12,25 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomatedCheckResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomatedCheckResult model = BinaryData
-            .fromString("{\"version\":\"zbn\",\"status\":\"lylpstdb\",\"result\":\"xsrz\",\"type\":\"Information\"}")
+        AutomatedCheckResult model = BinaryData.fromString(
+            "{\"version\":\"qfsubcgjbirx\",\"status\":\"ybsrfbjfdtwss\",\"result\":\"ftpvjzbexil\",\"type\":\"Warning\"}")
             .toObject(AutomatedCheckResult.class);
-        Assertions.assertEquals("zbn", model.version());
-        Assertions.assertEquals("lylpstdb", model.status());
-        Assertions.assertEquals("xsrz", model.result());
-        Assertions.assertEquals(AutomatedCheckResultType.INFORMATION, model.type());
+        Assertions.assertEquals("qfsubcgjbirx", model.version());
+        Assertions.assertEquals("ybsrfbjfdtwss", model.status());
+        Assertions.assertEquals("ftpvjzbexil", model.result());
+        Assertions.assertEquals(AutomatedCheckResultType.WARNING, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomatedCheckResult model = new AutomatedCheckResult().withVersion("zbn")
-            .withStatus("lylpstdb")
-            .withResult("xsrz")
-            .withType(AutomatedCheckResultType.INFORMATION);
+        AutomatedCheckResult model = new AutomatedCheckResult().withVersion("qfsubcgjbirx")
+            .withStatus("ybsrfbjfdtwss")
+            .withResult("ftpvjzbexil")
+            .withType(AutomatedCheckResultType.WARNING);
         model = BinaryData.fromObject(model).toObject(AutomatedCheckResult.class);
-        Assertions.assertEquals("zbn", model.version());
-        Assertions.assertEquals("lylpstdb", model.status());
-        Assertions.assertEquals("xsrz", model.result());
-        Assertions.assertEquals(AutomatedCheckResultType.INFORMATION, model.type());
+        Assertions.assertEquals("qfsubcgjbirx", model.version());
+        Assertions.assertEquals("ybsrfbjfdtwss", model.status());
+        Assertions.assertEquals("ftpvjzbexil", model.result());
+        Assertions.assertEquals(AutomatedCheckResultType.WARNING, model.type());
     }
 }

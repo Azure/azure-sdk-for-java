@@ -22,7 +22,7 @@ public final class DiscoverySolutionNlpsDiscoverSolutionsBySubscriptionWithRespo
     @Test
     public void testDiscoverSolutionsBySubscriptionWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"problemTitle\":\"zoggculapz\",\"problemDescription\":\"rpgogtqxep\",\"serviceId\":\"lbfu\",\"problemClassificationId\":\"lyjt\",\"solutions\":[{}],\"relatedServices\":[{}]},\"id\":\"hvfcibyfmow\",\"name\":\"xrkjpvdw\",\"type\":\"fzwiivwzjbhyz\"},{\"properties\":{\"problemTitle\":\"rkambt\",\"problemDescription\":\"egv\",\"serviceId\":\"vuqeqvldspast\",\"problemClassificationId\":\"kkdmfl\",\"solutions\":[{},{},{}],\"relatedServices\":[{},{},{},{}]},\"id\":\"lx\",\"name\":\"ril\",\"type\":\"zapeewchpx\"},{\"properties\":{\"problemTitle\":\"wk\",\"problemDescription\":\"iycslevuf\",\"serviceId\":\"tcktyhjtqedcgzu\",\"problemClassificationId\":\"mmrqz\",\"solutions\":[{},{},{},{}],\"relatedServices\":[{},{}]},\"id\":\"gl\",\"name\":\"dzgkr\",\"type\":\"qeevt\"},{\"properties\":{\"problemTitle\":\"r\",\"problemDescription\":\"t\",\"serviceId\":\"ytp\",\"problemClassificationId\":\"mov\",\"solutions\":[{},{}],\"relatedServices\":[{},{},{}]},\"id\":\"wzqa\",\"name\":\"f\",\"type\":\"gzuriglaecxndt\"}]}";
+            = "{\"value\":[{\"properties\":{\"problemTitle\":\"kdl\",\"problemDescription\":\"qfbumlkxtrqjf\",\"serviceId\":\"lmbtxhwgfwsrt\",\"problemClassificationId\":\"coezbrhubskh\",\"solutions\":[{}],\"relatedServices\":[{},{}]},\"id\":\"okkqfqjbvleo\",\"name\":\"fmluiqtqzfavyvn\",\"type\":\"qybaryeua\"},{\"properties\":{\"problemTitle\":\"qabqgzslesjcb\",\"problemDescription\":\"rnntiewdjcv\",\"serviceId\":\"uwrbehwagoh\",\"problemClassificationId\":\"f\",\"solutions\":[{},{},{}],\"relatedServices\":[{}]},\"id\":\"mvvhmxtdrjfuta\",\"name\":\"oe\",\"type\":\"jvewzcjznmwcp\"},{\"properties\":{\"problemTitle\":\"aadraufactkahz\",\"problemDescription\":\"ajjziuxxpshne\",\"serviceId\":\"ulfgslqu\",\"problemClassificationId\":\"wdlenrdsut\",\"solutions\":[{},{},{}],\"relatedServices\":[{},{},{}]},\"id\":\"juohminyflnorw\",\"name\":\"duvwpklvxwmygd\",\"type\":\"pgpqchiszepnnb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,17 +32,17 @@ public final class DiscoverySolutionNlpsDiscoverSolutionsBySubscriptionWithRespo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DiscoveryNlpResponse response = manager.discoverySolutionNlps()
-            .discoverSolutionsBySubscriptionWithResponse("ddrihpf",
-                new DiscoveryNlpRequest().withIssueSummary("oqcaaewdaomdj")
-                    .withResourceId("pjxxkzb")
-                    .withServiceId("sgeivsiy")
-                    .withAdditionalContext("kdncj"),
+            .discoverSolutionsBySubscriptionWithResponse("uodpv",
+                new DiscoveryNlpRequest().withIssueSummary("uudl")
+                    .withResourceId("ibthostgktstvd")
+                    .withServiceId("clzedqbcvh")
+                    .withAdditionalContext("h"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zoggculapz", response.value().get(0).problemTitle());
-        Assertions.assertEquals("rpgogtqxep", response.value().get(0).problemDescription());
-        Assertions.assertEquals("lbfu", response.value().get(0).serviceId());
-        Assertions.assertEquals("lyjt", response.value().get(0).problemClassificationId());
+        Assertions.assertEquals("kdl", response.value().get(0).problemTitle());
+        Assertions.assertEquals("qfbumlkxtrqjf", response.value().get(0).problemDescription());
+        Assertions.assertEquals("lmbtxhwgfwsrt", response.value().get(0).serviceId());
+        Assertions.assertEquals("coezbrhubskh", response.value().get(0).problemClassificationId());
     }
 }

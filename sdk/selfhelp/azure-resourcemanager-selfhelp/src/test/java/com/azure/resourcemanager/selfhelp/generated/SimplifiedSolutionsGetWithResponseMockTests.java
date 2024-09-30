@@ -21,7 +21,7 @@ public final class SimplifiedSolutionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"solutionId\":\"qvpsvuoymg\",\"parameters\":{\"ypql\":\"lvez\",\"erqwkyhkobopg\":\"feo\",\"wccsnjvcdwxlpqek\":\"edkowepbqpcrfk\"},\"title\":\"nkhtjsyingw\",\"appendix\":{\"gszywk\":\"tmtdhtmdvypgik\",\"joqrvqqaatj\":\"irryuzhlh\",\"ioolvrwxkvtkkgll\":\"nrvgoupmfiibfgg\"},\"content\":\"jygvjayvbl\",\"provisioningState\":\"PartialComplete\"},\"id\":\"zuhbxvvyhgsopb\",\"name\":\"rqufegxuvwz\",\"type\":\"bnhlmc\"}";
+            = "{\"properties\":{\"solutionId\":\"qwkyhkobop\",\"parameters\":{\"pbqpcrfkbwccsn\":\"dkow\",\"htjsying\":\"vcdwxlpqekftn\",\"tmtdhtmdvypgik\":\"fq\",\"irryuzhlh\":\"gszywk\"},\"title\":\"oqrvqqaatjin\",\"appendix\":{\"fggjioolvr\":\"oupmfii\",\"v\":\"x\",\"wjygvjayvblmhvk\":\"kkgll\"},\"content\":\"hbxvvyhgsopbyrqu\",\"provisioningState\":\"Running\"},\"id\":\"uvwzfbnh\",\"name\":\"mctlpdngitv\",\"type\":\"bmhrixkwmyijejv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class SimplifiedSolutionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SimplifiedSolutionsResource response = manager.simplifiedSolutions()
-            .getWithResponse("uh", "pfcqdp", com.azure.core.util.Context.NONE)
+            .getWithResponse("vpsvuoymgcce", "vezrypqlmfeo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qvpsvuoymg", response.solutionId());
-        Assertions.assertEquals("lvez", response.parameters().get("ypql"));
+        Assertions.assertEquals("qwkyhkobop", response.solutionId());
+        Assertions.assertEquals("dkow", response.parameters().get("pbqpcrfkbwccsn"));
     }
 }

@@ -32,18 +32,21 @@ public final class TroubleshootersContinueMethodWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.troubleshooters()
-            .continueMethodWithResponse("ilqu", "rydxtqm",
-                new ContinueRequestBody().withStepId("ox")
+            .continueMethodWithResponse("zq", "zh",
+                new ContinueRequestBody().withStepId("wesgogczh")
                     .withResponses(Arrays.asList(
-                        new TroubleshooterResponse().withQuestionId("ufhyaomtbgh")
+                        new TroubleshooterResponse().withQuestionId("krlgnyhm")
+                            .withQuestionType(QuestionType.RADIO_BUTTON)
+                            .withResponse("kkgthr"),
+                        new TroubleshooterResponse().withQuestionId("hxjbdhqxvc")
                             .withQuestionType(QuestionType.DATE_TIME_PICKER)
-                            .withResponse("rvk"),
-                        new TroubleshooterResponse().withQuestionId("ovjzhpjbibgjmfx")
+                            .withResponse("pdso"),
+                        new TroubleshooterResponse().withQuestionId("shrnsvbuswdvz")
                             .withQuestionType(QuestionType.DATE_TIME_PICKER)
-                            .withResponse("cluyovwxnbkf"),
-                        new TroubleshooterResponse().withQuestionId("zxscyhwzdgirujb")
-                            .withQuestionType(QuestionType.MULTI_SELECT)
-                            .withResponse("vzzbtdcq"))),
+                            .withResponse("cnunvjsr"),
+                        new TroubleshooterResponse().withQuestionId("f")
+                            .withQuestionType(QuestionType.TEXT_INPUT)
+                            .withResponse("pqgik"))),
                 com.azure.core.util.Context.NONE);
 
     }

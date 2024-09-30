@@ -22,7 +22,7 @@ public final class DiscoverySolutionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"solutions\":[{\"solutionId\":\"hvxndzwmkrefajpj\",\"solutionType\":\"Solutions\",\"description\":\"qnyhgb\",\"requiredInputs\":[\"jivfxzsjabib\",\"ystawfsdjpvkvp\",\"jxbkzbzkdvn\",\"jabudurgkakmo\"]}]},\"id\":\"hjjklff\",\"name\":\"mouwqlgzrfzeey\",\"type\":\"bizikayuhq\"}]}";
+            = "{\"value\":[{\"properties\":{\"solutions\":[{\"solutionId\":\"kzbzkdvncjabudu\",\"solutionType\":\"Solutions\",\"description\":\"kmokz\",\"requiredInputs\":[\"klff\"]},{\"solutionId\":\"ouw\",\"solutionType\":\"Diagnostics\",\"description\":\"rfzeey\",\"requiredInputs\":[\"zi\",\"ayuhqlbjbsy\",\"bqwrvtldgm\"]},{\"solutionId\":\"gvmpipaslthaqfx\",\"solutionType\":\"Troubleshooters\",\"description\":\"u\",\"requiredInputs\":[\"dsrezpdrhneuyow\",\"kdw\"]}]},\"id\":\"i\",\"name\":\"ib\",\"type\":\"rcgp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class DiscoverySolutionsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SolutionMetadataResource> response
-            = manager.discoverySolutions().list("hkr", "ibdeibq", com.azure.core.util.Context.NONE);
+            = manager.discoverySolutions().list("sjabibs", "stawfsdjpvkv", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("hvxndzwmkrefajpj", response.iterator().next().solutions().get(0).solutionId());
+        Assertions.assertEquals("kzbzkdvncjabudu", response.iterator().next().solutions().get(0).solutionId());
     }
 }

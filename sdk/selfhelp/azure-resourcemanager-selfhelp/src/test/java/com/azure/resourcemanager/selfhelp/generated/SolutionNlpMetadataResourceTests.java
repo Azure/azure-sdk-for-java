@@ -15,32 +15,38 @@ public final class SolutionNlpMetadataResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SolutionNlpMetadataResource model = BinaryData.fromString(
-            "{\"properties\":{\"problemTitle\":\"vxwc\",\"problemDescription\":\"lpcirelsf\",\"serviceId\":\"enwabfatk\",\"problemClassificationId\":\"dxbjhwuaanozj\",\"solutions\":[{\"solutionId\":\"youlp\",\"solutionType\":\"Diagnostics\",\"description\":\"ag\",\"requiredInputs\":[\"imjwosyt\",\"itc\"]}],\"relatedServices\":[{\"serviceId\":\"k\",\"displayName\":\"umiekkezzi\",\"resourceTypes\":[\"yf\"]},{\"serviceId\":\"dgqggebdu\",\"displayName\":\"g\",\"resourceTypes\":[\"idb\",\"fatpxllrxcyjmoa\",\"su\",\"arm\"]},{\"serviceId\":\"dmjsjqb\",\"displayName\":\"hyxxrwlycoduhpk\",\"resourceTypes\":[\"ymareqnajxqugj\",\"ky\"]}]},\"id\":\"beddgssofw\",\"name\":\"mzqa\",\"type\":\"krmnjijpxacqqud\"}")
+            "{\"properties\":{\"problemTitle\":\"l\",\"problemDescription\":\"imjwosyt\",\"serviceId\":\"tcs\",\"problemClassificationId\":\"cktqumiekkezzi\",\"solutions\":[{\"solutionId\":\"fjhdg\",\"solutionType\":\"Troubleshooters\",\"description\":\"bdunygaeqid\",\"requiredInputs\":[\"atpxl\",\"rxcyjmoad\",\"uvarmywdmjsjq\",\"jhhyxxrwlycoduhp\"]}],\"relatedServices\":[{\"serviceId\":\"ymareqnajxqugj\",\"displayName\":\"ycubeddgs\",\"resourceTypes\":[\"wqm\",\"qal\",\"rmnjijpx\"]},{\"serviceId\":\"q\",\"displayName\":\"dfnbyxbaaabjyv\",\"resourceTypes\":[\"fimrzrtuzqogse\",\"nevfdnw\",\"wmewzsyy\",\"euzsoi\"]},{\"serviceId\":\"ud\",\"displayName\":\"rx\",\"resourceTypes\":[\"hzv\",\"ytdw\",\"qbrqubpaxhexiili\",\"pdtii\"]},{\"serviceId\":\"tdqoaxoruzfgsq\",\"displayName\":\"fxrxxle\",\"resourceTypes\":[\"amxjezwlw\",\"wxuqlcvydypatdoo\",\"ojknio\"]}]},\"id\":\"oo\",\"name\":\"bw\",\"type\":\"ujhemmsbvdkcrodt\"}")
             .toObject(SolutionNlpMetadataResource.class);
-        Assertions.assertEquals("vxwc", model.problemTitle());
-        Assertions.assertEquals("lpcirelsf", model.problemDescription());
-        Assertions.assertEquals("enwabfatk", model.serviceId());
-        Assertions.assertEquals("dxbjhwuaanozj", model.problemClassificationId());
-        Assertions.assertEquals("youlp", model.solutions().get(0).solutionId());
-        Assertions.assertEquals("yf", model.relatedServices().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("l", model.problemTitle());
+        Assertions.assertEquals("imjwosyt", model.problemDescription());
+        Assertions.assertEquals("tcs", model.serviceId());
+        Assertions.assertEquals("cktqumiekkezzi", model.problemClassificationId());
+        Assertions.assertEquals("fjhdg", model.solutions().get(0).solutionId());
+        Assertions.assertEquals("wqm", model.relatedServices().get(0).resourceTypes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionNlpMetadataResource model = new SolutionNlpMetadataResource().withProblemTitle("vxwc")
-            .withProblemDescription("lpcirelsf")
-            .withServiceId("enwabfatk")
-            .withProblemClassificationId("dxbjhwuaanozj")
-            .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("youlp")))
-            .withRelatedServices(Arrays.asList(new ClassificationService().withResourceTypes(Arrays.asList("yf")),
-                new ClassificationService().withResourceTypes(Arrays.asList("idb", "fatpxllrxcyjmoa", "su", "arm")),
-                new ClassificationService().withResourceTypes(Arrays.asList("ymareqnajxqugj", "ky"))));
+        SolutionNlpMetadataResource model
+            = new SolutionNlpMetadataResource().withProblemTitle("l")
+                .withProblemDescription("imjwosyt")
+                .withServiceId("tcs")
+                .withProblemClassificationId("cktqumiekkezzi")
+                .withSolutions(Arrays.asList(new SolutionMetadataProperties().withSolutionId("fjhdg")))
+                .withRelatedServices(Arrays.asList(
+                    new ClassificationService().withResourceTypes(Arrays.asList("wqm", "qal", "rmnjijpx")),
+                    new ClassificationService()
+                        .withResourceTypes(Arrays.asList("fimrzrtuzqogse", "nevfdnw", "wmewzsyy", "euzsoi")),
+                    new ClassificationService()
+                        .withResourceTypes(Arrays.asList("hzv", "ytdw", "qbrqubpaxhexiili", "pdtii")),
+                    new ClassificationService()
+                        .withResourceTypes(Arrays.asList("amxjezwlw", "wxuqlcvydypatdoo", "ojknio"))));
         model = BinaryData.fromObject(model).toObject(SolutionNlpMetadataResource.class);
-        Assertions.assertEquals("vxwc", model.problemTitle());
-        Assertions.assertEquals("lpcirelsf", model.problemDescription());
-        Assertions.assertEquals("enwabfatk", model.serviceId());
-        Assertions.assertEquals("dxbjhwuaanozj", model.problemClassificationId());
-        Assertions.assertEquals("youlp", model.solutions().get(0).solutionId());
-        Assertions.assertEquals("yf", model.relatedServices().get(0).resourceTypes().get(0));
+        Assertions.assertEquals("l", model.problemTitle());
+        Assertions.assertEquals("imjwosyt", model.problemDescription());
+        Assertions.assertEquals("tcs", model.serviceId());
+        Assertions.assertEquals("cktqumiekkezzi", model.problemClassificationId());
+        Assertions.assertEquals("fjhdg", model.solutions().get(0).solutionId());
+        Assertions.assertEquals("wqm", model.relatedServices().get(0).resourceTypes().get(0));
     }
 }

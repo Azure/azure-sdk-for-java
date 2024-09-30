@@ -13,27 +13,27 @@ public final class ResponseValidationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResponseValidationProperties model = BinaryData.fromString(
-            "{\"regex\":\"n\",\"validationScope\":\"IpAddressFormat\",\"isRequired\":true,\"validationErrorMessage\":\"swiydmcwyhzdx\",\"maxLength\":5645412032437353957}")
+            "{\"regex\":\"ewwwfbkrvrnsv\",\"validationScope\":\"NumberOnlyFormat\",\"isRequired\":true,\"validationErrorMessage\":\"xc\",\"maxLength\":7996474210231511371}")
             .toObject(ResponseValidationProperties.class);
-        Assertions.assertEquals("n", model.regex());
-        Assertions.assertEquals(ValidationScope.IP_ADDRESS_FORMAT, model.validationScope());
+        Assertions.assertEquals("ewwwfbkrvrnsv", model.regex());
+        Assertions.assertEquals(ValidationScope.NUMBER_ONLY_FORMAT, model.validationScope());
         Assertions.assertEquals(true, model.isRequired());
-        Assertions.assertEquals("swiydmcwyhzdx", model.validationErrorMessage());
-        Assertions.assertEquals(5645412032437353957L, model.maxLength());
+        Assertions.assertEquals("xc", model.validationErrorMessage());
+        Assertions.assertEquals(7996474210231511371L, model.maxLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponseValidationProperties model = new ResponseValidationProperties().withRegex("n")
-            .withValidationScope(ValidationScope.IP_ADDRESS_FORMAT)
+        ResponseValidationProperties model = new ResponseValidationProperties().withRegex("ewwwfbkrvrnsv")
+            .withValidationScope(ValidationScope.NUMBER_ONLY_FORMAT)
             .withIsRequired(true)
-            .withValidationErrorMessage("swiydmcwyhzdx")
-            .withMaxLength(5645412032437353957L);
+            .withValidationErrorMessage("xc")
+            .withMaxLength(7996474210231511371L);
         model = BinaryData.fromObject(model).toObject(ResponseValidationProperties.class);
-        Assertions.assertEquals("n", model.regex());
-        Assertions.assertEquals(ValidationScope.IP_ADDRESS_FORMAT, model.validationScope());
+        Assertions.assertEquals("ewwwfbkrvrnsv", model.regex());
+        Assertions.assertEquals(ValidationScope.NUMBER_ONLY_FORMAT, model.validationScope());
         Assertions.assertEquals(true, model.isRequired());
-        Assertions.assertEquals("swiydmcwyhzdx", model.validationErrorMessage());
-        Assertions.assertEquals(5645412032437353957L, model.maxLength());
+        Assertions.assertEquals("xc", model.validationErrorMessage());
+        Assertions.assertEquals(7996474210231511371L, model.maxLength());
     }
 }
