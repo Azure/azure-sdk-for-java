@@ -37,6 +37,7 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
@@ -63,11 +64,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.ATOMIC_INTEGER;
 import static org.testng.Assert.assertThrows;
 import static org.testng.Assert.fail;
 
@@ -827,6 +830,44 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation()).isNotNull();
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).isNotNull();
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
+    }
+
+    @Test(groups = { "emulator" })
+    public void changeFeedQueryAvailableNow() {
+        this.createContainer(
+            (cp) -> {
+
+                // Ensuring we always use Hash V2 here
+                PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+                ArrayList<String> paths = new ArrayList<>();
+                paths.add("/mypk");
+                partitionKeyDef.setPaths(paths);
+                partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+                cp.setPartitionKeyDefinition(partitionKeyDef);
+
+                // To reproduce easily we need at least 3 physical partitions
+                return cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy());
+            },
+            400
+        );
+
+        insertDocuments(1, 5);
+        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+
+        cosmosChangeFeedRequestOptions.setQueryAvailableNow(true);
+        AtomicInteger totalQueryCount = new AtomicInteger(0);
+        this.createdAsyncContainer.queryChangeFeed(cosmosChangeFeedRequestOptions, JsonNode.class)
+            .byPage(1)
+            .flatMap(response -> {
+                System.out.println(totalQueryCount.get());
+                totalQueryCount.set(totalQueryCount.get() + response.getResults().size());
+                return this.createdAsyncContainer.createItem(getDocumentDefinition(UUID.randomUUID().toString()))
+                    .then();
+            })
+            .blockLast();
+
+        assertThat(totalQueryCount.get()).isEqualTo(5);
     }
 
     void insertDocuments(

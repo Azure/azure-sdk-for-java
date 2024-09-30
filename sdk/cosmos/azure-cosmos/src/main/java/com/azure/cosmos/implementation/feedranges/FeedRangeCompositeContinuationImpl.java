@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
@@ -28,8 +29,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -41,10 +44,14 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeCompositeContinuationImpl.class);
+    private static final String PK_RANGE_ID_SEPARATOR = ":";
+    private static final String SEGMENT_SEPARATOR = "#";
+
     private final Queue<CompositeContinuationToken> compositeContinuationTokens;
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
     private final AtomicLong continuousNotModifiedSinceInitialNoResultsRangeCaptured = new AtomicLong(0);
+    private final Map<Range<String>, FeedRangeAvailableNowContext> feedRangeAvailableNowContextMap = new ConcurrentHashMap<>();
 
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
@@ -261,6 +268,30 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
+    public <T> boolean shouldFetchMoreWithAvailableNowContext(FeedResponse<T> responseMessage) {
+        this.feedRangeAvailableNowContextMap.computeIfAbsent(
+            this.currentToken.getRange(),
+            (rangeMin) -> {
+                return new FeedRangeAvailableNowContext(
+                    this.currentToken.getRange(),
+                    this.getLatestLsnFromSessionToken(responseMessage.getSessionToken())
+                );
+            });
+
+        this.feedRangeAvailableNowContextMap
+            .get(this.currentToken.getRange())
+            .handleChangeFeed(this.currentToken);
+
+        // find next token which can fetch more
+        Range<String> initialToken = this.currentToken.getRange();
+        do {
+            this.moveToNextToken();
+        } while (this.currentToken.getRange() != initialToken && !this.feedRangeAvailableNowContextMap.get(this.currentToken.getRange()).shouldFetchMore);
+
+        return this.feedRangeAvailableNowContextMap.get(this.currentToken.getRange()).shouldFetchMore;
+    }
+
+    @Override
     public Mono<ShouldRetryResult> handleFeedRangeGone(final RxDocumentClientImpl client,
                                                        final GoneException goneException) {
 
@@ -296,6 +327,19 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             }
             return Mono.just(ShouldRetryResult.RETRY_NOW);
         });
+    }
+
+    private Long getLatestLsnFromSessionToken(String sessionToken) {
+        String parsedSessionToken = sessionToken.substring(
+            sessionToken.indexOf(PK_RANGE_ID_SEPARATOR));
+        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
+        String latestLsn = segments[0];
+        if (segments.length >= 2) {
+            // default to Global LSN
+            latestLsn = segments[1];
+        }
+
+        return Long.parseLong(latestLsn);
     }
 
     /**
@@ -522,6 +566,28 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         @Override
         public int compare(PartitionKeyRange o1, PartitionKeyRange o2) {
             return o1.getMinInclusive().compareTo(o2.getMinInclusive());
+        }
+    }
+
+    final static class FeedRangeAvailableNowContext {
+        private Range<String> range;
+        private Long lsnAvailableNow;
+        private boolean shouldFetchMore;
+
+        public FeedRangeAvailableNowContext(Range<String> range, Long lsnAvailableNow) {
+            this.range = range;
+            this.lsnAvailableNow = lsnAvailableNow;
+            this.shouldFetchMore = true;
+        }
+
+        public void handleChangeFeed(CompositeContinuationToken compositeContinuationToken) {
+            if (!compositeContinuationToken.getRange().equals(this.range)) {
+                throw new IllegalStateException("Range in FeedRangeAvailableNowContext is different than the range in the continuationToken");
+            }
+
+            if (Long.parseLong(compositeContinuationToken.getToken().replace("\"", "")) > lsnAvailableNow) {
+                this.shouldFetchMore = false;
+            }
         }
     }
 }

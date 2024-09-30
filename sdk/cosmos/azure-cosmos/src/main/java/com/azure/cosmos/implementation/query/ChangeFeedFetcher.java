@@ -42,6 +42,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
+    private final boolean isQueryAvailableNow;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -52,6 +53,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int top,
         int maxItemCount,
         boolean isSplitHandlingDisabled,
+        boolean isQueryAvailableNow,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
@@ -76,6 +78,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 collectionLink,
                 isSplitHandlingDisabled);
         this.createRequestFunc = createRequestFunc;
+        this.isQueryAvailableNow = isQueryAvailableNow;
     }
 
     @Override
@@ -112,13 +115,31 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (continuationSnapshot != null &&
-                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+                       if (this.isQueryAvailableNow) {
+                           if (continuationSnapshot != null) {
+                               boolean canFetchMore = continuationSnapshot.shouldFetchMoreWithAvailableNowContext(r);
+                               if (!ModelBridgeInternal.<T>noChanges(r)) {
+                                   if (!canFetchMore) {
+                                       this.disableShouldFetchMore();
+                                   }
 
-                           // not all continuations have been drained yet
-                           // repeat with the next continuation
-                           this.reEnableShouldFetchMoreForRetry();
-                           return Mono.empty();
+                                   return Mono.just(r);
+                               }
+
+                               if (canFetchMore) {
+                                   this.reEnableShouldFetchMoreForRetry();
+                                   return Mono.empty();
+                               }
+                           }
+                       } else {
+                           if (continuationSnapshot != null &&
+                               continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+
+                               // not all continuations have been drained yet
+                               // repeat with the next continuation
+                               this.reEnableShouldFetchMoreForRetry();
+                               return Mono.empty();
+                           }
                        }
 
                        return Mono.just(r);

@@ -184,6 +184,26 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    /***
+     * Whether only query changes available now.
+     *
+     * @param queryAvailableNow flag to indicate whether only query changes available now.
+     * @return the CosmosChangeFeedRequestOptions.
+     */
+    public CosmosChangeFeedRequestOptions setQueryAvailableNow(boolean queryAvailableNow) {
+        this.actualRequestOptions.setQueryAvailableNow(queryAvailableNow);
+        return this;
+    }
+
+    /***
+     * Whether only query changes available now.
+     *
+     * @return true if only query available now.
+     */
+    public boolean isQueryAvailableNow() {
+        return this.actualRequestOptions.isQueryAvailableNow();
+    }
+
     boolean isSplitHandlingDisabled() {
         return this.actualRequestOptions.isSplitHandlingDisabled();
     }
