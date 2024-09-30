@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databricks.models.ManagedIdentityConfiguration;
 public final class ManagedIdentityConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentityConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"cd54fb4b-3070-47cb-acc9-e7afb33f8dd5\",\"tenantId\":\"6fb3425d-6960-4eed-ae98-9704248d7083\",\"type\":\"ablgphuticndvk\"}")
-                .toObject(ManagedIdentityConfiguration.class);
+        ManagedIdentityConfiguration model = BinaryData.fromString(
+            "{\"principalId\":\"298c0f05-8000-4ff2-8403-b77c0e069b2c\",\"tenantId\":\"93a5914c-aa34-4c43-bb56-cd81e036a6af\",\"type\":\"jgrtfwvukxga\"}")
+            .toObject(ManagedIdentityConfiguration.class);
     }
 
     @org.junit.jupiter.api.Test
