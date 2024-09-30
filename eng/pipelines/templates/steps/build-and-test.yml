@@ -264,6 +264,7 @@ steps:
     displayName: 'Use .NET Core sdk 7.0.x'
     inputs:
       version: 7.0.x
+    condition: eq(variables['RunAggregateReports'], 'true')
 
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.
