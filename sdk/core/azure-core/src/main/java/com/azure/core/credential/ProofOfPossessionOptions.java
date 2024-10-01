@@ -17,10 +17,9 @@ public class ProofOfPossessionOptions {
     private HttpMethod requestMethod;
 
     /**
-     * Creates an instance of ProofOfPossessionOptions.
+     * Creates a new instance of {@link ProofOfPossessionOptions}.
      */
     public ProofOfPossessionOptions() {
-
     }
 
     /**
