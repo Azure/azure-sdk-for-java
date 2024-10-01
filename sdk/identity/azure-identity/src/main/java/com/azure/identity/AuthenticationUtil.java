@@ -18,7 +18,7 @@ import java.util.function.Supplier;
 /**
  * Utility methods for working with authentication.
  */
-final public class AuthenticationUtil {
+public final class AuthenticationUtil {
 
     private AuthenticationUtil() {
     }
