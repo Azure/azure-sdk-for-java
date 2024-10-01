@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -1272,13 +1273,13 @@ public class CosmosClientBuilder implements
         URI uri;
         try {
             // split the serviceEndpoint in case of a connection string being passed in
-            String[] serviceEndpointParts = serviceEndpoint.replace(";", "")
+            String[] serviceEndpointParts = serviceEndpoint.strip().replace(";", "")
                 .replace("AccountKey=", "").replace("https://","").split("/");
-            serviceEndpoint = "https://" + serviceEndpointParts[0] + "/";
+            if (!serviceEndpointParts[0].isEmpty()) {
+                serviceEndpoint = "https://" + serviceEndpointParts[0] + "/";
+            }
             uri = new URI(serviceEndpoint);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("invalid serviceEndpoint", e);
-        } catch (IndexOutOfBoundsException e) {
+        } catch (URISyntaxException | IndexOutOfBoundsException e) {
             throw new IllegalArgumentException("invalid serviceEndpoint", e);
         }
 

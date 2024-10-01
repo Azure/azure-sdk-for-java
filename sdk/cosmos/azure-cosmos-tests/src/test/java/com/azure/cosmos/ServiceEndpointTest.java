@@ -15,33 +15,37 @@ public class ServiceEndpointTest extends TestSuiteBase {
     @DataProvider
     private Object[][] serviceEndpointArgProvider() {
         return new Object[][] {
-            { TestConfigurations.HOST.substring(0,TestConfigurations.HOST.length() - 1) },
-            { TestConfigurations.HOST },
-            { TestConfigurations.HOST.replace("https://", "") },
-            { TestConfigurations.HOST.replace("https://", "").replace("/", "") },
-            { TestConfigurations.HOST + ";AccountKey=" + TestConfigurations.MASTER_KEY },
-            { TestConfigurations.HOST + ";" + TestConfigurations.MASTER_KEY + ";" },
-            { TestConfigurations.HOST + TestConfigurations.MASTER_KEY + ";" },
-            { TestConfigurations.HOST + TestConfigurations.MASTER_KEY },
-            { null },
-            { "" }
+            { TestConfigurations.HOST.substring(0,TestConfigurations.HOST.length() - 1), true }, // https://localhost:8080
+            { TestConfigurations.HOST, true }, // https://localhost:8080/
+            { TestConfigurations.HOST.replace("https://", ""), true }, // localhost:8080/
+            { TestConfigurations.HOST.replace("https://", "").replace("/", ""), true },  // localhost:8081
+            { TestConfigurations.HOST + ";AccountKey=" + TestConfigurations.MASTER_KEY + ";", true }, // https://localhost:8081/;AccountKey=<secret>;
+            { TestConfigurations.HOST + ";AccountKey=" + TestConfigurations.MASTER_KEY, true}, // https://localhost:8081/;AccountKey=<secret>
+            { TestConfigurations.HOST + ";" + TestConfigurations.MASTER_KEY + ";", true }, // https://localhost:8081/;<secret>;
+            { TestConfigurations.HOST + TestConfigurations.MASTER_KEY + ";", true }, // https://localhost:8081/<secret>;
+            { TestConfigurations.HOST + TestConfigurations.MASTER_KEY, true }, // https://localhost:8081/<secret>
+            { "AccountEndpoint=" + TestConfigurations.HOST + ";AccountKey=" + TestConfigurations.MASTER_KEY + ";", false }, // AccountEndpoint=https://localhost:8081/;AccountKey=<secret>;
+            { TestConfigurations.HOST.substring(0,TestConfigurations.HOST.length() - 1) + TestConfigurations.MASTER_KEY, false }, // https://localhost:8081<secret>
+            { null, false },
+            { "", false },
+            { "  ", false },
         };
     }
 
-    @Test(groups = { "unit" }, dataProvider = "serviceEndpointArgProvider")
-    public void validateServiceEndpoint(String serviceEndpoint) {
-        CosmosClient cosmosClient;
+    @Test(groups = { "emulator, fast" }, dataProvider = "serviceEndpointArgProvider", timeOut = TIMEOUT)
+    public void validateServiceEndpoint(String serviceEndpoint, boolean succeed) {
+        CosmosAsyncClient cosmosClient;
         try {
             CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                 .endpoint(serviceEndpoint)
                 .key(TestConfigurations.MASTER_KEY);
-            cosmosClient = cosmosClientBuilder.buildClient();
-        } catch (NullPointerException e) {
-            assertThat(serviceEndpoint).isNull();
-            System.out.println();
+            cosmosClient = cosmosClientBuilder.buildAsyncClient();
+        } catch (NullPointerException | IllegalArgumentException e) {
+            assertThat(succeed).isFalse();
             return;
-        } catch (IllegalArgumentException e) {
-            assertThat(serviceEndpoint).isEmpty();
+        } catch (RuntimeException e) {
+            assertThat(e.getMessage().contains("Client initialization failed. Check if the endpoint is reachable and if your auth token is valid.")).isTrue();
+            assertThat(succeed).isFalse();
             return;
         }
 
@@ -50,26 +54,13 @@ public class ServiceEndpointTest extends TestSuiteBase {
 
         assertThat(asyncDocumentClient.getServiceEndpoint().toString()).isEqualTo(TestConfigurations.HOST);
 
-        safeCloseSyncClient(cosmosClient);
-    }
-
-    @Test(groups = { "fast" }, dataProvider = "serviceEndpointArgProvider")
-    public void createWithDiffServiceEndpoints(String serviceEndpoint) {
-        if (serviceEndpoint != null && !serviceEndpoint.isEmpty()) {
-            CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-                .endpoint(serviceEndpoint)
-                .key(TestConfigurations.MASTER_KEY);
-
-            CosmosAsyncClient cosmosClient = cosmosClientBuilder.buildAsyncClient();
-            CosmosAsyncContainer cosmosAsyncContainer = getSharedSinglePartitionCosmosContainer(cosmosClient);
-
-            CosmosItemResponse<TestObject> response = cosmosAsyncContainer.createItem(TestObject.create()).block();
-            assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
-
-
-            safeClose(cosmosClient);
-        }
-
+        CosmosAsyncContainer cosmosAsyncContainer = getSharedSinglePartitionCosmosContainer(cosmosClient);
+        // basic validation to ensure the client is working
+        CosmosItemResponse<TestObject> response = cosmosAsyncContainer.createItem(TestObject.create()).block();
+        assertThat(response.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.CREATED);
+        assertThat(succeed).isTrue();
+        cleanUpContainer(cosmosAsyncContainer);
+        safeClose(cosmosClient);
     }
 
 }
