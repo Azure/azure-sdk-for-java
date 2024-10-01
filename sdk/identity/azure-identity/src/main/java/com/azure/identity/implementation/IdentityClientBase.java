@@ -482,7 +482,7 @@ public abstract class IdentityClientBase {
 
         ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
 
-        if (managedIdentitySourceType.equals(ManagedIdentitySourceType.DEFAULT_TO_IMDS)) {
+        if (ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(managedIdentitySourceType)) {
             options.setUseImdsRetryStrategy();
         }
 

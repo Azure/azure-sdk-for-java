@@ -234,8 +234,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
         if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
-            if (managedIdentitySourceType.equals(ManagedIdentitySourceType.CLOUD_SHELL)
-                || managedIdentitySourceType.equals(ManagedIdentitySourceType.AZURE_ARC)) {
+            if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)
+                || ManagedIdentitySourceType.AZURE_ARC.equals(managedIdentitySourceType)) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                     new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
                         + "User assigned Managed Identity is not supported in " + managedIdentitySourceType
