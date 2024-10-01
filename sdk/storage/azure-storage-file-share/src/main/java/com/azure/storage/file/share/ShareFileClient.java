@@ -90,8 +90,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -250,7 +254,7 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileOutputStream getFileOutputStream(long offset) {
-        return new StorageFileOutputStream(shareFileAsyncClient, offset);
+        return new StorageFileOutputStream(this, offset);
     }
 
     /**
@@ -2551,7 +2555,76 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String uploadFilePath, ShareRequestConditions requestConditions) {
-        shareFileAsyncClient.uploadFromFile(uploadFilePath, requestConditions).block();
+        StorageImplUtils.assertNotNull("uploadFilePath", uploadFilePath);
+
+        // Use ShareRequestConditions or default to a new instance if null
+        ShareRequestConditions validatedRequestConditions = requestConditions == null
+            ? new ShareRequestConditions()
+            : requestConditions;
+
+        // Open a FileChannel to read the file synchronously
+        try (FileChannel fileChannel = FileChannel.open(Paths.get(uploadFilePath), StandardOpenOption.READ)) {
+            long fileSize = fileChannel.size();
+
+            // Calculate ranges for chunked upload
+            List<ShareFileRange> fileRanges = sliceFile(fileSize);
+
+            // Upload each chunk sequentially
+            for (ShareFileRange range : fileRanges) {
+                uploadFileRange(fileChannel, range, validatedRequestConditions);
+            }
+
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Splits the file into chunks based on the default block size.
+     *
+     * @param fileSize The size of the file.
+     * @return A list of {@link ShareFileRange} representing each chunk.
+     */
+    private static List<ShareFileRange> sliceFile(long fileSize) {
+        List<ShareFileRange> ranges = new ArrayList<>();
+        for (long pos = 0; pos < fileSize; pos += ModelHelper.FILE_DEFAULT_BLOCK_SIZE) {
+            long count = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
+            if (pos + count > fileSize) {
+                count = fileSize - pos;
+            }
+            ranges.add(new ShareFileRange(pos, pos + count - 1));
+        }
+        return ranges;
+    }
+
+    /**
+     * Uploads a specific file range synchronously.
+     *
+     * @param fileChannel The FileChannel to read from.
+     * @param range The specific range to upload.
+     * @param requestConditions {@link ShareRequestConditions} for the upload.
+     */
+    private void uploadFileRange(FileChannel fileChannel, ShareFileRange range, ShareRequestConditions requestConditions) {
+        long rangeSize = range.getEnd() - range.getStart() + 1;
+
+        // Read the data from the file into a ByteBuffer
+        ByteBuffer buffer = ByteBuffer.allocate((int) rangeSize);
+        try {
+            fileChannel.read(buffer, range.getStart());
+            buffer.flip();  // Prepare buffer for reading
+
+            // Use ShareFileUploadRangeOptions to upload the range synchronously
+            ShareFileUploadRangeOptions uploadRangeOptions = new ShareFileUploadRangeOptions(
+                new ByteArrayInputStream(buffer.array()), rangeSize)
+                .setOffset(range.getStart())
+                .setRequestConditions(requestConditions);
+
+            // Perform the upload
+            uploadRangeWithResponse(uploadRangeOptions, null, null);
+
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     /**
