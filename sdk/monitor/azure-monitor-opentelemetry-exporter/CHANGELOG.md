@@ -207,7 +207,8 @@ See the [Readme](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monit
 ## 1.0.0-beta.4 (2021-03-10)
 
 ### New Features
-- `AzureMonitorExporterBuilder` now supports reading connection string from `APPLICATIONINSIGHTS_CONNECTION_STRING` environment variable.
+- `AzureMonitorExporterBuilder` now supports reading connection string from `APPLICATIONINSIGHTS_CONNECTION_STRING
+` environment variable.
 
 ### Dependency Updates
 - Updated versions of `opentelemetry-api` and `opentelemetry-sdk` to `1.0.0` version.
