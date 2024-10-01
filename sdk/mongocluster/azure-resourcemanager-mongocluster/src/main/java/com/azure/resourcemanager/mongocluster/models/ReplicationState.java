@@ -12,32 +12,33 @@ import java.util.Collection;
  */
 public final class ReplicationState extends ExpandableStringEnum<ReplicationState> {
     /**
-     * Static value Active for ReplicationState.
+     * Replication link is active.
      */
     public static final ReplicationState ACTIVE = fromString("Active");
 
     /**
-     * Static value Catchup for ReplicationState.
+     * Replica is catching-up with the primary. This can occur after the replica is created or after a promotion is
+     * triggered.
      */
     public static final ReplicationState CATCHUP = fromString("Catchup");
 
     /**
-     * Static value Provisioning for ReplicationState.
+     * Replica and replication link to the primary is being created.
      */
     public static final ReplicationState PROVISIONING = fromString("Provisioning");
 
     /**
-     * Static value Updating for ReplicationState.
+     * Replication link is being updated due to a change on the replica or an upgrade.
      */
     public static final ReplicationState UPDATING = fromString("Updating");
 
     /**
-     * Static value Broken for ReplicationState.
+     * Replication link is broken and the replica may need to be recreated.
      */
     public static final ReplicationState BROKEN = fromString("Broken");
 
     /**
-     * Static value Reconfiguring for ReplicationState.
+     * Replication link is re-configuring due to a promotion event.
      */
     public static final ReplicationState RECONFIGURING = fromString("Reconfiguring");
 

@@ -58,8 +58,9 @@ public final class ImageEmbeddingsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     input (Required): [
      *          (Required){
@@ -75,11 +76,13 @@ public final class ImageEmbeddingsClient {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Required): [
      *          (Required){
@@ -93,7 +96,8 @@ public final class ImageEmbeddingsClient {
      *     }
      *     model: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param embedRequest1 The embedRequest1 parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -115,14 +119,16 @@ public final class ImageEmbeddingsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     model_name: String (Required)
      *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
      *     model_provider_name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.

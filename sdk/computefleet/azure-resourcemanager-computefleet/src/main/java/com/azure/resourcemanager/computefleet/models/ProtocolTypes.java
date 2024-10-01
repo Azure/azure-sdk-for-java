@@ -13,12 +13,12 @@ import java.util.Collection;
  */
 public final class ProtocolTypes extends ExpandableStringEnum<ProtocolTypes> {
     /**
-     * Static value Http for ProtocolTypes.
+     * Http protocol.
      */
     public static final ProtocolTypes HTTP = fromString("Http");
 
     /**
-     * Static value Https for ProtocolTypes.
+     * Https protocol.
      */
     public static final ProtocolTypes HTTPS = fromString("Https");
 

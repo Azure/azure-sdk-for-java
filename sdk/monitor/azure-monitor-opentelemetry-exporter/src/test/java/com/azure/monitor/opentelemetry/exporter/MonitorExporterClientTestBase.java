@@ -32,8 +32,8 @@ import java.util.UUID;
  */
 public class MonitorExporterClientTestBase extends TestProxyTestBase {
 
-    AzureMonitorExporterBuilder getClientBuilder() {
-        return new AzureMonitorExporterBuilder().pipeline(getHttpPipeline(null));
+    AzureMonitorExporterOptions getClientBuilder() {
+        return new AzureMonitorExporterOptions().pipeline(getHttpPipeline(null));
     }
 
     HttpPipeline getHttpPipeline(@Nullable HttpPipelinePolicy policy, HttpClient httpClient) {
