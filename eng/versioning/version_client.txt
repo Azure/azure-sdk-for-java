@@ -491,8 +491,8 @@ io.clientcore:http-stress;1.0.0-beta.1;1.0.0-beta.1
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 
+unreleased_com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.29
 unreleased_com.azure:azure-core-http-okhttp;1.13.0-beta.1
-
 unreleased_com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.29
 unreleased_com.azure:azure-core-test;1.27.0-beta.2
 unreleased_com.azure:azure-core;1.53.0-beta.1
