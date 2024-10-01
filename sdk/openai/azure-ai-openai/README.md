@@ -506,7 +506,7 @@ CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.a
 Upload completeUpload = client.completeUpload(uploadId, completeUploadRequest);
 System.out.println("Upload completed, upload ID = " + completeUpload.getId());
 ```
-For a complete sample example, see sample [Upload large files in multiple parts][sample_uploads_in_multi_parts].
+For a full sample, see  [Upload large files in multiple parts][sample_uploads_in_multi_parts].
 For more details see the [OpenAI uploads documentation](https://platform.openai.com/docs/api-reference/uploads).
 
 ## Troubleshooting
