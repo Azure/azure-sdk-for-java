@@ -847,7 +847,13 @@ public class IdentityClient extends IdentityClientBase {
                         t -> {
                 throw new ClientAuthenticationException("Failed to acquire token with Interactive Browser Authentication.", null, t);
             })
-        .map(MsalToken::new);
+        .map(iAuthenticationResult -> {
+            if (options.isBrokerEnabled() && request.getProofOfPossessionOptions() != null) {
+                return new MsalToken(iAuthenticationResult, "PoP");
+            } else {
+                return new MsalToken(iAuthenticationResult);
+            }
+        });
     }
 
     /**

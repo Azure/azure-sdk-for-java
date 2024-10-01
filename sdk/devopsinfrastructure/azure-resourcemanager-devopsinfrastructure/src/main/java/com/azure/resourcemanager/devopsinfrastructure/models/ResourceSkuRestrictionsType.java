@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<ResourceSkuRestrictionsType> {
     /**
-     * Static value Location for ResourceSkuRestrictionsType.
+     * SKU restricted by location.
      */
     public static final ResourceSkuRestrictionsType LOCATION = fromString("Location");
 
     /**
-     * Static value Zone for ResourceSkuRestrictionsType.
+     * SKU restricted by availability zone.
      */
     public static final ResourceSkuRestrictionsType ZONE = fromString("Zone");
 

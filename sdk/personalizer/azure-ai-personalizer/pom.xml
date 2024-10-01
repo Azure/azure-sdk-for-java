@@ -43,6 +43,7 @@
     </javaModulesSurefireArgLine>
 
     <jacoco.min.branchcoverage>0.27</jacoco.min.branchcoverage>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

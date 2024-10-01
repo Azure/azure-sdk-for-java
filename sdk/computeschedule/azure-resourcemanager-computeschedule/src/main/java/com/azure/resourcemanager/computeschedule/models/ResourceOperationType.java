@@ -12,22 +12,22 @@ import java.util.Collection;
  */
 public final class ResourceOperationType extends ExpandableStringEnum<ResourceOperationType> {
     /**
-     * Static value Unknown for ResourceOperationType.
+     * The default value for this enum type.
      */
     public static final ResourceOperationType UNKNOWN = fromString("Unknown");
 
     /**
-     * Static value Start for ResourceOperationType.
+     * Start operations on the resources.
      */
     public static final ResourceOperationType START = fromString("Start");
 
     /**
-     * Static value Deallocate for ResourceOperationType.
+     * Deallocate operations on the resources.
      */
     public static final ResourceOperationType DEALLOCATE = fromString("Deallocate");
 
     /**
-     * Static value Hibernate for ResourceOperationType.
+     * Hibernate operations on the resources.
      */
     public static final ResourceOperationType HIBERNATE = fromString("Hibernate");
 

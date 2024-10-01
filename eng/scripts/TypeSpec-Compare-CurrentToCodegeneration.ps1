@@ -21,7 +21,7 @@ param(
 function Reset-Repository {
   # Clean up generated code, so that next step will not be affected.
   git reset --hard
-  git clean -fd $sdkPath
+  git clean -fd .
 }
 
 Write-Host "
