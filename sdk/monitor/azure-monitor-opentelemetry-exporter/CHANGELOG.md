@@ -23,7 +23,7 @@ See the [Readme](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monit
 ### Other Changes
 - [Better populate exception type name and message from span events](https://github.com/Azure/azure-sdk-for-java/pull/41397)
 - [Update OpenTelemetry SDK to 1.42.1](https://github.com/Azure/azure-sdk-for-java/pull/41931))
-- [Improve the error message when non connection string](https://github.com/Azure/azure-sdk-for-java/pull/42034)
+- [Improve the error message for null connection string](https://github.com/Azure/azure-sdk-for-java/pull/42034)
 - [Update message in case of connection failure](https://github.com/Azure/azure-sdk-for-java/pull/42103)
 
 ## 1.0.0-beta.28 (2024-08-08)
