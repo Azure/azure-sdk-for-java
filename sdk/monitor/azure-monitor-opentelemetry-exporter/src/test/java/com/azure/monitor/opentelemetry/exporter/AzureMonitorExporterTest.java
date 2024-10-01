@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.monitor.opentelemetry.AzureMonitor;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import org.junit.jupiter.api.Assertions;
@@ -14,16 +13,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.stream.Stream;
 
 /**
- * Unit tests for {@link AzureMonitorExporterBuilder}.
+ * Unit tests for {@link AzureMonitorExporterOptions}.
  */
-public class AzureMonitorExporterBuilderTest {
+public class AzureMonitorExporterTest {
     @ParameterizedTest
     @MethodSource("getInvalidConnectionStrings")
     public <T extends RuntimeException> void testInvalidConnectionStrings(String connectionString,
         Class<T> exceptionExpected) {
         Assertions.assertThrows(exceptionExpected, () -> {
             AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-            AzureMonitor.customize(sdkBuilder, connectionString);
+            AzureMonitorExporter.customize(sdkBuilder, connectionString);
             sdkBuilder.build();
         });
     }
