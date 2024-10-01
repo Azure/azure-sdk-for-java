@@ -14,6 +14,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.ProxyOptions.Type;
 import com.azure.core.util.Context;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.AuthorizationCodeCredential;
 import com.azure.identity.AuthorizationCodeCredentialBuilder;
 import com.azure.identity.AzureCliCredential;
@@ -48,7 +49,6 @@ import com.azure.identity.OnBehalfOfCredential;
 import com.azure.identity.OnBehalfOfCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
-import com.azure.identity.Util;
 import com.azure.identity.WorkloadIdentityCredential;
 import com.azure.identity.WorkloadIdentityCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -357,11 +357,11 @@ public final class JavaDocCodeSnippets {
         // END: com.azure.identity.silentauthentication
     }
 
-    public void bearerTokenProviderSample() {
-        // BEGIN: com.azure.identity.util.getBearerTokenSupplier
+    public void bearerTokenProviderSampleSync() {
+        // BEGIN: com.azure.identity.util.getBearerTokenSupplierSync
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         String scope = "https://cognitiveservices.azure.com/.default";
-        Supplier<String> supplier = Util.getBearerTokenSupplier(credential, scope);
+        Supplier<String> supplier = AuthenticationUtil.getBearerTokenSupplierSync(credential, scope);
 
         // This example simply uses the Azure SDK HTTP library to demonstrate setting the header.
         // Use the token as is appropriate for your circumstances.
@@ -369,8 +369,26 @@ public final class JavaDocCodeSnippets {
         request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + supplier.get());
         HttpClient client = HttpClient.createDefault();
         client.sendSync(request, Context.NONE);
-        // END: com.azure.identity.util.getBearerTokenSupplier
-
-
+        // END: com.azure.identity.util.getBearerTokenSupplierSync
     }
+
+    public void bearerTokenProviderSample() {
+        // BEGIN: com.azure.identity.util.getBearerTokenSupplier
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        String scope = "https://cognitiveservices.azure.com/.default";
+        Supplier<Mono<String>> supplier = AuthenticationUtil.getBearerTokenSupplier(credential, scope);
+
+        // This example simply uses the Azure SDK HTTP library to demonstrate setting the header.
+        // Use the token as is appropriate for your circumstances.
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://www.example.com");
+
+        supplier.get().subscribe(token -> {
+            request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + token);
+            HttpClient client = HttpClient.createDefault();
+            client.send(request, Context.NONE);
+        });
+        // END: com.azure.identity.util.getBearerTokenSupplier
+    }
+
+
 }
