@@ -16,7 +16,6 @@ public class ProofOfPossessionOptions {
     private URL requestUrl;
     private HttpMethod requestMethod;
 
-
     /**
      * Creates an instance of ProofOfPossessionOptions.
      */
