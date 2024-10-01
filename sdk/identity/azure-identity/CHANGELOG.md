@@ -13,6 +13,10 @@
 - Allow certain response headers to be logged in `AzurePipelinesCredential` for diagnostics and include them in the exception message.
 - Mark `AzureAuthorityHosts.AZURE_GERMANY` deprecated as the Germany cloud closed in 2021. [#42148](https://github.com/Azure/azure-sdk-for-java/issues/42148)
 
+#### Dependency Updates
+
+- Upgraded `msal4j` from `1.17.1` to version `1.17.2`.
+
 ## 1.14.0-beta.2 (2024-09-20)
 
 ### Features Added
