@@ -6,13 +6,15 @@
 
 ### Breaking Changes
 
-The `AzureMonitorExporterBuilder` class has been replaced with the `AzureMonitorExporter` class ([41705](https://github.com/Azure/azure-sdk-for-java/pull/41705) and [42134](https://github.com/Azure/azure-sdk-for-java/pull/42134)).
+⚠️⚠️ The `AzureMonitorExporterBuilder` class has been replaced with the `AzureMonitorExporter` class ([41705](https://github.com/Azure/azure-sdk-for-java/pull/41705) and [42134](https://github.com/Azure/azure-sdk-for-java/pull/42134)):
 
 ```java
 AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 AzureMonitorExporter.customize(sdkBuilder);
 OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 ```
+
+See the [Readme](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-opentelemetry-exporter) for more details
 
 ### Bugs Fixed
 - [Fix a race condition RejectedExecutionException](https://github.com/Azure/azure-sdk-for-java/pull/41927)
