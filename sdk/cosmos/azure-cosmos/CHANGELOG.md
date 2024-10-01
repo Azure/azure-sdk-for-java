@@ -4,6 +4,7 @@
 
 #### Features Added
 * Added an API to retrieve diagnostics from the change feed processor context. - See [PR 41738](https://github.com/Azure/azure-sdk-for-java/pull/41738)
+* Added an utility API to help extract sub-range continuation tokens from existing changeFeed query continuation token. - See [PR 42156](https://github.com/Azure/azure-sdk-for-java/pull/42156)
 
 #### Breaking Changes
 

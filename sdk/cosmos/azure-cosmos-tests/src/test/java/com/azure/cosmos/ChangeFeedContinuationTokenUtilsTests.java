@@ -48,7 +48,7 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
     public void extractContinuationTokens() {
         // create a container with at least 3 partitions
         String testContainerId = UUID.randomUUID().toString();
