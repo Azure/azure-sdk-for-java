@@ -149,6 +149,7 @@ public class CosmosClientBuilder implements
     private final List<CosmosOperationPolicy> requestPolicies;
     private CosmosItemSerializer defaultCustomSerializer;
     private boolean isRegionScopedSessionCapturingEnabled = false;
+    private boolean isPerPartitionAutomaticFailoverEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
