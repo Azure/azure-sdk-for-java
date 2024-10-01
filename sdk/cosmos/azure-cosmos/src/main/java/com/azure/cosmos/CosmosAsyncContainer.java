@@ -31,16 +31,9 @@ import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.guava25.collect.Lists;
-import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
@@ -86,13 +79,10 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -1118,53 +1108,6 @@ public class CosmosAsyncContainer {
         checkNotNull(classType, "Argument 'classType' must not be null.");
 
         return queryChangeFeedInternal(options, classType);
-    }
-
-    public Map<String, String> rebalancingChangeFeedContinuationToken(String changeFeedContinuationToken) {
-        return rebalancingChangeFeedContinuationToken(changeFeedContinuationToken, -1);
-    }
-
-    public Map<String, String> rebalancingChangeFeedContinuationToken(
-        String changeFeedContinuationToken,
-        int targetedDegreeOfParallelism) {
-
-        final ChangeFeedState changeFeedState = ChangeFeedState.fromString(changeFeedContinuationToken);
-        List<CompositeContinuationToken> allTokens = changeFeedState.extractContinuationTokens();
-        allTokens.sort(new Comparator<>() {
-            @Override
-            public int compare(CompositeContinuationToken o1, CompositeContinuationToken o2) {
-                return o1.getRange().getMin().compareTo(o2.getRange().getMin());
-            }
-        });
-
-        Map<String, String> rebalancingChangeFeedContinuationToken = new ConcurrentHashMap<>();
-        targetedDegreeOfParallelism = targetedDegreeOfParallelism == -1 ? allTokens.size() : targetedDegreeOfParallelism;
-        List<List<CompositeContinuationToken>> segmentedTokens = Lists.partition(allTokens, targetedDegreeOfParallelism);
-        for (List<CompositeContinuationToken> segmentedToken : segmentedTokens) {
-            FeedRangeEpkImpl effectiveChildRange =
-                new FeedRangeEpkImpl(
-                    new Range<>(
-                        segmentedToken.get(0).getRange().getMin(),
-                        segmentedToken.get(segmentedToken.size()-1).getRange().getMax(),
-                        true,
-                        false));
-
-            ChangeFeedState newChildFeedRangeState = new ChangeFeedStateV1(
-                changeFeedState.getContainerRid(),
-                effectiveChildRange,
-                changeFeedState.getMode(),
-                changeFeedState.getStartFromSettings(),
-                FeedRangeContinuation.create(
-                    changeFeedState.getContainerRid(),
-                    effectiveChildRange,
-                    segmentedToken
-                )
-            );
-
-            rebalancingChangeFeedContinuationToken.put(effectiveChildRange.toString(), newChildFeedRangeState.toString());
-        }
-
-        return rebalancingChangeFeedContinuationToken;
     }
 
     <T> CosmosPagedFlux<T> queryChangeFeedInternal(
