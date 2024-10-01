@@ -358,10 +358,10 @@ public final class JavaDocCodeSnippets {
     }
 
     public void bearerTokenProviderSampleSync() {
-        // BEGIN: com.azure.identity.util.getBearerTokenSupplierSync
+        // BEGIN: com.azure.identity.util.getBearerTokenSupplier
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         String scope = "https://cognitiveservices.azure.com/.default";
-        Supplier<String> supplier = AuthenticationUtil.getBearerTokenSupplierSync(credential, scope);
+        Supplier<String> supplier = AuthenticationUtil.getBearerTokenSupplier(credential, scope);
 
         // This example simply uses the Azure SDK HTTP library to demonstrate setting the header.
         // Use the token as is appropriate for your circumstances.
@@ -369,26 +369,7 @@ public final class JavaDocCodeSnippets {
         request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + supplier.get());
         HttpClient client = HttpClient.createDefault();
         client.sendSync(request, Context.NONE);
-        // END: com.azure.identity.util.getBearerTokenSupplierSync
-    }
-
-    public void bearerTokenProviderSample() {
-        // BEGIN: com.azure.identity.util.getBearerTokenSupplier
-        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-        String scope = "https://cognitiveservices.azure.com/.default";
-        Supplier<Mono<String>> supplier = AuthenticationUtil.getBearerTokenSupplier(credential, scope);
-
-        // This example simply uses the Azure SDK HTTP library to demonstrate setting the header.
-        // Use the token as is appropriate for your circumstances.
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://www.example.com");
-
-        supplier.get().subscribe(token -> {
-            request.setHeader(HttpHeaderName.AUTHORIZATION, "Bearer " + token);
-            HttpClient client = HttpClient.createDefault();
-            client.send(request, Context.NONE);
-        });
         // END: com.azure.identity.util.getBearerTokenSupplier
     }
-
 
 }
