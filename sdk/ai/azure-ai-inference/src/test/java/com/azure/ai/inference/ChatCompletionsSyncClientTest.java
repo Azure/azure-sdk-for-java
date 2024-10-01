@@ -6,6 +6,10 @@ import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.ai.inference.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.inference.models.ChatCompletionsFunctionToolDefinition;
 import com.azure.ai.inference.models.ChatCompletionsOptions;
+import com.azure.ai.inference.models.ChatMessageContentItem;
+import com.azure.ai.inference.models.ChatMessageImageContentItem;
+import com.azure.ai.inference.models.ChatMessageImageUrl;
+import com.azure.ai.inference.models.ChatMessageTextContentItem;
 import com.azure.ai.inference.models.ChatRequestMessage;
 import com.azure.ai.inference.models.ChatRequestAssistantMessage;
 import com.azure.ai.inference.models.ChatRequestUserMessage;
@@ -34,6 +38,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -46,8 +52,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase {
     private ChatCompletionsClient client;
-    private static String functionName = "FutureTemperature";
-    private static String functionReturn = "-7";
+    private static final String FUNCTION_NAME = "FutureTemperature";
+    private static final String FUNCTION_RETURN = "-7";
+    private static final String TEST_URL =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg";
+    private static final String TEST_IMAGE_PATH = "./src/samples/resources/sample-images/sample.png";
+    private static final String TEST_IMAGE_FORMAT = "png";
 
     private ChatCompletionsClient getChatCompletionsClient(HttpClient httpClient) {
         return getChatCompletionsClientBuilder(
@@ -126,6 +136,41 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             ChatCompletions resultCompletions = client.complete(options);
             assertCompletions(1, resultCompletions);
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsWithImageFile(HttpClient httpClient) {
+        client = getChatCompletionsClient(httpClient);
+        Path testFilePath = Paths.get(TEST_IMAGE_PATH);
+        List<ChatMessageContentItem> contentItems = new ArrayList<>();
+        contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+        contentItems.add(new ChatMessageImageContentItem(testFilePath, TEST_IMAGE_FORMAT));
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+        ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+        assertCompletions(1, completions);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.inference.TestUtils#getTestParameters")
+    public void testGetCompletionsWithImageUrl(HttpClient httpClient) {
+        client = getChatCompletionsClient(httpClient);
+        List<ChatMessageContentItem> contentItems = new ArrayList<>();
+        contentItems.add(new ChatMessageTextContentItem("Describe the image."));
+        contentItems.add(new ChatMessageImageContentItem(
+            new ChatMessageImageUrl(TEST_URL)));
+
+        List<ChatRequestMessage> chatMessages = new ArrayList<>();
+        chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
+        chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
+
+        ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
+
+        assertCompletions(1, completions);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -231,16 +276,16 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
                     finalResult.append(choice.getDelta().getContent());
                 }
             }
-            assertTrue(finalResult.toString().contains(functionReturn));
+            assertTrue(finalResult.toString().contains(FUNCTION_RETURN));
         }
     }
 
     private static String futureTemperature(String locationName, String data) {
-        return String.format("%s C", functionReturn);
+        return String.format("%s C", FUNCTION_RETURN);
     }
 
     private static FunctionDefinition getFutureTemperatureFunctionDefinition() {
-        FunctionDefinition functionDefinition = new FunctionDefinition(functionName);
+        FunctionDefinition functionDefinition = new FunctionDefinition(FUNCTION_NAME);
         functionDefinition.setDescription("Get the future temperature for a given location and date.");
         FutureTemperatureParameters parameters = new FutureTemperatureParameters();
         functionDefinition.setParameters(BinaryData.fromObject(parameters));
