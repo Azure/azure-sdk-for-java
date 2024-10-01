@@ -247,6 +247,7 @@
     "com.azure.ai.openai.models.Upload": "Azure.OpenAI.Upload",
     "com.azure.ai.openai.models.UploadObject": "null",
     "com.azure.ai.openai.models.UploadPart": "Azure.OpenAI.UploadPart",
+    "com.azure.ai.openai.models.UploadPurpose": "Upload.purpose.anonymous",
     "com.azure.ai.openai.models.UploadStatus": "Upload.status.anonymous"
   }
 }

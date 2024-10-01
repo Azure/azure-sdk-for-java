@@ -2120,7 +2120,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public List<OpenAIFile> listFiles(FilePurpose purpose) {
-        // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
@@ -2159,7 +2158,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose).setFilename(filename);
         BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
@@ -2187,7 +2185,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIFile uploadFile(FileDetails file, FilePurpose purpose) {
-        // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose);
         BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
@@ -2214,7 +2211,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FileDeletionStatus deleteFile(String fileId) {
-        // Generated convenience method for deleteFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteFileWithResponse(fileId, requestOptions).getValue();
     }
@@ -2233,7 +2229,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OpenAIFile getFile(String fileId) {
-        // Generated convenience method for getFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileWithResponse(fileId, requestOptions).getValue();
     }
@@ -2252,7 +2247,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] getFileContent(String fileId) {
-        // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileContentWithResponse(fileId, requestOptions).getValue();
     }
@@ -2272,7 +2266,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PageableList<Batch> listBatches(String after, Integer limit) {
-        // Generated convenience method for listBatchesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -2312,7 +2305,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Batch getBatch(String batchId) {
-        // Generated convenience method for getBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getBatchWithResponse(batchId, requestOptions).getValue();
     }
@@ -2331,7 +2323,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Batch cancelBatch(String batchId) {
-        // Generated convenience method for cancelBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelBatchWithResponse(batchId, requestOptions).getValue();
     }
@@ -2352,7 +2343,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Batch createBatch(BatchCreateRequest createBatchRequest) {
-        // Generated convenience method for createBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createBatchWithResponse(BinaryData.fromObject(createBatchRequest), requestOptions).getValue();
     }
@@ -2618,7 +2608,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Upload createUpload(CreateUploadRequest requestBody) {
-        // Generated convenience method for createUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createUploadWithResponse(BinaryData.fromObject(requestBody), requestOptions).getValue();
     }
@@ -2643,7 +2632,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UploadPart addUploadPart(String uploadId, AddUploadPartRequest requestBody) {
-        // Generated convenience method for addUploadPartWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return addUploadPartWithResponse(uploadId,
             new MultipartFormDataHelper(requestOptions)
@@ -2677,7 +2665,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Upload completeUpload(String uploadId, CompleteUploadRequest requestBody) {
-        // Generated convenience method for completeUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return completeUploadWithResponse(uploadId, BinaryData.fromObject(requestBody), requestOptions).getValue();
     }
@@ -2696,7 +2683,6 @@ public final class OpenAIClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Upload cancelUpload(String uploadId) {
-        // Generated convenience method for cancelUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelUploadWithResponse(uploadId, requestOptions).getValue();
     }

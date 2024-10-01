@@ -26,7 +26,8 @@ public final class CreateUploadRequest implements JsonSerializable<CreateUploadR
     /*
      * The intended purpose of the uploaded file.
      * 
-     * See the [documentation on File purposes](/docs/api-reference/files/create#files-create-purpose).
+     * Use 'assistants' for Assistants and Message files, 'vision' for Assistants image file inputs, 'batch' for Batch
+     * API, and 'fine-tune' for Fine-tuning.
      */
     @Generated
     private final CreateUploadRequestPurpose purpose;
@@ -75,7 +76,8 @@ public final class CreateUploadRequest implements JsonSerializable<CreateUploadR
     /**
      * Get the purpose property: The intended purpose of the uploaded file.
      *
-     * See the [documentation on File purposes](/docs/api-reference/files/create#files-create-purpose).
+     * Use 'assistants' for Assistants and Message files, 'vision' for Assistants image file inputs, 'batch' for Batch
+     * API, and 'fine-tune' for Fine-tuning.
      *
      * @return the purpose value.
      */

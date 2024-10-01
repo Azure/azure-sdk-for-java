@@ -2174,7 +2174,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OpenAIFile>> listFiles(FilePurpose purpose) {
-        // Generated convenience method for listFilesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (purpose != null) {
             requestOptions.addQueryParam("purpose", purpose.toString(), false);
@@ -2213,7 +2212,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose).setFilename(filename);
         BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
@@ -2241,7 +2239,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose) {
-        // Generated convenience method for uploadFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose);
         BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
@@ -2268,7 +2265,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileDeletionStatus> deleteFile(String fileId) {
-        // Generated convenience method for deleteFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return deleteFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2287,7 +2283,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<OpenAIFile> getFile(String fileId) {
-        // Generated convenience method for getFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2306,7 +2301,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<byte[]> getFileContent(String fileId) {
-        // Generated convenience method for getFileContentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getFileContentWithResponse(fileId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2326,7 +2320,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PageableList<Batch>> listBatches(String after, Integer limit) {
-        // Generated convenience method for listBatchesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (after != null) {
             requestOptions.addQueryParam("after", after, false);
@@ -2366,7 +2359,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> getBatch(String batchId) {
-        // Generated convenience method for getBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2385,7 +2377,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> cancelBatch(String batchId) {
-        // Generated convenience method for cancelBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelBatchWithResponse(batchId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2406,7 +2397,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Batch> createBatch(BatchCreateRequest createBatchRequest) {
-        // Generated convenience method for createBatchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createBatchWithResponse(BinaryData.fromObject(createBatchRequest), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -2678,7 +2668,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Upload> createUpload(CreateUploadRequest requestBody) {
-        // Generated convenience method for createUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return createUploadWithResponse(BinaryData.fromObject(requestBody), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -2704,7 +2693,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UploadPart> addUploadPart(String uploadId, AddUploadPartRequest requestBody) {
-        // Generated convenience method for addUploadPartWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return addUploadPartWithResponse(uploadId,
             new MultipartFormDataHelper(requestOptions)
@@ -2738,7 +2726,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Upload> completeUpload(String uploadId, CompleteUploadRequest requestBody) {
-        // Generated convenience method for completeUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return completeUploadWithResponse(uploadId, BinaryData.fromObject(requestBody), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -2758,7 +2745,6 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Upload> cancelUpload(String uploadId) {
-        // Generated convenience method for cancelUploadWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return cancelUploadWithResponse(uploadId, requestOptions).flatMap(FluxUtil::toMono);
     }

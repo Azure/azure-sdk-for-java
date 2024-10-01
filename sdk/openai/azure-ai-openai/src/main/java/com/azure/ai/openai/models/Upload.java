@@ -45,11 +45,10 @@ public final class Upload implements JsonSerializable<Upload> {
     private final long bytes;
 
     /*
-     * The intended purpose of the file. [Please refer here](/docs/api-reference/files/object#files/object-purpose) for
-     * acceptable values.
+     * The intended purpose of the file.
      */
     @Generated
-    private final String purpose;
+    private final UploadPurpose purpose;
 
     /*
      * The status of the Upload.
@@ -74,37 +73,6 @@ public final class Upload implements JsonSerializable<Upload> {
      */
     @Generated
     private OpenAIFile file;
-
-    /**
-     * Creates an instance of Upload class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param filename the filename value to set.
-     * @param bytes the bytes value to set.
-     * @param purpose the purpose value to set.
-     * @param status the status value to set.
-     * @param expiresAt the expiresAt value to set.
-     */
-    @Generated
-    private Upload(String id, OffsetDateTime createdAt, String filename, long bytes, String purpose,
-        UploadStatus status, OffsetDateTime expiresAt) {
-        this.id = id;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.filename = filename;
-        this.bytes = bytes;
-        this.purpose = purpose;
-        this.status = status;
-        if (expiresAt == null) {
-            this.expiresAt = 0L;
-        } else {
-            this.expiresAt = expiresAt.toEpochSecond();
-        }
-    }
 
     /**
      * Get the id property: The Upload unique identifier, which can be referenced in API endpoints.
@@ -147,13 +115,12 @@ public final class Upload implements JsonSerializable<Upload> {
     }
 
     /**
-     * Get the purpose property: The intended purpose of the file. [Please refer
-     * here](/docs/api-reference/files/object#files/object-purpose) for acceptable values.
+     * Get the purpose property: The intended purpose of the file.
      *
      * @return the purpose value.
      */
     @Generated
-    public String getPurpose() {
+    public UploadPurpose getPurpose() {
         return this.purpose;
     }
 
@@ -208,7 +175,7 @@ public final class Upload implements JsonSerializable<Upload> {
         jsonWriter.writeLongField("created_at", this.createdAt);
         jsonWriter.writeStringField("filename", this.filename);
         jsonWriter.writeLongField("bytes", this.bytes);
-        jsonWriter.writeStringField("purpose", this.purpose);
+        jsonWriter.writeStringField("purpose", this.purpose == null ? null : this.purpose.toString());
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeLongField("expires_at", this.expiresAt);
         jsonWriter.writeStringField("object", this.object == null ? null : this.object.toString());
@@ -232,7 +199,7 @@ public final class Upload implements JsonSerializable<Upload> {
             OffsetDateTime createdAt = null;
             String filename = null;
             long bytes = 0L;
-            String purpose = null;
+            UploadPurpose purpose = null;
             UploadStatus status = null;
             OffsetDateTime expiresAt = null;
             UploadObject object = null;
@@ -249,7 +216,7 @@ public final class Upload implements JsonSerializable<Upload> {
                 } else if ("bytes".equals(fieldName)) {
                     bytes = reader.getLong();
                 } else if ("purpose".equals(fieldName)) {
-                    purpose = reader.getString();
+                    purpose = UploadPurpose.fromString(reader.getString());
                 } else if ("status".equals(fieldName)) {
                     status = UploadStatus.fromString(reader.getString());
                 } else if ("expires_at".equals(fieldName)) {
@@ -267,5 +234,36 @@ public final class Upload implements JsonSerializable<Upload> {
             deserializedUpload.file = file;
             return deserializedUpload;
         });
+    }
+
+    /**
+     * Creates an instance of Upload class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param filename the filename value to set.
+     * @param bytes the bytes value to set.
+     * @param purpose the purpose value to set.
+     * @param status the status value to set.
+     * @param expiresAt the expiresAt value to set.
+     */
+    @Generated
+    private Upload(String id, OffsetDateTime createdAt, String filename, long bytes, UploadPurpose purpose,
+        UploadStatus status, OffsetDateTime expiresAt) {
+        this.id = id;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.filename = filename;
+        this.bytes = bytes;
+        this.purpose = purpose;
+        this.status = status;
+        if (expiresAt == null) {
+            this.expiresAt = 0L;
+        } else {
+            this.expiresAt = expiresAt.toEpochSecond();
+        }
     }
 }

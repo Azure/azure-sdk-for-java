@@ -1442,7 +1442,6 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         }));
     }
 
-    // Upload large file in parts
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testUploadLargesFilesInPartsOperations(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
