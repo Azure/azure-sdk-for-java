@@ -58,7 +58,7 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
- * Class allowing you to create options to configure the Azure Monitor export.
+ * Providers configuration options for Azure Monitor exporter..
  */
 @Fluent
 public final class AzureMonitorExporterOptions {
