@@ -20,13 +20,19 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
+import com.azure.security.keyvault.keys.KeyClient;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
+import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -45,6 +51,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
+import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -88,8 +95,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2048,5 +2059,123 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         bec2.uploadFromFile(file.toPath().toString(), true);
         BlobInputStream stream = bec2.openInputStream(new BlobRange(0, (long) fileSize), null);
         TestUtils.assertArraysEqual(convertInputStreamToByteArray(stream), data);
+    }
+
+    @Test
+    public void testtest() throws IOException {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        String keyVault = "kyleknapp-keyvault";
+        String keyName = "testRSAKey";
+        String account = "kyleknapptest";
+        String container = "test-cse";
+        String blobName = "v2-java-cse-release/non-standard-region-length-1KB/16MB/java/upload-from-file/f0aab0669dda9582813136f1ca0ea9e0.bin";
+
+        AsyncKeyEncryptionKey akek = new AsyncKeyEncryptionKeyFactory(keyVault, keyName, credential).createKey();
+        EncryptedBlobClientFactory ebcFactory = new EncryptedBlobClientFactory(account, container, credential, akek);
+
+        EncryptedBlobClient ebc = ebcFactory.createClient(blobName, new BlobClientSideEncryptionOptions());
+
+        //String filepath = "C:\\Users\\ibrandes\\Downloads\\f0aab0669dda9582813136f1ca0ea9e0.bin";
+
+        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        outFile.deleteOnExit();
+
+        ebc.downloadToFile(outFile.toString(), true);
+        String md5 = getMD5fromFile(outFile);
+        assertMD5(blobName, md5);
+
+        //byte[] originalData = Files.readAllBytes(Paths.get(filepath));
+        //byte[] newData = Files.readAllBytes(outFile.toPath());
+
+        //TestUtils.assertArraysEqual(originalData, newData);
+    }
+
+    private void assertMD5(String blobName, String actualMD5) {
+        Path path = Paths.get(blobName);
+        String baseBlobName = path.getFileName().toString();
+        String expectedMD5 = baseBlobName.substring(0, baseBlobName.length() - 4);
+        if (!expectedMD5.equals(actualMD5)) {
+            throw new RuntimeException("MD5 mismatch for " + blobName + ": expected " + expectedMD5 + ", got " + actualMD5);
+        }
+    }
+
+    private static String getMD5fromFile(File file) {
+        try {
+            byte[] data = Files.readAllBytes(file.toPath());
+            return getMD5(data);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String getMD5(byte[] input) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(input);
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                hexString.append(String.format("%02x", b));
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public class EncryptedBlobClientFactory {
+        private final String account;
+        private final String container;
+        private final DefaultAzureCredential credential;
+        private final AsyncKeyEncryptionKey keyEncryptionKey;
+
+        public EncryptedBlobClientFactory(String account, String container, DefaultAzureCredential credential, AsyncKeyEncryptionKey keyEncryptionKey) {
+            this.account = account;
+            this.container = container;
+            this.credential = credential;
+            this.keyEncryptionKey = keyEncryptionKey;
+        }
+
+        public EncryptedBlobClient createClient(String blobName, BlobClientSideEncryptionOptions options) {
+            EncryptionVersion version;
+            if (options.getAuthenticatedRegionDataLengthInBytes() == 1024 * 1024 * 4) {
+                version = EncryptionVersion.V2;
+            } else {
+                version = EncryptionVersion.V2_1;
+            }
+            EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
+                .key(keyEncryptionKey, KeyWrapAlgorithm.RSA_OAEP.toString())
+                .credential(credential)
+                .endpoint(String.format("https://%s.blob.core.windows.net", account))
+                .containerName(container)
+                .blobName(blobName);
+            if (version == EncryptionVersion.V2_1) {
+                builder.clientSideEncryptionOptions(options);
+            }
+            return builder.buildEncryptedBlobClient();
+        }
+    }
+
+    public class AsyncKeyEncryptionKeyFactory {
+        private final String keyVault;
+        private final String keyName;
+        private final DefaultAzureCredential credential;
+
+        public AsyncKeyEncryptionKeyFactory(String keyVault, String keyName, DefaultAzureCredential credential) {
+            this.keyVault = keyVault;
+            this.keyName = keyName;
+            this.credential = credential;
+        }
+
+        public AsyncKeyEncryptionKey createKey() {
+            KeyClient keyClient = new KeyClientBuilder()
+                .vaultUrl(String.format("https://%s.vault.azure.net", keyVault))
+                .credential(credential)
+                .buildClient();
+            KeyVaultKey rsaKey = keyClient.getKey(keyName);
+            return new KeyEncryptionKeyClientBuilder()
+                .credential(credential)
+                .buildAsyncKeyEncryptionKey(rsaKey.getId())
+                .block();
+        }
     }
 }
