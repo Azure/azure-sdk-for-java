@@ -479,7 +479,7 @@ ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Array
             .setSchema(BinaryData.fromObject(new Parameters()))));
 ```
 
-For a complete sample example, see sample [Structured Output: Response Format][sample_chat_completions_json_schema].
+For a full sample, see [Structured Output: Response Format][sample_chat_completions_json_schema].
 For more details see the [OpenAI structured output documentation](https://platform.openai.com/docs/guides/structured-output).
 
 ### Upload large files in multiple parts
