@@ -21,7 +21,7 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
     @Test
     public void testListOutboundNetworkDependenciesEndpointsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"category\":\"ixzwiehqvvbg\",\"endpoints\":[{\"domainName\":\"wticu\",\"endpointDetails\":[{}]},{\"domainName\":\"ubdmcd\",\"endpointDetails\":[{}]},{\"domainName\":\"lzhujcx\",\"endpointDetails\":[{},{},{}]}]}]}";
+            = "{\"value\":[{\"category\":\"qpjstc\",\"endpoints\":[{\"domainName\":\"odfybafenwvv\",\"endpointDetails\":[{}]}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse response = manager.integrationRuntimes()
-            .listOutboundNetworkDependenciesEndpointsWithResponse("yvjmwcflphqtqpc", "wmukzcrpd", "gzctfnlaklszbeu",
+            .listOutboundNetworkDependenciesEndpointsWithResponse("jfxznjduy", "tqbfqtxbtuxm", "grixolbzjl",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ixzwiehqvvbg", response.value().get(0).category());
-        Assertions.assertEquals("wticu", response.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("qpjstc", response.value().get(0).category());
+        Assertions.assertEquals("odfybafenwvv", response.value().get(0).endpoints().get(0).domainName());
     }
 }

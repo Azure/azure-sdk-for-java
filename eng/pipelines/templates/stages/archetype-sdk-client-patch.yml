@@ -17,9 +17,6 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
-- name: JavadocSafeJavaBuildVersion
-  type: string
-  default: $(JavadocSafeJavaBuildVersion)
 - name: TestPipeline
   type: boolean
   default: false
@@ -125,15 +122,15 @@ extends:
               parameters:
                 JdkVersion: ${{ parameters.JavaBuildVersion }}
 
-            - task: Maven@3
-              displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
+            - task: Maven@4
+              displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
               inputs:
                 mavenPomFile: ClientFromSourcePom.xml
                 goals: 'deploy'
                 options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module, so we ensure it always builds in CI.
                 mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
                 javaHomeOption: 'JDKVersion'
-                jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }}
+                jdkVersionOption: ${{ parameters.JavaBuildVersion }}
                 jdkArchitectureOption: 'x64'
                 publishJUnitResults: false
 
@@ -159,6 +156,16 @@ extends:
                   -TargetDirectory $(Build.ArtifactStagingDirectory)
                   -Artifacts ('$(ArtifactsJsonEscaped)' | ConvertFrom-Json | Where-Object -Not skipPublishPackage)
                   -InformationAction Continue
+
+            - task: Powershell@2
+              inputs:
+                filePath: $(Build.SourcesDirectory)/eng/scripts/Save-Package-Namespaces-Property.ps1
+                arguments: >
+                  -ArtifactStagingDirectory $(Build.ArtifactStagingDirectory)
+                  -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json)
+                pwsh: true
+                workingDirectory: $(Pipeline.Workspace)
+              displayName: Update package properties with namespaces
 
             - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:

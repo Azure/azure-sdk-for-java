@@ -25,7 +25,7 @@ jobs:
       - script: |
             python ./sdk/spring/scripts/spring_monitor_version_substitution.py -b $(TEST_SPRING_BOOT_VERSION)
         displayName: 'Replace Spring version'
-      - task: Maven@3
+      - task: Maven@4
         displayName: 'Run tests'
         inputs:
           options: '$(DefaultOptions) -ntp -T ${{parameters.BuildParallelization}} ${{parameters.SkipOptions}}'

@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -16,29 +17,26 @@ import java.util.Map;
  * PipelineExternalComputeScale properties for managed integration runtime.
  */
 @Fluent
-public final class PipelineExternalComputeScaleProperties {
+public final class PipelineExternalComputeScaleProperties
+    implements JsonSerializable<PipelineExternalComputeScaleProperties> {
     /*
      * Time to live (in minutes) setting of integration runtime which will execute pipeline and external activity.
      */
-    @JsonProperty(value = "timeToLive")
     private Integer timeToLive;
 
     /*
      * Number of the pipeline nodes, which should be greater than 0 and less than 11.
      */
-    @JsonProperty(value = "numberOfPipelineNodes")
     private Integer numberOfPipelineNodes;
 
     /*
      * Number of the the external nodes, which should be greater than 0 and less than 11.
      */
-    @JsonProperty(value = "numberOfExternalNodes")
     private Integer numberOfExternalNodes;
 
     /*
      * PipelineExternalComputeScale properties for managed integration runtime.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
     /**
@@ -118,7 +116,6 @@ public final class PipelineExternalComputeScaleProperties {
      * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -134,19 +131,68 @@ public final class PipelineExternalComputeScaleProperties {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new LinkedHashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("timeToLive", this.timeToLive);
+        jsonWriter.writeNumberField("numberOfPipelineNodes", this.numberOfPipelineNodes);
+        jsonWriter.writeNumberField("numberOfExternalNodes", this.numberOfExternalNodes);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PipelineExternalComputeScaleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PipelineExternalComputeScaleProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PipelineExternalComputeScaleProperties.
+     */
+    public static PipelineExternalComputeScaleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PipelineExternalComputeScaleProperties deserializedPipelineExternalComputeScaleProperties
+                = new PipelineExternalComputeScaleProperties();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timeToLive".equals(fieldName)) {
+                    deserializedPipelineExternalComputeScaleProperties.timeToLive
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfPipelineNodes".equals(fieldName)) {
+                    deserializedPipelineExternalComputeScaleProperties.numberOfPipelineNodes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("numberOfExternalNodes".equals(fieldName)) {
+                    deserializedPipelineExternalComputeScaleProperties.numberOfExternalNodes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPipelineExternalComputeScaleProperties.additionalProperties = additionalProperties;
+
+            return deserializedPipelineExternalComputeScaleProperties;
+        });
     }
 }

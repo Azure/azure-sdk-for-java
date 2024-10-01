@@ -5,33 +5,46 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state, which only appears in the response. */
+/**
+ * The provisioning state, which only appears in the response.
+ */
 public final class PrivateEndpointConnectionProvisioningState
     extends ExpandableStringEnum<PrivateEndpointConnectionProvisioningState> {
-    /** Static value InProgress for PrivateEndpointConnectionProvisioningState. */
+    /**
+     * Static value InProgress for PrivateEndpointConnectionProvisioningState.
+     */
     public static final PrivateEndpointConnectionProvisioningState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Updating for PrivateEndpointConnectionProvisioningState. */
+    /**
+     * Static value Updating for PrivateEndpointConnectionProvisioningState.
+     */
     public static final PrivateEndpointConnectionProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Failed for PrivateEndpointConnectionProvisioningState. */
+    /**
+     * Static value Failed for PrivateEndpointConnectionProvisioningState.
+     */
     public static final PrivateEndpointConnectionProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for PrivateEndpointConnectionProvisioningState. */
+    /**
+     * Static value Succeeded for PrivateEndpointConnectionProvisioningState.
+     */
     public static final PrivateEndpointConnectionProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for PrivateEndpointConnectionProvisioningState. */
+    /**
+     * Static value Canceled for PrivateEndpointConnectionProvisioningState.
+     */
     public static final PrivateEndpointConnectionProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for PrivateEndpointConnectionProvisioningState. */
+    /**
+     * Static value Deleting for PrivateEndpointConnectionProvisioningState.
+     */
     public static final PrivateEndpointConnectionProvisioningState DELETING = fromString("Deleting");
 
     /**
      * Creates a new instance of PrivateEndpointConnectionProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -40,18 +53,17 @@ public final class PrivateEndpointConnectionProvisioningState
 
     /**
      * Creates or finds a PrivateEndpointConnectionProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PrivateEndpointConnectionProvisioningState.
      */
-    @JsonCreator
     public static PrivateEndpointConnectionProvisioningState fromString(String name) {
         return fromString(name, PrivateEndpointConnectionProvisioningState.class);
     }
 
     /**
      * Gets known PrivateEndpointConnectionProvisioningState values.
-     *
+     * 
      * @return known PrivateEndpointConnectionProvisioningState values.
      */
     public static Collection<PrivateEndpointConnectionProvisioningState> values() {

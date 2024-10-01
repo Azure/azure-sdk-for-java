@@ -449,7 +449,7 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
 
         Map<String, String> containerValues = createTargetContainerWithClient(null);
-        String targetUrl = containerValues.get("sasUri");
+        String targetUrl = containerValues.get("containerUrl");
         String targetLanguageCode = "fr";
 
         // Constructing and uploading glossary on the fly

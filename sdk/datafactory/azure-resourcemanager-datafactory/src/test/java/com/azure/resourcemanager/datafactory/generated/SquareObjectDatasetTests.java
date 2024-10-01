@@ -19,37 +19,31 @@ public final class SquareObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SquareObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"SquareObject\",\"typeProperties\":{\"tableName\":\"dataqnneqrypyurvs\"},\"description\":\"ovtuer\",\"structure\":\"datazhbwcxyb\",\"schema\":\"datazycxhaoegjzg\",\"linkedServiceName\":{\"referenceName\":\"ljbnwczsrazcb\",\"parameters\":{\"uapasizzfmugykw\":\"datacqhxhj\",\"gthdzi\":\"dataycuotennd\",\"erwjqvswtwo\":\"datajzffp\"}},\"parameters\":{\"rrsguogk\":{\"type\":\"Object\",\"defaultValue\":\"datamzxvfybxmmrvnuvq\"},\"ftvvqtmvif\":{\"type\":\"Float\",\"defaultValue\":\"dataotpyabensjflw\"},\"xgosnxa\":{\"type\":\"Int\",\"defaultValue\":\"datasimalbmti\"},\"nlsbnucqxhpaqo\":{\"type\":\"Array\",\"defaultValue\":\"datacdfmzxaoxlhmvjc\"}},\"annotations\":[\"dataejoysoxovlznk\",\"dataeldkqdlqqhn\"],\"folder\":{\"name\":\"ykkxa\"},\"\":{\"pxiema\":\"datauptiicgvpzgyxcc\",\"tfmocn\":\"datamztjekxsnnbrysg\"}}")
+            "{\"type\":\"SquareObject\",\"typeProperties\":{\"tableName\":\"dataktdutydvvgkmo\"},\"description\":\"pcjes\",\"structure\":\"datavuztnsvmsh\",\"schema\":\"datagygfohrm\",\"linkedServiceName\":{\"referenceName\":\"hhlclpkr\",\"parameters\":{\"utivrfnztxtmrm\":\"databmjjv\",\"ii\":\"dataftj\",\"hfh\":\"dataohlgrjcx\"}},\"parameters\":{\"ylyumb\":{\"type\":\"Object\",\"defaultValue\":\"datawfogbv\"}},\"annotations\":[\"datarlnuom\",\"dataxhdkhmemx\"],\"folder\":{\"name\":\"apesnbyoullyfz\"},\"\":{\"g\":\"datarmxxjvwbat\",\"ommdzphxulx\":\"datakmwfwzlmpxfmdjs\"}}")
             .toObject(SquareObjectDataset.class);
-        Assertions.assertEquals("ovtuer", model.description());
-        Assertions.assertEquals("ljbnwczsrazcb", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("rrsguogk").type());
-        Assertions.assertEquals("ykkxa", model.folder().name());
+        Assertions.assertEquals("pcjes", model.description());
+        Assertions.assertEquals("hhlclpkr", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("ylyumb").type());
+        Assertions.assertEquals("apesnbyoullyfz", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SquareObjectDataset model = new SquareObjectDataset().withDescription("ovtuer")
-            .withStructure("datazhbwcxyb")
-            .withSchema("datazycxhaoegjzg")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ljbnwczsrazcb")
-                .withParameters(
-                    mapOf("uapasizzfmugykw", "datacqhxhj", "gthdzi", "dataycuotennd", "erwjqvswtwo", "datajzffp")))
-            .withParameters(mapOf("rrsguogk",
-                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datamzxvfybxmmrvnuvq"),
-                "ftvvqtmvif",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataotpyabensjflw"),
-                "xgosnxa", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datasimalbmti"),
-                "nlsbnucqxhpaqo",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datacdfmzxaoxlhmvjc")))
-            .withAnnotations(Arrays.asList("dataejoysoxovlznk", "dataeldkqdlqqhn"))
-            .withFolder(new DatasetFolder().withName("ykkxa"))
-            .withTableName("dataqnneqrypyurvs");
+        SquareObjectDataset model = new SquareObjectDataset().withDescription("pcjes")
+            .withStructure("datavuztnsvmsh")
+            .withSchema("datagygfohrm")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("hhlclpkr")
+                .withParameters(mapOf("utivrfnztxtmrm", "databmjjv", "ii", "dataftj", "hfh", "dataohlgrjcx")))
+            .withParameters(mapOf("ylyumb",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datawfogbv")))
+            .withAnnotations(Arrays.asList("datarlnuom", "dataxhdkhmemx"))
+            .withFolder(new DatasetFolder().withName("apesnbyoullyfz"))
+            .withTableName("dataktdutydvvgkmo");
         model = BinaryData.fromObject(model).toObject(SquareObjectDataset.class);
-        Assertions.assertEquals("ovtuer", model.description());
-        Assertions.assertEquals("ljbnwczsrazcb", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("rrsguogk").type());
-        Assertions.assertEquals("ykkxa", model.folder().name());
+        Assertions.assertEquals("pcjes", model.description());
+        Assertions.assertEquals("hhlclpkr", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("ylyumb").type());
+        Assertions.assertEquals("apesnbyoullyfz", model.folder().name());
     }
 
     // Use "Map.of" if available

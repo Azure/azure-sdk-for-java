@@ -11,19 +11,19 @@ public final class ZohoSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ZohoSource model = BinaryData.fromString(
-            "{\"type\":\"ZohoSource\",\"query\":\"datajsez\",\"queryTimeout\":\"datahipteo\",\"additionalColumns\":\"datadnhwdfxgec\",\"sourceRetryCount\":\"datakkdbzbhsnimompxd\",\"sourceRetryWait\":\"datap\",\"maxConcurrentConnections\":\"databdmoawh\",\"disableMetricsCollection\":\"dataxxnmyxzh\",\"\":{\"dq\":\"dataqo\",\"wywayjinlsk\":\"datazhfnylgbwdsa\"}}")
+            "{\"type\":\"ZohoSource\",\"query\":\"databetzydtgpvnczf\",\"queryTimeout\":\"dataybjku\",\"additionalColumns\":\"dataajkyrhucbfkaqlp\",\"sourceRetryCount\":\"dataptero\",\"sourceRetryWait\":\"dataqaktao\",\"maxConcurrentConnections\":\"datagefobcqvzmyw\",\"disableMetricsCollection\":\"datayns\",\"\":{\"kklzabauvncln\":\"dataosqvojgol\",\"ikireetvjfizafd\":\"dataaoidjhoykgtyvrn\",\"csipfwlye\":\"datajhnuvndgrolgxa\",\"rzfppopwxxdgzhn\":\"dataajdpjmqteirrjjm\"}}")
             .toObject(ZohoSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ZohoSource model = new ZohoSource().withSourceRetryCount("datakkdbzbhsnimompxd")
-            .withSourceRetryWait("datap")
-            .withMaxConcurrentConnections("databdmoawh")
-            .withDisableMetricsCollection("dataxxnmyxzh")
-            .withQueryTimeout("datahipteo")
-            .withAdditionalColumns("datadnhwdfxgec")
-            .withQuery("datajsez");
+        ZohoSource model = new ZohoSource().withSourceRetryCount("dataptero")
+            .withSourceRetryWait("dataqaktao")
+            .withMaxConcurrentConnections("datagefobcqvzmyw")
+            .withDisableMetricsCollection("datayns")
+            .withQueryTimeout("dataybjku")
+            .withAdditionalColumns("dataajkyrhucbfkaqlp")
+            .withQuery("databetzydtgpvnczf");
         model = BinaryData.fromObject(model).toObject(ZohoSource.class);
     }
 }

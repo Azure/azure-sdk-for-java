@@ -7,65 +7,87 @@ package com.azure.resourcemanager.machinelearning.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.machinelearning.models.EncryptionProperty;
+import com.azure.resourcemanager.machinelearning.models.FeatureStoreSettings;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.machinelearning.models.ProvisioningState;
 import com.azure.resourcemanager.machinelearning.models.PublicNetworkAccess;
+import com.azure.resourcemanager.machinelearning.models.ServerlessComputeSettings;
 import com.azure.resourcemanager.machinelearning.models.ServiceManagedResourcesSettings;
 import com.azure.resourcemanager.machinelearning.models.SharedPrivateLinkResource;
 import com.azure.resourcemanager.machinelearning.models.Sku;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.machinelearning.models.WorkspaceHubConfig;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** An object that represents a machine learning workspace. */
+/**
+ * An object that represents a machine learning workspace.
+ */
 @Fluent
 public final class WorkspaceInner extends ProxyResource {
     /*
      * The properties of the machine learning workspace.
      */
-    @JsonProperty(value = "properties")
     private WorkspacePropertiesInner innerProperties;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /*
+     * The kind property.
+     */
+    private String kind;
 
     /*
      * Specifies the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Contains resource tags defined as key/value pairs.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The sku of the workspace.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of WorkspaceInner class. */
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /**
+     * Creates an instance of WorkspaceInner class.
+     */
     public WorkspaceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the machine learning workspace.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspacePropertiesInner innerProperties() {
@@ -74,7 +96,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -83,7 +105,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -93,8 +115,28 @@ public final class WorkspaceInner extends ProxyResource {
     }
 
     /**
+     * Get the kind property: The kind property.
+     * 
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind property.
+     * 
+     * @param kind the kind value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withKind(String kind) {
+        this.kind = kind;
+        return this;
+    }
+
+    /**
      * Get the location property: Specifies the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -103,7 +145,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the location property: Specifies the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -114,7 +156,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the tags property: Contains resource tags defined as key/value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -123,7 +165,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the tags property: Contains resource tags defined as key/value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -134,7 +176,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the sku property: The sku of the workspace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -143,7 +185,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the sku property: The sku of the workspace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -154,7 +196,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -162,8 +204,38 @@ public final class WorkspaceInner extends ProxyResource {
     }
 
     /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the workspaceId property: The immutable id associated with this workspace.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -172,7 +244,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the description property: The description of this workspace.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -181,7 +253,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the description property: The description of this workspace.
-     *
+     * 
      * @param description the description value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -195,7 +267,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the friendlyName property: The friendly name for this workspace. This name in mutable.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -204,7 +276,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the friendlyName property: The friendly name for this workspace. This name in mutable.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -219,7 +291,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the keyVault property: ARM id of the key vault associated with this workspace. This cannot be changed once
      * the workspace has been created.
-     *
+     * 
      * @return the keyVault value.
      */
     public String keyVault() {
@@ -229,7 +301,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Set the keyVault property: ARM id of the key vault associated with this workspace. This cannot be changed once
      * the workspace has been created.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -243,7 +315,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the applicationInsights property: ARM id of the application insights associated with this workspace.
-     *
+     * 
      * @return the applicationInsights value.
      */
     public String applicationInsights() {
@@ -252,7 +324,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the applicationInsights property: ARM id of the application insights associated with this workspace.
-     *
+     * 
      * @param applicationInsights the applicationInsights value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -266,7 +338,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the containerRegistry property: ARM id of the container registry associated with this workspace.
-     *
+     * 
      * @return the containerRegistry value.
      */
     public String containerRegistry() {
@@ -275,7 +347,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the containerRegistry property: ARM id of the container registry associated with this workspace.
-     *
+     * 
      * @param containerRegistry the containerRegistry value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -290,7 +362,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the storageAccount property: ARM id of the storage account associated with this workspace. This cannot be
      * changed once the workspace has been created.
-     *
+     * 
      * @return the storageAccount value.
      */
     public String storageAccount() {
@@ -300,7 +372,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Set the storageAccount property: ARM id of the storage account associated with this workspace. This cannot be
      * changed once the workspace has been created.
-     *
+     * 
      * @param storageAccount the storageAccount value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -315,7 +387,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the discoveryUrl property: Url for the discovery service to identify regional endpoints for machine learning
      * experimentation services.
-     *
+     * 
      * @return the discoveryUrl value.
      */
     public String discoveryUrl() {
@@ -325,7 +397,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Set the discoveryUrl property: Url for the discovery service to identify regional endpoints for machine learning
      * experimentation services.
-     *
+     * 
      * @param discoveryUrl the discoveryUrl value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -340,7 +412,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the provisioningState property: The current deployment state of workspace resource. The provisioningState is
      * to indicate states for resource provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -349,7 +421,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the encryption property: The encryption settings of Azure ML workspace.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperty encryption() {
@@ -358,7 +430,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the encryption property: The encryption settings of Azure ML workspace.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -373,7 +445,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the hbiWorkspace property: The flag to signal HBI data in the workspace and reduce diagnostic data collected
      * by the service.
-     *
+     * 
      * @return the hbiWorkspace value.
      */
     public Boolean hbiWorkspace() {
@@ -383,7 +455,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Set the hbiWorkspace property: The flag to signal HBI data in the workspace and reduce diagnostic data collected
      * by the service.
-     *
+     * 
      * @param hbiWorkspace the hbiWorkspace value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -398,7 +470,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the serviceProvisionedResourceGroup property: The name of the managed resource group created by workspace RP
      * in customer subscription if the workspace is CMK workspace.
-     *
+     * 
      * @return the serviceProvisionedResourceGroup value.
      */
     public String serviceProvisionedResourceGroup() {
@@ -407,7 +479,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the privateLinkCount property: Count of private connections in the workspace.
-     *
+     * 
      * @return the privateLinkCount value.
      */
     public Integer privateLinkCount() {
@@ -416,7 +488,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the imageBuildCompute property: The compute name for image build.
-     *
+     * 
      * @return the imageBuildCompute value.
      */
     public String imageBuildCompute() {
@@ -425,7 +497,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the imageBuildCompute property: The compute name for image build.
-     *
+     * 
      * @param imageBuildCompute the imageBuildCompute value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -440,7 +512,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the allowPublicAccessWhenBehindVnet property: The flag to indicate whether to allow public access when behind
      * VNet.
-     *
+     * 
      * @return the allowPublicAccessWhenBehindVnet value.
      */
     public Boolean allowPublicAccessWhenBehindVnet() {
@@ -450,7 +522,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Set the allowPublicAccessWhenBehindVnet property: The flag to indicate whether to allow public access when behind
      * VNet.
-     *
+     * 
      * @param allowPublicAccessWhenBehindVnet the allowPublicAccessWhenBehindVnet value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -464,7 +536,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -473,7 +545,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -487,7 +559,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections in the workspace.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -495,8 +567,31 @@ public final class WorkspaceInner extends ProxyResource {
     }
 
     /**
+     * Get the serverlessComputeSettings property: Settings for serverless compute created in the workspace.
+     * 
+     * @return the serverlessComputeSettings value.
+     */
+    public ServerlessComputeSettings serverlessComputeSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().serverlessComputeSettings();
+    }
+
+    /**
+     * Set the serverlessComputeSettings property: Settings for serverless compute created in the workspace.
+     * 
+     * @param serverlessComputeSettings the serverlessComputeSettings value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withServerlessComputeSettings(ServerlessComputeSettings serverlessComputeSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withServerlessComputeSettings(serverlessComputeSettings);
+        return this;
+    }
+
+    /**
      * Get the sharedPrivateLinkResources property: The list of shared private link resources in this workspace.
-     *
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResource> sharedPrivateLinkResources() {
@@ -505,7 +600,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the sharedPrivateLinkResources property: The list of shared private link resources in this workspace.
-     *
+     * 
      * @param sharedPrivateLinkResources the sharedPrivateLinkResources value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -519,7 +614,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the notebookInfo property: The notebook info of Azure ML workspace.
-     *
+     * 
      * @return the notebookInfo value.
      */
     public NotebookResourceInfoInner notebookInfo() {
@@ -528,7 +623,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the serviceManagedResourcesSettings property: The service managed resource settings.
-     *
+     * 
      * @return the serviceManagedResourcesSettings value.
      */
     public ServiceManagedResourcesSettings serviceManagedResourcesSettings() {
@@ -537,12 +632,12 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Set the serviceManagedResourcesSettings property: The service managed resource settings.
-     *
+     * 
      * @param serviceManagedResourcesSettings the serviceManagedResourcesSettings value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withServiceManagedResourcesSettings(
-        ServiceManagedResourcesSettings serviceManagedResourcesSettings) {
+    public WorkspaceInner
+        withServiceManagedResourcesSettings(ServiceManagedResourcesSettings serviceManagedResourcesSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WorkspacePropertiesInner();
         }
@@ -553,7 +648,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the primaryUserAssignedIdentity property: The user assigned identity resource id that represents the
      * workspace identity.
-     *
+     * 
      * @return the primaryUserAssignedIdentity value.
      */
     public String primaryUserAssignedIdentity() {
@@ -563,7 +658,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Set the primaryUserAssignedIdentity property: The user assigned identity resource id that represents the
      * workspace identity.
-     *
+     * 
      * @param primaryUserAssignedIdentity the primaryUserAssignedIdentity value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -577,7 +672,7 @@ public final class WorkspaceInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The tenant id associated with this workspace.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -587,7 +682,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the storageHnsEnabled property: If the storage associated with the workspace has hierarchical namespace(HNS)
      * enabled.
-     *
+     * 
      * @return the storageHnsEnabled value.
      */
     public Boolean storageHnsEnabled() {
@@ -597,7 +692,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the mlFlowTrackingUri property: The URI associated with this workspace that machine learning flow must point
      * at to set up tracking.
-     *
+     * 
      * @return the mlFlowTrackingUri value.
      */
     public String mlFlowTrackingUri() {
@@ -607,7 +702,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Get the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
      * API.
-     *
+     * 
      * @return the v1LegacyMode value.
      */
     public Boolean v1LegacyMode() {
@@ -617,7 +712,7 @@ public final class WorkspaceInner extends ProxyResource {
     /**
      * Set the v1LegacyMode property: Enabling v1_legacy_mode may prevent you from using features provided by the v2
      * API.
-     *
+     * 
      * @param v1LegacyMode the v1LegacyMode value to set.
      * @return the WorkspaceInner object itself.
      */
@@ -630,8 +725,146 @@ public final class WorkspaceInner extends ProxyResource {
     }
 
     /**
+     * Get the managedNetwork property: Managed Network settings for a machine learning workspace.
+     * 
+     * @return the managedNetwork value.
+     */
+    public ManagedNetworkSettingsInner managedNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedNetwork();
+    }
+
+    /**
+     * Set the managedNetwork property: Managed Network settings for a machine learning workspace.
+     * 
+     * @param managedNetwork the managedNetwork value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withManagedNetwork(ManagedNetworkSettingsInner managedNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withManagedNetwork(managedNetwork);
+        return this;
+    }
+
+    /**
+     * Get the featureStoreSettings property: Settings for feature store type workspace.
+     * 
+     * @return the featureStoreSettings value.
+     */
+    public FeatureStoreSettings featureStoreSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().featureStoreSettings();
+    }
+
+    /**
+     * Set the featureStoreSettings property: Settings for feature store type workspace.
+     * 
+     * @param featureStoreSettings the featureStoreSettings value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withFeatureStoreSettings(FeatureStoreSettings featureStoreSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withFeatureStoreSettings(featureStoreSettings);
+        return this;
+    }
+
+    /**
+     * Get the associatedWorkspaces property: The associatedWorkspaces property.
+     * 
+     * @return the associatedWorkspaces value.
+     */
+    public List<String> associatedWorkspaces() {
+        return this.innerProperties() == null ? null : this.innerProperties().associatedWorkspaces();
+    }
+
+    /**
+     * Set the associatedWorkspaces property: The associatedWorkspaces property.
+     * 
+     * @param associatedWorkspaces the associatedWorkspaces value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withAssociatedWorkspaces(List<String> associatedWorkspaces) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withAssociatedWorkspaces(associatedWorkspaces);
+        return this;
+    }
+
+    /**
+     * Get the enableDataIsolation property: The enableDataIsolation property.
+     * 
+     * @return the enableDataIsolation value.
+     */
+    public Boolean enableDataIsolation() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableDataIsolation();
+    }
+
+    /**
+     * Set the enableDataIsolation property: The enableDataIsolation property.
+     * 
+     * @param enableDataIsolation the enableDataIsolation value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withEnableDataIsolation(Boolean enableDataIsolation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withEnableDataIsolation(enableDataIsolation);
+        return this;
+    }
+
+    /**
+     * Get the hubResourceId property: The hubResourceId property.
+     * 
+     * @return the hubResourceId value.
+     */
+    public String hubResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().hubResourceId();
+    }
+
+    /**
+     * Set the hubResourceId property: The hubResourceId property.
+     * 
+     * @param hubResourceId the hubResourceId value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withHubResourceId(String hubResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withHubResourceId(hubResourceId);
+        return this;
+    }
+
+    /**
+     * Get the workspaceHubConfig property: WorkspaceHub's configuration object.
+     * 
+     * @return the workspaceHubConfig value.
+     */
+    public WorkspaceHubConfig workspaceHubConfig() {
+        return this.innerProperties() == null ? null : this.innerProperties().workspaceHubConfig();
+    }
+
+    /**
+     * Set the workspaceHubConfig property: WorkspaceHub's configuration object.
+     * 
+     * @param workspaceHubConfig the workspaceHubConfig value to set.
+     * @return the WorkspaceInner object itself.
+     */
+    public WorkspaceInner withWorkspaceHubConfig(WorkspaceHubConfig workspaceHubConfig) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkspacePropertiesInner();
+        }
+        this.innerProperties().withWorkspaceHubConfig(workspaceHubConfig);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -644,5 +877,66 @@ public final class WorkspaceInner extends ProxyResource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspaceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspaceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspaceInner.
+     */
+    public static WorkspaceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspaceInner deserializedWorkspaceInner = new WorkspaceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkspaceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkspaceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkspaceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkspaceInner.innerProperties = WorkspacePropertiesInner.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWorkspaceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWorkspaceInner.kind = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedWorkspaceInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkspaceInner.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedWorkspaceInner.sku = Sku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedWorkspaceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspaceInner;
+        });
     }
 }

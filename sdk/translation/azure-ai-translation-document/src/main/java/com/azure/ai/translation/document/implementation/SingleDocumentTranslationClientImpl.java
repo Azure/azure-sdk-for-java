@@ -161,7 +161,7 @@ public final class SingleDocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> documentTranslate(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("targetLanguage") String targetLanguage,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData documentTranslateContent, RequestOptions requestOptions,
             Context context);
 
@@ -174,7 +174,7 @@ public final class SingleDocumentTranslationClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> documentTranslateSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("targetLanguage") String targetLanguage,
-            @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
+            @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("multipart/form-data") BinaryData documentTranslateContent, RequestOptions requestOptions,
             Context context);
     }
@@ -201,9 +201,11 @@ public final class SingleDocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
@@ -220,7 +222,7 @@ public final class SingleDocumentTranslationClientImpl {
     public Mono<Response<BinaryData>> documentTranslateWithResponseAsync(String targetLanguage,
         BinaryData documentTranslateContent, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil
             .withContext(context -> service.documentTranslate(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 targetLanguage, contentType, accept, documentTranslateContent, requestOptions, context));
@@ -248,9 +250,11 @@ public final class SingleDocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.
@@ -267,7 +271,7 @@ public final class SingleDocumentTranslationClientImpl {
     public Response<BinaryData> documentTranslateWithResponse(String targetLanguage,
         BinaryData documentTranslateContent, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
-        final String accept = "application/octet-stream, application/json";
+        final String accept = "application/octet-stream";
         return service.documentTranslateSync(this.getEndpoint(), this.getServiceVersion().getVersion(), targetLanguage,
             contentType, accept, documentTranslateContent, requestOptions, Context.NONE);
     }

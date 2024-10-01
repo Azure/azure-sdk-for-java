@@ -15,25 +15,27 @@ public final class ScalingRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScalingRule model = BinaryData.fromString(
-            "{\"actionType\":\"scaleup\",\"evaluationCount\":1281560612,\"scalingMetric\":\"hqwa\",\"comparisonRule\":{\"operator\":\"lessThan\",\"threshold\":44.0332}}")
+            "{\"actionType\":\"scaleup\",\"evaluationCount\":962281735,\"scalingMetric\":\"nayqi\",\"comparisonRule\":{\"operator\":\"greaterThanOrEqual\",\"threshold\":83.24161}}")
             .toObject(ScalingRule.class);
         Assertions.assertEquals(ScaleActionType.SCALEUP, model.actionType());
-        Assertions.assertEquals(1281560612, model.evaluationCount());
-        Assertions.assertEquals("hqwa", model.scalingMetric());
-        Assertions.assertEquals(ComparisonOperator.LESS_THAN, model.comparisonRule().operator());
-        Assertions.assertEquals(44.0332f, model.comparisonRule().threshold());
+        Assertions.assertEquals(962281735, model.evaluationCount());
+        Assertions.assertEquals("nayqi", model.scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.GREATER_THAN_OR_EQUAL, model.comparisonRule().operator());
+        Assertions.assertEquals(83.24161f, model.comparisonRule().threshold());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScalingRule model = new ScalingRule().withActionType(ScaleActionType.SCALEUP).withEvaluationCount(1281560612)
-            .withScalingMetric("hqwa").withComparisonRule(
-                new ComparisonRule().withOperator(ComparisonOperator.LESS_THAN).withThreshold(44.0332f));
+        ScalingRule model = new ScalingRule().withActionType(ScaleActionType.SCALEUP)
+            .withEvaluationCount(962281735)
+            .withScalingMetric("nayqi")
+            .withComparisonRule(
+                new ComparisonRule().withOperator(ComparisonOperator.GREATER_THAN_OR_EQUAL).withThreshold(83.24161f));
         model = BinaryData.fromObject(model).toObject(ScalingRule.class);
         Assertions.assertEquals(ScaleActionType.SCALEUP, model.actionType());
-        Assertions.assertEquals(1281560612, model.evaluationCount());
-        Assertions.assertEquals("hqwa", model.scalingMetric());
-        Assertions.assertEquals(ComparisonOperator.LESS_THAN, model.comparisonRule().operator());
-        Assertions.assertEquals(44.0332f, model.comparisonRule().threshold());
+        Assertions.assertEquals(962281735, model.evaluationCount());
+        Assertions.assertEquals("nayqi", model.scalingMetric());
+        Assertions.assertEquals(ComparisonOperator.GREATER_THAN_OR_EQUAL, model.comparisonRule().operator());
+        Assertions.assertEquals(83.24161f, model.comparisonRule().threshold());
     }
 }

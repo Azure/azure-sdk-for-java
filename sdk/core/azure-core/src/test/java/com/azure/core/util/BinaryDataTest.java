@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.AccessibleByteArrayOutputStream;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FileContent;
@@ -20,6 +21,8 @@ import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -53,8 +56,11 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
@@ -1088,6 +1094,73 @@ public class BinaryDataTest {
             .verifyComplete();
     }
 
+    @ParameterizedTest
+    @MethodSource("binaryDataOfEachKindSupplier")
+    public void writeToJsonWriterNullPointer(BinaryData binaryData, String ignored) {
+        assertThrows(NullPointerException.class, () -> binaryData.writeTo((JsonWriter) null));
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataOfEachKindSupplier")
+    public void writeToJsonWriterExpectedJson(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryDataToJson(binaryData));
+    }
+
+    private static Stream<Arguments> binaryDataOfEachKindSupplier() throws Exception {
+        String helloWorld = "hello world";
+        byte[] helloWorldBytes = helloWorld.getBytes(StandardCharsets.UTF_8);
+        Path file = Paths.get(BinaryDataTest.class.getClassLoader().getResource("helloworld.txt").toURI());
+
+        String binaryJson = "\"" + Base64.getEncoder().encodeToString(helloWorldBytes) + "\"";
+        // File needs its own JSON as git adds a newline character to the end.
+        String fileJson = "\"" + Base64.getEncoder().encodeToString(Files.readAllBytes(file)) + "\"";
+        String objectJson = "{\"hello\":\"world\"}";
+        String stringJson = "\"" + helloWorld + "\"";
+
+        return Stream.of(Arguments.of(BinaryData.fromBytes(helloWorldBytes), binaryJson),
+            Arguments.of(BinaryData.fromByteBuffer(ByteBuffer.wrap(helloWorldBytes)), binaryJson),
+            Arguments.of(BinaryData.fromFile(file), fileJson),
+            Arguments.of(BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(helloWorldBytes))).block(), binaryJson),
+            Arguments.of(BinaryData.fromListByteBuffer(Collections.singletonList(ByteBuffer.wrap(helloWorldBytes))),
+                binaryJson),
+            Arguments.of(BinaryData.fromObject(Collections.singletonMap("hello", "world")), objectJson),
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(helloWorldBytes)), binaryJson),
+            Arguments.of(BinaryData.fromString(helloWorld), stringJson));
+    }
+
+    @ParameterizedTest
+    @MethodSource("binaryDataObjectWriteToJsonWriterSupplier")
+    public void binaryDataObjectWriteToJsonWriter(BinaryData binaryData, String expectedJson) {
+        assertEquals(expectedJson, binaryDataToJson(binaryData));
+    }
+
+    private static Stream<Arguments> binaryDataObjectWriteToJsonWriterSupplier() {
+        String helloWorld = "hello world";
+        byte[] helloWorldBytes = helloWorld.getBytes(StandardCharsets.UTF_8);
+
+        String binaryJson = "\"" + Base64.getEncoder().encodeToString(helloWorldBytes) + "\"";
+        String stringJson = "\"" + helloWorld + "\"";
+
+        List<Object> jsonList = Arrays.asList(null, 42L, 42.0D, true);
+        String listJson = "[null,42,42.0,true]";
+
+        Map<String, Object> jsonMap = new LinkedHashMap<>();
+        jsonMap.put("long", 42L);
+        jsonMap.put("double", 42.0D);
+        jsonMap.put("boolean", true);
+        jsonMap.put("list", jsonList);
+        String mapJson = "{\"long\":42,\"double\":42.0,\"boolean\":true,\"list\":" + listJson + "}";
+
+        return Stream.of(Arguments.of(BinaryData.fromObject(null), "null"),
+            Arguments.of(BinaryData.fromObject(42), "42"), Arguments.of(BinaryData.fromObject(42L), "42"),
+            Arguments.of(BinaryData.fromObject(42.0F), "42.0"), Arguments.of(BinaryData.fromObject(42.0D), "42.0"),
+            Arguments.of(BinaryData.fromObject(true), "true"),
+            Arguments.of(BinaryData.fromObject(helloWorldBytes), binaryJson),
+            Arguments.of(BinaryData.fromObject(helloWorld), stringJson),
+            Arguments.of(BinaryData.fromObject(jsonList), listJson),
+            Arguments.of(BinaryData.fromObject(jsonMap), mapJson));
+    }
+
     public static final class BinaryDataAsProperty {
         @JsonProperty("property")
         private BinaryData property;
@@ -1163,6 +1236,17 @@ public class BinaryDataTest {
         @Override
         public Mono<Void> serializeAsync(OutputStream stream, Object value) {
             return Mono.fromRunnable(() -> serialize(stream, value));
+        }
+    }
+
+    private static String binaryDataToJson(BinaryData binaryData) {
+        try (AccessibleByteArrayOutputStream accessibleByteArrayOutputStream = new AccessibleByteArrayOutputStream();
+            JsonWriter jsonWriter = JsonProviders.createWriter(accessibleByteArrayOutputStream)) {
+            binaryData.writeTo(jsonWriter);
+            jsonWriter.flush();
+            return accessibleByteArrayOutputStream.toString(StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 }

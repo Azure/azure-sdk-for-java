@@ -47,37 +47,37 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
 
     private static Stream<Arguments> getFilterPredicate() {
         return Arrays.asList(
-                Arguments.of(AggregationType.AVERAGE,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getAverage() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.COUNT,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getCount() != null
-                                && metricValue.getAverage() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.TOTAL,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getTotal() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getAverage() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.MINIMUM,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getMinimum() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getAverage() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.MAXIMUM,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getMaximum() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getAverage() == null)
-        ).stream();
+            Arguments.of(AggregationType.AVERAGE,
+                (Predicate<MetricValue>) metricValue -> metricValue.getAverage() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.COUNT,
+                (Predicate<MetricValue>) metricValue -> metricValue.getCount() != null
+                    && metricValue.getAverage() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.TOTAL,
+                (Predicate<MetricValue>) metricValue -> metricValue.getTotal() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getAverage() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.MINIMUM,
+                (Predicate<MetricValue>) metricValue -> metricValue.getMinimum() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getAverage() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.MAXIMUM,
+                (Predicate<MetricValue>) metricValue -> metricValue.getMaximum() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getAverage() == null))
+            .stream();
     }
 
     @BeforeEach
@@ -85,39 +85,31 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
         resourceUri = getMetricResourceUri(interceptorManager.isPlaybackMode());
         TokenCredential credential = TestUtil.getTestTokenCredential(interceptorManager);
 
-        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder()
-            .credential(credential);
+        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder().credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilder
-                .httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
+            clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy());
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getMetricEndpoint());
         }
-        this.client = clientBuilder
-                .buildClient();
+        this.client = clientBuilder.buildClient();
     }
 
     private HttpClient getAssertingHttpClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertSync()
-            .skipRequest((request, context) -> false)
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertSync().skipRequest((request, context) -> false).build();
     }
 
     @Test
     public void testMetricsQuery() {
-        Response<MetricsQueryResult> metricsResponse = client
-            .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
-                new MetricsQueryOptions()
-                    .setMetricNamespace("Microsoft.EventHub/namespaces")
+        Response<MetricsQueryResult> metricsResponse
+            = client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
                     .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
                     .setGranularity(Duration.ofHours(1))
                     .setTop(100)
                     .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
-                            AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
+                        AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
@@ -138,75 +130,40 @@ public class MetricsQueryClientTest extends TestProxyTestBase {
     @ParameterizedTest
     @MethodSource("getFilterPredicate")
     public void testAggregation(AggregationType aggregationType, Predicate<MetricValue> metricValuePredicate) {
-        Response<MetricsQueryResult> metricsResponse = client
-                .queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
-                        new MetricsQueryOptions()
-                                .setMetricNamespace("Microsoft.EventHub/namespaces")
-                                .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
-                                .setGranularity(Duration.ofHours(1))
-                                .setTop(100)
-                                .setAggregations(Arrays.asList(aggregationType)),
-                        Context.NONE);
+        Response<MetricsQueryResult> metricsResponse
+            = client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                    .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
+                    .setGranularity(Duration.ofHours(1))
+                    .setTop(100)
+                    .setAggregations(Arrays.asList(aggregationType)),
+                Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
         List<MetricResult> metrics = metricsQueryResult.getMetrics();
         List<MetricValue> metricValues = metrics.stream()
-                .flatMap(result -> result.getTimeSeries().stream())
-                .flatMap(tsElement -> tsElement.getValues().stream())
-                .filter(metricValuePredicate)
-                .collect(Collectors.toList());
+            .flatMap(result -> result.getTimeSeries().stream())
+            .flatMap(tsElement -> tsElement.getValues().stream())
+            .filter(metricValuePredicate)
+            .collect(Collectors.toList());
         assertTrue(metricValues.size() > 0);
     }
 
     @Test
     public void testMetricsDefinition() {
-        PagedIterable<MetricDefinition> metricsDefinitions = client
-                .listMetricDefinitions(resourceUri);
+        PagedIterable<MetricDefinition> metricsDefinitions = client.listMetricDefinitions(resourceUri);
 
-        List<String> knownMetricsDefinitions = Arrays.asList(
-            "SuccessfulRequests",
-            "ServerErrors",
-            "UserErrors",
-            "QuotaExceededErrors",
-            "ThrottledRequests",
-            "IncomingRequests",
-            "IncomingMessages",
-            "OutgoingMessages",
-            "IncomingBytes",
-            "OutgoingBytes",
-            "ActiveConnections",
-            "ConnectionsOpened",
-            "ConnectionsClosed",
-            "CaptureBacklog",
-            "CapturedMessages",
-            "CapturedBytes",
-            "Size",
-            "INREQS",
-            "SUCCREQ",
-            "FAILREQ",
-            "SVRBSY",
-            "INTERR",
-            "MISCERR",
-            "INMSGS",
-            "EHINMSGS",
-            "OUTMSGS",
-            "EHOUTMSGS",
-            "EHINMBS",
-            "EHINBYTES",
-            "EHOUTMBS",
-            "EHOUTBYTES",
-            "EHABL",
-            "EHAMSGS",
-            "EHAMBS"
-        );
+        List<String> knownMetricsDefinitions = Arrays.asList("SuccessfulRequests", "ServerErrors", "UserErrors",
+            "QuotaExceededErrors", "ThrottledRequests", "IncomingRequests", "IncomingMessages", "OutgoingMessages",
+            "IncomingBytes", "OutgoingBytes", "ActiveConnections", "ConnectionsOpened", "ConnectionsClosed",
+            "CaptureBacklog", "CapturedMessages", "CapturedBytes", "Size", "INREQS", "SUCCREQ", "FAILREQ", "SVRBSY",
+            "INTERR", "MISCERR", "INMSGS", "EHINMSGS", "OUTMSGS", "EHOUTMSGS", "EHINMBS", "EHINBYTES", "EHOUTMBS",
+            "EHOUTBYTES", "EHABL", "EHAMSGS", "EHAMBS");
 
+        List<String> metricsDefinitionNames
+            = metricsDefinitions.stream().map(MetricDefinition::getName).collect(Collectors.toList());
 
-        List<String> metricsDefinitionNames = metricsDefinitions.stream()
-            .map(MetricDefinition::getName)
-            .collect(Collectors.toList());
-
-        assertTrue(metricsDefinitionNames
-                .containsAll(knownMetricsDefinitions));
+        assertTrue(metricsDefinitionNames.containsAll(knownMetricsDefinitions));
     }
 
     @Test

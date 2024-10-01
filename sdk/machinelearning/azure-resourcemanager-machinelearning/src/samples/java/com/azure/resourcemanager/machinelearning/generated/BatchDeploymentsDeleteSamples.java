@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.machinelearning.generated;
 
-/** Samples for BatchDeployments Delete. */
+/**
+ * Samples for BatchDeployments Delete.
+ */
 public final class BatchDeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchDeployment/delete.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Workspace/BatchDeployment/delete.json
      */
     /**
-     * Sample code: Delete Batch Deployment.
-     *
+     * Sample code: Delete Workspace Batch Deployment.
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void deleteBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .batchDeployments()
-            .delete(
-                "test-rg",
-                "my-aml-workspace",
-                "testEndpointName",
-                "testDeploymentName",
+    public static void
+        deleteWorkspaceBatchDeployment(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.batchDeployments()
+            .delete("test-rg", "my-aml-workspace", "testEndpointName", "testDeploymentName",
                 com.azure.core.util.Context.NONE);
     }
 }

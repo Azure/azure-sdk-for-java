@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationGetEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationGetEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"iith\",\"destinationPort\":63986979,\"publicPort\":511745945,\"privateIPAddress\":\"v\"}")
-                .toObject(ApplicationGetEndpoint.class);
+        ApplicationGetEndpoint model = BinaryData.fromString(
+            "{\"location\":\"iith\",\"destinationPort\":63986979,\"publicPort\":511745945,\"privateIPAddress\":\"v\"}")
+            .toObject(ApplicationGetEndpoint.class);
         Assertions.assertEquals("iith", model.location());
         Assertions.assertEquals(63986979, model.destinationPort());
         Assertions.assertEquals(511745945, model.publicPort());
@@ -24,12 +22,10 @@ public final class ApplicationGetEndpointTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationGetEndpoint model =
-            new ApplicationGetEndpoint()
-                .withLocation("iith")
-                .withDestinationPort(63986979)
-                .withPublicPort(511745945)
-                .withPrivateIpAddress("v");
+        ApplicationGetEndpoint model = new ApplicationGetEndpoint().withLocation("iith")
+            .withDestinationPort(63986979)
+            .withPublicPort(511745945)
+            .withPrivateIpAddress("v");
         model = BinaryData.fromObject(model).toObject(ApplicationGetEndpoint.class);
         Assertions.assertEquals("iith", model.location());
         Assertions.assertEquals(63986979, model.destinationPort());

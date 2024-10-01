@@ -16,24 +16,24 @@ public final class ManagedPrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedPrivateEndpoint model = BinaryData.fromString(
-            "{\"connectionState\":{\"actionsRequired\":\"idmhmwf\",\"description\":\"lfmu\",\"status\":\"pckc\"},\"fqdns\":[\"vwe\"],\"groupId\":\"xoy\",\"isReserved\":false,\"privateLinkResourceId\":\"haim\",\"provisioningState\":\"iroqbosh\",\"\":{\"pavbo\":\"datagapyyrmfsv\"}}")
+            "{\"connectionState\":{\"actionsRequired\":\"nt\",\"description\":\"yjuzkdb\",\"status\":\"o\"},\"fqdns\":[\"zvhqjwtrhtgvg\"],\"groupId\":\"c\",\"isReserved\":true,\"privateLinkResourceId\":\"lawjmjsmwrok\",\"provisioningState\":\"xfzzzwyjafitlhgu\",\"\":{\"mltx\":\"datachl\",\"fpafolpymwamxq\":\"datawhmozusgzvlnsnnj\",\"gdphtvdula\":\"datarag\"}}")
             .toObject(ManagedPrivateEndpoint.class);
-        Assertions.assertEquals("vwe", model.fqdns().get(0));
-        Assertions.assertEquals("xoy", model.groupId());
-        Assertions.assertEquals("haim", model.privateLinkResourceId());
+        Assertions.assertEquals("zvhqjwtrhtgvg", model.fqdns().get(0));
+        Assertions.assertEquals("c", model.groupId());
+        Assertions.assertEquals("lawjmjsmwrok", model.privateLinkResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedPrivateEndpoint model = new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-            .withFqdns(Arrays.asList("vwe"))
-            .withGroupId("xoy")
-            .withPrivateLinkResourceId("haim")
-            .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "iroqbosh"));
+            .withFqdns(Arrays.asList("zvhqjwtrhtgvg"))
+            .withGroupId("c")
+            .withPrivateLinkResourceId("lawjmjsmwrok")
+            .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "xfzzzwyjafitlhgu"));
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpoint.class);
-        Assertions.assertEquals("vwe", model.fqdns().get(0));
-        Assertions.assertEquals("xoy", model.groupId());
-        Assertions.assertEquals("haim", model.privateLinkResourceId());
+        Assertions.assertEquals("zvhqjwtrhtgvg", model.fqdns().get(0));
+        Assertions.assertEquals("c", model.groupId());
+        Assertions.assertEquals("lawjmjsmwrok", model.privateLinkResourceId());
     }
 
     // Use "Map.of" if available

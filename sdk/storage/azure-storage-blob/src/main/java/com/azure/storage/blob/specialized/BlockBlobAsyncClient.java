@@ -437,13 +437,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
                 options.isLegalHold(), null, options.getHeaders(), getCustomerProvidedKey(),
                 encryptionScope, finalContext)
-            .map(rb -> {
-                BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
-                return new SimpleResponse<>(rb, item);
-            }));
+                .map(rb -> {
+                    BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
+                    BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsVersionId());
+                    return new SimpleResponse<>(rb, item);
+                }));
     }
 
     /**
@@ -588,8 +588,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             sourceRequestConditions.getTagsConditions(),
             null, options.getContentMd5(), tagsToString(options.getTags()),
             options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(), options.getHeaders(),
-            getCustomerProvidedKey(), encryptionScope,
-            context)
+            getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
@@ -1152,8 +1151,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-            encryptionScope, context)
+            options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope, context)
             .map(rb -> {
                 BlockBlobsCommitBlockListHeaders hd = rb.getDeserializedHeaders();
                 BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),

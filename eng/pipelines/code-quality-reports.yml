@@ -87,7 +87,7 @@ extends:
 
               - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
 
-              - task: Maven@3
+              - task: Maven@4
                 displayName: 'Build Projects'
                 inputs:
                   mavenPomFile: ClientFromSourcePom.xml
@@ -100,7 +100,7 @@ extends:
                   publishJUnitResults: false
                 condition: and(succeeded(), ne(variables['LintingGoals'], ''))
 
-              - task: Maven@3
+              - task: Maven@4
                 displayName: 'Run Linting'
                 inputs:
                   mavenPomFile: ClientFromSourcePom.xml

@@ -5,26 +5,29 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Access policy for SSH
- *
- * <p>State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this
+ * 
+ * State of the public SSH port. Possible values are: Disabled - Indicates that the public ssh port is closed on this
  * instance. Enabled - Indicates that the public ssh port is open and accessible according to the VNet/subnet policy if
  * applicable.
  */
 public final class SshPublicAccess extends ExpandableStringEnum<SshPublicAccess> {
-    /** Static value Enabled for SshPublicAccess. */
+    /**
+     * Static value Enabled for SshPublicAccess.
+     */
     public static final SshPublicAccess ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SshPublicAccess. */
+    /**
+     * Static value Disabled for SshPublicAccess.
+     */
     public static final SshPublicAccess DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SshPublicAccess value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +36,17 @@ public final class SshPublicAccess extends ExpandableStringEnum<SshPublicAccess>
 
     /**
      * Creates or finds a SshPublicAccess from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SshPublicAccess.
      */
-    @JsonCreator
     public static SshPublicAccess fromString(String name) {
         return fromString(name, SshPublicAccess.class);
     }
 
     /**
      * Gets known SshPublicAccess values.
-     *
+     * 
      * @return known SshPublicAccess values.
      */
     public static Collection<SshPublicAccess> values() {

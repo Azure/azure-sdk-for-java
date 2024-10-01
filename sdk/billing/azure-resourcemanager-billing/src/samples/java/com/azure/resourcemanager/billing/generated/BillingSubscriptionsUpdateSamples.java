@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.resourcemanager.billing.fluent.models.BillingSubscriptionInner;
+import com.azure.resourcemanager.billing.models.BillingSubscriptionPatch;
 
-/** Samples for BillingSubscriptions Update. */
+/**
+ * Samples for BillingSubscriptions Update.
+ */
 public final class BillingSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/UpdateBillingSubscription.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/billingSubscriptionsUpdate.
+     * json
      */
     /**
-     * Sample code: UpdateBillingProperty.
-     *
+     * Sample code: BillingSubscriptionsUpdate.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void updateBillingProperty(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .billingSubscriptions()
-            .updateWithResponse(
-                "{billingAccountName}",
-                new BillingSubscriptionInner().withCostCenter("ABC1234"),
-                com.azure.core.util.Context.NONE);
+    public static void billingSubscriptionsUpdate(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.billingSubscriptions()
+            .update("00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                "11111111-1111-1111-1111-111111111111",
+                new BillingSubscriptionPatch().withConsumptionCostCenter("ABC1234"), com.azure.core.util.Context.NONE);
     }
 }

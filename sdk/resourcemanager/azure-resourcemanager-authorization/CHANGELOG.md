@@ -1,12 +1,28 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.44.0-beta.1 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 2.43.0 (2024-09-27)
+
+### Features Added
+
+- Added `Quota Request Operator` role to `BuiltInRole`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.42.0 (2024-08-23)
 
 ### Other Changes
 

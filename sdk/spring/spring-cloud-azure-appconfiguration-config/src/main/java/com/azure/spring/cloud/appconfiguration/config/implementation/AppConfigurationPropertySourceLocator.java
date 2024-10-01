@@ -200,7 +200,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (monitoring.isEnabled()) {
             // Setting new ETag values for Watch
             List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel())).toList();
+                .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(), !STARTUP.get())).toList();
 
             newState.setState(configStore.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
         }
@@ -258,7 +258,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                     selectedKeys.getKeyFilter() + store.getEndpoint() + "/", client, keyVaultClientFactory,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
             }
-            propertySource.initProperties(store.getTrimKeyPrefix());
+            propertySource.initProperties(store.getTrimKeyPrefix(), !STARTUP.get());
             sourceList.add(propertySource);
 
         }
@@ -281,7 +281,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
                 List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
-                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), !STARTUP.get());
                 storesFeatureFlags.forEach(featureFlags -> featureFlags.setConfigStore(store));
                 featureFlagWatchKeys.addAll(storesFeatureFlags);
             }

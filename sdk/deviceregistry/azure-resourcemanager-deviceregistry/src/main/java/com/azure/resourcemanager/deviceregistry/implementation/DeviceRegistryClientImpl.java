@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -26,8 +26,8 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetEndpointProfilesClient;
 import com.azure.resourcemanager.deviceregistry.fluent.AssetsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryClient;
-import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
 import com.azure.resourcemanager.deviceregistry.fluent.OperationStatusClient;
+import com.azure.resourcemanager.deviceregistry.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -43,12 +43,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = DeviceRegistryClientBuilder.class)
 public final class DeviceRegistryClientImpl implements DeviceRegistryClient {
     /**
-     * Server parameter.
+     * Service host.
      */
     private final String endpoint;
 
     /**
-     * Gets Server parameter.
+     * Gets Service host.
      * 
      * @return the endpoint value.
      */
@@ -189,7 +189,7 @@ public final class DeviceRegistryClientImpl implements DeviceRegistryClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param endpoint Server parameter.
+     * @param endpoint Service host.
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      */
     DeviceRegistryClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,

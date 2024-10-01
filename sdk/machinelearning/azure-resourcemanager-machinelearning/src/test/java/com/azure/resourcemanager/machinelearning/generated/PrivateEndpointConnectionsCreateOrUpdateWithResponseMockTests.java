@@ -6,11 +6,9 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
@@ -20,95 +18,64 @@ import com.azure.resourcemanager.machinelearning.models.PrivateEndpointServiceCo
 import com.azure.resourcemanager.machinelearning.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.machinelearning.models.Sku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class PrivateEndpointConnectionsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"privateEndpoint\":{\"id\":\"hdbitq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"jsgomrih\",\"actionsRequired\":\"grmsdbv\"},\"provisioningState\":\"Deleting\"},\"identity\":{\"principalId\":\"df52856d-4e2e-4dc3-82db-75118299d198\",\"tenantId\":\"8769944d-3a45-4ec5-b03c-8604ec7e8a5d\",\"type\":\"None\",\"userAssignedIdentities\":{\"dpbceh\":{\"principalId\":\"47e93559-498d-47de-90c5-a018e74d5b91\",\"clientId\":\"48daa439-430b-49e9-85a5-35d609d55ac6\"},\"psesboynpyt\":{\"principalId\":\"e827b970-cd6b-4ebe-9d9b-092146e41889\",\"clientId\":\"126fa503-83f6-4234-977c-5282ac54919c\"},\"rvkxtfctaneti\":{\"principalId\":\"76b4cd46-b1ec-4b33-ad1d-2aaadb7ea4a1\",\"clientId\":\"97bcfbf0-b95c-4639-b831-72698ac5a272\"},\"dhnpjnezjighdu\":{\"principalId\":\"58557c6a-9dec-46ee-b446-622e9330040b\",\"clientId\":\"6d964002-7aeb-48a7-81c9-29cddb3c0cd6\"}}},\"location\":\"tpmrzwvwetqf\",\"tags\":{\"bsotoc\":\"vfhuqhngqqx\",\"atwxpxb\":\"mrttujyd\"},\"sku\":{\"name\":\"dhxbboceksramqc\",\"tier\":\"Premium\",\"size\":\"fnlvvkswurxdq\",\"family\":\"hauimn\",\"capacity\":1536425318},\"id\":\"q\",\"name\":\"wq\",\"type\":\"nbnwi\"}";
 
-        String responseStr =
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"k\",\"subnetArmId\":\"zkdtzxsoed\"},\"privateLinkServiceConnectionState\":{\"status\":\"Timeout\",\"description\":\"li\",\"actionsRequired\":\"zomucmqgisnionet\"},\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"6990e6f7-106a-433c-997d-a718208f7ce7\",\"tenantId\":\"38771c9c-5b53-4d64-924e-98d9bc7791cc\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"kgtlzl\",\"tags\":{\"zkbnbmxl\":\"lxcznn\",\"g\":\"mwt\",\"ahfsgb\":\"qzusitoq\"},\"sku\":{\"name\":\"lreesrfwsszvlcwl\",\"tier\":\"Basic\",\"size\":\"ntfxxcrqmipfjwfo\",\"family\":\"izmshxxba\",\"capacity\":1165412558},\"id\":\"ulnvgskj\",\"name\":\"o\",\"type\":\"jdzjsjzn\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .define("fy")
+            .withExistingWorkspace("q", "rtgqrqkk")
+            .withRegion("eadnyciw")
+            .withTags(mapOf("vzohabbriz", "lykqadfge", "qsxofxqnkiuok", "adjrsbgailjqovqm", "bhiebruptls", "ltsxooi"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(
+                    mapOf("fiozttcbi", new UserAssignedIdentity(), "gkudsozodwjc", new UserAssignedIdentity(),
+                        "yxryqyc", new UserAssignedIdentity(), "rlcfgdwzauzf", new UserAssignedIdentity())))
+            .withSku(new Sku().withName("qzgaqsosrnjlvgrg")
+                .withTier(SkuTier.PREMIUM)
+                .withSize("oxrqhjninpeswv")
+                .withFamily("qkgebz")
+                .withCapacity(156493894))
+            .withPrivateEndpoint(new PrivateEndpoint())
+            .withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.TIMEOUT)
+                    .withDescription("pnyjtu")
+                    .withActionsRequired("zyvextchslro"))
+            .create();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .define("dpwrp")
-                .withExistingWorkspace("ycpawm", "jp")
-                .withRegion("qp")
-                .withTags(mapOf("qgcnbhcbmjk", "zihqod", "n", "ti"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf()))
-                .withSku(
-                    new Sku()
-                        .withName("ntsxjmfmeftvh")
-                        .withTier(SkuTier.FREE)
-                        .withSize("gjrhs")
-                        .withFamily("w")
-                        .withCapacity(2051010260))
-                .withPrivateEndpoint(new PrivateEndpoint())
-                .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                        .withDescription("eyam")
-                        .withActionsRequired("idmdiawpzxkzrntm"))
-                .create();
-
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("kgtlzl", response.location());
-        Assertions.assertEquals("lxcznn", response.tags().get("zkbnbmxl"));
-        Assertions.assertEquals("lreesrfwsszvlcwl", response.sku().name());
-        Assertions.assertEquals(SkuTier.BASIC, response.sku().tier());
-        Assertions.assertEquals("ntfxxcrqmipfjwfo", response.sku().size());
-        Assertions.assertEquals("izmshxxba", response.sku().family());
-        Assertions.assertEquals(1165412558, response.sku().capacity());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.TIMEOUT, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("li", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("zomucmqgisnionet", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("tpmrzwvwetqf", response.location());
+        Assertions.assertEquals("vfhuqhngqqx", response.tags().get("bsotoc"));
+        Assertions.assertEquals("dhxbboceksramqc", response.sku().name());
+        Assertions.assertEquals(SkuTier.PREMIUM, response.sku().tier());
+        Assertions.assertEquals("fnlvvkswurxdq", response.sku().size());
+        Assertions.assertEquals("hauimn", response.sku().family());
+        Assertions.assertEquals(1536425318, response.sku().capacity());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
+            response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("jsgomrih", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("grmsdbv", response.privateLinkServiceConnectionState().actionsRequired());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

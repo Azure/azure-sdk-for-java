@@ -6,19 +6,17 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.models.Amount;
-import org.junit.jupiter.api.Assertions;
 
 public final class AmountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Amount model = BinaryData.fromString("{\"currency\":\"rbpizc\",\"value\":87.63677}").toObject(Amount.class);
-        Assertions.assertEquals(87.63677F, model.value());
+        Amount model
+            = BinaryData.fromString("{\"currency\":\"dwtiukbldngkp\",\"value\":96.508446}").toObject(Amount.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Amount model = new Amount().withValue(87.63677F);
+        Amount model = new Amount();
         model = BinaryData.fromObject(model).toObject(Amount.class);
-        Assertions.assertEquals(87.63677F, model.value());
     }
 }

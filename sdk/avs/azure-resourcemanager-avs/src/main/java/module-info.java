@@ -8,6 +8,6 @@ module com.azure.resourcemanager.avs {
     exports com.azure.resourcemanager.avs.fluent;
     exports com.azure.resourcemanager.avs.fluent.models;
     exports com.azure.resourcemanager.avs.models;
-    opens com.azure.resourcemanager.avs.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.avs.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.avs.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.avs.models to com.azure.core;
 }

@@ -17,59 +17,49 @@ import org.junit.jupiter.api.Assertions;
 public final class TextClassificationMultilabelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TextClassificationMultilabel model =
-            BinaryData
-                .fromString(
-                    "{\"taskType\":\"TextClassificationMultilabel\",\"primaryMetric\":\"AveragePrecisionScoreWeighted\",\"featurizationSettings\":{\"datasetLanguage\":\"klt\"},\"limitSettings\":{\"maxConcurrentTrials\":1366135748,\"maxTrials\":1224275689,\"timeout\":\"PT25H21M12S\"},\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"EvalDownload\",\"uri\":\"grdcgubsrtmdy\",\"description\":\"erpi\"},\"logVerbosity\":\"Warning\",\"targetColumnName\":\"zgczfcmfpfbode\",\"trainingData\":{\"jobInputType\":\"mltable\",\"mode\":\"Direct\",\"uri\":\"sr\",\"description\":\"tshuvftwaivm\"}}")
-                .toObject(TextClassificationMultilabel.class);
-        Assertions.assertEquals(LogVerbosity.WARNING, model.logVerbosity());
-        Assertions.assertEquals("zgczfcmfpfbode", model.targetColumnName());
-        Assertions.assertEquals("tshuvftwaivm", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.trainingData().mode());
-        Assertions.assertEquals("sr", model.trainingData().uri());
-        Assertions.assertEquals("klt", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(1366135748, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(1224275689, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT25H21M12S"), model.limitSettings().timeout());
-        Assertions.assertEquals("erpi", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("grdcgubsrtmdy", model.validationData().uri());
+        TextClassificationMultilabel model = BinaryData.fromString(
+            "{\"taskType\":\"TextClassificationMultilabel\",\"primaryMetric\":\"NormMacroRecall\",\"limitSettings\":{\"timeout\":\"PT197H4M37S\",\"maxTrials\":470605377,\"maxConcurrentTrials\":1118935796},\"featurizationSettings\":{\"datasetLanguage\":\"xagf\"},\"validationData\":{\"jobInputType\":\"mltable\",\"uri\":\"dbqjnye\",\"mode\":\"Direct\",\"description\":\"gxqqqasfeooqftp\"},\"logVerbosity\":\"NotSet\",\"trainingData\":{\"jobInputType\":\"mltable\",\"uri\":\"tarp\",\"mode\":\"ReadOnlyMount\",\"description\":\"liiqeanu\"},\"targetColumnName\":\"jno\"}")
+            .toObject(TextClassificationMultilabel.class);
+        Assertions.assertEquals(LogVerbosity.NOT_SET, model.logVerbosity());
+        Assertions.assertEquals("liiqeanu", model.trainingData().description());
+        Assertions.assertEquals("tarp", model.trainingData().uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("jno", model.targetColumnName());
+        Assertions.assertEquals(Duration.parse("PT197H4M37S"), model.limitSettings().timeout());
+        Assertions.assertEquals(470605377, model.limitSettings().maxTrials());
+        Assertions.assertEquals(1118935796, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals("xagf", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals("gxqqqasfeooqftp", model.validationData().description());
+        Assertions.assertEquals("dbqjnye", model.validationData().uri());
+        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.validationData().mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TextClassificationMultilabel model =
-            new TextClassificationMultilabel()
-                .withLogVerbosity(LogVerbosity.WARNING)
-                .withTargetColumnName("zgczfcmfpfbode")
-                .withTrainingData(
-                    new MLTableJobInput()
-                        .withDescription("tshuvftwaivm")
-                        .withMode(InputDeliveryMode.DIRECT)
-                        .withUri("sr"))
-                .withFeaturizationSettings(new NlpVerticalFeaturizationSettings().withDatasetLanguage("klt"))
-                .withLimitSettings(
-                    new NlpVerticalLimitSettings()
-                        .withMaxConcurrentTrials(1366135748)
-                        .withMaxTrials(1224275689)
-                        .withTimeout(Duration.parse("PT25H21M12S")))
-                .withValidationData(
-                    new MLTableJobInput()
-                        .withDescription("erpi")
-                        .withMode(InputDeliveryMode.EVAL_DOWNLOAD)
-                        .withUri("grdcgubsrtmdy"));
+        TextClassificationMultilabel model = new TextClassificationMultilabel().withLogVerbosity(LogVerbosity.NOT_SET)
+            .withTrainingData(new MLTableJobInput().withDescription("liiqeanu")
+                .withUri("tarp")
+                .withMode(InputDeliveryMode.READ_ONLY_MOUNT))
+            .withTargetColumnName("jno")
+            .withLimitSettings(new NlpVerticalLimitSettings().withTimeout(Duration.parse("PT197H4M37S"))
+                .withMaxTrials(470605377)
+                .withMaxConcurrentTrials(1118935796))
+            .withFeaturizationSettings(new NlpVerticalFeaturizationSettings().withDatasetLanguage("xagf"))
+            .withValidationData(new MLTableJobInput().withDescription("gxqqqasfeooqftp")
+                .withUri("dbqjnye")
+                .withMode(InputDeliveryMode.DIRECT));
         model = BinaryData.fromObject(model).toObject(TextClassificationMultilabel.class);
-        Assertions.assertEquals(LogVerbosity.WARNING, model.logVerbosity());
-        Assertions.assertEquals("zgczfcmfpfbode", model.targetColumnName());
-        Assertions.assertEquals("tshuvftwaivm", model.trainingData().description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.trainingData().mode());
-        Assertions.assertEquals("sr", model.trainingData().uri());
-        Assertions.assertEquals("klt", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(1366135748, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(1224275689, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT25H21M12S"), model.limitSettings().timeout());
-        Assertions.assertEquals("erpi", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("grdcgubsrtmdy", model.validationData().uri());
+        Assertions.assertEquals(LogVerbosity.NOT_SET, model.logVerbosity());
+        Assertions.assertEquals("liiqeanu", model.trainingData().description());
+        Assertions.assertEquals("tarp", model.trainingData().uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.trainingData().mode());
+        Assertions.assertEquals("jno", model.targetColumnName());
+        Assertions.assertEquals(Duration.parse("PT197H4M37S"), model.limitSettings().timeout());
+        Assertions.assertEquals(470605377, model.limitSettings().maxTrials());
+        Assertions.assertEquals(1118935796, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals("xagf", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals("gxqqqasfeooqftp", model.validationData().description());
+        Assertions.assertEquals("dbqjnye", model.validationData().uri());
+        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.validationData().mode());
     }
 }

@@ -12,7 +12,7 @@
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
     "TestFromSource": false,
     "RunAggregateReports": false,
-    "TestGoals": "surefire:test",
+    "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
     "TestOptions": ""
   },
   "exclude": [
@@ -52,7 +52,7 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "RunAggregateReports": false,
-      "TestGoals": "surefire:test",
+      "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
       "TestOptions": ""
     },
     {
@@ -63,7 +63,7 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "RunAggregateReports": false,
-      "TestGoals": "surefire:test",
+      "TestGoals": "surefire:test failsafe:integration-test failsafe:verify",
       "TestOptions": ""
     },
     {
@@ -79,7 +79,7 @@
         "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.17",
-      "AZURE_TEST_HTTP_CLIENTS": "VertxAsyncHttpClientProvider",
+      "AZURE_TEST_HTTP_CLIENTS": "VertxHttpClientProvider",
       "TestFromSource": false
     }
   ]

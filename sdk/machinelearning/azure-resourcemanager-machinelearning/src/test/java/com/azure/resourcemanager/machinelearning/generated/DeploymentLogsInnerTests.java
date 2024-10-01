@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentLogsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentLogsInner model =
-            BinaryData.fromString("{\"content\":\"jcxcjxgrytfmpcyc\"}").toObject(DeploymentLogsInner.class);
-        Assertions.assertEquals("jcxcjxgrytfmpcyc", model.content());
+        DeploymentLogsInner model = BinaryData.fromString("{\"content\":\"jqu\"}").toObject(DeploymentLogsInner.class);
+        Assertions.assertEquals("jqu", model.content());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentLogsInner model = new DeploymentLogsInner().withContent("jcxcjxgrytfmpcyc");
+        DeploymentLogsInner model = new DeploymentLogsInner().withContent("jqu");
         model = BinaryData.fromObject(model).toObject(DeploymentLogsInner.class);
-        Assertions.assertEquals("jcxcjxgrytfmpcyc", model.content());
+        Assertions.assertEquals("jqu", model.content());
     }
 }

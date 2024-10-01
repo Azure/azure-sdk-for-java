@@ -5,75 +5,74 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Defines an Aml Instance DataMount. */
+/**
+ * Defines an Aml Instance DataMount.
+ */
 @Fluent
-public final class ComputeInstanceDataMount {
+public final class ComputeInstanceDataMount implements JsonSerializable<ComputeInstanceDataMount> {
     /*
      * Source of the ComputeInstance data mount.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Data source type.
      */
-    @JsonProperty(value = "sourceType")
     private SourceType sourceType;
 
     /*
      * name of the ComputeInstance data mount.
      */
-    @JsonProperty(value = "mountName")
     private String mountName;
 
     /*
      * Mount Action.
      */
-    @JsonProperty(value = "mountAction")
     private MountAction mountAction;
 
     /*
      * who this data mount created by.
      */
-    @JsonProperty(value = "createdBy")
     private String createdBy;
 
     /*
      * Path of this data mount.
      */
-    @JsonProperty(value = "mountPath")
     private String mountPath;
 
     /*
      * Mount state.
      */
-    @JsonProperty(value = "mountState")
     private MountState mountState;
 
     /*
-     * Mounted time.
-     *
      * The time when the disk mounted.
      */
-    @JsonProperty(value = "mountedOn")
     private OffsetDateTime mountedOn;
 
     /*
      * Error of this data mount.
      */
-    @JsonProperty(value = "error")
     private String error;
 
-    /** Creates an instance of ComputeInstanceDataMount class. */
+    /**
+     * Creates an instance of ComputeInstanceDataMount class.
+     */
     public ComputeInstanceDataMount() {
     }
 
     /**
      * Get the source property: Source of the ComputeInstance data mount.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -82,7 +81,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the source property: Source of the ComputeInstance data mount.
-     *
+     * 
      * @param source the source value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -93,7 +92,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Get the sourceType property: Data source type.
-     *
+     * 
      * @return the sourceType value.
      */
     public SourceType sourceType() {
@@ -102,7 +101,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the sourceType property: Data source type.
-     *
+     * 
      * @param sourceType the sourceType value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -113,7 +112,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Get the mountName property: name of the ComputeInstance data mount.
-     *
+     * 
      * @return the mountName value.
      */
     public String mountName() {
@@ -122,7 +121,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the mountName property: name of the ComputeInstance data mount.
-     *
+     * 
      * @param mountName the mountName value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -133,7 +132,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Get the mountAction property: Mount Action.
-     *
+     * 
      * @return the mountAction value.
      */
     public MountAction mountAction() {
@@ -142,7 +141,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the mountAction property: Mount Action.
-     *
+     * 
      * @param mountAction the mountAction value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -153,7 +152,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Get the createdBy property: who this data mount created by.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -162,7 +161,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the createdBy property: who this data mount created by.
-     *
+     * 
      * @param createdBy the createdBy value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -173,7 +172,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Get the mountPath property: Path of this data mount.
-     *
+     * 
      * @return the mountPath value.
      */
     public String mountPath() {
@@ -182,7 +181,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the mountPath property: Path of this data mount.
-     *
+     * 
      * @param mountPath the mountPath value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -193,7 +192,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Get the mountState property: Mount state.
-     *
+     * 
      * @return the mountState value.
      */
     public MountState mountState() {
@@ -202,7 +201,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the mountState property: Mount state.
-     *
+     * 
      * @param mountState the mountState value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -212,10 +211,8 @@ public final class ComputeInstanceDataMount {
     }
 
     /**
-     * Get the mountedOn property: Mounted time.
-     *
-     * <p>The time when the disk mounted.
-     *
+     * Get the mountedOn property: The time when the disk mounted.
+     * 
      * @return the mountedOn value.
      */
     public OffsetDateTime mountedOn() {
@@ -223,10 +220,8 @@ public final class ComputeInstanceDataMount {
     }
 
     /**
-     * Set the mountedOn property: Mounted time.
-     *
-     * <p>The time when the disk mounted.
-     *
+     * Set the mountedOn property: The time when the disk mounted.
+     * 
      * @param mountedOn the mountedOn value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -237,7 +232,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Get the error property: Error of this data mount.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -246,7 +241,7 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Set the error property: Error of this data mount.
-     *
+     * 
      * @param error the error value to set.
      * @return the ComputeInstanceDataMount object itself.
      */
@@ -257,9 +252,71 @@ public final class ComputeInstanceDataMount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("sourceType", this.sourceType == null ? null : this.sourceType.toString());
+        jsonWriter.writeStringField("mountName", this.mountName);
+        jsonWriter.writeStringField("mountAction", this.mountAction == null ? null : this.mountAction.toString());
+        jsonWriter.writeStringField("createdBy", this.createdBy);
+        jsonWriter.writeStringField("mountPath", this.mountPath);
+        jsonWriter.writeStringField("mountState", this.mountState == null ? null : this.mountState.toString());
+        jsonWriter.writeStringField("mountedOn",
+            this.mountedOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.mountedOn));
+        jsonWriter.writeStringField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceDataMount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceDataMount if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceDataMount.
+     */
+    public static ComputeInstanceDataMount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceDataMount deserializedComputeInstanceDataMount = new ComputeInstanceDataMount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.source = reader.getString();
+                } else if ("sourceType".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.sourceType = SourceType.fromString(reader.getString());
+                } else if ("mountName".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.mountName = reader.getString();
+                } else if ("mountAction".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.mountAction = MountAction.fromString(reader.getString());
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.createdBy = reader.getString();
+                } else if ("mountPath".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.mountPath = reader.getString();
+                } else if ("mountState".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.mountState = MountState.fromString(reader.getString());
+                } else if ("mountedOn".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.mountedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedComputeInstanceDataMount.error = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceDataMount;
+        });
     }
 }

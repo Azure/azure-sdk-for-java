@@ -5,26 +5,40 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of agreement. */
+/**
+ * The type of agreement.
+ */
 public final class AgreementType extends ExpandableStringEnum<AgreementType> {
-    /** Static value MicrosoftCustomerAgreement for AgreementType. */
+    /**
+     * Static value Other for AgreementType.
+     */
+    public static final AgreementType OTHER = fromString("Other");
+
+    /**
+     * Static value MicrosoftCustomerAgreement for AgreementType.
+     */
     public static final AgreementType MICROSOFT_CUSTOMER_AGREEMENT = fromString("MicrosoftCustomerAgreement");
 
-    /** Static value EnterpriseAgreement for AgreementType. */
+    /**
+     * Static value EnterpriseAgreement for AgreementType.
+     */
     public static final AgreementType ENTERPRISE_AGREEMENT = fromString("EnterpriseAgreement");
 
-    /** Static value MicrosoftOnlineServicesProgram for AgreementType. */
+    /**
+     * Static value MicrosoftOnlineServicesProgram for AgreementType.
+     */
     public static final AgreementType MICROSOFT_ONLINE_SERVICES_PROGRAM = fromString("MicrosoftOnlineServicesProgram");
 
-    /** Static value MicrosoftPartnerAgreement for AgreementType. */
+    /**
+     * Static value MicrosoftPartnerAgreement for AgreementType.
+     */
     public static final AgreementType MICROSOFT_PARTNER_AGREEMENT = fromString("MicrosoftPartnerAgreement");
 
     /**
      * Creates a new instance of AgreementType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +47,17 @@ public final class AgreementType extends ExpandableStringEnum<AgreementType> {
 
     /**
      * Creates or finds a AgreementType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AgreementType.
      */
-    @JsonCreator
     public static AgreementType fromString(String name) {
         return fromString(name, AgreementType.class);
     }
 
     /**
      * Gets known AgreementType values.
-     *
+     * 
      * @return known AgreementType values.
      */
     public static Collection<AgreementType> values() {

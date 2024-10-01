@@ -6,24 +6,60 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.billing.fluent.models.CustomerPolicyInner;
-import com.azure.resourcemanager.billing.models.ViewCharges;
+import com.azure.resourcemanager.billing.models.CustomerPolicyProperties;
+import com.azure.resourcemanager.billing.models.PolicySummary;
+import com.azure.resourcemanager.billing.models.PolicyType;
+import com.azure.resourcemanager.billing.models.ViewChargesPolicy;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class CustomerPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomerPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"viewCharges\":\"Allowed\"},\"id\":\"blmhvkzuhb\",\"name\":\"vvyhg\",\"type\":\"opbyrqufegxu\"}")
-                .toObject(CustomerPolicyInner.class);
-        Assertions.assertEquals(ViewCharges.ALLOWED, model.viewCharges());
+        CustomerPolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"ConfirmedBilling\",\"viewCharges\":\"Allowed\",\"policies\":[{\"name\":\"tpgaeukya\",\"value\":\"hpmwhqnucsk\",\"policyType\":\"SystemControlled\",\"scope\":\"dsjtdlpbni\"},{\"name\":\"gazlsvbz\",\"value\":\"puoee\",\"policyType\":\"Other\",\"scope\":\"ciklh\"}]},\"tags\":{\"xolriy\":\"krdre\",\"beivdlhydwbdbfg\":\"h\"},\"id\":\"punytjl\",\"name\":\"esmmpathubtahd\",\"type\":\"an\"}")
+            .toObject(CustomerPolicyInner.class);
+        Assertions.assertEquals("krdre", model.tags().get("xolriy"));
+        Assertions.assertEquals(ViewChargesPolicy.ALLOWED, model.properties().viewCharges());
+        Assertions.assertEquals("tpgaeukya", model.properties().policies().get(0).name());
+        Assertions.assertEquals("hpmwhqnucsk", model.properties().policies().get(0).value());
+        Assertions.assertEquals(PolicyType.SYSTEM_CONTROLLED, model.properties().policies().get(0).policyType());
+        Assertions.assertEquals("dsjtdlpbni", model.properties().policies().get(0).scope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomerPolicyInner model = new CustomerPolicyInner().withViewCharges(ViewCharges.ALLOWED);
+        CustomerPolicyInner model = new CustomerPolicyInner().withTags(mapOf("xolriy", "krdre", "beivdlhydwbdbfg", "h"))
+            .withProperties(new CustomerPolicyProperties().withViewCharges(ViewChargesPolicy.ALLOWED)
+                .withPolicies(Arrays.asList(
+                    new PolicySummary().withName("tpgaeukya")
+                        .withValue("hpmwhqnucsk")
+                        .withPolicyType(PolicyType.SYSTEM_CONTROLLED)
+                        .withScope("dsjtdlpbni"),
+                    new PolicySummary().withName("gazlsvbz")
+                        .withValue("puoee")
+                        .withPolicyType(PolicyType.OTHER)
+                        .withScope("ciklh"))));
         model = BinaryData.fromObject(model).toObject(CustomerPolicyInner.class);
-        Assertions.assertEquals(ViewCharges.ALLOWED, model.viewCharges());
+        Assertions.assertEquals("krdre", model.tags().get("xolriy"));
+        Assertions.assertEquals(ViewChargesPolicy.ALLOWED, model.properties().viewCharges());
+        Assertions.assertEquals("tpgaeukya", model.properties().policies().get(0).name());
+        Assertions.assertEquals("hpmwhqnucsk", model.properties().policies().get(0).value());
+        Assertions.assertEquals(PolicyType.SYSTEM_CONTROLLED, model.properties().policies().get(0).policyType());
+        Assertions.assertEquals("dsjtdlpbni", model.properties().policies().get(0).scope());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

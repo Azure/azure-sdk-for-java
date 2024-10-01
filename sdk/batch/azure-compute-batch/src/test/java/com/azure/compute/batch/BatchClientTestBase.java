@@ -19,7 +19,6 @@ import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
@@ -50,7 +49,6 @@ import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -74,7 +72,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         batchClientBuilder =
             new BatchClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "https://fakeaccount.batch.windows.net"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             batchClientBuilder
@@ -201,7 +199,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 elapsedTime += 30 * 1000;
             } else {
-                elapsedTime = (new Date()).getTime() - startTime;
+                elapsedTime = System.currentTimeMillis() - startTime;
             }
         }
 
@@ -341,7 +339,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 elapsedTime += 10 * 1000;
             } else {
-                elapsedTime = (new Date()).getTime() - startTime;
+                elapsedTime = System.currentTimeMillis() - startTime;
             }
         }
 
@@ -370,7 +368,7 @@ class BatchClientTestBase extends TestProxyTestBase {
             if (interceptorManager.isPlaybackMode()) {
                 elapsedTime += 30 * 1000;
             } else {
-                elapsedTime = (new Date()).getTime() - startTime;
+                elapsedTime = System.currentTimeMillis() - startTime;
             }
         }
 

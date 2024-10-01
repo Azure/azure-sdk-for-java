@@ -11,19 +11,19 @@ public final class MySqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MySqlSource model = BinaryData.fromString(
-            "{\"type\":\"MySqlSource\",\"query\":\"dataeedjnklvbrsxykwb\",\"queryTimeout\":\"datasd\",\"additionalColumns\":\"datajitlqxpsnnnxhgd\",\"sourceRetryCount\":\"datadxylndbgaicj\",\"sourceRetryWait\":\"datajzfzkh\",\"maxConcurrentConnections\":\"datapnmrxjdfk\",\"disableMetricsCollection\":\"datakaipfyv\",\"\":{\"ah\":\"datasvywkbiekyvak\",\"oxvoaoavezwcl\":\"datapgnapkpaie\",\"vhcbu\":\"datazmlrvlghlrcdiq\",\"jtockgqaawyyszwo\":\"dataawifz\"}}")
+            "{\"type\":\"MySqlSource\",\"query\":\"datajwgejakuz\",\"queryTimeout\":\"datawn\",\"additionalColumns\":\"datac\",\"sourceRetryCount\":\"datajgsyszdtgwmqcutk\",\"sourceRetryWait\":\"datarourtmccdejtoypl\",\"maxConcurrentConnections\":\"datavjutckfhmdcvlb\",\"disableMetricsCollection\":\"dataezvujpbmz\",\"\":{\"zpfoispchhvvmvs\":\"datagmuhxwkkbnhmdtj\"}}")
             .toObject(MySqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MySqlSource model = new MySqlSource().withSourceRetryCount("datadxylndbgaicj")
-            .withSourceRetryWait("datajzfzkh")
-            .withMaxConcurrentConnections("datapnmrxjdfk")
-            .withDisableMetricsCollection("datakaipfyv")
-            .withQueryTimeout("datasd")
-            .withAdditionalColumns("datajitlqxpsnnnxhgd")
-            .withQuery("dataeedjnklvbrsxykwb");
+        MySqlSource model = new MySqlSource().withSourceRetryCount("datajgsyszdtgwmqcutk")
+            .withSourceRetryWait("datarourtmccdejtoypl")
+            .withMaxConcurrentConnections("datavjutckfhmdcvlb")
+            .withDisableMetricsCollection("dataezvujpbmz")
+            .withQueryTimeout("datawn")
+            .withAdditionalColumns("datac")
+            .withQuery("datajwgejakuz");
         model = BinaryData.fromObject(model).toObject(MySqlSource.class);
     }
 }

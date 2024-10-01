@@ -14,36 +14,56 @@ import com.azure.resourcemanager.machinelearning.models.ComputeInstance;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceAuthorizationType;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceProperties;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceSshSettings;
+import com.azure.resourcemanager.machinelearning.models.ComputePowerAction;
+import com.azure.resourcemanager.machinelearning.models.ComputeSchedules;
+import com.azure.resourcemanager.machinelearning.models.ComputeStartStopSchedule;
+import com.azure.resourcemanager.machinelearning.models.ComputeTriggerType;
+import com.azure.resourcemanager.machinelearning.models.Cron;
+import com.azure.resourcemanager.machinelearning.models.CustomService;
 import com.azure.resourcemanager.machinelearning.models.DataFactory;
+import com.azure.resourcemanager.machinelearning.models.Docker;
+import com.azure.resourcemanager.machinelearning.models.Endpoint;
+import com.azure.resourcemanager.machinelearning.models.EnvironmentVariable;
+import com.azure.resourcemanager.machinelearning.models.EnvironmentVariableType;
+import com.azure.resourcemanager.machinelearning.models.Image;
+import com.azure.resourcemanager.machinelearning.models.ImageType;
 import com.azure.resourcemanager.machinelearning.models.InstanceTypeSchema;
 import com.azure.resourcemanager.machinelearning.models.InstanceTypeSchemaResources;
 import com.azure.resourcemanager.machinelearning.models.Kubernetes;
 import com.azure.resourcemanager.machinelearning.models.KubernetesProperties;
 import com.azure.resourcemanager.machinelearning.models.OsType;
 import com.azure.resourcemanager.machinelearning.models.PersonalComputeInstanceSettings;
+import com.azure.resourcemanager.machinelearning.models.Protocol;
 import com.azure.resourcemanager.machinelearning.models.RemoteLoginPortPublicAccess;
 import com.azure.resourcemanager.machinelearning.models.ResourceId;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettings;
+import com.azure.resourcemanager.machinelearning.models.ScheduleStatus;
 import com.azure.resourcemanager.machinelearning.models.SshPublicAccess;
 import com.azure.resourcemanager.machinelearning.models.VirtualMachineImage;
 import com.azure.resourcemanager.machinelearning.models.VmPriority;
+import com.azure.resourcemanager.machinelearning.models.VolumeDefinition;
+import com.azure.resourcemanager.machinelearning.models.VolumeDefinitionType;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Compute CreateOrUpdate. */
+/**
+ * Samples for Compute CreateOrUpdate.
+ */
 public final class ComputeCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/BasicAKSCompute.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/BasicAKSCompute.json
      */
     /**
      * Sample code: Create an AKS Compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void createAnAKSCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
@@ -52,180 +72,177 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/AKSCompute.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/AKSCompute.json
      */
     /**
      * Sample code: Update an AKS Compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void updateAnAKSCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
-            .withProperties(
-                new Aks()
-                    .withDescription("some compute")
-                    .withResourceId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2")
-                    .withProperties(new AksSchemaProperties().withAgentCount(4)))
+            .withProperties(new Aks().withDescription("some compute")
+                .withResourceId(
+                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2")
+                .withProperties(new AksSchemaProperties().withAgentCount(4)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/KubernetesCompute.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/KubernetesCompute.json
      */
     /**
      * Sample code: Attach a Kubernetes Compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void attachAKubernetesCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+    public static void
+        attachAKubernetesCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
-            .withProperties(
-                new Kubernetes()
-                    .withDescription("some compute")
-                    .withResourceId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2")
-                    .withProperties(
-                        new KubernetesProperties()
-                            .withNamespace("default")
-                            .withDefaultInstanceType("defaultInstanceType")
-                            .withInstanceTypes(
-                                mapOf(
-                                    "defaultInstanceType",
-                                    new InstanceTypeSchema()
-                                        .withResources(
-                                            new InstanceTypeSchemaResources()
-                                                .withRequests(
-                                                    mapOf("cpu", "1", "memory", "4Gi", "nvidia.com/gpu", null))
-                                                .withLimits(
-                                                    mapOf("cpu", "1", "memory", "4Gi", "nvidia.com/gpu", null)))))))
+            .withProperties(new Kubernetes().withDescription("some compute")
+                .withResourceId(
+                    "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/Microsoft.ContainerService/managedClusters/compute123-56826-c9b00420020b2")
+                .withProperties(new KubernetesProperties().withNamespace("default")
+                    .withDefaultInstanceType("defaultInstanceType")
+                    .withInstanceTypes(mapOf("defaultInstanceType",
+                        new InstanceTypeSchema().withResources(new InstanceTypeSchemaResources()
+                            .withRequests(mapOf("cpu", "1", "memory", "4Gi", "nvidia.com/gpu", null))
+                            .withLimits(mapOf("cpu", "1", "memory", "4Gi", "nvidia.com/gpu", null)))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/ComputeInstanceWithSchedules.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute with Schedules.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void createAnComputeInstanceComputeWithSchedules(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
             .withProperties(
-                new ComputeInstance()
-                    .withProperties(
-                        new ComputeInstanceProperties()
-                            .withVmSize("STANDARD_NC6")
-                            .withApplicationSharingPolicy(ApplicationSharingPolicy.PERSONAL)
-                            .withSshSettings(
-                                new ComputeInstanceSshSettings().withSshPublicAccess(SshPublicAccess.DISABLED))
-                            .withComputeInstanceAuthorizationType(ComputeInstanceAuthorizationType.PERSONAL)
-                            .withPersonalComputeInstanceSettings(
-                                new PersonalComputeInstanceSettings()
-                                    .withAssignedUser(
-                                        new AssignedUser()
-                                            .withObjectId("00000000-0000-0000-0000-000000000000")
-                                            .withTenantId("00000000-0000-0000-0000-000000000000")))))
+                new ComputeInstance().withProperties(new ComputeInstanceProperties().withVmSize("STANDARD_NC6")
+                    .withApplicationSharingPolicy(ApplicationSharingPolicy.PERSONAL)
+                    .withSshSettings(new ComputeInstanceSshSettings().withSshPublicAccess(SshPublicAccess.DISABLED))
+                    .withComputeInstanceAuthorizationType(ComputeInstanceAuthorizationType.PERSONAL)
+                    .withPersonalComputeInstanceSettings(new PersonalComputeInstanceSettings()
+                        .withAssignedUser(new AssignedUser().withObjectId("00000000-0000-0000-0000-000000000000")
+                            .withTenantId("00000000-0000-0000-0000-000000000000")))
+                    .withSchedules(new ComputeSchedules().withComputeStartStop(
+                        Arrays.asList(new ComputeStartStopSchedule().withStatus(ScheduleStatus.ENABLED)
+                            .withAction(ComputePowerAction.STOP)
+                            .withTriggerType(ComputeTriggerType.CRON)
+                            .withCron(new Cron().withStartTime("2021-04-23T01:30:00")
+                                .withTimeZone("Pacific Standard Time")
+                                .withExpression("0 18 * * *")))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/BasicAmlCompute.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/BasicAmlCompute.json
      */
     /**
      * Sample code: Create a AML Compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void createAAMLCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
-            .withProperties(
-                new AmlCompute()
-                    .withProperties(
-                        new AmlComputeProperties()
-                            .withOsType(OsType.WINDOWS)
-                            .withVmSize("STANDARD_NC6")
-                            .withVmPriority(VmPriority.DEDICATED)
-                            .withVirtualMachineImage(
-                                new VirtualMachineImage()
-                                    .withId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myImageGallery/images/myImageDefinition/versions/0.0.1"))
-                            .withIsolatedNetwork(false)
-                            .withScaleSettings(
-                                new ScaleSettings()
-                                    .withMaxNodeCount(1)
-                                    .withMinNodeCount(0)
-                                    .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT5M")))
-                            .withRemoteLoginPortPublicAccess(RemoteLoginPortPublicAccess.NOT_SPECIFIED)
-                            .withEnableNodePublicIp(true)))
+            .withProperties(new AmlCompute().withProperties(new AmlComputeProperties().withOsType(OsType.WINDOWS)
+                .withVmSize("STANDARD_NC6")
+                .withVmPriority(VmPriority.DEDICATED)
+                .withVirtualMachineImage(new VirtualMachineImage().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/galleries/myImageGallery/images/myImageDefinition/versions/0.0.1"))
+                .withIsolatedNetwork(false)
+                .withScaleSettings(new ScaleSettings().withMaxNodeCount(1)
+                    .withMinNodeCount(0)
+                    .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT5M")))
+                .withRemoteLoginPortPublicAccess(RemoteLoginPortPublicAccess.NOT_SPECIFIED)
+                .withEnableNodePublicIp(true)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/ComputeInstance.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/ComputeInstance.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createAnComputeInstanceCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+    public static void
+        createAnComputeInstanceCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
             .withProperties(
-                new ComputeInstance()
-                    .withProperties(
-                        new ComputeInstanceProperties()
-                            .withVmSize("STANDARD_NC6")
-                            .withSubnet(new ResourceId().withId("test-subnet-resource-id"))
-                            .withApplicationSharingPolicy(ApplicationSharingPolicy.PERSONAL)
-                            .withSshSettings(
-                                new ComputeInstanceSshSettings().withSshPublicAccess(SshPublicAccess.DISABLED))
-                            .withComputeInstanceAuthorizationType(ComputeInstanceAuthorizationType.PERSONAL)
-                            .withPersonalComputeInstanceSettings(
-                                new PersonalComputeInstanceSettings()
-                                    .withAssignedUser(
-                                        new AssignedUser()
-                                            .withObjectId("00000000-0000-0000-0000-000000000000")
-                                            .withTenantId("00000000-0000-0000-0000-000000000000")))))
+                new ComputeInstance().withProperties(new ComputeInstanceProperties().withVmSize("STANDARD_NC6")
+                    .withSubnet(new ResourceId().withId("test-subnet-resource-id"))
+                    .withApplicationSharingPolicy(ApplicationSharingPolicy.PERSONAL)
+                    .withSshSettings(new ComputeInstanceSshSettings().withSshPublicAccess(SshPublicAccess.DISABLED))
+                    .withCustomServices(Arrays.asList(new CustomService().withName("rstudio")
+                        .withImage(new Image().withType(ImageType.DOCKER)
+                            .withReference("ghcr.io/azure/rocker-rstudio-ml-verse:latest")
+                            .withAdditionalProperties(mapOf()))
+                        .withEnvironmentVariables(mapOf("test_variable",
+                            new EnvironmentVariable().withType(EnvironmentVariableType.LOCAL)
+                                .withValue("test_value")
+                                .withAdditionalProperties(mapOf())))
+                        .withDocker(new Docker().withPrivileged(true).withAdditionalProperties(mapOf()))
+                        .withEndpoints(Arrays.asList(new Endpoint().withProtocol(Protocol.HTTP)
+                            .withName("connect")
+                            .withTarget(8787)
+                            .withPublished(8787)))
+                        .withVolumes(Arrays.asList(new VolumeDefinition().withType(VolumeDefinitionType.BIND)
+                            .withReadOnly(false)
+                            .withSource("/home/azureuser/cloudfiles")
+                            .withTarget("/home/azureuser/cloudfiles")))
+                        .withAdditionalProperties(mapOf())))
+                    .withComputeInstanceAuthorizationType(ComputeInstanceAuthorizationType.PERSONAL)
+                    .withPersonalComputeInstanceSettings(new PersonalComputeInstanceSettings()
+                        .withAssignedUser(new AssignedUser().withObjectId("00000000-0000-0000-0000-000000000000")
+                            .withTenantId("00000000-0000-0000-0000-000000000000")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/ComputeInstanceMinimal.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/ComputeInstanceMinimal.json
      */
     /**
      * Sample code: Create an ComputeInstance Compute with minimal inputs.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void createAnComputeInstanceComputeWithMinimalInputs(
         com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
@@ -235,44 +252,40 @@ public final class ComputeCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/AmlCompute.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/AmlCompute.json
      */
     /**
      * Sample code: Update a AML Compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
     public static void updateAAMLCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
-            .withProperties(
-                new AmlCompute()
-                    .withDescription("some compute")
-                    .withProperties(
-                        new AmlComputeProperties()
-                            .withScaleSettings(
-                                new ScaleSettings()
-                                    .withMaxNodeCount(4)
-                                    .withMinNodeCount(4)
-                                    .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT5M")))))
+            .withProperties(new AmlCompute().withDescription("some compute")
+                .withProperties(new AmlComputeProperties().withScaleSettings(new ScaleSettings().withMaxNodeCount(4)
+                    .withMinNodeCount(4)
+                    .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT5M")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Compute/createOrUpdate/BasicDataFactoryCompute.json
+     * x-ms-original-file:
+     * specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2024-04-01/
+     * examples/Compute/createOrUpdate/BasicDataFactoryCompute.json
      */
     /**
      * Sample code: Create a DataFactory Compute.
-     *
+     * 
      * @param manager Entry point to MachineLearningManager.
      */
-    public static void createADataFactoryCompute(
-        com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
-        manager
-            .computes()
+    public static void
+        createADataFactoryCompute(com.azure.resourcemanager.machinelearning.MachineLearningManager manager) {
+        manager.computes()
             .define("compute123")
             .withExistingWorkspace("testrg123", "workspaces123")
             .withRegion("eastus")
@@ -280,6 +293,7 @@ public final class ComputeCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

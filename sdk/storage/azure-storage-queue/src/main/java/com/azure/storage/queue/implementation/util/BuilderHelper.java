@@ -6,6 +6,7 @@ package com.azure.storage.queue.implementation.util;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -265,7 +266,7 @@ public final class BuilderHelper {
      */
     private static HttpPipelinePolicy getResponseValidationPolicy() {
         return new ResponseValidationPolicyBuilder()
-            .addOptionalEcho(Constants.HeaderConstants.CLIENT_REQUEST_ID)
+            .addOptionalEcho(HttpHeaderName.X_MS_CLIENT_REQUEST_ID)
             .build();
     }
 

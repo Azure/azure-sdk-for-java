@@ -16,37 +16,45 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentContainerResourceArmPaginatedResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentContainerResourceArmPaginatedResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"buffkmrqemvvhm\",\"value\":[{\"properties\":{\"isArchived\":true,\"latestVersion\":\"utacoe\",\"nextVersion\":\"vewzcj\",\"description\":\"m\",\"properties\":{},\"tags\":{}},\"id\":\"guaadraufactkahz\",\"name\":\"v\",\"type\":\"jjziuxxpsh\"}]}")
-                .toObject(EnvironmentContainerResourceArmPaginatedResult.class);
-        Assertions.assertEquals("buffkmrqemvvhm", model.nextLink());
-        Assertions.assertEquals("m", model.value().get(0).properties().description());
+        EnvironmentContainerResourceArmPaginatedResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"isArchived\":true,\"latestVersion\":\"qvkjlmxho\",\"nextVersion\":\"ynhdwdigum\",\"description\":\"raauzzpt\",\"tags\":{\"wva\":\"ysdzhez\",\"hqyikvy\":\"qyuvvfonkp\"},\"properties\":{\"jfybvpoekrsgsgb\":\"yavluwmncstt\"}},\"id\":\"uzqgnjdgkynsc\",\"name\":\"i\",\"type\":\"hzvhxnkomtkubo\"},{\"properties\":{\"provisioningState\":\"Creating\",\"isArchived\":true,\"latestVersion\":\"xz\",\"nextVersion\":\"ihfrbbcevqa\",\"description\":\"ltd\",\"tags\":{\"py\":\"kqo\",\"ymbrnysuxmpraf\":\"vgtrdcnifmzzs\"},\"properties\":{\"roud\":\"khocxvdfffwaf\"}},\"id\":\"pavehhr\",\"name\":\"kbunzoz\",\"type\":\"dhcxgkmoy\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":true,\"latestVersion\":\"bhmfdnbz\",\"nextVersion\":\"vfvfcj\",\"description\":\"eoisrvhmgor\",\"tags\":{\"faxvxil\":\"kiscvwmzhwpl\",\"nzeyqxtjj\":\"btgn\",\"vodggxdbee\":\"zqlqhyc\"},\"properties\":{\"iaa\":\"eknlra\",\"agt\":\"iuagydwqfbylyrfg\"}},\"id\":\"jocqwogfnzjvusf\",\"name\":\"ld\",\"type\":\"ozuxylfsbtkadpys\"}],\"nextLink\":\"nbtgkbugrjqctoj\"}")
+            .toObject(EnvironmentContainerResourceArmPaginatedResult.class);
+        Assertions.assertEquals("raauzzpt", model.value().get(0).properties().description());
+        Assertions.assertEquals("ysdzhez", model.value().get(0).properties().tags().get("wva"));
+        Assertions.assertEquals("yavluwmncstt", model.value().get(0).properties().properties().get("jfybvpoekrsgsgb"));
         Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
+        Assertions.assertEquals("nbtgkbugrjqctoj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentContainerResourceArmPaginatedResult model =
-            new EnvironmentContainerResourceArmPaginatedResult()
-                .withNextLink("buffkmrqemvvhm")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new EnvironmentContainerInner()
-                                .withProperties(
-                                    new EnvironmentContainerProperties()
-                                        .withDescription("m")
-                                        .withProperties(mapOf())
-                                        .withTags(mapOf())
-                                        .withIsArchived(true))));
+        EnvironmentContainerResourceArmPaginatedResult model
+            = new EnvironmentContainerResourceArmPaginatedResult().withValue(Arrays.asList(
+                new EnvironmentContainerInner()
+                    .withProperties(new EnvironmentContainerProperties().withDescription("raauzzpt")
+                        .withTags(mapOf("wva", "ysdzhez", "hqyikvy", "qyuvvfonkp"))
+                        .withProperties(mapOf("jfybvpoekrsgsgb", "yavluwmncstt"))
+                        .withIsArchived(true)),
+                new EnvironmentContainerInner()
+                    .withProperties(new EnvironmentContainerProperties().withDescription("ltd")
+                        .withTags(mapOf("py", "kqo", "ymbrnysuxmpraf", "vgtrdcnifmzzs"))
+                        .withProperties(mapOf("roud", "khocxvdfffwaf"))
+                        .withIsArchived(true)),
+                new EnvironmentContainerInner()
+                    .withProperties(new EnvironmentContainerProperties().withDescription("eoisrvhmgor")
+                        .withTags(mapOf("faxvxil", "kiscvwmzhwpl", "nzeyqxtjj", "btgn", "vodggxdbee", "zqlqhyc"))
+                        .withProperties(mapOf("iaa", "eknlra", "agt", "iuagydwqfbylyrfg"))
+                        .withIsArchived(true))))
+                .withNextLink("nbtgkbugrjqctoj");
         model = BinaryData.fromObject(model).toObject(EnvironmentContainerResourceArmPaginatedResult.class);
-        Assertions.assertEquals("buffkmrqemvvhm", model.nextLink());
-        Assertions.assertEquals("m", model.value().get(0).properties().description());
+        Assertions.assertEquals("raauzzpt", model.value().get(0).properties().description());
+        Assertions.assertEquals("ysdzhez", model.value().get(0).properties().tags().get("wva"));
+        Assertions.assertEquals("yavluwmncstt", model.value().get(0).properties().properties().get("jfybvpoekrsgsgb"));
         Assertions.assertEquals(true, model.value().get(0).properties().isArchived());
+        Assertions.assertEquals("nbtgkbugrjqctoj", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

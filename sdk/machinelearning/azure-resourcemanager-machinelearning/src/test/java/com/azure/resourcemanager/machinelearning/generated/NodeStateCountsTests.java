@@ -10,11 +10,9 @@ import com.azure.resourcemanager.machinelearning.models.NodeStateCounts;
 public final class NodeStateCountsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeStateCounts model =
-            BinaryData
-                .fromString(
-                    "{\"idleNodeCount\":1191856604,\"runningNodeCount\":715935859,\"preparingNodeCount\":2047901283,\"unusableNodeCount\":1346181735,\"leavingNodeCount\":1358224808,\"preemptedNodeCount\":304822445}")
-                .toObject(NodeStateCounts.class);
+        NodeStateCounts model = BinaryData.fromString(
+            "{\"idleNodeCount\":17437062,\"runningNodeCount\":194546120,\"preparingNodeCount\":863569272,\"unusableNodeCount\":765041265,\"leavingNodeCount\":232651506,\"preemptedNodeCount\":1489395185}")
+            .toObject(NodeStateCounts.class);
     }
 
     @org.junit.jupiter.api.Test

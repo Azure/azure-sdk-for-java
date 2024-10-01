@@ -4,19 +4,26 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-/** Samples for Policies GetByCustomer. */
+import com.azure.resourcemanager.billing.models.ServiceDefinedResourceName;
+
+/**
+ * Samples for Policies GetByCustomer.
+ */
 public final class PoliciesGetByCustomerSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/CustomerPolicy.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/policiesGetByCustomer.json
      */
     /**
-     * Sample code: PolicyByCustomer.
-     *
+     * Sample code: PoliciesGetByCustomer.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void policyByCustomer(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager
-            .policies()
-            .getByCustomerWithResponse("{billingAccountName}", "{customerName}", com.azure.core.util.Context.NONE);
+    public static void policiesGetByCustomer(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.policies()
+            .getByCustomerWithResponse(
+                "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                "xxxx-xxxx-xxx-xxx", "11111111-1111-1111-1111-111111111111", ServiceDefinedResourceName.DEFAULT,
+                com.azure.core.util.Context.NONE);
     }
 }

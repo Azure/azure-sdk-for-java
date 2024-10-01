@@ -11,26 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Usage model =
-            BinaryData
-                .fromString(
-                    "{\"unit\":\"mciodhkhazxkhn\",\"currentValue\":1031605542268068469,\"limit\":5106824512288532592,\"name\":{\"value\":\"egokdwbwhkszzcmr\",\"localizedValue\":\"xztvbtqgsfraoyzk\"}}")
-                .toObject(Usage.class);
-        Assertions.assertEquals("mciodhkhazxkhn", model.unit());
-        Assertions.assertEquals(1031605542268068469L, model.currentValue());
-        Assertions.assertEquals(5106824512288532592L, model.limit());
+        Usage model = BinaryData.fromString(
+            "{\"unit\":\"l\",\"currentValue\":4701202797943859637,\"limit\":171678662002400976,\"name\":{\"value\":\"twvogvbbe\",\"localizedValue\":\"cngqqmoakufgmjz\"}}")
+            .toObject(Usage.class);
+        Assertions.assertEquals("l", model.unit());
+        Assertions.assertEquals(4701202797943859637L, model.currentValue());
+        Assertions.assertEquals(171678662002400976L, model.limit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Usage model =
-            new Usage()
-                .withUnit("mciodhkhazxkhn")
-                .withCurrentValue(1031605542268068469L)
-                .withLimit(5106824512288532592L);
+        Usage model = new Usage().withUnit("l").withCurrentValue(4701202797943859637L).withLimit(171678662002400976L);
         model = BinaryData.fromObject(model).toObject(Usage.class);
-        Assertions.assertEquals("mciodhkhazxkhn", model.unit());
-        Assertions.assertEquals(1031605542268068469L, model.currentValue());
-        Assertions.assertEquals(5106824512288532592L, model.limit());
+        Assertions.assertEquals("l", model.unit());
+        Assertions.assertEquals(4701202797943859637L, model.currentValue());
+        Assertions.assertEquals(171678662002400976L, model.limit());
     }
 }

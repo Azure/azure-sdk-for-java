@@ -18,44 +18,50 @@ public final class ManagedPrivateEndpointListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedPrivateEndpointListResponse model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"connectionState\":{\"actionsRequired\":\"wdkqzeqy\",\"description\":\"eziunjxdfzant\",\"status\":\"cegyamlbnseqacj\"},\"fqdns\":[\"ilguooqjagmditg\",\"eiookjbsah\",\"tdtpdelqacslmo\"],\"groupId\":\"ebnfxofvc\",\"isReserved\":false,\"privateLinkResourceId\":\"irazftxejwabmd\",\"provisioningState\":\"tmvcop\",\"\":{\"urbuhhlkyqltq\":\"datam\"}},\"name\":\"ogtu\",\"type\":\"ffdjktsysidfvclg\",\"etag\":\"n\",\"id\":\"ijtk\"},{\"properties\":{\"connectionState\":{\"actionsRequired\":\"qogsfikayian\",\"description\":\"arujt\",\"status\":\"qxfzyjqttvwk\"},\"fqdns\":[\"j\",\"enuygbq\",\"qqekewvnqvcdlgu\"],\"groupId\":\"cmfdjwnlax\",\"isReserved\":false,\"privateLinkResourceId\":\"qikczvvita\",\"provisioningState\":\"xmfcsserxhtv\",\"\":{\"sxypruuu\":\"datahlwntsjgq\"}},\"name\":\"nchrszizoyu\",\"type\":\"yetnd\",\"etag\":\"fqyggagflnlgmtr\",\"id\":\"hzjmucftbyrp\"},{\"properties\":{\"connectionState\":{\"actionsRequired\":\"hkpigqfusuckzmkw\",\"description\":\"snoxaxmqeqa\",\"status\":\"hjnhgwydyynfsvk\"},\"fqdns\":[\"vqtanarfdlpuk\"],\"groupId\":\"yrneizjcpeo\",\"isReserved\":true,\"privateLinkResourceId\":\"mgbro\",\"provisioningState\":\"ddbhf\",\"\":{\"zoyw\":\"datapaz\",\"htuevrhrljy\":\"dataxhpdulontacnpqwt\",\"reur\":\"dataogwxhnsduugwb\",\"fuarenlvhht\":\"dataq\"}},\"name\":\"nvnaf\",\"type\":\"kyfede\",\"etag\":\"bo\",\"id\":\"cqxypokkhminq\"}],\"nextLink\":\"mczngn\"}")
+            "{\"value\":[{\"properties\":{\"connectionState\":{\"actionsRequired\":\"dulontacn\",\"description\":\"w\",\"status\":\"htuevrhrljy\"},\"fqdns\":[\"wxhn\",\"duugwbsre\",\"rfqkfuar\",\"nlvhhtklnvnafvv\"],\"groupId\":\"f\",\"isReserved\":false,\"privateLinkResourceId\":\"jboslcqxypok\",\"provisioningState\":\"minqcym\",\"\":{\"dxxewuninv\":\"datagn\",\"h\":\"datadb\",\"tddmf\":\"dataqdtvqecrqctmxx\"}},\"name\":\"uytxzvtznapxban\",\"type\":\"vvoxczytprwnw\",\"etag\":\"oevytlyokr\",\"id\":\"o\"},{\"properties\":{\"connectionState\":{\"actionsRequired\":\"vnsasbcrymodi\",\"description\":\"xkl\",\"status\":\"d\"},\"fqdns\":[\"zpmkmlmvev\",\"xzopjhbzxl\",\"ohrdddt\"],\"groupId\":\"xqbawpc\",\"isReserved\":false,\"privateLinkResourceId\":\"qcy\",\"provisioningState\":\"apqofyuicdhz\",\"\":{\"d\":\"databwwg\"}},\"name\":\"bid\",\"type\":\"m\",\"etag\":\"f\",\"id\":\"fmuvapckccr\"},{\"properties\":{\"connectionState\":{\"actionsRequired\":\"eyoxoyyukphai\",\"description\":\"oir\",\"status\":\"boshbragapyyrmfs\"},\"fqdns\":[\"avbopfp\",\"dbwnu\"],\"groupId\":\"ahxku\",\"isReserved\":true,\"privateLinkResourceId\":\"caac\",\"provisioningState\":\"mmcpug\",\"\":{\"whoqhnlbqnbldxe\":\"dataqepvufhbzeh\",\"orim\":\"dataclgsc\",\"viyfcaabeolhbhlv\":\"datarsrrmoucsofldp\",\"bsxtkcudfbsfarfs\":\"datamxuq\"}},\"name\":\"wlkjxn\",\"type\":\"vwgf\",\"etag\":\"mhqykizmdksa\",\"id\":\"fcluqvo\"},{\"properties\":{\"connectionState\":{\"actionsRequired\":\"cjimryvwgcwwpbmz\",\"description\":\"esyds\",\"status\":\"efoh\"},\"fqdns\":[\"vopwndyqleallk\",\"mtkhlowkxxpvbr\",\"fjmzsyzfho\"],\"groupId\":\"h\",\"isReserved\":true,\"privateLinkResourceId\":\"ychunsjlpjrtwszh\",\"provisioningState\":\"uic\",\"\":{\"dpyflubhv\":\"datatrrmhwrb\",\"lw\":\"dataglrocuy\",\"ooclutnp\":\"datahmem\",\"ujxsglhsr\":\"datamemczjkmmyk\"}},\"name\":\"yejylmbkzudnigrf\",\"type\":\"otjewlpxuzzjgnre\",\"etag\":\"yhqotoihiqakydi\",\"id\":\"brkwpzdqt\"}],\"nextLink\":\"cspodaqax\"}")
             .toObject(ManagedPrivateEndpointListResponse.class);
-        Assertions.assertEquals("ijtk", model.value().get(0).id());
-        Assertions.assertEquals("ilguooqjagmditg", model.value().get(0).properties().fqdns().get(0));
-        Assertions.assertEquals("ebnfxofvc", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("irazftxejwabmd", model.value().get(0).properties().privateLinkResourceId());
-        Assertions.assertEquals("mczngn", model.nextLink());
+        Assertions.assertEquals("o", model.value().get(0).id());
+        Assertions.assertEquals("wxhn", model.value().get(0).properties().fqdns().get(0));
+        Assertions.assertEquals("f", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("jboslcqxypok", model.value().get(0).properties().privateLinkResourceId());
+        Assertions.assertEquals("cspodaqax", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedPrivateEndpointListResponse model = new ManagedPrivateEndpointListResponse()
             .withValue(Arrays.asList(
-                new ManagedPrivateEndpointResourceInner().withId("ijtk")
+                new ManagedPrivateEndpointResourceInner().withId("o")
                     .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                        .withFqdns(Arrays.asList("ilguooqjagmditg", "eiookjbsah", "tdtpdelqacslmo"))
-                        .withGroupId("ebnfxofvc")
-                        .withPrivateLinkResourceId("irazftxejwabmd")
-                        .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "tmvcop"))),
-                new ManagedPrivateEndpointResourceInner().withId("hzjmucftbyrp")
+                        .withFqdns(Arrays.asList("wxhn", "duugwbsre", "rfqkfuar", "nlvhhtklnvnafvv"))
+                        .withGroupId("f")
+                        .withPrivateLinkResourceId("jboslcqxypok")
+                        .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "minqcym"))),
+                new ManagedPrivateEndpointResourceInner().withId("fmuvapckccr")
                     .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                        .withFqdns(Arrays.asList("j", "enuygbq", "qqekewvnqvcdlgu"))
-                        .withGroupId("cmfdjwnlax")
-                        .withPrivateLinkResourceId("qikczvvita")
-                        .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "xmfcsserxhtv"))),
-                new ManagedPrivateEndpointResourceInner().withId("cqxypokkhminq")
+                        .withFqdns(Arrays.asList("zpmkmlmvev", "xzopjhbzxl", "ohrdddt"))
+                        .withGroupId("xqbawpc")
+                        .withPrivateLinkResourceId("qcy")
+                        .withAdditionalProperties(mapOf("isReserved", false, "provisioningState", "apqofyuicdhz"))),
+                new ManagedPrivateEndpointResourceInner().withId("fcluqvo")
                     .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
-                        .withFqdns(Arrays.asList("vqtanarfdlpuk"))
-                        .withGroupId("yrneizjcpeo")
-                        .withPrivateLinkResourceId("mgbro")
-                        .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "ddbhf")))))
-            .withNextLink("mczngn");
+                        .withFqdns(Arrays.asList("avbopfp", "dbwnu"))
+                        .withGroupId("ahxku")
+                        .withPrivateLinkResourceId("caac")
+                        .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "mmcpug"))),
+                new ManagedPrivateEndpointResourceInner().withId("brkwpzdqt")
+                    .withProperties(new ManagedPrivateEndpoint().withConnectionState(new ConnectionStateProperties())
+                        .withFqdns(Arrays.asList("vopwndyqleallk", "mtkhlowkxxpvbr", "fjmzsyzfho"))
+                        .withGroupId("h")
+                        .withPrivateLinkResourceId("ychunsjlpjrtwszh")
+                        .withAdditionalProperties(mapOf("isReserved", true, "provisioningState", "uic")))))
+            .withNextLink("cspodaqax");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointListResponse.class);
-        Assertions.assertEquals("ijtk", model.value().get(0).id());
-        Assertions.assertEquals("ilguooqjagmditg", model.value().get(0).properties().fqdns().get(0));
-        Assertions.assertEquals("ebnfxofvc", model.value().get(0).properties().groupId());
-        Assertions.assertEquals("irazftxejwabmd", model.value().get(0).properties().privateLinkResourceId());
-        Assertions.assertEquals("mczngn", model.nextLink());
+        Assertions.assertEquals("o", model.value().get(0).id());
+        Assertions.assertEquals("wxhn", model.value().get(0).properties().fqdns().get(0));
+        Assertions.assertEquals("f", model.value().get(0).properties().groupId());
+        Assertions.assertEquals("jboslcqxypok", model.value().get(0).properties().privateLinkResourceId());
+        Assertions.assertEquals("cspodaqax", model.nextLink());
     }
 
     // Use "Map.of" if available

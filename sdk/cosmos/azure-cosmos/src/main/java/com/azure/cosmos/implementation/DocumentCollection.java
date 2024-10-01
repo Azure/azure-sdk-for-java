@@ -78,7 +78,7 @@ public final class DocumentCollection extends Resource {
      * @param jsonString the json string that represents the document collection.
      */
     public DocumentCollection(String jsonString) {
-        super(jsonString);
+        super(jsonString, Utils.getSimpleObjectMapperWithAllowDuplicates());
     }
 
     /**

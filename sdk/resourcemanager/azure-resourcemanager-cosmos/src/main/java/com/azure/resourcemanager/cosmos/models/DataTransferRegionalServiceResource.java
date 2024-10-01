@@ -16,9 +16,9 @@ import java.io.IOException;
 @Immutable
 public final class DataTransferRegionalServiceResource extends RegionalServiceResource {
     /*
-     * The regional service name.
+     * Describes the status of a service.
      */
-    private String name;
+    private ServiceStatus status;
 
     /*
      * The location name.
@@ -26,34 +26,14 @@ public final class DataTransferRegionalServiceResource extends RegionalServiceRe
     private String location;
 
     /*
-     * Describes the status of a service.
+     * The regional service name.
      */
-    private ServiceStatus status;
+    private String name;
 
     /**
      * Creates an instance of DataTransferRegionalServiceResource class.
      */
     public DataTransferRegionalServiceResource() {
-    }
-
-    /**
-     * Get the name property: The regional service name.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the location property: The location name.
-     * 
-     * @return the location value.
-     */
-    @Override
-    public String location() {
-        return this.location;
     }
 
     /**
@@ -67,13 +47,32 @@ public final class DataTransferRegionalServiceResource extends RegionalServiceRe
     }
 
     /**
+     * Get the location property: The location name.
+     * 
+     * @return the location value.
+     */
+    @Override
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Get the name property: The regional service name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

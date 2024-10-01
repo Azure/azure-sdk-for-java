@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Amazon Redshift table dataset properties.
  */
 @Fluent
-public final class AmazonRedshiftTableDatasetTypeProperties {
+public final class AmazonRedshiftTableDatasetTypeProperties
+    implements JsonSerializable<AmazonRedshiftTableDatasetTypeProperties> {
     /*
      * This property will be retired. Please consider using schema + table properties instead.
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The Amazon Redshift table name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /*
      * The Amazon Redshift schema name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /**
@@ -104,5 +106,48 @@ public final class AmazonRedshiftTableDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("table", this.table);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRedshiftTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRedshiftTableDatasetTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRedshiftTableDatasetTypeProperties.
+     */
+    public static AmazonRedshiftTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRedshiftTableDatasetTypeProperties deserializedAmazonRedshiftTableDatasetTypeProperties
+                = new AmazonRedshiftTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDatasetTypeProperties.table = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAmazonRedshiftTableDatasetTypeProperties.schema = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmazonRedshiftTableDatasetTypeProperties;
+        });
     }
 }

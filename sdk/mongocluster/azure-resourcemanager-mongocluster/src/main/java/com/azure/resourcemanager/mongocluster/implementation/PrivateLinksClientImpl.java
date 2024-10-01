@@ -42,25 +42,25 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinksClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinksClientImpl(DocumentDBClientImpl client) {
+    PrivateLinksClientImpl(MongoClusterManagementClientImpl client) {
         this.service
             = RestProxy.create(PrivateLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientPrivateLinks to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for MongoClusterManagementClientPrivateLinks to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientPriv")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface PrivateLinksService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateLinkResources")
@@ -69,7 +69,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         Mono<Response<PrivateLinkResourceListResult>> listByMongoCluster(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("accept") String accept,
+            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -78,7 +78,7 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> listByMongoClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**

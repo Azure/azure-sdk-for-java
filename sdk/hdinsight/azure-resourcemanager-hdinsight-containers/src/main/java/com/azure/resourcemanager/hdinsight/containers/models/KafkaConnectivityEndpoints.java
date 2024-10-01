@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Kafka bootstrap server and broker related connectivity endpoints.
  */
 @Fluent
-public final class KafkaConnectivityEndpoints {
+public final class KafkaConnectivityEndpoints implements JsonSerializable<KafkaConnectivityEndpoints> {
     /*
      * bootstrap server connectivity endpoint.
      */
-    @JsonProperty(value = "bootstrapServerEndpoint")
     private String bootstrapServerEndpoint;
 
     /*
      * Kafka broker endpoint list.
      */
-    @JsonProperty(value = "brokerEndpoints")
     private List<String> brokerEndpoints;
 
     /**
@@ -77,5 +79,46 @@ public final class KafkaConnectivityEndpoints {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("bootstrapServerEndpoint", this.bootstrapServerEndpoint);
+        jsonWriter.writeArrayField("brokerEndpoints", this.brokerEndpoints,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KafkaConnectivityEndpoints from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KafkaConnectivityEndpoints if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KafkaConnectivityEndpoints.
+     */
+    public static KafkaConnectivityEndpoints fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KafkaConnectivityEndpoints deserializedKafkaConnectivityEndpoints = new KafkaConnectivityEndpoints();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bootstrapServerEndpoint".equals(fieldName)) {
+                    deserializedKafkaConnectivityEndpoints.bootstrapServerEndpoint = reader.getString();
+                } else if ("brokerEndpoints".equals(fieldName)) {
+                    List<String> brokerEndpoints = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKafkaConnectivityEndpoints.brokerEndpoints = brokerEndpoints;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKafkaConnectivityEndpoints;
+        });
     }
 }

@@ -6,131 +6,117 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * PostgreSqlV2 linked service properties.
  */
 @Fluent
-public final class PostgreSqlV2LinkedServiceTypeProperties {
+public final class PostgreSqlV2LinkedServiceTypeProperties
+    implements JsonSerializable<PostgreSqlV2LinkedServiceTypeProperties> {
     /*
      * Server name for connection. Type: string.
      */
-    @JsonProperty(value = "server", required = true)
     private Object server;
 
     /*
      * The port for the connection. Type: integer.
      */
-    @JsonProperty(value = "port")
     private Object port;
 
     /*
      * Username for authentication. Type: string.
      */
-    @JsonProperty(value = "username", required = true)
     private Object username;
 
     /*
      * Database name for connection. Type: string.
      */
-    @JsonProperty(value = "database", required = true)
     private Object database;
 
     /*
      * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
      * Type: integer.
      */
-    @JsonProperty(value = "sslMode", required = true)
     private Object sslMode;
 
     /*
      * Sets the schema search path. Type: string.
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /*
      * Whether connection pooling should be used. Type: boolean.
      */
-    @JsonProperty(value = "pooling")
     private Object pooling;
 
     /*
      * The time to wait (in seconds) while trying to establish a connection before terminating the attempt and
      * generating an error. Type: integer.
      */
-    @JsonProperty(value = "connectionTimeout")
     private Object connectionTimeout;
 
     /*
      * The time to wait (in seconds) while trying to execute a command before terminating the attempt and generating an
      * error. Set to zero for infinity. Type: integer.
      */
-    @JsonProperty(value = "commandTimeout")
     private Object commandTimeout;
 
     /*
      * Whether to trust the server certificate without validating it. Type: boolean.
      */
-    @JsonProperty(value = "trustServerCertificate")
     private Object trustServerCertificate;
 
     /*
      * Location of a client certificate to be sent to the server. Type: string.
      */
-    @JsonProperty(value = "sslCertificate")
     private Object sslCertificate;
 
     /*
      * Location of a client key for a client certificate to be sent to the server. Type: string.
      */
-    @JsonProperty(value = "sslKey")
     private Object sslKey;
 
     /*
      * Password for a key for a client certificate. Type: string.
      */
-    @JsonProperty(value = "sslPassword")
     private Object sslPassword;
 
     /*
      * Determines the size of the internal buffer uses when reading. Increasing may improve performance if transferring
      * large values from the database. Type: integer.
      */
-    @JsonProperty(value = "readBufferSize")
     private Object readBufferSize;
 
     /*
      * When enabled, parameter values are logged when commands are executed. Type: boolean.
      */
-    @JsonProperty(value = "logParameters")
     private Object logParameters;
 
     /*
      * Gets or sets the session timezone. Type: string.
      */
-    @JsonProperty(value = "timezone")
     private Object timezone;
 
     /*
      * Gets or sets the .NET encoding that will be used to encode/decode PostgreSQL string data. Type: string
      */
-    @JsonProperty(value = "encoding")
     private Object encoding;
 
     /*
      * The Azure key vault secret reference of password in connection string. Type: string.
      */
-    @JsonProperty(value = "password")
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -569,4 +555,97 @@ public final class PostgreSqlV2LinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlV2LinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("sslMode", this.sslMode);
+        jsonWriter.writeUntypedField("port", this.port);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeUntypedField("pooling", this.pooling);
+        jsonWriter.writeUntypedField("connectionTimeout", this.connectionTimeout);
+        jsonWriter.writeUntypedField("commandTimeout", this.commandTimeout);
+        jsonWriter.writeUntypedField("trustServerCertificate", this.trustServerCertificate);
+        jsonWriter.writeUntypedField("sslCertificate", this.sslCertificate);
+        jsonWriter.writeUntypedField("sslKey", this.sslKey);
+        jsonWriter.writeUntypedField("sslPassword", this.sslPassword);
+        jsonWriter.writeUntypedField("readBufferSize", this.readBufferSize);
+        jsonWriter.writeUntypedField("logParameters", this.logParameters);
+        jsonWriter.writeUntypedField("timezone", this.timezone);
+        jsonWriter.writeUntypedField("encoding", this.encoding);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostgreSqlV2LinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostgreSqlV2LinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PostgreSqlV2LinkedServiceTypeProperties.
+     */
+    public static PostgreSqlV2LinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostgreSqlV2LinkedServiceTypeProperties deserializedPostgreSqlV2LinkedServiceTypeProperties
+                = new PostgreSqlV2LinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("sslMode".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.sslMode = reader.readUntyped();
+                } else if ("port".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.port = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.schema = reader.readUntyped();
+                } else if ("pooling".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.pooling = reader.readUntyped();
+                } else if ("connectionTimeout".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.connectionTimeout = reader.readUntyped();
+                } else if ("commandTimeout".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.commandTimeout = reader.readUntyped();
+                } else if ("trustServerCertificate".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.trustServerCertificate = reader.readUntyped();
+                } else if ("sslCertificate".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.sslCertificate = reader.readUntyped();
+                } else if ("sslKey".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.sslKey = reader.readUntyped();
+                } else if ("sslPassword".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.sslPassword = reader.readUntyped();
+                } else if ("readBufferSize".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.readBufferSize = reader.readUntyped();
+                } else if ("logParameters".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.logParameters = reader.readUntyped();
+                } else if ("timezone".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.timezone = reader.readUntyped();
+                } else if ("encoding".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.encoding = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.password
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPostgreSqlV2LinkedServiceTypeProperties;
+        });
+    }
 }

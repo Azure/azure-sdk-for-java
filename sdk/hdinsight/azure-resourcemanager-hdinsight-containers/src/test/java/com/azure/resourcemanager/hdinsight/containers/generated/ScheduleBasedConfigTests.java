@@ -15,32 +15,31 @@ public final class ScheduleBasedConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduleBasedConfig model = BinaryData.fromString(
-            "{\"timeZone\":\"y\",\"defaultCount\":1035885378,\"schedules\":[{\"startTime\":\"bnuqqkpik\",\"endTime\":\"drgvtqagn\",\"count\":1873718862,\"days\":[\"Saturday\",\"Wednesday\",\"Wednesday\"]},{\"startTime\":\"jggmebfsiarbu\",\"endTime\":\"rcvpnazzmhjrunmp\",\"count\":185169787,\"days\":[\"Tuesday\",\"Friday\",\"Tuesday\"]},{\"startTime\":\"rbnlankxmyskp\",\"endTime\":\"henbtkcxywnytn\",\"count\":1863766018,\"days\":[\"Thursday\"]}]}")
+            "{\"timeZone\":\"bsrfbj\",\"defaultCount\":891212878,\"schedules\":[{\"startTime\":\"w\",\"endTime\":\"sotftpvj\",\"count\":1235013026,\"days\":[\"Tuesday\",\"Wednesday\",\"Monday\",\"Thursday\"]}]}")
             .toObject(ScheduleBasedConfig.class);
-        Assertions.assertEquals("y", model.timeZone());
-        Assertions.assertEquals(1035885378, model.defaultCount());
-        Assertions.assertEquals("bnuqqkpik", model.schedules().get(0).startTime());
-        Assertions.assertEquals("drgvtqagn", model.schedules().get(0).endTime());
-        Assertions.assertEquals(1873718862, model.schedules().get(0).count());
-        Assertions.assertEquals(ScheduleDay.SATURDAY, model.schedules().get(0).days().get(0));
+        Assertions.assertEquals("bsrfbj", model.timeZone());
+        Assertions.assertEquals(891212878, model.defaultCount());
+        Assertions.assertEquals("w", model.schedules().get(0).startTime());
+        Assertions.assertEquals("sotftpvj", model.schedules().get(0).endTime());
+        Assertions.assertEquals(1235013026, model.schedules().get(0).count());
+        Assertions.assertEquals(ScheduleDay.TUESDAY, model.schedules().get(0).days().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleBasedConfig model = new ScheduleBasedConfig().withTimeZone("y").withDefaultCount(1035885378)
-            .withSchedules(Arrays.asList(
-                new Schedule().withStartTime("bnuqqkpik").withEndTime("drgvtqagn").withCount(1873718862)
-                    .withDays(Arrays.asList(ScheduleDay.SATURDAY, ScheduleDay.WEDNESDAY, ScheduleDay.WEDNESDAY)),
-                new Schedule().withStartTime("jggmebfsiarbu").withEndTime("rcvpnazzmhjrunmp").withCount(185169787)
-                    .withDays(Arrays.asList(ScheduleDay.TUESDAY, ScheduleDay.FRIDAY, ScheduleDay.TUESDAY)),
-                new Schedule().withStartTime("rbnlankxmyskp").withEndTime("henbtkcxywnytn").withCount(1863766018)
-                    .withDays(Arrays.asList(ScheduleDay.THURSDAY))));
+        ScheduleBasedConfig model = new ScheduleBasedConfig().withTimeZone("bsrfbj")
+            .withDefaultCount(891212878)
+            .withSchedules(Arrays.asList(new Schedule().withStartTime("w")
+                .withEndTime("sotftpvj")
+                .withCount(1235013026)
+                .withDays(Arrays.asList(ScheduleDay.TUESDAY, ScheduleDay.WEDNESDAY, ScheduleDay.MONDAY,
+                    ScheduleDay.THURSDAY))));
         model = BinaryData.fromObject(model).toObject(ScheduleBasedConfig.class);
-        Assertions.assertEquals("y", model.timeZone());
-        Assertions.assertEquals(1035885378, model.defaultCount());
-        Assertions.assertEquals("bnuqqkpik", model.schedules().get(0).startTime());
-        Assertions.assertEquals("drgvtqagn", model.schedules().get(0).endTime());
-        Assertions.assertEquals(1873718862, model.schedules().get(0).count());
-        Assertions.assertEquals(ScheduleDay.SATURDAY, model.schedules().get(0).days().get(0));
+        Assertions.assertEquals("bsrfbj", model.timeZone());
+        Assertions.assertEquals(891212878, model.defaultCount());
+        Assertions.assertEquals("w", model.schedules().get(0).startTime());
+        Assertions.assertEquals("sotftpvj", model.schedules().get(0).endTime());
+        Assertions.assertEquals(1235013026, model.schedules().get(0).count());
+        Assertions.assertEquals(ScheduleDay.TUESDAY, model.schedules().get(0).days().get(0));
     }
 }

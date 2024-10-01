@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure Data Explorer (Kusto) dataset properties.
  */
 @Fluent
-public final class AzureDataExplorerDatasetTypeProperties {
+public final class AzureDataExplorerDatasetTypeProperties
+    implements JsonSerializable<AzureDataExplorerDatasetTypeProperties> {
     /*
      * The table name of the Azure Data Explorer database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /**
@@ -52,5 +56,42 @@ public final class AzureDataExplorerDatasetTypeProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("table", this.table);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataExplorerDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataExplorerDatasetTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDataExplorerDatasetTypeProperties.
+     */
+    public static AzureDataExplorerDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataExplorerDatasetTypeProperties deserializedAzureDataExplorerDatasetTypeProperties
+                = new AzureDataExplorerDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("table".equals(fieldName)) {
+                    deserializedAzureDataExplorerDatasetTypeProperties.table = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDataExplorerDatasetTypeProperties;
+        });
     }
 }

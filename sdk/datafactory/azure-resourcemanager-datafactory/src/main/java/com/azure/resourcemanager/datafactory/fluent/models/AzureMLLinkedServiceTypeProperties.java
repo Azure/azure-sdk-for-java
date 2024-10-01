@@ -6,67 +6,63 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure ML Studio Web Service linked service properties.
  */
 @Fluent
-public final class AzureMLLinkedServiceTypeProperties {
+public final class AzureMLLinkedServiceTypeProperties implements JsonSerializable<AzureMLLinkedServiceTypeProperties> {
     /*
      * The Batch Execution REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "mlEndpoint", required = true)
     private Object mlEndpoint;
 
     /*
      * The API key for accessing the Azure ML model endpoint.
      */
-    @JsonProperty(value = "apiKey", required = true)
     private SecretBase apiKey;
 
     /*
      * The Update Resource REST URL for an Azure ML Studio Web Service endpoint. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "updateResourceEndpoint")
     private Object updateResourceEndpoint;
 
     /*
      * The ID of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
      * Studio web service. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against the ARM-based updateResourceEndpoint of an Azure ML
      * Studio web service.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /*
      * Type of authentication (Required to specify MSI) used to connect to AzureML. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "authentication")
     private Object authentication;
 
     /**
@@ -273,4 +269,63 @@ public final class AzureMLLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureMLLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("mlEndpoint", this.mlEndpoint);
+        jsonWriter.writeJsonField("apiKey", this.apiKey);
+        jsonWriter.writeUntypedField("updateResourceEndpoint", this.updateResourceEndpoint);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        jsonWriter.writeUntypedField("authentication", this.authentication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMLLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMLLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureMLLinkedServiceTypeProperties.
+     */
+    public static AzureMLLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMLLinkedServiceTypeProperties deserializedAzureMLLinkedServiceTypeProperties
+                = new AzureMLLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("mlEndpoint".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.mlEndpoint = reader.readUntyped();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.apiKey = SecretBase.fromJson(reader);
+                } else if ("updateResourceEndpoint".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.updateResourceEndpoint = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.servicePrincipalKey = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else if ("authentication".equals(fieldName)) {
+                    deserializedAzureMLLinkedServiceTypeProperties.authentication = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMLLinkedServiceTypeProperties;
+        });
+    }
 }

@@ -17,6 +17,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 
 abstract class Decryptor {
     private static final ClientLogger LOGGER = new ClientLogger(Decryptor.class);
@@ -97,6 +98,7 @@ abstract class Decryptor {
             case ENCRYPTION_PROTOCOL_V1:
                 return new DecryptorV1(keyResolver, keyWrapper, encryptionData);
             case ENCRYPTION_PROTOCOL_V2:
+            case ENCRYPTION_PROTOCOL_V2_1:
                 return new DecryptorV2(keyResolver, keyWrapper, encryptionData);
             default:
                 throw LOGGER.logExceptionAsError(

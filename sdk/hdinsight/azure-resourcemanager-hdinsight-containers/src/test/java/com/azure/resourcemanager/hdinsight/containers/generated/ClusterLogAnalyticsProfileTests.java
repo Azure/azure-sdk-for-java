@@ -13,24 +13,24 @@ public final class ClusterLogAnalyticsProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterLogAnalyticsProfile model = BinaryData.fromString(
-            "{\"enabled\":false,\"applicationLogs\":{\"stdOutEnabled\":true,\"stdErrorEnabled\":true},\"metricsEnabled\":true}")
+            "{\"enabled\":true,\"applicationLogs\":{\"stdOutEnabled\":true,\"stdErrorEnabled\":false},\"metricsEnabled\":false}")
             .toObject(ClusterLogAnalyticsProfile.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(true, model.applicationLogs().stdOutEnabled());
-        Assertions.assertEquals(true, model.applicationLogs().stdErrorEnabled());
-        Assertions.assertEquals(true, model.metricsEnabled());
+        Assertions.assertEquals(false, model.applicationLogs().stdErrorEnabled());
+        Assertions.assertEquals(false, model.metricsEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterLogAnalyticsProfile model = new ClusterLogAnalyticsProfile().withEnabled(false)
+        ClusterLogAnalyticsProfile model = new ClusterLogAnalyticsProfile().withEnabled(true)
             .withApplicationLogs(
-                new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(true).withStdErrorEnabled(true))
-            .withMetricsEnabled(true);
+                new ClusterLogAnalyticsApplicationLogs().withStdOutEnabled(true).withStdErrorEnabled(false))
+            .withMetricsEnabled(false);
         model = BinaryData.fromObject(model).toObject(ClusterLogAnalyticsProfile.class);
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.enabled());
         Assertions.assertEquals(true, model.applicationLogs().stdOutEnabled());
-        Assertions.assertEquals(true, model.applicationLogs().stdErrorEnabled());
-        Assertions.assertEquals(true, model.metricsEnabled());
+        Assertions.assertEquals(false, model.applicationLogs().stdErrorEnabled());
+        Assertions.assertEquals(false, model.metricsEnabled());
     }
 }

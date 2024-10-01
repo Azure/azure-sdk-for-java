@@ -21,7 +21,7 @@ spec:
       resources:
         limits:
           memory: 1Gi
-          cpu: "1.0"
+          cpu: "0.5"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: main
       image:  {{ .Stress.imageTag }}
@@ -63,7 +63,7 @@ spec:
       resources:
         limits:
           memory: {{ default "1Gi" .Stress.memory }}
-          cpu: {{ default 1 .Stress.cores }}
+          cpu: "0.7"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 
 {{- end -}}

@@ -11,8 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.machinelearning.fluent.CodeVersionsClient;
 import com.azure.resourcemanager.machinelearning.fluent.models.CodeVersionInner;
+import com.azure.resourcemanager.machinelearning.fluent.models.PendingUploadResponseDtoInner;
 import com.azure.resourcemanager.machinelearning.models.CodeVersion;
 import com.azure.resourcemanager.machinelearning.models.CodeVersions;
+import com.azure.resourcemanager.machinelearning.models.DestinationAsset;
+import com.azure.resourcemanager.machinelearning.models.PendingUploadRequestDto;
+import com.azure.resourcemanager.machinelearning.models.PendingUploadResponseDto;
 
 public final class CodeVersionsImpl implements CodeVersions {
     private static final ClientLogger LOGGER = new ClientLogger(CodeVersionsImpl.class);
@@ -21,8 +25,7 @@ public final class CodeVersionsImpl implements CodeVersions {
 
     private final com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager;
 
-    public CodeVersionsImpl(
-        CodeVersionsClient innerClient,
+    public CodeVersionsImpl(CodeVersionsClient innerClient,
         com.azure.resourcemanager.machinelearning.MachineLearningManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,24 +33,18 @@ public final class CodeVersionsImpl implements CodeVersions {
 
     public PagedIterable<CodeVersion> list(String resourceGroupName, String workspaceName, String name) {
         PagedIterable<CodeVersionInner> inner = this.serviceClient().list(resourceGroupName, workspaceName, name);
-        return Utils.mapPage(inner, inner1 -> new CodeVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CodeVersionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<CodeVersion> list(
-        String resourceGroupName,
-        String workspaceName,
-        String name,
-        String orderBy,
-        Integer top,
-        String skip,
-        Context context) {
-        PagedIterable<CodeVersionInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, name, orderBy, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new CodeVersionImpl(inner1, this.manager()));
+    public PagedIterable<CodeVersion> list(String resourceGroupName, String workspaceName, String name, String orderBy,
+        Integer top, String skip, String hash, String hashVersion, Context context) {
+        PagedIterable<CodeVersionInner> inner = this.serviceClient()
+            .list(resourceGroupName, workspaceName, name, orderBy, top, skip, hash, hashVersion, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CodeVersionImpl(inner1, this.manager()));
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String name,
+        String version, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, name, version, context);
     }
 
@@ -55,15 +52,12 @@ public final class CodeVersionsImpl implements CodeVersions {
         this.serviceClient().delete(resourceGroupName, workspaceName, name, version);
     }
 
-    public Response<CodeVersion> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, String version, Context context) {
-        Response<CodeVersionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, version, context);
+    public Response<CodeVersion> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        String version, Context context) {
+        Response<CodeVersionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, name, version, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CodeVersionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -79,134 +73,131 @@ public final class CodeVersionsImpl implements CodeVersions {
         }
     }
 
+    public void publish(String resourceGroupName, String workspaceName, String name, String version,
+        DestinationAsset body) {
+        this.serviceClient().publish(resourceGroupName, workspaceName, name, version, body);
+    }
+
+    public void publish(String resourceGroupName, String workspaceName, String name, String version,
+        DestinationAsset body, Context context) {
+        this.serviceClient().publish(resourceGroupName, workspaceName, name, version, body, context);
+    }
+
+    public Response<PendingUploadResponseDto> createOrGetStartPendingUploadWithResponse(String resourceGroupName,
+        String workspaceName, String name, String version, PendingUploadRequestDto body, Context context) {
+        Response<PendingUploadResponseDtoInner> inner = this.serviceClient()
+            .createOrGetStartPendingUploadWithResponse(resourceGroupName, workspaceName, name, version, body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PendingUploadResponseDtoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PendingUploadResponseDto createOrGetStartPendingUpload(String resourceGroupName, String workspaceName,
+        String name, String version, PendingUploadRequestDto body) {
+        PendingUploadResponseDtoInner inner
+            = this.serviceClient().createOrGetStartPendingUpload(resourceGroupName, workspaceName, name, version, body);
+        if (inner != null) {
+            return new PendingUploadResponseDtoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public CodeVersion getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "codes");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "codes");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE).getValue();
     }
 
     public Response<CodeVersion> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "codes");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "codes");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, name, version, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "codes");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "codes");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, name, version, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "codes");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "codes");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'codes'.", id)));
         }
-        String version = Utils.getValueFromIdByName(id, "versions");
+        String version = ResourceManagerUtils.getValueFromIdByName(id, "versions");
         if (version == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'versions'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, name, version, context);
     }

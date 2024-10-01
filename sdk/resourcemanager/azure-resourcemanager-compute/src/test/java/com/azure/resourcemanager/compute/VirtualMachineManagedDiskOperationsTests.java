@@ -33,7 +33,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineManagedDiskOperationsTests.class);
 
     private String rgName = "";
-    private Region region = Region.US_EAST;
+    private Region region = Region.US_WEST2;
     private KnownLinuxVirtualMachineImage linuxImage = KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS;
 
     @Override
@@ -527,7 +527,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(uname)
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
@@ -631,6 +631,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
             .withoutPrimaryPublicIPAddress()
             .withSpecializedOSDisk(osDisk, OperatingSystemTypes.LINUX)
             .withOSDiskDeleteOptions(DeleteOptions.DETACH)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D4s_v5"))
             .enableHibernation()
             .create();
 

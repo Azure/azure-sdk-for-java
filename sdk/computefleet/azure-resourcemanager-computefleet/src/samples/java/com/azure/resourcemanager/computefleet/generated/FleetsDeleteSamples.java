@@ -9,7 +9,7 @@ package com.azure.resourcemanager.computefleet.generated;
  */
 public final class FleetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_Delete.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_Delete.json
      */
     /**
      * Sample code: Fleets_Delete.

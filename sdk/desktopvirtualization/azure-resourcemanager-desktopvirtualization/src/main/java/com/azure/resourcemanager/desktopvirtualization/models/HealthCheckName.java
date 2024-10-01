@@ -5,47 +5,70 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represents the name of the health check operation performed. */
+/**
+ * Represents the name of the health check operation performed.
+ */
 public final class HealthCheckName extends ExpandableStringEnum<HealthCheckName> {
-    /** Static value DomainJoinedCheck for HealthCheckName. */
+    /**
+     * Static value DomainJoinedCheck for HealthCheckName.
+     */
     public static final HealthCheckName DOMAIN_JOINED_CHECK = fromString("DomainJoinedCheck");
 
-    /** Static value DomainTrustCheck for HealthCheckName. */
+    /**
+     * Static value DomainTrustCheck for HealthCheckName.
+     */
     public static final HealthCheckName DOMAIN_TRUST_CHECK = fromString("DomainTrustCheck");
 
-    /** Static value FSLogixHealthCheck for HealthCheckName. */
+    /**
+     * Static value FSLogixHealthCheck for HealthCheckName.
+     */
     public static final HealthCheckName FSLOGIX_HEALTH_CHECK = fromString("FSLogixHealthCheck");
 
-    /** Static value SxSStackListenerCheck for HealthCheckName. */
+    /**
+     * Static value SxSStackListenerCheck for HealthCheckName.
+     */
     public static final HealthCheckName SX_SSTACK_LISTENER_CHECK = fromString("SxSStackListenerCheck");
 
-    /** Static value UrlsAccessibleCheck for HealthCheckName. */
+    /**
+     * Static value UrlsAccessibleCheck for HealthCheckName.
+     */
     public static final HealthCheckName URLS_ACCESSIBLE_CHECK = fromString("UrlsAccessibleCheck");
 
-    /** Static value MonitoringAgentCheck for HealthCheckName. */
+    /**
+     * Static value MonitoringAgentCheck for HealthCheckName.
+     */
     public static final HealthCheckName MONITORING_AGENT_CHECK = fromString("MonitoringAgentCheck");
 
-    /** Static value DomainReachable for HealthCheckName. */
+    /**
+     * Static value DomainReachable for HealthCheckName.
+     */
     public static final HealthCheckName DOMAIN_REACHABLE = fromString("DomainReachable");
 
-    /** Static value WebRTCRedirectorCheck for HealthCheckName. */
+    /**
+     * Static value WebRTCRedirectorCheck for HealthCheckName.
+     */
     public static final HealthCheckName WEB_RTCREDIRECTOR_CHECK = fromString("WebRTCRedirectorCheck");
 
-    /** Static value SupportedEncryptionCheck for HealthCheckName. */
+    /**
+     * Static value SupportedEncryptionCheck for HealthCheckName.
+     */
     public static final HealthCheckName SUPPORTED_ENCRYPTION_CHECK = fromString("SupportedEncryptionCheck");
 
-    /** Static value MetaDataServiceCheck for HealthCheckName. */
+    /**
+     * Static value MetaDataServiceCheck for HealthCheckName.
+     */
     public static final HealthCheckName META_DATA_SERVICE_CHECK = fromString("MetaDataServiceCheck");
 
-    /** Static value AppAttachHealthCheck for HealthCheckName. */
+    /**
+     * Static value AppAttachHealthCheck for HealthCheckName.
+     */
     public static final HealthCheckName APP_ATTACH_HEALTH_CHECK = fromString("AppAttachHealthCheck");
 
     /**
      * Creates a new instance of HealthCheckName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -54,18 +77,17 @@ public final class HealthCheckName extends ExpandableStringEnum<HealthCheckName>
 
     /**
      * Creates or finds a HealthCheckName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthCheckName.
      */
-    @JsonCreator
     public static HealthCheckName fromString(String name) {
         return fromString(name, HealthCheckName.class);
     }
 
     /**
      * Gets known HealthCheckName values.
-     *
+     * 
      * @return known HealthCheckName values.
      */
     public static Collection<HealthCheckName> values() {

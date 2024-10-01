@@ -11,7 +11,6 @@ package com.azure.ai.anomalydetector.generated;
 import com.azure.ai.anomalydetector.AnomalyDetectorClientBuilder;
 import com.azure.ai.anomalydetector.MultivariateClient;
 import com.azure.ai.anomalydetector.UnivariateClient;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -27,22 +26,18 @@ class AnomalyDetectorClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         AnomalyDetectorClientBuilder univariateClientbuilder = new AnomalyDetectorClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            univariateClientbuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
             univariateClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
         univariateClient = univariateClientbuilder.buildUnivariateClient();
 
         AnomalyDetectorClientBuilder multivariateClientbuilder = new AnomalyDetectorClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-            .httpClient(HttpClient.createDefault())
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            multivariateClientbuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else if (getTestMode() == TestMode.RECORD) {
+        if (getTestMode() == TestMode.RECORD) {
             multivariateClientbuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
         multivariateClient = multivariateClientbuilder.buildMultivariateClient();

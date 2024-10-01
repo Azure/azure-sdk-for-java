@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.machinelearning {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.machinelearning;
     exports com.azure.resourcemanager.machinelearning.fluent;
     exports com.azure.resourcemanager.machinelearning.fluent.models;
     exports com.azure.resourcemanager.machinelearning.models;
-
-    opens com.azure.resourcemanager.machinelearning.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.machinelearning.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.machinelearning.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.machinelearning.models to com.azure.core;
 }

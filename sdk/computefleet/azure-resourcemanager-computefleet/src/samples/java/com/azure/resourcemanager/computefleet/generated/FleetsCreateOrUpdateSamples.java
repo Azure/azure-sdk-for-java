@@ -28,8 +28,8 @@ import com.azure.resourcemanager.computefleet.models.DomainNameLabelScopeTypes;
 import com.azure.resourcemanager.computefleet.models.EncryptionIdentity;
 import com.azure.resourcemanager.computefleet.models.EvictionPolicy;
 import com.azure.resourcemanager.computefleet.models.FleetProperties;
-import com.azure.resourcemanager.computefleet.models.ImageReference;
 import com.azure.resourcemanager.computefleet.models.IPVersion;
+import com.azure.resourcemanager.computefleet.models.ImageReference;
 import com.azure.resourcemanager.computefleet.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.computefleet.models.LinuxConfiguration;
 import com.azure.resourcemanager.computefleet.models.LinuxPatchAssessmentMode;
@@ -43,8 +43,8 @@ import com.azure.resourcemanager.computefleet.models.Mode;
 import com.azure.resourcemanager.computefleet.models.NetworkApiVersion;
 import com.azure.resourcemanager.computefleet.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.computefleet.models.NetworkInterfaceAuxiliarySku;
-import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
 import com.azure.resourcemanager.computefleet.models.OSImageNotificationProfile;
+import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
 import com.azure.resourcemanager.computefleet.models.PatchSettings;
 import com.azure.resourcemanager.computefleet.models.Plan;
 import com.azure.resourcemanager.computefleet.models.ProtocolTypes;
@@ -69,6 +69,9 @@ import com.azure.resourcemanager.computefleet.models.StorageAccountTypes;
 import com.azure.resourcemanager.computefleet.models.TerminateNotificationProfile;
 import com.azure.resourcemanager.computefleet.models.UefiSettings;
 import com.azure.resourcemanager.computefleet.models.UserAssignedIdentity;
+import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
+import com.azure.resourcemanager.computefleet.models.VMGalleryApplication;
+import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
 import com.azure.resourcemanager.computefleet.models.VaultCertificate;
 import com.azure.resourcemanager.computefleet.models.VaultSecretGroup;
 import com.azure.resourcemanager.computefleet.models.VirtualHardDisk;
@@ -91,17 +94,14 @@ import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPubli
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetPublicIPAddressConfigurationProperties;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetStorageProfile;
-import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
-import com.azure.resourcemanager.computefleet.models.VMGalleryApplication;
 import com.azure.resourcemanager.computefleet.models.VmSizeProfile;
-import com.azure.resourcemanager.computefleet.models.VMSizeProperties;
+import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
+import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import com.azure.resourcemanager.computefleet.models.WindowsConfiguration;
 import com.azure.resourcemanager.computefleet.models.WindowsPatchAssessmentMode;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformRebootSetting;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchAutomaticByPlatformSettings;
 import com.azure.resourcemanager.computefleet.models.WindowsVMGuestPatchMode;
-import com.azure.resourcemanager.computefleet.models.WinRMConfiguration;
-import com.azure.resourcemanager.computefleet.models.WinRMListener;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,8 +111,7 @@ import java.util.Map;
  */
 public final class FleetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_CreateOrUpdate.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_CreateOrUpdate.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate.
@@ -386,8 +385,7 @@ public final class FleetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file:
-     * specification/azurefleet/AzureFleet.Management/examples/2024-05-01-preview/Fleets_CreateOrUpdate_MinimumSet.json
+     * x-ms-original-file: 2024-05-01-preview/Fleets_CreateOrUpdate_MinimumSet.json
      */
     /**
      * Sample code: Fleets_CreateOrUpdate_MinimumSet.

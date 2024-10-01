@@ -24,6 +24,7 @@ import com.azure.search.documents.indexes.models.SynonymMap;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.function.Tuple2;
@@ -66,16 +67,18 @@ public class IndexManagementTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupSharedResources() {
+        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
+
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return;
+        }
+
         sharedIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
-        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
-
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
-        }
+        sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
     }
 
     @AfterAll

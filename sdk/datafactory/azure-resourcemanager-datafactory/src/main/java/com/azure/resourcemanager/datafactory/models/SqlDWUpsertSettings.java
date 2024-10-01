@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Sql DW upsert option settings.
  */
 @Fluent
-public final class SqlDWUpsertSettings {
+public final class SqlDWUpsertSettings implements JsonSerializable<SqlDWUpsertSettings> {
     /*
      * Schema name for interim table. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "interimSchemaName")
     private Object interimSchemaName;
 
     /*
      * Key column names for unique row identification. Type: array of strings (or Expression with resultType array of
      * strings).
      */
-    @JsonProperty(value = "keys")
     private Object keys;
 
     /**
@@ -81,5 +83,44 @@ public final class SqlDWUpsertSettings {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("interimSchemaName", this.interimSchemaName);
+        jsonWriter.writeUntypedField("keys", this.keys);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlDWUpsertSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlDWUpsertSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlDWUpsertSettings.
+     */
+    public static SqlDWUpsertSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlDWUpsertSettings deserializedSqlDWUpsertSettings = new SqlDWUpsertSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("interimSchemaName".equals(fieldName)) {
+                    deserializedSqlDWUpsertSettings.interimSchemaName = reader.readUntyped();
+                } else if ("keys".equals(fieldName)) {
+                    deserializedSqlDWUpsertSettings.keys = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlDWUpsertSettings;
+        });
     }
 }

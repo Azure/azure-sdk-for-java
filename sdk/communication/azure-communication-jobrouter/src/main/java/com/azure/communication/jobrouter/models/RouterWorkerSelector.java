@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
+import com.azure.communication.jobrouter.implementation.utils.CustomizationHelper;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
@@ -12,11 +13,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.time.Duration;
-import com.azure.communication.jobrouter.implementation.utils.CustomizationHelper;
 
 /**
  * Describes a condition that must be met against a set of labels for worker selection.

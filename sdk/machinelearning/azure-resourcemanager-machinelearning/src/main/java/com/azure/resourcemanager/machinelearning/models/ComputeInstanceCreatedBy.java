@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes information on user who created this ComputeInstance. */
+/**
+ * Describes information on user who created this ComputeInstance.
+ */
 @Immutable
-public final class ComputeInstanceCreatedBy {
+public final class ComputeInstanceCreatedBy implements JsonSerializable<ComputeInstanceCreatedBy> {
     /*
      * Name of the user.
      */
-    @JsonProperty(value = "userName", access = JsonProperty.Access.WRITE_ONLY)
     private String username;
 
     /*
      * Uniquely identifies user' Azure Active Directory organization.
      */
-    @JsonProperty(value = "userOrgId", access = JsonProperty.Access.WRITE_ONLY)
     private String userOrgId;
 
     /*
      * Uniquely identifies the user within his/her organization.
      */
-    @JsonProperty(value = "userId", access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
-    /** Creates an instance of ComputeInstanceCreatedBy class. */
+    /**
+     * Creates an instance of ComputeInstanceCreatedBy class.
+     */
     public ComputeInstanceCreatedBy() {
     }
 
     /**
      * Get the username property: Name of the user.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -43,7 +48,7 @@ public final class ComputeInstanceCreatedBy {
 
     /**
      * Get the userOrgId property: Uniquely identifies user' Azure Active Directory organization.
-     *
+     * 
      * @return the userOrgId value.
      */
     public String userOrgId() {
@@ -52,7 +57,7 @@ public final class ComputeInstanceCreatedBy {
 
     /**
      * Get the userId property: Uniquely identifies the user within his/her organization.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -61,9 +66,48 @@ public final class ComputeInstanceCreatedBy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceCreatedBy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceCreatedBy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceCreatedBy.
+     */
+    public static ComputeInstanceCreatedBy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceCreatedBy deserializedComputeInstanceCreatedBy = new ComputeInstanceCreatedBy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedComputeInstanceCreatedBy.username = reader.getString();
+                } else if ("userOrgId".equals(fieldName)) {
+                    deserializedComputeInstanceCreatedBy.userOrgId = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedComputeInstanceCreatedBy.userId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceCreatedBy;
+        });
     }
 }

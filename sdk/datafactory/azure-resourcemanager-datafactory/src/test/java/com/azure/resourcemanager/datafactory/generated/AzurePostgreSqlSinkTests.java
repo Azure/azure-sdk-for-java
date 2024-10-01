@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSink model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSink\",\"preCopyScript\":\"dataromeawthycbigpi\",\"writeBatchSize\":\"datapxhzjnparsulmuwl\",\"writeBatchTimeout\":\"dataakheox\",\"sinkRetryCount\":\"datagoavzycxpzat\",\"sinkRetryWait\":\"dataloo\",\"maxConcurrentConnections\":\"datatm\",\"disableMetricsCollection\":\"datatwzslrprftq\",\"\":{\"emhohxabmxoow\":\"dataouyqzhoi\",\"p\":\"dataoogozerccz\",\"uj\":\"datankgk\",\"j\":\"dataqqjqafjk\"}}")
+            "{\"type\":\"AzurePostgreSqlSink\",\"preCopyScript\":\"datahbfttptsdee\",\"writeBatchSize\":\"dataovanag\",\"writeBatchTimeout\":\"dataacsfbmb\",\"sinkRetryCount\":\"dataefqku\",\"sinkRetryWait\":\"datayumoamqxwluslxyt\",\"maxConcurrentConnections\":\"databjledjxblobknfpd\",\"disableMetricsCollection\":\"datahzgj\",\"\":{\"ccypxsrhbqlbnufl\":\"datamctbg\",\"xhbpyoqfbj\":\"datazawkkz\",\"jpjnhwwyhx\":\"dataclboi\",\"hhw\":\"dataythxzrvjfsmfk\"}}")
             .toObject(AzurePostgreSqlSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSink model = new AzurePostgreSqlSink().withWriteBatchSize("datapxhzjnparsulmuwl")
-            .withWriteBatchTimeout("dataakheox")
-            .withSinkRetryCount("datagoavzycxpzat")
-            .withSinkRetryWait("dataloo")
-            .withMaxConcurrentConnections("datatm")
-            .withDisableMetricsCollection("datatwzslrprftq")
-            .withPreCopyScript("dataromeawthycbigpi");
+        AzurePostgreSqlSink model = new AzurePostgreSqlSink().withWriteBatchSize("dataovanag")
+            .withWriteBatchTimeout("dataacsfbmb")
+            .withSinkRetryCount("dataefqku")
+            .withSinkRetryWait("datayumoamqxwluslxyt")
+            .withMaxConcurrentConnections("databjledjxblobknfpd")
+            .withDisableMetricsCollection("datahzgj")
+            .withPreCopyScript("datahbfttptsdee");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSink.class);
     }
 }

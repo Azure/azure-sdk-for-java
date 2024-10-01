@@ -3,6 +3,7 @@
 
 package com.azure.perf.test.core;
 
+import java.util.concurrent.CompletableFuture;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,6 +38,21 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends
         return runAsync().then(Mono.just(1));
     }
 
+    @Override
+    CompletableFuture<Integer> runTestAsyncWithCompletableFuture() {
+        return runAsyncWithCompletableFuture().thenApply(unused -> 1);
+    }
+
+    @Override
+    Runnable runTestAsyncWithExecutorService() {
+        return runAsyncWithExecutorService();
+    }
+
+    @Override
+    Runnable runTestAsyncWithVirtualThread() {
+        return runAsyncWithVirtualThread();
+    }
+
     /**
      * Runs the performance test.
      */
@@ -47,4 +63,27 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends
      * @return An empty {@link Mono}
      */
     public abstract Mono<Void> runAsync();
+
+    /**
+     * Runs the performance test asynchronously.
+     * @return An empty {@link CompletableFuture}
+     */
+    public CompletableFuture<Void> runAsyncWithCompletableFuture() {
+        throw new UnsupportedOperationException("runAsyncWithCompletableFuture is not supported.");
+    }
+
+    /**
+     * Runs the performance test asynchronously.
+     * @return An empty {@link Runnable}
+     */
+    public Runnable runAsyncWithExecutorService() {
+        throw new UnsupportedOperationException("runAsyncWithExecutorService is not supported.");
+    }
+
+    /**
+     * Runs the performance test asynchronously.
+     */
+    public Runnable runAsyncWithVirtualThread() {
+        throw new UnsupportedOperationException("runAsyncWithVirtualThread is not supported.");
+    }
 }

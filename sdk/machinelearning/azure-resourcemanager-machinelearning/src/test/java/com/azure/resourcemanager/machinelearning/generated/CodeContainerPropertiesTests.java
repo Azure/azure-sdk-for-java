@@ -13,34 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class CodeContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CodeContainerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"isArchived\":true,\"latestVersion\":\"p\",\"nextVersion\":\"ksrpqv\",\"description\":\"zraehtwd\",\"properties\":{\"cdl\":\"tswiby\",\"hfwpracstwit\":\"h\",\"nmdyodnwzxl\":\"khevxccedc\",\"nhltiugcxn\":\"jc\"},\"tags\":{\"nyowxwlmdjrkvfg\":\"wxqibyq\",\"j\":\"vfvpdbodaciz\",\"hvxndzwmkrefajpj\":\"lhkrribdeibqipqk\"}}")
-                .toObject(CodeContainerProperties.class);
-        Assertions.assertEquals("zraehtwd", model.description());
-        Assertions.assertEquals("tswiby", model.properties().get("cdl"));
-        Assertions.assertEquals("wxqibyq", model.tags().get("nyowxwlmdjrkvfg"));
-        Assertions.assertEquals(true, model.isArchived());
+        CodeContainerProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Deleting\",\"isArchived\":false,\"latestVersion\":\"r\",\"nextVersion\":\"dsnfdsdoakgtdl\",\"description\":\"kzevdlhewpusds\",\"tags\":{\"kufgmj\":\"vogvbbejdcngqqmo\",\"grtwae\":\"rwr\",\"zkopb\":\"u\"},\"properties\":{\"hziuiefozbhdms\":\"rfdwoyu\",\"zqhof\":\"l\"}}")
+            .toObject(CodeContainerProperties.class);
+        Assertions.assertEquals("kzevdlhewpusds", model.description());
+        Assertions.assertEquals("vogvbbejdcngqqmo", model.tags().get("kufgmj"));
+        Assertions.assertEquals("rfdwoyu", model.properties().get("hziuiefozbhdms"));
+        Assertions.assertEquals(false, model.isArchived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CodeContainerProperties model =
-            new CodeContainerProperties()
-                .withDescription("zraehtwd")
-                .withProperties(
-                    mapOf("cdl", "tswiby", "hfwpracstwit", "h", "nmdyodnwzxl", "khevxccedc", "nhltiugcxn", "jc"))
-                .withTags(
-                    mapOf("nyowxwlmdjrkvfg", "wxqibyq", "j", "vfvpdbodaciz", "hvxndzwmkrefajpj", "lhkrribdeibqipqk"))
-                .withIsArchived(true);
+        CodeContainerProperties model = new CodeContainerProperties().withDescription("kzevdlhewpusds")
+            .withTags(mapOf("kufgmj", "vogvbbejdcngqqmo", "grtwae", "rwr", "zkopb", "u"))
+            .withProperties(mapOf("hziuiefozbhdms", "rfdwoyu", "zqhof", "l"))
+            .withIsArchived(false);
         model = BinaryData.fromObject(model).toObject(CodeContainerProperties.class);
-        Assertions.assertEquals("zraehtwd", model.description());
-        Assertions.assertEquals("tswiby", model.properties().get("cdl"));
-        Assertions.assertEquals("wxqibyq", model.tags().get("nyowxwlmdjrkvfg"));
-        Assertions.assertEquals(true, model.isArchived());
+        Assertions.assertEquals("kzevdlhewpusds", model.description());
+        Assertions.assertEquals("vogvbbejdcngqqmo", model.tags().get("kufgmj"));
+        Assertions.assertEquals("rfdwoyu", model.properties().get("hziuiefozbhdms"));
+        Assertions.assertEquals(false, model.isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -317,6 +317,32 @@
           "justification": "Previous value did was incorrect."
         },
         {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
+          "ignore": true,
+          "code": "java.method.returnTypeChangedCovariantly",
+          "old": "method com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties com.azure.messaging.eventgrid.systemevents.AcsChatThreadEventBaseProperties::fromJson(com.azure.json.JsonReader) throws java.io.IOException @ com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData",
+          "new": "method com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData::fromJson(com.azure.json.JsonReader) throws java.io.IOException",
+          "justification": "Subtype was not updated by codegen for azure-json due to being deprecated and no longer in swagger."
+        },
+        {
+          "code" : "java.field.constantValueChanged",
+          "old" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.GROUPS",
+          "new" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.GROUPS",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "code" : "java.field.constantValueChanged",
+          "old" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.USERS",
+          "new" : "field com.azure.spring.cloud.feature.management.filters.TargetingFilter.USERS",
+          "justification": "Previous value did was incorrect."
+        },
+        {
           "code": "java.field.removed",
           "old": "field com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties.AZURE_GERMANY",
           "justification": "Remove this because AZURE_GERMANY is deprecated."
@@ -633,6 +659,20 @@
           "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
           "justification": "Customer unlikely to subclass this class."
+        },
+        {
+          "ignore": true,
+          "code": "java.annotation.removed",
+          "old": "method com.azure.communication.rooms.models.ParticipantRole com.azure.communication.rooms.models.ParticipantRole::fromString(java.lang.String)",
+          "new": "method com.azure.communication.rooms.models.ParticipantRole com.azure.communication.rooms.models.ParticipantRole::fromString(java.lang.String)",
+          "annotation": "@com.fasterxml.jackson.annotation.JsonCreator",
+          "justification": "Migration to azure-json"
+        },
+        {
+          "ignore": true,
+          "code": "java.method.removed",
+          "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
+          "justification": "Service changed the property to readOnly."
         }
       ]
     }

@@ -50,25 +50,25 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     /**
      * The service client containing this operation class.
      */
-    private final DocumentDBClientImpl client;
+    private final MongoClusterManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionsClientImpl(DocumentDBClientImpl client) {
+    PrivateEndpointConnectionsClientImpl(MongoClusterManagementClientImpl client) {
         this.service = RestProxy.create(PrivateEndpointConnectionsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DocumentDBClientPrivateEndpointConnections to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for MongoClusterManagementClientPrivateEndpointConnections to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "DocumentDBClientPriv")
+    @ServiceInterface(name = "MongoClusterManageme")
     public interface PrivateEndpointConnectionsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections")
@@ -78,7 +78,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("accept") String accept,
+            @PathParam("mongoClusterName") String mongoClusterName, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -90,9 +90,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -101,7 +100,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("accept") String accept,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") PrivateEndpointConnectionResourceInner resource, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -113,7 +112,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("mongoClusterName") String mongoClusterName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -121,7 +120,7 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionResourceListResult>> listByMongoClusterNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("endpoint") String endpoint,
-            @HeaderParam("accept") String accept, Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -459,11 +458,12 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, mongoClusterName, privateEndpointConnectionName,
-                accept, resource, context))
+                contentType, accept, resource, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -509,10 +509,11 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         } else {
             resource.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
-            resourceGroupName, mongoClusterName, privateEndpointConnectionName, accept, resource, context);
+            resourceGroupName, mongoClusterName, privateEndpointConnectionName, contentType, accept, resource, context);
     }
 
     /**

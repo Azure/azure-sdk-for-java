@@ -19,33 +19,33 @@ public final class LinkedServiceResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LinkedServiceResourceInner model = BinaryData.fromString(
-            "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"vfiwjmygtdss\",\"parameters\":{\"emwabnet\":\"datatmweriofzpyq\",\"d\":\"datahhszh\"}},\"description\":\"vwiwubmwmbesld\",\"parameters\":{\"flcxoga\":{\"type\":\"Float\",\"defaultValue\":\"datapp\"},\"qzeqqkdltfzxm\":{\"type\":\"SecureString\",\"defaultValue\":\"datanzmnsikvm\"}},\"annotations\":[\"datahgure\"],\"\":{\"xwak\":\"datawobdagxtibqdx\",\"lbpodxunk\":\"dataogqxndlkzgxhuri\",\"lrb\":\"dataebxmubyynt\"}},\"name\":\"koievseo\",\"type\":\"q\",\"etag\":\"ltmuwlauwzizx\",\"id\":\"pgcjefuzmuvp\"}")
+            "{\"properties\":{\"type\":\"LinkedService\",\"version\":\"hzdxssadbzm\",\"connectVia\":{\"referenceName\":\"dfznudaodv\",\"parameters\":{\"bhhxsrzdzuc\":\"datancblylpst\",\"ntnev\":\"datarsc\",\"tmweriofzpyq\":\"dataiwjmygtdssls\",\"hhszh\":\"dataemwabnet\"}},\"description\":\"plvwiwubmwmbes\",\"parameters\":{\"z\":{\"type\":\"Array\",\"defaultValue\":\"datawtppjflcxogaoko\"}},\"annotations\":[\"dataikvmkqzeqqk\",\"datal\",\"datafzxmhhvhgureodkw\",\"databdagxt\"],\"\":{\"akbogqxndlkzgxh\":\"datadxbx\",\"podxunkb\":\"dataripl\"}},\"name\":\"xmubyyntwlrbq\",\"type\":\"oievseotgqrlltm\",\"etag\":\"lauwzizxbmpgcjef\",\"id\":\"muvp\"}")
             .toObject(LinkedServiceResourceInner.class);
-        Assertions.assertEquals("pgcjefuzmuvp", model.id());
-        Assertions.assertEquals("vfiwjmygtdss", model.properties().connectVia().referenceName());
-        Assertions.assertEquals("vwiwubmwmbesld", model.properties().description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("flcxoga").type());
+        Assertions.assertEquals("muvp", model.id());
+        Assertions.assertEquals("hzdxssadbzm", model.properties().version());
+        Assertions.assertEquals("dfznudaodv", model.properties().connectVia().referenceName());
+        Assertions.assertEquals("plvwiwubmwmbes", model.properties().description());
+        Assertions.assertEquals(ParameterType.ARRAY, model.properties().parameters().get("z").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceResourceInner model = new LinkedServiceResourceInner().withId("pgcjefuzmuvp")
-            .withProperties(new LinkedService()
-                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("vfiwjmygtdss")
-                    .withParameters(mapOf("emwabnet", "datatmweriofzpyq", "d", "datahhszh")))
-                .withDescription("vwiwubmwmbesld")
-                .withParameters(mapOf("flcxoga",
-                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datapp"),
-                    "qzeqqkdltfzxm",
-                    new ParameterSpecification().withType(ParameterType.SECURE_STRING)
-                        .withDefaultValue("datanzmnsikvm")))
-                .withAnnotations(Arrays.asList("datahgure"))
+        LinkedServiceResourceInner model = new LinkedServiceResourceInner().withId("muvp")
+            .withProperties(new LinkedService().withVersion("hzdxssadbzm")
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("dfznudaodv")
+                    .withParameters(mapOf("bhhxsrzdzuc", "datancblylpst", "ntnev", "datarsc", "tmweriofzpyq",
+                        "dataiwjmygtdssls", "hhszh", "dataemwabnet")))
+                .withDescription("plvwiwubmwmbes")
+                .withParameters(mapOf("z",
+                    new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datawtppjflcxogaoko")))
+                .withAnnotations(Arrays.asList("dataikvmkqzeqqk", "datal", "datafzxmhhvhgureodkw", "databdagxt"))
                 .withAdditionalProperties(mapOf("type", "LinkedService")));
         model = BinaryData.fromObject(model).toObject(LinkedServiceResourceInner.class);
-        Assertions.assertEquals("pgcjefuzmuvp", model.id());
-        Assertions.assertEquals("vfiwjmygtdss", model.properties().connectVia().referenceName());
-        Assertions.assertEquals("vwiwubmwmbesld", model.properties().description());
-        Assertions.assertEquals(ParameterType.FLOAT, model.properties().parameters().get("flcxoga").type());
+        Assertions.assertEquals("muvp", model.id());
+        Assertions.assertEquals("hzdxssadbzm", model.properties().version());
+        Assertions.assertEquals("dfznudaodv", model.properties().connectVia().referenceName());
+        Assertions.assertEquals("plvwiwubmwmbes", model.properties().description());
+        Assertions.assertEquals(ParameterType.ARRAY, model.properties().parameters().get("z").type());
     }
 
     // Use "Map.of" if available

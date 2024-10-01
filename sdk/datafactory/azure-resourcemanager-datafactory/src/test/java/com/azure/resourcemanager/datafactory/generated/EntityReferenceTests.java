@@ -12,20 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class EntityReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityReference model
-            = BinaryData.fromString("{\"type\":\"LinkedServiceReference\",\"referenceName\":\"ggkztzttjn\"}")
-                .toObject(EntityReference.class);
+        EntityReference model = BinaryData.fromString("{\"type\":\"LinkedServiceReference\",\"referenceName\":\"miy\"}")
+            .toObject(EntityReference.class);
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE, model.type());
-        Assertions.assertEquals("ggkztzttjn", model.referenceName());
+        Assertions.assertEquals("miy", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EntityReference model
             = new EntityReference().withType(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE)
-                .withReferenceName("ggkztzttjn");
+                .withReferenceName("miy");
         model = BinaryData.fromObject(model).toObject(EntityReference.class);
         Assertions.assertEquals(IntegrationRuntimeEntityReferenceType.LINKED_SERVICE_REFERENCE, model.type());
-        Assertions.assertEquals("ggkztzttjn", model.referenceName());
+        Assertions.assertEquals("miy", model.referenceName());
     }
 }

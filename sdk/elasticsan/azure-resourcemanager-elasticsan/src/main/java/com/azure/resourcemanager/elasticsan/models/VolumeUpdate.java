@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.elasticsan.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Response for Volume request.
  */
 @Fluent
-public final class VolumeUpdate {
+public final class VolumeUpdate implements JsonSerializable<VolumeUpdate> {
     /*
      * Properties of Volume.
      */
-    @JsonProperty(value = "properties")
     private VolumeUpdateProperties innerProperties;
 
     /**
@@ -89,5 +92,41 @@ public final class VolumeUpdate {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeUpdate.
+     */
+    public static VolumeUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeUpdate deserializedVolumeUpdate = new VolumeUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedVolumeUpdate.innerProperties = VolumeUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeUpdate;
+        });
     }
 }

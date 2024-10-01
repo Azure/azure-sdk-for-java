@@ -4,10 +4,15 @@
 package com.azure.ai.openai.assistants;
 
 import com.azure.ai.openai.assistants.models.VectorStore;
+import com.azure.ai.openai.assistants.models.VectorStoreAutoChunkingStrategyRequest;
+import com.azure.ai.openai.assistants.models.VectorStoreExpirationPolicy;
 import com.azure.ai.openai.assistants.models.VectorStoreFile;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatch;
 import com.azure.ai.openai.assistants.models.VectorStoreFileBatchStatus;
 import com.azure.ai.openai.assistants.models.VectorStoreOptions;
+import com.azure.ai.openai.assistants.models.VectorStoreStaticChunkingStrategyOptions;
+import com.azure.ai.openai.assistants.models.VectorStoreStaticChunkingStrategyRequest;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Disabled;
@@ -21,31 +26,37 @@ import java.util.List;
 
 import static com.azure.ai.openai.assistants.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.openai.assistants.models.FilePurpose.ASSISTANTS;
+import static com.azure.ai.openai.assistants.models.VectorStoreExpirationPolicyAnchor.LAST_ACTIVE_AT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AzureVectorStoreAsyncTests extends AssistantsClientTestBase {
+public class AzureVectorStoreAsyncTests extends VectorStoreTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(AzureVectorStoreAsyncTests.class);
 
     private AssistantsAsyncClient client;
     private VectorStore vectorStore;
     private List<String> fileIds = new ArrayList<>();
+
     protected void beforeTest(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         client = getAssistantsAsyncClient(httpClient, serviceVersion);
-        fileIds.add(uploadFileAsync(client, "20210203_alphabet_10K.pdf", ASSISTANTS));
+        addFile(ALPHABET_FINANCIAL_STATEMENT);
         VectorStoreOptions vectorStoreOptions = new VectorStoreOptions()
-                .setName("Financial Statements")
-                .setFileIds(fileIds);
-
+            .setName("Financial Statements")
+            .setExpiresAfter(new VectorStoreExpirationPolicy(LAST_ACTIVE_AT, 1));
         StepVerifier.create(client.createVectorStore(vectorStoreOptions))
-                .assertNext(vectorStore -> {
-                    this.vectorStore = vectorStore;
-                    assertNotNull(vectorStore);
-                    assertNotNull(vectorStore.getId());
-                })
-                .verifyComplete();
+            .assertNext(vectorStore -> {
+                this.vectorStore = vectorStore;
+                assertNotNull(vectorStore);
+                assertNotNull(vectorStore.getId());
+            })
+            .verifyComplete();
+    }
+
+    private void addFile(String fileId) {
+        fileIds.add(uploadFileAsync(client, fileId, ASSISTANTS));
     }
 
     @Override
@@ -110,13 +121,52 @@ public class AzureVectorStoreAsyncTests extends AssistantsClientTestBase {
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createVectorStoreFile(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         beforeTest(httpClient, serviceVersion);
-        String storeId = vectorStore.getId();
-        StepVerifier.create(client.createVectorStoreFile(storeId, fileIds.get(0)))
-                .assertNext(vectorStoreFile -> {
-                    assertNotNull(vectorStoreFile);
-                    assertNotNull(vectorStoreFile.getId());
-                })
-                .verifyComplete();
+        StepVerifier.create(client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0)))
+            .assertNext(this::assertVectorStoreFile)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void createVectorStoreFileWithAutoChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        beforeTest(httpClient, serviceVersion);
+        StepVerifier.create(client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0),
+                new VectorStoreAutoChunkingStrategyRequest()))
+            .assertNext(vectorStoreFile -> {
+                assertVectorStoreFile(vectorStoreFile);
+                assertStaticChunkingStrategy(vectorStoreFile, 800, 400);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void createVectorStoreFileWithStaticChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        beforeTest(httpClient, serviceVersion);
+        int maxChunkSizeTokens = 101;
+        int chunkOverlapTokens = 50;
+        StepVerifier.create(client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0),
+                new VectorStoreStaticChunkingStrategyRequest(
+                    new VectorStoreStaticChunkingStrategyOptions(maxChunkSizeTokens, chunkOverlapTokens))))
+            .assertNext(vectorStoreFile -> {
+                assertVectorStoreFile(vectorStoreFile);
+                assertStaticChunkingStrategy(vectorStoreFile, maxChunkSizeTokens, chunkOverlapTokens);
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void throwExceptionWhenOverrideExistChunkStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        beforeTest(httpClient, serviceVersion);
+        StepVerifier.create(client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0),
+                new VectorStoreAutoChunkingStrategyRequest()))
+            .assertNext(this::assertVectorStoreFile)
+            .verifyComplete();
+        StepVerifier.create(client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0),
+                new VectorStoreStaticChunkingStrategyRequest(
+                    new VectorStoreStaticChunkingStrategyOptions(101, 50))))
+            .verifyErrorSatisfies(error -> assertInstanceOf(HttpResponseException.class, error));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -169,13 +219,17 @@ public class AzureVectorStoreAsyncTests extends AssistantsClientTestBase {
         beforeTest(httpClient, serviceVersion);
         String storeId = vectorStore.getId();
         String fileId = fileIds.get(0);
+        // Create Vector Store File
+        StepVerifier.create(client.createVectorStoreFile(vectorStore.getId(), fileIds.get(0)))
+            .assertNext(this::assertVectorStoreFile)
+            .verifyComplete();
         // Delete Vector Store File
         StepVerifier.create(client.deleteVectorStoreFile(storeId, fileId))
-                .assertNext(deletionStatus -> {
-                    assertTrue(deletionStatus.isDeleted());
-                    assertEquals(fileId, deletionStatus.getId());
-                })
-                .verifyComplete();
+            .assertNext(deletionStatus -> {
+                assertTrue(deletionStatus.isDeleted());
+                assertEquals(fileId, deletionStatus.getId());
+            })
+            .verifyComplete();
     }
 
     // Vector Store File Batch
@@ -183,18 +237,55 @@ public class AzureVectorStoreAsyncTests extends AssistantsClientTestBase {
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
     public void createVectorStoreFileBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
         beforeTest(httpClient, serviceVersion);
-        String storeId = vectorStore.getId();
-        String fileId = fileIds.get(0);
-        String fileId2 = uploadFileAsync(client, "20220924_aapl_10k.pdf", ASSISTANTS);
-        fileIds.add(fileId2);
+        addFile(APPLE_FINANCIAL_STATEMENT);
+        StepVerifier.create(client.createVectorStoreFileBatch(vectorStore.getId(),
+                Arrays.asList(fileIds.get(0), fileIds.get(1))))
+            .assertNext(vectorStoreFileBatch -> assertVectorStoreFileBatch(vectorStoreFileBatch, 2))
+            .verifyComplete();
+    }
 
-        StepVerifier.create(client.createVectorStoreFileBatch(storeId, Arrays.asList(fileId, fileId2)))
-                .assertNext(vectorStoreFileBatch -> {
-                    assertNotNull(vectorStoreFileBatch);
-                    assertNotNull(vectorStoreFileBatch.getId());
-                    assertEquals(2, vectorStoreFileBatch.getFileCounts().getTotal());
-                })
-                .verifyComplete();
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void createVectorStoreFileBatchWithAutoChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        beforeTest(httpClient, serviceVersion);
+        addFile(APPLE_FINANCIAL_STATEMENT);
+        StepVerifier.create(client.createVectorStoreFileBatch(vectorStore.getId(),
+                Arrays.asList(fileIds.get(0), fileIds.get(1)),
+                new VectorStoreAutoChunkingStrategyRequest()))
+            .assertNext(vectorStoreFileBatch -> assertVectorStoreFileBatch(vectorStoreFileBatch, 2))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void createVectorStoreFileBatchWithStaticChunkingStrategy(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        beforeTest(httpClient, serviceVersion);
+        addFile(APPLE_FINANCIAL_STATEMENT);
+        StepVerifier.create(client.createVectorStoreFileBatch(vectorStore.getId(),
+                Arrays.asList(fileIds.get(0), fileIds.get(1)),
+                new VectorStoreStaticChunkingStrategyRequest(
+                    new VectorStoreStaticChunkingStrategyOptions(101, 50))))
+            .assertNext(vectorStoreFileBatch -> assertVectorStoreFileBatch(vectorStoreFileBatch, 2))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
+    public void throwExceptionWhenOverrideExistChunkStrategyInBatch(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+        beforeTest(httpClient, serviceVersion);
+        addFile(APPLE_FINANCIAL_STATEMENT);
+
+        StepVerifier.create(client.createVectorStoreFileBatch(vectorStore.getId(),
+                Arrays.asList(fileIds.get(0), fileIds.get(1)),
+                new VectorStoreStaticChunkingStrategyRequest(
+                    new VectorStoreStaticChunkingStrategyOptions(101, 50))))
+            .assertNext(vectorStoreFileBatch -> assertVectorStoreFileBatch(vectorStoreFileBatch, 2))
+            .verifyComplete();
+
+        StepVerifier.create(client.createVectorStoreFileBatch(vectorStore.getId(),
+                Arrays.asList(fileIds.get(0), fileIds.get(1)),
+                new VectorStoreAutoChunkingStrategyRequest()))
+            .verifyErrorSatisfies(error -> assertInstanceOf(HttpResponseException.class, error));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

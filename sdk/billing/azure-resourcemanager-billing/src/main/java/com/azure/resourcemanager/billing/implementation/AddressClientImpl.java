@@ -22,21 +22,27 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.billing.fluent.AddressClient;
-import com.azure.resourcemanager.billing.fluent.models.ValidateAddressResponseInner;
+import com.azure.resourcemanager.billing.fluent.models.AddressValidationResponseInner;
 import com.azure.resourcemanager.billing.models.AddressDetails;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AddressClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AddressClient.
+ */
 public final class AddressClientImpl implements AddressClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AddressService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final BillingManagementClientImpl client;
 
     /**
      * Initializes an instance of AddressClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AddressClientImpl(BillingManagementClientImpl client) {
@@ -51,51 +57,46 @@ public final class AddressClientImpl implements AddressClient {
     @Host("{$host}")
     @ServiceInterface(name = "BillingManagementCli")
     public interface AddressService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Billing/validateAddress")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ValidateAddressResponseInner>> validate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AddressDetails address,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<AddressValidationResponseInner>> validate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AddressDetails parameters,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the address validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidateAddressResponseInner>> validateWithResponseAsync(AddressDetails address) {
+    private Mono<Response<AddressValidationResponseInner>> validateWithResponseAsync(AddressDetails parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (address == null) {
-            return Mono.error(new IllegalArgumentException("Parameter address is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            address.validate();
+            parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.validate(this.client.getEndpoint(), apiVersion, address, accept, context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -103,43 +104,40 @@ public final class AddressClientImpl implements AddressClient {
      * @return result of the address validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidateAddressResponseInner>> validateWithResponseAsync(
-        AddressDetails address, Context context) {
+    private Mono<Response<AddressValidationResponseInner>> validateWithResponseAsync(AddressDetails parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (address == null) {
-            return Mono.error(new IllegalArgumentException("Parameter address is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            address.validate();
+            parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.validate(this.client.getEndpoint(), apiVersion, address, accept, context);
+        return service.validate(this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the address validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateAddressResponseInner> validateAsync(AddressDetails address) {
-        return validateWithResponseAsync(address).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<AddressValidationResponseInner> validateAsync(AddressDetails parameters) {
+        return validateWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -147,21 +145,21 @@ public final class AddressClientImpl implements AddressClient {
      * @return result of the address validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidateAddressResponseInner> validateWithResponse(AddressDetails address, Context context) {
-        return validateWithResponseAsync(address, context).block();
+    public Response<AddressValidationResponseInner> validateWithResponse(AddressDetails parameters, Context context) {
+        return validateWithResponseAsync(parameters, context).block();
     }
 
     /**
      * Validates an address. Use the operation to validate an address before using it as soldTo or a billTo address.
-     *
-     * @param address Address details.
+     * 
+     * @param parameters Address details.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the address validation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateAddressResponseInner validate(AddressDetails address) {
-        return validateWithResponse(address, Context.NONE).getValue();
+    public AddressValidationResponseInner validate(AddressDetails parameters) {
+        return validateWithResponse(parameters, Context.NONE).getValue();
     }
 }

@@ -626,7 +626,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().deleteNoCustomHeadersWithResponseAsync(shareName, snapshot, null,
             ModelHelper.toDeleteSnapshotsOptionType(options.getDeleteSnapshotsOptions()),
-            requestConditions.getLeaseId(), context);
+                requestConditions.getLeaseId(), context);
     }
 
     /**
@@ -2135,11 +2135,12 @@ public class ShareAsyncClient {
     Mono<Response<String>> createPermissionWithResponse(String filePermission, FilePermissionFormat filePermissionFormat,
                                                         Context context) {
         // NOTE: Should we check for null or empty?
-        SharePermission sharePermission = new SharePermission().setPermission(filePermission).setFormat(filePermissionFormat);
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission)
+            .setFormat(filePermissionFormat);
         return azureFileStorageClient.getShares()
-                .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
-                .map(response -> new SimpleResponse<>(response,
-                        response.getDeserializedHeaders().getXMsFilePermissionKey()));
+            .createPermissionWithResponseAsync(shareName, sharePermission, null, context)
+            .map(response -> new SimpleResponse<>(response,
+                response.getDeserializedHeaders().getXMsFilePermissionKey()));
     }
 
     /**

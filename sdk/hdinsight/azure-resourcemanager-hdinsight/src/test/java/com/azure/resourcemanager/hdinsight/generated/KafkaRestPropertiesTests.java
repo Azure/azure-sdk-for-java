@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class KafkaRestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KafkaRestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"clientGroupInfo\":{\"groupName\":\"sbj\",\"groupId\":\"zq\"},\"configurationOverride\":{\"jidsuyonobglaoc\":\"ywpmueefjzwfqkq\",\"udxytlmoyrx\":\"xtccmg\",\"qj\":\"wfudwpzntxhdzhl\",\"bkyvp\":\"hckfrlhrx\"}}")
-                .toObject(KafkaRestProperties.class);
+        KafkaRestProperties model = BinaryData.fromString(
+            "{\"clientGroupInfo\":{\"groupName\":\"sbj\",\"groupId\":\"zq\"},\"configurationOverride\":{\"jidsuyonobglaoc\":\"ywpmueefjzwfqkq\",\"udxytlmoyrx\":\"xtccmg\",\"qj\":\"wfudwpzntxhdzhl\",\"bkyvp\":\"hckfrlhrx\"}}")
+            .toObject(KafkaRestProperties.class);
         Assertions.assertEquals("sbj", model.clientGroupInfo().groupName());
         Assertions.assertEquals("zq", model.clientGroupInfo().groupId());
         Assertions.assertEquals("ywpmueefjzwfqkq", model.configurationOverride().get("jidsuyonobglaoc"));
@@ -26,25 +24,17 @@ public final class KafkaRestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KafkaRestProperties model =
-            new KafkaRestProperties()
-                .withClientGroupInfo(new ClientGroupInfo().withGroupName("sbj").withGroupId("zq"))
-                .withConfigurationOverride(
-                    mapOf(
-                        "jidsuyonobglaoc",
-                        "ywpmueefjzwfqkq",
-                        "udxytlmoyrx",
-                        "xtccmg",
-                        "qj",
-                        "wfudwpzntxhdzhl",
-                        "bkyvp",
-                        "hckfrlhrx"));
+        KafkaRestProperties model = new KafkaRestProperties()
+            .withClientGroupInfo(new ClientGroupInfo().withGroupName("sbj").withGroupId("zq"))
+            .withConfigurationOverride(mapOf("jidsuyonobglaoc", "ywpmueefjzwfqkq", "udxytlmoyrx", "xtccmg", "qj",
+                "wfudwpzntxhdzhl", "bkyvp", "hckfrlhrx"));
         model = BinaryData.fromObject(model).toObject(KafkaRestProperties.class);
         Assertions.assertEquals("sbj", model.clientGroupInfo().groupName());
         Assertions.assertEquals("zq", model.clientGroupInfo().groupId());
         Assertions.assertEquals("ywpmueefjzwfqkq", model.configurationOverride().get("jidsuyonobglaoc"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

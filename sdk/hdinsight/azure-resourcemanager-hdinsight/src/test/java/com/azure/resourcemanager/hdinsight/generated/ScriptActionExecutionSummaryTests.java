@@ -10,9 +10,8 @@ import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionSummary;
 public final class ScriptActionExecutionSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptActionExecutionSummary model =
-            BinaryData
-                .fromString("{\"status\":\"wpgdak\",\"instanceCount\":1202587998}")
+        ScriptActionExecutionSummary model
+            = BinaryData.fromString("{\"status\":\"wpgdak\",\"instanceCount\":1202587998}")
                 .toObject(ScriptActionExecutionSummary.class);
     }
 

@@ -1,14 +1,24 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.15.5 (2024-10-01)
 
-### Features Added
+### Other Changes
 
-### Breaking Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.15.4 (2024-09-12)
 
 ### Bugs Fixed
 
+- Fixed a bug where logging the Netty versions could throw an exception when `SecurityManager` is present. ([#41484](https://github.com/Azure/azure-sdk-for-java/pull/41484))
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 1.15.3 (2024-07-31)
 

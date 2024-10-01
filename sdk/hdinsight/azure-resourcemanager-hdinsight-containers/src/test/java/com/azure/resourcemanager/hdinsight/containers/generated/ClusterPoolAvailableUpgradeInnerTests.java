@@ -12,7 +12,7 @@ public final class ClusterPoolAvailableUpgradeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPoolAvailableUpgradeInner model = BinaryData.fromString(
-            "{\"properties\":{\"upgradeType\":\"ClusterPoolAvailableUpgradeProperties\"},\"id\":\"rolfpfp\",\"name\":\"algbquxigjyjg\",\"type\":\"jaoyfhrtx\"}")
+            "{\"properties\":{\"upgradeType\":\"ClusterPoolAvailableUpgradeProperties\"},\"id\":\"nb\",\"name\":\"xqabnmocpcysh\",\"type\":\"rzafbljjgpbtoqcj\"}")
             .toObject(ClusterPoolAvailableUpgradeInner.class);
     }
 

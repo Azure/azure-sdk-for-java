@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.hdinsight.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hdinsight.models.AsyncOperationState;
 import com.azure.resourcemanager.hdinsight.models.Errors;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The azure async operation response. */
+/**
+ * The azure async operation response.
+ */
 @Fluent
-public final class AsyncOperationResultInner {
+public final class AsyncOperationResultInner implements JsonSerializable<AsyncOperationResultInner> {
     /*
      * The async operation state.
      */
-    @JsonProperty(value = "status")
     private AsyncOperationState status;
 
     /*
      * The operation error information.
      */
-    @JsonProperty(value = "error")
     private Errors error;
 
-    /** Creates an instance of AsyncOperationResultInner class. */
+    /**
+     * Creates an instance of AsyncOperationResultInner class.
+     */
     public AsyncOperationResultInner() {
     }
 
     /**
      * Get the status property: The async operation state.
-     *
+     * 
      * @return the status value.
      */
     public AsyncOperationState status() {
@@ -39,7 +45,7 @@ public final class AsyncOperationResultInner {
 
     /**
      * Set the status property: The async operation state.
-     *
+     * 
      * @param status the status value to set.
      * @return the AsyncOperationResultInner object itself.
      */
@@ -50,7 +56,7 @@ public final class AsyncOperationResultInner {
 
     /**
      * Get the error property: The operation error information.
-     *
+     * 
      * @return the error value.
      */
     public Errors error() {
@@ -59,7 +65,7 @@ public final class AsyncOperationResultInner {
 
     /**
      * Set the error property: The operation error information.
-     *
+     * 
      * @param error the error value to set.
      * @return the AsyncOperationResultInner object itself.
      */
@@ -70,12 +76,51 @@ public final class AsyncOperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsyncOperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsyncOperationResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AsyncOperationResultInner.
+     */
+    public static AsyncOperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsyncOperationResultInner deserializedAsyncOperationResultInner = new AsyncOperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedAsyncOperationResultInner.status = AsyncOperationState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedAsyncOperationResultInner.error = Errors.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAsyncOperationResultInner;
+        });
     }
 }

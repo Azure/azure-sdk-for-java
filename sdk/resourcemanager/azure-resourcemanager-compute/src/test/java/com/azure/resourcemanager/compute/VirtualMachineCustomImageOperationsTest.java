@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 
 public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTest {
     private String rgName = "";
-    private Region region = Region.US_WEST;
+    private Region region = Region.US_WEST2;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -217,7 +217,7 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
-                .withLatestLinuxImage("Canonical", "UbuntuServer", "14.04.2-LTS")
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername(uname)
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */

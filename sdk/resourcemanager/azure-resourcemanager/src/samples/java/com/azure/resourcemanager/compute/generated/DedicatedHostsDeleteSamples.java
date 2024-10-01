@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class DedicatedHostsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * dedicatedHostExamples/DedicatedHost_Delete_MaximumSet_Gen.json
      */
     /**
@@ -28,7 +28,7 @@ public final class DedicatedHostsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-03-01/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
      * dedicatedHostExamples/DedicatedHost_Delete_MinimumSet_Gen.json
      */
     /**

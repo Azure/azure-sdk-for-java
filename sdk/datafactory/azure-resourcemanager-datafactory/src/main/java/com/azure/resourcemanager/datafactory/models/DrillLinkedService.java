@@ -6,32 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.DrillLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Drill server linked service.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = DrillLinkedService.class, visible = true)
-@JsonTypeName("Drill")
 @Fluent
 public final class DrillLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "Drill";
 
     /*
      * Drill server linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private DrillLinkedServiceTypeProperties innerTypeProperties = new DrillLinkedServiceTypeProperties();
 
     /**
@@ -57,6 +53,15 @@ public final class DrillLinkedService extends LinkedService {
      */
     private DrillLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DrillLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -186,4 +191,74 @@ public final class DrillLinkedService extends LinkedService {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DrillLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DrillLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DrillLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DrillLinkedService.
+     */
+    public static DrillLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DrillLinkedService deserializedDrillLinkedService = new DrillLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedDrillLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedDrillLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedDrillLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedDrillLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedDrillLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedDrillLinkedService.innerTypeProperties
+                        = DrillLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedDrillLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDrillLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedDrillLinkedService;
+        });
+    }
 }

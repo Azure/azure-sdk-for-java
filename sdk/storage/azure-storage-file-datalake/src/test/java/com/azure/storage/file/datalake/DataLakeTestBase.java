@@ -85,8 +85,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
 
     protected static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
         HttpHeaderName.fromString(Constants.HeaderConstants.REQUEST_SERVER_ENCRYPTED);
-    protected static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
-        HttpHeaderName.fromString(Constants.HeaderConstants.ENCRYPTION_KEY_SHA256);
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_BLOB_SEQUENCE_NUMBER = HttpHeaderName.fromString("x-ms-blob-sequence-number");
     protected static final HttpHeaderName X_MS_COPY_COMPLETION_TIME = HttpHeaderName.fromString("x-ms-copy-completion-time");

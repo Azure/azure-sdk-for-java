@@ -6,92 +6,104 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.machinelearning.MachineLearningManager;
+import com.azure.resourcemanager.machinelearning.models.EmailNotificationEnableType;
 import com.azure.resourcemanager.machinelearning.models.IdentityConfiguration;
 import com.azure.resourcemanager.machinelearning.models.JobBase;
 import com.azure.resourcemanager.machinelearning.models.JobBaseProperties;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.machinelearning.models.JobService;
+import com.azure.resourcemanager.machinelearning.models.Nodes;
+import com.azure.resourcemanager.machinelearning.models.NotificationSetting;
+import com.azure.resourcemanager.machinelearning.models.Webhook;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class JobsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"displayName\":\"fhdfo\",\"status\":\"Provisioning\",\"experimentName\":\"lcfcpzajgq\",\"services\":{\"ebolhyiohcjugd\":{\"jobServiceType\":\"meqhtngrx\",\"port\":1649257125,\"endpoint\":\"sewfbllegezvwuwi\",\"status\":\"msgg\",\"errorMessage\":\"cmazilq\",\"properties\":{\"oqpyb\":\"ip\",\"aqqqtmpgr\":\"ykmdklwbqkmtw\",\"ltwedllp\":\"c\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"ydc\":{\"jobServiceType\":\"ggxszmyxguyk\",\"port\":1274422195,\"endpoint\":\"mwzplcrzdwe\",\"status\":\"vspknxraidjeddn\",\"errorMessage\":\"n\",\"properties\":{\"tnuckojqoxpw\":\"rhcfeqjkacu\",\"doyqbpzxushmltih\":\"hvfdosq\",\"rzpggs\":\"cptvkbcykntdzze\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"mcjjxx\":{\"jobServiceType\":\"neibhztlzbwb\",\"port\":852314155,\"endpoint\":\"spkgk\",\"status\":\"pvbzmyo\",\"errorMessage\":\"xstxsfztlvs\",\"properties\":{\"yfgtwxmjdbzfiac\":\"shhcdlsowyhxwh\",\"mch\":\"wmce\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}},\"rzzxqtcgs\":{\"jobServiceType\":\"dwmjurtnolzio\",\"port\":1365609318,\"endpoint\":\"ukeplfwykr\",\"status\":\"jenpsff\",\"errorMessage\":\"zefajgb\",\"properties\":{\"cevfbiekydk\":\"xpeuahvxfn\",\"yrvdszrizpej\":\"dkzfkneck\"},\"nodes\":{\"nodesValueType\":\"Nodes\"}}},\"computeId\":\"hzcicitykzyi\",\"isArchived\":true,\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"componentId\":\"gnfunh\",\"notificationSetting\":{\"emails\":[\"syiwm\",\"pkudhjztbwzjbqzq\"],\"emailOn\":[\"JobCompleted\"],\"webhooks\":{\"lkdsbekvprkwpvx\":{\"webhookType\":\"Webhook\",\"eventType\":\"zdb\"},\"zshfafbeh\":{\"webhookType\":\"Webhook\",\"eventType\":\"qcnv\"},\"eplpfrecri\":{\"webhookType\":\"Webhook\",\"eventType\":\"eiuexkpgrmwdwlr\"}}},\"description\":\"aba\",\"tags\":{\"sgpdbhbdxsjsox\":\"sizao\",\"inlgttvon\":\"uwuungdvvddrcpqu\",\"mitmtkcqixgqxs\":\"rpeli\",\"wqumecqyianjmv\":\"pevthuvupdsafqag\"},\"properties\":{\"xqtgzvzcfmwfogjr\":\"dkqffhux\"}},\"id\":\"tbpnh\",\"name\":\"o\",\"type\":\"lvfzwt\"}";
 
-        String responseStr =
-            "{\"properties\":{\"jobType\":\"JobBaseProperties\",\"componentId\":\"qmrpahuuonjk\",\"computeId\":\"ukguehvvp\",\"displayName\":\"oegcjoj\",\"experimentName\":\"eui\",\"identity\":{\"identityType\":\"IdentityConfiguration\"},\"isArchived\":true,\"services\":{},\"status\":\"Preparing\",\"description\":\"nhtmeplhbp\",\"properties\":{\"uc\":\"pmummmkva\",\"chxwwuzdmh\":\"jiuaiqpmnufzh\"},\"tags\":{\"mlitqdsj\":\"vivjm\",\"efndslvrqoemwsi\":\"pdviscotyxbrii\"}},\"id\":\"ailwdqmqfyd\",\"name\":\"otmfxlkdlgwgna\",\"type\":\"kuuyiuyuaf\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MachineLearningManager manager = MachineLearningManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        JobBase response = manager.jobs()
+            .define("ecuve")
+            .withExistingWorkspace("iel", "kymqmgudvy")
+            .withProperties(new JobBaseProperties().withDescription("mjtxwazyvi")
+                .withTags(mapOf("rjmwaa", "ebffkgfiyd"))
+                .withProperties(mapOf("jnaotavwmrfqt", "khptyhziqeo", "cyrwvoohmcw", "gdfecju"))
+                .withDisplayName("cwdge")
+                .withExperimentName("rrvjqhoehyirsv")
+                .withServices(mapOf("pspaxhfuwygssssj",
+                    new JobService().withJobServiceType("xpvqpblqubfpeome")
+                        .withPort(153862409)
+                        .withEndpoint("eamzlqvajztsvc")
+                        .withProperties(mapOf("moigawlojwv", "rbfvehuweuitqeyo", "jmujz", "ovjvjjuypcnbucb"))
+                        .withNodes(new Nodes()),
+                    "dfeyaev",
+                    new JobService().withJobServiceType("fep")
+                        .withPort(405179371)
+                        .withEndpoint("sdvjv")
+                        .withProperties(mapOf("eynxkxqnwcekqsb", "ht", "apzebje", "cad", "jbpzdwhxputka",
+                            "wwgverbywuuvei", "rw", "l"))
+                        .withNodes(new Nodes()),
+                    "mtxjca",
+                    new JobService().withJobServiceType("qfxfiyjzuqgxbo")
+                        .withPort(91105546)
+                        .withEndpoint("dymdypsxkw")
+                        .withProperties(mapOf("vsi", "zclilyoixeeiznqi"))
+                        .withNodes(new Nodes()),
+                    "vncxtnbutytoaini",
+                    new JobService().withJobServiceType("sjuqqtzrnubodgou")
+                        .withPort(1627288021)
+                        .withEndpoint("npgugrjx")
+                        .withProperties(mapOf("bafiqxomevketa", "tipkdb"))
+                        .withNodes(new Nodes())))
+                .withComputeId("xhzqgbaqvqe")
+                .withIsArchived(false)
+                .withIdentity(new IdentityConfiguration())
+                .withComponentId("obkrgryfnbx")
+                .withNotificationSetting(new NotificationSetting().withEmails(Arrays.asList("yszhxoth", "yifjufzlg"))
+                    .withEmailOn(Arrays.asList(EmailNotificationEnableType.JOB_CANCELLED))
+                    .withWebhooks(mapOf("sxyrywdezprycix", new Webhook().withEventType("mnuzyyc"), "k",
+                        new Webhook().withEventType("yamochpwwykfyt"), "oudmcadcojf",
+                        new Webhook().withEventType("dckwqvckh")))))
+            .create();
 
-        MachineLearningManager manager =
-            MachineLearningManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        JobBase response =
-            manager
-                .jobs()
-                .define("zqpl")
-                .withExistingWorkspace("at", "ejrnmi")
-                .withProperties(
-                    new JobBaseProperties()
-                        .withDescription("xxkwykuqdndx")
-                        .withProperties(mapOf("gga", "h"))
-                        .withTags(mapOf("eerscdxrnrnjrcu", "gtf", "acnrgfdtncmspsan", "mb", "b", "ame"))
-                        .withComponentId("kihonik")
-                        .withComputeId("r")
-                        .withDisplayName("ffjilzfbpnt")
-                        .withExperimentName("kensckh")
-                        .withIdentity(new IdentityConfiguration())
-                        .withIsArchived(false)
-                        .withServices(mapOf()))
-                .create();
-
-        Assertions.assertEquals("nhtmeplhbp", response.properties().description());
-        Assertions.assertEquals("pmummmkva", response.properties().properties().get("uc"));
-        Assertions.assertEquals("vivjm", response.properties().tags().get("mlitqdsj"));
-        Assertions.assertEquals("qmrpahuuonjk", response.properties().componentId());
-        Assertions.assertEquals("ukguehvvp", response.properties().computeId());
-        Assertions.assertEquals("oegcjoj", response.properties().displayName());
-        Assertions.assertEquals("eui", response.properties().experimentName());
+        Assertions.assertEquals("aba", response.properties().description());
+        Assertions.assertEquals("sizao", response.properties().tags().get("sgpdbhbdxsjsox"));
+        Assertions.assertEquals("dkqffhux", response.properties().properties().get("xqtgzvzcfmwfogjr"));
+        Assertions.assertEquals("fhdfo", response.properties().displayName());
+        Assertions.assertEquals("lcfcpzajgq", response.properties().experimentName());
+        Assertions.assertEquals("meqhtngrx", response.properties().services().get("ebolhyiohcjugd").jobServiceType());
+        Assertions.assertEquals(1649257125, response.properties().services().get("ebolhyiohcjugd").port());
+        Assertions.assertEquals("sewfbllegezvwuwi", response.properties().services().get("ebolhyiohcjugd").endpoint());
+        Assertions.assertEquals("ip", response.properties().services().get("ebolhyiohcjugd").properties().get("oqpyb"));
+        Assertions.assertEquals("hzcicitykzyi", response.properties().computeId());
         Assertions.assertEquals(true, response.properties().isArchived());
+        Assertions.assertEquals("gnfunh", response.properties().componentId());
+        Assertions.assertEquals("syiwm", response.properties().notificationSetting().emails().get(0));
+        Assertions.assertEquals(EmailNotificationEnableType.JOB_COMPLETED,
+            response.properties().notificationSetting().emailOn().get(0));
+        Assertions.assertEquals("zdb",
+            response.properties().notificationSetting().webhooks().get("lkdsbekvprkwpvx").eventType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

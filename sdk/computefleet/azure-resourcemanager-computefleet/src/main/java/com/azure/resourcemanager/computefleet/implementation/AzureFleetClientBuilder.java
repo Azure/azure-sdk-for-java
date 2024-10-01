@@ -20,12 +20,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { AzureFleetClientImpl.class })
 public final class AzureFleetClientBuilder {
     /*
-     * Server parameter
+     * Service host
      */
     private String endpoint;
 
     /**
-     * Sets Server parameter.
+     * Sets Service host.
      * 
      * @param endpoint the endpoint value.
      * @return the AzureFleetClientBuilder.
@@ -121,6 +121,7 @@ public final class AzureFleetClientBuilder {
      * @return an instance of AzureFleetClientImpl.
      */
     public AzureFleetClientImpl buildClient() {
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
             ? pipeline
@@ -131,7 +132,7 @@ public final class AzureFleetClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         AzureFleetClientImpl client = new AzureFleetClientImpl(localPipeline, localSerializerAdapter,
-            localDefaultPollInterval, localEnvironment, this.endpoint, this.subscriptionId);
+            localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }

@@ -38,8 +38,8 @@ import com.azure.storage.file.datalake.implementation.models.PathsDeleteHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsGetPropertiesHeaders;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlHeaders;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
-import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
+import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
 import com.azure.storage.file.datalake.models.AccessControlChangeResult;
@@ -434,13 +434,13 @@ public class DataLakePathClient {
 
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () ->
-            this.dataLakeStorage.getPaths().createWithResponse(null, null, pathResourceType, null, null, null,
-                finalOptions.getSourceLeaseId(), ModelHelper.buildMetadataString(finalOptions.getMetadata()),
-                finalOptions.getPermissions(), finalOptions.getUmask(), finalOptions.getOwner(),
-                finalOptions.getGroup(), acl, finalOptions.getProposedLeaseId(), leaseDuration, expiryOptions,
-                finalExpiresOnString, finalOptions.getEncryptionContext(), finalOptions.getPathHttpHeaders(), lac, mac,
-                null, customerProvidedKey, finalContext);
+        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .createWithResponse(null, null, pathResourceType, null, null, null, finalOptions.getSourceLeaseId(),
+                ModelHelper.buildMetadataString(finalOptions.getMetadata()), finalOptions.getPermissions(),
+                finalOptions.getUmask(), finalOptions.getOwner(), finalOptions.getGroup(), acl,
+                finalOptions.getProposedLeaseId(), leaseDuration, expiryOptions, finalExpiresOnString,
+                finalOptions.getEncryptionContext(), finalOptions.getPathHttpHeaders(), lac, mac, null,
+                customerProvidedKey, finalContext);
 
         ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
@@ -1368,9 +1368,9 @@ public class DataLakePathClient {
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
 
         Context finalContext = context == null ? Context.NONE : context;
-        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation =
-            () -> this.dataLakeStorage.getPaths().getPropertiesWithResponse(null, null,
-                PathGetPropertiesAction.GET_ACCESS_CONTROL, userPrincipalNameReturned, lac, mac, finalContext);
+        Callable<ResponseBase<PathsGetPropertiesHeaders, Void>> operation = () -> this.dataLakeStorage.getPaths()
+            .getPropertiesWithResponse(null, null, PathGetPropertiesAction.GET_ACCESS_CONTROL,
+                userPrincipalNameReturned, lac, mac, finalContext);
         ResponseBase<PathsGetPropertiesHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);
 
@@ -1417,14 +1417,13 @@ public class DataLakePathClient {
         }
         String finalRenameSource = signature != null ? renameSource + "?" + signature : renameSource;
 
-        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () ->
-            dataLakePathClient.dataLakeStorage.getPaths().createWithResponse(null /* request id */, null /* timeout */,
-                null /* pathResourceType */, null /* continuation */, PathRenameMode.LEGACY, finalRenameSource,
+        Callable<ResponseBase<PathsCreateHeaders, Void>> operation = () -> dataLakePathClient.dataLakeStorage.getPaths()
+            .createWithResponse(null /* request id */, null /* timeout */, null /* pathResourceType */,
+                null /* continuation */, PathRenameMode.LEGACY, finalRenameSource,
                 finalSourceRequestConditions.getLeaseId(), null /* properties */, null /* permissions */,
                 null /* umask */, null /* owner */, null /* group */, null /* acl */, null /* proposedLeaseId */,
-                null /* leaseDuration */, null /* expiryOptions */, null /* expiresOn */,
-                null /* encryptionContext */, null /* pathHttpHeaders */, destLac, destMac, sourceConditions,
-                null /* cpkInfo */, finalContext);
+                null /* leaseDuration */, null /* expiryOptions */, null /* expiresOn */, null /* encryptionContext */,
+                null /* pathHttpHeaders */, destLac, destMac, sourceConditions, null /* cpkInfo */, finalContext);
 
         ResponseBase<PathsCreateHeaders, Void> response = sendRequest(operation, timeout,
             DataLakeStorageException.class);

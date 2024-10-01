@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -98,5 +102,67 @@ public final class ServiceConfigResultProperties extends ServiceConfigListResult
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", serviceName());
+        jsonWriter.writeStringField("fileName", fileName());
+        jsonWriter.writeStringField("componentName", componentName());
+        jsonWriter.writeStringField("content", content());
+        jsonWriter.writeStringField("type", type());
+        jsonWriter.writeStringField("path", path());
+        jsonWriter.writeMapField("customKeys", customKeys(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("defaultKeys", defaultKeys(), (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceConfigResultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceConfigResultProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceConfigResultProperties.
+     */
+    public static ServiceConfigResultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceConfigResultProperties deserializedServiceConfigResultProperties
+                = new ServiceConfigResultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedServiceConfigResultProperties.withServiceName(reader.getString());
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedServiceConfigResultProperties.withFileName(reader.getString());
+                } else if ("componentName".equals(fieldName)) {
+                    deserializedServiceConfigResultProperties.withComponentName(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    deserializedServiceConfigResultProperties.withContent(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceConfigResultProperties.withType(reader.getString());
+                } else if ("path".equals(fieldName)) {
+                    deserializedServiceConfigResultProperties.withPath(reader.getString());
+                } else if ("customKeys".equals(fieldName)) {
+                    Map<String, String> customKeys = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceConfigResultProperties.withCustomKeys(customKeys);
+                } else if ("defaultKeys".equals(fieldName)) {
+                    Map<String, ServiceConfigListResultValueEntity> defaultKeys
+                        = reader.readMap(reader1 -> ServiceConfigListResultValueEntity.fromJson(reader1));
+                    deserializedServiceConfigResultProperties.withDefaultKeys(defaultKeys);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceConfigResultProperties;
+        });
     }
 }

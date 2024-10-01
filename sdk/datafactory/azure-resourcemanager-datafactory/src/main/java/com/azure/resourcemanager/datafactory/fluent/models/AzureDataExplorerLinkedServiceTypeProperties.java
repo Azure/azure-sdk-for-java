@@ -6,52 +6,51 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Azure Data Explorer (Kusto) linked service properties.
  */
 @Fluent
-public final class AzureDataExplorerLinkedServiceTypeProperties {
+public final class AzureDataExplorerLinkedServiceTypeProperties
+    implements JsonSerializable<AzureDataExplorerLinkedServiceTypeProperties> {
     /*
      * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
      * https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
      */
-    @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
      * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
      * The key of the service principal used to authenticate against Kusto.
      */
-    @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
      * Database name for connection. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "database", required = true)
     private Object database;
 
     /*
      * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
      * The credential reference containing authentication information.
      */
-    @JsonProperty(value = "credential")
     private CredentialReference credential;
 
     /**
@@ -213,4 +212,59 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
+        jsonWriter.writeJsonField("servicePrincipalKey", this.servicePrincipalKey);
+        jsonWriter.writeUntypedField("tenant", this.tenant);
+        jsonWriter.writeJsonField("credential", this.credential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDataExplorerLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDataExplorerLinkedServiceTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureDataExplorerLinkedServiceTypeProperties.
+     */
+    public static AzureDataExplorerLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDataExplorerLinkedServiceTypeProperties deserializedAzureDataExplorerLinkedServiceTypeProperties
+                = new AzureDataExplorerLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedAzureDataExplorerLinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedAzureDataExplorerLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("servicePrincipalId".equals(fieldName)) {
+                    deserializedAzureDataExplorerLinkedServiceTypeProperties.servicePrincipalId = reader.readUntyped();
+                } else if ("servicePrincipalKey".equals(fieldName)) {
+                    deserializedAzureDataExplorerLinkedServiceTypeProperties.servicePrincipalKey
+                        = SecretBase.fromJson(reader);
+                } else if ("tenant".equals(fieldName)) {
+                    deserializedAzureDataExplorerLinkedServiceTypeProperties.tenant = reader.readUntyped();
+                } else if ("credential".equals(fieldName)) {
+                    deserializedAzureDataExplorerLinkedServiceTypeProperties.credential
+                        = CredentialReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureDataExplorerLinkedServiceTypeProperties;
+        });
+    }
 }

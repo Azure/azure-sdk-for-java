@@ -5,25 +5,31 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Strictly used in update requests. */
+/**
+ * Strictly used in update requests.
+ */
 @Fluent
-public class PartialMinimalTrackedResourceWithIdentity extends PartialMinimalTrackedResource {
+public final class PartialMinimalTrackedResourceWithIdentity extends PartialMinimalTrackedResource {
     /*
      * Managed service identity (system assigned and/or user assigned identities)
      */
-    @JsonProperty(value = "identity")
     private PartialManagedServiceIdentity identity;
 
-    /** Creates an instance of PartialMinimalTrackedResourceWithIdentity class. */
+    /**
+     * Creates an instance of PartialMinimalTrackedResourceWithIdentity class.
+     */
     public PartialMinimalTrackedResourceWithIdentity() {
     }
 
     /**
      * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @return the identity value.
      */
     public PartialManagedServiceIdentity identity() {
@@ -32,7 +38,7 @@ public class PartialMinimalTrackedResourceWithIdentity extends PartialMinimalTra
 
     /**
      * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PartialMinimalTrackedResourceWithIdentity object itself.
      */
@@ -41,7 +47,9 @@ public class PartialMinimalTrackedResourceWithIdentity extends PartialMinimalTra
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartialMinimalTrackedResourceWithIdentity withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,7 +58,7 @@ public class PartialMinimalTrackedResourceWithIdentity extends PartialMinimalTra
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -59,5 +67,47 @@ public class PartialMinimalTrackedResourceWithIdentity extends PartialMinimalTra
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartialMinimalTrackedResourceWithIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartialMinimalTrackedResourceWithIdentity if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartialMinimalTrackedResourceWithIdentity.
+     */
+    public static PartialMinimalTrackedResourceWithIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartialMinimalTrackedResourceWithIdentity deserializedPartialMinimalTrackedResourceWithIdentity
+                = new PartialMinimalTrackedResourceWithIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPartialMinimalTrackedResourceWithIdentity.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedPartialMinimalTrackedResourceWithIdentity.identity
+                        = PartialManagedServiceIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartialMinimalTrackedResourceWithIdentity;
+        });
     }
 }

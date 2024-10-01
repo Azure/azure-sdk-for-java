@@ -11,19 +11,19 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ServiceNowSource\",\"query\":\"datajdga\",\"queryTimeout\":\"dataktnsowszbeflhx\",\"additionalColumns\":\"datargokyngarwzutzjx\",\"sourceRetryCount\":\"datassmnatnpo\",\"sourceRetryWait\":\"dataeylqysgm\",\"maxConcurrentConnections\":\"dataxngekcwe\",\"disableMetricsCollection\":\"dataqtkdginmhlgpefqq\",\"\":{\"cqgqrsopq\":\"datayowrwvbqv\",\"pvyktfuhfaabi\":\"dataiqfaxtljpyzcgugs\",\"qlkh\":\"datavslocdkpvv\",\"fmibwzuhy\":\"dataxnzjzashhiz\"}}")
+            "{\"type\":\"ServiceNowSource\",\"query\":\"datagw\",\"queryTimeout\":\"dataujshcsnk\",\"additionalColumns\":\"datagpqxqevt\",\"sourceRetryCount\":\"datavyy\",\"sourceRetryWait\":\"datakjirvjogsalvjl\",\"maxConcurrentConnections\":\"dataimua\",\"disableMetricsCollection\":\"datakympwquu\",\"\":{\"iqeftgunropdpuf\":\"dataofuzthszjyanhs\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datassmnatnpo")
-            .withSourceRetryWait("dataeylqysgm")
-            .withMaxConcurrentConnections("dataxngekcwe")
-            .withDisableMetricsCollection("dataqtkdginmhlgpefqq")
-            .withQueryTimeout("dataktnsowszbeflhx")
-            .withAdditionalColumns("datargokyngarwzutzjx")
-            .withQuery("datajdga");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datavyy")
+            .withSourceRetryWait("datakjirvjogsalvjl")
+            .withMaxConcurrentConnections("dataimua")
+            .withDisableMetricsCollection("datakympwquu")
+            .withQueryTimeout("dataujshcsnk")
+            .withAdditionalColumns("datagpqxqevt")
+            .withQuery("datagw");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

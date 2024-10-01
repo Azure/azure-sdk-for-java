@@ -167,7 +167,7 @@ public final class PrivateDnsManagementClientImpl extends AzureServiceClient imp
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-06-01";
+        this.apiVersion = "2024-06-01";
         this.privateZones = new PrivateZonesClientImpl(this);
         this.virtualNetworkLinks = new VirtualNetworkLinksClientImpl(this);
         this.recordSets = new RecordSetsClientImpl(this);

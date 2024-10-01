@@ -6,36 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightStreamingActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * HDInsight streaming activity type.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = HDInsightStreamingActivity.class,
-    visible = true)
-@JsonTypeName("HDInsightStreaming")
 @Fluent
 public final class HDInsightStreamingActivity extends ExecutionActivity {
     /*
      * Type of activity.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "HDInsightStreaming";
 
     /*
      * HDInsight streaming activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private HDInsightStreamingActivityTypeProperties innerTypeProperties
         = new HDInsightStreamingActivityTypeProperties();
 
@@ -430,4 +422,86 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HDInsightStreamingActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightStreamingActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightStreamingActivity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightStreamingActivity.
+     */
+    public static HDInsightStreamingActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightStreamingActivity deserializedHDInsightStreamingActivity = new HDInsightStreamingActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedHDInsightStreamingActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedHDInsightStreamingActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity.innerTypeProperties
+                        = HDInsightStreamingActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightStreamingActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightStreamingActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightStreamingActivity;
+        });
+    }
 }

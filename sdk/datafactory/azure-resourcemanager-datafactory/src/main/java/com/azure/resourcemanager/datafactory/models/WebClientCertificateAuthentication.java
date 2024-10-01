@@ -6,40 +6,30 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A WebLinkedService that uses client certificate based authentication to communicate with an HTTP endpoint. This
  * scheme follows mutual authentication; the server must also provide valid credentials to the client.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "authenticationType",
-    defaultImpl = WebClientCertificateAuthentication.class,
-    visible = true)
-@JsonTypeName("ClientCertificate")
 @Fluent
 public final class WebClientCertificateAuthentication extends WebLinkedServiceTypeProperties {
     /*
      * Type of authentication used to connect to the web table source.
      */
-    @JsonTypeId
-    @JsonProperty(value = "authenticationType", required = true)
     private WebAuthenticationType authenticationType = WebAuthenticationType.CLIENT_CERTIFICATE;
 
     /*
      * Base64-encoded contents of a PFX file.
      */
-    @JsonProperty(value = "pfx", required = true)
     private SecretBase pfx;
 
     /*
      * Password for the PFX file.
      */
-    @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
     /**
@@ -132,4 +122,53 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebClientCertificateAuthentication.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("url", url());
+        jsonWriter.writeJsonField("pfx", this.pfx);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebClientCertificateAuthentication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebClientCertificateAuthentication if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebClientCertificateAuthentication.
+     */
+    public static WebClientCertificateAuthentication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebClientCertificateAuthentication deserializedWebClientCertificateAuthentication
+                = new WebClientCertificateAuthentication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.withUrl(reader.readUntyped());
+                } else if ("pfx".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.pfx = SecretBase.fromJson(reader);
+                } else if ("password".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.password = SecretBase.fromJson(reader);
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedWebClientCertificateAuthentication.authenticationType
+                        = WebAuthenticationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebClientCertificateAuthentication;
+        });
+    }
 }

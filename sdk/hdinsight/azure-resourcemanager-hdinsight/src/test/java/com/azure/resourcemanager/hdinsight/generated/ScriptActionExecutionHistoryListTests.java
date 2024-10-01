@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hdinsight.models.ScriptActionExecutionHistoryLi
 public final class ScriptActionExecutionHistoryListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScriptActionExecutionHistoryList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"scriptExecutionId\":7238089424205548916,\"startTime\":\"nrkcxkj\",\"endTime\":\"nxm\",\"status\":\"uxswqrntvl\",\"operation\":\"jpsttexoq\",\"executionSummary\":[{\"status\":\"yyufmhruncuw\",\"instanceCount\":2077646980},{\"status\":\"kcdqzhlct\",\"instanceCount\":1266865634},{\"status\":\"qn\",\"instanceCount\":981773620},{\"status\":\"chrqb\",\"instanceCount\":1026325475}],\"debugInformation\":\"cgegydcwbo\",\"name\":\"jumvqqolihrraio\",\"uri\":\"aubrjtloq\",\"parameters\":\"uojrngiflr\",\"roles\":[\"asccbiui\",\"zdlyjdfqw\"],\"applicationName\":\"yoqufdvruz\"}],\"nextLink\":\"zojhpctfnmd\"}")
-                .toObject(ScriptActionExecutionHistoryList.class);
+        ScriptActionExecutionHistoryList model = BinaryData.fromString(
+            "{\"value\":[{\"scriptExecutionId\":7238089424205548916,\"startTime\":\"nrkcxkj\",\"endTime\":\"nxm\",\"status\":\"uxswqrntvl\",\"operation\":\"jpsttexoq\",\"executionSummary\":[{\"status\":\"yyufmhruncuw\",\"instanceCount\":2077646980},{\"status\":\"kcdqzhlct\",\"instanceCount\":1266865634},{\"status\":\"qn\",\"instanceCount\":981773620},{\"status\":\"chrqb\",\"instanceCount\":1026325475}],\"debugInformation\":\"cgegydcwbo\",\"name\":\"jumvqqolihrraio\",\"uri\":\"aubrjtloq\",\"parameters\":\"uojrngiflr\",\"roles\":[\"asccbiui\",\"zdlyjdfqw\"],\"applicationName\":\"yoqufdvruz\"}],\"nextLink\":\"zojhpctfnmd\"}")
+            .toObject(ScriptActionExecutionHistoryList.class);
     }
 
     @org.junit.jupiter.api.Test

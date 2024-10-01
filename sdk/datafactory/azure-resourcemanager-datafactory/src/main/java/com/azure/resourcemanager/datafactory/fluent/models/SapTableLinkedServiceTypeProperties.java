@@ -5,118 +5,107 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Properties specific to this linked service type.
  */
 @Fluent
-public final class SapTableLinkedServiceTypeProperties {
+public final class SapTableLinkedServiceTypeProperties
+    implements JsonSerializable<SapTableLinkedServiceTypeProperties> {
     /*
      * Host name of the SAP instance where the table is located. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "server")
     private Object server;
 
     /*
      * System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a
      * string.) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "systemNumber")
     private Object systemNumber;
 
     /*
      * Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number
      * represented as a string) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "clientId")
     private Object clientId;
 
     /*
      * Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "language")
     private Object language;
 
     /*
      * SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "systemId")
     private Object systemId;
 
     /*
      * Username to access the SAP server where the table is located. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "userName")
     private Object username;
 
     /*
      * Password to access the SAP server where the table is located.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "messageServer")
     private Object messageServer;
 
     /*
      * The service name or port number of the Message Server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "messageServerService")
     private Object messageServerService;
 
     /*
      * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on).
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "sncMode")
     private Object sncMode;
 
     /*
      * Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "sncMyName")
     private Object sncMyName;
 
     /*
      * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "sncPartnerName")
     private Object sncPartnerName;
 
     /*
      * External security product's library to access the SAP server where the table is located. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "sncLibraryPath")
     private Object sncLibraryPath;
 
     /*
      * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "sncQop")
     private Object sncQop;
 
     /*
      * The Logon Group for the SAP System. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "logonGroup")
     private Object logonGroup;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
     /**
@@ -484,5 +473,87 @@ public final class SapTableLinkedServiceTypeProperties {
         if (password() != null) {
             password().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("server", this.server);
+        jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeUntypedField("language", this.language);
+        jsonWriter.writeUntypedField("systemId", this.systemId);
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("messageServer", this.messageServer);
+        jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
+        jsonWriter.writeUntypedField("sncMode", this.sncMode);
+        jsonWriter.writeUntypedField("sncMyName", this.sncMyName);
+        jsonWriter.writeUntypedField("sncPartnerName", this.sncPartnerName);
+        jsonWriter.writeUntypedField("sncLibraryPath", this.sncLibraryPath);
+        jsonWriter.writeUntypedField("sncQop", this.sncQop);
+        jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapTableLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapTableLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapTableLinkedServiceTypeProperties.
+     */
+    public static SapTableLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapTableLinkedServiceTypeProperties deserializedSapTableLinkedServiceTypeProperties
+                = new SapTableLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("server".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.server = reader.readUntyped();
+                } else if ("systemNumber".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.systemNumber = reader.readUntyped();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("language".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.language = reader.readUntyped();
+                } else if ("systemId".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.systemId = reader.readUntyped();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("messageServer".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.messageServer = reader.readUntyped();
+                } else if ("messageServerService".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.messageServerService = reader.readUntyped();
+                } else if ("sncMode".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.sncMode = reader.readUntyped();
+                } else if ("sncMyName".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.sncMyName = reader.readUntyped();
+                } else if ("sncPartnerName".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.sncPartnerName = reader.readUntyped();
+                } else if ("sncLibraryPath".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.sncLibraryPath = reader.readUntyped();
+                } else if ("sncQop".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.sncQop = reader.readUntyped();
+                } else if ("logonGroup".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.logonGroup = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSapTableLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapTableLinkedServiceTypeProperties;
+        });
     }
 }

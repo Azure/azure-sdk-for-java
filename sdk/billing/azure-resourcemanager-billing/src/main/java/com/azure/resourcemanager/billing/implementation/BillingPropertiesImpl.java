@@ -20,19 +20,18 @@ public final class BillingPropertiesImpl implements BillingProperties {
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public BillingPropertiesImpl(
-        BillingPropertiesClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public BillingPropertiesImpl(BillingPropertiesClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<BillingProperty> getWithResponse(Context context) {
-        Response<BillingPropertyInner> inner = this.serviceClient().getWithResponse(context);
+    public Response<BillingProperty> getWithResponse(Boolean includeBillingCountry, Boolean includeTransitionStatus,
+        Context context) {
+        Response<BillingPropertyInner> inner
+            = this.serviceClient().getWithResponse(includeBillingCountry, includeTransitionStatus, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BillingPropertyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -51,10 +50,7 @@ public final class BillingPropertiesImpl implements BillingProperties {
     public Response<BillingProperty> updateWithResponse(BillingPropertyInner parameters, Context context) {
         Response<BillingPropertyInner> inner = this.serviceClient().updateWithResponse(parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BillingPropertyImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.machinelearning.fluent.models.CodeContainerInner;
 
-/** An instance of this class provides access to all the operations defined in CodeContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CodeContainersClient.
+ */
 public interface CodeContainersClient {
     /**
      * List containers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface CodeContainersClient {
 
     /**
      * List containers.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param skip Continuation token for pagination.
@@ -39,12 +41,12 @@ public interface CodeContainersClient {
      * @return a paginated list of CodeContainer entities as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CodeContainerInner> list(
-        String resourceGroupName, String workspaceName, String skip, Context context);
+    PagedIterable<CodeContainerInner> list(String resourceGroupName, String workspaceName, String skip,
+        Context context);
 
     /**
      * Delete container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -59,7 +61,7 @@ public interface CodeContainersClient {
 
     /**
      * Delete container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -72,7 +74,7 @@ public interface CodeContainersClient {
 
     /**
      * Get container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -83,12 +85,12 @@ public interface CodeContainersClient {
      * @return container along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeContainerInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String name, Context context);
+    Response<CodeContainerInner> getWithResponse(String resourceGroupName, String workspaceName, String name,
+        Context context);
 
     /**
      * Get container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -102,7 +104,7 @@ public interface CodeContainersClient {
 
     /**
      * Create or update container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -114,12 +116,12 @@ public interface CodeContainersClient {
      * @return azure Resource Manager resource envelope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CodeContainerInner> createOrUpdateWithResponse(
-        String resourceGroupName, String workspaceName, String name, CodeContainerInner body, Context context);
+    Response<CodeContainerInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName, String name,
+        CodeContainerInner body, Context context);
 
     /**
      * Create or update container.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName Name of Azure Machine Learning workspace.
      * @param name Container name. This is case-sensitive.
@@ -130,6 +132,6 @@ public interface CodeContainersClient {
      * @return azure Resource Manager resource envelope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CodeContainerInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String name, CodeContainerInner body);
+    CodeContainerInner createOrUpdate(String resourceGroupName, String workspaceName, String name,
+        CodeContainerInner body);
 }

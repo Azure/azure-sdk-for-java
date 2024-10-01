@@ -18,8 +18,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -45,6 +43,7 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -379,13 +378,12 @@ public class JacksonAdapterTests {
     }
 
     @ParameterizedTest
-    @MethodSource("binaryDataWithJsonSerializableContainerSupplier")
-    @Execution(ExecutionMode.SAME_THREAD)
-    public void binaryDataWithJsonSerializableContainer(BinaryData binaryData, String expectedJson) {
+    @MethodSource("binaryDataWithJsonSerializableContainerSerializationSupplier")
+    public void binaryDataWithJsonSerializableContainerSerialization(BinaryData binaryData, String expectedJson) {
         assertEquals(expectedJson, binaryData.toString());
     }
 
-    private static Stream<Arguments> binaryDataWithJsonSerializableContainerSupplier() {
+    private static Stream<Arguments> binaryDataWithJsonSerializableContainerSerializationSupplier() {
         Simple[] array = new Simple[] { new Simple("id", "name") };
         List<Simple> list = Collections.singletonList(new Simple("id", "name"));
         Iterable<Simple> iterable = () -> Collections.singletonList(new Simple("id", "name")).iterator();
@@ -401,6 +399,38 @@ public class JacksonAdapterTests {
 
             // Should use modifyMapSerializer or modifyMapLikeSerializer
             Arguments.of(BinaryData.fromObject(map), "{\"key\":{\"id\":\"id\",\"name\":\"name\"}}"));
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayDeserialization() {
+        Simple[] expected = new Simple[] { new Simple("id", "name") };
+        Simple[] actual = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]").toObject(Simple[].class);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerArrayArrayDeserialization() {
+        Simple[][] expected = new Simple[][] { { new Simple("id", "name") } };
+        Simple[][] actual = BinaryData.fromString("[[{\"id\":\"id\",\"name\":\"name\"}]]").toObject(Simple[][].class);
+        assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerListDeserialization() {
+        List<Simple> expected = Collections.singletonList(new Simple("id", "name"));
+        List<Simple> actual
+            = BinaryData.fromString("[{\"id\":\"id\",\"name\":\"name\"}]").toObject(new TypeReference<List<Simple>>() {
+            });
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void binaryDataWithJsonSerializableContainerMapDeserialization() {
+        Map<String, Simple> expected = Collections.singletonMap("key", new Simple("id", "name"));
+        Map<String, Simple> actual = BinaryData.fromString("{\"key\":{\"id\":\"id\",\"name\":\"name\"}}")
+            .toObject(new TypeReference<Map<String, Simple>>() {
+            });
+        assertEquals(expected, actual);
     }
 
     public static final class StronglyTypedHeaders {

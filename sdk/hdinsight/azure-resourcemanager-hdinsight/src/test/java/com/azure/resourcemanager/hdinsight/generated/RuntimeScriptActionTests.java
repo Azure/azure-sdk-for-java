@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RuntimeScriptActionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuntimeScriptAction model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"fqrvkdvjsllrmvvd\",\"uri\":\"watkpnpulexxb\",\"parameters\":\"wtruwiqzbqjvsovm\",\"roles\":[\"kacspkw\",\"hzdobpxjmflbvvnc\"],\"applicationName\":\"kcciwwzjuqkhr\"}")
-                .toObject(RuntimeScriptAction.class);
+        RuntimeScriptAction model = BinaryData.fromString(
+            "{\"name\":\"fqrvkdvjsllrmvvd\",\"uri\":\"watkpnpulexxb\",\"parameters\":\"wtruwiqzbqjvsovm\",\"roles\":[\"kacspkw\",\"hzdobpxjmflbvvnc\"],\"applicationName\":\"kcciwwzjuqkhr\"}")
+            .toObject(RuntimeScriptAction.class);
         Assertions.assertEquals("fqrvkdvjsllrmvvd", model.name());
         Assertions.assertEquals("watkpnpulexxb", model.uri());
         Assertions.assertEquals("wtruwiqzbqjvsovm", model.parameters());
@@ -25,12 +23,10 @@ public final class RuntimeScriptActionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuntimeScriptAction model =
-            new RuntimeScriptAction()
-                .withName("fqrvkdvjsllrmvvd")
-                .withUri("watkpnpulexxb")
-                .withParameters("wtruwiqzbqjvsovm")
-                .withRoles(Arrays.asList("kacspkw", "hzdobpxjmflbvvnc"));
+        RuntimeScriptAction model = new RuntimeScriptAction().withName("fqrvkdvjsllrmvvd")
+            .withUri("watkpnpulexxb")
+            .withParameters("wtruwiqzbqjvsovm")
+            .withRoles(Arrays.asList("kacspkw", "hzdobpxjmflbvvnc"));
         model = BinaryData.fromObject(model).toObject(RuntimeScriptAction.class);
         Assertions.assertEquals("fqrvkdvjsllrmvvd", model.name());
         Assertions.assertEquals("watkpnpulexxb", model.uri());

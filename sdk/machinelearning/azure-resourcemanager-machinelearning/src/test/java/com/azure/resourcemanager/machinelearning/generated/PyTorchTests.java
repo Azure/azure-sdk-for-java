@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PyTorchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PyTorch model =
-            BinaryData
-                .fromString("{\"distributionType\":\"PyTorch\",\"processCountPerInstance\":1314386445}")
+        PyTorch model
+            = BinaryData.fromString("{\"distributionType\":\"PyTorch\",\"processCountPerInstance\":409553371}")
                 .toObject(PyTorch.class);
-        Assertions.assertEquals(1314386445, model.processCountPerInstance());
+        Assertions.assertEquals(409553371, model.processCountPerInstance());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PyTorch model = new PyTorch().withProcessCountPerInstance(1314386445);
+        PyTorch model = new PyTorch().withProcessCountPerInstance(409553371);
         model = BinaryData.fromObject(model).toObject(PyTorch.class);
-        Assertions.assertEquals(1314386445, model.processCountPerInstance());
+        Assertions.assertEquals(409553371, model.processCountPerInstance());
     }
 }

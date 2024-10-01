@@ -11,19 +11,19 @@ public final class AzureMySqlSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMySqlSink model = BinaryData.fromString(
-            "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"datagvf\",\"writeBatchSize\":\"dataqz\",\"writeBatchTimeout\":\"datavazkqkycgejgw\",\"sinkRetryCount\":\"datajybboq\",\"sinkRetryWait\":\"dataiycdvdgemymyddz\",\"maxConcurrentConnections\":\"dataxlvgslmgl\",\"disableMetricsCollection\":\"dataeyvag\",\"\":{\"grhrdnsgvsrtqlt\":\"dataqpaexlltmekkae\",\"wiwrubxeyralhb\":\"datawjkraleglpynsbl\",\"qt\":\"datawaltvkylwjo\"}}")
+            "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"datamhookefdgfexakct\",\"writeBatchSize\":\"datapszdn\",\"writeBatchTimeout\":\"datao\",\"sinkRetryCount\":\"dataqxmdievkmrso\",\"sinkRetryWait\":\"datayiheheimuqqmd\",\"maxConcurrentConnections\":\"datawxfmrm\",\"disableMetricsCollection\":\"dataf\",\"\":{\"xdldhhkdeviwp\":\"dataypmthfvszlaf\",\"nu\":\"datahfxvl\"}}")
             .toObject(AzureMySqlSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlSink model = new AzureMySqlSink().withWriteBatchSize("dataqz")
-            .withWriteBatchTimeout("datavazkqkycgejgw")
-            .withSinkRetryCount("datajybboq")
-            .withSinkRetryWait("dataiycdvdgemymyddz")
-            .withMaxConcurrentConnections("dataxlvgslmgl")
-            .withDisableMetricsCollection("dataeyvag")
-            .withPreCopyScript("datagvf");
+        AzureMySqlSink model = new AzureMySqlSink().withWriteBatchSize("datapszdn")
+            .withWriteBatchTimeout("datao")
+            .withSinkRetryCount("dataqxmdievkmrso")
+            .withSinkRetryWait("datayiheheimuqqmd")
+            .withMaxConcurrentConnections("datawxfmrm")
+            .withDisableMetricsCollection("dataf")
+            .withPreCopyScript("datamhookefdgfexakct");
         model = BinaryData.fromObject(model).toObject(AzureMySqlSink.class);
     }
 }

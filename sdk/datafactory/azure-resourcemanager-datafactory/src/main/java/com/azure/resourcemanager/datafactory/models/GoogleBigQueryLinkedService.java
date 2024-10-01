@@ -6,36 +6,28 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Google BigQuery service linked service.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = GoogleBigQueryLinkedService.class,
-    visible = true)
-@JsonTypeName("GoogleBigQuery")
 @Fluent
 public final class GoogleBigQueryLinkedService extends LinkedService {
     /*
      * Type of linked service.
      */
-    @JsonTypeId
-    @JsonProperty(value = "type", required = true)
     private String type = "GoogleBigQuery";
 
     /*
      * Google BigQuery service linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private GoogleBigQueryLinkedServiceTypeProperties innerTypeProperties
         = new GoogleBigQueryLinkedServiceTypeProperties();
 
@@ -62,6 +54,15 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
      */
     private GoogleBigQueryLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GoogleBigQueryLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
     }
 
     /**
@@ -420,4 +421,75 @@ public final class GoogleBigQueryLinkedService extends LinkedService {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GoogleBigQueryLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GoogleBigQueryLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GoogleBigQueryLinkedService if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GoogleBigQueryLinkedService.
+     */
+    public static GoogleBigQueryLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GoogleBigQueryLinkedService deserializedGoogleBigQueryLinkedService = new GoogleBigQueryLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService
+                        .withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedGoogleBigQueryLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedGoogleBigQueryLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.innerTypeProperties
+                        = GoogleBigQueryLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedGoogleBigQueryLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedGoogleBigQueryLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedGoogleBigQueryLinkedService;
+        });
+    }
 }

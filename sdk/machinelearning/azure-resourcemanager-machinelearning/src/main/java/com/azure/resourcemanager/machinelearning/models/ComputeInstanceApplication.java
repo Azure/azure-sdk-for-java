@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.machinelearning.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines an Aml Instance application and its connectivity endpoint URI. */
+/**
+ * Defines an Aml Instance application and its connectivity endpoint URI.
+ */
 @Fluent
-public final class ComputeInstanceApplication {
+public final class ComputeInstanceApplication implements JsonSerializable<ComputeInstanceApplication> {
     /*
      * Name of the ComputeInstance application.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Application' endpoint URI.
      */
-    @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
-    /** Creates an instance of ComputeInstanceApplication class. */
+    /**
+     * Creates an instance of ComputeInstanceApplication class.
+     */
     public ComputeInstanceApplication() {
     }
 
     /**
      * Get the displayName property: Name of the ComputeInstance application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -37,7 +43,7 @@ public final class ComputeInstanceApplication {
 
     /**
      * Set the displayName property: Name of the ComputeInstance application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ComputeInstanceApplication object itself.
      */
@@ -48,7 +54,7 @@ public final class ComputeInstanceApplication {
 
     /**
      * Get the endpointUri property: Application' endpoint URI.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -57,7 +63,7 @@ public final class ComputeInstanceApplication {
 
     /**
      * Set the endpointUri property: Application' endpoint URI.
-     *
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the ComputeInstanceApplication object itself.
      */
@@ -68,9 +74,48 @@ public final class ComputeInstanceApplication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeInstanceApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeInstanceApplication if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeInstanceApplication.
+     */
+    public static ComputeInstanceApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeInstanceApplication deserializedComputeInstanceApplication = new ComputeInstanceApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedComputeInstanceApplication.displayName = reader.getString();
+                } else if ("endpointUri".equals(fieldName)) {
+                    deserializedComputeInstanceApplication.endpointUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeInstanceApplication;
+        });
     }
 }

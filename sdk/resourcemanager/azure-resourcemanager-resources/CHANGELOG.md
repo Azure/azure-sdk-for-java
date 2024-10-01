@@ -1,12 +1,20 @@
 # Release History
 
-## 2.42.0-beta.1 (Unreleased)
+## 2.44.0-beta.1 (Unreleased)
 
 ### Features Added
 
-### Breaking Changes
+- Added data boundary client of api-version 2024-03-01.
 
-### Bugs Fixed
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.42.0 (2024-08-23)
 
 ### Other Changes
 

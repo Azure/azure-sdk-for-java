@@ -1,0 +1,68 @@
+[
+    {
+        "FeatureFlagName": "BooleanTrue",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "An Enabled Feature Flag with no Filters."
+    },
+    {
+        "FeatureFlagName": "BooleanFalse",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "A Disabled Feature Flag with no Filters."
+    },
+    {
+        "FeatureFlagName": "InvalidEnabled",
+        "Inputs": {},
+        "IsEnabled": {
+            "Exception": "Invalid setting 'enabled' with value 'invalid' for feature 'InvalidEnabled'."
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "A Feature Flag with an invalid Enabled Value."
+    },
+    {
+        "FeatureFlagName": "Minimal",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "A Feature Flag with just a key and enabled."
+    },
+    {
+        "FeatureFlagName": "NoEnabled",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "false"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "Validates that the default value of enabled is False."
+    },
+    {
+        "FeatureFlagName": "EmptyConditions",
+        "Inputs": {},
+        "IsEnabled": {
+            "Result": "true"
+        },
+        "Variant": {
+            "Result": null
+        },
+        "Description": "A feature flag with no Conditions, returns true as it's enabled."
+    }
+]

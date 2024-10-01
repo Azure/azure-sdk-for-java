@@ -15,27 +15,27 @@ public final class ConnectivityProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectivityProfile model = BinaryData.fromString(
-            "{\"web\":{\"fqdn\":\"jdeyeamdpha\",\"privateFqdn\":\"lpbuxwgipwhonowk\"},\"ssh\":[{\"endpoint\":\"wankixzbi\",\"privateSshEndpoint\":\"eputtmrywnuzoqf\"},{\"endpoint\":\"iyqzrnk\",\"privateSshEndpoint\":\"vyxlwhzlsicohoqq\"},{\"endpoint\":\"wvl\",\"privateSshEndpoint\":\"avwhheunm\"},{\"endpoint\":\"qhgyxzkonocukok\",\"privateSshEndpoint\":\"axuconuq\"}]}")
+            "{\"web\":{\"fqdn\":\"eli\",\"privateFqdn\":\"nr\"},\"ssh\":[{\"endpoint\":\"o\",\"privateSshEndpoint\":\"bnxknalaulppg\"},{\"endpoint\":\"dtpnapnyiropuhp\",\"privateSshEndpoint\":\"vpgylgqgitxmed\"},{\"endpoint\":\"v\",\"privateSshEndpoint\":\"lynqwwncwzzh\"}]}")
             .toObject(ConnectivityProfile.class);
-        Assertions.assertEquals("jdeyeamdpha", model.web().fqdn());
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.web().privateFqdn());
-        Assertions.assertEquals("wankixzbi", model.ssh().get(0).endpoint());
-        Assertions.assertEquals("eputtmrywnuzoqf", model.ssh().get(0).privateSshEndpoint());
+        Assertions.assertEquals("eli", model.web().fqdn());
+        Assertions.assertEquals("nr", model.web().privateFqdn());
+        Assertions.assertEquals("o", model.ssh().get(0).endpoint());
+        Assertions.assertEquals("bnxknalaulppg", model.ssh().get(0).privateSshEndpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectivityProfile model = new ConnectivityProfile()
-            .withWeb(new ConnectivityProfileWeb().withFqdn("jdeyeamdpha").withPrivateFqdn("lpbuxwgipwhonowk"))
-            .withSsh(Arrays.asList(
-                new SshConnectivityEndpoint().withEndpoint("wankixzbi").withPrivateSshEndpoint("eputtmrywnuzoqf"),
-                new SshConnectivityEndpoint().withEndpoint("iyqzrnk").withPrivateSshEndpoint("vyxlwhzlsicohoqq"),
-                new SshConnectivityEndpoint().withEndpoint("wvl").withPrivateSshEndpoint("avwhheunm"),
-                new SshConnectivityEndpoint().withEndpoint("qhgyxzkonocukok").withPrivateSshEndpoint("axuconuq")));
+        ConnectivityProfile model
+            = new ConnectivityProfile().withWeb(new ConnectivityProfileWeb().withFqdn("eli").withPrivateFqdn("nr"))
+                .withSsh(Arrays.asList(
+                    new SshConnectivityEndpoint().withEndpoint("o").withPrivateSshEndpoint("bnxknalaulppg"),
+                    new SshConnectivityEndpoint().withEndpoint("dtpnapnyiropuhp")
+                        .withPrivateSshEndpoint("vpgylgqgitxmed"),
+                    new SshConnectivityEndpoint().withEndpoint("v").withPrivateSshEndpoint("lynqwwncwzzh")));
         model = BinaryData.fromObject(model).toObject(ConnectivityProfile.class);
-        Assertions.assertEquals("jdeyeamdpha", model.web().fqdn());
-        Assertions.assertEquals("lpbuxwgipwhonowk", model.web().privateFqdn());
-        Assertions.assertEquals("wankixzbi", model.ssh().get(0).endpoint());
-        Assertions.assertEquals("eputtmrywnuzoqf", model.ssh().get(0).privateSshEndpoint());
+        Assertions.assertEquals("eli", model.web().fqdn());
+        Assertions.assertEquals("nr", model.web().privateFqdn());
+        Assertions.assertEquals("o", model.ssh().get(0).endpoint());
+        Assertions.assertEquals("bnxknalaulppg", model.ssh().get(0).privateSshEndpoint());
     }
 }

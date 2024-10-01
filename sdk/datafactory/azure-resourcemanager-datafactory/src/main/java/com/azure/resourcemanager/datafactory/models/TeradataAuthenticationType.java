@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class TeradataAuthenticationType extends ExpandableStringEnum<Terad
      * @param name a name to look for.
      * @return the corresponding TeradataAuthenticationType.
      */
-    @JsonCreator
     public static TeradataAuthenticationType fromString(String name) {
         return fromString(name, TeradataAuthenticationType.class);
     }

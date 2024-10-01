@@ -6,62 +6,33 @@ package com.azure.resourcemanager.billing.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.billing.BillingManager;
 import com.azure.resourcemanager.billing.models.Invoice;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class InvoicesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"amountDue\":{\"currency\":\"wbnwdkgbzjoyy\",\"value\":31.932968},\"azurePrepaymentApplied\":{\"currency\":\"doqxkzeowizv\",\"value\":55.130047},\"billedAmount\":{\"currency\":\"k\",\"value\":45.320618},\"billedDocumentId\":\"wkxxboauvkkco\",\"billingProfileDisplayName\":\"nwhld\",\"billingProfileId\":\"n\",\"creditAmount\":{\"currency\":\"uqmdynmtnlcvl\",\"value\":40.62859},\"creditForDocumentId\":\"edrbzzb\",\"documents\":[{\"documentNumbers\":[\"xwcndkdlxdlh\"],\"externalUrl\":\"l\",\"kind\":\"Transactions\",\"name\":\"wkyxowno\",\"url\":\"qus\",\"source\":\"Other\"}],\"documentType\":\"Invoice\",\"dueDate\":\"2021-04-03T17:46:24Z\",\"failedPayments\":[{\"date\":\"2021-12-05T05:46:45Z\",\"failedPaymentReason\":\"BankDeclined\"},{\"date\":\"2021-10-19T14:18:51Z\",\"failedPaymentReason\":\"Other\"},{\"date\":\"2021-03-25T13:21:33Z\",\"failedPaymentReason\":\"Other\"}],\"freeAzureCreditApplied\":{\"currency\":\"pprszehijlwrf\",\"value\":31.895458},\"invoiceDate\":\"2021-04-07T06:35:41Z\",\"invoicePeriodEndDate\":\"2021-10-06T09:53:27Z\",\"invoicePeriodStartDate\":\"2021-04-02T08:47:21Z\",\"invoiceType\":\"AzureServices\",\"isMonthlyInvoice\":true,\"payments\":[{\"amount\":{\"currency\":\"l\",\"value\":19.73927},\"date\":\"2021-05-30T13:37:29Z\",\"paymentMethodId\":\"i\",\"paymentMethodFamily\":\"EWallet\",\"paymentMethodType\":\"qmvnhsfjxtus\",\"paymentType\":\"xpuokk\"},{\"amount\":{\"currency\":\"s\",\"value\":94.20208},\"date\":\"2021-05-05T17:37:31Z\",\"paymentMethodId\":\"onalpwa\",\"paymentMethodFamily\":\"EWallet\",\"paymentMethodType\":\"uyasjwnwnjdrnf\",\"paymentType\":\"mupblhnxqvzz\"}],\"purchaseOrderNumber\":\"xufuwcajyezlk\",\"rebillDetails\":{\"invoiceDocumentId\":\"eftugiwsvlf\",\"creditNoteDocumentId\":\"bpnrgnxwrfu\",\"rebillDetails\":{\"invoiceDocumentId\":\"y\",\"creditNoteDocumentId\":\"zuvu\",\"rebillDetails\":{\"invoiceDocumentId\":\"y\",\"creditNoteDocumentId\":\"cjclvbqovk\",\"rebillDetails\":{}}}},\"status\":\"OverDue\",\"subscriptionDisplayName\":\"phnazp\",\"subscriptionId\":\"fcubxlmqhed\",\"specialTaxationType\":\"SubtotalLevel\",\"subTotal\":{\"currency\":\"yhzyf\",\"value\":28.069782},\"taxAmount\":{\"currency\":\"rzvdjpcevbkkgqfj\",\"value\":97.70191},\"totalAmount\":{\"currency\":\"pwxghwwfq\",\"value\":25.156248},\"refundDetails\":{\"requestedOn\":\"2021-03-16T22:44:26Z\",\"approvedOn\":\"2021-04-15T09:30:50Z\",\"completedOn\":\"2021-09-03T13:05:30Z\",\"amountRequested\":{\"currency\":\"sqepxftyif\",\"value\":92.90886},\"amountRefunded\":{\"currency\":\"ifdrbsrpjs\",\"value\":10.842013},\"rebillInvoiceId\":\"snxmfooin\",\"transactionCount\":819372658,\"refundStatus\":\"Expired\",\"refundOperationId\":\"gcuwgkmqcb\",\"refundReason\":\"Other\"}},\"tags\":{\"mlpihtep\":\"uxktsxnikcgitt\",\"invfcdsijsinybn\":\"sjeb\",\"ayxujzoxgakqt\":\"lx\"},\"id\":\"jucazwedmahulxgc\",\"name\":\"mxoanudvqa\",\"type\":\"nenxg\"}";
 
-        String responseStr =
-            "{\"properties\":{\"dueDate\":\"2021-03-09T19:20:38Z\",\"invoiceDate\":\"2021-03-12T02:37:11Z\",\"status\":\"Paid\",\"amountDue\":{\"currency\":\"efjokn\",\"value\":76.97374},\"azurePrepaymentApplied\":{\"currency\":\"qedikdfrd\",\"value\":26.596153},\"billedAmount\":{\"currency\":\"jgeihfqlggwfi\",\"value\":70.12909},\"creditAmount\":{\"currency\":\"jpbyephmgtv\",\"value\":89.511314},\"freeAzureCreditApplied\":{\"currency\":\"m\",\"value\":27.577436},\"subTotal\":{\"currency\":\"gxhnpomyqwcabv\",\"value\":19.589584},\"taxAmount\":{\"currency\":\"ey\",\"value\":95.847664},\"totalAmount\":{\"currency\":\"augmrmfjlr\",\"value\":87.45515},\"invoicePeriodStartDate\":\"2021-07-12T07:37Z\",\"invoicePeriodEndDate\":\"2021-02-10T01:38:52Z\",\"invoiceType\":\"AzureService\",\"isMonthlyInvoice\":false,\"billingProfileId\":\"isizm\",\"billingProfileDisplayName\":\"eds\",\"purchaseOrderNumber\":\"wuived\",\"documents\":[],\"payments\":[],\"rebillDetails\":{},\"documentType\":\"Invoice\",\"billedDocumentId\":\"qbpsmg\",\"creditForDocumentId\":\"guamlj\",\"subscriptionId\":\"rgmsplzga\"},\"id\":\"fcshh\",\"name\":\"new\",\"type\":\"nxkympqanxrjk\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        BillingManager manager = BillingManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Invoice response
+            = manager.invoices().getWithResponse("gpymyerpusozaou", com.azure.core.util.Context.NONE).getValue();
 
-        BillingManager manager =
-            BillingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Invoice response =
-            manager
-                .invoices()
-                .getWithResponse("ubkmifo", "xkubvphavpmhbrbq", com.azure.core.util.Context.NONE)
-                .getValue();
+        Assertions.assertEquals("uxktsxnikcgitt", response.tags().get("mlpihtep"));
     }
 }

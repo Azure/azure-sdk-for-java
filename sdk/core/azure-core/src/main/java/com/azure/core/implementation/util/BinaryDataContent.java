@@ -7,6 +7,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonWriter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -137,6 +138,22 @@ public abstract class BinaryDataContent {
      * @throws NullPointerException If {@code channel} is null.
      */
     public abstract Mono<Void> writeTo(AsynchronousByteChannel channel);
+
+    /**
+     * Writes the contents of this {@link BinaryDataContent} to the given {@link JsonWriter}.
+     * <p>
+     * This method does not close or flush the {@link JsonWriter}.
+     * <p>
+     * The contents of this {@link BinaryDataContent} will be written without buffering. If the underlying data source
+     * isn't {@link #isReplayable()}, after this method is called the {@link BinaryDataContent} will be consumed and
+     * can't be read again. If it needs to be read again, use {@link #toReplayableContent()} to create a replayable
+     * copy.
+     *
+     * @param jsonWriter The {@link JsonWriter} to write the contents of this {@link BinaryDataContent} to.
+     * @throws NullPointerException If {@code jsonWriter} is null.
+     * @throws IOException If an I/O error occurs during writing.
+     */
+    public abstract void writeTo(JsonWriter jsonWriter) throws IOException;
 
     /**
      * Returns a flag indicating whether the content can be repeatedly consumed using all accessors including

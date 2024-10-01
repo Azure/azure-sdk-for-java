@@ -20,12 +20,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = { DevOpsInfrastructureClientImpl.class })
 public final class DevOpsInfrastructureClientBuilder {
     /*
-     * Server parameter
+     * Service host
      */
     private String endpoint;
 
     /**
-     * Sets Server parameter.
+     * Sets Service host.
      * 
      * @param endpoint the endpoint value.
      * @return the DevOpsInfrastructureClientBuilder.
@@ -121,6 +121,7 @@ public final class DevOpsInfrastructureClientBuilder {
      * @return an instance of DevOpsInfrastructureClientImpl.
      */
     public DevOpsInfrastructureClientImpl buildClient() {
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
             ? pipeline
@@ -131,7 +132,7 @@ public final class DevOpsInfrastructureClientBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         DevOpsInfrastructureClientImpl client = new DevOpsInfrastructureClientImpl(localPipeline,
-            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.endpoint, this.subscriptionId);
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, localEndpoint, this.subscriptionId);
         return client;
     }
 }

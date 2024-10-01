@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.hdinsight.containers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -57,7 +56,6 @@ public final class DataDiskType extends ExpandableStringEnum<DataDiskType> {
      * @param name a name to look for.
      * @return the corresponding DataDiskType.
      */
-    @JsonCreator
     public static DataDiskType fromString(String name) {
         return fromString(name, DataDiskType.class);
     }
