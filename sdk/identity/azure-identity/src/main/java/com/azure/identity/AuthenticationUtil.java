@@ -16,11 +16,14 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
 
+/**
+ * Utility methods for working with authentication.
+ */
 public class AuthenticationUtil {
 
 
     /**
-     * Creates a {@link Supplier<String>} that provides a Bearer token from the specified credential.
+     * Creates a {@link Supplier} that provides a Bearer token from the specified credential.
      * The token is cached and will refresh when it expires.
      * <p><strong>Using the supplier:</strong></p>
      * <!-- src_embed com.azure.identity.util.getBearerTokenSupplierSync -->
@@ -40,7 +43,7 @@ public class AuthenticationUtil {
      *
      * @param credential The {@link TokenCredential} from which to retrieve a token.
      * @param scopes The scopes as appropriate for the token you are retrieving.
-     * @return A {@link Supplier<String>} which returns the bearer token.
+     * @return A {@link Supplier} which returns the bearer token as a {@link String}.
      */
     public static Supplier<String> getBearerTokenSupplierSync(TokenCredential credential, String... scopes) {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(credential, scopes)).build();
@@ -55,7 +58,7 @@ public class AuthenticationUtil {
     }
 
     /**
-     * Creates a {@link Supplier<Mono<String>>} that provides a Bearer token from the specified credential.
+     * Creates a {@link Supplier} that provides a Bearer token from the specified credential.
      * The token is cached and will refresh when it expires.
      * <p><strong>Using the supplier:</strong></p>
      * <!-- src_embed com.azure.identity.util.getBearerTokenSupplier -->
@@ -78,7 +81,7 @@ public class AuthenticationUtil {
      *
      * @param credential The {@link TokenCredential} from which to retrieve a token.
      * @param scopes The scopes as appropriate for the token you are retrieving.
-     * @return A {@link Supplier<Mono<String>>} which returns the bearer token.
+     * @return A {@link Supplier} which returns the bearer token as a {@link Mono} of {@link String}.
      */
     public static Supplier<Mono<String>> getBearerTokenSupplier(TokenCredential credential, String... scopes) {
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new BearerTokenAuthenticationPolicy(credential, scopes)).build();
