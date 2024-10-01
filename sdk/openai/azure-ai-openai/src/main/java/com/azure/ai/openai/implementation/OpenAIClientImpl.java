@@ -3128,18 +3128,21 @@ public final class OpenAIClientImpl {
      * File.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filename: String (Required)
      *     purpose: String(assistants/batch/fine-tune/vision) (Required)
      *     bytes: int (Required)
      *     mime_type: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3160,7 +3163,8 @@ public final class OpenAIClientImpl {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestBody The request body for the operation options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3194,18 +3198,21 @@ public final class OpenAIClientImpl {
      * File.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filename: String (Required)
      *     purpose: String(assistants/batch/fine-tune/vision) (Required)
      *     bytes: int (Required)
      *     mime_type: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3226,7 +3233,8 @@ public final class OpenAIClientImpl {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestBody The request body for the operation options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3253,7 +3261,8 @@ public final class OpenAIClientImpl {
      * complete the Upload.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3261,7 +3270,8 @@ public final class OpenAIClientImpl {
      *     object: String (Required)
      *     azure_block_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestBody The request body data payload for the operation.
@@ -3291,7 +3301,8 @@ public final class OpenAIClientImpl {
      * complete the Upload.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3299,7 +3310,8 @@ public final class OpenAIClientImpl {
      *     object: String (Required)
      *     azure_block_id: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestBody The request body data payload for the operation.
@@ -3331,18 +3343,21 @@ public final class OpenAIClientImpl {
      * Upload object. No Parts may be added after an Upload is completed.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     part_ids (Required): [
      *         String (Required)
      *     ]
      *     md5: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3363,7 +3378,8 @@ public final class OpenAIClientImpl {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestBody The request body for the completion operation.
@@ -3396,18 +3412,21 @@ public final class OpenAIClientImpl {
      * Upload object. No Parts may be added after an Upload is completed.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     part_ids (Required): [
      *         String (Required)
      *     ]
      *     md5: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3428,7 +3447,8 @@ public final class OpenAIClientImpl {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestBody The request body for the completion operation.
@@ -3452,7 +3472,8 @@ public final class OpenAIClientImpl {
      * Cancels the Upload. No Parts may be added after an Upload is cancelled.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3473,7 +3494,8 @@ public final class OpenAIClientImpl {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3495,7 +3517,8 @@ public final class OpenAIClientImpl {
      * Cancels the Upload. No Parts may be added after an Upload is cancelled.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -3516,7 +3539,8 @@ public final class OpenAIClientImpl {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

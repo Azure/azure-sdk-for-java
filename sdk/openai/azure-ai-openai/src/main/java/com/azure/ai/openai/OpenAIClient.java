@@ -2426,18 +2426,21 @@ public final class OpenAIClient {
      * File.
      * <p><strong>Request Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     filename: String (Required)
      *     purpose: String(assistants/batch/fine-tune/vision) (Required)
      *     bytes: int (Required)
      *     mime_type: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p><strong>Response Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -2458,7 +2461,8 @@ public final class OpenAIClient {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestBody The request body for the operation options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2491,14 +2495,16 @@ public final class OpenAIClient {
      * complete the Upload.
      * <p><strong>Response Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
      *     upload_id: String (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestBody The request body data payload for the operation.
@@ -2540,18 +2546,21 @@ public final class OpenAIClient {
      * Upload object. No Parts may be added after an Upload is completed.
      * <p><strong>Request Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     part_ids (Required): [
      *         String (Required)
      *     ]
      *     md5: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p><strong>Response Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -2572,7 +2581,8 @@ public final class OpenAIClient {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestBody The request body for the completion operation.
@@ -2604,7 +2614,8 @@ public final class OpenAIClient {
      * Cancels the Upload. No Parts may be added after an Upload is cancelled.
      * <p><strong>Response Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created_at: long (Required)
@@ -2625,7 +2636,8 @@ public final class OpenAIClient {
      *         status_details: String (Optional)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param uploadId The ID of the upload associated with this operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2699,11 +2711,8 @@ public final class OpenAIClient {
     public UploadPart addUploadPart(String uploadId, AddUploadPartRequest requestBody) {
         RequestOptions requestOptions = new RequestOptions();
         return addUploadPartWithResponse(uploadId,
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("data", requestBody.getData().getContent(), requestBody.getData().getContentType(),
-                    requestBody.getData().getFilename())
-                .end()
-                .getRequestBody(),
+            new MultipartFormDataHelper(requestOptions).serializeFileField("data", requestBody.getData().getContent(),
+                requestBody.getData().getContentType(), requestBody.getData().getFilename()).end().getRequestBody(),
             requestOptions).getValue();
     }
 
