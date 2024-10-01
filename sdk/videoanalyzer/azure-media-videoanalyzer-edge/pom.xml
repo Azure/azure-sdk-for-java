@@ -18,6 +18,7 @@
 
   <properties>
     <src.dir>src/main/java</src.dir>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <distributionManagement>

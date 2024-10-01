@@ -6,7 +6,6 @@ package com.azure.health.insights.radiologyinsights;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.CriticalResultInference;
@@ -36,7 +35,6 @@ import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsPatie
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsResult;
 import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
-
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDate;

@@ -1,5 +1,15 @@
 # Release History
 
+## 1.2.28 (2024-09-30)
+
+### Dependency Updates
+
+- Added new library entries to the BOM:
+  - `azure-data-schemaregistry-jsonschema`
+  - `azure-health-deidentification`
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.27 (2024-08-27)
 
 ### Dependency Updates

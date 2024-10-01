@@ -93,7 +93,7 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     void getChatCompletionsFromOptionsRunner(Consumer<ChatCompletionsOptions> testRunner) {
         List<ChatRequestMessage> chatMessages = Arrays.asList(
             new ChatRequestSystemMessage("You are a helpful assistant."),
-            new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
+            new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?\n")
         );
         ChatCompletionsOptions options = new ChatCompletionsOptions(chatMessages);
         testRunner.accept(options);
@@ -152,9 +152,9 @@ public abstract class ChatCompletionsClientTestBase extends TestProxyTestBase {
     private List<ChatRequestMessage> getChatMessages() {
         List<ChatRequestMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant. You will talk like a pirate."));
-        chatMessages.add(new ChatRequestUserMessage("Can you help me?"));
+        chatMessages.add(new ChatRequestUserMessage("Can you help me?\n"));
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
-        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
+        chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?\n"));
         return chatMessages;
     }
 }

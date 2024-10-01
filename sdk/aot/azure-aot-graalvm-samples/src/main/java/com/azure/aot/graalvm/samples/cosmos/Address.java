@@ -12,6 +12,12 @@ public class Address {
     private String city = "";
 
     /**
+     * Creates a new instance of {@link Address}.
+     */
+    public Address() {
+    }
+
+    /**
      * Returns the state.
      * @return the state.
      */

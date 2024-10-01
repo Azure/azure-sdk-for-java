@@ -14,22 +14,22 @@ import java.util.Collection;
 public final class LinuxVMGuestPatchAutomaticByPlatformRebootSetting
     extends ExpandableStringEnum<LinuxVMGuestPatchAutomaticByPlatformRebootSetting> {
     /**
-     * Static value Unknown for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     * Unknown Reboot setting.
      */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting UNKNOWN = fromString("Unknown");
 
     /**
-     * Static value IfRequired for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     * IfRequired Reboot setting.
      */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting IF_REQUIRED = fromString("IfRequired");
 
     /**
-     * Static value Never for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     * Never Reboot setting.
      */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting NEVER = fromString("Never");
 
     /**
-     * Static value Always for LinuxVMGuestPatchAutomaticByPlatformRebootSetting.
+     * Always Reboot setting.
      */
     public static final LinuxVMGuestPatchAutomaticByPlatformRebootSetting ALWAYS = fromString("Always");
 

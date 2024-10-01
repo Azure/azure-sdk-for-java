@@ -214,6 +214,12 @@
     <!-- This property configures whether doclinting is performed when generating Javadocs. -->
     <doclint>all</doclint>
 
+    <!-- This property configures whether doclinting includes warning and erroring for missing tags and descriptions. -->
+    <!-- By default, missing tags and descriptions are included as issues. -->
+    <!-- If needed, temporarily, override this property in a child POM with a value of '-' to exclude this validation. -->
+    <!-- Even with this validation excluded other linting tooling, such as Checkstyle, may still raise errors. -->
+    <doclintMissingInclusion></doclintMissingInclusion>
+
     <!-- The following properties configure compile skipping. -->
     <!-- While maven-compiler-plugin has properties for skipping source and test compile other plugins -->
     <!-- key in on the properties as well. These properties ensure that skipping compiles doesn't result -->
@@ -292,18 +298,6 @@
         </excludes>
       </resource>
     </resources>
-
-    <testResources>
-      <testResource>
-        <directory>src/test/resources</directory>
-      </testResource>
-      <testResource>
-        <directory>${project.parent.relativePath}</directory>
-        <includes>
-          <include>simplelogger.properties</include>
-        </includes>
-      </testResource>
-    </testResources>
 
     <plugins>
       <!-- This plugin checks dependencies for android API level compatibility -->
@@ -901,7 +895,7 @@
             </offlineLinks>
             <failOnError>true</failOnError>
             <failOnWarnings>true</failOnWarnings>
-            <doclint>${doclint}</doclint>
+            <doclint>${doclint},${doclintMissingInclusion}missing</doclint>
             <quiet>true</quiet>
             <jarOutputDirectory>${packageOutputDirectory}</jarOutputDirectory>
           </configuration>
@@ -925,6 +919,11 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
@@ -969,6 +968,11 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>

@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Contains details on the failure. */
+/**
+ * Contains details on the failure.
+ */
 @Immutable
-public final class SessionHostHealthCheckFailureDetails {
+public final class SessionHostHealthCheckFailureDetails
+    implements JsonSerializable<SessionHostHealthCheckFailureDetails> {
     /*
      * Failure message: hints on what is wrong and how to recover.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Error code corresponding for the failure.
      */
-    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorCode;
 
     /*
      * The timestamp of the last update.
      */
-    @JsonProperty(value = "lastHealthCheckDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastHealthCheckDateTime;
 
-    /** Creates an instance of SessionHostHealthCheckFailureDetails class. */
+    /**
+     * Creates an instance of SessionHostHealthCheckFailureDetails class.
+     */
     public SessionHostHealthCheckFailureDetails() {
     }
 
     /**
      * Get the message property: Failure message: hints on what is wrong and how to recover.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -44,7 +51,7 @@ public final class SessionHostHealthCheckFailureDetails {
 
     /**
      * Get the errorCode property: Error code corresponding for the failure.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -53,7 +60,7 @@ public final class SessionHostHealthCheckFailureDetails {
 
     /**
      * Get the lastHealthCheckDateTime property: The timestamp of the last update.
-     *
+     * 
      * @return the lastHealthCheckDateTime value.
      */
     public OffsetDateTime lastHealthCheckDateTime() {
@@ -62,9 +69,50 @@ public final class SessionHostHealthCheckFailureDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SessionHostHealthCheckFailureDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SessionHostHealthCheckFailureDetails if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SessionHostHealthCheckFailureDetails.
+     */
+    public static SessionHostHealthCheckFailureDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SessionHostHealthCheckFailureDetails deserializedSessionHostHealthCheckFailureDetails
+                = new SessionHostHealthCheckFailureDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedSessionHostHealthCheckFailureDetails.message = reader.getString();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedSessionHostHealthCheckFailureDetails.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("lastHealthCheckDateTime".equals(fieldName)) {
+                    deserializedSessionHostHealthCheckFailureDetails.lastHealthCheckDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSessionHostHealthCheckFailureDetails;
+        });
     }
 }

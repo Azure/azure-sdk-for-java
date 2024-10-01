@@ -23,9 +23,8 @@
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
     <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
     <codesnippet.skip>false</codesnippet.skip>
-    <javadocDoclet></javadocDoclet>
-    <javadocDocletOptions></javadocDocletOptions>
     <createSourcesJar>true</createSourcesJar>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

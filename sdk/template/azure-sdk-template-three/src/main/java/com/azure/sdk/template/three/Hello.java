@@ -6,6 +6,13 @@ package com.azure.sdk.template.three;
  * This is a sample class for template app.
  */
 public class Hello {
+
+    /**
+     * Creates a new instance of {@link Hello}.
+     */
+    public Hello() {
+    }
+
     /**
      * Sample method.
      * @return message

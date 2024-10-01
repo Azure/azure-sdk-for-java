@@ -423,7 +423,8 @@ public final class TableServiceClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the created table.</p>
@@ -447,7 +448,8 @@ public final class TableServiceClient {
     }
 
     /**
-     * Creates a table within the Tables service if the table does not already exist.
+     * Creates a table within the Tables service if the table does not already exist. If the table already exists, a
+     * {@link TableClient} for the existing table is returned.
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a table if it does not already exist. Prints out the details of the {@link Response HTTP response}
@@ -476,7 +478,9 @@ public final class TableServiceClient {
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
         Supplier<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
-        return callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger, true);
+        Response<TableClient> returnedResponse = callWithOptionalTimeout(callable, THREAD_POOL, timeout, logger, true);
+        return returnedResponse.getValue() == null ? new SimpleResponse<>(returnedResponse.getRequest(),
+            returnedResponse.getStatusCode(), returnedResponse.getHeaders(), getTableClient(tableName)) : returnedResponse;
     }
 
     Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) {

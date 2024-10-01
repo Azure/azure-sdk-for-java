@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SessionHost properties that can be patched. */
+/**
+ * SessionHost properties that can be patched.
+ */
 @Fluent
-public final class SessionHostPatchProperties {
+public final class SessionHostPatchProperties implements JsonSerializable<SessionHostPatchProperties> {
     /*
      * Allow a new session.
      */
-    @JsonProperty(value = "allowNewSession")
     private Boolean allowNewSession;
 
     /*
      * User assigned to SessionHost.
      */
-    @JsonProperty(value = "assignedUser")
     private String assignedUser;
 
     /*
      * Friendly name of SessionHost
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
-    /** Creates an instance of SessionHostPatchProperties class. */
+    /**
+     * Creates an instance of SessionHostPatchProperties class.
+     */
     public SessionHostPatchProperties() {
     }
 
     /**
      * Get the allowNewSession property: Allow a new session.
-     *
+     * 
      * @return the allowNewSession value.
      */
     public Boolean allowNewSession() {
@@ -43,7 +48,7 @@ public final class SessionHostPatchProperties {
 
     /**
      * Set the allowNewSession property: Allow a new session.
-     *
+     * 
      * @param allowNewSession the allowNewSession value to set.
      * @return the SessionHostPatchProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class SessionHostPatchProperties {
 
     /**
      * Get the assignedUser property: User assigned to SessionHost.
-     *
+     * 
      * @return the assignedUser value.
      */
     public String assignedUser() {
@@ -63,7 +68,7 @@ public final class SessionHostPatchProperties {
 
     /**
      * Set the assignedUser property: User assigned to SessionHost.
-     *
+     * 
      * @param assignedUser the assignedUser value to set.
      * @return the SessionHostPatchProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class SessionHostPatchProperties {
 
     /**
      * Get the friendlyName property: Friendly name of SessionHost.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -83,7 +88,7 @@ public final class SessionHostPatchProperties {
 
     /**
      * Set the friendlyName property: Friendly name of SessionHost.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the SessionHostPatchProperties object itself.
      */
@@ -94,9 +99,51 @@ public final class SessionHostPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("allowNewSession", this.allowNewSession);
+        jsonWriter.writeStringField("assignedUser", this.assignedUser);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SessionHostPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SessionHostPatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SessionHostPatchProperties.
+     */
+    public static SessionHostPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SessionHostPatchProperties deserializedSessionHostPatchProperties = new SessionHostPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowNewSession".equals(fieldName)) {
+                    deserializedSessionHostPatchProperties.allowNewSession = reader.getNullable(JsonReader::getBoolean);
+                } else if ("assignedUser".equals(fieldName)) {
+                    deserializedSessionHostPatchProperties.assignedUser = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedSessionHostPatchProperties.friendlyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSessionHostPatchProperties;
+        });
     }
 }
