@@ -1,15 +1,28 @@
 # Release History
 
-## 1.0.0-beta.29 (Unreleased)
+## 1.0.0-beta.29
 
 ### Features Added
 
 ### Breaking Changes
 
+The `AzureMonitorExporterBuilder` class has been replaced with the `AzureMonitorExpporter` class ([41705](https://github.com/Azure/azure-sdk-for-java/pull/41705) and [42134](https://github.com/Azure/azure-sdk-for-java/pull/42134)).
+
+```java
+AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
+AzureMonitorExporter.customize(sdkBuilder);
+OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
+```
+
 ### Bugs Fixed
-- Fix a bug where post requests to Live Metrics returned http 400 due to malformed json.
+- [Fix a race condition RejectedExecutionException](https://github.com/Azure/azure-sdk-for-java/pull/41927)
+- [Fix a bug where post requests to Live Metrics returned http 400 due to malformed json](https://github.com/Azure/azure-sdk-for-java/pull/42147)
 
 ### Other Changes
+- [Better populate exception type name and message from span events](https://github.com/Azure/azure-sdk-for-java/pull/41397)
+- [Update OpenTelemetry SDK to 1.42.1](https://github.com/Azure/azure-sdk-for-java/pull/41931))
+- [Improve the error message when non connection string](https://github.com/Azure/azure-sdk-for-java/pull/42034)
+- [Update message in case of connection failure](https://github.com/Azure/azure-sdk-for-java/pull/42103)
 
 ## 1.0.0-beta.28 (2024-08-08)
 
@@ -27,7 +40,7 @@
 ### Bugs Fixed
 - [Fix pre-aggregated standard HTTP server metric success calculation](https://github.com/Azure/azure-sdk-for-java/pull/40599)
 - [OOM error caused by AzureMonitorLogRecordExporter](https://github.com/Azure/azure-sdk-for-java/issues/40546)
-  
+
 ### Other Changes
 - [Update OpenTelemetry to 1.40.0](https://github.com/Azure/azure-sdk-for-java/pull/39843)
 - [Improve connection string message](https://github.com/Azure/azure-sdk-for-java/pull/40922)
@@ -193,7 +206,7 @@
 
 ### New Features
 - `AzureMonitorExporterBuilder` now supports reading connection string from `APPLICATIONINSIGHTS_CONNECTION_STRING
-` environment variable.
+  ` environment variable.
 
 ### Dependency Updates
 - Updated versions of `opentelemetry-api` and `opentelemetry-sdk` to `1.0.0` version.
