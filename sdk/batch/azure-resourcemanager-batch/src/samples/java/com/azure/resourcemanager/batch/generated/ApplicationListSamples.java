@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class ApplicationListSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/ApplicationList.json
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/ApplicationList.json
      */
     /**
      * Sample code: ApplicationList.
@@ -18,7 +18,7 @@ public final class ApplicationListSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void applicationList(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.applications().list("default-azurebatch-japaneast", "sampleacct", null,
-            com.azure.core.util.Context.NONE);
+        manager.applications()
+            .list("default-azurebatch-japaneast", "sampleacct", null, com.azure.core.util.Context.NONE);
     }
 }

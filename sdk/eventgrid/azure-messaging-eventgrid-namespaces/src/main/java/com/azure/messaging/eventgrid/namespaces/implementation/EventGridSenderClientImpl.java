@@ -201,7 +201,8 @@ public final class EventGridSenderClientImpl {
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     source: String (Required)
@@ -214,13 +215,17 @@ public final class EventGridSenderClientImpl {
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
@@ -244,7 +249,8 @@ public final class EventGridSenderClientImpl {
      * Publish a single Cloud Event to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     source: String (Required)
@@ -257,13 +263,17 @@ public final class EventGridSenderClientImpl {
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param event Single Cloud Event being published.
@@ -286,7 +296,8 @@ public final class EventGridSenderClientImpl {
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -301,13 +312,17 @@ public final class EventGridSenderClientImpl {
      *         subject: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.
@@ -331,7 +346,8 @@ public final class EventGridSenderClientImpl {
      * Publish a batch of Cloud Events to a namespace topic.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         id: String (Required)
@@ -346,13 +362,17 @@ public final class EventGridSenderClientImpl {
      *         subject: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
-     * { }
-     * }</pre>
+     * <pre>
+     * {@code
+     * {
+     * }
+     * }
+     * </pre>
      * 
      * @param topicName Topic Name.
      * @param events Array of Cloud Events being published.

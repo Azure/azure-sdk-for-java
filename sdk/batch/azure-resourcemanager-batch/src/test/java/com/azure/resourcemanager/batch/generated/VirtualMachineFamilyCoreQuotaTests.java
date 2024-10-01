@@ -10,7 +10,7 @@ import com.azure.resourcemanager.batch.models.VirtualMachineFamilyCoreQuota;
 public final class VirtualMachineFamilyCoreQuotaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualMachineFamilyCoreQuota model = BinaryData.fromString("{\"name\":\"xth\",\"coreQuota\":1638968400}")
+        VirtualMachineFamilyCoreQuota model = BinaryData.fromString("{\"name\":\"pdappds\",\"coreQuota\":253055122}")
             .toObject(VirtualMachineFamilyCoreQuota.class);
     }
 

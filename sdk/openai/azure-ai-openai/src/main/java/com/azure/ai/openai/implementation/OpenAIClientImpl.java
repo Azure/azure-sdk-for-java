@@ -646,9 +646,11 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -676,9 +678,11 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -704,7 +708,8 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -734,7 +739,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -762,7 +768,8 @@ public final class OpenAIClientImpl {
      * written language corresponding to the language it was spoken in.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -792,7 +799,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -818,9 +826,11 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -847,9 +857,11 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * String
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -875,7 +887,8 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -898,7 +911,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -925,7 +939,8 @@ public final class OpenAIClientImpl {
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     task: String(transcribe/translate) (Optional)
@@ -948,7 +963,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -977,7 +993,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     prompt (Required): [
      *         String (Required)
@@ -1003,11 +1020,13 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     seed: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -1098,7 +1117,8 @@ public final class OpenAIClientImpl {
      *     }
      *     system_fingerprint: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1130,7 +1150,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     prompt (Required): [
      *         String (Required)
@@ -1156,11 +1177,13 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     seed: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -1251,7 +1274,8 @@ public final class OpenAIClientImpl {
      *     }
      *     system_fingerprint: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1282,7 +1306,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Required): [
      *          (Required){
@@ -1338,11 +1363,13 @@ public final class OpenAIClientImpl {
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -1507,7 +1534,8 @@ public final class OpenAIClientImpl {
      *         total_tokens: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1539,7 +1567,8 @@ public final class OpenAIClientImpl {
      * provided prompt data.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Required): [
      *          (Required){
@@ -1595,11 +1624,13 @@ public final class OpenAIClientImpl {
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -1764,7 +1795,8 @@ public final class OpenAIClientImpl {
      *         total_tokens: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1793,7 +1825,8 @@ public final class OpenAIClientImpl {
      * Creates an image given a prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     prompt: String (Required)
@@ -1804,11 +1837,13 @@ public final class OpenAIClientImpl {
      *     style: String(natural/vivid) (Optional)
      *     user: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     created: long (Required)
      *     data (Required): [
@@ -1848,7 +1883,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1875,7 +1911,8 @@ public final class OpenAIClientImpl {
      * Creates an image given a prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     model: String (Optional)
      *     prompt: String (Required)
@@ -1886,11 +1923,13 @@ public final class OpenAIClientImpl {
      *     style: String(natural/vivid) (Optional)
      *     user: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     created: long (Required)
      *     data (Required): [
@@ -1930,7 +1969,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1955,7 +1995,8 @@ public final class OpenAIClientImpl {
      * Generates text-to-speech audio from the input text.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     input: String (Required)
      *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
@@ -1963,13 +2004,16 @@ public final class OpenAIClientImpl {
      *     speed: Double (Optional)
      *     model: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -1996,7 +2040,8 @@ public final class OpenAIClientImpl {
      * Generates text-to-speech audio from the input text.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     input: String (Required)
      *     voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
@@ -2004,13 +2049,16 @@ public final class OpenAIClientImpl {
      *     speed: Double (Optional)
      *     model: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -2036,7 +2084,8 @@ public final class OpenAIClientImpl {
      * Return the embeddings for a given prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     user: String (Optional)
      *     model: String (Optional)
@@ -2047,11 +2096,13 @@ public final class OpenAIClientImpl {
      *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     data (Required): [
      *          (Required){
@@ -2067,7 +2118,8 @@ public final class OpenAIClientImpl {
      *         total_tokens: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -2098,7 +2150,8 @@ public final class OpenAIClientImpl {
      * Return the embeddings for a given prompt.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     user: String (Optional)
      *     model: String (Optional)
@@ -2109,11 +2162,13 @@ public final class OpenAIClientImpl {
      *     dimensions: Integer (Optional)
      *     input_type: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     data (Required): [
      *          (Required){
@@ -2129,7 +2184,8 @@ public final class OpenAIClientImpl {
      *         total_tokens: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -2167,7 +2223,8 @@ public final class OpenAIClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2183,7 +2240,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2211,7 +2269,8 @@ public final class OpenAIClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Required): [
@@ -2227,7 +2286,8 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2246,7 +2306,8 @@ public final class OpenAIClientImpl {
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -2257,7 +2318,8 @@ public final class OpenAIClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2281,7 +2343,8 @@ public final class OpenAIClientImpl {
      * Uploads a file for use by other operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -2292,7 +2355,8 @@ public final class OpenAIClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param uploadFileRequest The uploadFileRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2314,13 +2378,15 @@ public final class OpenAIClientImpl {
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2342,13 +2408,15 @@ public final class OpenAIClientImpl {
      * Delete a previously uploaded file.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     deleted: boolean (Required)
      *     object: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2368,7 +2436,8 @@ public final class OpenAIClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -2379,7 +2448,8 @@ public final class OpenAIClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2401,7 +2471,8 @@ public final class OpenAIClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     id: String (Required)
@@ -2412,7 +2483,8 @@ public final class OpenAIClientImpl {
      *     status: String(uploaded/pending/running/processed/error/deleting/deleted) (Optional)
      *     status_details: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2432,9 +2504,11 @@ public final class OpenAIClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * byte[]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2455,9 +2529,11 @@ public final class OpenAIClientImpl {
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * byte[]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param fileId The ID of the file to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2486,7 +2562,8 @@ public final class OpenAIClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Optional): [
@@ -2533,7 +2610,8 @@ public final class OpenAIClientImpl {
      *     last_id: String (Optional)
      *     has_more: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2563,7 +2641,8 @@ public final class OpenAIClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     object: String (Required)
      *     data (Optional): [
@@ -2610,7 +2689,8 @@ public final class OpenAIClientImpl {
      *     last_id: String (Optional)
      *     has_more: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2631,7 +2711,8 @@ public final class OpenAIClientImpl {
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     endpoint: String (Required)
      *     input_file_id: String (Required)
@@ -2640,11 +2721,13 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2683,7 +2766,8 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param createBatchRequest The specification of the batch to create and execute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2708,7 +2792,8 @@ public final class OpenAIClientImpl {
      * The ID of the result file is added to the response once complete.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     endpoint: String (Required)
      *     input_file_id: String (Required)
@@ -2717,11 +2802,13 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2760,7 +2847,8 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param createBatchRequest The specification of the batch to create and execute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2782,7 +2870,8 @@ public final class OpenAIClientImpl {
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2821,7 +2910,8 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2843,7 +2933,8 @@ public final class OpenAIClientImpl {
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2882,7 +2973,8 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2902,7 +2994,8 @@ public final class OpenAIClientImpl {
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -2941,7 +3034,8 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2963,7 +3057,8 @@ public final class OpenAIClientImpl {
      * Gets details for a single batch specified by the given batchID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     object: String (Required)
@@ -3002,7 +3097,8 @@ public final class OpenAIClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param batchId The identifier of the batch.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

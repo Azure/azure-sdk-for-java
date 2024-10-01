@@ -6,25 +6,52 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
 public final class PrivateLinkResourceInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
 
-    /** Creates an instance of PrivateLinkResourceInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PrivateLinkResourceInner class.
+     */
     public PrivateLinkResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -32,8 +59,47 @@ public final class PrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -42,7 +108,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -51,7 +117,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
 
     /**
      * Get the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -60,7 +126,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
 
     /**
      * Set the requiredZoneNames property: The private link resource Private link DNS zone name.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResourceInner object itself.
      */
@@ -74,12 +140,58 @@ public final class PrivateLinkResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkResourceInner.
+     */
+    public static PrivateLinkResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResourceInner deserializedPrivateLinkResourceInner = new PrivateLinkResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.innerProperties
+                        = PrivateLinkResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPrivateLinkResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResourceInner;
+        });
     }
 }

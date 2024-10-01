@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -82,6 +83,7 @@ public class ServiceApiTests extends BlobTestBase {
         // We shouldn't be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .httpClient(getHttpClient())
             .buildClient();
 
         tagKey = testResourceNamer.randomName(prefix, 20);
@@ -1018,7 +1020,8 @@ public class ServiceApiTests extends BlobTestBase {
             "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter";
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            BlobServiceClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas).buildClient();
+            BlobServiceClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas)
+                .httpClient(new NoOpHttpClient()).buildClient();
             client.getBlobContainerClient(container).getBlobClient("blobname");
         });
 

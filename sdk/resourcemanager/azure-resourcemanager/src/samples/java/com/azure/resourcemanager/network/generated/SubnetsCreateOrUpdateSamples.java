@@ -15,7 +15,7 @@ import java.util.Arrays;
 public final class SubnetsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreate.json
      */
     /**
      * Sample code: Create subnet.
@@ -32,7 +32,7 @@ public final class SubnetsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/
      * SubnetCreateServiceEndpointNetworkIdentifier.json
      */
     /**
@@ -56,7 +56,7 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreateServiceEndpoint.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreateServiceEndpoint.
      * json
      */
     /**
@@ -78,7 +78,7 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreateWithDelegation.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreateWithDelegation.
      * json
      */
     /**
@@ -97,7 +97,7 @@ public final class SubnetsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/SubnetCreateWithSharingScope.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/SubnetCreateWithSharingScope.
      * json
      */
     /**

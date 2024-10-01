@@ -23,12 +23,12 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void initialStateIsDisabled() {
-        assertThat(new QuickPulseDataCollector(true).peek()).isNull();
+        assertThat(new QuickPulseDataCollector().peek()).isNull();
     }
 
     @Test
     void emptyCountsAndDurationsAfterEnable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
@@ -37,7 +37,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void nullCountersAfterDisable() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
         collector.disable();
@@ -46,7 +46,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void requestTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -88,7 +88,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void dependencyTelemetryIsCounted_DurationIsSum() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -130,7 +130,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void exceptionTelemetryIsCounted() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);
@@ -204,7 +204,7 @@ class QuickPulseDataCollectorTests {
 
     @Test
     void checkDocumentsListSize() {
-        QuickPulseDataCollector collector = new QuickPulseDataCollector(true);
+        QuickPulseDataCollector collector = new QuickPulseDataCollector();
 
         collector.setQuickPulseStatus(QuickPulseStatus.QP_IS_ON);
         collector.enable(FAKE_CONNECTION_STRING::getInstrumentationKey);

@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class MongoClusterRestoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MongoClusterRestoreParameters model
-            = BinaryData.fromString("{\"pointInTimeUTC\":\"2021-07-26T12:53:27Z\",\"sourceResourceId\":\"n\"}")
-                .toObject(MongoClusterRestoreParameters.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T12:53:27Z"), model.pointInTimeUTC());
-        Assertions.assertEquals("n", model.sourceResourceId());
+        MongoClusterRestoreParameters model = BinaryData
+            .fromString("{\"pointInTimeUTC\":\"2021-05-03T09:30:55Z\",\"sourceResourceId\":\"snhsjcnyejhkryh\"}")
+            .toObject(MongoClusterRestoreParameters.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T09:30:55Z"), model.pointInTimeUTC());
+        Assertions.assertEquals("snhsjcnyejhkryh", model.sourceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoClusterRestoreParameters model
-            = new MongoClusterRestoreParameters().withPointInTimeUTC(OffsetDateTime.parse("2021-07-26T12:53:27Z"))
-                .withSourceResourceId("n");
+            = new MongoClusterRestoreParameters().withPointInTimeUTC(OffsetDateTime.parse("2021-05-03T09:30:55Z"))
+                .withSourceResourceId("snhsjcnyejhkryh");
         model = BinaryData.fromObject(model).toObject(MongoClusterRestoreParameters.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T12:53:27Z"), model.pointInTimeUTC());
-        Assertions.assertEquals("n", model.sourceResourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T09:30:55Z"), model.pointInTimeUTC());
+        Assertions.assertEquals("snhsjcnyejhkryh", model.sourceResourceId());
     }
 }

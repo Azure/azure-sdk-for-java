@@ -73,4 +73,11 @@ public interface TrafficControllerManagementClient {
      * @return the FrontendsInterfacesClient object.
      */
     FrontendsInterfacesClient getFrontendsInterfaces();
+
+    /**
+     * Gets the SecurityPoliciesInterfacesClient object to access its operations.
+     * 
+     * @return the SecurityPoliciesInterfacesClient object.
+     */
+    SecurityPoliciesInterfacesClient getSecurityPoliciesInterfaces();
 }

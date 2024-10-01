@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Whether the pool permits direct communication between nodes.
  * 
@@ -39,7 +36,6 @@ public enum InterNodeCommunicationState {
      * @param value the serialized value to parse.
      * @return the parsed InterNodeCommunicationState object, or null if unable to parse.
      */
-    @JsonCreator
     public static InterNodeCommunicationState fromString(String value) {
         if (value == null) {
             return null;
@@ -56,7 +52,6 @@ public enum InterNodeCommunicationState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

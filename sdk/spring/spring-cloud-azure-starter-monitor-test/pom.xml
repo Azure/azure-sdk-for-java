@@ -7,7 +7,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/> <!--By default Maven assumes the parent pom is in the parent folder. This line avoids a Maven warning.
      In Maven, a profile can only be shared with inheritance and a pom can only have one parent.
      spring-boot-starter-parent contains a native-test profile gathering the configuration allowing to execute a Spring native test.-->
@@ -25,6 +25,18 @@
     <codesnippet.skip>true</codesnippet.skip>
   </properties>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>io.opentelemetry</groupId>
+        <artifactId>opentelemetry-bom</artifactId>
+        <version>1.42.1</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-bom;external_dependency} -->
+        <type>pom</type>
+        <scope>runtime</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -35,24 +47,30 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-data-jdbc</artifactId>
-      <version>2.7.18</version><!-- {x-version-update;org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
+      <version>3.3.3</version><!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-data-jdbc;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.3.3</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.26.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
@@ -172,6 +190,21 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+
+    <profile>
+      <id>java12plus</id>
+      <activation>
+        <jdk>[12,)</jdk>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-core-http-jdk-httpclient</artifactId>
+          <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 </project>

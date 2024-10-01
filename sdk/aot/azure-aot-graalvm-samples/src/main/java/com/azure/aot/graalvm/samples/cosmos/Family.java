@@ -12,10 +12,16 @@ public class Family {
     private String id = "";
     private String lastName = "";
     private String district = "";
-    private Parent[] parents = {};
-    private Child[] children = {};
+    private Parent[] parents = { };
+    private Child[] children = { };
     private Address address = new Address();
     private boolean isRegistered = false;
+
+    /**
+     * Creates a new instance of {@link Family}.
+     */
+    public Family() {
+    }
 
     /**
      * Returns the family id.

@@ -9,7 +9,7 @@ package com.azure.resourcemanager.elasticsan.generated;
  */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * PrivateEndpointConnections_Get_MinimumSet_Gen.json
      */
     /**
@@ -19,12 +19,13 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void
         privateEndpointConnectionsGetMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.privateEndpointConnections().getWithResponse("resourcegroupname", "elasticsanname",
-            "privateendpointconnectionname", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("resourcegroupname", "elasticsanname", "privateendpointconnectionname",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2024-05-01/examples/
      * PrivateEndpointConnections_Get_MaximumSet_Gen.json
      */
     /**
@@ -34,7 +35,8 @@ public final class PrivateEndpointConnectionsGetSamples {
      */
     public static void
         privateEndpointConnectionsGetMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager.privateEndpointConnections().getWithResponse("resourcegroupname", "elasticsanname",
-            "privateendpointconnectionname", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("resourcegroupname", "elasticsanname", "privateendpointconnectionname",
+                com.azure.core.util.Context.NONE);
     }
 }

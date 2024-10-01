@@ -5,7 +5,7 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.ErrorContext;
@@ -27,6 +27,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.test.publisher.TestPublisher;
 
@@ -71,8 +72,8 @@ public class PartitionPumpManagerTest {
     private static final String ETAG = "etag1";
     private static final PartitionContext PARTITION_CONTEXT = new PartitionContext(FULLY_QUALIFIED_NAME, EVENTHUB_NAME,
         CONSUMER_GROUP, PARTITION_ID);
-    private static final EventHubsTracer DEFAULT_TRACER =
-        new EventHubsTracer(null, FULLY_QUALIFIED_NAME, EVENTHUB_NAME);
+    private static final EventHubsConsumerInstrumentation DEFAULT_INSTRUMENTATION = new EventHubsConsumerInstrumentation(null, null,
+        FULLY_QUALIFIED_NAME, EVENTHUB_NAME, CONSUMER_GROUP, false);
     @Mock
     private CheckpointStore checkpointStore;
     @Mock
@@ -181,7 +182,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         try {
             // Act
@@ -215,7 +216,7 @@ public class PartitionPumpManagerTest {
             }));
         } finally {
             // Want to make sure we dispose of resources we create. (ie. schedulers)
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -245,7 +246,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         checkpoint.setOffset(1L).setSequenceNumber(10L);
         partitionOwnership.setLastModifiedTime(OffsetDateTime.now().toEpochSecond());
@@ -288,7 +289,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         final Exception testException = new IllegalStateException("Dummy exception.");
         when(consumerAsyncClient.receiveFromPartition(
@@ -337,29 +338,31 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         final String partition1 = "01";
         final EventHubConsumerAsyncClient client1 = mock(EventHubConsumerAsyncClient.class);
         final Scheduler scheduler1 = mock(Scheduler.class);
+        when(scheduler1.disposeGracefully()).thenReturn(Mono.empty());
         final PartitionPump pump1 = new PartitionPump(partition1, client1, scheduler1);
 
         final String partition2 = "02";
         final EventHubConsumerAsyncClient client2 = mock(EventHubConsumerAsyncClient.class);
         final Scheduler scheduler2 = mock(Scheduler.class);
+        when(scheduler2.disposeGracefully()).thenReturn(Mono.empty());
         final PartitionPump pump2 = new PartitionPump(partition2, client2, scheduler2);
 
         manager.getPartitionPumps().put(partition1, pump1);
         manager.getPartitionPumps().put(partition2, pump2);
 
         // Act
-        manager.stopAllPartitionPumps();
+        manager.stopAllPartitionPumps().block();
 
         // Assert
-        verify(scheduler1).dispose();
+        verify(scheduler1).disposeGracefully();
         verify(client1).close();
 
-        verify(scheduler2).dispose();
+        verify(scheduler2).disposeGracefully();
         verify(client2).close();
 
         assertTrue(manager.getPartitionPumps().isEmpty());
@@ -389,7 +392,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final Instant retrievalTime = Instant.now();
@@ -439,7 +442,7 @@ public class PartitionPumpManagerTest {
 
             assertEquals(3, eventCounter.get());
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -461,7 +464,7 @@ public class PartitionPumpManagerTest {
             .setBatchReceiveMode(true);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         final AtomicInteger publishedCounter = new AtomicInteger();
         final Instant retrievalTime = Instant.now();
@@ -501,7 +504,7 @@ public class PartitionPumpManagerTest {
             assertTrue(maxPrefetched.get() <= maxExpectedPrefetched,
                 String.format("Expected at most %s events to be prefetched, got %s", maxExpectedPrefetched, maxPrefetched.get()));
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -521,7 +524,7 @@ public class PartitionPumpManagerTest {
             .setBatchReceiveMode(true);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         final Instant retrievalTime = Instant.now();
 
@@ -540,7 +543,7 @@ public class PartitionPumpManagerTest {
             assertTrue(receiveCounter.await(20, TimeUnit.SECONDS));
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -561,7 +564,7 @@ public class PartitionPumpManagerTest {
             .setBatchReceiveMode(true);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, () -> partitionProcessor, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         final Instant retrievalTime = Instant.now();
 
@@ -580,7 +583,7 @@ public class PartitionPumpManagerTest {
             assertFalse(receiveCounter.await(10, TimeUnit.SECONDS));
             verify(partitionProcessor, never()).processError(any(ErrorContext.class));
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -610,7 +613,7 @@ public class PartitionPumpManagerTest {
         final EventPosition expected = EventPosition.latest();
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, null);
@@ -656,7 +659,7 @@ public class PartitionPumpManagerTest {
 
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -697,7 +700,7 @@ public class PartitionPumpManagerTest {
         final EventPosition expected = EventPosition.fromSequenceNumber(sequenceNumber);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -734,7 +737,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -769,7 +772,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Act
         final EventPosition actual = manager.getInitialEventPosition(partitionId, checkpoint);
@@ -803,7 +806,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final EventData eventData1 = new EventData("1");
@@ -859,7 +862,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -889,7 +892,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final EventData eventData1 = new EventData("1");
@@ -949,7 +952,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
@@ -979,7 +982,7 @@ public class PartitionPumpManagerTest {
             .setLoadBalancingStrategy(LoadBalancingStrategy.BALANCED);
 
         final PartitionPumpManager manager = new PartitionPumpManager(checkpointStore, supplier, builder,
-            DEFAULT_TRACER, options);
+            DEFAULT_INSTRUMENTATION, options);
 
         // Mock events to add.
         final EventData eventData1 = new EventData("1");
@@ -1037,7 +1040,7 @@ public class PartitionPumpManagerTest {
             verify(consumerAsyncClient).close();
 
         } finally {
-            manager.stopAllPartitionPumps();
+            manager.stopAllPartitionPumps().block();
         }
     }
 
