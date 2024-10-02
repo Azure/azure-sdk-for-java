@@ -6,7 +6,6 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
-import com.azure.monitor.opentelemetry.AzureMonitor;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;
@@ -39,7 +38,7 @@ public class ReadmeSamples {
         // This should be done just once when application starts up
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitor.customize(sdkBuilder, "{connection-string}");
+        AzureMonitorExporter.customize(sdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
 
@@ -71,7 +70,7 @@ public class ReadmeSamples {
     public void exporterAndOpenTelemetryAutoconfigurationEnvVariable() {
         // BEGIN: readme-sample-autoconfigure-env-variable
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        AzureMonitor.customize(sdkBuilder);
+        AzureMonitorExporter.customize(sdkBuilder);
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure-env-variable
     }
@@ -82,7 +81,7 @@ public class ReadmeSamples {
     public void exporterAndOpenTelemetryAutoconfiguration() {
         // BEGIN: readme-sample-autoconfigure
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
-        AzureMonitor.customize(sdkBuilder, "{connection-string}");
+        AzureMonitorExporter.customize(sdkBuilder, "{connection-string}");
         OpenTelemetry openTelemetry = sdkBuilder.build().getOpenTelemetrySdk();
         // END: readme-sample-autoconfigure
     }
@@ -95,7 +94,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-create-span
         AutoConfiguredOpenTelemetrySdkBuilder otelSdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitor.customize(otelSdkBuilder, "{connection-string}");
+        AzureMonitorExporter.customize(otelSdkBuilder, "{connection-string}");
 
         OpenTelemetry openTelemetry = otelSdkBuilder.build().getOpenTelemetrySdk();
         Tracer tracer = openTelemetry.getTracer("Sample");
@@ -124,7 +123,7 @@ public class ReadmeSamples {
     public void spanProcessor() {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        AzureMonitor.customize(sdkBuilder);
+        AzureMonitorExporter.customize(sdkBuilder);
 
         SpanProcessor spanProcessor = new SpanProcessor() {
 

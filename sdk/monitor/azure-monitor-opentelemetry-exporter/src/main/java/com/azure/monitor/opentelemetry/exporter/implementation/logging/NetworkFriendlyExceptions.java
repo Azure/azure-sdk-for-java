@@ -91,7 +91,7 @@ public class NetworkFriendlyExceptions {
     }
 
     private static String getFriendlyExceptionBanner(String url) {
-        return "Application Insights Java failed to connect to " + url;
+        return "Failed to connect to " + url;
     }
 
     private static String populateFriendlyMessage(String description, String action, String banner, String note) {

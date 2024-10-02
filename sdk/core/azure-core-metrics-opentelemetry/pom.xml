@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.23</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
+  <version>1.0.0-beta.24</version> <!-- {x-version-update;com.azure:azure-core-metrics-opentelemetry;current} -->
 
   <name>Microsoft Azure OpenTelemetry metrics plugin</name>
   <description>This package contains the OpenTelemetry metrics plugin for Azure client libraries.</description>
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.53.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.54.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.2</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
+      <version>1.27.0-beta.3</version>  <!-- {x-version-update;com.azure:azure-core-test;current} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -149,7 +149,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
+          <version>1.0.0-beta.18</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;current} -->
           <scope>test</scope>
         </dependency>
       </dependencies>

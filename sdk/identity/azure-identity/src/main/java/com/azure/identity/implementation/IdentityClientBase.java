@@ -4,9 +4,9 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.ProofOfPossessionOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.experimental.credential.PopTokenRequestContext;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -480,9 +480,9 @@ public abstract class IdentityClientBase {
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        ManagedIdentitySourceType managedIdentitySourceType = getManagedIdentitySourceType();
+        ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
 
-        if (managedIdentitySourceType.compareTo(ManagedIdentitySourceType.DEFAULT_TO_IMDS) == 0) {
+        if (ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(managedIdentitySourceType)) {
             options.setUseImdsRetryStrategy();
         }
 
@@ -499,14 +499,6 @@ public abstract class IdentityClientBase {
 
         return miBuilder.build();
     }
-
-
-    // temporary workaround until msal4j fixes a bug.
-    public static ManagedIdentitySourceType getManagedIdentitySourceType() {
-        return ManagedIdentityApplication.builder(ManagedIdentityId.systemAssigned())
-            .build().getManagedIdentitySource();
-    }
-
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
         String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
             + "/" + tenantId;
@@ -615,12 +607,11 @@ public abstract class IdentityClientBase {
                 builder.extraQueryParameters(extraQueryParameters);
             }
 
-            if (request instanceof PopTokenRequestContext
-                && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
-                PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
+            if (request.getProofOfPossessionOptions() != null) {
+                ProofOfPossessionOptions proofOfPossessionOptions = request.getProofOfPossessionOptions();
                 try {
-                    builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getResourceRequestMethod()),
-                        requestContext.getResourceRequestUrl().toURI(), requestContext.getProofOfPossessionNonce());
+                    builder.proofOfPossession(mapToMsalHttpMethod(proofOfPossessionOptions.getRequestMethod().toString()),
+                        proofOfPossessionOptions.getRequestUrl().toURI(), proofOfPossessionOptions.getProofOfPossessionNonce());
                 } catch (URISyntaxException e) {
                     throw new IllegalArgumentException(e);
                 }

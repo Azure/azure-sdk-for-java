@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fix a bug where post requests to Live Metrics returned http 400 due to malformed json.
 
 ### Other Changes
 
