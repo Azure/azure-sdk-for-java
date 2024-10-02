@@ -865,7 +865,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
 
-            cosmosChangeFeedRequestOptions.setCompleteAfterAvailableNow(true);
+            cosmosChangeFeedRequestOptions.setCompleteAfterAllCurrentChangesRetrieved(true);
             AtomicInteger totalQueryCount = new AtomicInteger(0);
             testContainer.queryChangeFeed(cosmosChangeFeedRequestOptions, JsonNode.class)
                 .byPage(1)

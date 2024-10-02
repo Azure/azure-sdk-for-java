@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -43,7 +42,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
-    private final boolean completeAfterAvailableNow;
+    private final boolean completeAfterAllCurrentChangesRetrieved;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -54,7 +53,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int top,
         int maxItemCount,
         boolean isSplitHandlingDisabled,
-        boolean completeAfterAvailableNow,
+        boolean completeAfterAllCurrentChangesRetrieved,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
@@ -79,7 +78,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 collectionLink,
                 isSplitHandlingDisabled);
         this.createRequestFunc = createRequestFunc;
-        this.completeAfterAvailableNow = completeAfterAvailableNow;
+        this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
     }
 
     @Override
@@ -116,7 +115,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (this.completeAfterAvailableNow) {
+                       if (this.completeAfterAllCurrentChangesRetrieved) {
                            if (continuationSnapshot != null) {
                                //track the end-LSN available now for each sub-feedRange and then find the next sub-feedRange to fetch more changes
                                boolean shouldComplete = continuationSnapshot.hasFetchedAllChangesAvailableNow(r);
@@ -156,7 +155,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
-        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAvailableNow;
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAllCurrentChangesRetrieved;
         return this.changeFeedState.applyServerResponseContinuation(
             serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }
