@@ -73,11 +73,9 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
                 CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
                 cosmosQueryRequestOptions.setFeedRange(feedRange);
                 List<String> pkValues = testContainer.readAllItems(cosmosQueryRequestOptions, TestItem.class)
-                    .collectList()
-                    .block()
-                    .stream()
                     .map(TestItem::getMypk)
-                    .collect(Collectors.toUnmodifiableList());
+                    .collectList()
+                    .block();
                 assertThat(pkValues.size()).isGreaterThan(0);
                 pkValuesByFeedRange.put(feedRange, pkValues);
             }
@@ -136,7 +134,7 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
                                     .getResults()
                                     .stream()
                                     .map(TestItem::getId)
-                                    .collect(Collectors.toUnmodifiableList()));
+                                    .collect(Collectors.toList()));
                         })
                         .blockLast();
                 }
