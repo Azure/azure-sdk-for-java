@@ -63,36 +63,15 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 @Fluent
 public final class AzureMonitorExporterOptions {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterOptions.class);
+    ConnectionString connectionString;
+    TokenCredential credential;
 
-    private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
-    private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
-
-    private static final String STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME
-        = "STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME";
-    private static final String STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME
-        = "STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME";
-
-    private static final Map<String, String> PROPERTIES
-        = CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
-
-    private ConnectionString connectionString;
-    private TokenCredential credential;
-
-    private HttpPipeline httpPipeline;
-    private HttpClient httpClient;
-    private HttpLogOptions httpLogOptions;
-    private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
-    private ClientOptions clientOptions;
-    private RetryOptions retryOptions;
-
-    private boolean frozen;
-
-    // this is only populated after the builder is frozen
-    private TelemetryItemExporter builtTelemetryItemExporter;
-
-    // this is only populated after the builder is frozen
-    private StatsbeatModule statsbeatModule;
+    HttpPipeline httpPipeline;
+    HttpClient httpClient;
+    HttpLogOptions httpLogOptions;
+    final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
+    ClientOptions clientOptions;
+    RetryOptions retryOptions;
 
     /**
      * Creates an instance of {@link AzureMonitorExporterOptions}.
@@ -114,10 +93,6 @@ public final class AzureMonitorExporterOptions {
      * @return The updated {@link AzureMonitorExporterOptions} object.
      */
     public AzureMonitorExporterOptions pipeline(HttpPipeline pipeline) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpPipeline cannot be changed after any of the build methods have been called"));
-        }
         this.httpPipeline = pipeline;
         return this;
     }
@@ -136,10 +111,6 @@ public final class AzureMonitorExporterOptions {
      * @return The updated {@link AzureMonitorExporterOptions} object.
      */
     public AzureMonitorExporterOptions httpClient(HttpClient httpClient) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpClient cannot be changed after any of the build methods have been called"));
-        }
         this.httpClient = httpClient;
         return this;
     }
@@ -160,10 +131,6 @@ public final class AzureMonitorExporterOptions {
      * @return The updated {@link AzureMonitorExporterOptions} object.
      */
     public AzureMonitorExporterOptions httpLogOptions(HttpLogOptions logOptions) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpLogOptions cannot be changed after any of the build methods have been called"));
-        }
         this.httpLogOptions = logOptions;
         return this;
     }
@@ -183,10 +150,6 @@ public final class AzureMonitorExporterOptions {
      * @return The updated {@link AzureMonitorExporterOptions} object.
      */
     public AzureMonitorExporterOptions addPolicy(HttpPipelinePolicy pipelinePolicy) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "httpPipelinePolicy cannot be added after any of the build methods have been called"));
-        }
         httpPipelinePolicies.add(Objects.requireNonNull(pipelinePolicy, "'policy' cannot be null."));
         return this;
     }
@@ -205,10 +168,6 @@ public final class AzureMonitorExporterOptions {
      * @return The updated {@link AzureMonitorExporterOptions} object.
      */
     public AzureMonitorExporterOptions retryOptions(RetryOptions retryOptions) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "retryOptions cannot be changed after any of the build methods have been called"));
-        }
         this.retryOptions = retryOptions;
         return this;
     }
@@ -232,10 +191,6 @@ public final class AzureMonitorExporterOptions {
      * @see HttpClientOptions
      */
     public AzureMonitorExporterOptions clientOptions(ClientOptions clientOptions) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "clientOptions cannot be changed after any of the build methods have been called"));
-        }
         this.clientOptions = clientOptions;
         return this;
     }
@@ -249,10 +204,6 @@ public final class AzureMonitorExporterOptions {
      * @throws IllegalArgumentException If the connection string is invalid.
      */
     public AzureMonitorExporterOptions connectionString(String connectionString) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "connectionString cannot be changed after any of the build methods have been called"));
-        }
         this.connectionString = ConnectionString.parse(connectionString);
         return this;
     }
@@ -264,180 +215,7 @@ public final class AzureMonitorExporterOptions {
      * @return The updated {@link AzureMonitorExporterOptions} object.
      */
     public AzureMonitorExporterOptions credential(TokenCredential credential) {
-        if (frozen) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "credential cannot be changed after any of the build methods have been called"));
-        }
         this.credential = credential;
         return this;
-    }
-
-    SpanExporter buildSpanExporter(ConfigProperties configProperties) {
-        internalBuildAndFreeze(configProperties);
-        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
-            statsbeatModule);
-    }
-
-    LogRecordExporter buildLogRecordExporter(ConfigProperties configProperties) {
-        internalBuildAndFreeze(configProperties);
-        return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
-    }
-
-    // One caveat: ConfigProperties will get used only once when initializing/starting StatsbeatModule.
-    // When a customer call build(AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder) multiple times with a diff ConfigProperties each time,
-    // the new ConfigProperties will not get applied to StatsbeatModule because of "frozen" guard. Luckily, we're using the config properties
-    // in StatsbeatModule for testing only. We might need to revisit this approach later.
-    void internalBuildAndFreeze(ConfigProperties configProperties) {
-        if (!frozen) {
-            HttpPipeline httpPipeline = createHttpPipeline();
-            statsbeatModule = initStatsbeatModule(configProperties);
-            File tempDir = TempDirs.getApplicationInsightsTempDir(LOGGER,
-                "Telemetry will not be stored to disk and retried on sporadic network failures");
-            // TODO (heya) change LocalStorageStats.noop() to statsbeatModule.getNonessentialStatsbeat() when we decide to collect non-essential Statsbeat by default.
-            builtTelemetryItemExporter = AzureMonitorHelper.createTelemetryItemExporter(httpPipeline, statsbeatModule,
-                tempDir, LocalStorageStats.noop());
-            startStatsbeatModule(statsbeatModule, configProperties, tempDir); // wait till TelemetryItemExporter has been initialized before starting StatsbeatModule
-            frozen = true;
-        }
-    }
-
-    MetricExporter buildMetricExporter(ConfigProperties configProperties) {
-        internalBuildAndFreeze(configProperties);
-        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties),
-            builtTelemetryItemExporter::send);
-        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(configProperties), true),
-            builtTelemetryItemExporter);
-    }
-
-    private Set<Feature> initStatsbeatFeatures() {
-        if (System.getProperty("org.graalvm.nativeimage.imagecode") != null) {
-            return Collections.singleton(Feature.GRAAL_VM_NATIVE);
-        }
-        return Collections.emptySet();
-    }
-
-    private StatsbeatConnectionString getStatsbeatConnectionString() {
-        return StatsbeatConnectionString.create(connectionString, null, null);
-    }
-
-    private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
-        return new SpanDataMapper(true, createDefaultsPopulator(configProperties),
-            (event, instrumentationName) -> false, (span, event) -> false);
-    }
-
-    private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator(ConfigProperties configProperties) {
-        ConnectionString connectionString = getConnectionString(configProperties);
-        ResourceParser resourceParser = new ResourceParser();
-        return (builder, resource) -> {
-            builder.setConnectionString(connectionString);
-            builder.setResource(resource);
-            builder.addTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), VersionGenerator.getSdkVersion());
-            // TODO (trask) unify these
-            resourceParser.updateRoleNameAndInstance(builder, resource);
-        };
-    }
-
-    private ConnectionString getConnectionString(ConfigProperties configProperties) {
-        if (connectionString != null) {
-            return connectionString;
-        }
-        ConnectionString connectionString
-            = ConnectionString.parse(configProperties.getString(APPLICATIONINSIGHTS_CONNECTION_STRING));
-        return connectionString;
-    }
-
-    private HttpPipeline createHttpPipeline() {
-
-        if (httpPipeline != null) {
-            if (credential != null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("'credential' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (httpClient != null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalStateException("'httpClient' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (httpLogOptions != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'httpLogOptions' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (!httpPipelinePolicies.isEmpty()) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'httpPipelinePolicies' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (clientOptions != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'clientOptions' is not supported when custom 'httpPipeline' is specified"));
-            }
-            if (retryOptions != null) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(
-                    "'retryOptions' is not supported when custom 'httpPipeline' is specified"));
-            }
-            return httpPipeline;
-        }
-
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
-
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
-
-        policies
-            .add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
-        policies.add(new CookiePolicy());
-        if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE));
-        }
-
-        if (retryOptions != null) {
-            policies.add(new RetryPolicy(retryOptions));
-        }
-
-        policies.addAll(httpPipelinePolicies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new com.azure.core.http.HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .tracer(new NoopTracer())
-            .build();
-    }
-
-    private StatsbeatModule initStatsbeatModule(ConfigProperties configProperties) {
-        return new StatsbeatModule(PropertyHelper::lazyUpdateVmRpIntegration);
-    }
-
-    private void startStatsbeatModule(StatsbeatModule statsbeatModule, ConfigProperties configProperties,
-        File tempDir) {
-        HttpPipeline statsbeatHttpPipeline = createStatsbeatHttpPipeline();
-        TelemetryItemExporter statsbeatTelemetryItemExporter
-            = AzureMonitorHelper.createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
-
-        statsbeatModule.start(statsbeatTelemetryItemExporter, this::getStatsbeatConnectionString,
-            getConnectionString(configProperties)::getInstrumentationKey, false,
-            configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
-            configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
-            false, initStatsbeatFeatures());
-    }
-
-    private HttpPipeline createStatsbeatHttpPipeline() {
-        if (httpPipeline != null) {
-            return httpPipeline;
-        }
-
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = PROPERTIES.getOrDefault("name", "UnknownName");
-        String clientVersion = PROPERTIES.getOrDefault("version", "UnknownVersion");
-
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
-
-        policies
-            .add(new UserAgentPolicy(applicationId, clientName, clientVersion, Configuration.getGlobalConfiguration()));
-        policies.add(new CookiePolicy());
-        policies.addAll(httpPipelinePolicies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new com.azure.core.http.HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .tracer(new NoopTracer())
-            .build();
     }
 }
