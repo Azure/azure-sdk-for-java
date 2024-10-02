@@ -912,14 +912,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
         for (int i = 0; i < docs.size(); i++) {
-            result.add(container
+            result.add(createdAsyncContainer
                 .createItem(docs.get(i)));
         }
 
         List<ObjectNode> insertedDocs = Flux.merge(
-                Flux.fromIterable(result),
-                2)
-            .map(CosmosItemResponse::getItem).collectList().block();
+            Flux.fromIterable(result),
+            2)
+                   .map(CosmosItemResponse::getItem).collectList().block();
 
         for (ObjectNode doc : insertedDocs) {
             partitionKeyToDocuments.put(
