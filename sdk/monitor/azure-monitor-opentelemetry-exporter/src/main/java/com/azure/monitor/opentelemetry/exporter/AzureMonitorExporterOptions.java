@@ -18,7 +18,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.configuration.Con
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.BiConsumer;
 
 /**
  * Providers configuration options for Azure Monitor exporter..
