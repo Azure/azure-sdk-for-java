@@ -17,13 +17,13 @@ public class ServiceEndpointTest extends TestSuiteBase {
         return new Object[][] {
             { TestConfigurations.HOST.substring(0,TestConfigurations.HOST.length() - 1), true }, // https://localhost:8080
             { TestConfigurations.HOST, true }, // https://localhost:8080/
-            { TestConfigurations.HOST.replace("https://", ""), true }, // localhost:8080/
-            { TestConfigurations.HOST.replace("https://", "").replace("/", ""), true },  // localhost:8081
             { TestConfigurations.HOST + ";AccountKey=" + TestConfigurations.MASTER_KEY + ";", true }, // https://localhost:8081/;AccountKey=<secret>;
             { TestConfigurations.HOST + ";AccountKey=" + TestConfigurations.MASTER_KEY, true}, // https://localhost:8081/;AccountKey=<secret>
             { TestConfigurations.HOST + ";" + TestConfigurations.MASTER_KEY + ";", true }, // https://localhost:8081/;<secret>;
             { TestConfigurations.HOST + TestConfigurations.MASTER_KEY + ";", true }, // https://localhost:8081/<secret>;
             { TestConfigurations.HOST + TestConfigurations.MASTER_KEY, true }, // https://localhost:8081/<secret>
+            { TestConfigurations.HOST.replace("https://", ""), false }, // localhost:8080/
+            { TestConfigurations.HOST.replace("https://", "").replace("/", ""), false },  // localhost:8081
             { "AccountEndpoint=" + TestConfigurations.HOST + ";AccountKey=" + TestConfigurations.MASTER_KEY + ";", false }, // AccountEndpoint=https://localhost:8081/;AccountKey=<secret>;
             { TestConfigurations.HOST.substring(0,TestConfigurations.HOST.length() - 1) + TestConfigurations.MASTER_KEY, false }, // https://localhost:8081<secret>
             { null, false },
@@ -52,7 +52,8 @@ public class ServiceEndpointTest extends TestSuiteBase {
         AsyncDocumentClient asyncDocumentClient =
             CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
 
-        assertThat(asyncDocumentClient.getServiceEndpoint().toString()).isEqualTo(TestConfigurations.HOST);
+        assertThat(asyncDocumentClient.getServiceEndpoint().getPath()).isNullOrEmpty();
+        assertThat(asyncDocumentClient.getServiceEndpoint().getQuery()).isNullOrEmpty();
 
         CosmosAsyncContainer cosmosAsyncContainer = getSharedSinglePartitionCosmosContainer(cosmosClient);
         // basic validation to ensure the client is working

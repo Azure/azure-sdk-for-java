@@ -14,12 +14,11 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Index;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
@@ -1272,24 +1271,23 @@ public class CosmosClientBuilder implements
     private void validateConfig() {
         URI uri;
         try {
-            // split the serviceEndpoint in case of a connection string being passed in
-            String[] serviceEndpointParts = serviceEndpoint.strip().replace(";", "")
-                .replace("AccountKey=", "").replace("https://","").split("/");
-            if (!serviceEndpointParts[0].isEmpty()) {
-                serviceEndpoint = "https://" + serviceEndpointParts[0] + "/";
-            }
             uri = new URI(serviceEndpoint);
-        } catch (URISyntaxException | IndexOutOfBoundsException e) {
+            if (!Strings.isNullOrEmpty(uri.getPath()) || !Strings.isNullOrEmpty(uri.getQuery())) {
+                serviceEndpoint = uri.getScheme() + "://" + uri.getAuthority();
+                uri = new URI(serviceEndpoint);
+            }
+        } catch (URISyntaxException e) {
             throw new IllegalArgumentException("invalid serviceEndpoint", e);
         }
 
         if (preferredRegions != null) {
             // validate preferredRegions
+            URI finalUri = uri;
             preferredRegions.forEach(
                 preferredRegion -> {
                     Preconditions.checkArgument(StringUtils.trimToNull(preferredRegion) != null, "preferredRegion can't be empty");
                     String trimmedPreferredRegion = preferredRegion.toLowerCase(Locale.ROOT).replace(" ", "");
-                    LocationHelper.getLocationEndpoint(uri, trimmedPreferredRegion);
+                    LocationHelper.getLocationEndpoint(finalUri, trimmedPreferredRegion);
                 }
             );
         }
