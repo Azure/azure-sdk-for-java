@@ -1,5 +1,15 @@
 # Release History
 
+## 2.10.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 2.9.10 (2024-10-01)
 
 ### Other Changes
