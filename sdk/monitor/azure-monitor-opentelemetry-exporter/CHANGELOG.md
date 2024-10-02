@@ -2,8 +2,6 @@
 
 ## 1.0.0-beta.29 (2024-10-02)
 
-### Features Added
-
 ### Breaking Changes
 
 ⚠️⚠️ The `AzureMonitorExporterBuilder` class has been replaced with the `AzureMonitorExporter` class ([41705](https://github.com/Azure/azure-sdk-for-java/pull/41705) and [42134](https://github.com/Azure/azure-sdk-for-java/pull/42134)):
