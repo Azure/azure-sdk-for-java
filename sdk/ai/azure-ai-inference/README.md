@@ -216,7 +216,8 @@ For a complete sample example, see sample [Streaming Function Calls][sample_stre
 ```java readme-sample-getModelInfo
 ModelInfo modelInfo = client.getModelInfo();
 
-System.out.printf("modelName: %s, modelNameProvider: %s", modelInfo.getModelName(), modelInfo.getModelProviderName());
+System.out.printf("modelName: %s, modelNameProvider: %s, modelType: %s%n",
+    modelInfo.getModelName(), modelInfo.getModelProviderName(), modelInfo.getModelType().toString());
 ```
 
 ### Service API versions
