@@ -3,15 +3,13 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
-import com.azure.spring.jms.ServiceBusJmsConnectionFactory;
+import com.azure.servicebus.jms.ServiceBusJmsConnectionFactory;
 
 /**
  * A customizer for {@link ServiceBusJmsConnectionFactory}.
- * @deprecated Use {@link AzureServiceBusJmsConnectionFactoryCustomizer} instead.
  */
-@Deprecated
 @FunctionalInterface
-public interface ServiceBusJmsConnectionFactoryCustomizer {
+public interface AzureServiceBusJmsConnectionFactoryCustomizer {
 
     /**
      * Customize the given {@link ServiceBusJmsConnectionFactory}.
