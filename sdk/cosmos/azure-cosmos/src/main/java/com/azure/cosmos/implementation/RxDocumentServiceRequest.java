@@ -22,7 +22,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
 
-import java.lang.ref.WeakReference;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -31,14 +30,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
 /**
  * This is core Transport/Connection agnostic request to the Azure Cosmos DB database service.
  */
 public class RxDocumentServiceRequest implements Cloneable {
 
-    private final WeakReference<DiagnosticsClientContext> clientContext;
+    private final DiagnosticsClientContext clientContext;
     public volatile boolean forcePartitionKeyRangeRefresh;
     public volatile boolean forceCollectionRoutingMapRefresh;
     private String resourceId;
@@ -174,7 +171,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                      Map<String, String> headers,
                                      boolean isNameBased,
                                      AuthorizationTokenType authorizationTokenType) {
-        this.clientContext = new WeakReference<>(clientContext);
+        this.clientContext = clientContext;
         this.operationType = operationType;
         this.forceNameCacheRefresh = false;
         this.resourceType = resourceType;
@@ -207,7 +204,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                      ResourceType resourceType,
                                      String path,
                                      Map<String, String> headers) {
-        this.clientContext = new WeakReference<>(clientContext);
+        this.clientContext = clientContext;
         this.requestContext = new DocumentServiceRequestContext();
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         this.operationType = operationType;
@@ -1034,20 +1031,15 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public static RxDocumentServiceRequest createFromResource(RxDocumentServiceRequest request, Resource modifiedResource) {
         RxDocumentServiceRequest modifiedRequest;
-
-        DiagnosticsClientContext clientContextSnapshot = request.clientContext.get();
-
-        checkNotNull(clientContextSnapshot, "Argument 'clientContextSnapshot' cannot be null!");
-
         if (!request.getIsNameBased()) {
-            modifiedRequest = RxDocumentServiceRequest.create(clientContextSnapshot,
+            modifiedRequest = RxDocumentServiceRequest.create(request.clientContext,
                                                               request.getOperationType(),
                                                               request.getResourceId(),
                                                               request.getResourceType(),
                                                               modifiedResource,
                                                               request.headers);
         } else {
-            modifiedRequest = RxDocumentServiceRequest.createFromName(clientContextSnapshot,
+            modifiedRequest = RxDocumentServiceRequest.createFromName(request.clientContext,
                                                                       request.getOperationType(),
                                                                       modifiedResource,
                                                                       request.getResourceAddress(),
@@ -1087,12 +1079,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
-
-        DiagnosticsClientContext clientContextSnapshot = this.clientContext.get();
-
-        checkNotNull(clientContextSnapshot, "Argument 'clientContextSnapshot' cannot be null!");
-
-        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(clientContextSnapshot, this.getOperationType(),
+        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
             this.resourceId, this.isNameBased, this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
@@ -1184,12 +1171,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public CosmosDiagnostics createCosmosDiagnostics() {
-
-        DiagnosticsClientContext clientContextSnapshot = this.clientContext.get();
-
-        checkNotNull(clientContextSnapshot, "Argument clientContextSnapshot cannot be null!");
-
-        return clientContextSnapshot.createDiagnostics();
+        return this.clientContext.createDiagnostics();
     }
 
     /**

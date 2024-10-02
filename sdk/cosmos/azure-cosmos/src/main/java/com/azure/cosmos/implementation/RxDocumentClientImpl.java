@@ -1867,10 +1867,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if( options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -1918,10 +1921,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             content);
 
         if (options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -2882,10 +2888,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext =
@@ -3065,10 +3074,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (retryPolicyInstance != null) {
@@ -3228,10 +3240,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             if (options != null) {
+
+                DocumentServiceRequestContext requestContext = request.requestContext;
+
                 options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                    () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-                request.requestContext.setExcludeRegions(options.getExcludedRegions());
-                request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                    () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+                requestContext.setExcludeRegions(options.getExcludedRegions());
+                requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicyInstance != null) {
@@ -3381,10 +3396,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
