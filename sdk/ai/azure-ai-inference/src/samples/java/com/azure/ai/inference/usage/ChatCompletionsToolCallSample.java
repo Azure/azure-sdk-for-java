@@ -59,7 +59,7 @@ public final class ChatCompletionsToolCallSample {
             chatMessages);
         ChatCompletions chatCompletionsAnswer = client.complete(new ChatCompletionsOptions(chatMessages));
 
-        System.out.printf("Message: %s.%n", chatCompletionsAnswer.getChoices().get(0).getMessage().getContent());
+        System.out.printf("Message: %s.%n", chatCompletionsAnswer.getChoice().getMessage().getContent());
     }
 
     private static List<ChatRequestMessage> handleFunctionCallResponse(List<ChatChoice> choices,

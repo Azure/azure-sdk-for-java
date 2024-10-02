@@ -132,7 +132,7 @@ client.completeStream(new ChatCompletionsOptions(chatMessages))
         if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
             return;
         }
-        StreamingChatResponseMessageUpdate delta = chatCompletions.getChoices().get(0).getDelta();
+        StreamingChatResponseMessageUpdate delta = chatCompletions.getChoice().getDelta();
         if (delta.getRole() != null) {
             System.out.println("Role = " + delta.getRole());
         }
@@ -158,10 +158,7 @@ chatMessages.add(new ChatRequestSystemMessage("You are a helpful assistant."));
 chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
 
 ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
-
-for (ChatChoice choice : completions.getChoices()) {
-    System.out.printf("%s.%n", choice.getMessage().getContent());
-}
+System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
 ```
 For a complete sample example, see sample [Image URL][sample_chat_with_image_url].
 
@@ -179,9 +176,7 @@ chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
 
 ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
 
-for (ChatChoice choice : completions.getChoices()) {
-    System.out.printf("%s.%n", choice.getMessage().getContent());
-}
+System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
 ```
 For a complete sample example, see sample [Image File][sample_chat_with_image_file].
 

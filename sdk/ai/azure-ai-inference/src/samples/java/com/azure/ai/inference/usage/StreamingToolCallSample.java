@@ -69,7 +69,7 @@ public final class StreamingToolCallSample {
             if (chatCompletions.getChoices().isEmpty()) {
                 continue;
             }
-            StreamingChatChoiceUpdate choice = chatCompletions.getChoices().get(0);
+            StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
             if (choice.getFinishReason() != null) {
                 finishReason = choice.getFinishReason();
             }
@@ -137,7 +137,7 @@ public final class StreamingToolCallSample {
                 if (chatCompletions.getChoices().isEmpty()) {
                     continue;
                 }
-                StreamingChatChoiceUpdate choice = chatCompletions.getChoices().get(0);
+                StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
                 if (choice.getFinishReason() != null) {
                     finalFinishReason = choice.getFinishReason();
                 }

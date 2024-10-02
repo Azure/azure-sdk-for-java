@@ -99,7 +99,7 @@ public final class ReadmeSamples {
                 if (CoreUtils.isNullOrEmpty(chatCompletions.getChoices())) {
                     return;
                 }
-                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoices().get(0).getDelta();
+                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoice().getDelta();
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());
                 }
@@ -154,9 +154,7 @@ public final class ReadmeSamples {
 
         ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
 
-        for (ChatChoice choice : completions.getChoices()) {
-            System.out.printf("%s.%n", choice.getMessage().getContent());
-        }
+        System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
         // END: readme-sample-chatWithImageFile
     }
 
@@ -172,10 +170,7 @@ public final class ReadmeSamples {
         chatMessages.add(ChatRequestUserMessage.fromContentItems(contentItems));
 
         ChatCompletions completions = client.complete(new ChatCompletionsOptions(chatMessages));
-
-        for (ChatChoice choice : completions.getChoices()) {
-            System.out.printf("%s.%n", choice.getMessage().getContent());
-        }
+        System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
         // END: readme-sample-chatWithImageUrl
     }
 

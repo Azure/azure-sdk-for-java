@@ -200,7 +200,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
             if (chatCompletions.getChoices().isEmpty()) {
                 continue;
             }
-            StreamingChatChoiceUpdate choice = chatCompletions.getChoices().get(0);
+            StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
             if (choice.getFinishReason() != null) {
                 finishReason = choice.getFinishReason();
                 assertSame(finishReason, CompletionsFinishReason.TOOL_CALLS);
@@ -267,7 +267,7 @@ public class ChatCompletionsSyncClientTest extends ChatCompletionsClientTestBase
                 if (chatCompletions.getChoices().isEmpty()) {
                     continue;
                 }
-                StreamingChatChoiceUpdate choice = chatCompletions.getChoices().get(0);
+                StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
                 if (choice.getFinishReason() != null) {
                     finalFinishReason = choice.getFinishReason();
                     assertSame(finalFinishReason, CompletionsFinishReason.STOPPED);
