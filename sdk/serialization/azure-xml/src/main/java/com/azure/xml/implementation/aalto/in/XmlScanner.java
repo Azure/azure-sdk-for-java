@@ -93,20 +93,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
     protected final ReaderConfig _config;
 
-    /**
-     * Whether validity checks (wrt. name and text characters)
-     * and normalization (linefeeds) is to be
-     * done using xml 1.1 rules, or basic xml 1.0 rules. Default
-     * is 1.0.
-     */
-    protected final boolean _xml11;
-
     protected final boolean _cfgCoalescing;
-
-    /* Note: non-final since it may need to be disabled after
-     * construction.
-     */
-    protected boolean _cfgLazyParsing;
 
     /*
     /**********************************************************************
@@ -232,12 +219,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
     /*
     /**********************************************************************
-    /* Support for non-transient NamespaceContext
-    /**********************************************************************
-     */
-
-    /*
-    /**********************************************************************
     /* Attribute info
     /**********************************************************************
      */
@@ -297,8 +278,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         _config = cfg;
 
         _cfgCoalescing = cfg.willCoalesceText();
-        _cfgLazyParsing = cfg.willParseLazily();
-        _xml11 = cfg.isXml11();
         _textBuilder = TextBuilder.createRecyclableBuffer(_config);
         _attrCollector = new AttributeCollector();
         _nameBuffer = cfg.allocSmallCBuffer(ReaderConfig.DEFAULT_SMALL_BUFFER_LEN);
@@ -317,7 +296,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
      */
     public final void close(boolean forceCloseSource) throws XMLStreamException {
         _releaseBuffers();
-        if (forceCloseSource || _config.willAutoCloseInput()) {
+        if (forceCloseSource) {
             try {
                 _closeSource();
             } catch (IOException ioe) {
@@ -511,12 +490,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
 
     /*
     /**********************************************************************
-    /* Data accessors, firing SAX events
-    /**********************************************************************
-     */
-
-    /*
-    /**********************************************************************
     /* Data accessors, attributes:
     /**********************************************************************
      */
@@ -558,18 +531,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
             return null;
         }
         return _attrCollector.getValue(nsURI, localName);
-    }
-
-    public final String getAttrType() {
-        // Note: caller checks indices:
-        // !!! TBI
-        return "CDATA";
-    }
-
-    public final boolean isAttrSpecified() {
-        // !!! TBI
-        // (for now works ok as we don't handle DTD info, no attr value defaults)
-        return true;
     }
 
     /*
@@ -986,9 +947,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         } else if (value < 32) {
             // XML 1.1 allows most other chars; 1.0 does not:
             if (value != INT_LF && value != INT_CR && value != INT_TAB) {
-                if (!_xml11 || value == 0) {
-                    reportInvalidXmlChar(value);
-                }
+                reportInvalidXmlChar(value);
             }
         }
     }
@@ -1160,13 +1119,7 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
             throwNullChar();
         }
 
-        String msg = "Illegal XML character (" + XmlChars.getCharDesc(c) + ")";
-        if (_xml11) {
-            if (i < INT_SPACE) {
-                msg += " [note: in XML 1.1, it could be included via entity expansion]";
-            }
-        }
-        reportInputProblem(msg);
+        reportInputProblem("Illegal XML character (" + XmlChars.getCharDesc(c) + ")");
 
         //will not reach this block
         return (char) i;
@@ -1177,12 +1130,6 @@ public abstract class XmlScanner implements XmlConsts, XMLStreamConstants, Names
         if (c == CHAR_NULL) {
             throwNullChar();
         }
-        String msg = "Illegal character (" + XmlChars.getCharDesc(c) + ")";
-        if (_xml11) {
-            if (i < INT_SPACE) {
-                msg += " [note: in XML 1.1, it could be included via entity expansion]";
-            }
-        }
-        reportInputProblem(msg);
+        reportInputProblem("Illegal character (" + XmlChars.getCharDesc(c) + ")");
     }
 }

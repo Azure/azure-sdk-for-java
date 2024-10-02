@@ -424,45 +424,6 @@ public final class ByteBasedPNameTable extends NameTable {
         return sb.toString();
     }
 
-    // Not really a std method... but commonly useful
-    /*
-    public String toDebugString()
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[PNameTable, size: ");
-        sb.append(mCount);
-        sb.append('/');
-        sb.append(mMainHash.length);
-        sb.append(" -> ");
-        for (int i = 0; i < mMainHash.length; ++i) {
-            sb.append("\n#");
-            sb.append(i);
-            sb.append(": 0x");
-            sb.append(Integer.toHexString(mMainHash[i]));
-            sb.append(" == ");
-            PName name = mMainNames[i];
-            if (name == null) {
-                sb.append("null");
-            } else {
-                sb.append('"');
-                sb.append(name.toString());
-                sb.append('"');
-            }
-        }
-        sb.append("\nSpill(");
-        sb.append(mCollEnd);
-        sb.append("):");
-        for (int i = 0; i < mCollEnd; ++i) {
-            Bucket bucket = mCollList[i];
-            sb.append("\nsp#");
-            sb.append(i);
-            sb.append(": ");
-            sb.append(bucket.toDebugString());
-        }
-        return sb.toString();
-    }
-    */
-
     /*
     /**********************************************************************
     /* Internal methods
@@ -542,14 +503,6 @@ public final class ByteBasedPNameTable extends NameTable {
     }
 
     private void rehash() {
-        /*
-        System.err.println("DEBUG: Rehashing!!!");
-        System.err.println("DEBUG: before rehash, "+toString());
-        System.err.println("-> [");
-        System.err.println(toDebugString());
-        System.err.println("DEBUG: ]");
-        */
-
         mNeedRehash = false;
         // Note: since we'll make copies, no need to unshare, can just mark as such:
         mMainNamesShared = false;
@@ -629,12 +582,6 @@ public final class ByteBasedPNameTable extends NameTable {
         if (symbolsSeen != mCount) { // sanity check
             throw new Error("Internal error: count after rehash " + symbolsSeen + "; should be " + mCount);
         }
-
-        /*
-        System.err.println("DEBUG: after rehash == [");
-        System.err.println(toDebugString());
-        System.err.println("DEBUG: ]");
-        */
     }
 
     /**
@@ -750,22 +697,5 @@ public final class ByteBasedPNameTable extends NameTable {
             }
             return null;
         }
-
-        /*
-        public String toDebugString()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.append("[Bucket(");
-            sb.append(length());
-            sb.append("): ");
-            for (Bucket curr = this; curr != null; curr = curr.mNext) {
-                sb.append('"');
-                sb.append(curr.mName.toString());
-                sb.append("\" -> ");
-            }
-            sb.append("NULL]");
-            return sb.toString();
-        }
-        */
     }
 }

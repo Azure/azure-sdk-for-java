@@ -277,11 +277,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
              */
             _tmpChar = (int) b & 0xFF; // need to ensure it won't be negative
         }
-        if (_cfgLazyParsing) {
-            _tokenIncomplete = true;
-        } else {
-            finishCharacters();
-        }
+        _tokenIncomplete = true;
         return (_currToken = CHARACTERS);
     }
 
@@ -313,23 +309,12 @@ public abstract class StreamScanner extends ByteBasedScanner {
             }
             b = _inputBuffer[_inputPtr++];
             if (b == BYTE_HYPHEN) {
-                if (_cfgLazyParsing) {
-                    _tokenIncomplete = true;
-                } else {
-                    finishComment();
-                }
+                _tokenIncomplete = true;
                 return (_currToken = COMMENT);
             }
         } else if (b == BYTE_D) { // DOCTYPE?
             if (isProlog) { // no DOCTYPE in epilog
                 handleDtdStart();
-                // incomplete flag is set by handleDtdStart
-                if (!_cfgLazyParsing) {
-                    if (_tokenIncomplete) {
-                        finishDTD(true); // must copy contents, may be needed
-                        _tokenIncomplete = false;
-                    }
-                }
                 return DTD;
             }
         }
@@ -407,11 +392,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
             if (b != BYTE_HYPHEN) {
                 reportTreeUnexpChar(decodeCharForError(b), " (expected '-' for COMMENT)");
             }
-            if (_cfgLazyParsing) {
-                _tokenIncomplete = true;
-            } else {
-                finishComment();
-            }
+            _tokenIncomplete = true;
             return (_currToken = COMMENT);
         }
 
@@ -428,11 +409,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
                     reportTreeUnexpChar(ch, " (expected '" + CDATA_STR.charAt(i) + "' for CDATA section)");
                 }
             }
-            if (_cfgLazyParsing) {
-                _tokenIncomplete = true;
-            } else {
-                finishCData();
-            }
+            _tokenIncomplete = true;
             return CDATA;
         }
         reportTreeUnexpChar(decodeCharForError(b), " (expected either '-' for COMMENT or '[CDATA[' for CDATA section)");
@@ -494,11 +471,7 @@ public abstract class StreamScanner extends ByteBasedScanner {
                 ++_inputPtr;
             }
             // Ok, got non-space, need to push back:
-            if (_cfgLazyParsing) {
-                _tokenIncomplete = true;
-            } else {
-                finishPI();
-            }
+            _tokenIncomplete = true;
         } else {
             if (c != INT_QMARK) {
                 reportMissingPISpace(decodeCharForError((byte) c));
@@ -725,125 +698,6 @@ public abstract class StreamScanner extends ByteBasedScanner {
         }
         return END_ELEMENT;
     }
-
-    /* 28-Oct-2006, tatus: This is the old (slow) implementation. I'll
-     *   leave it here, since it's known to work, so in case new impl
-     *   has problems, one can refer to the old impl
-     */
-    /*
-    protected final int handleEndElement2()
-        throws XMLStreamException
-    {
-        --_depth;
-        _currToken = END_ELEMENT;
-        // Ok, at this point we have seen '/', need the name
-        _tokenName = _currElem.getName();
-    
-        int i2;
-        int qix = 0;
-    
-        while (true) {
-            int q;
-            int expQuad = _tokenName.getQuad(qix);
-    
-            // First byte of a quad:
-            if (_inputPtr >= _inputEnd) {
-                loadMoreGuaranteed();
-            }
-            i2 = _inputBuffer[_inputPtr++] & 0xFF;
-            if (i2 < 65) {
-                // Ok; "_" (45), "." (46) and "0"-"9"/":" (48 - 57/58) still name chars
-                if (i2 < 45 || i2 > 58 || i2 == 47) {
-                    if (0 != expQuad || _tokenName.sizeInQuads() != qix) {
-                        reportUnexpectedEndTag(_tokenName.getPrefixedName());
-                    }
-                    break;
-                }
-            }
-            q = i2;
-            ++qix; // since this started a new quad
-    
-            // second byte
-            //i2 = (int) ((_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++] : loadOne()) & 0xFF;
-            if (_inputPtr >= _inputEnd) {
-                loadMoreGuaranteed();
-            }
-            i2 = _inputBuffer[_inputPtr++] & 0xFF;
-            if (i2 < 65) {
-                if (i2 < 45 || i2 > 58 || i2 == 47) {
-                    if (q != expQuad || _tokenName.sizeInQuads() != qix) {
-                        reportUnexpectedEndTag(_tokenName.getPrefixedName());
-                    }
-                    break;
-                }
-            }
-            q = (q << 8) | i2;
-    
-            // third byte
-            //i2 = (int) ((_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++] : loadOne()) & 0xFF;
-            if (_inputPtr >= _inputEnd) {
-                loadMoreGuaranteed();
-            }
-            i2 = _inputBuffer[_inputPtr++] & 0xFF;
-            if (i2 < 65) {
-                if (i2 < 45 || i2 > 58 || i2 == 47) { // 2 (ascii) char name?
-                    if (q != expQuad || _tokenName.sizeInQuads() != qix) {
-                        reportUnexpectedEndTag(_tokenName.getPrefixedName());
-                    }
-                    break;
-                }
-            }
-            q = (q << 8) | i2;
-    
-            // fourth byte
-            //i2 = (int) ((_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++] : loadOne()) & 0xFF;
-            if (_inputPtr >= _inputEnd) {
-                loadMoreGuaranteed();
-            }
-            i2 = _inputBuffer[_inputPtr++] & 0xFF;
-            if (i2 < 65) {
-                if (i2 < 45 || i2 > 58 || i2 == 47) { // 2 (ascii) char name?
-                    if (q != expQuad || _tokenName.sizeInQuads() != qix) {
-                        reportUnexpectedEndTag(_tokenName.getPrefixedName());
-                    }
-                    break;
-                }
-            }
-            q = (q << 8) | i2;
-    
-            // Full quad, ok; need to compare now:
-            if (q != expQuad) {
-                // Let's just fall through, then; will throw exception
-                reportUnexpectedEndTag(_tokenName.getPrefixedName());
-            }
-        }
-    
-        // Note: i2 still holds the last byte read (except if we detected
-        // a mismatch; but that caused an exception above)
-    
-        // Trailing space?
-        while (i2 <= INT_SPACE) {
-            if (i2 == INT_LF) {
-                markLF();
-            } else if (i2 == INT_CR) {
-                byte b = (_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++] : loadOne();
-                if (b != BYTE_LF) {
-                    markLF(_inputPtr-1);
-                    i2 = (int) b & 0xFF;
-                    continue;
-                }
-                markLF();
-            } else if (i2 != INT_SPACE && i2 != INT_TAB) {
-                throwInvalidSpace(i2);
-            }
-            i2 = (int) ((_inputPtr < _inputEnd) ? _inputBuffer[_inputPtr++] : loadOne()) & 0xFF;
-        }
-        if (i2 != INT_GT) {
-            throwUnexpectedChar(decodeCharForError((byte)i2), " expected space or closing '>'");
-        }
-        return END_ELEMENT;
-    }
-    */
 
     /*
     /**********************************************************************

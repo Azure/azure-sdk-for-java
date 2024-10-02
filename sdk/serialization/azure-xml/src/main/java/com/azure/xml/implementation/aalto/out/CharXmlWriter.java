@@ -485,11 +485,8 @@ public final class CharXmlWriter extends XmlWriter {
                     case CT_WS_CR:
                         // !!! TBI: line count
                         // Also, CR to be quoted?
-                        if (_config.willEscapeCR()) {
-                            writeAsEntity(ch);
-                            continue;
-                        }
-                        break;
+                        writeAsEntity(ch);
+                        continue;
 
                     case CT_WS_LF:
                         // !!! TBI: line count
@@ -540,9 +537,7 @@ public final class CharXmlWriter extends XmlWriter {
         while (offset < len) {
             char ch = cbuf[offset++];
             if (ch > 0x0020) {
-                if (!_config.isXml11() || (ch != 0x0085 && ch != 0x2028)) {
-                    reportNwfContent(ErrorConsts.WERR_SPACE_CONTENT, (int) ch, offset - 1);
-                }
+                reportNwfContent(ErrorConsts.WERR_SPACE_CONTENT, (int) ch, offset - 1);
             }
             if (_outputPtr >= _outputBufferLen) {
                 flushBuffer();
@@ -642,9 +637,6 @@ public final class CharXmlWriter extends XmlWriter {
                          * extra space...
                          */
                         if (offset == len || cbuf[offset] == '-') {
-                            if (!_config.willFixContent()) {
-                                return offset - 1; // points to the 'offending' char
-                            }
                             if (_outputPtr >= _outputBufferLen) {
                                 flushBuffer();
                             }
@@ -1048,18 +1040,6 @@ public final class CharXmlWriter extends XmlWriter {
             _outputBuffer[_outputPtr++] = (char) ch;
         }
     }
-
-    /*
-    //////////////////////////////////////////////////
-    // Write methods, typed content
-    //////////////////////////////////////////////////
-     */
-
-    /*
-    ////////////////////////////////////////////////////
-    // Write methods, attributes, Typed
-    ////////////////////////////////////////////////////
-     */
 
     /*
     ////////////////////////////////////////////////////

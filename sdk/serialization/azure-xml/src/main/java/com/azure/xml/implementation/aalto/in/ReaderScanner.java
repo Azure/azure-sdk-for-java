@@ -314,11 +314,7 @@ public final class ReaderScanner extends XmlScanner {
             mTmpChar = c;
         }
         // text, possibly/probably ok
-        if (_cfgLazyParsing) {
-            _tokenIncomplete = true;
-        } else {
-            finishCharacters();
-        }
+        _tokenIncomplete = true;
         return (_currToken = CHARACTERS);
     }
 
@@ -350,23 +346,12 @@ public final class ReaderScanner extends XmlScanner {
             }
             c = _inputBuffer[_inputPtr++];
             if (c == '-') {
-                if (_cfgLazyParsing) {
-                    _tokenIncomplete = true;
-                } else {
-                    finishComment();
-                }
+                _tokenIncomplete = true;
                 return (_currToken = COMMENT);
             }
         } else if (c == 'D') { // DOCTYPE?
             if (isProlog) { // no DOCTYPE in epilog
                 handleDtdStart();
-                // incomplete flag is set by handleDtdStart
-                if (!_cfgLazyParsing) {
-                    if (_tokenIncomplete) {
-                        finishDTD(true); // must copy contents, may be needed
-                        _tokenIncomplete = false;
-                    }
-                }
                 return DTD;
             }
         }
@@ -444,11 +429,7 @@ public final class ReaderScanner extends XmlScanner {
             if (c != '-') {
                 reportTreeUnexpChar(c, " (expected '-' for COMMENT)");
             }
-            if (_cfgLazyParsing) {
-                _tokenIncomplete = true;
-            } else {
-                finishComment();
-            }
+            _tokenIncomplete = true;
             return (_currToken = COMMENT);
         }
 
@@ -464,11 +445,7 @@ public final class ReaderScanner extends XmlScanner {
                     reportTreeUnexpChar(c, " (expected '" + CDATA_STR.charAt(i) + "' for CDATA section)");
                 }
             }
-            if (_cfgLazyParsing) {
-                _tokenIncomplete = true;
-            } else {
-                finishCData();
-            }
+            _tokenIncomplete = true;
             return CDATA;
         }
         reportTreeUnexpChar(c, " (expected either '-' for COMMENT or '[CDATA[' for CDATA section)");
@@ -526,11 +503,7 @@ public final class ReaderScanner extends XmlScanner {
                 ++_inputPtr;
             }
             // Ok, got non-space, need to push back:
-            if (_cfgLazyParsing) {
-                _tokenIncomplete = true;
-            } else {
-                finishPI();
-            }
+            _tokenIncomplete = true;
         } else {
             if (c != INT_QMARK) {
                 reportMissingPISpace(c);
@@ -611,9 +584,7 @@ public final class ReaderScanner extends XmlScanner {
         } else if (value < 32) {
             // XML 1.1 allows most other chars; 1.0 does not:
             if (value != INT_LF && value != INT_CR && value != INT_TAB) {
-                if (!_xml11 || value == 0) {
-                    reportInvalidXmlChar(value);
-                }
+                reportInvalidXmlChar(value);
             }
         }
         return value;
@@ -877,24 +848,21 @@ public final class ReaderScanner extends XmlScanner {
 
                     case XmlCharTypes.CT_LT:
                         throwUnexpectedChar(c, "'<' not allowed in attribute value");
-                    case XmlCharTypes.CT_AMP: {
-                        if (!_config.willRetainAttributeGeneralEntities()) {
-                            int d = handleEntityInText();
-                            if (d == 0) { // unexpanded general entity... not good
-                                reportUnexpandedEntityInAttr(false);
-                            }
-                            // Ok; does it need a surrogate though? (over 16 bits)
-                            if ((d >> 16) != 0) {
-                                d -= 0x10000;
-                                attrBuffer[attrPtr++] = (char) (0xD800 | (d >> 10));
-                                d = 0xDC00 | (d & 0x3FF);
-                                if (attrPtr >= attrBuffer.length) {
-                                    attrBuffer = _attrCollector.valueBufferFull();
-                                }
-                            }
-                            c = (char) d;
+                    case XmlCharTypes.CT_AMP:
+                        int d = handleEntityInText();
+                        if (d == 0) { // unexpanded general entity... not good
+                            reportUnexpandedEntityInAttr(false);
                         }
-                    }
+                        // Ok; does it need a surrogate though? (over 16 bits)
+                        if ((d >> 16) != 0) {
+                            d -= 0x10000;
+                            attrBuffer[attrPtr++] = (char) (0xD800 | (d >> 10));
+                            d = 0xDC00 | (d & 0x3FF);
+                            if (attrPtr >= attrBuffer.length) {
+                                attrBuffer = _attrCollector.valueBufferFull();
+                            }
+                        }
+                        c = (char) d;
                         break;
 
                     case XmlCharTypes.CT_ATTR_QUOTE:

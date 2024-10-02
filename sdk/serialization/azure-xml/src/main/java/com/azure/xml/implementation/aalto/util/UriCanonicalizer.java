@@ -2,6 +2,7 @@
 package com.azure.xml.implementation.aalto.util;
 
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * This class is used for canonicalization of namespace URIs.
@@ -12,6 +13,7 @@ import java.util.*;
  */
 public final class UriCanonicalizer {
     private BoundedHashMap mURIs = null;
+    private final ReentrantLock lock = new ReentrantLock();
 
     public UriCanonicalizer() {
     }
@@ -20,24 +22,29 @@ public final class UriCanonicalizer {
         mURIs = new BoundedHashMap();
     }
 
-    public synchronized String canonicalizeURI(char[] ch, int len) {
-        CanonicalKey key = new CanonicalKey(ch, len);
-        if (mURIs == null) {
-            init();
-        } else {
-            String result = mURIs.get(key);
-            if (result != null) {
-                return result;
+    public String canonicalizeURI(char[] ch, int len) {
+        lock.lock();
+        try {
+            CanonicalKey key = new CanonicalKey(ch, len);
+            if (mURIs == null) {
+                init();
+            } else {
+                String result = mURIs.get(key);
+                if (result != null) {
+                    return result;
+                }
             }
+            /* Key we have is not yet stable, as the underlying array
+             * is shared and mutable. So:
+             */
+            key = key.safeClone();
+            // Also, now we should intern() the URI
+            String uri = new String(ch, 0, len).intern();
+            mURIs.put(key, uri);
+            return uri;
+        } finally {
+            lock.unlock();
         }
-        /* Key we have is not yet stable, as the underlying array
-         * is shared and mutable. So:
-         */
-        key = key.safeClone();
-        // Also, now we should intern() the URI
-        String uri = new String(ch, 0, len).intern();
-        mURIs.put(key, uri);
-        return uri;
     }
 
     /*

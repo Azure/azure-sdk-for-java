@@ -25,8 +25,6 @@ import javax.xml.stream.Location;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.azure.xml.implementation.stax2.*;
-
 import com.azure.xml.implementation.aalto.UncheckedStreamException;
 import com.azure.xml.implementation.aalto.WFCException;
 import com.azure.xml.implementation.aalto.impl.ErrorConsts;
@@ -41,7 +39,7 @@ import com.azure.xml.implementation.aalto.util.TextAccumulator;
  * While the read implements Stax API, most of real work is delegated
  * to input (and thereby, encoding) specific backend implementations.
  */
-public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
+public class StreamReaderImpl implements XMLStreamReader {
     // // // Main state constants
 
     final static int STATE_PROLOG = 0; // Before root element
@@ -63,8 +61,6 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
     // // // Config flags:
 
     protected final boolean _cfgCoalesceText;
-
-    protected final boolean _cfgReportTextAsChars;
 
     /*
     /**********************************************************************
@@ -98,14 +94,6 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
     /**********************************************************************
      */
 
-    // // // Info from XML declaration:
-
-    //final String mXmlDeclEncoding;
-    //final int mXmlDeclVersion;
-    //final int mXmlDeclStandalone;
-
-    //final String mInputEncoding;
-
     /**
      * Prefixed root-name DOCTYPE declaration gave us, if any (note: also
      * serves as a marker to know if we have seen DOCTYPE yet)
@@ -123,7 +111,6 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
         _currToken = START_DOCUMENT;
         ReaderConfig cfg = scanner.getConfig();
         _cfgCoalesceText = cfg.willCoalesceText();
-        _cfgReportTextAsChars = !cfg.willReportCData();
     }
 
     public static StreamReaderImpl construct(InputBootstrapper bs) throws XMLStreamException {
@@ -286,7 +273,7 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
         if (index >= _attrCount || index < 0) {
             reportInvalidAttrIndex(index);
         }
-        return _scanner.getAttrType();
+        return "CDATA";
     }
 
     @Override
@@ -369,7 +356,7 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
          * as CHARACTERS always, never as CDATA (StAX specs).
          */
         if (_currToken == CDATA) {
-            if (_cfgCoalesceText || _cfgReportTextAsChars) {
+            if (_cfgCoalesceText) {
                 return CHARACTERS;
             }
         }
@@ -564,7 +551,7 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
         if (_currToken != START_ELEMENT) {
             throw new IllegalStateException(ErrorConsts.ERR_STATE_NOT_STELEM);
         }
-        return _scanner.isAttrSpecified();
+        return true;
     }
 
     @Override
@@ -604,7 +591,7 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
          */
         if (curr != type) {
             if (curr == CDATA) {
-                if (_cfgCoalesceText || _cfgReportTextAsChars) {
+                if (_cfgCoalesceText) {
                     curr = CHARACTERS;
                 }
             }
@@ -666,7 +653,7 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
              * internally keep track of the real type.
              */
             if (type == CDATA) {
-                if (_cfgCoalesceText || _cfgReportTextAsChars) {
+                if (_cfgCoalesceText) {
                     return CHARACTERS;
                 }
             } else {
@@ -753,21 +740,6 @@ public class StreamReaderImpl implements XMLStreamReader, LocationInfo {
 
     @Override
     public final Location getLocation() {
-        return getStartLocation();
-    }
-
-    /*
-    /**********************************************************************
-    /* LocationInfo implementation (StAX 2)
-    /**********************************************************************
-     */
-
-    // // // First, the "raw" offset accessors:
-
-    // // // and then the object-based access methods:
-
-    @Override
-    public final Location getStartLocation() {
         return _scanner.getStartLocation();
     }
 

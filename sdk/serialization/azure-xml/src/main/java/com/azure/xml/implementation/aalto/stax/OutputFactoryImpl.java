@@ -125,16 +125,6 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
 
     /*
     /**********************************************************************
-    /* StAX2 extensions
-    /**********************************************************************
-     */
-
-    // // // StAX2 additional (encoding-aware) factory methods
-
-    // // // StAX2 "Profile" mutators
-
-    /*
-    /**********************************************************************
     /* Internal methods:
     /**********************************************************************
      */
@@ -191,23 +181,6 @@ public final class OutputFactoryImpl extends XMLOutputFactory2 {
             } catch (IOException ioe) {
                 throw new XMLStreamException(ioe);
             }
-            /*
-            try {
-                if (enc == CharsetNames.CS_UTF8) {
-                    w = new UTF8Writer(cfg, out, autoCloseOutput);
-                    xw = new BufferingXmlWriter(w, cfg, enc, true);
-                } else if (enc == CharsetNames.CS_ISO_LATIN1) {
-                    xw = new ISOLatin1XmlWriter(out, cfg, autoCloseOutput);
-                } else if (enc == CharsetNames.CS_US_ASCII) {
-                    xw = new ISOLatin1XmlWriter(out, cfg, autoCloseOutput);
-                } else {
-                    w = new OutputStreamWriter(out, enc);
-                    xw = new BufferingXmlWriter(w, cfg, enc, autoCloseOutput);
-                }
-            } catch (IOException ex) {
-                throw new XMLStreamException(ex);
-            }
-            */
 
         } else {
             // we may still be able to figure out the encoding:

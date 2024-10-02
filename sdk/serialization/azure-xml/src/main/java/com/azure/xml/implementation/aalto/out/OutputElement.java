@@ -62,7 +62,6 @@ final class OutputElement {
      * Namespace context end application may have supplied, and that
      * (if given) should be used to augment explicitly defined bindings.
      */
-    //NamespaceContext _rootNsContext;
 
     private String _defaultNsURI;
 

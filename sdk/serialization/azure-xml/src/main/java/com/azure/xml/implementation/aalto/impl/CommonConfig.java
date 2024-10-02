@@ -153,12 +153,6 @@ public abstract class CommonConfig {
      */
     public abstract String getActualEncoding();
 
-    /**
-     * @return True, if the processing will be done according to Xml 1.1
-     *  rules; false if according to xml 1.0
-     */
-    public abstract boolean isXml11();
-
     /*
     /**********************************************************************
     /* Helper methods for sub-classes

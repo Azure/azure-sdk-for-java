@@ -28,7 +28,6 @@ public final class ByteBasedPNameFactory {
      * usage)
      */
     private final static boolean DO_INTERN = true;
-    //private final static boolean DO_INTERN = false;
 
     /*
     /**********************************************************************

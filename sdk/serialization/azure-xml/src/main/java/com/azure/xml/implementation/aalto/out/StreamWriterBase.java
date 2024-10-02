@@ -53,21 +53,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
      */
     protected NamespaceContext _rootNsContext;
 
-    // // // Config flags:
-
-    // // Basic Stax:
-
-    // // Stax2:
-
     // // Custom:
-
-    // Note: non-final to support pluggable validators' needs
-
-    protected boolean _cfgCheckStructure;
-    protected boolean _cfgCheckContent;
-    protected boolean _cfgCheckAttrs;
-
-    protected final boolean _cfgCDataAsText;
 
     /*
     /**********************************************************************
@@ -172,14 +158,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         _config = cfg;
         _xmlWriter = writer;
         _symbols = symbols;
-
-        // // Config settings:
-
-        // !!! TBI:
-        _cfgCheckStructure = cfg.willCheckStructure();
-        _cfgCheckContent = cfg.willCheckContent();
-        _cfgCheckAttrs = cfg.willCheckAttributes();
-        _cfgCDataAsText = false;
     }
 
     /*
@@ -262,9 +240,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             }
             // Empty URI can only be bound to the default ns on xml 1.0:
             if (uri.isEmpty()) {
-                if (!_config.isXml11()) {
-                    throwOutputError(ErrorConsts.ERR_NS_EMPTY);
-                }
+                throwOutputError(ErrorConsts.ERR_NS_EMPTY);
             }
         }
         _setPrefix(prefix, uri);
@@ -290,11 +266,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     @Override
     public void writeCData(String data) throws XMLStreamException {
-        if (_cfgCDataAsText) {
-            writeCharacters(data);
-            return;
-        }
-
         _verifyWriteCData();
 
         try {
@@ -461,10 +432,8 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         }
 
         // Structurally, need to check we are not in prolog/epilog.
-        if (_cfgCheckStructure) {
-            if (inPrologOrEpilog()) {
-                _reportNwfStructure(ErrorConsts.WERR_PROLOG_ENTITY);
-            }
+        if (inPrologOrEpilog()) {
+            _reportNwfStructure(ErrorConsts.WERR_PROLOG_ENTITY);
         }
         try {
             _xmlWriter.writeEntityReference(_symbols.findSymbol(name));
@@ -505,17 +474,17 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             enc = XmlConsts.STAX_DEFAULT_OUTPUT_ENCODING;
             _config.setActualEncodingIfNotSet(enc);
         }
-        _writeStartDocument(XmlConsts.STAX_DEFAULT_OUTPUT_VERSION, enc, null);
+        _writeStartDocument(XmlConsts.STAX_DEFAULT_OUTPUT_VERSION, enc);
     }
 
     @Override
     public void writeStartDocument(String version) throws XMLStreamException {
-        _writeStartDocument(version, _config.getActualEncoding(), null);
+        _writeStartDocument(version, _config.getActualEncoding());
     }
 
     @Override
     public void writeStartDocument(String encoding, String version) throws XMLStreamException {
-        _writeStartDocument(version, encoding, null);
+        _writeStartDocument(version, encoding);
     }
 
     /**
@@ -572,17 +541,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     /*
     /**********************************************************************
-    /* TypedXMLStreamWriter2 implementation
-    /* (Typed Access API, Stax v3.0)
-    /**********************************************************************
-     */
-
-    // // // Typed element content write methods
-
-    // // // Typed attribute value write methods
-
-    /*
-    /**********************************************************************
     /* XMLStreamWriter2 methods (StAX2)
     /**********************************************************************
      */
@@ -604,23 +562,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             throw new IoStreamException(ioe);
         }
     }
-
-    // From base class:
-    //public void copyEventFromReader(XMLStreamReader2 sr, boolean preserveEventData) throws XMLStreamException
-
-    /*
-    /**********************************************************************
-    /* Stax2, output handling
-    /**********************************************************************
-     */
-
-    /*
-    /**********************************************************************
-    /* Stax2, config
-    /**********************************************************************
-     */
-
-    // NOTE: getProperty() defined in Stax 1.0 interface
 
     /*
     /**********************************************************************
@@ -681,19 +622,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
 
     /*
     /**********************************************************************
-    /* ValidationContext interface (Stax2, validation)
-    /**********************************************************************
-     */
-
-    // already part of NamespaceContext impl above...
-    //public String getNamespaceURI(String prefix)
-
-    // // // Notation/entity access: not (yet?) implemented
-
-    // // // Attribute access: not yet implemented:
-
-    /*
-    /**********************************************************************
     /* Package methods (ie not part of public API)
     /**********************************************************************
      */
@@ -741,9 +669,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
      */
 
     protected final void _writeAttribute(WName name, String value) throws XMLStreamException {
-        if (_cfgCheckAttrs) { // still need to ensure no duplicate attrs?
-            _verifyWriteAttr();
-        }
         try {
             _xmlWriter.writeAttribute(name, value);
         } catch (IOException ioe) {
@@ -769,26 +694,22 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         }
     }
 
-    protected void _writeStartDocument(String version, String encoding, String standAlone) throws XMLStreamException {
+    protected void _writeStartDocument(String version, String encoding) throws XMLStreamException {
         /* Not legal to output XML declaration if there has been ANY
          * output prior... that is, if we validate the structure.
          */
-        if (_cfgCheckStructure) {
-            if (_stateAnyOutput) {
-                _reportNwfStructure(ErrorConsts.WERR_DUP_XML_DECL);
-            }
+        if (_stateAnyOutput) {
+            _reportNwfStructure(ErrorConsts.WERR_DUP_XML_DECL);
         }
 
         _stateAnyOutput = true;
 
-        if (_cfgCheckContent) {
-            // !!! If and how to check encoding?
-            // if (encoding != null) { }
-            if (version != null && !version.isEmpty()) {
-                if (!(version.equals(XmlConsts.XML_V_10_STR) || version.equals(XmlConsts.XML_V_11_STR))) {
-                    _reportNwfContent("Illegal version argument ('" + version + "'); should only use '"
-                        + XmlConsts.XML_V_10_STR + "' or '" + XmlConsts.XML_V_11_STR + "'");
-                }
+        // !!! If and how to check encoding?
+        // if (encoding != null) { }
+        if (version != null && !version.isEmpty()) {
+            if (!(version.equals(XmlConsts.XML_V_10_STR) || version.equals(XmlConsts.XML_V_11_STR))) {
+                _reportNwfContent("Illegal version argument ('" + version + "'); should only use '"
+                    + XmlConsts.XML_V_10_STR + "' or '" + XmlConsts.XML_V_11_STR + "'");
             }
         }
 
@@ -796,7 +717,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             version = XmlConsts.STAX_DEFAULT_OUTPUT_VERSION;
         }
         if (XmlConsts.XML_V_11_STR.equals(version)) {
-            _config.enableXml11();
             _xmlWriter.enableXml11();
         }
 
@@ -807,7 +727,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
             _config.setActualEncodingIfNotSet(encoding);
         }
         try {
-            _xmlWriter.writeXmlDeclaration(version, encoding, standAlone);
+            _xmlWriter.writeXmlDeclaration(version, encoding, null);
         } catch (IOException ioe) {
             throw new IoStreamException(ioe);
         }
@@ -863,10 +783,6 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     /**********************************************************************
      */
 
-    protected final void _verifyWriteAttr() {
-        // !!! TBI
-    }
-
     /**
      * Method that is called to ensure that we can start writing an
      * element, both from structural point of view, and from syntactic
@@ -882,10 +798,8 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         } else if (_state == State.PROLOG) {
             _verifyRootElement();
         } else if (_state == State.EPILOG) {
-            if (_cfgCheckStructure) {
-                String name = (prefix == null) ? localName : (prefix + ":" + localName);
-                _reportNwfStructure(ErrorConsts.WERR_PROLOG_SECOND_ROOT, name);
-            }
+            String name = (prefix == null) ? localName : (prefix + ":" + localName);
+            _reportNwfStructure(ErrorConsts.WERR_PROLOG_SECOND_ROOT, name);
             /* When outputting a fragment, need to reset this to the
              * tree. No point in trying to verify the root element?
              */
@@ -900,24 +814,19 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
         }
 
         // Not legal outside main element tree:
-        if (_cfgCheckStructure) {
-            if (inPrologOrEpilog()) {
-                _reportNwfStructure(ErrorConsts.WERR_PROLOG_CDATA);
-            }
+        if (inPrologOrEpilog()) {
+            _reportNwfStructure(ErrorConsts.WERR_PROLOG_CDATA);
         }
     }
 
     protected final void _verifyWriteDTD() throws XMLStreamException {
-        if (_cfgCheckStructure) {
-            if (_state != State.PROLOG) {
-                throw new XMLStreamException(
-                    "Can not write DOCTYPE declaration (DTD) when not in prolog any more (state " + _state
-                        + "; start element(s) written)");
-            }
-            // And let's also check that we only output one...
-            if (_dtdRootElemName != null) {
-                throw new XMLStreamException("Trying to write multiple DOCTYPE declarations");
-            }
+        if (_state != State.PROLOG) {
+            throw new XMLStreamException("Can not write DOCTYPE declaration (DTD) when not in prolog any more (state "
+                + _state + "; start element(s) written)");
+        }
+        // And let's also check that we only output one...
+        if (_dtdRootElemName != null) {
+            throw new XMLStreamException("Trying to write multiple DOCTYPE declarations");
         }
     }
 
@@ -979,7 +888,7 @@ public abstract class StreamWriterBase extends Stax2WriterImpl implements Namesp
     private void _finishDocument() throws XMLStreamException {
         // Is tree still open?
         if (_state != State.EPILOG) {
-            if (_cfgCheckStructure && _state == State.PROLOG) {
+            if (_state == State.PROLOG) {
                 _reportNwfStructure(ErrorConsts.WERR_PROLOG_NO_ROOT);
             }
             // Need to close the open sub-tree, if it exists...

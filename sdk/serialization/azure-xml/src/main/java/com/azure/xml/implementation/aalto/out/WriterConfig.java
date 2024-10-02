@@ -140,10 +140,6 @@ public final class WriterConfig extends CommonConfig {
         }
     }
 
-    public void enableXml11() {
-        // !!! TBI
-    }
-
     /*
     /**********************************************************************
     /* Common accessors from CommonConfig
@@ -152,11 +148,6 @@ public final class WriterConfig extends CommonConfig {
 
     public WriterConfig createNonShared() {
         return new WriterConfig(_encoding, _flags, _flagMods, _encodingContext, _propAutoNsPrefix);
-    }
-
-    @Override
-    public boolean isXml11() {
-        return false;
     }
 
     @Override
@@ -244,61 +235,6 @@ public final class WriterConfig extends CommonConfig {
     @Override
     public boolean isPropertySupported(String propName) {
         return sProperties.containsKey(propName) || super.isPropertySupported(propName);
-    }
-
-    /*
-    /**********************************************************************
-    /* Accessors
-    /**********************************************************************
-     */
-
-    // // // Configuration, Stax std props:
-
-    public boolean isNamespaceAware() {
-        // !!! TBI
-        return hasFlag(F_NS_AWARE);
-    }
-
-    // // // Stax2 standard properties
-
-    public boolean willAutoCloseOutput() {
-        return hasFlag(F_AUTO_CLOSE_OUTPUT);
-    }
-
-    /*
-    /**********************************************************************
-    /* Impl specific additions, validation
-    /**********************************************************************
-     */
-
-    public boolean willCheckStructure() {
-        // !!! TBI
-        return true;
-    }
-
-    public boolean willCheckContent() {
-        // !!! TBI
-        return true;
-    }
-
-    public boolean willCheckNames() {
-        // !!! TBI
-        return false;
-    }
-
-    public boolean willCheckAttributes() {
-        // !!! TBI
-        return false;
-    }
-
-    public boolean willFixContent() {
-        // !!! TBI
-        return true;
-    }
-
-    public boolean willEscapeCR() {
-        // !!! TBI
-        return true;
     }
 
     /*

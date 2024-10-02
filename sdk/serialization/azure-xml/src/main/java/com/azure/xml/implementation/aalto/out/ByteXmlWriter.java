@@ -841,14 +841,9 @@ public abstract class ByteXmlWriter extends XmlWriter {
                     case CT_WS_CR:
                         // !!! TBI: line count
                         // Also, CR to be quoted?
-                        if (_config.willEscapeCR()) {
-                            _outputPtr = ptr;
-                            writeAsEntity(ch);
-                            break;
-                        }
-                        _outputBuffer[ptr++] = (byte) ch;
-                        ++_locRowNr;
-                        continue;
+                        _outputPtr = ptr;
+                        writeAsEntity(ch);
+                        break;
 
                     case CT_WS_LF: // never occurs (handled in loop), but don't want to leave gaps
                         break;
@@ -938,12 +933,8 @@ public abstract class ByteXmlWriter extends XmlWriter {
                     case CT_WS_CR:
                         // !!! TBI: line count
                         // Also, CR to be quoted?
-                        if (_config.willEscapeCR()) {
-                            writeAsEntity(ch);
-                            continue;
-                        }
-                        ++_locRowNr;
-                        break;
+                        writeAsEntity(ch);
+                        continue;
 
                     case CT_WS_LF: // can not occur, handled above, but let's keep sequence
                         break;
@@ -1252,9 +1243,7 @@ public abstract class ByteXmlWriter extends XmlWriter {
         while (offset < len) {
             char ch = cbuf[offset++];
             if (ch > 0x0020) {
-                if (!_config.isXml11() || (ch != 0x0085 && ch != 0x2028)) {
-                    reportNwfContent(ErrorConsts.WERR_SPACE_CONTENT, (int) ch, offset - 1);
-                }
+                reportNwfContent(ErrorConsts.WERR_SPACE_CONTENT, (int) ch, offset - 1);
             }
             if (_outputPtr >= _outputBufferLen) {
                 flushBuffer();

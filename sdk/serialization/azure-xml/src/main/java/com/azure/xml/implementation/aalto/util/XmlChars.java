@@ -417,22 +417,14 @@ public final class XmlChars {
     }
 
     public static boolean is10NameStartChar(int c) {
-        // First, let's deal with outliers
-        if (c > 0x312C) { // Most valid chars are below this..
-            if (c < 0xAC00) {
-                return (c >= 0x4E00 && c <= 0x9FA5); // valid ideograms
-            }
-            // 0xAC00 - 0xD7A3, valid base chars
-            return c <= 0xD7A3;
-            /* Surrogate chars should not be coming in here; but if they do,
-             * they would be illegal... so remaining ones are all invalid
-             */
-        }
-        // but then we'll just need to use the table...
-        return (sXml10StartChars[c >> 5] & (1 << (c & 31))) != 0;
+        return is10NameCharShared(c, sXml10StartChars);
     }
 
     public static boolean is10NameChar(int c) {
+        return is10NameCharShared(c, sXml10Chars);
+    }
+
+    private static boolean is10NameCharShared(int c, int[] chars) {
         // First, let's deal with outliers
         if (c > 0x312C) { // Most valid chars are below this..
             if (c < 0xAC00) {
@@ -445,7 +437,7 @@ public final class XmlChars {
              */
         }
         // but then we'll just need to use the table...
-        return (sXml10Chars[c >> 5] & (1 << (c & 31))) != 0;
+        return (chars[c >> 5] & (1 << (c & 31))) != 0;
     }
 
     public static String getCharDesc(int i) {

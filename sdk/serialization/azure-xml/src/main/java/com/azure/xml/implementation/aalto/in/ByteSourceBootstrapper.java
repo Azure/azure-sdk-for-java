@@ -359,9 +359,6 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
         } else if (charset.equals(CharsetNames.CS_UTF16)) {
             // BOM should be obligatory, to know the ordering?
             // For now, let's not enforce that though.
-            //if (!mHadBOM) {
-            //reportMissingBOM(enc);
-            //}
             verifyEncoding(charset, 2);
         } else if (charset.equals(CharsetNames.CS_UTF16LE)) {
             verifyEncoding(charset, 2, false);
@@ -370,9 +367,6 @@ public final class ByteSourceBootstrapper extends InputBootstrapper {
 
         } else if (charset.equals(CharsetNames.CS_UTF32)) {
             // Do we require a BOM here? we can live without it...
-            //if (!mHadBOM) {
-            //    reportMissingBOM(enc);
-            //}
             verifyEncoding(charset, 4);
         } else if (charset.equals(CharsetNames.CS_UTF32LE)) {
             verifyEncoding(charset, 4, false);

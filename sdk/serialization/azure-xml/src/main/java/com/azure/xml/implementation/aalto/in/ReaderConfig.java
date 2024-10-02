@@ -1,7 +1,6 @@
 // Original file from https://github.com/FasterXML/aalto-xml under Apache-2.0 license.
 package com.azure.xml.implementation.aalto.in;
 
-import com.azure.xml.implementation.aalto.AaltoInputProperties;
 import com.azure.xml.implementation.aalto.impl.CommonConfig;
 import com.azure.xml.implementation.aalto.util.BufferRecycler;
 import com.azure.xml.implementation.aalto.util.CharsetNames;
@@ -44,9 +43,6 @@ public final class ReaderConfig extends CommonConfig {
     private final static int F_REPORT_CDATA = 0x0800;
     private final static int F_PRESERVE_LOCATION = 0x1000;
     private final static int F_AUTO_CLOSE_INPUT = 0x2000;
-
-    // Custom flags:
-    private final static int F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES = 0x4000;
 
     /**
      * These are the default settings for XMLInputFactory.
@@ -94,11 +90,6 @@ public final class ReaderConfig extends CommonConfig {
 
         // !!! Not really implemented, but let's recognize it
         sProperties.put(XMLInputFactory2.P_DTD_OVERRIDE, null);
-
-        // Custom ones:
-
-        // [aalto-xml#65]: Allow disabling processing of GEs in attribute values:
-        sProperties.put(AaltoInputProperties.P_RETAIN_ATTRIBUTE_GENERAL_ENTITIES, F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES);
     }
 
     /**
@@ -245,11 +236,6 @@ public final class ReaderConfig extends CommonConfig {
         return mActualEncoding;
     }
 
-    @Override
-    public boolean isXml11() {
-        return false;
-    }
-
     /*
     /**********************************************************************
     /* Standard accessors, configurable properties
@@ -319,36 +305,6 @@ public final class ReaderConfig extends CommonConfig {
 
     public boolean willCoalesceText() {
         return hasFlag(F_COALESCING);
-    }
-
-    // // // Stax2 standard properties
-
-    public boolean willParseLazily() {
-        return hasFlag(F_LAZY_PARSING);
-    }
-
-    public boolean willReportCData() {
-        return hasFlag(F_REPORT_CDATA);
-    }
-
-    public boolean willAutoCloseInput() {
-        return hasFlag(F_AUTO_CLOSE_INPUT);
-    }
-
-    // // // Support for things that must be explicitly enabled
-
-    // // // Custom properties
-
-    /**
-     * Accessor for checking configured state of
-     * {@link AaltoInputProperties#P_RETAIN_ATTRIBUTE_GENERAL_ENTITIES}.
-     *
-     * @return Whether the property is enabled or disabled
-     *
-     * @since 1.3
-     */
-    public boolean willRetainAttributeGeneralEntities() {
-        return hasFlag(F_RETAIN_ATTRIBUTE_GENERAL_ENTITIES);
     }
 
     /*

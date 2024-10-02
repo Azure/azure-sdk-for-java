@@ -64,8 +64,6 @@ public abstract class XmlWriter extends WNameFactory {
      */
     protected boolean _xml11 = false;
 
-    protected final boolean _cfgNsAware;
-
     /*
     /**********************************************************************
     /* Output location info
@@ -87,16 +85,6 @@ public abstract class XmlWriter extends WNameFactory {
 
     /*
     /**********************************************************************
-    /* Validation
-    /**********************************************************************
-     */
-
-    final protected boolean _checkContent;
-
-    final protected boolean _checkNames;
-
-    /*
-    /**********************************************************************
     /* Life-cycle
     /**********************************************************************
      */
@@ -105,10 +93,6 @@ public abstract class XmlWriter extends WNameFactory {
         _config = cfg;
         _copyBuffer = cfg.allocMediumCBuffer(DEFAULT_COPYBUFFER_LEN);
         _copyBufferLen = _copyBuffer.length;
-
-        _cfgNsAware = cfg.isNamespaceAware();
-        _checkContent = cfg.willCheckContent();
-        _checkNames = cfg.willCheckNames();
     }
 
     /*
@@ -158,7 +142,7 @@ public abstract class XmlWriter extends WNameFactory {
     public final void close(boolean forceTargetClose) throws IOException {
         flush();
         _releaseBuffers();
-        _closeTarget(forceTargetClose || _config.willAutoCloseOutput());
+        _closeTarget(forceTargetClose);
     }
 
     public void _releaseBuffers() {
@@ -349,9 +333,7 @@ public abstract class XmlWriter extends WNameFactory {
         }
         // One more check: is it only escapable in xml 1.1?
         if (ch < 0x0020) {
-            if (ch == 0 || !_config.isXml11()) {
-                reportInvalidChar(ch);
-            }
+            reportInvalidChar(ch);
         }
         String msg = MessageFormat.format(ErrorConsts.WERR_NO_ESCAPING, type, ch);
         reportNwfContent(msg);

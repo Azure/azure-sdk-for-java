@@ -60,9 +60,7 @@ public interface XMLStreamProperties {
     /**
      * Read/write property that can be set to change the level of xml:id
      * specification support, if the implementation implements xml:id
-     * specification. Value to set should be one of
-     * <code>XSP_V_XMLID_xxx</code> constants (like
-     * {@link #XSP_V_XMLID_TYPING}).
+     * specification.
      *<p>
      * Default value is implementation-specific, but recommended default
      * value is <code>XSP_V_XMLID_TYPING</code> for implementations
@@ -75,33 +73,5 @@ public interface XMLStreamProperties {
      * mode; usual id checking overhead for validating mode).
      */
     String XSP_SUPPORT_XMLID = "com.azure.xml.implementation.stax2.supportXmlId";
-
-    /**
-     * Property value to use with property
-     * {@link #XSP_SUPPORT_XMLID}.
-     * Property value that indicates that no xml:id support should be
-     * enabled.
-     */
-    String XSP_V_XMLID_NONE = "disable";
-
-    /**
-     * Property value to use with property
-     * {@link #XSP_SUPPORT_XMLID}.
-     * Value indicates that the attribute type assignment
-     * portion of xml:id should be supported (all 'xml:id' attributes
-     * that are not explicitly declared should have attribute type of
-     * ID), but that no xml:id specific validation is to be done.
-     * Due to typing, value normalization should occur.
-     * It is still possible that schema (DTD, RNG, W3C Schema) based
-     * validation is done, including validation of values of xml:id
-     * attributes, but only based on Schema information.
-     *<p>
-     * The main reason for specifying this value (as opposed to the full
-     * enabling) is that there is some overhead associated with
-     * validation (especially uniqueness constraints checking, which means
-     * that all values of xml:id attributes in the input document have to
-     * be kept in memory), whereas typing is a low overhead operation.
-     */
-    String XSP_V_XMLID_TYPING = "xmlidTyping";
 
 }

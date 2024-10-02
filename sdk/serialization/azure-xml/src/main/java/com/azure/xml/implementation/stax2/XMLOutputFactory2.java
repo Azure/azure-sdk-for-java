@@ -44,17 +44,6 @@ import javax.xml.stream.XMLStreamWriter; // only for javadoc
 public abstract class XMLOutputFactory2 extends XMLOutputFactory implements XMLStreamProperties {
     /*
     /**********************************************************************
-    /* We share some options with other factories
-    /**********************************************************************
-     */
-
-    //public final static String XSP_IMPLEMENTATION_NAME
-    //public final static String XSP_IMPLEMENTATION_VERSION
-    //public final static String XSP_NAMESPACE_AWARE
-    //public final static String XSP_PROBLEM_REPORTER
-
-    /*
-    /**********************************************************************
     /* Additional standard configuration properties
     /**********************************************************************
      */
@@ -136,11 +125,4 @@ public abstract class XMLOutputFactory2 extends XMLOutputFactory implements XMLS
     protected XMLOutputFactory2() {
         super();
     }
-
-    /*
-    /**********************************************************************
-    /* Configuring using profiles
-    /**********************************************************************
-     */
-
 }

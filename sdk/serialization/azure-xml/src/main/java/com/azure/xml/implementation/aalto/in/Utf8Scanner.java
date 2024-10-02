@@ -656,10 +656,6 @@ public final class Utf8Scanner extends StreamScanner {
             reportInputProblem("General entity reference (&" + pname
                 + ";) encountered in entity expanding mode: operation not (yet) implemented");
         }
-        if (false) {
-            reportInputProblem("General entity reference (&" + pname
-                + ";) encountered in attribute value, in non-entity-expanding mode: no way to handle it");
-        }
         return 0;
     }
 
@@ -1175,97 +1171,6 @@ public final class Utf8Scanner extends StreamScanner {
 
         _inputPtr = ptr;
     }
-
-    /*
-    private final int skipMultiByteChar(int c, int ptr)
-        throws XMLStreamException
-    {
-        int needed;
-    
-        // Ok; if we end here, we got multi-byte combination
-        if ((c & 0xE0) == 0xC0) { // 2 bytes (0x0080 - 0x07FF)
-            needed = 1;
-        } else if ((c & 0xF0) == 0xE0) { // 3 bytes (0x0800 - 0xFFFF)
-            needed = 2;
-        } else if ((c & 0xF8) == 0xF0) {
-            // 4 bytes; double-char with surrogates and all...
-            needed = 3;
-        } else {
-            reportInvalidInitial(c & 0xFF);
-            needed = 1; // never gets here
-        }
-    
-        if (ptr >= _inputEnd) {
-            loadMoreGuaranteed();
-            ptr = _inputPtr;
-        }
-        c = (int) _inputBuffer[ptr++];
-    
-        if ((c & 0xC0) != 0x080) {
-            reportInvalidOther(c & 0xFF, ptr);
-        }
-    
-        if (needed > 1) { // needed == 1 means 2 bytes total
-            if (ptr >= _inputEnd) {
-                loadMoreGuaranteed();
-                ptr = _inputPtr;
-            }
-            c = (int) _inputBuffer[ptr++];
-    
-            if ((c & 0xC0) != 0x080) {
-                reportInvalidOther(c & 0xFF, ptr);
-            }
-            if (needed > 2) { // 4 bytes? (need surrogates)
-                if (ptr >= _inputEnd) {
-                    loadMoreGuaranteed();
-                    ptr = _inputPtr;
-                }
-                c = (int) _inputBuffer[ptr++];
-    
-                if ((c & 0xC0) != 0x080) {
-                    reportInvalidOther(c & 0xFF, ptr);
-                }
-            }
-        }
-        return ptr;
-    }
-    
-    private final int skipMultiByteChar(int c, int type, int ptr)
-        throws XMLStreamException
-    {
-        type -= XmlCharTypes.CT_MULTIBYTE_N; // number of more bytes needed
-    
-        if (ptr >= _inputEnd) {
-            loadMoreGuaranteed();
-            ptr = _inputPtr;
-        }
-        c = (int) _inputBuffer[ptr++];
-        if ((c & 0xC0) != 0x080) {
-            reportInvalidOther(c & 0xFF, ptr);
-        }
-        if (type > 1) { // needed == 1 means 2 bytes total
-            if (ptr >= _inputEnd) {
-                loadMoreGuaranteed();
-                ptr = _inputPtr;
-            }
-            c = (int) _inputBuffer[ptr++];
-            if ((c & 0xC0) != 0x080) {
-                reportInvalidOther(c & 0xFF, ptr);
-            }
-            if (type > 2) { // 4 bytes? (need surrogates)
-                if (ptr >= _inputEnd) {
-                    loadMoreGuaranteed();
-                    ptr = _inputPtr;
-                }
-                c = (int) _inputBuffer[ptr++];
-                if ((c & 0xC0) != 0x080) {
-                    reportInvalidOther(c & 0xFF, ptr);
-                }
-            }
-        }
-        return ptr;
-    }
-    */
 
     private void skipUtf8_2() throws XMLStreamException {
         if (_inputPtr >= _inputEnd) {
