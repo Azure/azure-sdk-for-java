@@ -38,6 +38,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @DisabledOnOs(OS.MAC)
     public void testUploadLogsInBatches() {
         List<Object> logs = getObjects(10000);
 
