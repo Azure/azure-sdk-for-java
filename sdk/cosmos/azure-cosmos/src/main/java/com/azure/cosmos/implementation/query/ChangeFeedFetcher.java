@@ -7,6 +7,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -42,7 +43,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
-    private final boolean isQueryAvailableNow;
+    private final boolean completeAfterAvailableNow;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -53,7 +54,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int top,
         int maxItemCount,
         boolean isSplitHandlingDisabled,
-        boolean isQueryAvailableNow,
+        boolean completeAfterAvailableNow,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
@@ -78,7 +79,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 collectionLink,
                 isSplitHandlingDisabled);
         this.createRequestFunc = createRequestFunc;
-        this.isQueryAvailableNow = isQueryAvailableNow;
+        this.completeAfterAvailableNow = completeAfterAvailableNow;
     }
 
     @Override
@@ -115,23 +116,24 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (this.isQueryAvailableNow) {
+                       if (this.completeAfterAvailableNow) {
                            if (continuationSnapshot != null) {
-                               boolean canFetchMore = continuationSnapshot.shouldFetchMoreWithAvailableNowContext(r);
-                               if (!ModelBridgeInternal.<T>noChanges(r)) {
-                                   if (!canFetchMore) {
-                                       this.disableShouldFetchMore();
-                                   }
-
+                               // track the LSN available now for each sub-feedRange
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChangesAvailableNow(r);
+                               if (shouldComplete) {
+                                   this.disableShouldFetchMore();
                                    return Mono.just(r);
                                }
 
-                               if (canFetchMore) {
+                               if (ModelBridgeInternal.<T>noChanges(r)) {
+                                   // if we have reached here, it means we have got 304 for the current feedRange,
+                                   // but we need to continue drain the changes from other sub-feedRange
                                    this.reEnableShouldFetchMoreForRetry();
                                    return Mono.empty();
                                }
                            }
                        } else {
+                           // complete query based on 304s
                            if (continuationSnapshot != null &&
                                continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
 
@@ -154,7 +156,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
-        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges;
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAvailableNow;
         return this.changeFeedState.applyServerResponseContinuation(
             serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }

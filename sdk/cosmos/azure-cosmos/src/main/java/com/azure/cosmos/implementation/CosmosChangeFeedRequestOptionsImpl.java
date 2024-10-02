@@ -48,7 +48,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
     private PartitionKeyDefinition partitionKeyDefinition;
     private String collectionRid;
     private Set<String> keywordIdentifiers;
-    private boolean queryAvailableNow;
+    private boolean completeAfterAvailableNow;
 
     public CosmosChangeFeedRequestOptionsImpl(CosmosChangeFeedRequestOptionsImpl toBeCloned) {
         this.continuationState = toBeCloned.continuationState;
@@ -69,7 +69,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         this.collectionRid = toBeCloned.collectionRid;
         this.partitionKeyDefinition = toBeCloned.partitionKeyDefinition;
         this.keywordIdentifiers = toBeCloned.keywordIdentifiers;
-        this.queryAvailableNow = toBeCloned.queryAvailableNow;
+        this.completeAfterAvailableNow = toBeCloned.completeAfterAvailableNow;
     }
 
     public CosmosChangeFeedRequestOptionsImpl(
@@ -107,7 +107,7 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
 
         this.properties = new HashMap<>();
         this.isSplitHandlingDisabled = false;
-        this.queryAvailableNow = DEFAULT_QUERY_AVAILABLE_NOW;
+        this.completeAfterAvailableNow = DEFAULT_QUERY_AVAILABLE_NOW;
     }
 
     public ChangeFeedState getContinuation() {
@@ -363,12 +363,12 @@ public final class CosmosChangeFeedRequestOptionsImpl implements OverridableRequ
         return this.keywordIdentifiers;
     }
 
-    public boolean isQueryAvailableNow() {
-        return queryAvailableNow;
+    public boolean getCompleteAfterAvailableNow() {
+        return this.completeAfterAvailableNow;
     }
 
-    public void setQueryAvailableNow(boolean queryAvailableNow) {
-        this.queryAvailableNow = queryAvailableNow;
+    public void setCompleteAfterAvailableNow(boolean queryAvailableNow) {
+        this.completeAfterAvailableNow = queryAvailableNow;
     }
 
     @Override

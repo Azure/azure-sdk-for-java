@@ -113,7 +113,7 @@ class ChangeFeedQueryImpl<T> {
             this.options.getMaxItemCount(),
             this.options.getMaxPrefetchPageCount(),
             ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options),
-            this.options.isQueryAvailableNow(),
+            this.options.getCompleteAfterAvailableNow(),
             ImplementationBridgeHelpers
                 .CosmosChangeFeedRequestOptionsHelper
                 .getCosmosChangeFeedRequestOptionsAccessor()

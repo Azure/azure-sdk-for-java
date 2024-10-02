@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
@@ -70,7 +71,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.ATOMIC_INTEGER;
 import static org.testng.Assert.assertThrows;
 import static org.testng.Assert.fail;
 
@@ -85,6 +85,17 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
     private final Multimap<String, ObjectNode> partitionKeyToDocuments = ArrayListMultimap.create();
     private final String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
+
+    @DataProvider(name = "changeFeedQueryCompleteAfterAvailableNowDataProvider")
+    public static Object[][] changeFeedQueryCompleteAfterAvailableNowDataProvider() {
+        return new Object[][]{
+            // container RU, continuous ingest items
+            { 400, true },
+            { 400, false },
+            { 11000, true },
+            { 11000, false },
+        };
+    }
 
     @DataProvider(name = "changeFeedSplitHandlingDataProvider")
     public static Object[][] changeFeedSplitHandlingDataProvider() {
@@ -832,47 +843,63 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
-    @Test(groups = { "emulator" })
-    public void changeFeedQueryAvailableNow() {
-        this.createContainer(
-            (cp) -> {
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryCompleteAfterAvailableNowDataProvider", timeOut = 100 * TIMEOUT)
+    public void changeFeedQueryCompleteAfterAvailableNow(
+        int throughput,
+        boolean shouldContinuouslyIngestItems) {
+        String testContainerId = UUID.randomUUID().toString();
 
-                // Ensuring we always use Hash V2 here
-                PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
-                ArrayList<String> paths = new ArrayList<>();
-                paths.add("/mypk");
-                partitionKeyDef.setPaths(paths);
-                partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
-                cp.setPartitionKeyDefinition(partitionKeyDef);
+        try {
+            CosmosContainerProperties containerProperties = new CosmosContainerProperties(testContainerId, "/mypk");
+            CosmosAsyncContainer testContainer =
+                createCollection(
+                    this.createdAsyncDatabase,
+                    containerProperties,
+                    new CosmosContainerRequestOptions(),
+                    throughput);
 
-                // To reproduce easily we need at least 3 physical partitions
-                return cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy());
-            },
-            400
-        );
+            List<FeedRange> feedRanges = testContainer.getFeedRanges().block();
+            AtomicInteger currentPageCount = new AtomicInteger(0);
 
-        insertDocuments(1, 5);
-        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
-            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+            insertDocuments(1, 5, testContainer);
+            CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
+                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
 
-        cosmosChangeFeedRequestOptions.setQueryAvailableNow(true);
-        AtomicInteger totalQueryCount = new AtomicInteger(0);
-        this.createdAsyncContainer.queryChangeFeed(cosmosChangeFeedRequestOptions, JsonNode.class)
-            .byPage(1)
-            .flatMap(response -> {
-                System.out.println(totalQueryCount.get());
-                totalQueryCount.set(totalQueryCount.get() + response.getResults().size());
-                return this.createdAsyncContainer.createItem(getDocumentDefinition(UUID.randomUUID().toString()))
-                    .then();
-            })
-            .blockLast();
+            cosmosChangeFeedRequestOptions.setCompleteAfterAvailableNow(true);
+            AtomicInteger totalQueryCount = new AtomicInteger(0);
+            testContainer.queryChangeFeed(cosmosChangeFeedRequestOptions, JsonNode.class)
+                .byPage(1)
+                .flatMap(response -> {
+                    int currentPage = currentPageCount.incrementAndGet();
+                    totalQueryCount.set(totalQueryCount.get() + response.getResults().size());
 
-        assertThat(totalQueryCount.get()).isEqualTo(5);
+                    // Only start creating new items once we have looped through all feedRanges once to make the test behavior more deterministic
+                    if (shouldContinuouslyIngestItems && currentPage >= feedRanges.size()) {
+                        return testContainer
+                            .createItem(getDocumentDefinition(UUID.randomUUID().toString())).then();
+                    } else {
+                        return Mono.empty();
+                    }
+                })
+                .blockLast();
+
+            assertThat(totalQueryCount.get()).isEqualTo(5);
+        } finally {
+            safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
+        }
     }
 
     void insertDocuments(
         int partitionCount,
         int documentCount) {
+
+        insertDocuments(partitionCount, documentCount, this.createdAsyncContainer);
+    }
+
+    void insertDocuments(
+        int partitionCount,
+        int documentCount,
+        CosmosAsyncContainer container) {
 
         List<ObjectNode> docs = new ArrayList<>();
 
@@ -885,14 +912,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
         for (int i = 0; i < docs.size(); i++) {
-            result.add(createdAsyncContainer
+            result.add(container
                 .createItem(docs.get(i)));
         }
 
         List<ObjectNode> insertedDocs = Flux.merge(
-            Flux.fromIterable(result),
-            2)
-                   .map(CosmosItemResponse::getItem).collectList().block();
+                Flux.fromIterable(result),
+                2)
+            .map(CosmosItemResponse::getItem).collectList().block();
 
         for (ObjectNode doc : insertedDocs) {
             partitionKeyToDocuments.put(

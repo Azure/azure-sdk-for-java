@@ -185,23 +185,23 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     /***
-     * Whether only query changes available now.
+     * Whether the query should be completed when all available changes when the query starts have been fetched.
      *
-     * @param queryAvailableNow flag to indicate whether only query changes available now.
+     * @param completeAfterAvailableNow flag to indicate whether to complete the query when all changes up to current moment have been fetched.
      * @return the CosmosChangeFeedRequestOptions.
      */
-    public CosmosChangeFeedRequestOptions setQueryAvailableNow(boolean queryAvailableNow) {
-        this.actualRequestOptions.setQueryAvailableNow(queryAvailableNow);
+    public CosmosChangeFeedRequestOptions setCompleteAfterAvailableNow(boolean completeAfterAvailableNow) {
+        this.actualRequestOptions.setCompleteAfterAvailableNow(completeAfterAvailableNow);
         return this;
     }
 
     /***
-     * Whether only query changes available now.
+     * Whether the query should be completed when all available changes when the query starts have been fetched.
      *
-     * @return true if only query available now.
+     * @return true if complete the query when all changes up to the current moment have been fetched.
      */
-    public boolean isQueryAvailableNow() {
-        return this.actualRequestOptions.isQueryAvailableNow();
+    public boolean getCompleteAfterAvailableNow() {
+        return this.actualRequestOptions.getCompleteAfterAvailableNow();
     }
 
     boolean isSplitHandlingDisabled() {

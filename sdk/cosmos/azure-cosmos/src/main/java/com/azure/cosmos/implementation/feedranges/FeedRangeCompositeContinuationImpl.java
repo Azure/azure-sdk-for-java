@@ -51,7 +51,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     private CompositeContinuationToken currentToken;
     private String initialNoResultsRange;
     private final AtomicLong continuousNotModifiedSinceInitialNoResultsRangeCaptured = new AtomicLong(0);
-    private final Map<Range<String>, FeedRangeAvailableNowContext> feedRangeAvailableNowContextMap = new ConcurrentHashMap<>();
+    private final Map<Range<String>, FeedRangeLSNContext> feedRangeLSNContextMap = new ConcurrentHashMap<>();
+
 
     public FeedRangeCompositeContinuationImpl(
         String containerRid,
@@ -268,27 +269,22 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T> boolean shouldFetchMoreWithAvailableNowContext(FeedResponse<T> responseMessage) {
-        this.feedRangeAvailableNowContextMap.computeIfAbsent(
-            this.currentToken.getRange(),
-            (rangeMin) -> {
-                return new FeedRangeAvailableNowContext(
-                    this.currentToken.getRange(),
-                    this.getLatestLsnFromSessionToken(responseMessage.getSessionToken())
-                );
-            });
-
-        this.feedRangeAvailableNowContextMap
-            .get(this.currentToken.getRange())
-            .handleChangeFeed(this.currentToken);
+    public <T> boolean hasFetchedAllChangesAvailableNow(FeedResponse<T> response) {
+        FeedRangeLSNContext feedRangeLSNContext =
+            this.updateFeedRangeEndLSNIfAbsent(
+                this.currentToken.getRange(),
+                response.getSessionToken());
+        feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
 
         // find next token which can fetch more
         Range<String> initialToken = this.currentToken.getRange();
         do {
             this.moveToNextToken();
-        } while (this.currentToken.getRange() != initialToken && !this.feedRangeAvailableNowContextMap.get(this.currentToken.getRange()).shouldFetchMore);
+        } while (
+            !this.currentToken.getRange().equals(initialToken) &&
+                this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange()));
 
-        return this.feedRangeAvailableNowContextMap.get(this.currentToken.getRange()).shouldFetchMore;
+        return this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange());
     }
 
     @Override
@@ -340,6 +336,24 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
 
         return Long.parseLong(latestLsn);
+    }
+
+    private FeedRangeLSNContext updateFeedRangeEndLSNIfAbsent(
+        Range<String> targetedRange,
+        String sessionToken) {
+        return this.feedRangeLSNContextMap.computeIfAbsent(
+            targetedRange,
+            (range) -> {
+                return new FeedRangeLSNContext(
+                    targetedRange,
+                    this.getLatestLsnFromSessionToken(sessionToken)
+                );
+            });
+    }
+
+    private boolean hasFetchAllChangesAvailableNowForFeedRange(Range<String> range) {
+        return this.feedRangeLSNContextMap.containsKey(range) &&
+            this.feedRangeLSNContextMap.get(range).hasCompleted;
     }
 
     /**
@@ -569,24 +583,30 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         }
     }
 
-    final static class FeedRangeAvailableNowContext {
+    final static class FeedRangeLSNContext {
         private Range<String> range;
-        private Long lsnAvailableNow;
-        private boolean shouldFetchMore;
+        private Long endLSN;
+        private boolean hasCompleted;
 
-        public FeedRangeAvailableNowContext(Range<String> range, Long lsnAvailableNow) {
+        public FeedRangeLSNContext(Range<String> range, Long endLSN) {
             this.range = range;
-            this.lsnAvailableNow = lsnAvailableNow;
-            this.shouldFetchMore = true;
+            this.endLSN = endLSN;
+            this.hasCompleted = false;
         }
 
-        public void handleChangeFeed(CompositeContinuationToken compositeContinuationToken) {
+        public void handleLSNFromContinuation(CompositeContinuationToken compositeContinuationToken) {
             if (!compositeContinuationToken.getRange().equals(this.range)) {
-                throw new IllegalStateException("Range in FeedRangeAvailableNowContext is different than the range in the continuationToken");
+                throw new IllegalStateException(
+                    "Range in FeedRangeAvailableNowContext is different than the range in the continuationToken");
             }
 
-            if (Long.parseLong(compositeContinuationToken.getToken().replace("\"", "")) > lsnAvailableNow) {
-                this.shouldFetchMore = false;
+            String lsnFromContinuationToken = compositeContinuationToken.getToken();
+            if (lsnFromContinuationToken.startsWith("\"")) {
+                lsnFromContinuationToken = lsnFromContinuationToken.substring(1, lsnFromContinuationToken.length() - 1);
+            }
+
+            if (Long.parseLong(lsnFromContinuationToken) >= endLSN) {
+                this.hasCompleted = true;
             }
         }
     }

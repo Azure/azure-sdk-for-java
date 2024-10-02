@@ -97,7 +97,7 @@ public class Paginator {
         int maxPageSize,
         int preFetchCount,
         boolean isSplitHandlingDisabled,
-        boolean isQueryAvailableNow,
+        boolean completeAfterAvailableNow,
         OperationContextAndListenerTuple operationContext) {
 
         return getPaginatedQueryResultAsObservable(
@@ -110,7 +110,7 @@ public class Paginator {
                 top,
                 maxPageSize,
                 isSplitHandlingDisabled,
-                isQueryAvailableNow,
+                completeAfterAvailableNow,
                 operationContext,
                 client.getGlobalEndpointManager(),
                 client.getGlobalPartitionEndpointManagerForCircuitBreaker()
