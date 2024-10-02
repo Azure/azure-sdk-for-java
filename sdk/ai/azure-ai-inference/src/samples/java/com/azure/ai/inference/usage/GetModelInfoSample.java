@@ -6,26 +6,26 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
-public final class BasicChatSample {
+public final class GetModelInfoSample {
      /**
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
         String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
+
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
             .credential(new AzureKeyCredential(key))
             .endpoint(endpoint)
             .buildClient();
 
-        String prompt = "Tell me 3 jokes about trains";
+        ModelInfo modelInfo = client.getModelInfo();
 
-        ChatCompletions completions = client.complete(prompt);
-
-        System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
+        System.out.printf("modelName: %s, modelNameProvider: %s, modelType: %s%n",
+            modelInfo.getModelName(), modelInfo.getModelProviderName(), modelInfo.getModelType().toString());
     }
 }

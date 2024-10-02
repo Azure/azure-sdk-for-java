@@ -122,6 +122,15 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
     }
 
     /**
+     * Get the choice property: The chat choice associated with this completion response.
+     *
+     * @return the choice value.
+     */
+    public ChatChoice getChoice() {
+        return this.choices.get(0);
+    }
+
+    /**
      * Get the choices property: The collection of completions choices associated with this completions response.
      * Generally, `n` choices are generated per provided prompt with a default value of 1.
      * Token limits and other settings may limit the number of choices generated.

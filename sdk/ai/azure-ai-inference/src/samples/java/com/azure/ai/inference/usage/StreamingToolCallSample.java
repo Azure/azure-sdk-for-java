@@ -31,8 +31,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Arrays;
 import java.util.List;
 
-public final class ToolCallSample {
-     /**
+public final class StreamingToolCallSample {
+     /**`
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
@@ -69,7 +69,7 @@ public final class ToolCallSample {
             if (chatCompletions.getChoices().isEmpty()) {
                 continue;
             }
-            StreamingChatChoiceUpdate choice = chatCompletions.getChoices().get(0);
+            StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
             if (choice.getFinishReason() != null) {
                 finishReason = choice.getFinishReason();
             }
@@ -137,7 +137,7 @@ public final class ToolCallSample {
                 if (chatCompletions.getChoices().isEmpty()) {
                     continue;
                 }
-                StreamingChatChoiceUpdate choice = chatCompletions.getChoices().get(0);
+                StreamingChatChoiceUpdate choice = chatCompletions.getChoice();
                 if (choice.getFinishReason() != null) {
                     finalFinishReason = choice.getFinishReason();
                 }
