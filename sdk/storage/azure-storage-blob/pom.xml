@@ -150,18 +150,6 @@
       <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.13.0-beta.1</version> <!-- {x-version-update;unreleased_com.azure:azure-core-http-okhttp;dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-http-vertx</artifactId>
-      <version>1.0.0-beta.22</version> <!-- {x-version-update;com.azure:azure-core-http-vertx;dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <profiles>
