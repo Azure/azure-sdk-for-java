@@ -61,12 +61,12 @@ class AzureMonitorExporterBuilder {
 
     private AzureMonitorExporterOptions exporterOptions;
 
-    // this is only populated after the builder is frozen
     private TelemetryItemExporter builtTelemetryItemExporter;
 
-    // this is only populated after the builder is frozen
     private StatsbeatModule statsbeatModule;
+
     private ConfigProperties configProperties;
+
     private boolean initialized;
 
     void initializeIfNot(AzureMonitorExporterOptions exporterOptions, ConfigProperties configProperties) {
