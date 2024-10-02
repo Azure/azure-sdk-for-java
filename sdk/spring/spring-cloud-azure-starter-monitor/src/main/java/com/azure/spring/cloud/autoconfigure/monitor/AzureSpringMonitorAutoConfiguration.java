@@ -4,8 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.monitor;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.monitor.opentelemetry.AzureMonitor;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
 import io.opentelemetry.instrumentation.spring.autoconfigure.OpenTelemetryAutoConfiguration;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import io.opentelemetry.sdk.autoconfigure.spi.AutoConfigurationCustomizer;
@@ -109,10 +109,10 @@ class AzureSpringMonitorAutoConfiguration {
 
                 HttpPipeline providedHttpPipeline = httpPipeline.getIfAvailable();
                 if (providedHttpPipeline != null) {
-                    AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder().connectionString(connectionString).pipeline(providedHttpPipeline);
-                    AzureMonitor.customize(sdkBuilder, azureMonitorExporterBuilder);
+                    AzureMonitorExporterOptions exporterOptions = new AzureMonitorExporterOptions().connectionString(connectionString).pipeline(providedHttpPipeline);
+                    AzureMonitorExporter.customize(sdkBuilder, exporterOptions);
                 } else {
-                    AzureMonitor.customize(sdkBuilder, connectionString);
+                    AzureMonitorExporter.customize(sdkBuilder, connectionString);
                 }
             }
 

@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
 /**
  * A sample to demonstrate CRUD operations for Azure Key Vault secrets using GraalVM.
  */
-public class KeyVaultSecretsSample {
+public final class KeyVaultSecretsSample {
     private static final String AZURE_KEY_VAULT_URL = System.getenv("AZURE_KEY_VAULT_URL");
 
     /**
@@ -36,20 +36,19 @@ public class KeyVaultSecretsSample {
         // Instantiate a secret client that will be used to call the service. Notice that the client is using default Azure
         // credentials. To make default credentials work, ensure that environment variables 'AZURE_CLIENT_ID',
         // 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
-        SecretClient secretClient = new SecretClientBuilder()
-                .vaultUrl(AZURE_KEY_VAULT_URL)
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildClient();
+        SecretClient secretClient = new SecretClientBuilder().vaultUrl(AZURE_KEY_VAULT_URL)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
 
         // Let's create a secret holding bank account credentials valid for 1 year. if the secret
         // already exists in the key vault, then a new version of the secret is created.
         secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "f4G34fMh8v")
-                .setProperties(new SecretProperties()
-                        .setExpiresOn(OffsetDateTime.now().plusYears(1))));
+            .setProperties(new SecretProperties().setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // Let's Get the bank secret from the key vault.
         KeyVaultSecret bankSecret = secretClient.getSecret("BankAccountPassword");
-        System.out.printf("Secret is returned with name %s and value %s %n", bankSecret.getName(), bankSecret.getValue());
+        System.out.printf("Secret is returned with name %s and value %s %n", bankSecret.getName(),
+            bankSecret.getValue());
 
         // After one year, the bank account is still active, we need to update the expiry time of the secret.
         // The update method can be used to update the expiry attribute of the secret. It cannot be used to update
@@ -62,12 +61,10 @@ public class KeyVaultSecretsSample {
         // To achieve this, we need to create a new version of the secret in the key vault. The update operation cannot
         // change the value of the secret.
         secretClient.setSecret(new KeyVaultSecret("BankAccountPassword", "bhjd4DDgsa")
-                .setProperties(new SecretProperties()
-                        .setExpiresOn(OffsetDateTime.now().plusYears(1))));
+            .setProperties(new SecretProperties().setExpiresOn(OffsetDateTime.now().plusYears(1))));
 
         // The bank account was closed, need to delete its credentials from the key vault.
-        SyncPoller<DeletedSecret, Void> deletedBankSecretPoller
-                = secretClient.beginDeleteSecret("BankAccountPassword");
+        SyncPoller<DeletedSecret, Void> deletedBankSecretPoller = secretClient.beginDeleteSecret("BankAccountPassword");
 
         PollResponse<DeletedSecret> deletedBankSecretPollResponse = deletedBankSecretPoller.poll();
 
@@ -83,5 +80,8 @@ public class KeyVaultSecretsSample {
         System.out.println("\n================================================================");
         System.out.println(" Key Vault Keys Secrets Complete");
         System.out.println("================================================================");
+    }
+
+    private KeyVaultSecretsSample() {
     }
 }

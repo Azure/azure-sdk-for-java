@@ -290,7 +290,6 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -315,6 +314,7 @@ public final class ImageEmbeddingsClientBuilder implements HttpTrait<ImageEmbedd
         policies.add(new AddDatePolicy());
         if (keyCredential != null) {
             policies.add(new KeyCredentialPolicy("api-key", keyCredential));
+            policies.add(new KeyCredentialPolicy("Authorization", keyCredential));
         }
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
