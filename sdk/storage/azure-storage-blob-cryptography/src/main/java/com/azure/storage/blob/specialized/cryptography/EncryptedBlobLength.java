@@ -20,9 +20,9 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  */
 
 final class EncryptedBlobLength {
-    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobRange.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobLength.class);
 
-    static Function<Long, Long> computeUnencryptedBlobLength (EncryptionData encryptionData) {
+    static Function<Long, Long> computeUnencryptedBlobLength(EncryptionData encryptionData) {
         return (totalLength) -> {
             switch (encryptionData.getEncryptionAgent().getProtocol()) {
                 case ENCRYPTION_PROTOCOL_V1:

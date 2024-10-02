@@ -20,19 +20,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.security.keyvault.keys.KeyClient;
-import com.azure.security.keyvault.keys.KeyClientBuilder;
-import com.azure.security.keyvault.keys.cryptography.KeyEncryptionKeyClientBuilder;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
-import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
@@ -51,7 +45,6 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
-import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -95,12 +88,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.GeneralSecurityException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -2030,6 +2019,60 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         outFile.deleteOnExit();
 
         Files.write(file.toPath(), getRandomByteArray(fileSize));
+
+        StepVerifier.create(bec2.uploadFromFile(file.toPath().toString(), true)
+            .then(bec2.downloadToFile(outFile.toPath().toString(), true)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        compareFiles(file, outFile, 0, file.length());
+    }
+
+    @Test
+    public void sixteenMBUploadV21() throws IOException {
+        String blobName = generateBlobName();
+        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
+            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(blobName)
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(1024))
+            .buildEncryptedBlobClient();
+
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+
+        file.deleteOnExit();
+        outFile.deleteOnExit();
+
+        Files.write(file.toPath(), getRandomByteArray(16777216));
+
+        bec2.uploadFromFile(file.toPath().toString(), true);
+        bec2.downloadToFile(outFile.toPath().toString(), true);
+
+        compareFiles(file, outFile, 0, file.length());
+    }
+
+    @Test
+    public void sixteenMBUploadV21Async() throws IOException {
+        String blobName = generateBlobName();
+        EncryptedBlobAsyncClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
+            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(blobName)
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(1024))
+            .buildEncryptedBlobAsyncClient();
+
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+
+        file.deleteOnExit();
+        outFile.deleteOnExit();
+
+        Files.write(file.toPath(), getRandomByteArray(16777216));
 
         StepVerifier.create(bec2.uploadFromFile(file.toPath().toString(), true)
             .then(bec2.downloadToFile(outFile.toPath().toString(), true)))
