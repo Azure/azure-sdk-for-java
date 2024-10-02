@@ -118,7 +118,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
                        if (this.completeAfterAvailableNow) {
                            if (continuationSnapshot != null) {
-                               // track the LSN available now for each sub-feedRange
+                               //track the end-LSN available now for each sub-feedRange and then find the next sub-feedRange to fetch more changes
                                boolean shouldComplete = continuationSnapshot.hasFetchedAllChangesAvailableNow(r);
                                if (shouldComplete) {
                                    this.disableShouldFetchMore();
