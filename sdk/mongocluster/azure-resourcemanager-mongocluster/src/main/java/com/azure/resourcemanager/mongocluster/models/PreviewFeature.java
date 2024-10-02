@@ -12,7 +12,8 @@ import java.util.Collection;
  */
 public final class PreviewFeature extends ExpandableStringEnum<PreviewFeature> {
     /**
-     * Static value GeoReplicas for PreviewFeature.
+     * Enables geo replicas preview feature. The feature must be set at create-time on new cluster to enable linking a
+     * geo-replica cluster to it.
      */
     public static final PreviewFeature GEO_REPLICAS = fromString("GeoReplicas");
 

@@ -1,4 +1,6 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 3.3.4 and Spring Cloud dependencies version to 2023.0.3
 
 ## 5.17.0-beta.1 (unreleased)
 
@@ -7,6 +9,10 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Bugs Fixed
 - Improve the jdbc properties bean post processor priority. [#38631](https://github.com/Azure/azure-sdk-for-java/issues/38631).
+- Allow users to update SSL\TLS parameters in the default JDBC URL. [#39064](https://github.com/Azure/azure-sdk-for-java/issues/39064).
+
+#### Other Changes
+- Switch to use `ServiceBusJmsConnectionFactory` from `azure-servicebus-jms` [#42022](https://github.com/Azure/azure-sdk-for-java/pull/42022).
 
 ## 5.16.0 (2024-09-09)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.7, 3.3.0-3.3.3. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>7) and 3.3.m (m>3) should be supported, but they aren't tested with this release.)

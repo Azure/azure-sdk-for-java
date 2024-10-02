@@ -75,7 +75,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -152,11 +153,13 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -221,7 +224,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -252,7 +256,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -331,7 +336,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -371,7 +377,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -450,11 +457,13 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -519,7 +528,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -541,7 +551,8 @@ public final class EntityAsyncClient {
      * attributes.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -606,7 +617,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -627,7 +639,8 @@ public final class EntityAsyncClient {
      * Associate a classification to multiple entities in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
@@ -650,7 +663,8 @@ public final class EntityAsyncClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -680,7 +694,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -757,7 +772,8 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -782,13 +798,16 @@ public final class EntityAsyncClient {
      * Null updates are not possible.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * Object
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -853,7 +872,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param name The name of the attribute.
@@ -877,7 +897,8 @@ public final class EntityAsyncClient {
      * Delete an entity identified by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -942,7 +963,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -963,7 +985,8 @@ public final class EntityAsyncClient {
      * Get classification for a given entity represented by a GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -981,7 +1004,8 @@ public final class EntityAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param classificationName The name of the classification.
@@ -1023,7 +1047,8 @@ public final class EntityAsyncClient {
      * List classifications for a given entity represented by a GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     list (Optional): [
      *         Object (Optional)
@@ -1034,7 +1059,8 @@ public final class EntityAsyncClient {
      *     startIndex: Integer (Optional)
      *     totalCount: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1054,7 +1080,8 @@ public final class EntityAsyncClient {
      * Add classifications to an existing entity represented by a GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1074,7 +1101,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body An array of classifications to be added.
@@ -1096,7 +1124,8 @@ public final class EntityAsyncClient {
      * Update classifications to an existing entity represented by a guid.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1116,7 +1145,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body An array of classifications to be updated.
@@ -1164,7 +1194,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -1241,7 +1272,8 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1299,7 +1331,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -1376,11 +1409,13 @@ public final class EntityAsyncClient {
      *     }
      *     entity (Optional): (recursive schema, see entity above)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -1445,7 +1480,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param body Body parameter.
@@ -1488,7 +1524,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -1553,7 +1590,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1614,7 +1652,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1634,7 +1673,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param body An array of classification to be added.
@@ -1665,7 +1705,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         attributes (Optional): {
@@ -1685,7 +1726,8 @@ public final class EntityAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param body An array of classification to be updated.
@@ -1708,7 +1750,8 @@ public final class EntityAsyncClient {
      * Set classifications on entities in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidHeaderMap (Optional): {
      *         String (Required): {
@@ -1765,15 +1808,18 @@ public final class EntityAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Required)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1825,7 +1871,8 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     referredEntities (Optional): {
      *         String (Required): {
@@ -1904,7 +1951,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1926,7 +1974,8 @@ public final class EntityAsyncClient {
      * Get entity header given its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     attributes (Optional): {
      *         String: Object (Required)
@@ -1979,7 +2028,8 @@ public final class EntityAsyncClient {
      *     ]
      *     status: String(ACTIVE/DELETED) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1999,13 +2049,15 @@ public final class EntityAsyncClient {
      * Remove business metadata from an entity.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body Business metadata payload.
@@ -2036,13 +2088,15 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param body BusinessMetadata payload.
@@ -2064,11 +2118,13 @@ public final class EntityAsyncClient {
      * Delete business metadata attributes from an entity.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: Object (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
@@ -2092,11 +2148,13 @@ public final class EntityAsyncClient {
      * Add or update business metadata attributes.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: Object (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param businessMetadataName BusinessMetadata name.
      * @param guid The globally unique identifier of the entity.
@@ -2120,9 +2178,11 @@ public final class EntityAsyncClient {
      * Get the sample Template for uploading/creating bulk BusinessMetaData.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2142,7 +2202,8 @@ public final class EntityAsyncClient {
      * Upload the file for creating Business Metadata in BULK.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     failedImportInfoList (Optional): [
      *          (Optional){
@@ -2156,7 +2217,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2186,11 +2248,13 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2218,11 +2282,13 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2250,11 +2316,13 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2303,11 +2371,13 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2359,11 +2429,13 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2414,11 +2486,13 @@ public final class EntityAsyncClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *     String (Optional)
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2438,17 +2512,20 @@ public final class EntityAsyncClient {
      * Move existing entities to the target collection.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     entityGuids (Optional): [
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guidAssignments (Optional): {
      *         String: String (Required)
@@ -2513,7 +2590,8 @@ public final class EntityAsyncClient {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param collectionId The collection where entities will be moved to.
      * @param body Body parameter.
@@ -3671,13 +3749,10 @@ public final class EntityAsyncClient {
         // Generated convenience method for importBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return importBusinessMetadataWithResponse(
-            new MultipartFormDataHelper(requestOptions)
-                .serializeFileField("file", body.getFile().getContent(), body.getFile().getContentType(),
-                    body.getFile().getFilename())
-                .end()
-                .getRequestBody(),
+            new MultipartFormDataHelper(requestOptions).serializeFileField("file", body.getFile().getContent(),
+                body.getFile().getContentType(), body.getFile().getFilename()).end().getRequestBody(),
             requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(BulkImportResult.class));
+                .map(protocolMethodData -> protocolMethodData.toObject(BulkImportResult.class));
     }
 
     /**

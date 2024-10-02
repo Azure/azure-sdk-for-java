@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = ManagementZonesClientBuilder.class)
 public final class ManagementZonesClient {
-    @Generated private final ManagementZonesAsyncClient client;
+    @Generated
+    private final ManagementZonesAsyncClient client;
 
     /**
      * Initializes an instance of ManagementZonesClient class.
@@ -171,11 +172,10 @@ public final class ManagementZonesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String managementZoneId, RequestOptions requestOptions) {
-        return this.client
-                .beginCreateCascadeDeleteJob(jobId, partyId, managementZoneId, requestOptions)
-                .getSyncPoller();
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String managementZoneId, RequestOptions requestOptions) {
+        return this.client.beginCreateCascadeDeleteJob(jobId, partyId, managementZoneId, requestOptions)
+            .getSyncPoller();
     }
 
     /**
@@ -286,8 +286,8 @@ public final class ManagementZonesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId, String managementZoneId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String partyId, String managementZoneId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(partyId, managementZoneId, requestOptions).block();
     }
 
@@ -356,11 +356,10 @@ public final class ManagementZonesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String managementZoneId, BinaryData managementZone, RequestOptions requestOptions) {
-        return this.client
-                .createOrUpdateWithResponse(partyId, managementZoneId, managementZone, requestOptions)
-                .block();
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String managementZoneId,
+        BinaryData managementZone, RequestOptions requestOptions) {
+        return this.client.createOrUpdateWithResponse(partyId, managementZoneId, managementZone, requestOptions)
+            .block();
     }
 
     /**

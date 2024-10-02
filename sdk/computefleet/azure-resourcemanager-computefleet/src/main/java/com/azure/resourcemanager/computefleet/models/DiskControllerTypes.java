@@ -20,12 +20,12 @@ import java.util.Collection;
  */
 public final class DiskControllerTypes extends ExpandableStringEnum<DiskControllerTypes> {
     /**
-     * Static value SCSI for DiskControllerTypes.
+     * SCSI disk type.
      */
     public static final DiskControllerTypes SCSI = fromString("SCSI");
 
     /**
-     * Static value NVMe for DiskControllerTypes.
+     * NVMe disk type.
      */
     public static final DiskControllerTypes NVME = fromString("NVMe");
 

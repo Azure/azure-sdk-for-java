@@ -14,7 +14,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 public final class AssociationsInterfaceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/stable/2023-11-01/examples/
+     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
      * AssociationPut.json
      */
     /**
@@ -23,7 +23,9 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void putAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().define("as1").withRegion("NorthCentralUS")
+        manager.associationsInterfaces()
+            .define("as1")
+            .withRegion("NorthCentralUS")
             .withExistingTrafficController("rg1", "tc1")
             .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
                 .withSubnet(new AssociationSubnet().withId(

@@ -934,8 +934,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * List existing private connections
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -965,8 +963,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * List existing private connections
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

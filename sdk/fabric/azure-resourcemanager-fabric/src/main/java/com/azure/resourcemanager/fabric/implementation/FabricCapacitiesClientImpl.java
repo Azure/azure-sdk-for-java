@@ -2069,8 +2069,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List FabricCapacity resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2099,8 +2097,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List FabricCapacity resources by resource group
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2129,8 +2125,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List FabricCapacity resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2159,8 +2153,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List FabricCapacity resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2189,8 +2181,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List eligible SKUs for a Microsoft Fabric resource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2220,8 +2210,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List eligible SKUs for a Microsoft Fabric resource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2250,8 +2238,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List eligible SKUs for Microsoft Fabric resource provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -2279,8 +2265,6 @@ public final class FabricCapacitiesClientImpl implements FabricCapacitiesClient 
     }
 
     /**
-     * List eligible SKUs for Microsoft Fabric resource provider
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

@@ -9,12 +9,12 @@ package com.azure.resourcemanager.healthdataaiservices.models;
  */
 public enum PublicNetworkAccess {
     /**
-     * Enum value Enabled.
+     * The public network access is enabled.
      */
     ENABLED("Enabled"),
 
     /**
-     * Enum value Disabled.
+     * The public network access is disabled.
      */
     DISABLED("Disabled");
 
