@@ -46,7 +46,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 class AzureMonitorExporterBuilder {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporterBuilder.class);
 
     private static final String APPLICATIONINSIGHTS_CONNECTION_STRING = "APPLICATIONINSIGHTS_CONNECTION_STRING";
     private static final String APPLICATIONINSIGHTS_AUTHENTICATION_SCOPE = "https://monitor.azure.com//.default";
