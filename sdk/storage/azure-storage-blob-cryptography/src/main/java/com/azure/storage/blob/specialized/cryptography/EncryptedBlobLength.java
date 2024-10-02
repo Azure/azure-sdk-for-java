@@ -22,7 +22,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 final class EncryptedBlobLength {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobRange.class);
 
-    public static Function<Long, Long> computeUnencryptedBlobLength (EncryptionData encryptionData) {
+    static Function<Long, Long> computeUnencryptedBlobLength (EncryptionData encryptionData) {
         return (totalLength) -> {
             switch (encryptionData.getEncryptionAgent().getProtocol()) {
                 case ENCRYPTION_PROTOCOL_V1:
@@ -30,7 +30,7 @@ final class EncryptedBlobLength {
                 case ENCRYPTION_PROTOCOL_V2:
                 case ENCRYPTION_PROTOCOL_V2_1:
                     long regionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
-                    long region = (totalLength + regionLength - 1) / regionLength;
+                    long region = (long) Math.ceil((double) totalLength / (double) (regionLength + NONCE_LENGTH + TAG_LENGTH));
                     long offset = (NONCE_LENGTH + TAG_LENGTH) * region;
                     return totalLength - offset;
                 default:
