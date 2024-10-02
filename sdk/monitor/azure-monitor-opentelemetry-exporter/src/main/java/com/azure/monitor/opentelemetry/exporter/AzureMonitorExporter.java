@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorMetricExporterProvider;
@@ -20,10 +19,6 @@ import java.util.Map;
  * Class to enable Azure Monitor for OpenTelemetry autoconfiguration.
  */
 public final class AzureMonitorExporter {
-
-    private static boolean customized = false;
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorExporter.class);
 
     private AzureMonitorExporter() {
     }
@@ -56,10 +51,6 @@ public final class AzureMonitorExporter {
      */
     public static void customize(AutoConfigurationCustomizer autoConfigurationCustomizer,
         AzureMonitorExporterOptions exporterOptions) {
-        if (customized) {
-            LOGGER.warning("You have already customized the OpenTelemetry auto-configuration for Azure.");
-        }
-        customized = true;
         autoConfigurationCustomizer.addPropertiesSupplier(() -> {
             Map<String, String> props = new HashMap<>();
             props.put("otel.traces.exporter", AzureMonitorExporterProviderKeys.EXPORTER_NAME);
