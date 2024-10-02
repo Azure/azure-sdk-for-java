@@ -12,7 +12,7 @@
 ### Bugs Fixed
 
 - #42036: illegal char exception for newline in prompt
-- Fixed key authentication issue with non-AOAI models
+- Fixed key authentication issue with non-Azure OpenAI models
 
 ### Other Changes
 
