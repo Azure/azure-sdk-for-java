@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class InboundSecurityRuleOperationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/InboundSecurityRuleGet.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/InboundSecurityRuleGet.json
      */
     /**
      * Sample code: Create Network Virtual Appliance Inbound Security Rules.

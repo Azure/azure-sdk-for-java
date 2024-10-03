@@ -27,6 +27,7 @@ import com.azure.resourcemanager.mediaservices.models.TransformOutput;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -42,6 +43,7 @@ public class MediaServicesTests extends TestBase {
 
     private String resourceGroup = "rg" + randomPadding();
 
+    @Disabled("resource in jobHttpBaseUri/jobFile is expired, didn't find a replacement")
     @Test
     @LiveOnly
     public void mediaServicesTest() {

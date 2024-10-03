@@ -12,31 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ShareablePrivateLinkResourceTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShareablePrivateLinkResourceType model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"eamtmcz\",\"properties\":{\"description\":\"ejwcwwqiok\",\"groupId\":\"sx\",\"type\":\"jmsvpkjp\"}}")
-                .toObject(ShareablePrivateLinkResourceType.class);
-        Assertions.assertEquals("eamtmcz", model.name());
-        Assertions.assertEquals("ejwcwwqiok", model.properties().description());
-        Assertions.assertEquals("sx", model.properties().groupId());
-        Assertions.assertEquals("jmsvpkjp", model.properties().type());
+        ShareablePrivateLinkResourceType model = BinaryData.fromString(
+            "{\"name\":\"rwm\",\"properties\":{\"description\":\"wpklvxw\",\"groupId\":\"gdxpg\",\"type\":\"chisze\"}}")
+            .toObject(ShareablePrivateLinkResourceType.class);
+        Assertions.assertEquals("rwm", model.name());
+        Assertions.assertEquals("wpklvxw", model.properties().description());
+        Assertions.assertEquals("gdxpg", model.properties().groupId());
+        Assertions.assertEquals("chisze", model.properties().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShareablePrivateLinkResourceType model =
-            new ShareablePrivateLinkResourceType()
-                .withName("eamtmcz")
-                .withProperties(
-                    new ShareablePrivateLinkResourceProperties()
-                        .withDescription("ejwcwwqiok")
-                        .withGroupId("sx")
-                        .withType("jmsvpkjp"));
+        ShareablePrivateLinkResourceType model = new ShareablePrivateLinkResourceType().withName("rwm")
+            .withProperties(new ShareablePrivateLinkResourceProperties().withDescription("wpklvxw")
+                .withGroupId("gdxpg")
+                .withType("chisze"));
         model = BinaryData.fromObject(model).toObject(ShareablePrivateLinkResourceType.class);
-        Assertions.assertEquals("eamtmcz", model.name());
-        Assertions.assertEquals("ejwcwwqiok", model.properties().description());
-        Assertions.assertEquals("sx", model.properties().groupId());
-        Assertions.assertEquals("jmsvpkjp", model.properties().type());
+        Assertions.assertEquals("rwm", model.name());
+        Assertions.assertEquals("wpklvxw", model.properties().description());
+        Assertions.assertEquals("gdxpg", model.properties().groupId());
+        Assertions.assertEquals("chisze", model.properties().type());
     }
 }

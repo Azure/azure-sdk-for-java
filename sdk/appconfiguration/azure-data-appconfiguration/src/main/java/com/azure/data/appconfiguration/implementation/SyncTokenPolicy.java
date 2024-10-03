@@ -39,7 +39,6 @@ public final class SyncTokenPolicy extends HttpPipelineSyncPolicy {
         return response;
     }
 
-
     /**
      * Get all latest sync-tokens from the concurrent map and convert to one sync-token string.
      * All sync-tokens concatenated by a comma delimiter.
@@ -47,8 +46,10 @@ public final class SyncTokenPolicy extends HttpPipelineSyncPolicy {
      * @return sync-token string
      */
     private String getSyncTokenHeader() {
-        return syncTokenMap.values().stream().map(syncToken -> syncToken.getId() + EQUAL + syncToken.getValue())
-                   .collect(Collectors.joining(COMMA));
+        return syncTokenMap.values()
+            .stream()
+            .map(syncToken -> syncToken.getId() + EQUAL + syncToken.getValue())
+            .collect(Collectors.joining(COMMA));
     }
 
     /**
@@ -77,7 +78,7 @@ public final class SyncTokenPolicy extends HttpPipelineSyncPolicy {
             // to ensure the entire operation is atomic.
             syncTokenMap.compute(tokenId, (key, existingSyncToken) -> {
                 if (existingSyncToken == null
-                        || syncToken.getSequenceNumber() > existingSyncToken.getSequenceNumber()) {
+                    || syncToken.getSequenceNumber() > existingSyncToken.getSequenceNumber()) {
                     return syncToken;
                 }
                 return existingSyncToken;

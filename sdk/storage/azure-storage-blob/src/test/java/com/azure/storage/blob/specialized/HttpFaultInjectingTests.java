@@ -10,7 +10,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
-import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
@@ -187,7 +186,7 @@ public class HttpFaultInjectingTests {
                 return HttpClient.createDefault(new HttpClientOptions()
                     .readTimeout(Duration.ofSeconds(2))
                     .responseTimeout(Duration.ofSeconds(2))
-                    .setHttpClientProvider(VertxAsyncHttpClientProvider.class));
+                    .setHttpClientProvider(getVertxClientProviderReflectivelyUntilNameChangeReleases()));
             case JDK_HTTP:
                 try {
                     return HttpClient.createDefault(new HttpClientOptions()
@@ -202,6 +201,23 @@ public class HttpFaultInjectingTests {
             default:
                 throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Class<? extends HttpClientProvider> getVertxClientProviderReflectivelyUntilNameChangeReleases() {
+        Class<?> clazz;
+        try {
+            clazz = Class.forName("com.azure.core.http.vertx.VertxHttpClientProvider");
+        } catch (ClassNotFoundException ex) {
+            try {
+                clazz = Class.forName("com.azure.core.http.vertx.VertxAsyncHttpClientProvider");
+            } catch (ClassNotFoundException ex2) {
+                ex2.addSuppressed(ex);
+                throw new RuntimeException(ex2);
+            }
+        }
+
+        return (Class<? extends HttpClientProvider>) clazz;
     }
 
     // For now a local implementation is here in azure-storage-blob until this is released in azure-core-test.

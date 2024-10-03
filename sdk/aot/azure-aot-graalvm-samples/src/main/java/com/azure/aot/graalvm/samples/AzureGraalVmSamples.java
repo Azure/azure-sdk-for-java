@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Main class to run Azure client samples using GraalVM.
  */
-public class AzureGraalVmSamples {
+public final class AzureGraalVmSamples {
     /**
      * Main method to run the samples.
      * @param args args to samples.
@@ -36,5 +36,8 @@ public class AzureGraalVmSamples {
         // https://github.com/micronaut-projects/micronaut-core/issues/2575
         // https://github.com/awslabs/aws-serverless-java-container/issues/428
         // CosmosSample.runSample();
+    }
+
+    private AzureGraalVmSamples() {
     }
 }

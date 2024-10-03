@@ -8,6 +8,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
@@ -71,9 +73,15 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         TokenCredential credential;
 
         if (interceptorManager.isLiveMode()) {
-            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+            credential = new AzurePowerShellCredentialBuilder()
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .additionallyAllowedTenants("*")
+                .build();
         } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+            credential = new DefaultAzureCredentialBuilder()
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .additionallyAllowedTenants("*")
+                .build();
         } else {
             credential = new MockTokenCredential();
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
@@ -83,6 +91,7 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         }
 
         SecretClientBuilder builder = new SecretClientBuilder()
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)

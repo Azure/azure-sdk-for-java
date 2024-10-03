@@ -569,7 +569,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -588,7 +589,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     maxTrainingHours: Double (Optional)
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -611,7 +613,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -630,7 +633,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     maxTrainingHours: Double (Optional)
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -652,7 +656,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -671,7 +676,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     maxTrainingHours: Double (Optional)
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -701,7 +707,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -720,7 +727,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     maxTrainingHours: Double (Optional)
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -750,7 +758,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -769,7 +778,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     maxTrainingHours: Double (Optional)
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -800,7 +810,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document analysis model.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -819,7 +830,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     maxTrainingHours: Double (Optional)
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -850,7 +862,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -889,7 +902,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -912,7 +926,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -951,7 +966,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -973,7 +989,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1012,7 +1029,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1042,7 +1060,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1081,7 +1100,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1111,7 +1131,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1150,7 +1171,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1181,7 +1203,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Creates a new document model from document types of existing document models.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1220,7 +1243,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param composeRequest Compose request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1252,7 +1276,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * specified modelId and optional description.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1260,11 +1285,13 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1273,7 +1300,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1298,7 +1326,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * specified modelId and optional description.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1306,11 +1335,13 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1319,7 +1350,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1343,7 +1375,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1352,7 +1385,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -1377,7 +1411,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1386,7 +1421,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -1410,7 +1446,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1419,7 +1456,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -1450,7 +1488,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1459,7 +1498,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -1490,7 +1530,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1499,7 +1540,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -1531,7 +1573,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document model to the target resource, region, and modelId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -1540,7 +1583,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param copyToRequest Copy to request parameters.
@@ -1572,7 +1616,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Gets detailed document model information.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1631,7 +1676,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1652,7 +1698,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Gets detailed document model information.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1711,7 +1758,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param modelId Unique document model name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1732,7 +1780,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1791,7 +1840,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1815,7 +1865,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1874,7 +1925,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1896,7 +1948,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -1955,7 +2008,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1977,7 +2031,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document models.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -2036,7 +2091,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2094,14 +2150,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Return information about the current resource.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     customDocumentModels (Required): {
      *         count: int (Required)
      *         limit: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2122,14 +2180,16 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Return information about the current resource.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     customDocumentModels (Required): {
      *         count: int (Required)
      *         limit: int (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2149,7 +2209,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Gets operation info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -2176,7 +2237,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2197,7 +2259,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Gets operation info.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -2224,7 +2287,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param operationId Operation ID.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2245,7 +2309,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -2272,7 +2337,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2296,7 +2362,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -2323,7 +2390,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2345,7 +2413,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -2372,7 +2441,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2394,7 +2464,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Lists all operations.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -2421,7 +2492,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2443,7 +2515,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2463,7 +2536,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2486,7 +2560,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2506,7 +2581,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2528,7 +2604,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2548,7 +2625,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2578,7 +2656,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2598,7 +2677,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2628,7 +2708,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2648,7 +2729,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2679,7 +2761,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Builds a custom document classifier.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2699,7 +2782,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     }
      *     allowOverwrite: Boolean (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param buildRequest Build request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2731,7 +2815,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * specified classifierId and optional description.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2739,11 +2824,13 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -2752,7 +2839,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2777,7 +2865,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * specified classifierId and optional description.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -2785,11 +2874,13 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         String: String (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -2798,7 +2889,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param authorizeCopyRequest Authorize copy request parameters.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2822,7 +2914,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -2831,7 +2924,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
@@ -2856,7 +2950,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -2865,7 +2960,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
@@ -2889,7 +2985,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -2898,7 +2995,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
@@ -2929,7 +3027,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -2938,7 +3037,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
@@ -2969,7 +3069,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -2978,7 +3079,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
@@ -3011,7 +3113,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Copies document classifier to the target resource, region, and classifierId.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     targetResourceId: String (Required)
      *     targetResourceRegion: String (Required)
@@ -3020,7 +3123,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     accessToken: String (Required)
      *     expirationDateTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param copyToRequest Copy to request parameters.
@@ -3052,7 +3156,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Gets detailed document classifier information.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3081,7 +3186,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3104,7 +3210,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * Gets detailed document classifier information.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3133,7 +3240,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param classifierId Unique document classifier name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3154,7 +3262,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3183,7 +3292,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3207,7 +3317,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3236,7 +3347,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3258,7 +3370,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3287,7 +3400,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3309,7 +3423,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      * List all document classifiers.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3338,7 +3453,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3393,12 +3509,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     }
 
     /**
-     * List all document models
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -3457,7 +3572,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3480,12 +3596,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     }
 
     /**
-     * List all document models
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     description: String (Optional)
@@ -3544,7 +3659,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *     ]
      *     trainingHours: Double (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3564,12 +3680,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     }
 
     /**
-     * Lists all operations.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -3596,7 +3711,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3619,12 +3735,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     }
 
     /**
-     * Lists all operations.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(documentModelBuild/documentModelCompose/documentModelCopyTo/documentClassifierCopyTo/documentClassifierBuild) (Required)
      *     operationId: String (Required)
@@ -3651,7 +3766,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3671,12 +3787,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     }
 
     /**
-     * List all document classifiers.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3705,7 +3820,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3728,12 +3844,11 @@ public final class DocumentIntelligenceAdministrationClientImpl {
     }
 
     /**
-     * List all document classifiers.
-     * 
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
@@ -3762,7 +3877,8 @@ public final class DocumentIntelligenceAdministrationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

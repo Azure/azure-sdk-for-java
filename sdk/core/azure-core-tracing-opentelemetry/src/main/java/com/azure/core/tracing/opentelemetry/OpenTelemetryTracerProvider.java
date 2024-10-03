@@ -3,6 +3,7 @@
 
 package com.azure.core.tracing.opentelemetry;
 
+import com.azure.core.util.LibraryTelemetryOptions;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
@@ -29,12 +30,31 @@ public final class OpenTelemetryTracerProvider implements TracerProvider {
      * @param libraryName Azure client library package name
      * @param libraryVersion Azure client library version
      * @param azNamespace Azure Resource Provider namespace.
-     * @param options instance of {@link com.azure.core.util.TracingOptions}
+     * @param applicationOptions instance of {@link com.azure.core.util.TracingOptions} passed by the application.
      * @return a tracer instance.
      */
     @Override
-    public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace, TracingOptions options) {
+    public Tracer createTracer(String libraryName, String libraryVersion, String azNamespace,
+        TracingOptions applicationOptions) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
-        return new OpenTelemetryTracer(libraryName, libraryVersion, azNamespace, options);
+
+        final LibraryTelemetryOptions libraryOptions
+            = new LibraryTelemetryOptions(libraryName).setLibraryVersion(libraryVersion)
+                .setResourceProviderNamespace(azNamespace);
+        return new OpenTelemetryTracer(libraryOptions, applicationOptions);
+    }
+
+    /**
+     * Creates OpenTelemetry-based implementation of {@link Tracer}
+     *
+     * @param libraryOptions Library-specific telemetry options.
+     * @param applicationOptions Tracing options configured by the application.
+     * @return a tracer instance.
+     */
+    @Override
+    public Tracer createTracer(LibraryTelemetryOptions libraryOptions, TracingOptions applicationOptions) {
+        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null.");
+
+        return new OpenTelemetryTracer(libraryOptions, applicationOptions);
     }
 }

@@ -229,7 +229,7 @@ public final class HttpLogOptions {
         NONE,
 
         /**
-         * Logs only URLs, HTTP methods, and time to finish the request.
+         * Logs only URIs, HTTP methods, and time to finish the request.
          */
         BASIC,
 
@@ -279,11 +279,11 @@ public final class HttpLogOptions {
         }
 
         /**
-         * Whether a URL should be logged.
+         * Whether a URI should be logged.
          *
-         * @return Whether a URL should be logged.
+         * @return Whether a URI should be logged.
          */
-        public boolean shouldLogUrl() {
+        public boolean shouldLogUri() {
             return this != NONE;
         }
 

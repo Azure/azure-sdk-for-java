@@ -74,6 +74,9 @@ public class DataDeletionDetectionPolicy implements JsonSerializable<DataDeletio
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy".equals(discriminatorValue)) {
                     return SoftDeleteColumnDeletionDetectionPolicy.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy"
+                    .equals(discriminatorValue)) {
+                    return NativeBlobSoftDeleteDeletionDetectionPolicy.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

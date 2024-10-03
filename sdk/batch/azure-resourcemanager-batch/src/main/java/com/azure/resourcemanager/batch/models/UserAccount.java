@@ -6,50 +6,43 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties used to create a user on an Azure Batch node.
  */
 @Fluent
-public final class UserAccount {
+public final class UserAccount implements JsonSerializable<UserAccount> {
     /*
      * The name of the user account. Names can contain any Unicode characters up to a maximum length of 20.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The password for the user account.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
-     * The elevation level of the user.
-     * 
      * nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with
      * elevated access and operates with full Administrator permissions. The default value is nonAdmin.
      */
-    @JsonProperty(value = "elevationLevel")
     private ElevationLevel elevationLevel;
 
     /*
-     * Properties used to create a user account on a Linux node.
-     * 
      * This property is ignored if specified on a Windows pool. If not specified, the user is created with the default
      * options.
      */
-    @JsonProperty(value = "linuxUserConfiguration")
     private LinuxUserConfiguration linuxUserConfiguration;
 
     /*
-     * Properties used to create a user account on a Windows node.
-     * 
-     * This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool,
-     * the user is created with the default options.
+     * This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool, the
+     * user is created with the default options.
      */
-    @JsonProperty(value = "windowsUserConfiguration")
     private WindowsUserConfiguration windowsUserConfiguration;
 
     /**
@@ -101,10 +94,9 @@ public final class UserAccount {
     }
 
     /**
-     * Get the elevationLevel property: The elevation level of the user.
-     * 
-     * nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with
-     * elevated access and operates with full Administrator permissions. The default value is nonAdmin.
+     * Get the elevationLevel property: nonAdmin - The auto user is a standard user without elevated access. admin - The
+     * auto user is a user with elevated access and operates with full Administrator permissions. The default value is
+     * nonAdmin.
      * 
      * @return the elevationLevel value.
      */
@@ -113,10 +105,9 @@ public final class UserAccount {
     }
 
     /**
-     * Set the elevationLevel property: The elevation level of the user.
-     * 
-     * nonAdmin - The auto user is a standard user without elevated access. admin - The auto user is a user with
-     * elevated access and operates with full Administrator permissions. The default value is nonAdmin.
+     * Set the elevationLevel property: nonAdmin - The auto user is a standard user without elevated access. admin - The
+     * auto user is a user with elevated access and operates with full Administrator permissions. The default value is
+     * nonAdmin.
      * 
      * @param elevationLevel the elevationLevel value to set.
      * @return the UserAccount object itself.
@@ -127,10 +118,8 @@ public final class UserAccount {
     }
 
     /**
-     * Get the linuxUserConfiguration property: Properties used to create a user account on a Linux node.
-     * 
-     * This property is ignored if specified on a Windows pool. If not specified, the user is created with the default
-     * options.
+     * Get the linuxUserConfiguration property: This property is ignored if specified on a Windows pool. If not
+     * specified, the user is created with the default options.
      * 
      * @return the linuxUserConfiguration value.
      */
@@ -139,10 +128,8 @@ public final class UserAccount {
     }
 
     /**
-     * Set the linuxUserConfiguration property: Properties used to create a user account on a Linux node.
-     * 
-     * This property is ignored if specified on a Windows pool. If not specified, the user is created with the default
-     * options.
+     * Set the linuxUserConfiguration property: This property is ignored if specified on a Windows pool. If not
+     * specified, the user is created with the default options.
      * 
      * @param linuxUserConfiguration the linuxUserConfiguration value to set.
      * @return the UserAccount object itself.
@@ -153,10 +140,8 @@ public final class UserAccount {
     }
 
     /**
-     * Get the windowsUserConfiguration property: Properties used to create a user account on a Windows node.
-     * 
-     * This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool,
-     * the user is created with the default options.
+     * Get the windowsUserConfiguration property: This property can only be specified if the user is on a Windows pool.
+     * If not specified and on a Windows pool, the user is created with the default options.
      * 
      * @return the windowsUserConfiguration value.
      */
@@ -165,10 +150,8 @@ public final class UserAccount {
     }
 
     /**
-     * Set the windowsUserConfiguration property: Properties used to create a user account on a Windows node.
-     * 
-     * This property can only be specified if the user is on a Windows pool. If not specified and on a Windows pool,
-     * the user is created with the default options.
+     * Set the windowsUserConfiguration property: This property can only be specified if the user is on a Windows pool.
+     * If not specified and on a Windows pool, the user is created with the default options.
      * 
      * @param windowsUserConfiguration the windowsUserConfiguration value to set.
      * @return the UserAccount object itself.
@@ -185,12 +168,12 @@ public final class UserAccount {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model UserAccount"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UserAccount"));
         }
         if (password() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property password in model UserAccount"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property password in model UserAccount"));
         }
         if (linuxUserConfiguration() != null) {
             linuxUserConfiguration().validate();
@@ -201,4 +184,54 @@ public final class UserAccount {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserAccount.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("elevationLevel",
+            this.elevationLevel == null ? null : this.elevationLevel.toString());
+        jsonWriter.writeJsonField("linuxUserConfiguration", this.linuxUserConfiguration);
+        jsonWriter.writeJsonField("windowsUserConfiguration", this.windowsUserConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAccount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAccount.
+     */
+    public static UserAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAccount deserializedUserAccount = new UserAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedUserAccount.name = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedUserAccount.password = reader.getString();
+                } else if ("elevationLevel".equals(fieldName)) {
+                    deserializedUserAccount.elevationLevel = ElevationLevel.fromString(reader.getString());
+                } else if ("linuxUserConfiguration".equals(fieldName)) {
+                    deserializedUserAccount.linuxUserConfiguration = LinuxUserConfiguration.fromJson(reader);
+                } else if ("windowsUserConfiguration".equals(fieldName)) {
+                    deserializedUserAccount.windowsUserConfiguration = WindowsUserConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAccount;
+        });
+    }
 }

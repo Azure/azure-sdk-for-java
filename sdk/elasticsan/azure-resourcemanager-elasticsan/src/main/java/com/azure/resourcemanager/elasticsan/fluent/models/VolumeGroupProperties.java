@@ -5,54 +5,57 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * VolumeGroup response properties.
  */
 @Fluent
-public final class VolumeGroupProperties {
+public final class VolumeGroupProperties implements JsonSerializable<VolumeGroupProperties> {
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /*
      * Type of storage target
      */
-    @JsonProperty(value = "protocolType")
     private StorageTargetType protocolType;
 
     /*
      * Type of encryption
      */
-    @JsonProperty(value = "encryption")
     private EncryptionType encryption;
 
     /*
      * Encryption Properties describing Key Vault and Identity information
      */
-    @JsonProperty(value = "encryptionProperties")
     private EncryptionProperties encryptionProperties;
 
     /*
      * A collection of rules governing the accessibility from specific network locations.
      */
-    @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
 
     /*
      * The list of Private Endpoint Connections.
      */
-    @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * A boolean indicating whether or not Data Integrity Check is enabled
+     */
+    private Boolean enforceDataIntegrityCheckForIscsi;
 
     /**
      * Creates an instance of VolumeGroupProperties class.
@@ -159,6 +162,28 @@ public final class VolumeGroupProperties {
     }
 
     /**
+     * Get the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data Integrity Check is
+     * enabled.
+     * 
+     * @return the enforceDataIntegrityCheckForIscsi value.
+     */
+    public Boolean enforceDataIntegrityCheckForIscsi() {
+        return this.enforceDataIntegrityCheckForIscsi;
+    }
+
+    /**
+     * Set the enforceDataIntegrityCheckForIscsi property: A boolean indicating whether or not Data Integrity Check is
+     * enabled.
+     * 
+     * @param enforceDataIntegrityCheckForIscsi the enforceDataIntegrityCheckForIscsi value to set.
+     * @return the VolumeGroupProperties object itself.
+     */
+    public VolumeGroupProperties withEnforceDataIntegrityCheckForIscsi(Boolean enforceDataIntegrityCheckForIscsi) {
+        this.enforceDataIntegrityCheckForIscsi = enforceDataIntegrityCheckForIscsi;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -173,5 +198,61 @@ public final class VolumeGroupProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocolType", this.protocolType == null ? null : this.protocolType.toString());
+        jsonWriter.writeStringField("encryption", this.encryption == null ? null : this.encryption.toString());
+        jsonWriter.writeJsonField("encryptionProperties", this.encryptionProperties);
+        jsonWriter.writeJsonField("networkAcls", this.networkAcls);
+        jsonWriter.writeBooleanField("enforceDataIntegrityCheckForIscsi", this.enforceDataIntegrityCheckForIscsi);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeGroupProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeGroupProperties.
+     */
+    public static VolumeGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeGroupProperties deserializedVolumeGroupProperties = new VolumeGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.provisioningState
+                        = ProvisioningStates.fromString(reader.getString());
+                } else if ("protocolType".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.protocolType = StorageTargetType.fromString(reader.getString());
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.encryption = EncryptionType.fromString(reader.getString());
+                } else if ("encryptionProperties".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.encryptionProperties = EncryptionProperties.fromJson(reader);
+                } else if ("networkAcls".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.networkAcls = NetworkRuleSet.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedVolumeGroupProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("enforceDataIntegrityCheckForIscsi".equals(fieldName)) {
+                    deserializedVolumeGroupProperties.enforceDataIntegrityCheckForIscsi
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeGroupProperties;
+        });
     }
 }

@@ -47,9 +47,8 @@ public final class SolutionInferencesImpl {
      * @param client the instance of the service client containing this operation class.
      */
     SolutionInferencesImpl(FarmBeatsClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        SolutionInferencesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SolutionInferencesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,67 +60,37 @@ public final class SolutionInferencesImpl {
     @ServiceInterface(name = "FarmBeatsClientSolut")
     public interface SolutionInferencesService {
         @Post("/solutions/{solutionId}:cancel")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> cancel(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("solutionId") String solutionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData solutionInferenceRequest,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> cancel(@HostParam("endpoint") String endpoint,
+            @PathParam("solutionId") String solutionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData solutionInferenceRequest, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/solutions/{solutionId}:create")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("solutionId") String solutionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData solutionInferenceRequest,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("solutionId") String solutionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData solutionInferenceRequest, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Post("/solutions/{solutionId}:fetch")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> fetch(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("solutionId") String solutionId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData solutionInferenceRequest,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> fetch(@HostParam("endpoint") String endpoint,
+            @PathParam("solutionId") String solutionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData solutionInferenceRequest, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -156,19 +125,11 @@ public final class SolutionInferencesImpl {
      * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelWithResponseAsync(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> cancelWithResponseAsync(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.cancel(
-                                this.client.getEndpoint(),
-                                solutionId,
-                                this.client.getServiceVersion().getVersion(),
-                                solutionInferenceRequest,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.cancel(this.client.getEndpoint(), solutionId,
+            this.client.getServiceVersion().getVersion(), solutionInferenceRequest, accept, requestOptions, context));
     }
 
     /**
@@ -203,8 +164,8 @@ public final class SolutionInferencesImpl {
      * @return dictionary of &lt;any&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelWithResponse(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> cancelWithResponse(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         return cancelWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions).block();
     }
 
@@ -240,19 +201,11 @@ public final class SolutionInferencesImpl {
      * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String solutionId,
+        BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                solutionId,
-                                this.client.getServiceVersion().getVersion(),
-                                solutionInferenceRequest,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), solutionId,
+            this.client.getServiceVersion().getVersion(), solutionInferenceRequest, accept, requestOptions, context));
     }
 
     /**
@@ -287,20 +240,16 @@ public final class SolutionInferencesImpl {
      * @return the {@link PollerFlux} for polling of dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdateAsync(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.createOrUpdateWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginCreateOrUpdateAsync(String solutionId,
+        BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createOrUpdateWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions),
+            new DefaultPollingStrategy<>(this.client.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.client.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -335,8 +284,8 @@ public final class SolutionInferencesImpl {
      * @return the {@link SyncPoller} for polling of dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdate(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateOrUpdate(String solutionId,
+        BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
         return this.beginCreateOrUpdateAsync(solutionId, solutionInferenceRequest, requestOptions).getSyncPoller();
     }
 
@@ -372,19 +321,11 @@ public final class SolutionInferencesImpl {
      * @return dictionary of &lt;any&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> fetchWithResponseAsync(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> fetchWithResponseAsync(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.fetch(
-                                this.client.getEndpoint(),
-                                solutionId,
-                                this.client.getServiceVersion().getVersion(),
-                                solutionInferenceRequest,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.fetch(this.client.getEndpoint(), solutionId,
+            this.client.getServiceVersion().getVersion(), solutionInferenceRequest, accept, requestOptions, context));
     }
 
     /**
@@ -419,8 +360,8 @@ public final class SolutionInferencesImpl {
      * @return dictionary of &lt;any&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> fetchWithResponse(
-            String solutionId, BinaryData solutionInferenceRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> fetchWithResponse(String solutionId, BinaryData solutionInferenceRequest,
+        RequestOptions requestOptions) {
         return fetchWithResponseAsync(solutionId, solutionInferenceRequest, requestOptions).block();
     }
 }

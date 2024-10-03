@@ -30,19 +30,9 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     private DefaultAdminPropertiesFormat innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The system metadata related to this resource.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
-     * The type of the resource.
-     */
-    private String type;
+    private SystemData systemData;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -50,9 +40,19 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     private String etag;
 
     /*
-     * The system metadata related to this resource.
+     * The type of the resource.
      */
-    private SystemData systemData;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of DefaultAdminRule class.
@@ -80,33 +80,13 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the systemData property: The system metadata related to this resource.
      * 
-     * @return the id value.
+     * @return the systemData value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -120,13 +100,33 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
     }
 
     /**
-     * Get the systemData property: The system metadata related to this resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the systemData value.
+     * @return the type value.
      */
     @Override
-    public SystemData systemData() {
-        return this.systemData;
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -260,7 +260,6 @@ public final class DefaultAdminRule extends BaseAdminRuleInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

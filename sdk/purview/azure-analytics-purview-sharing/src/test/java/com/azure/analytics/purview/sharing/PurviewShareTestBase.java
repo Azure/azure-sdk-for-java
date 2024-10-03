@@ -10,7 +10,6 @@ import com.azure.analytics.purview.sharing.models.SentShare;
 import com.azure.analytics.purview.sharing.models.ServiceInvitation;
 import com.azure.analytics.purview.sharing.models.StorageAccountPath;
 import com.azure.analytics.purview.sharing.models.StoreReference;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.RequestOptions;
@@ -121,11 +120,10 @@ class PurviewShareTestBase extends TestProxyTestBase {
         ReceivedSharesClientBuilder receivedSharesClientbuilder = new ReceivedSharesClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT",
                         "https://account.purview.azure.com/share"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            receivedSharesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(new MockTokenCredential());
+            receivedSharesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             receivedSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
@@ -144,11 +142,10 @@ class PurviewShareTestBase extends TestProxyTestBase {
         SentSharesClientBuilder sentSharesClientbuilder = new SentSharesClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT",
                         "https://account.purview.azure.com/share"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            sentSharesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(new MockTokenCredential());
+            sentSharesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             sentSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
@@ -167,11 +164,10 @@ class PurviewShareTestBase extends TestProxyTestBase {
         ShareResourcesClientBuilder shareResourcesClientbuilder = new ShareResourcesClientBuilder()
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT",
                         "https://account.purview.azure.com/share"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            shareResourcesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(new MockTokenCredential());
+            shareResourcesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             shareResourcesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
