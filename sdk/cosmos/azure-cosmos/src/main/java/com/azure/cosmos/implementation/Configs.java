@@ -661,15 +661,13 @@ public class Configs {
         return Boolean.parseBoolean(shouldSystemExit);
     }
 
-    public static boolean isPerPartitionAutomaticFailoverEnabled() {
-        String shouldSystemExit =
-            System.getProperty(
-                IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
-                firstNonNull(
-                    emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
-                    String.valueOf(DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)));
+    public static String isPerPartitionAutomaticFailoverEnabled() {
 
-        return Boolean.parseBoolean(shouldSystemExit);
+        return System.getProperty(
+            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
+                StringUtils.EMPTY));
     }
 
     public static boolean shouldOptInDefaultCircuitBreakerConfig() {

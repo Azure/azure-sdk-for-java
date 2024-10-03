@@ -109,6 +109,7 @@ public interface AsyncDocumentClient {
         private CosmosContainerProactiveInitConfig containerProactiveInitConfig;
         private CosmosItemSerializer defaultCustomSerializer;
         private boolean isRegionScopedSessionCapturingEnabled;
+        private boolean isPerPartitionAutomaticFailoverEnabled;
         private List<CosmosOperationPolicy> operationPolicies;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
@@ -272,6 +273,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withPerPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+            this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -310,8 +316,8 @@ public interface AsyncDocumentClient {
                     containerProactiveInitConfig,
                     defaultCustomSerializer,
                     isRegionScopedSessionCapturingEnabled,
-                    operationPolicies
-            );
+                    operationPolicies,
+                    isPerPartitionAutomaticFailoverEnabled);
 
             client.init(state, null);
             return client;

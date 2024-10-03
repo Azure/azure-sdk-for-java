@@ -226,6 +226,15 @@ public class CosmosClientBuilder implements
         return this.isRegionScopedSessionCapturingEnabled;
     }
 
+    CosmosClientBuilder perPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+        this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+        return this;
+    }
+
+    boolean isPerPartitionAutomaticFailoverEnabled() {
+        return this.isPerPartitionAutomaticFailoverEnabled;
+    }
+
     /**
      * Sets an apiType for the builder.
      * @param apiType
@@ -864,6 +873,14 @@ public class CosmosClientBuilder implements
         }
     }
 
+    void resetIsPerPartitionAutomaticFailoverEnabledSetting() {
+        String isPerPartitionAutomaticFailoverEnabledAsEnvProperty = Configs.isPerPartitionAutomaticFailoverEnabled();
+
+        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledAsEnvProperty)) {
+            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsEnvProperty);
+        }
+    }
+
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1184,6 +1201,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabledSetting();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1224,6 +1243,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabledSetting();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);

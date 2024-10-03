@@ -28,15 +28,20 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     private static final Logger logger = LoggerFactory.getLogger(GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover.class);
     private final ConcurrentHashMap<PartitionKeyRangeWrapper, PartitionLevelFailoverInfo> partitionKeyRangeToLocation;
     private final GlobalEndpointManager globalEndpointManager;
+    private final boolean isPerPartitionAutomaticFailoverEnabled;
 
-    public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(GlobalEndpointManager globalEndpointManager) {
+    public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(
+        GlobalEndpointManager globalEndpointManager,
+        boolean isPerPartitionAutomaticFailoverEnabled) {
+
         this.globalEndpointManager = globalEndpointManager;
         this.partitionKeyRangeToLocation = new ConcurrentHashMap<>();
+        this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
     }
 
     public boolean tryAddPartitionLevelLocationOverride(RxDocumentServiceRequest request) {
 
-        if (!Configs.isPerPartitionAutomaticFailoverEnabled()) {
+        if (!this.isPerPartitionAutomaticFailoverEnabled) {
             return false;
         }
 
@@ -73,7 +78,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
 
-        if (!Configs.isPerPartitionAutomaticFailoverEnabled()) {
+        if (this.isPerPartitionAutomaticFailoverEnabled) {
             return false;
         }
 
