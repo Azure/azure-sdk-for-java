@@ -1823,14 +1823,12 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     @MethodSource("uploadAndDownloadFileDifferentRegionLengthSupplier")
     public void uploadAndDownloadToFileDifferentRegionLengthAsync(int regionLength, int fileSize) throws IOException {
         File file = getRandomFile(fileSize);
-        beac = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
+        beac = mockAesKey(getEncryptedClientBuilder(fakeKey, null,
+            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl(), EncryptionVersion.V2_1)
             .blobName(generateBlobName())
             .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
                 .setAuthenticatedRegionDataLengthInBytes(regionLength))
-            .buildEncryptedBlobAsyncClient();
+            .buildEncryptedBlobAsyncClient());
 
         File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
         Files.deleteIfExists(outFile.toPath());
