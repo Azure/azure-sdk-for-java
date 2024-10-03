@@ -494,7 +494,7 @@ public class EncryptedBlobClient extends BlobClient {
 
             context = context.addData(ENCRYPTION_DATA_KEY, encryptionData)
                 .addData(Constants.ADJUSTED_BLOB_LENGTH_KEY,
-                    EncryptedBlobLength.computeAdjustedBlobLength(encryptionData));
+                    EncryptedBlobLength.computeAdjustedBlobLength(encryptionData, initialProperties.getBlobSize()));
         }
         return context;
     }

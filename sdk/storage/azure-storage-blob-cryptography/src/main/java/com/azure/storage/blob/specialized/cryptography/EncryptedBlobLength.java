@@ -19,8 +19,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 final class EncryptedBlobLength {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobLength.class);
 
-    static Function<Long, Long> computeAdjustedBlobLength(EncryptionData encryptionData) {
-        return (totalLength) -> {
+    static Long computeAdjustedBlobLength(EncryptionData encryptionData, Long encryptedLength) {
             switch (encryptionData.getEncryptionAgent().getProtocol()) {
                 /*
                  Technically, the total unencrypted length may be different for v1,
@@ -28,16 +27,15 @@ final class EncryptedBlobLength {
                  the size does not need to be adjusted for v1.
                  */
                 case ENCRYPTION_PROTOCOL_V1:
-                    return totalLength;
+                    return encryptedLength;
                 case ENCRYPTION_PROTOCOL_V2:
                 case ENCRYPTION_PROTOCOL_V2_1:
                     long regionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
-                    long region = (long) Math.ceil((double) totalLength / (double) (regionLength + NONCE_LENGTH + TAG_LENGTH));
+                    long region = (long) Math.ceil((double) encryptedLength / (double) (regionLength + NONCE_LENGTH + TAG_LENGTH));
                     long offset = (NONCE_LENGTH + TAG_LENGTH) * region;
-                    return totalLength - offset;
+                    return encryptedLength - offset;
                 default:
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected protocol version"));
             }
-        };
     }
 }

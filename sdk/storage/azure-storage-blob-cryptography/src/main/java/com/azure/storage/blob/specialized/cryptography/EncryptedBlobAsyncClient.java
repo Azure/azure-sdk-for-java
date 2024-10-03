@@ -755,7 +755,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
                     result = result.contextWrite(context -> context.put(ENCRYPTION_DATA_KEY, encryptionData))
                         .contextWrite(context -> context.put(Constants.ADJUSTED_BLOB_LENGTH_KEY,
-                            EncryptedBlobLength.computeAdjustedBlobLength(encryptionData)));
+                            EncryptedBlobLength.computeAdjustedBlobLength(encryptionData, response.getValue().getBlobSize())));
                 }
 
                 return result;

@@ -73,8 +73,7 @@ public class ChunkedDownloadUtils {
                 if (context != null) {
                     Optional<Object> contextAdjustment = context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY);
                     if (contextAdjustment.isPresent()) {
-                        Function<Long, Long> rangeAdjustment = (Function<Long, Long>) contextAdjustment.get();
-                        totalLength = rangeAdjustment.apply(totalLength);
+                        totalLength = (long) contextAdjustment.get();
                     }
                 }
                 /*
