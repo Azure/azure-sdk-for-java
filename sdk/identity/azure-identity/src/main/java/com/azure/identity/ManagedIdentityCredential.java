@@ -208,8 +208,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
                         + (identityClientOptions.isChained() ? "DefaultAzureCredentialBuilder."
                         : "ManagedIdentityCredentialBuilder."))));
             }
-
-            ManagedIdentityCredential authentication unavailable. User-assigned Managed Identity is not supported in Cloud Shell. To use system-assigned Managed Identity, remove the configured client ID from the ManagedIdentityCredentialBuilder.
         }
 
         return managedIdentityServiceCredential.authenticate(request)
