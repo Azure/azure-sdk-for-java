@@ -5,27 +5,28 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Critical Result consists of two properties.
  */
 @Immutable
-public final class CriticalResult {
+public final class CriticalResult implements JsonSerializable<CriticalResult> {
 
     /*
      * Description : medical problem.
      */
     @Generated
-    @JsonProperty(value = "description")
     private final String description;
 
     /*
      * Finding linked to the critical result.
      */
     @Generated
-    @JsonProperty(value = "finding")
     private FhirR4Observation finding;
 
     /**
@@ -34,8 +35,7 @@ public final class CriticalResult {
      * @param description the description value to set.
      */
     @Generated
-    @JsonCreator
-    private CriticalResult(@JsonProperty(value = "description") String description) {
+    private CriticalResult(String description) {
         this.description = description;
     }
 
@@ -57,5 +57,48 @@ public final class CriticalResult {
     @Generated
     public FhirR4Observation getFinding() {
         return this.finding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("finding", this.finding);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CriticalResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CriticalResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CriticalResult.
+     */
+    @Generated
+    public static CriticalResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String description = null;
+            FhirR4Observation finding = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("finding".equals(fieldName)) {
+                    finding = FhirR4Observation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CriticalResult deserializedCriticalResult = new CriticalResult(description);
+            deserializedCriticalResult.finding = finding;
+            return deserializedCriticalResult;
+        });
     }
 }
