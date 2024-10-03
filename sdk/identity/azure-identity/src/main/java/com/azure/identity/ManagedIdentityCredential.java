@@ -139,42 +139,6 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.AKS,
                     identityClientOptions, configuration))
                 .build());
-        }  else if (configuration.contains(USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI)) {
-            if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
-                managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
-                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
-                        identityClientOptions, configuration))
-                    .build());
-            } else if (configuration.contains(Configuration.PROPERTY_IDENTITY_ENDPOINT)) {
-                if (configuration.contains(Configuration.PROPERTY_IDENTITY_HEADER)) {
-                    if (configuration.get(PROPERTY_IDENTITY_SERVER_THUMBPRINT) != null) {
-                        managedIdentityServiceCredential = new ServiceFabricMsiCredential(clientId, clientBuilder
-                            .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.SERVICE_FABRIC,
-                                identityClientOptions, configuration))
-                            .build());
-                    } else {
-                        managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder
-                            .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.APP_SERVICE,
-                                identityClientOptions, configuration))
-                            .build());
-                    }
-                } else if (configuration.get(PROPERTY_IMDS_ENDPOINT) != null) {
-                    managedIdentityServiceCredential = new ArcIdentityCredential(clientId, clientBuilder
-                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.ARC,
-                            identityClientOptions, configuration))
-                        .build());
-                } else {
-                    managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
-                        .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
-                            identityClientOptions, configuration))
-                        .build());
-                }
-            } else {
-                managedIdentityServiceCredential = new VirtualMachineMsiCredential(clientId, clientBuilder
-                    .identityClientOptions(updateIdentityClientOptions(ManagedIdentityType.VM,
-                        identityClientOptions, configuration))
-                    .build());
-            }
         } else {
             identityClientOptions.setManagedIdentityType(getManagedIdentityEnv(configuration));
             managedIdentityServiceCredential = new ManagedIdentityMsalCredential(clientId, clientBuilder.build());
@@ -238,9 +202,11 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 || ManagedIdentitySourceType.AZURE_ARC.equals(managedIdentitySourceType)) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                     new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                        + "User assigned Managed Identity is not supported in " + managedIdentitySourceType
-                        + ". To use system assigned Managed Identity, remove the configured client id on "
-                        + "the ManagedIdentityCredentialBuilder.")));
+                        + "User-assigned managed identity is not supported in " + managedIdentitySourceType
+                        + ". To use system-assigned managed identity, remove the configured client ID on "
+                        + "the "
+                        + (identityClientOptions.isChained() ? "DefaultAzureCredentialBuilder."
+                        : "ManagedIdentityCredentialBuilder."))));
             }
         }
 
