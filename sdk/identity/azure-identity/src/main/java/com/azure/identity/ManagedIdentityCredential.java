@@ -202,12 +202,14 @@ public final class ManagedIdentityCredential implements TokenCredential {
                 || ManagedIdentitySourceType.AZURE_ARC.equals(managedIdentitySourceType)) {
                 return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
                     new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                        + "User assigned Managed Identity is not supported in " + managedIdentitySourceType
-                        + ". To use system assigned Managed Identity, remove the configured client id on "
+                        + "User-assigned managed identity is not supported in " + managedIdentitySourceType
+                        + ". To use system-assigned managed identity, remove the configured client ID on "
                         + "the "
-                        + (identityClientOptions.isChained() ? "DefaultAzureCredentialBuilder"
+                        + (identityClientOptions.isChained() ? "DefaultAzureCredentialBuilder."
                         : "ManagedIdentityCredentialBuilder."))));
             }
+
+            ManagedIdentityCredential authentication unavailable. User-assigned Managed Identity is not supported in Cloud Shell. To use system-assigned Managed Identity, remove the configured client ID from the ManagedIdentityCredentialBuilder.
         }
 
         return managedIdentityServiceCredential.authenticate(request)
