@@ -33,9 +33,9 @@ class AzureSpringMonitorAutoConfiguration {
     private static final AutoConfigurationCustomizerProvider DISABLE_OTEL_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> singletonMap("otel.sdk.disabled", "true"));
 
     private static final AutoConfigurationCustomizerProvider NO_EXPORT_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> new HashMap<String, String>(3) {{
-        put("otel.traces.exporter", "none");
-        put("otel.metrics.exporter", "none");
-        put("otel.logs.exporter", "none");
+            put("otel.traces.exporter", "none");
+            put("otel.metrics.exporter", "none");
+            put("otel.logs.exporter", "none");
     }});
 
     {
