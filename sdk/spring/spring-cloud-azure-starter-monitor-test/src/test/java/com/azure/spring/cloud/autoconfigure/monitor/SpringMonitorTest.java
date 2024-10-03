@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
 import com.azure.spring.cloud.autoconfigure.monitor.selfdiagnostics.SelfDiagnosticsLevel;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.*;
 import io.opentelemetry.sdk.common.internal.OtelVersion;
@@ -51,10 +51,11 @@ class SpringMonitorTest {
     static class TestConfig {
 
         @Bean
-        AzureMonitorExporterBuilder azureMonitorExporterBuilder() {
+        AzureMonitorExporterOptions azureMonitorExporterBuilder() {
             countDownLatch = new CountDownLatch(2);
             customValidationPolicy = new CustomValidationPolicy(countDownLatch);
-            return new AzureMonitorExporterBuilder().connectionString("InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=https://test.in.applicationinsights.azure.com/;LiveEndpoint=https://test.livediagnostics.monitor.azure.com/")
+            return new AzureMonitorExporterOptions()
+                .connectionString("InstrumentationKey=00000000-0000-0000-0000-0FEEDDADBEEF;IngestionEndpoint=https://test.in.applicationinsights.azure.com/;LiveEndpoint=https://test.livediagnostics.monitor.azure.com/")
                 .pipeline(getHttpPipeline(customValidationPolicy));
         }
 
