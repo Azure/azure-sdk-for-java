@@ -9,9 +9,12 @@
   length can be set via `BlobClientSideEncryptionOptions.setAuthenticatedRegionDataLengthInBytes(long authenticatedRegionDataLength)`. 
   Note: This change only applies to `EncryptionVersion.V2_1`. Also, only applies to upload operations, this does not directly 
   change the authenticated region length used to download and decrypt blobs.
+
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug where downloadToFile was throwing an InvalidRange exception if the target file size was a multiple of the
+  authenticated region length.
 
 ### Other Changes
 
