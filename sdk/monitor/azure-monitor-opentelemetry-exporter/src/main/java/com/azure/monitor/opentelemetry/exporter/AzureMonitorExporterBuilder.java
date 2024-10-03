@@ -91,19 +91,17 @@ class AzureMonitorExporterBuilder {
     }
 
     SpanExporter buildSpanExporter() {
-        return new AzureMonitorTraceExporter(createSpanDataMapper(configProperties), builtTelemetryItemExporter,
-            statsbeatModule);
+        return new AzureMonitorTraceExporter(createSpanDataMapper(), builtTelemetryItemExporter, statsbeatModule);
     }
 
     LogRecordExporter buildLogRecordExporter() {
-        return new AzureMonitorLogRecordExporter(
-            new LogDataMapper(true, false, createDefaultsPopulator(configProperties)), builtTelemetryItemExporter);
+        return new AzureMonitorLogRecordExporter(new LogDataMapper(true, false, createDefaultsPopulator()),
+            builtTelemetryItemExporter);
     }
 
     MetricExporter buildMetricExporter() {
-        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(configProperties),
-            builtTelemetryItemExporter::send);
-        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(configProperties), true),
+        HeartbeatExporter.start(MINUTES.toSeconds(15), createDefaultsPopulator(), builtTelemetryItemExporter::send);
+        return new AzureMonitorMetricExporter(new MetricDataMapper(createDefaultsPopulator(), true),
             builtTelemetryItemExporter);
     }
 
@@ -118,13 +116,13 @@ class AzureMonitorExporterBuilder {
         return StatsbeatConnectionString.create(exporterOptions.connectionString, null, null);
     }
 
-    private SpanDataMapper createSpanDataMapper(ConfigProperties configProperties) {
-        return new SpanDataMapper(true, createDefaultsPopulator(configProperties),
-            (event, instrumentationName) -> false, (span, event) -> false);
+    private SpanDataMapper createSpanDataMapper() {
+        return new SpanDataMapper(true, createDefaultsPopulator(), (event, instrumentationName) -> false,
+            (span, event) -> false);
     }
 
-    private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator(ConfigProperties configProperties) {
-        ConnectionString connectionString = getConnectionString(configProperties);
+    private BiConsumer<AbstractTelemetryBuilder, Resource> createDefaultsPopulator() {
+        ConnectionString connectionString = getConnectionString();
         ResourceParser resourceParser = new ResourceParser();
         return (builder, resource) -> {
             builder.setConnectionString(connectionString);
@@ -135,7 +133,7 @@ class AzureMonitorExporterBuilder {
         };
     }
 
-    private ConnectionString getConnectionString(ConfigProperties configProperties) {
+    private ConnectionString getConnectionString() {
         if (exporterOptions.connectionString != null) {
             return exporterOptions.connectionString;
         }
@@ -212,7 +210,7 @@ class AzureMonitorExporterBuilder {
             = AzureMonitorHelper.createStatsbeatTelemetryItemExporter(statsbeatHttpPipeline, statsbeatModule, tempDir);
 
         statsbeatModule.start(statsbeatTelemetryItemExporter, this::getStatsbeatConnectionString,
-            getConnectionString(configProperties)::getInstrumentationKey, false,
+            getConnectionString()::getInstrumentationKey, false,
             configProperties.getLong(STATSBEAT_SHORT_INTERVAL_SECONDS_PROPERTY_NAME, MINUTES.toSeconds(15)), // Statsbeat short interval
             configProperties.getLong(STATSBEAT_LONG_INTERVAL_SECONDS_PROPERTY_NAME, DAYS.toSeconds(1)), // Statsbeat long interval
             false, initStatsbeatFeatures());
