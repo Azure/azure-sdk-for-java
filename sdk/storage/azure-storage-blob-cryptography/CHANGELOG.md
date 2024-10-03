@@ -1,6 +1,18 @@
 # Release History
 
-## 12.27.0-beta.2 (Unreleased)
+## 12.28.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed a bug where downloadToFile was throwing an InvalidRange exception if the target file size was a multiple of the
+  authenticated region length.
+
+### Other Changes
+
+## 12.27.0 (2024-09-17)
 
 ### Features Added
 - Added a new `EncryptionVersion.V2_1` that allows encrypted blobs to be uploaded using a configurable authenticated region length.
@@ -10,13 +22,12 @@
   Note: This change only applies to `EncryptionVersion.V2_1`. Also, only applies to upload operations, this does not directly 
   change the authenticated region length used to download and decrypt blobs.
 
-### Breaking Changes
-
-### Bugs Fixed
-- Fixed a bug where downloadToFile was throwing an InvalidRange exception if the target file size was a multiple of the
-  authenticated region length.
-
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.50.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.4`.
+- Upgraded `azure-storage-blob` from `12.27.0` to version `12.28.0`.
 
 ## 12.27.0-beta.1 (2024-08-06)
 

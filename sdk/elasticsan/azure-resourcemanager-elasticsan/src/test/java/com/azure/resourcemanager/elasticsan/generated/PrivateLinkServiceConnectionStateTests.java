@@ -24,7 +24,8 @@ public final class PrivateLinkServiceConnectionStateTests {
     public void testSerialize() throws Exception {
         PrivateLinkServiceConnectionState model
             = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.FAILED)
-                .withDescription("agfuaxbezyiu").withActionsRequired("ktwh");
+                .withDescription("agfuaxbezyiu")
+                .withActionsRequired("ktwh");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.FAILED, model.status());
         Assertions.assertEquals("agfuaxbezyiu", model.description());

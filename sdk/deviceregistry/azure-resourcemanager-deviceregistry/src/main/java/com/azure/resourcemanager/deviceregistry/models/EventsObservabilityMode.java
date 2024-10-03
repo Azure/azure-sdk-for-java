@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class EventsObservabilityMode extends ExpandableStringEnum<EventsObservabilityMode> {
     /**
-     * Static value none for EventsObservabilityMode.
+     * No mapping to OpenTelemetry.
      */
     public static final EventsObservabilityMode NONE = fromString("none");
 
     /**
-     * Static value log for EventsObservabilityMode.
+     * Map as log to OpenTelemetry.
      */
     public static final EventsObservabilityMode LOG = fromString("log");
 

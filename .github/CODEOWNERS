@@ -64,6 +64,9 @@
 # ServiceLabel: %Advisor
 # ServiceOwners:                                     @mojayara @Prasanna-Padmanabhan
 
+# PRLabel: %AI Model Inference
+/sdk/ai/azure-ai-inference/                          @dargilco @jhakulin @glharper
+
 # ServiceLabel: %AKS
 # ServiceOwners:                                     @Azure/aks-pm
 
@@ -245,6 +248,12 @@
 
 # ServiceLabel: %Cognitive - Mgmt
 # ServiceOwners:                                     @yangyuan
+
+# PRLabel: %Cognitive - Health Insights
+/sdk/healthinsights/                                               @tomsft @koen-mertens
+
+# ServiceLabel: %Cognitive - Health Insights
+# ServiceOwners:                                                   @tomsft @koen-mertens
 
 # ServiceLabel: %Commerce
 # ServiceOwners:                                     @ms-premp @qiaozha
@@ -527,7 +536,7 @@
 # ServiceOwners:                                     @minamnmik
 
 # ServiceLabel: %Maps
-# ServiceOwners:                                     @dubiety
+/sdk/maps/                                           @dubiety
 
 # ServiceLabel: %Managed Identity
 # ServiceOwners:                                     @varunkch
@@ -889,24 +898,25 @@
 
 # ######## Eng Sys ########
 
-/eng/                                                @hallipr @weshaggard @benbp @JimSuplizio
-/eng/automation/                                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
-/eng/bomgenerator/                                   @vcolin7 @alzimmermsft @srnagar @jonathangiles
-/eng/code-quality-reports/                           @mssfang @JonathanGiles @alzimmermsft @srnagar @rujche @netyyyy @saragluna @moarychan
-/eng/common/                                         @Azure/azure-sdk-eng
-/eng/spotbugs-aggregate-report/                      @srnagar @JonathanGiles
-/eng/versioning/                                     @alzimmermsft @samvaity @g2vinay @JimSuplizio
-/eng/versioning/external_dependencies.txt            @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
-/.github/CODEOWNERS                                  @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
-/.github/workflows/                                  @Azure/azure-sdk-eng
+/eng/                                                         @hallipr @weshaggard @benbp @JimSuplizio
+/eng/automation/                                              @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @hallipr @weshaggard @benbp @JimSuplizio
+/eng/bomgenerator/                                            @vcolin7 @alzimmermsft @srnagar @jonathangiles
+/eng/code-quality-reports/                                    @mssfang @JonathanGiles @alzimmermsft @srnagar @rujche @netyyyy @saragluna @moarychan
+/eng/common/                                                  @Azure/azure-sdk-eng
+/eng/spotbugs-aggregate-report/                               @srnagar @JonathanGiles
+/eng/versioning/                                              @alzimmermsft @samvaity @g2vinay @JimSuplizio
+/eng/versioning/external_dependencies.txt                     @alzimmermsft @samvaity @g2vinay @jonathangiles @rujche @netyyyy @saragluna @moarychan
+/.github/CODEOWNERS                                           @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles @alzimmermsft @Azure/azure-sdk-eng
+/.github/workflows/                                           @Azure/azure-sdk-eng
+/.config/1espt/                                               @benbp @weshaggard
 
 # Removing owners for these files to not require codeowner approval for changes to them given they are shared with project
 /eng/versioning/version_client.txt
 /eng/versioning/version_data.txt
 
 # Add owners for notifications for specific pipelines
-/eng/pipelines/aggregate-reports.yml                 @joshfree @jonathangiles
-/eng/common/pipelines/codeowners-linter.yml          @alzimmermsft @srnagar @lmolkova
+/eng/pipelines/aggregate-reports.yml                          @joshfree @jonathangiles
+/eng/common/pipelines/codeowners-linter.yml                   @alzimmermsft @srnagar @lmolkova
 
 # Add Cosmos source owners as the owners of their specialized matrix
 /eng/pipelines/templates/stages/cosmos-emulator-matrix.json   @kirankumarkolli @Azure/azure-cosmos-java-sdk-connectors

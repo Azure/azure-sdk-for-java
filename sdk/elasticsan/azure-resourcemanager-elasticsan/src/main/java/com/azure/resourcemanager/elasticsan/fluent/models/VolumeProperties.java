@@ -5,51 +5,49 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
 import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Volume response properties.
  */
 @Fluent
-public final class VolumeProperties {
+public final class VolumeProperties implements JsonSerializable<VolumeProperties> {
     /*
      * Unique Id of the volume in GUID format
      */
-    @JsonProperty(value = "volumeId", access = JsonProperty.Access.WRITE_ONLY)
     private String volumeId;
 
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "creationData")
     private SourceCreationData creationData;
 
     /*
      * Volume size.
      */
-    @JsonProperty(value = "sizeGiB", required = true)
     private long sizeGiB;
 
     /*
      * Storage target information
      */
-    @JsonProperty(value = "storageTarget", access = JsonProperty.Access.WRITE_ONLY)
     private IscsiTargetInfo storageTarget;
 
     /*
      * Parent resource information.
      */
-    @JsonProperty(value = "managedBy")
     private ManagedByInfo managedBy;
 
     /*
      * State of the operation on the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStates provisioningState;
 
     /**
@@ -160,5 +158,54 @@ public final class VolumeProperties {
         if (managedBy() != null) {
             managedBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("sizeGiB", this.sizeGiB);
+        jsonWriter.writeJsonField("creationData", this.creationData);
+        jsonWriter.writeJsonField("managedBy", this.managedBy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VolumeProperties.
+     */
+    public static VolumeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeProperties deserializedVolumeProperties = new VolumeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sizeGiB".equals(fieldName)) {
+                    deserializedVolumeProperties.sizeGiB = reader.getLong();
+                } else if ("volumeId".equals(fieldName)) {
+                    deserializedVolumeProperties.volumeId = reader.getString();
+                } else if ("creationData".equals(fieldName)) {
+                    deserializedVolumeProperties.creationData = SourceCreationData.fromJson(reader);
+                } else if ("storageTarget".equals(fieldName)) {
+                    deserializedVolumeProperties.storageTarget = IscsiTargetInfo.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedVolumeProperties.managedBy = ManagedByInfo.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVolumeProperties.provisioningState = ProvisioningStates.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeProperties;
+        });
     }
 }

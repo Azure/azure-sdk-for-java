@@ -240,6 +240,10 @@ public final class BuiltInRole extends ExpandableStringEnum<BuiltInRole> {
     public static final BuiltInRole AZURE_KUBERNETES_SERVICE_RBAC_WRITER =
         BuiltInRole.fromString("Azure Kubernetes Service RBAC Writer");
 
+    /** Read and create quota requests, get quota request status, and create support tickets. */
+    public static final BuiltInRole QUOTA_REQUEST_OPERATOR =
+        BuiltInRole.fromString("Quota Request Operator");
+
     /**
      * Finds or creates a role instance based on the specified name.
      *

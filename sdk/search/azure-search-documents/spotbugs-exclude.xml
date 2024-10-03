@@ -10,6 +10,15 @@
     </Or>
   </Match>
   <Match>
+    <Class name="com.azure.search.documents.models.QueryResultDocumentSubscores" />
+    <Bug pattern="EI_EXPOSE_REP" />
+    <Method name="getVectors" />
+  </Match>
+  <Match>
+    <Class name="com.azure.search.documents.indexes.models.AzureOpenAITokenizerParameters" />
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
+  </Match>
+  <Match>
     <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
     <Or>
       <Class name="com.azure.search.documents.SearchClientBuilderTests" />

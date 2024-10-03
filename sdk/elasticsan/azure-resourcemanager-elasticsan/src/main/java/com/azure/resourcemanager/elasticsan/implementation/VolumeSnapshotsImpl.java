@@ -36,8 +36,8 @@ public final class VolumeSnapshotsImpl implements VolumeSnapshots {
 
     public PagedIterable<Snapshot> listByVolumeGroup(String resourceGroupName, String elasticSanName,
         String volumeGroupName, String filter, Context context) {
-        PagedIterable<SnapshotInner> inner = this.serviceClient().listByVolumeGroup(resourceGroupName, elasticSanName,
-            volumeGroupName, filter, context);
+        PagedIterable<SnapshotInner> inner = this.serviceClient()
+            .listByVolumeGroup(resourceGroupName, elasticSanName, volumeGroupName, filter, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new SnapshotImpl(inner1, this.manager()));
     }
 
@@ -52,8 +52,8 @@ public final class VolumeSnapshotsImpl implements VolumeSnapshots {
 
     public Response<Snapshot> getWithResponse(String resourceGroupName, String elasticSanName, String volumeGroupName,
         String snapshotName, Context context) {
-        Response<SnapshotInner> inner = this.serviceClient().getWithResponse(resourceGroupName, elasticSanName,
-            volumeGroupName, snapshotName, context);
+        Response<SnapshotInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, snapshotName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SnapshotImpl(inner.getValue(), this.manager()));

@@ -30,6 +30,7 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
@@ -109,6 +110,7 @@ public class IdentityClient extends IdentityClientBase {
                    String certificatePath,
                    String clientAssertionFilePath,
                    String resourceId,
+                   String objectId,
                    Supplier<String> clientAssertionSupplier,
                    Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                    byte[] certificate,
@@ -116,7 +118,7 @@ public class IdentityClient extends IdentityClientBase {
                    boolean isSharedTokenCacheCredential,
                    Duration clientAssertionTimeout,
                    IdentityClientOptions options) {
-        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId,
+        super(tenantId, clientId, clientSecret, certificatePath, clientAssertionFilePath, resourceId, objectId,
             clientAssertionSupplier, clientAssertionSupplierWithHttpPipeline, certificate, certificatePassword,
             isSharedTokenCacheCredential, clientAssertionTimeout, options);
 
@@ -538,8 +540,8 @@ public class IdentityClient extends IdentityClientBase {
 
     public Mono<AccessToken> authenticateWithManagedIdentityMsalClient(TokenRequestContext request) {
         String resource = ScopeUtil.scopesToResource(request.getScopes()) + "/";
-        String  managedIdentitySourceType = String.valueOf(getManagedIdentitySourceType());
-        return Mono.fromSupplier(() -> options.isChained() && "DEFAULT_TO_IMDS".equals(managedIdentitySourceType))
+
+        return Mono.fromSupplier(() -> options.isChained() && ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(ManagedIdentityApplication.getManagedIdentitySource()))
             .flatMap(shouldProbe -> shouldProbe ? checkIMDSAvailable(getImdsEndpoint()) : Mono.just(true))
             .flatMap(ignored ->  getTokenFromMsalMIClient(resource));
     }
@@ -846,7 +848,13 @@ public class IdentityClient extends IdentityClientBase {
                         t -> {
                 throw new ClientAuthenticationException("Failed to acquire token with Interactive Browser Authentication.", null, t);
             })
-        .map(MsalToken::new);
+        .map(iAuthenticationResult -> {
+            if (options.isBrokerEnabled() && request.getProofOfPossessionOptions() != null) {
+                return new MsalToken(iAuthenticationResult, "PoP");
+            } else {
+                return new MsalToken(iAuthenticationResult);
+            }
+        });
     }
 
     /**
@@ -1034,6 +1042,12 @@ public class IdentityClient extends IdentityClientBase {
                 payload.append(urlEncode(resourceId));
             }
 
+            if (objectId != null) {
+                LOGGER.warning("User-assigned managed identities are not supported in the Service Fabric environment.");
+                payload.append("&object_id=");
+                payload.append(urlEncode(objectId));
+            }
+
             try {
                 URL url = getUrl(payload.toString());
                 connection = (HttpsURLConnection) url.openConnection();
@@ -1120,6 +1134,16 @@ public class IdentityClient extends IdentityClientBase {
                 payload.append("&mi_res_id=");
                 payload.append(urlEncode(resourceId));
             }
+
+            if (objectId != null) {
+                if (endpointVersion.equals(MSI_ENDPOINT_VERSION) && headerValue == null) {
+                    // This is the Cloud Shell case. If a clientId is specified, warn the user.
+                    LOGGER.warning("User-assigned managed identities are not supported in the Cloud Shell environment.");
+                }
+                payload.append("&object_id=");
+                payload.append(urlEncode(objectId));
+            }
+
             try {
                 URL url = getUrl(payload.toString());
                 connection = (HttpURLConnection) url.openConnection();
@@ -1168,6 +1192,10 @@ public class IdentityClient extends IdentityClientBase {
             if (resourceId != null) {
                 payload.append("&mi_res_id=");
                 payload.append(urlEncode(resourceId));
+            }
+            if (objectId != null) {
+                payload.append("&object_Id=");
+                payload.append(urlEncode(objectId));
             }
         } catch (IOException exception) {
             return Mono.error(exception);

@@ -8,7 +8,8 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * If the encrypted VNet allows VM that does not support encryption.
+ * If the encrypted VNet allows VM that does not support encryption. This field is for future support, AllowUnencrypted
+ * is the only supported value at general availability.
  */
 public final class VirtualNetworkEncryptionEnforcement
     extends ExpandableStringEnum<VirtualNetworkEncryptionEnforcement> {

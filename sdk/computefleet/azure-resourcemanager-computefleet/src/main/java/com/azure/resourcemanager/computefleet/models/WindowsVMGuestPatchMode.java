@@ -14,17 +14,22 @@ import java.util.Collection;
  */
 public final class WindowsVMGuestPatchMode extends ExpandableStringEnum<WindowsVMGuestPatchMode> {
     /**
-     * Static value Manual for WindowsVMGuestPatchMode.
+     * You control the application of patches to a virtual machine.
+     * You do this by applying patches manually inside the VM. In this mode,
+     * automatic updates are disabled; the property WindowsConfiguration.enableAutomaticUpdates
+     * must be false.
      */
     public static final WindowsVMGuestPatchMode MANUAL = fromString("Manual");
 
     /**
-     * Static value AutomaticByOS for WindowsVMGuestPatchMode.
+     * The virtual machine will automatically be updated by the OS.
+     * The property WindowsConfiguration.enableAutomaticUpdates must be true.
      */
     public static final WindowsVMGuestPatchMode AUTOMATIC_BY_OS = fromString("AutomaticByOS");
 
     /**
-     * Static value AutomaticByPlatform for WindowsVMGuestPatchMode.
+     * The virtual machine will automatically updated by the platform. The properties
+     * provisionVMAgent and WindowsConfiguration.enableAutomaticUpdates must be true.
      */
     public static final WindowsVMGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 

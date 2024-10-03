@@ -42,7 +42,7 @@ public final class PoolsListByResourceGroupMockTests {
             response.iterator().next().properties().provisioningState());
         Assertions.assertEquals(613432064, response.iterator().next().properties().maximumConcurrency());
         Assertions.assertEquals("ibzyhwitsmyp", response.iterator().next().properties().devCenterProjectResourceId());
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED,
             response.iterator().next().identity().type());
     }
 }

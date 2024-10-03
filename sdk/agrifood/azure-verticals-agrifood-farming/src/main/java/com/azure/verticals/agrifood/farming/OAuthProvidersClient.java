@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = OAuthProvidersClientBuilder.class)
 public final class OAuthProvidersClient {
-    @Generated private final OAuthProvidersAsyncClient client;
+    @Generated
+    private final OAuthProvidersAsyncClient client;
 
     /**
      * Initializes an instance of OAuthProvidersClient class.
@@ -190,8 +191,8 @@ public final class OAuthProvidersClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String oauthProviderId, BinaryData oauthProvider, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String oauthProviderId, BinaryData oauthProvider,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(oauthProviderId, oauthProvider, requestOptions).block();
     }
 
@@ -291,8 +292,8 @@ public final class OAuthProvidersClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String oauthProviderId, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String oauthProviderId,
+        RequestOptions requestOptions) {
         return this.client.beginCreateCascadeDeleteJob(jobId, oauthProviderId, requestOptions).getSyncPoller();
     }
 }

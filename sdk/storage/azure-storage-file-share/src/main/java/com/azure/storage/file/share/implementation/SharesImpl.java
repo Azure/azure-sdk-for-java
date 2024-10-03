@@ -1157,9 +1157,9 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota, accessTier,
                 this.client.getVersion(), enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
@@ -1234,9 +1234,9 @@ public final class SharesImpl {
         Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols,
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Context context) {
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
                 accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
                 enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
@@ -1425,9 +1425,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesGetPropertiesHeaders, Void> getPropertiesWithResponse(String shareName,
         String sharesnapshot, Integer timeout, String leaseId, Context context) {
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1475,9 +1475,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String shareName, String sharesnapshot,
         Integer timeout, String leaseId, Context context) {
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, sharesnapshot,
                 timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1671,9 +1671,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesDeleteHeaders, Void> deleteWithResponse(String shareName, String sharesnapshot,
         Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, String leaseId, Context context) {
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.deleteSync(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
                 this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept,
                 context);
@@ -1725,9 +1725,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String shareName, String sharesnapshot, Integer timeout,
         DeleteSnapshotsOptionType deleteSnapshots, String leaseId, Context context) {
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), shareName, restype, sharesnapshot, timeout,
                 this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept,
                 context);
@@ -1976,11 +1976,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesAcquireLeaseHeaders, Void> acquireLeaseWithResponse(String shareName, Integer timeout,
         Integer duration, String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.acquireLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, duration,
                 proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(),
                 accept, context);
@@ -2044,11 +2044,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> acquireLeaseNoCustomHeadersWithResponse(String shareName, Integer timeout, Integer duration,
         String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "acquire";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype,
                 timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2260,11 +2260,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesReleaseLeaseHeaders, Void> releaseLeaseWithResponse(String shareName, String leaseId,
         Integer timeout, String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.releaseLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
                 this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept,
                 context);
@@ -2318,11 +2318,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseNoCustomHeadersWithResponse(String shareName, String leaseId, Integer timeout,
         String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "release";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "release";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype,
                 timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2557,11 +2557,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesChangeLeaseHeaders, Void> changeLeaseWithResponse(String shareName, String leaseId,
         Integer timeout, String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.changeLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
                 proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(),
                 accept, context);
@@ -2621,11 +2621,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> changeLeaseNoCustomHeadersWithResponse(String shareName, String leaseId, Integer timeout,
         String proposedLeaseId, String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "change";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "change";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype,
                 timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -2836,11 +2836,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesRenewLeaseHeaders, Void> renewLeaseWithResponse(String shareName, String leaseId,
         Integer timeout, String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "renew";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "renew";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.renewLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, leaseId,
                 this.client.getVersion(), sharesnapshot, requestId, this.client.getFileRequestIntent(), accept,
                 context);
@@ -2893,11 +2893,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renewLeaseNoCustomHeadersWithResponse(String shareName, String leaseId, Integer timeout,
         String sharesnapshot, String requestId, Context context) {
-        final String comp = "lease";
-        final String action = "renew";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "renew";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype,
                 timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
                 this.client.getFileRequestIntent(), accept, context);
@@ -3152,11 +3152,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesBreakLeaseHeaders, Void> breakLeaseWithResponse(String shareName, Integer timeout,
         Integer breakPeriod, String leaseId, String requestId, String sharesnapshot, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.breakLeaseSync(this.client.getUrl(), shareName, comp, action, restype, timeout, breakPeriod,
                 leaseId, this.client.getVersion(), requestId, sharesnapshot, this.client.getFileRequestIntent(), accept,
                 context);
@@ -3222,11 +3222,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> breakLeaseNoCustomHeadersWithResponse(String shareName, Integer timeout, Integer breakPeriod,
         String leaseId, String requestId, String sharesnapshot, Context context) {
-        final String comp = "lease";
-        final String action = "break";
-        final String restype = "share";
-        final String accept = "application/xml";
         try {
+            final String comp = "lease";
+            final String action = "break";
+            final String restype = "share";
+            final String accept = "application/xml";
             return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), shareName, comp, action, restype,
                 timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot,
                 this.client.getFileRequestIntent(), accept, context);
@@ -3396,10 +3396,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesCreateSnapshotHeaders, Void> createSnapshotWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Context context) {
-        final String restype = "share";
-        final String comp = "snapshot";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "snapshot";
+            final String accept = "application/xml";
             return service.createSnapshotSync(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -3441,10 +3441,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createSnapshotNoCustomHeadersWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, Context context) {
-        final String restype = "share";
-        final String comp = "snapshot";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "snapshot";
+            final String accept = "application/xml";
             return service.createSnapshotNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 metadata, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -3613,10 +3613,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesCreatePermissionHeaders, Void> createPermissionWithResponse(String shareName,
         SharePermission sharePermission, Integer timeout, Context context) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "filepermission";
+            final String accept = "application/xml";
             return service.createPermissionSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), sharePermission, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -3658,10 +3658,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createPermissionNoCustomHeadersWithResponse(String shareName, SharePermission sharePermission,
         Integer timeout, Context context) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "filepermission";
+            final String accept = "application/xml";
             return service.createPermissionNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), sharePermission, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -3874,10 +3874,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesGetPermissionHeaders, SharePermission> getPermissionWithResponse(String shareName,
         String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/json";
         try {
+            final String restype = "share";
+            final String comp = "filepermission";
+            final String accept = "application/json";
             return service.getPermissionSync(this.client.getUrl(), shareName, restype, comp, filePermissionKey,
                 filePermissionFormat, timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept,
                 context);
@@ -3937,10 +3937,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SharePermission> getPermissionNoCustomHeadersWithResponse(String shareName,
         String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout, Context context) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/json";
         try {
+            final String restype = "share";
+            final String comp = "filepermission";
+            final String accept = "application/json";
             return service.getPermissionNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp,
                 filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
@@ -4204,10 +4204,10 @@ public final class SharesImpl {
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Context context) {
-        final String restype = "share";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
@@ -4277,10 +4277,10 @@ public final class SharesImpl {
         ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Context context) {
-        final String restype = "share";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), quota, accessTier, leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess,
                 paidBurstingEnabled, paidBurstingMaxBandwidthMibps, paidBurstingMaxIops,
@@ -4460,10 +4460,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesSetMetadataHeaders, Void> setMetadataWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, String leaseId, Context context) {
-        final String restype = "share";
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataSync(this.client.getUrl(), shareName, restype, comp, timeout, metadata,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -4507,10 +4507,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataNoCustomHeadersWithResponse(String shareName, Integer timeout,
         Map<String, String> metadata, String leaseId, Context context) {
-        final String restype = "share";
-        final String comp = "metadata";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "metadata";
+            final String accept = "application/xml";
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 metadata, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -4681,10 +4681,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper>
         getAccessPolicyWithResponse(String shareName, Integer timeout, String leaseId, Context context) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "acl";
+            final String accept = "application/xml";
             return service.getAccessPolicySync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -4731,10 +4731,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareSignedIdentifierWrapper> getAccessPolicyNoCustomHeadersWithResponse(String shareName,
         Integer timeout, String leaseId, Context context) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "acl";
+            final String accept = "application/xml";
             return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -4914,11 +4914,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesSetAccessPolicyHeaders, Void> setAccessPolicyWithResponse(String shareName,
         Integer timeout, String leaseId, List<ShareSignedIdentifier> shareAcl, Context context) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         try {
+            final String restype = "share";
+            final String comp = "acl";
+            final String accept = "application/xml";
+            ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
             return service.setAccessPolicySync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept,
                 context);
@@ -4964,11 +4964,11 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPolicyNoCustomHeadersWithResponse(String shareName, Integer timeout, String leaseId,
         List<ShareSignedIdentifier> shareAcl, Context context) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
         try {
+            final String restype = "share";
+            final String comp = "acl";
+            final String accept = "application/xml";
+            ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
             return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept,
                 context);
@@ -5137,10 +5137,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesGetStatisticsHeaders, ShareStats> getStatisticsWithResponse(String shareName,
         Integer timeout, String leaseId, Context context) {
-        final String restype = "share";
-        final String comp = "stats";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "stats";
+            final String accept = "application/xml";
             return service.getStatisticsSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -5187,10 +5187,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareStats> getStatisticsNoCustomHeadersWithResponse(String shareName, Integer timeout,
         String leaseId, Context context) {
-        final String restype = "share";
-        final String comp = "stats";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "stats";
+            final String accept = "application/xml";
             return service.getStatisticsNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -5383,10 +5383,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<SharesRestoreHeaders, Void> restoreWithResponse(String shareName, Integer timeout,
         String requestId, String deletedShareName, String deletedShareVersion, Context context) {
-        final String restype = "share";
-        final String comp = "undelete";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "undelete";
+            final String accept = "application/xml";
             return service.restoreSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
                 this.client.getFileRequestIntent(), accept, context);
@@ -5436,10 +5436,10 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restoreNoCustomHeadersWithResponse(String shareName, Integer timeout, String requestId,
         String deletedShareName, String deletedShareVersion, Context context) {
-        final String restype = "share";
-        final String comp = "undelete";
-        final String accept = "application/xml";
         try {
+            final String restype = "share";
+            final String comp = "undelete";
+            final String accept = "application/xml";
             return service.restoreNoCustomHeadersSync(this.client.getUrl(), shareName, restype, comp, timeout,
                 this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
                 this.client.getFileRequestIntent(), accept, context);

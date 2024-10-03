@@ -86,6 +86,29 @@ public final class ConfigurationGroup implements JsonSerializable<ConfigurationG
     }
 
     /**
+     * Get the memberType property: The type of the group member.
+     * 
+     * @return the memberType value.
+     */
+    public GroupMemberType memberType() {
+        return this.innerProperties() == null ? null : this.innerProperties().memberType();
+    }
+
+    /**
+     * Set the memberType property: The type of the group member.
+     * 
+     * @param memberType the memberType value to set.
+     * @return the ConfigurationGroup object itself.
+     */
+    public ConfigurationGroup withMemberType(GroupMemberType memberType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkGroupProperties();
+        }
+        this.innerProperties().withMemberType(memberType);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the scope assignment resource.
      * 
      * @return the provisioningState value.

@@ -6,9 +6,12 @@ package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.models.CertificateBaseProperties;
 import com.azure.resourcemanager.batch.models.CertificateFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Certificate properties for create operations.
@@ -16,19 +19,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CertificateCreateOrUpdateProperties extends CertificateBaseProperties {
     /*
-     * The base64-encoded contents of the certificate.
-     * 
      * The maximum size is 10KB.
      */
-    @JsonProperty(value = "data", required = true)
     private String data;
 
     /*
-     * The password to access the certificate's private key.
-     * 
      * This must not be specified if the certificate format is Cer.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /**
@@ -38,9 +35,7 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     }
 
     /**
-     * Get the data property: The base64-encoded contents of the certificate.
-     * 
-     * The maximum size is 10KB.
+     * Get the data property: The maximum size is 10KB.
      * 
      * @return the data value.
      */
@@ -49,9 +44,7 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     }
 
     /**
-     * Set the data property: The base64-encoded contents of the certificate.
-     * 
-     * The maximum size is 10KB.
+     * Set the data property: The maximum size is 10KB.
      * 
      * @param data the data value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.
@@ -62,9 +55,7 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     }
 
     /**
-     * Get the password property: The password to access the certificate's private key.
-     * 
-     * This must not be specified if the certificate format is Cer.
+     * Get the password property: This must not be specified if the certificate format is Cer.
      * 
      * @return the password value.
      */
@@ -73,9 +64,7 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
     }
 
     /**
-     * Set the password property: The password to access the certificate's private key.
-     * 
-     * This must not be specified if the certificate format is Cer.
+     * Set the password property: This must not be specified if the certificate format is Cer.
      * 
      * @param password the password value to set.
      * @return the CertificateCreateOrUpdateProperties object itself.
@@ -119,12 +108,63 @@ public final class CertificateCreateOrUpdateProperties extends CertificateBasePr
      */
     @Override
     public void validate() {
-        super.validate();
         if (data() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property data in model CertificateCreateOrUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property data in model CertificateCreateOrUpdateProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CertificateCreateOrUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thumbprintAlgorithm", thumbprintAlgorithm());
+        jsonWriter.writeStringField("thumbprint", thumbprint());
+        jsonWriter.writeStringField("format", format() == null ? null : format().toString());
+        jsonWriter.writeStringField("data", this.data);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateCreateOrUpdateProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateCreateOrUpdateProperties.
+     */
+    public static CertificateCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateCreateOrUpdateProperties deserializedCertificateCreateOrUpdateProperties
+                = new CertificateCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprintAlgorithm".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.withThumbprintAlgorithm(reader.getString());
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.withThumbprint(reader.getString());
+                } else if ("format".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties
+                        .withFormat(CertificateFormat.fromString(reader.getString()));
+                } else if ("data".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.data = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateProperties.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateCreateOrUpdateProperties;
+        });
+    }
 }
