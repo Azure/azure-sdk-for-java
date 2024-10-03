@@ -46,8 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-broker</artifactId>
-
-    <version>1.1.5</version>
+    <version>1.1.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
