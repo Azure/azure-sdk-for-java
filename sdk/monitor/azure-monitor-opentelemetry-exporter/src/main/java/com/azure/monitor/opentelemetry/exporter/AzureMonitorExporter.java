@@ -59,21 +59,25 @@ public final class AzureMonitorExporter {
             props.put(AzureMonitorExporterProviderKeys.INTERNAL_USING_AZURE_MONITOR_EXPORTER_BUILDER, "true");
             return props;
         });
+        AzureMonitorExporterBuilder azureMonitorExporterBuilder = new AzureMonitorExporterBuilder();
         autoConfigurationCustomizer.addSpanExporterCustomizer((spanExporter, configProperties) -> {
             if (spanExporter instanceof AzureMonitorSpanExporterProvider.MarkerSpanExporter) {
-                spanExporter = exporterOptions.buildSpanExporter(configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                spanExporter = azureMonitorExporterBuilder.buildSpanExporter();
             }
             return spanExporter;
         });
         autoConfigurationCustomizer.addMetricExporterCustomizer((metricExporter, configProperties) -> {
             if (metricExporter instanceof AzureMonitorMetricExporterProvider.MarkerMetricExporter) {
-                metricExporter = exporterOptions.buildMetricExporter(configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                metricExporter = azureMonitorExporterBuilder.buildMetricExporter();
             }
             return metricExporter;
         });
         autoConfigurationCustomizer.addLogRecordExporterCustomizer((logRecordExporter, configProperties) -> {
             if (logRecordExporter instanceof AzureMonitorLogRecordExporterProvider.MarkerLogRecordExporter) {
-                logRecordExporter = exporterOptions.buildLogRecordExporter(configProperties);
+                azureMonitorExporterBuilder.initializeIfNot(exporterOptions, configProperties);
+                logRecordExporter = azureMonitorExporterBuilder.buildLogRecordExporter();
             }
             return logRecordExporter;
         });
