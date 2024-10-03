@@ -4,10 +4,15 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ChatCompletionsClientImpl;
+import com.azure.ai.inference.implementation.ChatCompletionsUtils;
+import com.azure.ai.inference.implementation.InferenceServerSentEvents;
+import com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
 import com.azure.ai.inference.implementation.models.CompleteRequest;
 import com.azure.ai.inference.models.ChatCompletions;
+import com.azure.ai.inference.models.ChatCompletionsOptions;
 import com.azure.ai.inference.models.ExtraParameters;
 import com.azure.ai.inference.models.ModelInfo;
+import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -20,14 +25,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
-import com.azure.ai.inference.implementation.InferenceServerSentEvents;
-import com.azure.ai.inference.models.ChatCompletionsOptions;
-import com.azure.ai.inference.implementation.ChatCompletionsUtils;
-import com.azure.ai.inference.models.StreamingChatCompletionsUpdate;
 import com.azure.core.util.IterableStream;
-import reactor.core.publisher.Flux;
 import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 
 /**
  * Initializes a new instance of the synchronous ChatCompletionsClient type.
@@ -65,7 +65,8 @@ public final class ChatCompletionsClient {
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     messages (Required): [
      *          (Required){
@@ -101,11 +102,13 @@ public final class ChatCompletionsClient {
      *         String: Object (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * <p><strong>Response Body Schema</strong></p>
      *
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     created: long (Required)
@@ -136,7 +139,8 @@ public final class ChatCompletionsClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param completeRequest The completeRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -157,14 +161,16 @@ public final class ChatCompletionsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     model_name: String (Required)
      *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
      *     model_provider_name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -296,9 +302,8 @@ public final class ChatCompletionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents some basic information about the AI model.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelInfo getModelInfo() {
+    public ModelInfo getModelInfo() {
         // Generated convenience method for getModelInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getModelInfoWithResponse(requestOptions).getValue().toObject(ModelInfo.class);

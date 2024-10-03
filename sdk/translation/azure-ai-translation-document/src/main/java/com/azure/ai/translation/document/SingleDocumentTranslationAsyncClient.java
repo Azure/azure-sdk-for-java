@@ -63,9 +63,11 @@ public final class SingleDocumentTranslationAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param targetLanguage Specifies the language of the output document.
      * The target language must be one of the supported languages included in the translation scope.

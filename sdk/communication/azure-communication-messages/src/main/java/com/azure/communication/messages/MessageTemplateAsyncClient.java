@@ -51,14 +51,16 @@ public final class MessageTemplateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param channelId The registration ID of the channel.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

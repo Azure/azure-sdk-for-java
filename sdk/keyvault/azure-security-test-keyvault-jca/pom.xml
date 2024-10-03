@@ -19,6 +19,7 @@
 
   <properties>
     <spotbugs.skip>true</spotbugs.skip>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>
@@ -64,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -85,7 +86,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <version>1.0.0-beta.17</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>

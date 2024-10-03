@@ -69,6 +69,7 @@ Licensed under the MIT License.
       --add-exports com.azure.cosmos/com.azure.cosmos.implementation.query=com.azure.cosmos.kafka.connect
 
     </javaModulesSurefireArgLine>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
   </properties>
 
   <dependencies>

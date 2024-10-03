@@ -229,8 +229,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     }
 
     /**
-     * list private links on the given resource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -259,8 +257,6 @@ public final class PrivateLinksClientImpl implements PrivateLinksClient {
     }
 
     /**
-     * list private links on the given resource
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

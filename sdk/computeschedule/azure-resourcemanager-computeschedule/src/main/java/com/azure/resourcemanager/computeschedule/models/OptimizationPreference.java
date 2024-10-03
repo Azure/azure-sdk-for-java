@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class OptimizationPreference extends ExpandableStringEnum<OptimizationPreference> {
     /**
-     * Static value Cost for OptimizationPreference.
+     * Optimize while considering cost savings.
      */
     public static final OptimizationPreference COST = fromString("Cost");
 
     /**
-     * Static value Availability for OptimizationPreference.
+     * Optimize while considering availability of resources.
      */
     public static final OptimizationPreference AVAILABILITY = fromString("Availability");
 
     /**
-     * Static value CostAvailabilityBalanced for OptimizationPreference.
+     * Optimize while considering a balance of cost and availability.
      */
     public static final OptimizationPreference COST_AVAILABILITY_BALANCED = fromString("CostAvailabilityBalanced");
 

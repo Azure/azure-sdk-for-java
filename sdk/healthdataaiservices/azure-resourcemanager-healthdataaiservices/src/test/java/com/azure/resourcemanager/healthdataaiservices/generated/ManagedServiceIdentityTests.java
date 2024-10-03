@@ -18,17 +18,17 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model = BinaryData.fromString(
             "{\"principalId\":\"b\",\"tenantId\":\"jvtbvpyss\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"uitnwuiz\":{\"principalId\":\"jq\",\"clientId\":\"hmuouqfprwzwbn\"},\"rfidfvzwdz\":{\"principalId\":\"zxufiz\",\"clientId\":\"kyfi\"}}}")
             .toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedServiceIdentity model
-            = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+            = new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED)
                 .withUserAssignedIdentities(
                     mapOf("uitnwuiz", new UserAssignedIdentity(), "rfidfvzwdz", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(ManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_AND_USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

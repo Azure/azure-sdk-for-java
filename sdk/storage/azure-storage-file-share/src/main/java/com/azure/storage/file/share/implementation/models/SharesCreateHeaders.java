@@ -51,6 +51,11 @@ public final class SharesCreateHeaders {
     private DateTimeRfc1123 lastModified;
 
     /*
+     * The x-ms-share-max-burst-credits-for-iops property.
+     */
+    private Long xMsShareMaxBurstCreditsForIops;
+
+    /*
      * The x-ms-request-id property.
      */
     private String xMsRequestId;
@@ -72,6 +77,9 @@ public final class SharesCreateHeaders {
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
     private static final HttpHeaderName X_MS_SHARE_QUOTA = HttpHeaderName.fromString("x-ms-share-quota");
+
+    private static final HttpHeaderName X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS
+        = HttpHeaderName.fromString("x-ms-share-max-burst-credits-for-iops");
 
     // HttpHeaders containing the raw property values.
     /**
@@ -101,6 +109,10 @@ public final class SharesCreateHeaders {
         String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        String xMsShareMaxBurstCreditsForIops = rawHeaders.getValue(X_MS_SHARE_MAX_BURST_CREDITS_FOR_IOPS);
+        if (xMsShareMaxBurstCreditsForIops != null) {
+            this.xMsShareMaxBurstCreditsForIops = Long.parseLong(xMsShareMaxBurstCreditsForIops);
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
@@ -253,6 +265,26 @@ public final class SharesCreateHeaders {
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        return this;
+    }
+
+    /**
+     * Get the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
+     * 
+     * @return the xMsShareMaxBurstCreditsForIops value.
+     */
+    public Long getXMsShareMaxBurstCreditsForIops() {
+        return this.xMsShareMaxBurstCreditsForIops;
+    }
+
+    /**
+     * Set the xMsShareMaxBurstCreditsForIops property: The x-ms-share-max-burst-credits-for-iops property.
+     * 
+     * @param xMsShareMaxBurstCreditsForIops the xMsShareMaxBurstCreditsForIops value to set.
+     * @return the SharesCreateHeaders object itself.
+     */
+    public SharesCreateHeaders setXMsShareMaxBurstCreditsForIops(Long xMsShareMaxBurstCreditsForIops) {
+        this.xMsShareMaxBurstCreditsForIops = xMsShareMaxBurstCreditsForIops;
         return this;
     }
 

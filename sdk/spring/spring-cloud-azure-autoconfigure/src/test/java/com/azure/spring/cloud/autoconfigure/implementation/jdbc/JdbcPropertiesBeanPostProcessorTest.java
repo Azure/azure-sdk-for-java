@@ -13,13 +13,18 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.mock.env.MockEnvironment;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.MySqlAzureJdbcAutoConfigurationTest.MYSQL_USER_AGENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -104,6 +109,30 @@ class JdbcPropertiesBeanPostProcessorTest {
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN, MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS })
+    void ignorePostprocessWhenUsingNonAzureAuthForMySQL(String authenticationParameterKey) {
+        String connStr = "jdbc:mysql://host/database?enableSwitch1&property1=value1&" + authenticationParameterKey + "=NonAzurePlugin";
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setUrl(connStr);
+
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        assertEquals(connStr, dataSourceProperties.getUrl());
+    }
+
+    @Test
+    void ignorePostprocessWhenUsingNonAzureAuthForPostgresql() {
+        String connStr = "jdbc:postgresql://host/database?enableSwitch1&property1=value1&"
+            + POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME + "=NonAzurePlugin";
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setUrl(connStr);
+
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        assertEquals(connStr, dataSourceProperties.getUrl());
     }
 
     @Test

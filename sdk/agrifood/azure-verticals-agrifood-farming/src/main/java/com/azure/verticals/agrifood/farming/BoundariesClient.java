@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = BoundariesClientBuilder.class)
 public final class BoundariesClient {
-    @Generated private final BoundariesAsyncClient client;
+    @Generated
+    private final BoundariesAsyncClient client;
 
     /**
      * Initializes an instance of BoundariesClient class.
@@ -218,8 +219,8 @@ public final class BoundariesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String boundaryId, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String boundaryId, RequestOptions requestOptions) {
         return this.client.beginCreateCascadeDeleteJob(jobId, partyId, boundaryId, requestOptions).getSyncPoller();
     }
 
@@ -408,8 +409,8 @@ public final class BoundariesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> searchByPartyId(
-            String partyId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
+    public PagedIterable<BinaryData> searchByPartyId(String partyId, BinaryData searchBoundaryQuery,
+        RequestOptions requestOptions) {
         return new PagedIterable<>(this.client.searchByPartyId(partyId, searchBoundaryQuery, requestOptions));
     }
 
@@ -494,8 +495,8 @@ public final class BoundariesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String boundaryId, BinaryData boundary, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String boundaryId, BinaryData boundary,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(partyId, boundaryId, boundary, requestOptions).block();
     }
 
@@ -594,14 +595,9 @@ public final class BoundariesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getOverlapWithResponse(
-            String partyId,
-            String boundaryId,
-            String otherPartyId,
-            String otherBoundaryId,
-            RequestOptions requestOptions) {
-        return this.client
-                .getOverlapWithResponse(partyId, boundaryId, otherPartyId, otherBoundaryId, requestOptions)
-                .block();
+    public Response<BinaryData> getOverlapWithResponse(String partyId, String boundaryId, String otherPartyId,
+        String otherBoundaryId, RequestOptions requestOptions) {
+        return this.client.getOverlapWithResponse(partyId, boundaryId, otherPartyId, otherBoundaryId, requestOptions)
+            .block();
     }
 }

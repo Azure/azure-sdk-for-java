@@ -29,7 +29,6 @@ import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizeTypes;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -72,7 +71,6 @@ public class VirtualMachineMockTests {
         return computeManager;
     }
 
-    @NotNull
     private HttpClient mockHttpClient() {
         Map<String, Object> responseBody = new HashMap<>();
         Map<String, Object> vm;

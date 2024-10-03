@@ -925,13 +925,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -974,13 +973,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1022,13 +1020,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1066,13 +1063,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1111,13 +1107,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1160,13 +1155,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1208,13 +1202,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1260,13 +1253,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1301,13 +1293,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4054,13 +4045,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4100,13 +4090,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4147,13 +4136,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4189,13 +4177,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4232,13 +4219,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4279,13 +4265,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4325,13 +4310,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -4375,13 +4359,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4414,13 +4397,12 @@ public final class SharesImpl {
      * file share can support. Current maximum for a file share is 10,340 MiB/sec.
      * @param paidBurstingMaxIops Optional. Integer. Default if not specified is the maximum IOPS the file share can
      * support. Current maximum for a file share is 102,400 IOPS.
-     * @param shareProvisionedIops Optional. The provisioned IOPS of the share. If this is not specified, compute the
-     * recommended IOPS of the share using the formula for a share in this media tier (SSD/HDD as appropriate). The
-     * provisioned IOPS of the share is always explicitly stored on the share object, even if the recommendation formula
-     * is used.
-     * @param shareProvisionedBandwidthMibps Optional. The provisioned throughput of the share. If this is not
-     * specified, compute the recommended throughput of the share using the formula for a share in this media tier
-     * (SSD/HDD as appropriate).
+     * @param shareProvisionedIops Optional. Supported in version 2025-01-05 and later. Only allowed for provisioned v2
+     * file shares. Specifies the provisioned number of input/output operations per second (IOPS) of the share. If this
+     * is not specified, the provisioned IOPS is set to value calculated based on recommendation formula.
+     * @param shareProvisionedBandwidthMibps Optional. Supported in version 2025-01-05 and later. Only allowed for
+     * provisioned v2 file shares. Specifies the provisioned bandwidth of the share, in mebibytes per second (MiBps). If
+     * this is not specified, the provisioned bandwidth is set to value calculated based on recommendation formula.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
