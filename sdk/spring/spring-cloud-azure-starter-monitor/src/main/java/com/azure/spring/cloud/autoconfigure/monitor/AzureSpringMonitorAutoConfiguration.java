@@ -36,7 +36,7 @@ class AzureSpringMonitorAutoConfiguration {
             put("otel.traces.exporter", "none");
             put("otel.metrics.exporter", "none");
             put("otel.logs.exporter", "none");
-    }});
+            }});
 
     {
         if (!isNativeRuntimeExecution()) {
