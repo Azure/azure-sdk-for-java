@@ -1110,6 +1110,45 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(file.toPath());
     }
 
+    @LiveOnly
+    @ParameterizedTest
+    @MethodSource("downloadFileSupplier")
+    public void downloadFileAsync(int fileSize, EncryptionVersion version) throws IOException {
+        File file = getRandomFile(fileSize);
+        File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
+
+        beac = getEncryptionAsyncClient(version);
+
+        StepVerifier.create(beac.uploadFromFile(file.toPath().toString(), true)
+            .then(beac.downloadToFileWithResponse(outFile.toPath().toString(), null,
+                new ParallelTransferOptions().setBlockSizeLong((long) (4 * 1024 * 1024)), null,
+                null, false)))
+            .assertNext(r -> assertEquals(BlobType.BLOCK_BLOB, r.getValue().getBlobType()))
+            .verifyComplete();
+
+        compareFiles(file, outFile, 0, fileSize);
+
+        Files.deleteIfExists(outFile.toPath());
+        Files.deleteIfExists(file.toPath());
+    }
+
+    @LiveOnly
+    @ParameterizedTest
+    @MethodSource("downloadFileSupplier")
+    public void downloadStream(int fileSize, EncryptionVersion version) throws IOException {
+        byte[] data = getRandomByteArray(fileSize);
+        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+        Files.write(file.toPath(), data);
+
+        ebc = getEncryptionClient(version);
+        ebc.uploadFromFile(file.toPath().toString(), true);
+
+        BlobInputStream stream = ebc.openInputStream(new BlobRange(0, (long) fileSize), null);
+        TestUtils.assertArraysEqual(convertInputStreamToByteArray(stream), data);
+
+        Files.deleteIfExists(file.toPath());
+    }
+
     private static Stream<Arguments> downloadFileSupplier() {
         return Stream.of(
             Arguments.of(0, EncryptionVersion.V1), // empty file
@@ -1121,7 +1160,11 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(20, EncryptionVersion.V2), // small file
             Arguments.of(16 * 1024 * 1024, EncryptionVersion.V2), // medium file in several chunks
             Arguments.of(8 * 1026 * 1024 + 10, EncryptionVersion.V2), // medium file not aligned to block
-            Arguments.of(50 * Constants.MB, EncryptionVersion.V2) // large file requiring multiple requests
+            Arguments.of(50 * Constants.MB, EncryptionVersion.V2), // large file requiring multiple requests
+            Arguments.of((4 * Constants.MB) + 1, EncryptionVersion.V2), // 4mb file bug
+            Arguments.of(4 * Constants.MB, EncryptionVersion.V2), // 4mb file bug
+            Arguments.of((4 * Constants.MB) + 27, EncryptionVersion.V2), // 4mb file bug
+            Arguments.of(16 * Constants.MB, EncryptionVersion.V2) // 4mb file bug
         );
     }
 
@@ -1777,6 +1820,33 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     }
 
     @ParameterizedTest
+    @MethodSource("uploadAndDownloadFileDifferentRegionLengthSupplier")
+    public void uploadAndDownloadToFileDifferentRegionLengthAsync(int regionLength, int fileSize) throws IOException {
+        File file = getRandomFile(fileSize);
+        beac = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
+            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
+            .credential(ENV.getPrimaryAccount().getCredential())
+            .endpoint(cc.getBlobContainerUrl())
+            .blobName(generateBlobName())
+            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
+                .setAuthenticatedRegionDataLengthInBytes(regionLength))
+            .buildEncryptedBlobAsyncClient();
+
+        File outFile = new File(testResourceNamer.randomName(prefix, 60) + ".txt");
+        Files.deleteIfExists(outFile.toPath());
+
+        StepVerifier.create(beac.uploadFromFile(file.toPath().toString(), true)
+            .then(beac.downloadToFile(outFile.toPath().toString(), true)))
+            .expectNextCount(1)
+            .verifyComplete();
+
+        compareFiles(file, outFile, 0, file.length());
+
+        file.deleteOnExit();
+        outFile.deleteOnExit();
+    }
+
+    @ParameterizedTest
     @MethodSource("uploadAndDownloadDifferentRegionLengthSupplier")
     public void uploadAndDownloadRegionLengthWithDiffBlobClients(int regionLength, int dataSize) {
         ByteBuffer data = getRandomData(dataSize);
@@ -1901,7 +1971,8 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(16, Constants.KB), // minimum boundary
             Arguments.of(25, Constants.KB), // unaligned
             Arguments.of(6 * Constants.MB, Constants.KB), // testing region smaller than data size
-            Arguments.of(6 * Constants.MB, 8 * Constants.MB) // testing greater than default 4MB region size
+            Arguments.of(6 * Constants.MB, 8 * Constants.MB), // testing greater than default 4MB region size
+            Arguments.of(Constants.KB, 16 * Constants.MB) // 4mb download bug
         );
     }
 
@@ -1968,139 +2039,5 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
     public static boolean hasServiceVersion() {
         return ENV.getServiceVersion() != null;
-    }
-
-    private static Stream<Arguments> fourMBUploadsV2Supplier() {
-        return Stream.of(
-            Arguments.of(4194305),
-            Arguments.of(4194304),
-            Arguments.of(4194277),
-            Arguments.of(33554432)
-        );
-    }
-
-    @ParameterizedTest
-    @MethodSource("fourMBUploadsV2Supplier")
-    public void fourMBUploadsV2(int fileSize) throws IOException {
-        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildEncryptedBlobClient();
-
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-
-        file.deleteOnExit();
-        outFile.deleteOnExit();
-
-        Files.write(file.toPath(), getRandomByteArray(fileSize));
-
-        bec2.uploadFromFile(file.toPath().toString(), true);
-        bec2.downloadToFile(outFile.toPath().toString(), true);
-        compareFiles(file, outFile, 0, file.length());
-    }
-
-    @ParameterizedTest
-    @MethodSource("fourMBUploadsV2Supplier")
-    public void fourMBUploadsV2Async(int fileSize) throws IOException {
-        EncryptedBlobAsyncClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient();
-
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-
-        file.deleteOnExit();
-        outFile.deleteOnExit();
-
-        Files.write(file.toPath(), getRandomByteArray(fileSize));
-
-        StepVerifier.create(bec2.uploadFromFile(file.toPath().toString(), true)
-            .then(bec2.downloadToFile(outFile.toPath().toString(), true)))
-            .expectNextCount(1)
-            .verifyComplete();
-
-        compareFiles(file, outFile, 0, file.length());
-    }
-
-    @Test
-    public void sixteenMBUploadV21() throws IOException {
-        String blobName = generateBlobName();
-        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(blobName)
-            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
-                .setAuthenticatedRegionDataLengthInBytes(1024))
-            .buildEncryptedBlobClient();
-
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-
-        file.deleteOnExit();
-        outFile.deleteOnExit();
-
-        Files.write(file.toPath(), getRandomByteArray(16777216));
-
-        bec2.uploadFromFile(file.toPath().toString(), true);
-        bec2.downloadToFile(outFile.toPath().toString(), true);
-
-        compareFiles(file, outFile, 0, file.length());
-    }
-
-    @Test
-    public void sixteenMBUploadV21Async() throws IOException {
-        String blobName = generateBlobName();
-        EncryptedBlobAsyncClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2_1)
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(blobName)
-            .clientSideEncryptionOptions(new BlobClientSideEncryptionOptions()
-                .setAuthenticatedRegionDataLengthInBytes(1024))
-            .buildEncryptedBlobAsyncClient();
-
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        File outFile = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-
-        file.deleteOnExit();
-        outFile.deleteOnExit();
-
-        Files.write(file.toPath(), getRandomByteArray(16777216));
-
-        StepVerifier.create(bec2.uploadFromFile(file.toPath().toString(), true)
-            .then(bec2.downloadToFile(outFile.toPath().toString(), true)))
-            .expectNextCount(1)
-            .verifyComplete();
-
-        compareFiles(file, outFile, 0, file.length());
-    }
-
-    @ParameterizedTest
-    @MethodSource("fourMBUploadsV2Supplier")
-    public void fourMBUploadsOpenInputStreamV2(int fileSize) throws IOException {
-        EncryptedBlobClient bec2 = new EncryptedBlobClientBuilder(EncryptionVersion.V2)
-            .key(fakeKey, KeyWrapAlgorithm.RSA_OAEP_256.toString())
-            .credential(ENV.getPrimaryAccount().getCredential())
-            .endpoint(cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildEncryptedBlobClient();
-
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-
-        file.deleteOnExit();
-
-        byte[] data = getRandomByteArray(fileSize);
-        Files.write(file.toPath(), data);
-
-        bec2.uploadFromFile(file.toPath().toString(), true);
-        BlobInputStream stream = bec2.openInputStream(new BlobRange(0, (long) fileSize), null);
-        TestUtils.assertArraysEqual(convertInputStreamToByteArray(stream), data);
     }
 }

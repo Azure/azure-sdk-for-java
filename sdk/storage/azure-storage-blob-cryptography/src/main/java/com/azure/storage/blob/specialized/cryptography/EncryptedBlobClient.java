@@ -52,7 +52,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
-import static com.azure.storage.blob.specialized.cryptography.EncryptedBlobLength.computeUnencryptedBlobLength;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -495,9 +494,8 @@ public class EncryptedBlobClient extends BlobClient {
 
             context = context.addData(ENCRYPTION_DATA_KEY, encryptionData)
                 .addData(Constants.ADJUSTED_BLOB_LENGTH_KEY,
-                    computeUnencryptedBlobLength(encryptionData));
+                    EncryptedBlobLength.computeAdjustedBlobLength(encryptionData));
         }
-
         return context;
     }
 

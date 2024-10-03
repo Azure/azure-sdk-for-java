@@ -15,16 +15,18 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 
 /**
  * This class provides helper methods for adjusting encrypted downloads.
- * <p>
- * RESERVED FOR INTERNAL USE.
  */
-
 final class EncryptedBlobLength {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobLength.class);
 
-    static Function<Long, Long> computeUnencryptedBlobLength(EncryptionData encryptionData) {
+    static Function<Long, Long> computeAdjustedBlobLength(EncryptionData encryptionData) {
         return (totalLength) -> {
             switch (encryptionData.getEncryptionAgent().getProtocol()) {
+                /*
+                 Technically, the total unencrypted length may be different for v1,
+                 but because this helper method is only used for partitioning ranged downloads,
+                 the size does not need to be adjusted for v1.
+                 */
                 case ENCRYPTION_PROTOCOL_V1:
                     return totalLength;
                 case ENCRYPTION_PROTOCOL_V2:
