@@ -1318,6 +1318,11 @@ public class CosmosClientBuilder implements
             }
         }
 
+        if (this.isPerPartitionAutomaticFailoverEnabled) {
+            Preconditions.checkArgument(preferredRegions != null && !preferredRegions.isEmpty(),
+                "preferredRegions cannot be null or empty when per-partition automatic failover has been enabled");
+        }
+
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
