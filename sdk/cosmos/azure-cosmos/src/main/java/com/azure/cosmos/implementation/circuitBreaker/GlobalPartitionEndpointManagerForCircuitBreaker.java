@@ -156,7 +156,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
             return;
         }
 
-        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.initiallyResolvedPartitionKeyRange' cannot be null!");
+        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
 
         String resourceId = request.getResourceId();
 
