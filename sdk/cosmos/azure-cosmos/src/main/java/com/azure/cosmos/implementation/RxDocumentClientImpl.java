@@ -2481,7 +2481,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' cannot be null!");
 
-                        feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRange, request.getResourceId());
+                        feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, request.getResourceId());
                         this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
                     }
                 }
@@ -6035,6 +6035,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
             request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
 
+            // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+            // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
+            // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+            // such scenarios and circuit breaking in general
+            request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
+
             List<String> unavailableRegionsForPartition
                 = this.globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
                 request.getResourceId(),
@@ -6088,6 +6094,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
         // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
         request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+        // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+        // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+        // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+        // such scenarios and circuit breaking in general
+        request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
 
         if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
             checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
