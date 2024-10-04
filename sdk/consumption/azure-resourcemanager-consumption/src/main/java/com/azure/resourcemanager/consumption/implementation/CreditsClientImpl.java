@@ -21,24 +21,27 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.consumption.fluent.CreditsClient;
 import com.azure.resourcemanager.consumption.fluent.models.CreditSummaryInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CreditsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CreditsClient.
+ */
 public final class CreditsClientImpl implements CreditsClient {
-    private final ClientLogger logger = new ClientLogger(CreditsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CreditsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConsumptionManagementClientImpl client;
 
     /**
      * Initializes an instance of CreditsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CreditsClientImpl(ConsumptionManagementClientImpl client) {
@@ -52,39 +55,32 @@ public final class CreditsClientImpl implements CreditsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConsumptionManagemen")
-    private interface CreditsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}"
-                + "/providers/Microsoft.Consumption/credits/balanceSummary")
-        @ExpectedResponses({200, 204})
+    public interface CreditsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}/providers/Microsoft.Consumption/credits/balanceSummary")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CreditSummaryInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<CreditSummaryInner>> get(@HostParam("$host") String endpoint,
             @PathParam("billingAccountId") String billingAccountId,
-            @PathParam("billingProfileId") String billingProfileId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("billingProfileId") String billingProfileId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * The credit summary by billingAccountId and billingProfileId.
-     *
+     * 
      * @param billingAccountId BillingAccount ID.
      * @param billingProfileId Azure Billing Profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credit summary resource.
+     * @return a credit summary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CreditSummaryInner>> getWithResponseAsync(String billingAccountId, String billingProfileId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -96,38 +92,28 @@ public final class CreditsClientImpl implements CreditsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            billingAccountId,
-                            billingProfileId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), billingAccountId, billingProfileId,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The credit summary by billingAccountId and billingProfileId.
-     *
+     * 
      * @param billingAccountId BillingAccount ID.
      * @param billingProfileId Azure Billing Profile ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credit summary resource.
+     * @return a credit summary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CreditSummaryInner>> getWithResponseAsync(
-        String billingAccountId, String billingProfileId, Context context) {
+    private Mono<Response<CreditSummaryInner>> getWithResponseAsync(String billingAccountId, String billingProfileId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingAccountId == null) {
             return Mono
@@ -139,42 +125,46 @@ public final class CreditsClientImpl implements CreditsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                billingAccountId,
-                billingProfileId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), billingAccountId, billingProfileId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * The credit summary by billingAccountId and billingProfileId.
-     *
+     * 
      * @param billingAccountId BillingAccount ID.
      * @param billingProfileId Azure Billing Profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credit summary resource.
+     * @return a credit summary resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CreditSummaryInner> getAsync(String billingAccountId, String billingProfileId) {
         return getWithResponseAsync(billingAccountId, billingProfileId)
-            .flatMap(
-                (Response<CreditSummaryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * The credit summary by billingAccountId and billingProfileId.
-     *
+     * 
+     * @param billingAccountId BillingAccount ID.
+     * @param billingProfileId Azure Billing Profile ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a credit summary resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreditSummaryInner> getWithResponse(String billingAccountId, String billingProfileId,
+        Context context) {
+        return getWithResponseAsync(billingAccountId, billingProfileId, context).block();
+    }
+
+    /**
+     * The credit summary by billingAccountId and billingProfileId.
+     * 
      * @param billingAccountId BillingAccount ID.
      * @param billingProfileId Azure Billing Profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,23 +174,6 @@ public final class CreditsClientImpl implements CreditsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreditSummaryInner get(String billingAccountId, String billingProfileId) {
-        return getAsync(billingAccountId, billingProfileId).block();
-    }
-
-    /**
-     * The credit summary by billingAccountId and billingProfileId.
-     *
-     * @param billingAccountId BillingAccount ID.
-     * @param billingProfileId Azure Billing Profile ID.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a credit summary resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreditSummaryInner> getWithResponse(
-        String billingAccountId, String billingProfileId, Context context) {
-        return getWithResponseAsync(billingAccountId, billingProfileId, context).block();
+        return getWithResponse(billingAccountId, billingProfileId, Context.NONE).getValue();
     }
 }

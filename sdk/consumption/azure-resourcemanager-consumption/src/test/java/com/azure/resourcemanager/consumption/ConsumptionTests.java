@@ -23,15 +23,17 @@ public class ConsumptionTests extends TestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void availabilityTest() {
-        ConsumptionManager manager = ConsumptionManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+        ConsumptionManager manager = ConsumptionManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String billingScope = "/providers/Microsoft.Billing/<>";
         // no billing scope in our test env
 
-        String subscriptionScope = "/subscriptions/" + Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
+        String subscriptionScope = "/subscriptions/"
+            + Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID);
         List<Budget> budgets = manager.budgets().list(subscriptionScope).stream().collect(Collectors.toList());
-        List<ReservationRecommendation> reservationRecommendations = manager.reservationRecommendations().list(subscriptionScope).stream().collect(Collectors.toList());
+        List<ReservationRecommendation> reservationRecommendations
+            = manager.reservationRecommendations().list(subscriptionScope).stream().collect(Collectors.toList());
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.fluent.models.ReservationSummaryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of listing reservation summaries. */
+/**
+ * Result of listing reservation summaries.
+ */
 @Immutable
-public final class ReservationSummariesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReservationSummariesListResult.class);
-
+public final class ReservationSummariesListResult implements JsonSerializable<ReservationSummariesListResult> {
     /*
      * The list of reservation summaries.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReservationSummaryInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of ReservationSummariesListResult class.
+     */
+    public ReservationSummariesListResult() {
+    }
+
+    /**
      * Get the value property: The list of reservation summaries.
-     *
+     * 
      * @return the value value.
      */
     public List<ReservationSummaryInner> value() {
@@ -39,7 +45,7 @@ public final class ReservationSummariesListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,52 @@ public final class ReservationSummariesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationSummariesListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationSummariesListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationSummariesListResult.
+     */
+    public static ReservationSummariesListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationSummariesListResult deserializedReservationSummariesListResult
+                = new ReservationSummariesListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReservationSummaryInner> value
+                        = reader.readArray(reader1 -> ReservationSummaryInner.fromJson(reader1));
+                    deserializedReservationSummariesListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedReservationSummariesListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationSummariesListResult;
+        });
     }
 }
