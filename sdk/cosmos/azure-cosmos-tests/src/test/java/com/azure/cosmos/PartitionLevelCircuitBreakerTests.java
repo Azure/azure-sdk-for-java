@@ -326,18 +326,217 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             // Expectation is for the operation to succeed in all runs but to move over to
             // the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
-                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
                     .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(5),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 503 injected into first preferred region for REPLACE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(5),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 503 injected into first preferred region for DELETE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(5),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 503 injected into first preferred region for PATCH_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(5),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 503 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(5),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 503 injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to succeed in all runs but include
+            // the second preferred region when the first preferred region has been short-circuited.
+            // For queries which require a QueryPlan, the first preferred region is contacted (not a data plane request
+            // which will hit a data partition so is not eligible for circuit breaking).
+            new Object[]{
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(10),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 503 injected into first preferred region for BATCH_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(5),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 503 injected into first preferred region for READ_FEED_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to succeed in all runs but to move over to
+            // the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with service unavailable error in first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(10),
+                this.buildServiceUnavailableFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasSuccess,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAllRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // Server-generated 410 injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
+            new Object[]{
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                this.buildPartitionIsSplittingFaultInjectionRules,
+                this.buildServerGeneratedGoneErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
                 !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ONLY_DIRECT_MODE,
@@ -345,24 +544,24 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 15,
                 15
             },
-            // Server-generated 410 injected into first preferred region for DELETE_ITEM operation
+            // Server-generated 410 injected into first preferred region for UPSERT_ITEM operation
             // injected into all replicas of the faulty EPK range (although only the primary replica
             // is ever involved - effectively doesn't impact the assertions for this test).
             // Expectation is for the operation to hit OperationCancelledException and only to succeed when
             // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
-                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
+                String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.UPSERT_ITEM),
                 new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
                     .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
                     .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                this.buildPartitionIsSplittingFaultInjectionRules,
+                this.buildServerGeneratedGoneErrorFaultInjectionRules,
                 THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
                 NO_REGION_SWITCH_HINT,
                 !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
                 this.validateResponseHasOperationCancelledException,
                 this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ONLY_DIRECT_MODE,
@@ -370,35 +569,11 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 15,
                 15
             },
-            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
-            // for QUERY_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
-            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
-            // circuit breaking involved here (partition split will resolve to two new child partitions)
-            new Object[]{
-                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
-                new FaultInjectionRuleParamsWrapper()
-                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-                this.buildPartitionIsSplittingFaultInjectionRules,
-                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-                NO_REGION_SWITCH_HINT,
-                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-                this.validateResponseHasOperationCancelledException,
-                this.validateResponseHasSuccess,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-                ONLY_DIRECT_MODE,
-                1,
-                15,
-                15
-            },
-            //  Server-generated 410 injected into first preferred region for REPLACE_ITEM operation
-            //  injected into all replicas of the faulty EPK range (although only the primary replica
-            //  is ever involved - effectively doesn't impact the assertions for this test).
-            //  Expectation is for the operation to hit OperationCancelledException and only to succeed when
-            //  moved over to the second preferred region when the first preferred region has been short-circuited.
+            // Server-generated 410 injected into first preferred region for REPLACE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
             new Object[]{
                 String.format("Test with faulty %s with server-generated gone in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -1040,6 +1215,150 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 ONLY_DIRECT_MODE,
                 this.writeRegions.size(),
                 25,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for CREATE_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for QUERY_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for BATCH_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for DELETE_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for PATCH_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for REPLACE_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
                 15
             }
         };
