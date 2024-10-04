@@ -7,7 +7,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MessageData;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MetricsData;
@@ -88,9 +89,9 @@ public final class TestUtils {
         String connectionString) {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
 
-        new AzureMonitorExporterBuilder().connectionString(connectionString)
-            .httpPipeline(httpPipeline)
-            .install(sdkBuilder);
+        AzureMonitorExporterOptions exporterOptions
+            = new AzureMonitorExporterOptions().connectionString(connectionString).pipeline(httpPipeline);
+        AzureMonitorExporter.customize(sdkBuilder, exporterOptions);
 
         return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }

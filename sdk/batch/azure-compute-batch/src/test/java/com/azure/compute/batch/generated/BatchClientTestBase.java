@@ -10,7 +10,6 @@ package com.azure.compute.batch.generated;
 
 import com.azure.compute.batch.BatchClient;
 import com.azure.compute.batch.BatchClientBuilder;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
@@ -26,10 +25,10 @@ class BatchClientTestBase extends TestProxyTestBase {
     protected void beforeTest() {
         BatchClientBuilder batchClientbuilder
             = new BatchClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .httpClient(HttpClient.createDefault())
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            batchClientbuilder.httpClient(interceptorManager.getPlaybackClient()).credential(new MockTokenCredential());
+            batchClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             batchClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                 .credential(new DefaultAzureCredentialBuilder().build());

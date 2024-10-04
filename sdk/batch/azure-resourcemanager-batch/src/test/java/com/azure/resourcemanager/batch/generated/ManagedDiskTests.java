@@ -6,21 +6,30 @@ package com.azure.resourcemanager.batch.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.models.ManagedDisk;
+import com.azure.resourcemanager.batch.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.batch.models.StorageAccountType;
+import com.azure.resourcemanager.batch.models.VMDiskSecurityProfile;
 import org.junit.jupiter.api.Assertions;
 
 public final class ManagedDiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedDisk model
-            = BinaryData.fromString("{\"storageAccountType\":\"StandardSSD_LRS\"}").toObject(ManagedDisk.class);
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.storageAccountType());
+        ManagedDisk model = BinaryData.fromString(
+            "{\"storageAccountType\":\"Premium_LRS\",\"securityProfile\":{\"securityEncryptionType\":\"VMGuestStateOnly\"}}")
+            .toObject(ManagedDisk.class);
+        Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
+            model.securityProfile().securityEncryptionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedDisk model = new ManagedDisk().withStorageAccountType(StorageAccountType.STANDARD_SSD_LRS);
+        ManagedDisk model = new ManagedDisk().withStorageAccountType(StorageAccountType.PREMIUM_LRS)
+            .withSecurityProfile(
+                new VMDiskSecurityProfile().withSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY));
         model = BinaryData.fromObject(model).toObject(ManagedDisk.class);
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.storageAccountType());
+        Assertions.assertEquals(StorageAccountType.PREMIUM_LRS, model.storageAccountType());
+        Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
+            model.securityProfile().securityEncryptionType());
     }
 }

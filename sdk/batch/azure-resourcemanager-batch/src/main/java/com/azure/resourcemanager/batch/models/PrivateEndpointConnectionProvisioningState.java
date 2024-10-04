@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The provisioning state of the private endpoint connection.
  */
@@ -56,7 +53,6 @@ public enum PrivateEndpointConnectionProvisioningState {
      * @param value the serialized value to parse.
      * @return the parsed PrivateEndpointConnectionProvisioningState object, or null if unable to parse.
      */
-    @JsonCreator
     public static PrivateEndpointConnectionProvisioningState fromString(String value) {
         if (value == null) {
             return null;
@@ -73,7 +69,6 @@ public enum PrivateEndpointConnectionProvisioningState {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

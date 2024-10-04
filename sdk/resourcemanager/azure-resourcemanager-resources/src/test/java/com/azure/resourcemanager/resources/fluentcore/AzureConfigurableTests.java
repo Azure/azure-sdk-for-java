@@ -13,11 +13,13 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
 import java.time.Duration;
@@ -30,6 +32,7 @@ public class AzureConfigurableTests {
         ResourceManager resourceManager = ResourceManager
             .configure()
             .withRetryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
+            .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
             .withSubscription(Mockito.anyString());
 
@@ -39,6 +42,7 @@ public class AzureConfigurableTests {
         // Default is RetryPolicy with ExponentialBackoff
         resourceManager = ResourceManager
             .configure()
+            .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
             .withSubscription(Mockito.anyString());
 
@@ -46,6 +50,8 @@ public class AzureConfigurableTests {
         validateRetryPolicy(httpPipeline, ExponentialBackoff.class);
 
         resourceManager = ResourceManager
+            .configure()
+            .withHttpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .authenticate(new DefaultAzureCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE))
             .withSubscription(Mockito.anyString());
 

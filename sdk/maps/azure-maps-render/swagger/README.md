@@ -22,7 +22,7 @@ npm install -g autorest
 
 ``` yaml    
 title: RenderClient
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Render/stable/2022-08-01/render.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Render/stable/2024-04-01/render.json
 namespace: com.azure.maps.render
 java: true
 use: '@autorest/java@4.1.29'

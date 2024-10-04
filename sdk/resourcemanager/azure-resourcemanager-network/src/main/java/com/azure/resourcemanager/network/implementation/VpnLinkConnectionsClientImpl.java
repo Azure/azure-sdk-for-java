@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -12,6 +13,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -30,7 +32,9 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VpnLinkConnectionsClient;
+import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyResultInner;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteLinkConnectionInner;
+import com.azure.resourcemanager.network.models.ConnectionSharedKeyResultList;
 import com.azure.resourcemanager.network.models.ListVpnSiteLinkConnectionsResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -80,6 +84,51 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/sharedKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionSharedKeyResultList>> getAllSharedKeys(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("gatewayName") String gatewayName,
+            @PathParam("connectionName") String connectionName,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/sharedKeys/default")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionSharedKeyResultInner>> getDefaultSharedKey(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("gatewayName") String gatewayName,
+            @PathParam("connectionName") String connectionName,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/sharedKeys/default")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> setOrInitDefaultSharedKey(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("gatewayName") String gatewayName,
+            @PathParam("connectionName") String connectionName,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ConnectionSharedKeyResultInner connectionSharedKeyParameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/sharedKeys/default/listSharedKey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionSharedKeyResultInner>> listDefaultSharedKey(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("gatewayName") String gatewayName,
+            @PathParam("connectionName") String connectionName,
+            @PathParam("linkConnectionName") String linkConnectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}/getikesas")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -98,6 +147,14 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("gatewayName") String gatewayName,
             @PathParam("connectionName") String connectionName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConnectionSharedKeyResultList>> getAllSharedKeysNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -146,7 +203,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetConnection(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -192,7 +249,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetConnection(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -359,6 +416,798 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     }
 
     /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionSharedKeyResultInner>> getAllSharedKeysSinglePageAsync(
+        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getAllSharedKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, gatewayName, connectionName, linkConnectionName, apiVersion, accept, context))
+            .<PagedResponse<ConnectionSharedKeyResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionSharedKeyResultInner>> getAllSharedKeysSinglePageAsync(
+        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getAllSharedKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                gatewayName, connectionName, linkConnectionName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConnectionSharedKeyResultInner> getAllSharedKeysAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
+        return new PagedFlux<>(
+            () -> getAllSharedKeysSinglePageAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName),
+            nextLink -> getAllSharedKeysNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConnectionSharedKeyResultInner> getAllSharedKeysAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName, Context context) {
+        return new PagedFlux<>(() -> getAllSharedKeysSinglePageAsync(resourceGroupName, gatewayName, connectionName,
+            linkConnectionName, context), nextLink -> getAllSharedKeysNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConnectionSharedKeyResultInner> getAllSharedKeys(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
+        return new PagedIterable<>(
+            getAllSharedKeysAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName));
+    }
+
+    /**
+     * Lists all shared keys of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConnectionSharedKeyResultInner> getAllSharedKeys(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, Context context) {
+        return new PagedIterable<>(
+            getAllSharedKeysAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName, context));
+    }
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConnectionSharedKeyResultInner>> getDefaultSharedKeyWithResponseAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.getDefaultSharedKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, gatewayName, connectionName, linkConnectionName, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConnectionSharedKeyResultInner>> getDefaultSharedKeyWithResponseAsync(
+        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getDefaultSharedKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, gatewayName, connectionName, linkConnectionName, apiVersion, accept, context);
+    }
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionSharedKeyResultInner> getDefaultSharedKeyAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
+        return getDefaultSharedKeyWithResponseAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectionSharedKeyResultInner> getDefaultSharedKeyWithResponse(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName, Context context) {
+        return getDefaultSharedKeyWithResponseAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            context).block();
+    }
+
+    /**
+     * Gets the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the shared key of VpnLink connection specified.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionSharedKeyResultInner getDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
+        return getDefaultSharedKeyWithResponse(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> setOrInitDefaultSharedKeyWithResponseAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName,
+        ConnectionSharedKeyResultInner connectionSharedKeyParameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        if (connectionSharedKeyParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter connectionSharedKeyParameters is required and cannot be null."));
+        } else {
+            connectionSharedKeyParameters.validate();
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.setOrInitDefaultSharedKey(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, gatewayName, connectionName, linkConnectionName,
+                apiVersion, connectionSharedKeyParameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> setOrInitDefaultSharedKeyWithResponseAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName,
+        ConnectionSharedKeyResultInner connectionSharedKeyParameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        if (connectionSharedKeyParameters == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter connectionSharedKeyParameters is required and cannot be null."));
+        } else {
+            connectionSharedKeyParameters.validate();
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.setOrInitDefaultSharedKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, gatewayName, connectionName, linkConnectionName, apiVersion,
+            connectionSharedKeyParameters, accept, context);
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
+        beginSetOrInitDefaultSharedKeyAsync(String resourceGroupName, String gatewayName, String connectionName,
+            String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = setOrInitDefaultSharedKeyWithResponseAsync(resourceGroupName,
+            gatewayName, connectionName, linkConnectionName, connectionSharedKeyParameters);
+        return this.client.<ConnectionSharedKeyResultInner, ConnectionSharedKeyResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionSharedKeyResultInner.class, ConnectionSharedKeyResultInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
+        beginSetOrInitDefaultSharedKeyAsync(String resourceGroupName, String gatewayName, String connectionName,
+            String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = setOrInitDefaultSharedKeyWithResponseAsync(resourceGroupName,
+            gatewayName, connectionName, linkConnectionName, connectionSharedKeyParameters, context);
+        return this.client.<ConnectionSharedKeyResultInner, ConnectionSharedKeyResultInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConnectionSharedKeyResultInner.class, ConnectionSharedKeyResultInner.class,
+            context);
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
+        beginSetOrInitDefaultSharedKey(String resourceGroupName, String gatewayName, String connectionName,
+            String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters) {
+        return this
+            .beginSetOrInitDefaultSharedKeyAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+                connectionSharedKeyParameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ConnectionSharedKeyResultInner>, ConnectionSharedKeyResultInner>
+        beginSetOrInitDefaultSharedKey(String resourceGroupName, String gatewayName, String connectionName,
+            String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters, Context context) {
+        return this
+            .beginSetOrInitDefaultSharedKeyAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+                connectionSharedKeyParameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionSharedKeyResultInner> setOrInitDefaultSharedKeyAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName,
+        ConnectionSharedKeyResultInner connectionSharedKeyParameters) {
+        return beginSetOrInitDefaultSharedKeyAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            connectionSharedKeyParameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ConnectionSharedKeyResultInner> setOrInitDefaultSharedKeyAsync(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName,
+        ConnectionSharedKeyResultInner connectionSharedKeyParameters, Context context) {
+        return beginSetOrInitDefaultSharedKeyAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            connectionSharedKeyParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionSharedKeyResultInner setOrInitDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName,
+        ConnectionSharedKeyResultInner connectionSharedKeyParameters) {
+        return setOrInitDefaultSharedKeyAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            connectionSharedKeyParameters).block();
+    }
+
+    /**
+     * Sets or auto generates the shared key based on the user input. If users give a shared key value, it does the set
+     * operation. If key length is given, the operation creates a random key of the pre-defined length.
+     * 
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param connectionSharedKeyParameters Parameters supplied to set or auto generate the shared key for the vpn link
+     * connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sharedKey Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionSharedKeyResultInner setOrInitDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName, ConnectionSharedKeyResultInner connectionSharedKeyParameters,
+        Context context) {
+        return setOrInitDefaultSharedKeyAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            connectionSharedKeyParameters, context).block();
+    }
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<ConnectionSharedKeyResultInner>> listDefaultSharedKeyWithResponseAsync(
+        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.listDefaultSharedKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, gatewayName, connectionName, linkConnectionName, apiVersion, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ConnectionSharedKeyResultInner>> listDefaultSharedKeyWithResponseAsync(
+        String resourceGroupName, String gatewayName, String connectionName, String linkConnectionName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (connectionName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
+        }
+        if (linkConnectionName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
+        }
+        final String apiVersion = "2024-03-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listDefaultSharedKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, gatewayName, connectionName, linkConnectionName, apiVersion, accept, context);
+    }
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionSharedKeyResultInner> listDefaultSharedKeyAsync(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
+        return listDefaultSharedKeyWithResponseAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ConnectionSharedKeyResultInner> listDefaultSharedKeyWithResponse(String resourceGroupName,
+        String gatewayName, String connectionName, String linkConnectionName, Context context) {
+        return listDefaultSharedKeyWithResponseAsync(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            context).block();
+    }
+
+    /**
+     * Gets the value of the shared key of VpnLink connection specified.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the gateway.
+     * @param connectionName The name of the vpn connection.
+     * @param linkConnectionName The name of the vpn link connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the value of the shared key of VpnLink connection specified.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionSharedKeyResultInner listDefaultSharedKey(String resourceGroupName, String gatewayName,
+        String connectionName, String linkConnectionName) {
+        return listDefaultSharedKeyWithResponse(resourceGroupName, gatewayName, connectionName, linkConnectionName,
+            Context.NONE).getValue();
+    }
+
+    /**
      * Lists IKE Security Associations for Vpn Site Link Connection in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group.
@@ -395,7 +1244,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getIkeSas(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -441,7 +1290,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getIkeSas(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -640,7 +1489,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -685,7 +1534,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2024-01-01";
+        final String apiVersion = "2024-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -770,6 +1619,61 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     public PagedIterable<VpnSiteLinkConnectionInner> listByVpnConnection(String resourceGroupName, String gatewayName,
         String connectionName, Context context) {
         return new PagedIterable<>(listByVpnConnectionAsync(resourceGroupName, gatewayName, connectionName, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionSharedKeyResultInner>> getAllSharedKeysNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getAllSharedKeysNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ConnectionSharedKeyResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of shared keys for the vpn link connection along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConnectionSharedKeyResultInner>> getAllSharedKeysNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getAllSharedKeysNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**

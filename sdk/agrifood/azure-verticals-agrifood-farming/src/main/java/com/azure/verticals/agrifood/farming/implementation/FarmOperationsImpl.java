@@ -48,8 +48,8 @@ public final class FarmOperationsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     FarmOperationsImpl(FarmBeatsClientImpl client) {
-        this.service =
-                RestProxy.create(FarmOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FarmOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,45 +61,25 @@ public final class FarmOperationsImpl {
     @ServiceInterface(name = "FarmBeatsClientFarmO")
     public interface FarmOperationsService {
         @Put("/farm-operations/ingest-data/{jobId}")
-        @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createDataIngestionJob(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") BinaryData job,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> createDataIngestionJob(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BinaryData job, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Get("/farm-operations/ingest-data/{jobId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getDataIngestionJobDetails(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("jobId") String jobId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getDataIngestionJobDetails(@HostParam("endpoint") String endpoint,
+            @PathParam("jobId") String jobId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
@@ -176,19 +156,11 @@ public final class FarmOperationsImpl {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createDataIngestionJobWithResponseAsync(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> createDataIngestionJobWithResponseAsync(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.createDataIngestionJob(
-                                this.client.getEndpoint(),
-                                jobId,
-                                this.client.getServiceVersion().getVersion(),
-                                job,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.createDataIngestionJob(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), job, accept, requestOptions, context));
     }
 
     /**
@@ -264,20 +236,16 @@ public final class FarmOperationsImpl {
      * @return the {@link PollerFlux} for polling of schema of farm operation data ingestion job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJobAsync(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
-        return PollerFlux.create(
-                Duration.ofSeconds(1),
-                () -> this.createDataIngestionJobWithResponseAsync(jobId, job, requestOptions),
-                new DefaultPollingStrategy<>(
-                        this.client.getHttpPipeline(),
-                        "{endpoint}".replace("{endpoint}", this.client.getEndpoint()),
-                        null,
-                        requestOptions != null && requestOptions.getContext() != null
-                                ? requestOptions.getContext()
-                                : Context.NONE),
-                TypeReference.createInstance(BinaryData.class),
-                TypeReference.createInstance(BinaryData.class));
+    public PollerFlux<BinaryData, BinaryData> beginCreateDataIngestionJobAsync(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
+        return PollerFlux.create(Duration.ofSeconds(1),
+            () -> this.createDataIngestionJobWithResponseAsync(jobId, job, requestOptions),
+            new DefaultPollingStrategy<>(this.client.getHttpPipeline(),
+                "{endpoint}".replace("{endpoint}", this.client.getEndpoint()), null,
+                requestOptions != null && requestOptions.getContext() != null
+                    ? requestOptions.getContext()
+                    : Context.NONE),
+            TypeReference.createInstance(BinaryData.class), TypeReference.createInstance(BinaryData.class));
     }
 
     /**
@@ -353,8 +321,8 @@ public final class FarmOperationsImpl {
      * @return the {@link SyncPoller} for polling of schema of farm operation data ingestion job.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateDataIngestionJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.beginCreateDataIngestionJobAsync(jobId, job, requestOptions).getSyncPoller();
     }
 
@@ -400,18 +368,11 @@ public final class FarmOperationsImpl {
      * @return a farm operation data ingestion job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponseAsync(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getDataIngestionJobDetailsWithResponseAsync(String jobId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getDataIngestionJobDetails(
-                                this.client.getEndpoint(),
-                                jobId,
-                                this.client.getServiceVersion().getVersion(),
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getDataIngestionJobDetails(this.client.getEndpoint(), jobId,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**

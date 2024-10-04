@@ -47,7 +47,8 @@ public final class ContentSafetyClient {
      * Hate, SelfHarm, Sexual, and Violence.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     text: String (Required)
      *     categories (Optional): [
@@ -59,11 +60,13 @@ public final class ContentSafetyClient {
      *     haltOnBlocklistHit: Boolean (Optional)
      *     outputType: String(FourSeverityLevels/EightSeverityLevels) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     blocklistsMatch (Optional): [
      *          (Optional){
@@ -79,7 +82,8 @@ public final class ContentSafetyClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param options The text analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -102,7 +106,8 @@ public final class ContentSafetyClient {
      * Hate, SelfHarm, Sexual, and Violence.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     image (Required): {
      *         content: byte[] (Optional)
@@ -113,11 +118,13 @@ public final class ContentSafetyClient {
      *     ]
      *     outputType: String(FourSeverityLevels) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     categoriesAnalysis (Required): [
      *          (Required){
@@ -126,7 +133,8 @@ public final class ContentSafetyClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param options The image analysis request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

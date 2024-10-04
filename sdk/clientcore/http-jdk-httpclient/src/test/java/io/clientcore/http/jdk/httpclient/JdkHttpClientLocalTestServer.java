@@ -4,6 +4,8 @@ package io.clientcore.http.jdk.httpclient;
 
 import io.clientcore.core.shared.LocalTestServer;
 import org.eclipse.jetty.util.Callback;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
 import javax.servlet.ServletException;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +17,7 @@ import java.util.concurrent.Semaphore;
 /**
  * {@link LocalTestServer} used by all tests in this package.
  */
+@DisabledForJreRange(max = JRE.JAVA_11)
 public final class JdkHttpClientLocalTestServer {
     private static volatile LocalTestServer server;
     private static final Semaphore SERVER_SEMAPHORE = new Semaphore(1);
@@ -149,8 +152,8 @@ public final class JdkHttpClientLocalTestServer {
 
     private static LocalTestServer initializeProxyServer() {
         LocalTestServer proxyServer = new LocalTestServer((req, resp, requestBody) -> {
-            String requestUrl = req.getRequestURL().toString();
-            if (!Objects.equals(requestUrl, "/default")) {
+            String requestUri = req.getRequestURL().toString();
+            if (!Objects.equals(requestUri, "/default")) {
                 throw new ServletException("Unexpected request to proxy server");
             }
 

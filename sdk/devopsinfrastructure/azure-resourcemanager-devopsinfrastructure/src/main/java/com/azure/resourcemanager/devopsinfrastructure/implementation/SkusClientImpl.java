@@ -204,8 +204,6 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * List ResourceSku resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
@@ -233,8 +231,6 @@ public final class SkusClientImpl implements SkusClient {
     }
 
     /**
-     * List ResourceSku resources by subscription ID
-     * 
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.

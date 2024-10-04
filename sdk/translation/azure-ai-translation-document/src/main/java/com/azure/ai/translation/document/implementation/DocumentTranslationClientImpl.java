@@ -380,7 +380,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -413,7 +414,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -457,7 +459,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -490,7 +493,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -533,7 +537,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -566,7 +571,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -614,7 +620,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -647,7 +654,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -695,7 +703,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -728,7 +737,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -776,7 +786,8 @@ public final class DocumentTranslationClientImpl {
      * must be unique.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     inputs (Required): [
      *          (Required){
@@ -809,7 +820,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param startTranslationDetails Translation job submission batch request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -942,7 +954,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -969,7 +982,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1098,7 +1112,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1125,7 +1140,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1272,7 +1288,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1299,7 +1316,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1426,7 +1444,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1453,7 +1472,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1498,7 +1518,8 @@ public final class DocumentTranslationClientImpl {
      * and document Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1521,7 +1542,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
@@ -1547,7 +1569,8 @@ public final class DocumentTranslationClientImpl {
      * and document Id.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1570,7 +1593,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The batch id.
      * @param documentId Format - uuid. The document id.
@@ -1598,7 +1622,8 @@ public final class DocumentTranslationClientImpl {
      * translated as part of that request.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1625,7 +1650,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1651,7 +1677,8 @@ public final class DocumentTranslationClientImpl {
      * translated as part of that request.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1678,7 +1705,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1708,7 +1736,8 @@ public final class DocumentTranslationClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1735,7 +1764,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation-id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1765,7 +1795,8 @@ public final class DocumentTranslationClientImpl {
      * possible.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -1792,7 +1823,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation-id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1912,7 +1944,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -1935,7 +1968,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2059,7 +2093,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2082,7 +2117,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2224,7 +2260,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2247,7 +2284,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2369,7 +2407,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2392,7 +2431,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param id Format - uuid. The operation id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2448,7 +2488,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2467,7 +2508,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2500,7 +2542,8 @@ public final class DocumentTranslationClientImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     value (Required): [
      *          (Required){
@@ -2519,7 +2562,8 @@ public final class DocumentTranslationClientImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -2541,7 +2585,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -2568,7 +2613,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2595,7 +2641,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     id: String (Required)
      *     createdDateTimeUtc: OffsetDateTime (Required)
@@ -2622,7 +2669,8 @@ public final class DocumentTranslationClientImpl {
      *         totalCharacterCharged: long (Required)
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2648,7 +2696,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2671,7 +2720,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2697,7 +2747,8 @@ public final class DocumentTranslationClientImpl {
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     path: String (Optional)
      *     sourcePath: String (Required)
@@ -2720,7 +2771,8 @@ public final class DocumentTranslationClientImpl {
      *     id: String (Required)
      *     characterCharged: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param nextLink The URL to get the next list of items.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
