@@ -58,6 +58,13 @@ import static com.azure.messaging.eventhubs.checkpointstore.jedis.ClientConstant
  *     .eventHubName&#40;&quot;&lt;YOUR_EVENT_HUB_NAME&gt;&quot;&#41;
  *     .credential&#40;credential&#41;
  *     .consumerGroup&#40;&quot;&lt;YOUR_CONSUMER_GROUP_NAME&gt;&quot;&#41;
+ *     .processEvent&#40;eventContext -&gt; &#123;
+ *         System.out.println&#40;&quot;Partition id = &quot; + eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41; + &quot; and &quot;
+ *             + &quot;sequence number of event = &quot; + eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .processError&#40;context -&gt; &#123;
+ *         System.out.println&#40;&quot;Error occurred while processing events &quot; + context.getThrowable&#40;&#41;.getMessage&#40;&#41;&#41;;
+ *     &#125;&#41;
  *     .buildEventProcessorClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.jedischeckpointstore.instantiation -->

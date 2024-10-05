@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.fluent.models.EventSummaryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of listing event summary. */
+/**
+ * Result of listing event summary.
+ */
 @Immutable
-public final class Events {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Events.class);
-
+public final class Events implements JsonSerializable<Events> {
     /*
      * The list of event summary.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<EventSummaryInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of Events class.
+     */
+    public Events() {
+    }
+
+    /**
      * Get the value property: The list of event summary.
-     *
+     * 
      * @return the value value.
      */
     public List<EventSummaryInner> value() {
@@ -39,7 +45,7 @@ public final class Events {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class Events {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Events from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Events if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Events.
+     */
+    public static Events fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Events deserializedEvents = new Events();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EventSummaryInner> value = reader.readArray(reader1 -> EventSummaryInner.fromJson(reader1));
+                    deserializedEvents.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedEvents.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEvents;
+        });
     }
 }

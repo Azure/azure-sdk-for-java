@@ -11,30 +11,29 @@ import com.azure.resourcemanager.consumption.fluent.MarketplacesClient;
 import com.azure.resourcemanager.consumption.fluent.models.MarketplaceInner;
 import com.azure.resourcemanager.consumption.models.Marketplace;
 import com.azure.resourcemanager.consumption.models.Marketplaces;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MarketplacesImpl implements Marketplaces {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MarketplacesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MarketplacesImpl.class);
 
     private final MarketplacesClient innerClient;
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    public MarketplacesImpl(
-        MarketplacesClient innerClient, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    public MarketplacesImpl(MarketplacesClient innerClient,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Marketplace> list(String scope) {
         PagedIterable<MarketplaceInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new MarketplaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MarketplaceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Marketplace> list(
-        String scope, String filter, Integer top, String skiptoken, Context context) {
+    public PagedIterable<Marketplace> list(String scope, String filter, Integer top, String skiptoken,
+        Context context) {
         PagedIterable<MarketplaceInner> inner = this.serviceClient().list(scope, filter, top, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new MarketplaceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new MarketplaceImpl(inner1, this.manager()));
     }
 
     private MarketplacesClient serviceClient() {

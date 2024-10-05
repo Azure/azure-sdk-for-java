@@ -52,7 +52,6 @@ import static com.azure.data.tables.TestUtils.assertPropertiesEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -161,7 +160,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         serviceClient.createTable(tableName);
 
         //Act & Assert
-        assertNull(serviceClient.createTableIfNotExists(tableName));
+        assertNotNull(serviceClient.createTableIfNotExists(tableName));
     }
 
     @Test
@@ -188,7 +187,7 @@ public class TableServiceClientTest extends TableServiceClientTestBase {
         final Response<TableClient> response = serviceClient.createTableIfNotExistsWithResponse(tableName, null, null);
 
         assertEquals(expectedStatusCode, response.getStatusCode());
-        assertNull(response.getValue());
+        assertNotNull(response.getValue());
     }
 
     @Test

@@ -12,6 +12,10 @@
 
 ## 2.43.0 (2024-09-27)
 
+### Features Added
+
+- Added `Quota Request Operator` role to `BuiltInRole`.
+
 ### Other Changes
 
 #### Dependency Updates

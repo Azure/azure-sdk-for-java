@@ -5,8 +5,10 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,112 +22,96 @@ public final class FhirR4ObservationComponent extends FhirR4Element {
      * Type of component observation (code / type)
      */
     @Generated
-    @JsonProperty(value = "code")
     private final FhirR4CodeableConcept code;
 
     /*
      * Value as Quantity
      */
     @Generated
-    @JsonProperty(value = "valueQuantity")
     private FhirR4Quantity valueQuantity;
 
     /*
      * Value as CodeableConcept
      */
     @Generated
-    @JsonProperty(value = "valueCodeableConcept")
     private FhirR4CodeableConcept valueCodeableConcept;
 
     /*
      * Value as string
      */
     @Generated
-    @JsonProperty(value = "valueString")
     private String valueString;
 
     /*
      * Value as boolean
      */
     @Generated
-    @JsonProperty(value = "valueBoolean")
     private Boolean valueBoolean;
 
     /*
      * Value as integer
      */
     @Generated
-    @JsonProperty(value = "valueInteger")
     private Integer valueInteger;
 
     /*
      * Value as Range.
      */
     @Generated
-    @JsonProperty(value = "valueRange")
     private FhirR4Range valueRange;
 
     /*
      * Value as Ratio.
      */
     @Generated
-    @JsonProperty(value = "valueRatio")
     private FhirR4Ratio valueRatio;
 
     /*
      * Value as SampledData.
      */
     @Generated
-    @JsonProperty(value = "valueSampledData")
     private FhirR4SampledData valueSampledData;
 
     /*
      * Value as time (hh:mm:ss)
      */
     @Generated
-    @JsonProperty(value = "valueTime")
     private String valueTime;
 
     /*
      * Value as dateTime.
      */
     @Generated
-    @JsonProperty(value = "valueDateTime")
     private String valueDateTime;
 
     /*
      * Value as Period.
      */
     @Generated
-    @JsonProperty(value = "valuePeriod")
     private FhirR4Period valuePeriod;
 
     /*
      * Value as reference.
      */
     @Generated
-    @JsonProperty(value = "valueReference")
     private FhirR4Reference valueReference;
 
     /*
      * Why the component result is missing
      */
     @Generated
-    @JsonProperty(value = "dataAbsentReason")
     private FhirR4CodeableConcept dataAbsentReason;
 
     /*
      * High, low, normal, etc.
      */
     @Generated
-    @JsonProperty(value = "interpretation")
     private List<FhirR4CodeableConcept> interpretation;
 
     /*
      * Provides guide for interpretation of component result
      */
     @Generated
-    @JsonProperty(value = "referenceRange")
     private List<FhirR4ObservationReferenceRange> referenceRange;
 
     /**
@@ -134,8 +120,7 @@ public final class FhirR4ObservationComponent extends FhirR4Element {
      * @param code the code value to set.
      */
     @Generated
-    @JsonCreator
-    private FhirR4ObservationComponent(@JsonProperty(value = "code") FhirR4CodeableConcept code) {
+    private FhirR4ObservationComponent(FhirR4CodeableConcept code) {
         this.code = code;
     }
 
@@ -297,5 +282,130 @@ public final class FhirR4ObservationComponent extends FhirR4Element {
     @Generated
     public List<FhirR4ObservationReferenceRange> getReferenceRange() {
         return this.referenceRange;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("code", this.code);
+        jsonWriter.writeJsonField("valueQuantity", this.valueQuantity);
+        jsonWriter.writeJsonField("valueCodeableConcept", this.valueCodeableConcept);
+        jsonWriter.writeStringField("valueString", this.valueString);
+        jsonWriter.writeBooleanField("valueBoolean", this.valueBoolean);
+        jsonWriter.writeNumberField("valueInteger", this.valueInteger);
+        jsonWriter.writeJsonField("valueRange", this.valueRange);
+        jsonWriter.writeJsonField("valueRatio", this.valueRatio);
+        jsonWriter.writeJsonField("valueSampledData", this.valueSampledData);
+        jsonWriter.writeStringField("valueTime", this.valueTime);
+        jsonWriter.writeStringField("valueDateTime", this.valueDateTime);
+        jsonWriter.writeJsonField("valuePeriod", this.valuePeriod);
+        jsonWriter.writeJsonField("valueReference", this.valueReference);
+        jsonWriter.writeJsonField("dataAbsentReason", this.dataAbsentReason);
+        jsonWriter.writeArrayField("interpretation", this.interpretation,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("referenceRange", this.referenceRange,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4ObservationComponent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4ObservationComponent if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4ObservationComponent.
+     */
+    @Generated
+    public static FhirR4ObservationComponent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            List<FhirR4Extension> extension = null;
+            FhirR4CodeableConcept code = null;
+            FhirR4Quantity valueQuantity = null;
+            FhirR4CodeableConcept valueCodeableConcept = null;
+            String valueString = null;
+            Boolean valueBoolean = null;
+            Integer valueInteger = null;
+            FhirR4Range valueRange = null;
+            FhirR4Ratio valueRatio = null;
+            FhirR4SampledData valueSampledData = null;
+            String valueTime = null;
+            String valueDateTime = null;
+            FhirR4Period valuePeriod = null;
+            FhirR4Reference valueReference = null;
+            FhirR4CodeableConcept dataAbsentReason = null;
+            List<FhirR4CodeableConcept> interpretation = null;
+            List<FhirR4ObservationReferenceRange> referenceRange = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("code".equals(fieldName)) {
+                    code = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("valueQuantity".equals(fieldName)) {
+                    valueQuantity = FhirR4Quantity.fromJson(reader);
+                } else if ("valueCodeableConcept".equals(fieldName)) {
+                    valueCodeableConcept = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("valueString".equals(fieldName)) {
+                    valueString = reader.getString();
+                } else if ("valueBoolean".equals(fieldName)) {
+                    valueBoolean = reader.getNullable(JsonReader::getBoolean);
+                } else if ("valueInteger".equals(fieldName)) {
+                    valueInteger = reader.getNullable(JsonReader::getInt);
+                } else if ("valueRange".equals(fieldName)) {
+                    valueRange = FhirR4Range.fromJson(reader);
+                } else if ("valueRatio".equals(fieldName)) {
+                    valueRatio = FhirR4Ratio.fromJson(reader);
+                } else if ("valueSampledData".equals(fieldName)) {
+                    valueSampledData = FhirR4SampledData.fromJson(reader);
+                } else if ("valueTime".equals(fieldName)) {
+                    valueTime = reader.getString();
+                } else if ("valueDateTime".equals(fieldName)) {
+                    valueDateTime = reader.getString();
+                } else if ("valuePeriod".equals(fieldName)) {
+                    valuePeriod = FhirR4Period.fromJson(reader);
+                } else if ("valueReference".equals(fieldName)) {
+                    valueReference = FhirR4Reference.fromJson(reader);
+                } else if ("dataAbsentReason".equals(fieldName)) {
+                    dataAbsentReason = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("interpretation".equals(fieldName)) {
+                    interpretation = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("referenceRange".equals(fieldName)) {
+                    referenceRange = reader.readArray(reader1 -> FhirR4ObservationReferenceRange.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FhirR4ObservationComponent deserializedFhirR4ObservationComponent = new FhirR4ObservationComponent(code);
+            deserializedFhirR4ObservationComponent.setId(id);
+            deserializedFhirR4ObservationComponent.setExtension(extension);
+            deserializedFhirR4ObservationComponent.valueQuantity = valueQuantity;
+            deserializedFhirR4ObservationComponent.valueCodeableConcept = valueCodeableConcept;
+            deserializedFhirR4ObservationComponent.valueString = valueString;
+            deserializedFhirR4ObservationComponent.valueBoolean = valueBoolean;
+            deserializedFhirR4ObservationComponent.valueInteger = valueInteger;
+            deserializedFhirR4ObservationComponent.valueRange = valueRange;
+            deserializedFhirR4ObservationComponent.valueRatio = valueRatio;
+            deserializedFhirR4ObservationComponent.valueSampledData = valueSampledData;
+            deserializedFhirR4ObservationComponent.valueTime = valueTime;
+            deserializedFhirR4ObservationComponent.valueDateTime = valueDateTime;
+            deserializedFhirR4ObservationComponent.valuePeriod = valuePeriod;
+            deserializedFhirR4ObservationComponent.valueReference = valueReference;
+            deserializedFhirR4ObservationComponent.dataAbsentReason = dataAbsentReason;
+            deserializedFhirR4ObservationComponent.interpretation = interpretation;
+            deserializedFhirR4ObservationComponent.referenceRange = referenceRange;
+            return deserializedFhirR4ObservationComponent;
+        });
     }
 }

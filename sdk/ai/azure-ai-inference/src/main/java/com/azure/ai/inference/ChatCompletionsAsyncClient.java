@@ -286,9 +286,8 @@ public final class ChatCompletionsAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents some basic information about the AI model on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ModelInfo> getModelInfo() {
+    public Mono<ModelInfo> getModelInfo() {
         // Generated convenience method for getModelInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getModelInfoWithResponse(requestOptions).flatMap(FluxUtil::toMono)

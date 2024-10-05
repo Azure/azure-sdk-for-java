@@ -15,20 +15,20 @@ public final class FrontendInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendInner model = BinaryData.fromString(
-            "{\"properties\":{\"fqdn\":\"norcjxvsnbyxqab\",\"provisioningState\":\"Accepted\"},\"location\":\"pcyshu\",\"tags\":{\"gpbtoqcjmklj\":\"fblj\",\"qajzyulpkudjkr\":\"vbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}")
+            "{\"properties\":{\"fqdn\":\"exhd\",\"provisioningState\":\"Provisioning\"},\"location\":\"qeojnxqbzvddntw\",\"tags\":{\"vuhrhcffcyddgl\":\"icbtwnpzao\"},\"id\":\"jthjqkwpyei\",\"name\":\"xmqci\",\"type\":\"q\"}")
             .toObject(FrontendInner.class);
-        Assertions.assertEquals("pcyshu", model.location());
-        Assertions.assertEquals("fblj", model.tags().get("gpbtoqcjmklj"));
+        Assertions.assertEquals("qeojnxqbzvddntw", model.location());
+        Assertions.assertEquals("icbtwnpzao", model.tags().get("vuhrhcffcyddgl"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendInner model = new FrontendInner().withLocation("pcyshu")
-            .withTags(mapOf("gpbtoqcjmklj", "fblj", "qajzyulpkudjkr", "vbqid", "e", "khbzhfepgzg", "scpai", "zloc"))
+        FrontendInner model = new FrontendInner().withLocation("qeojnxqbzvddntw")
+            .withTags(mapOf("vuhrhcffcyddgl", "icbtwnpzao"))
             .withProperties(new FrontendProperties());
         model = BinaryData.fromObject(model).toObject(FrontendInner.class);
-        Assertions.assertEquals("pcyshu", model.location());
-        Assertions.assertEquals("fblj", model.tags().get("gpbtoqcjmklj"));
+        Assertions.assertEquals("qeojnxqbzvddntw", model.location());
+        Assertions.assertEquals("icbtwnpzao", model.tags().get("vuhrhcffcyddgl"));
     }
 
     // Use "Map.of" if available
