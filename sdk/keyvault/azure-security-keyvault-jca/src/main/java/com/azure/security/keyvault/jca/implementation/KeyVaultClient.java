@@ -200,7 +200,7 @@ public class KeyVaultClient {
                 accessToken =
                     AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
             } else {
-                accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
+                accessToken = getAccessToken(resource, managedIdentity);
             }
         } catch (Throwable t) {
             LOGGER.log(WARNING, "Could not obtain access token to authenticate with.", t);
@@ -209,6 +209,10 @@ public class KeyVaultClient {
         LOGGER.exiting("KeyVaultClient", "getAccessTokenByHttpRequest", accessToken);
 
         return accessToken;
+    }
+
+    AccessToken getAccessToken(String resource, String managedIdentity) {
+        return AccessTokenUtil.getAccessToken(resource, managedIdentity);
     }
 
     /**
@@ -225,7 +229,7 @@ public class KeyVaultClient {
         String uri = keyVaultUri + "certificates" + API_VERSION_POSTFIX;
 
         while (uri != null && !uri.isEmpty()) {
-            String response = HttpUtil.get(uri, headers);
+            String response = httpGet(uri, headers);
             CertificateListResult certificateListResult = null;
 
             if (response != null) {
@@ -250,6 +254,10 @@ public class KeyVaultClient {
         return result;
     }
 
+    String httpGet(String uri, Map<String, String> headers) {
+        return HttpUtil.get(uri, headers);
+    }
+
     /**
      * Get the certificate bundle.
      *
@@ -263,7 +271,7 @@ public class KeyVaultClient {
         headers.put("Authorization", "Bearer " + getAccessToken());
 
         String uri = keyVaultUri + "certificates/" + alias + API_VERSION_POSTFIX;
-        String response = HttpUtil.get(uri, headers);
+        String response = httpGet(uri, headers);
 
         if (response != null) {
             result = (CertificateBundle) JsonConverterUtil.fromJson(response, CertificateBundle.class);
@@ -379,7 +387,7 @@ public class KeyVaultClient {
 
         headers.put("Authorization", "Bearer " + getAccessToken());
 
-        String body = HttpUtil.get(certificateSecretUri + API_VERSION_POSTFIX, headers);
+        String body = httpGet(certificateSecretUri + API_VERSION_POSTFIX, headers);
 
         if (body == null) {
             // If the private key is not available the certificate cannot be used for server side certificates or mTLS.
