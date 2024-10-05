@@ -1599,251 +1599,251 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 15,
                 15
             },
-//             500 (internal server error) injected into first preferred region for READ_ITEM operation
-//             injected into all replicas of the faulty EPK range.
-//             Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
-//             should see a success from the second preferred region.
-//            {
-//                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-//                    .withHitLimit(10),
-//                this.buildInternalServerErrorFaultInjectionRules,
-//                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasInternalServerError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                1,
-//                15,
-//                15
-//            },
-//            // 500 (internal server error) injected into first preferred region for CREATE_ITEM operation
-//            // injected into all replicas of the faulty EPK range (although only the primary replica
-//            // is ever involved - effectively doesn't impact the assertions for this test).
-//            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
-//            // should see a success from the second preferred region.
-//            {
-//                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-//                    .withHitLimit(5),
-//                this.buildInternalServerErrorFaultInjectionRules,
-//                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasInternalServerError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                1,
-//                15,
-//                15
-//            },
-//            // 500 (internal server error) injected into first preferred region for READ_FEED_ITEM operation
-//            // injected into all replicas of the faulty EPK range.
-//            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
-//            // should see a success from the second preferred region.
-//            {
-//                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-//                    .withHitLimit(10),
-//                this.buildInternalServerErrorFaultInjectionRules,
-//                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasInternalServerError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                1,
-//                15,
-//                15
-//            },
-//            // 500 (internal server error) injected into first preferred region for QUERY_ITEM operation
-//            // injected into all replicas of the faulty EPK range (although only the primary replica
-//            // is ever involved - effectively doesn't impact the assertions for this test).
-//            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
-//            // should see a success from the second preferred region. Although, after short-circuiting, a query operation
-//            // will see request for QueryPlan from the short-circuited region.
-//            {
-//                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-//                    .withHitLimit(10),
-//                this.buildInternalServerErrorFaultInjectionRules,
-//                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasInternalServerError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                1,
-//                15,
-//                15
-//            },
-//            // 429 injected into first preferred region for READ_ITEM operation
-//            // injected into all replicas of the faulty EPK range.
-//            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
-//            // moved over to the second preferred region when the first preferred region has been short-circuited.
-//            {
-//                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                this.buildTooManyRequestsErrorFaultInjectionRules,
-//                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasOperationCancelledException,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                1,
-//                15,
-//                15
-//            },
-//            // 429 injected into first preferred region for CREATE_ITEM operation
-//            // injected into all replicas of the faulty EPK range (although only the primary replica
-//            // is ever involved - effectively doesn't impact the assertions for this test).
-//            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
-//            // moved over to the second preferred region when the first preferred region has been short-circuited.
-//            {
-//                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                this.buildTooManyRequestsErrorFaultInjectionRules,
-//                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasOperationCancelledException,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                1,
-//                15,
-//                15
-//            },
-//            // 429 injected into first preferred region for QUERY_ITEM operation
-//            // injected into all replicas of the faulty EPK range.
-//            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
-//            // moved over to the second preferred region when the first preferred region has been short-circuited.
-//            // QUERY_ITEM operation will see requests hit even for short-circuited region for fetching the QueryPlan.
-//            {
-//                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
-//                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
-//                this.buildTooManyRequestsErrorFaultInjectionRules,
-//                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasOperationCancelledException,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                1,
-//                15,
-//                15
-//            },
-//            // 500 injected into all regions for QUERY_ITEM operation
-//            // injected into all replicas of the faulty EPK range.
-//            // Expectation is for the operation to see InternalServerError in all regions
-//            // and will have one region contacted post circuit breaking (one for QueryPlan and the other for the data plane request).
-//            new Object[]{
-//                String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.QUERY_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions)
-//                    .withHitLimit(10),
-//                this.buildInternalServerErrorFaultInjectionRules,
-//                NO_END_TO_END_TIMEOUT,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasInternalServerError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                this.validateDiagnosticsContextHasAtMostTwoPreferredRegions,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                this.writeRegions.size(),
-//                40,
-//                15
-//            },
-//            // 500 injected into all regions for READ_ITEM operation
-//            // injected into all replicas of the faulty EPK range.
-//            // Expectation is for the operation to see InternalServerError in all regions
-//            // and will contact one region contacted post circuit breaking.
-//            new Object[]{
-//                String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.READ_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions)
-//                    .withHitLimit(10),
-//                this.buildInternalServerErrorFaultInjectionRules,
-//                NO_END_TO_END_TIMEOUT,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasInternalServerError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasOnePreferredRegion,
-//                this.validateDiagnosticsContextHasOnePreferredRegion,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                this.writeRegions.size(),
-//                40,
-//                15
-//            },
-//            // 500 injected into all regions for UPSERT_ITEM operation
-//            // injected into all replicas of the faulty EPK range (effectively the primary since it is an upsert (write) operation).
-//            // Expectation is for the operation to see InternalServerError in all regions
-//            // and will contact one region contacted post circuit breaking.
-//            new Object[]{
-//                String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.UPSERT_ITEM),
-//                new FaultInjectionRuleParamsWrapper()
-//                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
-//                    .withFaultInjectionApplicableRegions(this.writeRegions)
-//                    .withHitLimit(5),
-//                this.buildInternalServerErrorFaultInjectionRules,
-//                NO_END_TO_END_TIMEOUT,
-//                NO_REGION_SWITCH_HINT,
-//                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
-//                this.validateResponseHasInternalServerError,
-//                this.validateResponseHasSuccess,
-//                this.validateDiagnosticsContextHasOnePreferredRegion,
-//                this.validateDiagnosticsContextHasOnePreferredRegion,
-//                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
-//                ONLY_GATEWAY_MODE,
-//                this.writeRegions.size(),
-//                25,
-//                15
-//            }
+            // 500 (internal server error) injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region.
+            {
+                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(10),
+                this.buildInternalServerErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // 500 (internal server error) injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region.
+            {
+                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(5),
+                this.buildInternalServerErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // 500 (internal server error) injected into first preferred region for READ_FEED_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region.
+            {
+                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_FEED_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_FEED_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(10),
+                this.buildInternalServerErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // 500 (internal server error) injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region. Although, after short-circuiting, a query operation
+            // will see request for QueryPlan from the short-circuited region.
+            {
+                String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withHitLimit(10),
+                this.buildInternalServerErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // 429 injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // 429 injected into first preferred region for CREATE_ITEM operation
+            // injected into all replicas of the faulty EPK range (although only the primary replica
+            // is ever involved - effectively doesn't impact the assertions for this test).
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasSecondPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // 429 injected into first preferred region for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to hit OperationCancelledException and only to succeed when
+            // moved over to the second preferred region when the first preferred region has been short-circuited.
+            // QUERY_ITEM operation will see requests hit even for short-circuited region for fetching the QueryPlan.
+            {
+                String.format("Test with faulty %s with too many requests error in the first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildTooManyRequestsErrorFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstAndSecondPreferredRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                1,
+                15,
+                15
+            },
+            // 500 injected into all regions for QUERY_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to see InternalServerError in all regions
+            // and will have one region contacted post circuit breaking (one for QueryPlan and the other for the data plane request).
+            new Object[]{
+                String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions)
+                    .withHitLimit(10),
+                this.buildInternalServerErrorFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasAtMostTwoPreferredRegions,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                this.writeRegions.size(),
+                40,
+                15
+            },
+            // 500 injected into all regions for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to see InternalServerError in all regions
+            // and will contact one region contacted post circuit breaking.
+            new Object[]{
+                String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.READ_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.READ_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions)
+                    .withHitLimit(10),
+                this.buildInternalServerErrorFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasOnePreferredRegion,
+                this.validateDiagnosticsContextHasOnePreferredRegion,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                this.writeRegions.size(),
+                40,
+                15
+            },
+            // 500 injected into all regions for UPSERT_ITEM operation
+            // injected into all replicas of the faulty EPK range (effectively the primary since it is an upsert (write) operation).
+            // Expectation is for the operation to see InternalServerError in all regions
+            // and will contact one region contacted post circuit breaking.
+            new Object[]{
+                String.format("Test with faulty %s with internal server error in all preferred regions.", FaultInjectionOperationType.UPSERT_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.UPSERT_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions)
+                    .withHitLimit(5),
+                this.buildInternalServerErrorFaultInjectionRules,
+                NO_END_TO_END_TIMEOUT,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasInternalServerError,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasOnePreferredRegion,
+                this.validateDiagnosticsContextHasOnePreferredRegion,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_GATEWAY_MODE,
+                this.writeRegions.size(),
+                25,
+                15
+            }
         };
     }
 
