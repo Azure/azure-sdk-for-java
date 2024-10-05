@@ -6,6 +6,7 @@ package com.azure.storage.file.share;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
@@ -26,6 +27,7 @@ import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -858,8 +860,10 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             .verifyComplete();
     }
 
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2024-11-04")
+    @LiveOnly
     @Test
-    public void audienceError() {
+    public void audienceErrorBearerChallengeRetry() {
         primaryShareAsyncClient.create().block();
         ShareAsyncClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
             .shareName(shareName)
@@ -872,10 +876,8 @@ public class ShareAsyncApiTests extends FileShareTestBase {
             + "188441444-3053964)S:NO_ACCESS_CONTROL";
 
         StepVerifier.create(aadShareClient.createPermission(permission))
-            .verifyErrorSatisfies(r -> {
-                ShareStorageException e = assertInstanceOf(ShareStorageException.class, r);
-                assertEquals(ShareErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
     }
     @Test
     public void audienceFromString() {
