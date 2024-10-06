@@ -5,47 +5,76 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DisabledReason. */
+/**
+ * Reason why the product is disabled.
+ */
 public final class DisabledReason extends ExpandableStringEnum<DisabledReason> {
-    /** Static value None for DisabledReason. */
+    /**
+     * Static value None for DisabledReason.
+     */
     public static final DisabledReason NONE = fromString("None");
 
-    /** Static value Country for DisabledReason. */
+    /**
+     * Static value Country for DisabledReason.
+     */
     public static final DisabledReason COUNTRY = fromString("Country");
 
-    /** Static value Region for DisabledReason. */
+    /**
+     * Static value Region for DisabledReason.
+     */
     public static final DisabledReason REGION = fromString("Region");
 
-    /** Static value Feature for DisabledReason. */
+    /**
+     * Static value Feature for DisabledReason.
+     */
     public static final DisabledReason FEATURE = fromString("Feature");
 
-    /** Static value OfferType for DisabledReason. */
+    /**
+     * Static value OfferType for DisabledReason.
+     */
     public static final DisabledReason OFFER_TYPE = fromString("OfferType");
 
-    /** Static value NoSubscriptionInfo for DisabledReason. */
+    /**
+     * Static value NoSubscriptionInfo for DisabledReason.
+     */
     public static final DisabledReason NO_SUBSCRIPTION_INFO = fromString("NoSubscriptionInfo");
 
-    /** Static value NotAvailable for DisabledReason. */
+    /**
+     * Static value NotAvailable for DisabledReason.
+     */
     public static final DisabledReason NOT_AVAILABLE = fromString("NotAvailable");
 
-    /** Static value OutOfStock for DisabledReason. */
+    /**
+     * Static value OutOfStock for DisabledReason.
+     */
     public static final DisabledReason OUT_OF_STOCK = fromString("OutOfStock");
 
     /**
+     * Creates a new instance of DisabledReason value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DisabledReason() {
+    }
+
+    /**
      * Creates or finds a DisabledReason from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DisabledReason.
      */
-    @JsonCreator
     public static DisabledReason fromString(String name) {
         return fromString(name, DisabledReason.class);
     }
 
-    /** @return known DisabledReason values. */
+    /**
+     * Gets known DisabledReason values.
+     * 
+     * @return known DisabledReason values.
+     */
     public static Collection<DisabledReason> values() {
         return values(DisabledReason.class);
     }
