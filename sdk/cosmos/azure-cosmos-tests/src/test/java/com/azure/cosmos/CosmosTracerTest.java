@@ -1758,7 +1758,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         assertThat(attributes.get("db.type")).isEqualTo("Cosmos");
         assertThat(attributes.get("db.url"))
-            .matches(url -> url.equals(TestConfigurations.HOST.substring(0, TestConfigurations.HOST.length()-1)) ||
+            .matches(url -> url.equals(TestConfigurations.HOST) ||
                 url.equals(TestConfigurations.HOST.replace(
                     ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT
                 )));

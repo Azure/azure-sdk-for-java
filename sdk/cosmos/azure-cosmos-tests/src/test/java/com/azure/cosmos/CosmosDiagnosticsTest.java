@@ -541,10 +541,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             InternalObjectNode internalObjectNode = getInternalObjectNode();
             CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
             String diagnostics = createResponse.getDiagnostics().toString();
-            String hostWithoutSlash = TestConfigurations.HOST.substring(0, TestConfigurations.HOST.length() - 1);
+
             // assert diagnostics shows the correct format for tracking client instances
             assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                    ":{\"%s\"", hostWithoutSlash));
+                    ":{\"%s\"", TestConfigurations.HOST));
             // track number of clients currently mapped to account
             int clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
             // we do end at +120 to ensure we grab the bracket even if the account is very long or if
@@ -567,7 +567,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             diagnostics = createResponse.getDiagnostics().toString();
             // assert diagnostics shows the correct format for tracking client instances
             assertThat(diagnostics).contains(String.format("\"clientEndpoints\"" +
-                ":{\"%s\"", hostWithoutSlash));
+                ":{\"%s\"", TestConfigurations.HOST));
             // grab new value and assert one additional client is mapped to the same account used previously
             clientsIndex = diagnostics.indexOf("\"clientEndpoints\":");
             substrings = diagnostics.substring(clientsIndex, clientsIndex + 120)

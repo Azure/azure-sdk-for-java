@@ -1273,7 +1273,7 @@ public class CosmosClientBuilder implements
         try {
             uri = new URI(serviceEndpoint);
             if (!Strings.isNullOrEmpty(uri.getPath()) || !Strings.isNullOrEmpty(uri.getQuery())) {
-                serviceEndpoint = uri.getScheme() + "://" + uri.getAuthority();
+                serviceEndpoint = uri.getScheme() + "://" + uri.getAuthority() + "/";
                 uri = new URI(serviceEndpoint);
             }
         } catch (URISyntaxException e) {

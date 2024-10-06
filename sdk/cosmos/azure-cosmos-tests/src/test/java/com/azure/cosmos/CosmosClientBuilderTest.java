@@ -40,7 +40,7 @@ public class CosmosClientBuilderTest {
         } catch (Exception e) {
             assertThat(e).isInstanceOf(RuntimeException.class);
             assertThat(e).hasCauseExactlyInstanceOf(URISyntaxException.class);
-            assertThat(e.getMessage()).isEqualTo("invalid location [westus1,eastus1] or serviceEndpoint [https://sample-account.documents.azure.com:443]");
+            assertThat(e.getMessage()).isEqualTo("invalid location [westus1,eastus1] or serviceEndpoint [https://sample-account.documents.azure.com:443/]");
         }
     }
 
