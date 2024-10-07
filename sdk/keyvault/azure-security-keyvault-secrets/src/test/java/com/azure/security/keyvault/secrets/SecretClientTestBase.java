@@ -74,12 +74,10 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isLiveMode()) {
             credential = new AzurePowerShellCredentialBuilder()
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .additionallyAllowedTenants("*")
                 .build();
         } else if (interceptorManager.isRecordMode()) {
             credential = new DefaultAzureCredentialBuilder()
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .additionallyAllowedTenants("*")
                 .build();
         } else {
@@ -91,7 +89,6 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         }
 
         SecretClientBuilder builder = new SecretClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)
