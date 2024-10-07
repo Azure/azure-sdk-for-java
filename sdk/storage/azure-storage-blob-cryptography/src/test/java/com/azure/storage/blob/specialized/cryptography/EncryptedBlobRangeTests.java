@@ -5,15 +5,12 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.File;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
