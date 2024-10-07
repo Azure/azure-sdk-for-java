@@ -73,7 +73,7 @@ public class RxDocumentClientImplTest {
     private ConsistencyLevel consistencyLevelMock;
     private Configs configsMock;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolverMock;
-    private AzureKeyCredential azureKeyCredential;
+    private AzureKeyCredential azureKeyCredentialMock;
     private CosmosClientMetadataCachesSnapshot metadataCachesSnapshotMock;
     private ApiType apiTypeMock;
     private CosmosClientTelemetryConfig cosmosClientTelemetryConfigMock;
@@ -96,7 +96,7 @@ public class RxDocumentClientImplTest {
         this.consistencyLevelMock = Mockito.mock(ConsistencyLevel.class);
         this.configsMock = Mockito.mock(Configs.class);
         this.cosmosAuthorizationTokenResolverMock = Mockito.mock(CosmosAuthorizationTokenResolver.class);
-        this.azureKeyCredential = new AzureKeyCredential("fakeKey");
+        this.azureKeyCredentialMock = new AzureKeyCredential("fakeKey");
         this.metadataCachesSnapshotMock = Mockito.mock(CosmosClientMetadataCachesSnapshot.class);
         this.apiTypeMock = Mockito.mock(ApiType.class);
         this.cosmosClientTelemetryConfigMock = Mockito.mock(CosmosClientTelemetryConfig.class);
@@ -110,7 +110,8 @@ public class RxDocumentClientImplTest {
         this.defaultItemSerializer = Mockito.mock(CosmosItemSerializer.class);
     }
 
-    @Test(groups = {"unit"})
+    // todo: fix and revert enabled = false when circuit breaker is enabled
+    @Test(groups = {"unit"}, enabled = true)
     public void readMany() {
 
         // setup static method mocks
@@ -233,7 +234,7 @@ public class RxDocumentClientImplTest {
             this.consistencyLevelMock,
             this.configsMock,
             this.cosmosAuthorizationTokenResolverMock,
-            this.azureKeyCredential,
+            this.azureKeyCredentialMock,
             false,
             false,
             false,
