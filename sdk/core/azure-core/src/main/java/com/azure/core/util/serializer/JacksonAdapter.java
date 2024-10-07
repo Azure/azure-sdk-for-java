@@ -28,8 +28,6 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -470,13 +468,11 @@ public class JacksonAdapter implements SerializerAdapter {
         return GlobalXmlMapper.XML_MAPPER.getXmlMapper();
     }
 
-    @SuppressWarnings("removal")
     private static Object useAccessHelper(IOExceptionCallable serializationCall) throws IOException {
         if (useAccessHelper) {
             try {
-                return java.security.AccessController
-                    .doPrivileged((PrivilegedExceptionAction<Object>) serializationCall::call);
-            } catch (PrivilegedActionException ex) {
+                return ImplUtils.doPrivilegedException(serializationCall::call);
+            } catch (Exception ex) {
                 Throwable cause = ex.getCause();
                 // If the privileged call failed due to an IOException unwrap it.
                 if (cause instanceof IOException) {
