@@ -407,7 +407,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
 
                     if (newResponse.getStatusCode() == 401 && authHeader != null
-                        && !(isClaimsPresent(httpResponse) && isClaimsPresent(newResponse))) {
+                        && (isClaimsPresent(httpResponse) ^ isClaimsPresent(newResponse))) {
 
                         return handleChallenge(context, newResponse, nextPolicy);
                     } else {
@@ -431,7 +431,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
 
             if (newResponse.getStatusCode() == 401 && authHeader != null
-                && !(isClaimsPresent(httpResponse) && isClaimsPresent(newResponse))) {
+                && (isClaimsPresent(httpResponse) ^ isClaimsPresent(newResponse))) {
 
                 return handleChallengeSync(context, newResponse, nextPolicy);
             }
