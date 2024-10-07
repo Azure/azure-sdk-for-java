@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed a bug where downloadToFile was throwing an InvalidRange exception if the target file size was a multiple of the
+- Fixed a bug where downloadToFile and openInputStream was throwing an InvalidRange exception if the target file size was a multiple of the
   authenticated region length.
 
 ### Other Changes
