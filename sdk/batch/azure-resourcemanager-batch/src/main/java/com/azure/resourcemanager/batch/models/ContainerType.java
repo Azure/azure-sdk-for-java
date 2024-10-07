@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ContainerType extends ExpandableStringEnum<ContainerType> {
      * @param name a name to look for.
      * @return the corresponding ContainerType.
      */
-    @JsonCreator
     public static ContainerType fromString(String name) {
         return fromString(name, ContainerType.class);
     }

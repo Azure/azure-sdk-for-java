@@ -4,9 +4,9 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.ProofOfPossessionOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -41,11 +41,13 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
@@ -55,8 +57,8 @@ import com.microsoft.aad.msal4j.UserNamePasswordParameters;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,6 +71,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -121,6 +124,7 @@ public abstract class IdentityClientBase {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+    private static final Map<String, HttpMethod> HTTP_METHOD_HASH_MAP = new HashMap<>(8);
 
 
     private final Map<String, String> properties = CoreUtils.getProperties(AZURE_IDENTITY_PROPERTIES);
@@ -130,6 +134,7 @@ public abstract class IdentityClientBase {
     final String tenantId;
     final String clientId;
     final String resourceId;
+    final String objectId;
     final String clientSecret;
     final String clientAssertionFilePath;
     final byte[] certificate;
@@ -164,6 +169,7 @@ public abstract class IdentityClientBase {
                        String certificatePath,
                        String clientAssertionFilePath,
                        String resourceId,
+                       String objectId,
                        Supplier<String> clientAssertionSupplier,
                        Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                        byte[] certificate,
@@ -180,6 +186,7 @@ public abstract class IdentityClientBase {
         }
         this.tenantId = tenantId;
         this.clientId = clientId;
+        this.objectId = objectId;
         this.resourceId = resourceId;
         this.clientSecret = clientSecret;
         this.clientAssertionFilePath = clientAssertionFilePath;
@@ -457,16 +464,25 @@ public abstract class IdentityClientBase {
 
     ManagedIdentityApplication getManagedIdentityMsalApplication() {
 
-        ManagedIdentityId managedIdentityId = CoreUtils.isNullOrEmpty(clientId)
-            ? (CoreUtils.isNullOrEmpty(resourceId)
-            ? ManagedIdentityId.systemAssigned() : ManagedIdentityId.userAssignedResourceId(resourceId))
-            : ManagedIdentityId.userAssignedClientId(clientId);
+        ManagedIdentityId managedIdentityId;
+
+        if (!CoreUtils.isNullOrEmpty(clientId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedClientId(clientId);
+        } else if (!CoreUtils.isNullOrEmpty(resourceId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedResourceId(resourceId);
+        } else if (!CoreUtils.isNullOrEmpty(objectId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedObjectId(objectId);
+        } else {
+            managedIdentityId = ManagedIdentityId.systemAssigned();
+        }
 
         ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
+        ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
+
+        if (ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(managedIdentitySourceType)) {
             options.setUseImdsRetryStrategy();
         }
 
@@ -483,7 +499,6 @@ public abstract class IdentityClientBase {
 
         return miBuilder.build();
     }
-
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
         String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
             + "/" + tenantId;
@@ -591,12 +606,41 @@ public abstract class IdentityClientBase {
                 extraQueryParameters.put("msal_request_type", "consumer_passthrough");
                 builder.extraQueryParameters(extraQueryParameters);
             }
+
+            if (request.getProofOfPossessionOptions() != null) {
+                ProofOfPossessionOptions proofOfPossessionOptions = request.getProofOfPossessionOptions();
+                try {
+                    builder.proofOfPossession(mapToMsalHttpMethod(proofOfPossessionOptions.getRequestMethod().toString()),
+                        proofOfPossessionOptions.getRequestUrl().toURI(), proofOfPossessionOptions.getProofOfPossessionNonce());
+                } catch (URISyntaxException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
         }
 
         if (loginHint != null) {
             builder.loginHint(loginHint);
         }
         return builder;
+    }
+
+    static HttpMethod mapToMsalHttpMethod(String methodName) {
+        if (HTTP_METHOD_HASH_MAP.containsKey(methodName)) {
+            return HTTP_METHOD_HASH_MAP.get(methodName);
+        }
+
+        // Invalidate the cache if it grows too large. This is a simple cache and does not need to be large.
+        if (HTTP_METHOD_HASH_MAP.size() > 10) {
+            HTTP_METHOD_HASH_MAP.clear();
+        }
+
+        for (HttpMethod method : HttpMethod.values()) {
+            if (method.methodName.equalsIgnoreCase(methodName)) {
+                HTTP_METHOD_HASH_MAP.put(methodName, method);
+                return method;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with method name: " + methodName);
     }
 
     UserNamePasswordParameters.UserNamePasswordParametersBuilder buildUsernamePasswordFlowParameters(TokenRequestContext request, String username, String password) {
@@ -835,12 +879,39 @@ public abstract class IdentityClientBase {
             connection.connect();
 
             return MSIToken.fromJson(JsonProviders.createReader(connection.getInputStream()));
+        } catch (IOException exception) {
+            if (connection == null) {
+                throw LOGGER.logExceptionAsError(new RuntimeException(
+                    "Could not connect to the authority host: " + url + ".", exception));
+            }
+            int responseCode;
+            try {
+                responseCode = connection.getResponseCode();
+            } catch (Exception e) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "Connection to the authority host cannot be established, "
+                            + e.getMessage() + ".", e));
+            }
+            if (responseCode == 400) {
+                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
+                    new CredentialUnavailableException(
+                        "WorkloadIdentityCredential authentication unavailable. "
+                            + "The request to the authority host was invalid. "
+                            + "Additional details: " + exception.getMessage() + ".", exception));
+            }
+
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Couldn't acquire access token from Workload Identity.", exception));
         } finally {
             if (connection != null) {
                 connection.disconnect();
             }
         }
     }
+
+
 
     String getSafeWorkingDirectory() {
         if (isWindowsPlatform()) {
@@ -863,7 +934,7 @@ public abstract class IdentityClientBase {
     abstract Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext);
 
 
-    HttpPipeline setupPipeline(HttpClient httpClient) {
+    HttpPipeline setupPipeline() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
@@ -895,7 +966,9 @@ public abstract class IdentityClientBase {
         policies.addAll(options.getPerRetryPolicies());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder().httpClient(httpClient)
+        // if the user has not supplied an httpClient, the builder will create a default using localClientOptions.
+        // If the user has supplied an HttpClient, it will be used as is.
+        return new HttpPipelineBuilder().httpClient(options.getHttpClient())
             .clientOptions(localClientOptions)
             .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
@@ -921,9 +994,9 @@ public abstract class IdentityClientBase {
             return this.httpPipeline;
         }
 
-        // if the user has supplied an HttpClient, use it
-        HttpClient httpClient = options.getHttpClient();
-        this.httpPipeline = setupPipeline(httpClient != null ? httpClient : HttpClient.createDefault());
+        // setupPipeline will use the user's HttpClient and HttpClientOptions if they're set
+        // otherwise it will use defaults.
+        this.httpPipeline = setupPipeline();
         return this.httpPipeline;
     }
 

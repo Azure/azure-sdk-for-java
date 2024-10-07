@@ -148,6 +148,10 @@ abstract class Fetcher<T> {
         this.shouldFetchMore.set(true);
     }
 
+    protected void disableShouldFetchMore() {
+        this.shouldFetchMore.set(false);
+    }
+
     protected RxDocumentServiceRequest createRequest(DocumentClientRetryPolicy documentClientRetryPolicy) {
         if (!shouldFetchMore.get()) {
             // this should never happen

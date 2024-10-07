@@ -31,14 +31,9 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     private String etag;
 
     /*
-     * The minimum throughput of the resource
+     * The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
      */
-    private String minimumThroughput;
-
-    /*
-     * The throughput replace is pending
-     */
-    private String offerReplacePending;
+    private String softAllowedMaximumThroughput;
 
     /*
      * The offer throughput value to instantly scale up without triggering splits
@@ -46,9 +41,14 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     private String instantMaximumThroughput;
 
     /*
-     * The maximum throughput value or the maximum maxThroughput value (for autoscale) that can be specified
+     * The throughput replace is pending
      */
-    private String softAllowedMaximumThroughput;
+    private String offerReplacePending;
+
+    /*
+     * The minimum throughput of the resource
+     */
+    private String minimumThroughput;
 
     /**
      * Creates an instance of ThroughputSettingsGetPropertiesResource class.
@@ -85,23 +85,14 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     }
 
     /**
-     * Get the minimumThroughput property: The minimum throughput of the resource.
+     * Get the softAllowedMaximumThroughput property: The maximum throughput value or the maximum maxThroughput value
+     * (for autoscale) that can be specified.
      * 
-     * @return the minimumThroughput value.
+     * @return the softAllowedMaximumThroughput value.
      */
     @Override
-    public String minimumThroughput() {
-        return this.minimumThroughput;
-    }
-
-    /**
-     * Get the offerReplacePending property: The throughput replace is pending.
-     * 
-     * @return the offerReplacePending value.
-     */
-    @Override
-    public String offerReplacePending() {
-        return this.offerReplacePending;
+    public String softAllowedMaximumThroughput() {
+        return this.softAllowedMaximumThroughput;
     }
 
     /**
@@ -116,14 +107,23 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
     }
 
     /**
-     * Get the softAllowedMaximumThroughput property: The maximum throughput value or the maximum maxThroughput value
-     * (for autoscale) that can be specified.
+     * Get the offerReplacePending property: The throughput replace is pending.
      * 
-     * @return the softAllowedMaximumThroughput value.
+     * @return the offerReplacePending value.
      */
     @Override
-    public String softAllowedMaximumThroughput() {
-        return this.softAllowedMaximumThroughput;
+    public String offerReplacePending() {
+        return this.offerReplacePending;
+    }
+
+    /**
+     * Get the minimumThroughput property: The minimum throughput of the resource.
+     * 
+     * @return the minimumThroughput value.
+     */
+    @Override
+    public String minimumThroughput() {
+        return this.minimumThroughput;
     }
 
     /**
@@ -151,7 +151,9 @@ public final class ThroughputSettingsGetPropertiesResource extends ThroughputSet
      */
     @Override
     public void validate() {
-        super.validate();
+        if (autoscaleSettings() != null) {
+            autoscaleSettings().validate();
+        }
     }
 
     /**

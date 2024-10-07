@@ -3,13 +3,21 @@
 ### 4.64.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added an API to retrieve diagnostics from the change feed processor context. - See [PR 41738](https://github.com/Azure/azure-sdk-for-java/pull/41738)
+* Added support to allow `queryChangeFeed` to complete when all changes available when the query starts have been fetched. - See [PR 42160](https://github.com/Azure/azure-sdk-for-java/pull/42160)
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 4.63.3 (2024-09-10)
+
+#### Bugs Fixed
 * Fixed an issue where `CosmosDiagnostics` being accumulated across all requests for `queryChangeFeed` - See [PR 41698](https://github.com/Azure/azure-sdk-for-java/pull/41698)
 * Fixed an issue in the `CosmosAsyncContainer.queryChangeFeed` API that could result in hangs under certain conditions. - See [PR 41774](https://github.com/Azure/azure-sdk-for-java/pull/41774)
-* Fixed an issue where cross region retries were not performed when preferred regions were not configured for `CosmosClient` / `CosmosAsyncClient` - See [PR 41653](https://github.com/Azure/azure-sdk-for-java/pull/41653) 
+* Fixed an issue where cross region retries were not performed when preferred regions were not configured for `CosmosClient` / `CosmosAsyncClient` - See [PR 41653](https://github.com/Azure/azure-sdk-for-java/pull/41653)
 
 #### Other Changes
 * Changed diagnostic handler implementations to use weak references to `CosmosAsyncClient` to allow GC to earlier clean them up. - See [PR 41710](https://github.com/Azure/azure-sdk-for-java/pull/41710)

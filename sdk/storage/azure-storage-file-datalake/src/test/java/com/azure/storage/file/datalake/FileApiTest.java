@@ -16,6 +16,7 @@ import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
@@ -2295,6 +2296,21 @@ public class FileApiTest extends DataLakeTestBase {
     }
 
     @Test
+    public void getNonEncodedPathName() {
+        String pathName = "foo/bar";
+        String urlEncodedPathName = Utility.encodeUrlPath(pathName);
+
+        DataLakeFileClient client = getPathClientBuilder(getDataLakeCredential(), ENVIRONMENT.getDataLakeAccount()
+            .getDataLakeEndpoint())
+            .fileSystemName(generateFileSystemName())
+            .pathName(urlEncodedPathName)
+            .buildFileClient();
+
+        assertEquals(pathName, client.getFilePath());
+        assertTrue(client.getFileUrl().contains(Utility.urlEncode(pathName)));
+    }
+
+    @Test
     public void builderBearerTokenValidation() {
         // Technically no additional checks need to be added to datalake builder since the corresponding blob builder fails
         String endpoint = BlobUrlParts.parse(fc.getFileUrl()).setScheme("http").toUrl().toString();
@@ -2976,8 +2992,9 @@ public class FileApiTest extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-            assertThrows(UncheckedIOException.class, () -> fc.openQueryInputStreamWithResponse(
-                new FileQueryOptions(expression).setInputSerialization(new FileQueryJsonSerialization())).getValue());
+            InputStream qqStream = fc.openQueryInputStreamWithResponse(new FileQueryOptions(expression)
+                .setInputSerialization(new FileQueryJsonSerialization())).getValue();
+            assertThrows(UncheckedIOException.class, () -> readFromInputStream(qqStream, Constants.KB));
 
             assertThrows(RuntimeException.class, () -> fc.queryWithResponse(new FileQueryOptions(expression,
                 new ByteArrayOutputStream()).setInputSerialization(new FileQueryJsonSerialization()), null, null));

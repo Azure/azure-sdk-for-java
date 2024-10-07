@@ -41,8 +41,8 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
     private final EmailRecipients recipients;
 
     /*
-     * List of attachments. Please note that we limit the total size of an email request (which includes attachments) to
-     * 10MB.
+     * List of attachments. Please note that we limit the total size of an email request (which includes both regular
+     * and inline attachments) to 10MB.
      */
     private List<EmailAttachment> attachments;
 
@@ -59,7 +59,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Creates an instance of EmailMessage class.
-     * 
+     *
      * @param senderAddress the senderAddress value to set.
      * @param content the content value to set.
      * @param recipients the recipients value to set.
@@ -72,7 +72,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Get the headers property: Custom email headers to be passed.
-     * 
+     *
      * @return the headers value.
      */
     public Map<String, String> getHeaders() {
@@ -81,7 +81,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Set the headers property: Custom email headers to be passed.
-     * 
+     *
      * @param headers the headers value to set.
      * @return the EmailMessage object itself.
      */
@@ -92,7 +92,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Get the senderAddress property: Sender email address from a verified domain.
-     * 
+     *
      * @return the senderAddress value.
      */
     public String getSenderAddress() {
@@ -101,7 +101,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Get the content property: Email content to be sent.
-     * 
+     *
      * @return the content value.
      */
     public EmailContent getContent() {
@@ -110,7 +110,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Get the recipients property: Recipients for the email.
-     * 
+     *
      * @return the recipients value.
      */
     public EmailRecipients getRecipients() {
@@ -119,8 +119,8 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Get the attachments property: List of attachments. Please note that we limit the total size of an email request
-     * (which includes attachments) to 10MB.
-     * 
+     * (which includes both regular and inline attachments) to 10MB.
+     *
      * @return the attachments value.
      */
     public List<EmailAttachment> getAttachments() {
@@ -129,8 +129,8 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Set the attachments property: List of attachments. Please note that we limit the total size of an email request
-     * (which includes attachments) to 10MB.
-     * 
+     * (which includes both regular and inline attachments) to 10MB.
+     *
      * @param attachments the attachments value to set.
      * @return the EmailMessage object itself.
      */
@@ -141,7 +141,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Get the replyTo property: Email addresses where recipients' replies will be sent to.
-     * 
+     *
      * @return the replyTo value.
      */
     public List<EmailAddress> getReplyTo() {
@@ -150,7 +150,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Set the replyTo property: Email addresses where recipients' replies will be sent to.
-     * 
+     *
      * @param replyTo the replyTo value to set.
      * @return the EmailMessage object itself.
      */
@@ -162,7 +162,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
     /**
      * Get the userEngagementTrackingDisabled property: Indicates whether user engagement tracking should be disabled
      * for this request if the resource-level user engagement tracking setting was already enabled in the control plane.
-     * 
+     *
      * @return the userEngagementTrackingDisabled value.
      */
     public Boolean isUserEngagementTrackingDisabled() {
@@ -172,7 +172,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
     /**
      * Set the userEngagementTrackingDisabled property: Indicates whether user engagement tracking should be disabled
      * for this request if the resource-level user engagement tracking setting was already enabled in the control plane.
-     * 
+     *
      * @param userEngagementTrackingDisabled the userEngagementTrackingDisabled value to set.
      * @return the EmailMessage object itself.
      */
@@ -199,7 +199,7 @@ public final class EmailMessage implements JsonSerializable<EmailMessage> {
 
     /**
      * Reads an instance of EmailMessage from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of EmailMessage if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

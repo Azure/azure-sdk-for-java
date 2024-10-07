@@ -14,7 +14,7 @@ import java.util.Map;
 public final class PublicIpPrefixesUpdateTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/PublicIpPrefixUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/PublicIpPrefixUpdateTags.json
      */
     /**
      * Sample code: Update public IP prefix tags.

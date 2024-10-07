@@ -127,29 +127,7 @@ public final class BlobClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public BlobClient buildClient() {
-        Objects.requireNonNull(blobName, "'blobName' cannot be null.");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null");
-
-        BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, LOGGER);
-
-        if (Objects.nonNull(customerProvidedKey) && Objects.nonNull(encryptionScope)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Customer provided key and encryption "
-                + "scope cannot both be set"));
-        }
-
-        /*
-        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
-        to read and debug.
-         */
-        String blobContainerName = CoreUtils.isNullOrEmpty(containerName) ? BlobContainerClient.ROOT_CONTAINER_NAME
-            : containerName;
-
-        BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-
-        BlobAsyncClient asyncClient = buildAsyncClient();
-
-        return new BlobClient(asyncClient, asyncClient.getHttpPipeline(), endpoint, serviceVersion, accountName,
-            blobContainerName, blobName, snapshot, customerProvidedKey, encryptionScope, versionId);
+        return new BlobClient(buildAsyncClient());
     }
 
     /**
@@ -193,17 +171,13 @@ public final class BlobClientBuilder implements
 
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        HttpPipeline pipeline = constructPipeline();
-
-        return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
-            snapshot, customerProvidedKey, encryptionScope, versionId);
-    }
-
-    private HttpPipeline constructPipeline() {
-        return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
+
+        return new BlobAsyncClient(pipeline, endpoint, serviceVersion, accountName, blobContainerName, blobName,
+            snapshot, customerProvidedKey, encryptionScope, versionId);
     }
 
     /**

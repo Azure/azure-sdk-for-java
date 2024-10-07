@@ -10,14 +10,15 @@ import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpoint;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateEndpointConnectionWithSystemData;
 import com.azure.resourcemanager.desktopvirtualization.models.PrivateLinkServiceConnectionState;
+import java.util.Collections;
+import java.util.List;
 
 public final class PrivateEndpointConnectionWithSystemDataImpl implements PrivateEndpointConnectionWithSystemData {
     private PrivateEndpointConnectionWithSystemDataInner innerObject;
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    PrivateEndpointConnectionWithSystemDataImpl(
-        PrivateEndpointConnectionWithSystemDataInner innerObject,
+    PrivateEndpointConnectionWithSystemDataImpl(PrivateEndpointConnectionWithSystemDataInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -35,6 +36,19 @@ public final class PrivateEndpointConnectionWithSystemDataImpl implements Privat
         return this.innerModel().type();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
+    public List<String> groupIds() {
+        List<String> inner = this.innerModel().groupIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public PrivateEndpoint privateEndpoint() {
         return this.innerModel().privateEndpoint();
     }
@@ -45,10 +59,6 @@ public final class PrivateEndpointConnectionWithSystemDataImpl implements Privat
 
     public PrivateEndpointConnectionProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public PrivateEndpointConnectionWithSystemDataInner innerModel() {

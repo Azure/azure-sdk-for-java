@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.AgentPoolSecurityProfile;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
@@ -296,6 +297,11 @@ public class ManagedClusterAgentPoolProfileProperties
      * The Windows agent pool's specific profile.
      */
     private AgentPoolWindowsProfile windowsProfile;
+
+    /*
+     * The security settings of an agent pool.
+     */
+    private AgentPoolSecurityProfile securityProfile;
 
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
@@ -1285,6 +1291,26 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the securityProfile property: The security settings of an agent pool.
+     * 
+     * @return the securityProfile value.
+     */
+    public AgentPoolSecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: The security settings of an agent pool.
+     * 
+     * @param securityProfile the securityProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withSecurityProfile(AgentPoolSecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1310,6 +1336,9 @@ public class ManagedClusterAgentPoolProfileProperties
         }
         if (windowsProfile() != null) {
             windowsProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
     }
 
@@ -1366,6 +1395,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeStringField("hostGroupID", this.hostGroupId);
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("windowsProfile", this.windowsProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1501,6 +1531,9 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("windowsProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.windowsProfile
                         = AgentPoolWindowsProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.securityProfile
+                        = AgentPoolSecurityProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

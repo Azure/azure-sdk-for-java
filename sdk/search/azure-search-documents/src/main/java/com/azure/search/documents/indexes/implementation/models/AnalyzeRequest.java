@@ -13,6 +13,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.CharFilterName;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.TokenFilterName;
 import java.io.IOException;
@@ -39,6 +40,11 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
      * analyzer instead. The tokenizer and analyzer parameters are mutually exclusive.
      */
     private LexicalTokenizerName tokenizer;
+
+    /*
+     * The name of the normalizer to use to normalize the given text.
+     */
+    private LexicalNormalizerName normalizer;
 
     /*
      * An optional list of token filters to use when breaking the given text. This parameter can only be set when using
@@ -115,6 +121,26 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
     }
 
     /**
+     * Get the normalizer property: The name of the normalizer to use to normalize the given text.
+     * 
+     * @return the normalizer value.
+     */
+    public LexicalNormalizerName getNormalizer() {
+        return this.normalizer;
+    }
+
+    /**
+     * Set the normalizer property: The name of the normalizer to use to normalize the given text.
+     * 
+     * @param normalizer the normalizer value to set.
+     * @return the AnalyzeRequest object itself.
+     */
+    public AnalyzeRequest setNormalizer(LexicalNormalizerName normalizer) {
+        this.normalizer = normalizer;
+        return this;
+    }
+
+    /**
      * Get the tokenFilters property: An optional list of token filters to use when breaking the given text. This
      * parameter can only be set when using the tokenizer parameter.
      * 
@@ -167,6 +193,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
         jsonWriter.writeStringField("text", this.text);
         jsonWriter.writeStringField("analyzer", this.analyzer == null ? null : this.analyzer.toString());
         jsonWriter.writeStringField("tokenizer", this.tokenizer == null ? null : this.tokenizer.toString());
+        jsonWriter.writeStringField("normalizer", this.normalizer == null ? null : this.normalizer.toString());
         jsonWriter.writeArrayField("tokenFilters", this.tokenFilters,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
         jsonWriter.writeArrayField("charFilters", this.charFilters,
@@ -189,6 +216,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
             String text = null;
             LexicalAnalyzerName analyzer = null;
             LexicalTokenizerName tokenizer = null;
+            LexicalNormalizerName normalizer = null;
             List<TokenFilterName> tokenFilters = null;
             List<CharFilterName> charFilters = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -202,6 +230,8 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                     analyzer = LexicalAnalyzerName.fromString(reader.getString());
                 } else if ("tokenizer".equals(fieldName)) {
                     tokenizer = LexicalTokenizerName.fromString(reader.getString());
+                } else if ("normalizer".equals(fieldName)) {
+                    normalizer = LexicalNormalizerName.fromString(reader.getString());
                 } else if ("tokenFilters".equals(fieldName)) {
                     tokenFilters = reader.readArray(reader1 -> TokenFilterName.fromString(reader1.getString()));
                 } else if ("charFilters".equals(fieldName)) {
@@ -214,6 +244,7 @@ public final class AnalyzeRequest implements JsonSerializable<AnalyzeRequest> {
                 AnalyzeRequest deserializedAnalyzeRequest = new AnalyzeRequest(text);
                 deserializedAnalyzeRequest.analyzer = analyzer;
                 deserializedAnalyzeRequest.tokenizer = tokenizer;
+                deserializedAnalyzeRequest.normalizer = normalizer;
                 deserializedAnalyzeRequest.tokenFilters = tokenFilters;
                 deserializedAnalyzeRequest.charFilters = charFilters;
 

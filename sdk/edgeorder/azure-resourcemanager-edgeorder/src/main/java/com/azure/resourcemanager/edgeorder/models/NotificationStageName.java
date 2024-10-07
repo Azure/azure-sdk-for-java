@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NotificationStageName. */
+/**
+ * Name of the stage.
+ */
 public final class NotificationStageName extends ExpandableStringEnum<NotificationStageName> {
-    /** Static value Shipped for NotificationStageName. */
+    /**
+     * Static value Shipped for NotificationStageName.
+     */
     public static final NotificationStageName SHIPPED = fromString("Shipped");
 
-    /** Static value Delivered for NotificationStageName. */
+    /**
+     * Static value Delivered for NotificationStageName.
+     */
     public static final NotificationStageName DELIVERED = fromString("Delivered");
 
     /**
+     * Creates a new instance of NotificationStageName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationStageName() {
+    }
+
+    /**
      * Creates or finds a NotificationStageName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NotificationStageName.
      */
-    @JsonCreator
     public static NotificationStageName fromString(String name) {
         return fromString(name, NotificationStageName.class);
     }
 
-    /** @return known NotificationStageName values. */
+    /**
+     * Gets known NotificationStageName values.
+     * 
+     * @return known NotificationStageName values.
+     */
     public static Collection<NotificationStageName> values() {
         return values(NotificationStageName.class);
     }

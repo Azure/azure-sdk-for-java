@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/fabric/ci.yml
+      - sdk/fabric/azure-resourcemanager-fabric/
+    exclude:
+      - sdk/fabric/pom.xml
+      - sdk/fabric/azure-resourcemanager-fabric/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/fabric/ci.yml
+      - sdk/fabric/azure-resourcemanager-fabric/
+    exclude:
+      - sdk/fabric/pom.xml
+      - sdk/fabric/azure-resourcemanager-fabric/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerfabric
+    displayName: azure-resourcemanager-fabric
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: fabric
+    Artifacts:
+      - name: azure-resourcemanager-fabric
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerfabric
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerfabric }}

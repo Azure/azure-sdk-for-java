@@ -10,7 +10,7 @@ package com.azure.resourcemanager.privatedns.generated;
 public final class VirtualNetworkLinksListSamples {
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/VirtualNetworkLinkList.
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/VirtualNetworkLinkList.
      * json
      */
     /**
@@ -23,6 +23,6 @@ public final class VirtualNetworkLinksListSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkLinks()
-            .list("resourceGroup1", "privatezone1.com", null, com.azure.core.util.Context.NONE);
+            .list("resourceGroup1", "privatelink.contoso.com", null, com.azure.core.util.Context.NONE);
     }
 }

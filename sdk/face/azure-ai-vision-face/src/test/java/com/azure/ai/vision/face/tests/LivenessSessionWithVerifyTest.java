@@ -6,7 +6,7 @@ package com.azure.ai.vision.face.tests;
 import com.azure.ai.vision.face.FaceServiceVersion;
 import com.azure.ai.vision.face.FaceSessionAsyncClient;
 import com.azure.ai.vision.face.FaceSessionClient;
-import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionJsonContent;
+import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionContent;
 import com.azure.ai.vision.face.models.CreateLivenessWithVerifySessionResult;
 import com.azure.ai.vision.face.models.LivenessOperationMode;
 import com.azure.ai.vision.face.models.LivenessWithVerifyImage;
@@ -19,7 +19,6 @@ import com.azure.ai.vision.face.tests.utils.FaceDisplayNameGenerator;
 import com.azure.ai.vision.face.tests.utils.TestUtils;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
-import org.apache.commons.lang3.tuple.Triple;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,6 +27,7 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.util.function.Tuple3;
 
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -46,7 +46,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
             String httpClientName, FaceServiceVersion serviceVersion,
             Supplier<ILivenessWithVerifySessionSyncCommands> commandProvider, String path) {
         String uuid = UUID.randomUUID().toString();
-        CreateLivenessWithVerifySessionJsonContent content = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
+        CreateLivenessWithVerifySessionContent content = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE)
             .setDeviceCorrelationId(uuid);
         createSessionAndVerify(commandProvider.get(), content, path);
     }
@@ -55,7 +55,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
     @MethodSource("getDataForTestSessionCreation")
     public void testCreateSessionDeviceIdOptional(
             String httpClientName, FaceServiceVersion serviceVersion, Supplier<ILivenessWithVerifySessionSyncCommands> commandProvider, String path) {
-        CreateLivenessWithVerifySessionJsonContent content = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
+        CreateLivenessWithVerifySessionContent content = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE)
             .setDeviceCorrelationIdSetInClient(true);
         createSessionAndVerify(commandProvider.get(), content, path);
     }
@@ -69,7 +69,7 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         int authTokenTimeToLiveInSeconds = 60;
         String uuid = UUID.randomUUID().toString();
 
-        CreateLivenessWithVerifySessionJsonContent content = new CreateLivenessWithVerifySessionJsonContent(LivenessOperationMode.PASSIVE)
+        CreateLivenessWithVerifySessionContent content = new CreateLivenessWithVerifySessionContent(LivenessOperationMode.PASSIVE)
             .setDeviceCorrelationId(uuid)
             .setAuthTokenTimeToLiveInSeconds(authTokenTimeToLiveInSeconds);
 
@@ -97,14 +97,14 @@ public class LivenessSessionWithVerifyTest extends FaceClientTestBase {
         String[] imagePaths = new String[] {null, Resources.TEST_IMAGE_PATH_DETECTLIVENESS_VERIFYIMAGE};
         LivenessSessionWithVerifyCommandsProvider[] providers =  LivenessSessionWithVerifyCommandsProvider.getFunctionProviders();
 
-        Stream<Triple<String, FaceServiceVersion, Supplier<ILivenessWithVerifySessionSyncCommands>>> clientArumentStream =
+        Stream<Tuple3<String, FaceServiceVersion, Supplier<ILivenessWithVerifySessionSyncCommands>>> clientArumentStream =
                 createClientArgumentStream(FaceSessionClient.class, FaceSessionAsyncClient.class, providers);
 
         return TestUtils.createCombinationWithClientArguments(clientArumentStream, imagePaths);
     }
 
     private CreateLivenessWithVerifySessionResult createSessionAndVerify(
-        ILivenessWithVerifySessionSyncCommands livenessCommands, CreateLivenessWithVerifySessionJsonContent content, String path) {
+        ILivenessWithVerifySessionSyncCommands livenessCommands, CreateLivenessWithVerifySessionContent content, String path) {
         BinaryData imageData = path != null ? Utils.loadFromFile(path) : null;
         CreateLivenessWithVerifySessionResult result = livenessCommands.createLivenessWithVerifySessionSync(content, imageData);
 

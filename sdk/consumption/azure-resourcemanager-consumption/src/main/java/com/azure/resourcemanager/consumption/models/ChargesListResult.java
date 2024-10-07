@@ -7,18 +7,20 @@ package com.azure.resourcemanager.consumption.models;
 import com.azure.resourcemanager.consumption.fluent.models.ChargesListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of ChargesListResult. */
+/**
+ * An immutable client-side representation of ChargesListResult.
+ */
 public interface ChargesListResult {
     /**
      * Gets the value property: The list of charge summary.
-     *
+     * 
      * @return the value value.
      */
     List<ChargeSummary> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.ChargesListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     ChargesListResultInner innerModel();

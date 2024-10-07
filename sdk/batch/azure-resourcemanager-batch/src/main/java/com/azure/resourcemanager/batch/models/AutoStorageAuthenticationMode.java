@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * The authentication mode which the Batch service will use to manage the auto-storage account.
  */
@@ -36,7 +33,6 @@ public enum AutoStorageAuthenticationMode {
      * @param value the serialized value to parse.
      * @return the parsed AutoStorageAuthenticationMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static AutoStorageAuthenticationMode fromString(String value) {
         if (value == null) {
             return null;
@@ -53,7 +49,6 @@ public enum AutoStorageAuthenticationMode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

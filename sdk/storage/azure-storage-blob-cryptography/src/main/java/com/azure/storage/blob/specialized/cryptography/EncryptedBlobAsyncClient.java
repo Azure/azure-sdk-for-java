@@ -111,6 +111,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     private final boolean requiresEncryption;
 
+    private final BlobClientSideEncryptionOptions clientSideEncryptionOptions;
+
     EncryptionScope getEncryptionScopeInternal() {
         return encryptionScope;
     }
@@ -129,6 +131,10 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
 
     boolean isRequiresEncryption() {
         return requiresEncryption;
+    }
+
+    BlobClientSideEncryptionOptions getClientSideEncryptionOptions() {
+        return clientSideEncryptionOptions;
     }
 
     /**
@@ -151,7 +157,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     EncryptedBlobAsyncClient(HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion, String accountName,
         String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope, AsyncKeyEncryptionKey key, String keyWrapAlgorithm, String versionId,
-        EncryptionVersion encryptionVersion, boolean requiresEncryption) {
+        EncryptionVersion encryptionVersion, boolean requiresEncryption,
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
         super(pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
             encryptionScope, versionId);
 
@@ -159,6 +166,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         this.keyWrapAlgorithm = keyWrapAlgorithm;
         this.encryptionVersion = encryptionVersion;
         this.requiresEncryption = requiresEncryption;
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
     }
 
     /**
@@ -175,7 +183,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), finalEncryptionScope,
-            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption, clientSideEncryptionOptions);
     }
 
     /**
@@ -196,7 +204,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         }
         return new EncryptedBlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
             getContainerName(), getBlobName(), getSnapshotId(), finalCustomerProvidedKey, encryptionScope, keyWrapper,
-            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption);
+            keyWrapAlgorithm, getVersionId(), encryptionVersion, requiresEncryption, clientSideEncryptionOptions);
     }
 
     boolean isEncryptionRequired() {
@@ -633,7 +641,8 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     Mono<EncryptedBlob> encryptBlob(Flux<ByteBuffer> plainTextFlux) {
         Objects.requireNonNull(this.keyWrapper, "keyWrapper cannot be null");
         try {
-            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey());
+            Encryptor encryptor = Encryptor.getEncryptor(this.encryptionVersion, generateSecretKey(),
+                clientSideEncryptionOptions);
 
             Map<String, String> keyWrappingMetadata = new HashMap<>();
             keyWrappingMetadata.put(AGENT_METADATA_KEY, AGENT_METADATA_VALUE);

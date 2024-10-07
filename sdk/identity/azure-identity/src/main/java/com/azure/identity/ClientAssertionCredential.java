@@ -49,8 +49,7 @@ import java.util.function.Supplier;
  *
  * <!-- src_embed com.azure.identity.credential.clientassertioncredential.construct -->
  * <pre>
- * TokenCredential clientAssertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientAssertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientAssertion&#40;&#40;&#41; -&gt; &quot;&lt;Client-Assertion&gt;&quot;&#41;
  *     .build&#40;&#41;;
@@ -68,8 +67,7 @@ import java.util.function.Supplier;
  *
  * <!-- src_embed com.azure.identity.credential.clientassertioncredential.constructwithproxy -->
  * <pre>
- * TokenCredential assertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential assertionCredential = new ClientAssertionCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientAssertion&#40;&#40;&#41; -&gt; &quot;&lt;Client-Assertion&gt;&quot;&#41;
  *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;

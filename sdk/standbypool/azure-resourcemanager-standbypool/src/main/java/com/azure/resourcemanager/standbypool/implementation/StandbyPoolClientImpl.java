@@ -13,8 +13,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
-import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -229,7 +229,7 @@ public final class StandbyPoolClientImpl implements StandbyPoolClient {
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-03-01-preview";
+        this.apiVersion = "2024-03-01";
         this.operations = new OperationsClientImpl(this);
         this.standbyVirtualMachinePools = new StandbyVirtualMachinePoolsClientImpl(this);
         this.standbyVirtualMachines = new StandbyVirtualMachinesClientImpl(this);

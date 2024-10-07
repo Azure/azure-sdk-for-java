@@ -398,7 +398,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listKubernetesVersions(this.client.getEndpoint(), apiVersion,
@@ -434,7 +434,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listKubernetesVersions(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -512,7 +512,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -542,7 +542,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
@@ -629,7 +629,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -665,7 +665,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -764,7 +764,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getUpgradeProfile(this.client.getEndpoint(), apiVersion,
@@ -802,7 +802,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getUpgradeProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -896,7 +896,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getAccessProfile(this.client.getEndpoint(), apiVersion,
@@ -943,7 +943,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (roleName == null) {
             return Mono.error(new IllegalArgumentException("Parameter roleName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getAccessProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1050,7 +1050,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listClusterAdminCredentials(this.client.getEndpoint(), apiVersion,
@@ -1088,7 +1088,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listClusterAdminCredentials(this.client.getEndpoint(), apiVersion,
@@ -1181,7 +1181,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listClusterUserCredentials(this.client.getEndpoint(), apiVersion,
@@ -1222,7 +1222,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listClusterUserCredentials(this.client.getEndpoint(), apiVersion,
@@ -1316,7 +1316,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listClusterMonitoringUserCredentials(this.client.getEndpoint(), apiVersion,
@@ -1354,7 +1354,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.listClusterMonitoringUserCredentials(this.client.getEndpoint(), apiVersion,
@@ -1443,7 +1443,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion,
@@ -1480,7 +1480,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1569,7 +1569,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
@@ -1612,7 +1612,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -1802,7 +1802,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.updateTags(this.client.getEndpoint(), apiVersion,
@@ -1845,7 +1845,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.updateTags(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2027,7 +2027,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
@@ -2064,7 +2064,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -2237,7 +2237,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetServicePrincipalProfile(this.client.getEndpoint(), apiVersion,
@@ -2282,7 +2282,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetServicePrincipalProfile(this.client.getEndpoint(), apiVersion,
@@ -2490,7 +2490,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.resetAadProfile(this.client.getEndpoint(), apiVersion,
@@ -2536,7 +2536,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.resetAadProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2744,7 +2744,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.rotateClusterCertificates(this.client.getEndpoint(), apiVersion,
@@ -2784,7 +2784,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.rotateClusterCertificates(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -2982,7 +2982,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.abortLatestOperation(this.client.getEndpoint(), apiVersion,
@@ -3023,7 +3023,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.abortLatestOperation(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3223,7 +3223,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.rotateServiceAccountSigningKeys(this.client.getEndpoint(), apiVersion,
@@ -3260,7 +3260,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.rotateServiceAccountSigningKeys(this.client.getEndpoint(), apiVersion,
@@ -3435,7 +3435,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -3477,7 +3477,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -3684,7 +3684,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.start(this.client.getEndpoint(), apiVersion,
@@ -3724,7 +3724,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
@@ -3922,7 +3922,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.runCommand(this.client.getEndpoint(), apiVersion,
@@ -3968,7 +3968,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         } else {
             requestPayload.validate();
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.runCommand(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -4182,7 +4182,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getCommandResult(this.client.getEndpoint(), apiVersion,
@@ -4224,7 +4224,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (commandId == null) {
             return Mono.error(new IllegalArgumentException("Parameter commandId is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getCommandResult(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -4317,7 +4317,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
@@ -4362,7 +4362,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4489,7 +4489,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMeshRevisionProfiles(this.client.getEndpoint(), apiVersion,
@@ -4527,7 +4527,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4639,7 +4639,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (mode == null) {
             return Mono.error(new IllegalArgumentException("Parameter mode is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getMeshRevisionProfile(this.client.getEndpoint(), apiVersion,
@@ -4678,7 +4678,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (mode == null) {
             return Mono.error(new IllegalArgumentException("Parameter mode is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getMeshRevisionProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
@@ -4770,7 +4770,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listMeshUpgradeProfiles(this.client.getEndpoint(), apiVersion,
@@ -4810,7 +4810,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -4921,7 +4921,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (mode == null) {
             return Mono.error(new IllegalArgumentException("Parameter mode is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getMeshUpgradeProfile(this.client.getEndpoint(), apiVersion,
@@ -4963,7 +4963,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         if (mode == null) {
             return Mono.error(new IllegalArgumentException("Parameter mode is required and cannot be null."));
         }
-        final String apiVersion = "2024-05-01";
+        final String apiVersion = "2024-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getMeshUpgradeProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),

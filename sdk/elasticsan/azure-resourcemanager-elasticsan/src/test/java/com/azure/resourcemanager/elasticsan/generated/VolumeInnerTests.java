@@ -28,7 +28,8 @@ public final class VolumeInnerTests {
         VolumeInner model = new VolumeInner()
             .withCreationData(
                 new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT).withSourceId("j"))
-            .withSizeGiB(8463316449918745617L).withManagedBy(new ManagedByInfo().withResourceId("bijhtxfvgxbf"));
+            .withSizeGiB(8463316449918745617L)
+            .withManagedBy(new ManagedByInfo().withResourceId("bijhtxfvgxbf"));
         model = BinaryData.fromObject(model).toObject(VolumeInner.class);
         Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.creationData().createSource());
         Assertions.assertEquals("j", model.creationData().sourceId());

@@ -28,7 +28,8 @@ public final class VolumePropertiesTests {
         VolumeProperties model = new VolumeProperties()
             .withCreationData(
                 new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceId("fbxzpuzycisp"))
-            .withSizeGiB(1357175486164499901L).withManagedBy(new ManagedByInfo().withResourceId("ebf"));
+            .withSizeGiB(1357175486164499901L)
+            .withManagedBy(new ManagedByInfo().withResourceId("ebf"));
         model = BinaryData.fromObject(model).toObject(VolumeProperties.class);
         Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
         Assertions.assertEquals("fbxzpuzycisp", model.creationData().sourceId());

@@ -1,6 +1,24 @@
 # Release History
 
-## 1.27.0-beta.1 (Unreleased)
+## 1.27.0-beta.3 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.27.0-beta.2 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.27.0-beta.1 (2024-09-12)
 
 ### Features Added
 
@@ -10,10 +28,14 @@
 ### Breaking Changes
 
 - Moved code related to testing HTTP client implementations to shared `azure-core` test code.
-
-### Bugs Fixed
+- Replaced dependency `commons-compress` with `ant` to handle tar.gz files. `ant` has fewer transitive dependencies,
+  reducing the likelihood of dependency conflicts.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 1.26.2 (2024-07-31)
 
