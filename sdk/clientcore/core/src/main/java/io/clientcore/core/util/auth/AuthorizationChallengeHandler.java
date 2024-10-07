@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import static io.clientcore.core.util.auth.AuthUtils.isNullOrEmpty;
+
 /**
  * Handles authorization challenges.
  */
@@ -20,6 +22,8 @@ public class AuthorizationChallengeHandler {
     private ChallengeHandler handler;
     private final String username;
     private final String password;
+    private static final String NEXT_NONCE = "nextnonce";
+    private static final String NONCE = "nonce";
 
     /**
      * Creates an {@link AuthorizationChallengeHandler} using the {@code username} and {@code password} to respond to
@@ -53,24 +57,50 @@ public class AuthorizationChallengeHandler {
      * @param uri The request URI.
      * @param challenges The list of challenges from the server.
      * @param entityBodySupplier A supplier for the request entity body.
+     * @param nonce The nonce value used in the digest authentication challenge.
      * @return The authorization header for digest authentication.
      */
-    public String handleDigest(String method, String uri, List<Map<String, String>> challenges, Supplier<BinaryData> entityBodySupplier) {
-        handler = new DigestHandler(username, password, method, uri, challenges, entityBodySupplier);
+    public String handleDigest(String method, String uri, List<Map<String, String>> challenges, Supplier<BinaryData> entityBodySupplier, String nonce) {
+        handler = new DigestHandler(username, password, method, uri, challenges, entityBodySupplier, nonce);
         return handler.handle();
     }
 
     /**
-     * Attempts to pipeline authorization based on the last challenge type.
+     * Attempts to pipeline authorization, if supported by the handler.
      *
-     * @return The authorization header, or null if no handler is available.
+     * @return The authorization header, or null if pipelining isn't supported.
      */
     public String attemptToPipelineAuthorization() {
         if (handler instanceof DigestHandler) {
-            return handler.handle();
+            ((DigestHandler) handler).setPipelineMode(true);
+            String result = handler.handle();
+            ((DigestHandler) handler).setPipelineMode(false);
+            return result;
         } else if (handler instanceof BasicHandler) {
             return handler.handle();
         }
         return null;
+    }
+
+    /**
+     * Consumes the authentication info header and updates the internal state, if applicable.
+     *
+     * @param authenticationInfoMap The parsed pieces of the authentication info header.
+     */
+    public void consumeAuthenticationInfoHeader(Map<String, String> authenticationInfoMap) {
+        if (!(handler instanceof DigestHandler)) {
+            return;
+        }
+        if (isNullOrEmpty(authenticationInfoMap)) {
+            return;
+        }
+
+        /*
+         * If the authentication info header has a nextnonce value set update the last challenge nonce value to it.
+         * The nextnonce value indicates to the client which nonce value it should use to generate its response value.
+         */
+        if (authenticationInfoMap.containsKey(NEXT_NONCE)) {
+            ((DigestHandler) (handler)).getLastChallenge().get().put(NONCE, authenticationInfoMap.get(NEXT_NONCE));
+        }
     }
 }

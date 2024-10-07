@@ -17,7 +17,12 @@ public abstract class ChallengeHandler {
      */
     public abstract String handle();
 
-    // Factory method for creating composite handlers
+    /**
+     * Factory method for creating composite handlers.
+     *
+     * @param handlers The array of `ChallengeHandler` instances to be combined.
+     * @return A `CompositeChallengeHandler` that combines the provided handlers.
+     */
     public static ChallengeHandler of(ChallengeHandler... handlers) {
         return new CompositeChallengeHandler(Arrays.asList(handlers));
     }

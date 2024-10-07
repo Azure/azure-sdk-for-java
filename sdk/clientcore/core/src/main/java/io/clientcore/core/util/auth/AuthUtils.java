@@ -1,5 +1,5 @@
-//  Copyright (c) Microsoft Corporation. All rights reserved.
-//  Licensed under the MIT License.
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package io.clientcore.core.util.auth;
 
@@ -10,12 +10,12 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.util.auth.AuthScheme.BASIC;
-import static io.clientcore.core.util.auth.AuthScheme.DIGEST;
 
 /**
  * Utility class for handling various HTTP authentication headers.
  */
 public class AuthUtils {
+    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
 
     /**
      * Header representing a server requesting authentication.
@@ -60,7 +60,7 @@ public class AuthUtils {
             return Collections.emptyMap();
         }
 
-        if (header.startsWith(BASIC.name()) || header.startsWith(DIGEST.name())) {
+        if (header.startsWith(BASIC.getScheme()) || header.startsWith(BASIC.getScheme())) {
             header = header.split(" ", 2)[1];
         }
 
@@ -93,4 +93,41 @@ public class AuthUtils {
         return map == null || map.isEmpty();
     }
 
+    /**
+     * Converts a byte array into a hex string.
+     *
+     * <p>The hex string returned uses characters {@code 0123456789abcdef}, if uppercase {@code ABCDEF} is required the
+     * returned string will need to be {@link String#toUpperCase() uppercased}.</p>
+     *
+     * <p>If {@code bytes} is null, null will be returned. If {@code bytes} was an empty array an empty string is
+     * returned.</p>
+     *
+     * @param bytes The byte array to convert into a hex string.
+     * @return A hex string representing the {@code bytes} that were passed, or null if {@code bytes} were null.
+     */
+    public static String bytesToHexString(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
+
+        if (bytes.length == 0) {
+            return "";
+        }
+
+        // Hex uses 4 bits, converting a byte to hex will double its size.
+        char[] hexString = new char[bytes.length * 2];
+
+        for (int i = 0; i < bytes.length; i++) {
+            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
+            int b = bytes[i] & 0xFF;
+
+            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
+            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
+
+            // Mask all but the last 4 bits and get the corresponding hex character.
+            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
+        }
+
+        return new String(hexString);
+    }
 }

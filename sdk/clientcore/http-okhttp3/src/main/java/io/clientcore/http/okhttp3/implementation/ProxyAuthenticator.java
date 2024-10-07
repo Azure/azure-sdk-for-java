@@ -5,8 +5,8 @@ package io.clientcore.http.okhttp3.implementation;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.auth.AuthorizationChallengeHandler;
 import io.clientcore.core.util.auth.AuthUtils;
+import io.clientcore.core.util.auth.AuthorizationChallengeHandler;
 import io.clientcore.core.util.binarydata.BinaryData;
 import okhttp3.Authenticator;
 import okhttp3.Challenge;
@@ -21,9 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.implementation.util.auth.DigestHandler.isNullOrEmpty;
-import static io.clientcore.core.util.auth.AuthUtils.PROXY_AUTHENTICATION_INFO;
-import static io.clientcore.core.util.auth.AuthUtils.isNullOrEmpty;
 import static io.clientcore.core.util.auth.AuthUtils.PROXY_AUTHENTICATION_INFO;
 import static io.clientcore.core.util.auth.AuthUtils.PROXY_AUTHORIZATION;
 import static io.clientcore.core.util.auth.AuthUtils.isNullOrEmpty;
@@ -89,12 +86,14 @@ public final class ProxyAuthenticator implements Authenticator {
      */
     @Override
     public Request authenticate(Route route, Response response) {
-        String authorizationHeader
-            = challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
+        String authorizationHeader =
+            challengeHandler.attemptToPipelineAuthorization();
 
         // Pipelining was successful, use the generated authorization header.
         if (!isNullOrEmpty(authorizationHeader)) {
-            return response.request().newBuilder().header(PROXY_AUTHORIZATION, authorizationHeader).build();
+            return response.request().newBuilder()
+                .header(PROXY_AUTHORIZATION, authorizationHeader)
+                .build();
         }
 
         // If this is a pre-emptive challenge quit now if pipelining doesn't produce anything.
@@ -115,8 +114,8 @@ public final class ProxyAuthenticator implements Authenticator {
 
         // Prefer digest challenges over basic.
         if (digestChallenges.size() > 0) {
-            authorizationHeader
-                = challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
+            authorizationHeader =
+                challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY, null);
         }
 
         /*
@@ -197,14 +196,15 @@ public final class ProxyAuthenticator implements Authenticator {
      * outlining that the values didn't match.
      */
     private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
-        Map<String, String> authorizationPieces) {
+                                                             Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(
-                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER.logThrowableAsError(
+                    new IllegalStateException(
+                        String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
         }
     }
