@@ -118,7 +118,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
                 TokenRequestContext tokenRequestContext = new TokenRequestContext()
                     .addScopes(this.challenge.getScopes())
-                    .setTenantId(this.challenge.getTenantId());
+                    .setTenantId(this.challenge.getTenantId())
+                    .setCaeEnabled(true);
 
                 return setAuthorizationHeader(context, tokenRequestContext);
             }
@@ -208,7 +209,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId());
+                .setTenantId(this.challenge.getTenantId())
+                .setCaeEnabled(true);
 
             String error = challengeAttributes.get("error");
 
@@ -219,9 +221,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     String claims = challengeAttributes.get("claims");
 
                     if (claims != null) {
-                        tokenRequestContext
-                            .setCaeEnabled(true)
-                            .setClaims(new String(Base64Util.decodeString(claims)));
+                        tokenRequestContext.setClaims(new String(Base64Util.decodeString(claims)));
                     }
                 }
             }
@@ -244,7 +244,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             // We fetched the challenge from the cache, but we have not initialized the scopes in the base yet.
             TokenRequestContext tokenRequestContext = new TokenRequestContext()
                 .addScopes(this.challenge.getScopes())
-                .setTenantId(this.challenge.getTenantId());
+                .setTenantId(this.challenge.getTenantId())
+                .setCaeEnabled(true);
 
             setAuthorizationHeaderSync(context, tokenRequestContext);
 
@@ -331,7 +332,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         TokenRequestContext tokenRequestContext = new TokenRequestContext()
             .addScopes(this.challenge.getScopes())
-            .setTenantId(this.challenge.getTenantId());
+            .setTenantId(this.challenge.getTenantId())
+            .setCaeEnabled(true);
 
         String error = challengeAttributes.get("error");
 
@@ -342,9 +344,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 String claims = challengeAttributes.get("claims");
 
                 if (claims != null) {
-                    tokenRequestContext
-                        .setCaeEnabled(true)
-                        .setClaims(new String(Base64Util.decodeString(claims)));
+                    tokenRequestContext.setClaims(new String(Base64Util.decodeString(claims)));
                 }
             }
         }
