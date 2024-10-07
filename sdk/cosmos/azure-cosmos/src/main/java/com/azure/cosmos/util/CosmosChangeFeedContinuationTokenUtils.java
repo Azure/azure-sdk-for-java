@@ -19,7 +19,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class CosmosChangeFeedContinuationTokenUtils {
+public final class CosmosChangeFeedContinuationTokenUtils {
+    private CosmosChangeFeedContinuationTokenUtils() {}
+    
     /***
      * Utility method to help extract continuation tokens for sub-feedRange
      * @param changeFeedContinuationToken the original change feed continuation token being returned from queryChangeFeed.
