@@ -102,9 +102,9 @@ public final class BlobInputStream extends StorageInputStream {
     /**
      * Allows for encrypted blobs to use BlobInputStream correctly by using the non-encrypted blob length
      */
-    private static Long adjustBlobLength(Long initialLength, Context context) {
+    private static long adjustBlobLength(long initialLength, Context context) {
         if (context != null && context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).isPresent()) {
-            return (Long) context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).get();
+            return (long) context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).get();
         }
         return initialLength;
     }
