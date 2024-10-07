@@ -56,11 +56,7 @@ public final class BlobInputStream extends StorageInputStream {
         ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties, Context context)
         throws BlobStorageException {
 
-        // allow for encrypted blobs to use BlobInputStream correctly by using the non-encrypted blob length
-        super(blobRangeOffset, blobRangeLength, chunkSize,
-            context != null && context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).isPresent() ?
-                (Long) context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).get() :
-                blobProperties.getBlobSize(), initialBuffer);
+        super(blobRangeOffset, blobRangeLength, chunkSize, adjustBlobLength(blobProperties.getBlobSize(), context), initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
@@ -101,6 +97,16 @@ public final class BlobInputStream extends StorageInputStream {
      */
     public BlobProperties getProperties() {
         return this.properties;
+    }
+
+    /**
+     * Allows for encrypted blobs to use BlobInputStream correctly by using the non-encrypted blob length
+     */
+    private static Long adjustBlobLength(Long initialLength, Context context) {
+        if (context != null && context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).isPresent()) {
+            return (Long) context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).get();
+        }
+        return initialLength;
     }
 
 }

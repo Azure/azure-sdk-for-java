@@ -5,12 +5,15 @@ package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.File;
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
@@ -114,8 +117,7 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
 
     @ParameterizedTest
     @MethodSource("provideRanges")
-    public void testAdjustedBlobRange(int originalOffset, long originalCount, int expectedNewOffset, long expectedNewCount) {
-        int regionLength = 16;
+    public void testAdjustedBlobRange(long originalOffset, long originalCount, long expectedNewOffset, long expectedNewCount, int regionLength) {
         EncryptionData encryptionData = new EncryptionData()
             .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2, EncryptionAlgorithm.AES_GCM_256))
             .setEncryptedRegionInfo(new EncryptedRegionInfo(regionLength, NONCE_LENGTH));
@@ -131,10 +133,11 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
 
     private static Stream<Arguments> provideRanges() {
         return Stream.of(
-            Arguments.of(5, 10, 0, 44), // Entirely within a single region, adjustment includes nonce and tag
-            Arguments.of(16, 16, 44, 44), // Exactly one region
-            Arguments.of(15, 35, 0, 176), // Straddles across four regions
-            Arguments.of(32, 15, 88, 44)  // Starts exactly at the second region
+            Arguments.of(5L, 10L, 0L, 44L, 16), // Entirely within a single region, adjustment includes nonce and tag
+            Arguments.of(16L, 16L, 44L, 44L, 16), // Exactly one region
+            Arguments.of(15L, 35L, 0L, 176L, 16), // Straddles across four regions
+            Arguments.of(32L, 15L, 88L, 44L, 16), // Starts exactly at the second region
+            Arguments.of(3674210304L, 10066367L, 8818104720L, 24159312L, 20) // Tests for integer overflow with a very large blob
         );
     }
 }

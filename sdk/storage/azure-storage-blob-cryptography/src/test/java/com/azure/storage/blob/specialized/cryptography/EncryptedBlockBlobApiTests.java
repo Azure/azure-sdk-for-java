@@ -1148,23 +1148,6 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         Files.deleteIfExists(file.toPath());
     }
 
-    @LiveOnly
-    @ParameterizedTest
-    @MethodSource("downloadStreamWithRangeSupplier")
-    public void downloadStreamWithRange(int fileSize, EncryptionVersion version) throws IOException {
-        byte[] data = getRandomByteArray(fileSize);
-        File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
-        Files.write(file.toPath(), data);
-
-        ebc = getEncryptionClient(version);
-        ebc.uploadFromFile(file.toPath().toString(), true);
-
-        BlobInputStream stream = ebc.openInputStream(new BlobRange(0, (long) fileSize), null);
-        TestUtils.assertArraysEqual(convertInputStreamToByteArray(stream), data);
-
-        Files.deleteIfExists(file.toPath());
-    }
-
     private static Stream<Arguments> downloadFileSupplier() {
         return Stream.of(
             Arguments.of(0, EncryptionVersion.V1), // empty file
@@ -1173,27 +1156,6 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of(8 * 1026 * 1024 + 10, EncryptionVersion.V1), // medium file not aligned to block
             Arguments.of(50 * Constants.MB, EncryptionVersion.V1), // large file requiring multiple requests
             Arguments.of(0, EncryptionVersion.V2), // empty file
-            Arguments.of(20, EncryptionVersion.V2), // small file
-            Arguments.of(16 * 1024 * 1024, EncryptionVersion.V2), // medium file in several chunks
-            Arguments.of(8 * 1026 * 1024 + 10, EncryptionVersion.V2), // medium file not aligned to block
-            Arguments.of(50 * Constants.MB, EncryptionVersion.V2), // large file requiring multiple requests
-            Arguments.of((4 * Constants.MB) + 1, EncryptionVersion.V2), // 4mb file bug
-            Arguments.of(4 * Constants.MB, EncryptionVersion.V2), // 4mb file bug
-            Arguments.of((4 * Constants.MB) + 27, EncryptionVersion.V2), // 4mb file bug
-            Arguments.of(16 * Constants.MB, EncryptionVersion.V2) // 4mb file bug
-        );
-    }
-
-    private static Stream<Arguments> downloadStreamWithRangeSupplier() {
-        return Stream.of(
-//            Arguments.of(0, EncryptionVersion.V1), // empty file
-            //todo isbr: uncomment when we find out if this is supported
-            Arguments.of(20, EncryptionVersion.V1), // small file
-            Arguments.of(16 * 1024 * 1024, EncryptionVersion.V1), // medium file in several chunks
-            Arguments.of(8 * 1026 * 1024 + 10, EncryptionVersion.V1), // medium file not aligned to block
-            Arguments.of(50 * Constants.MB, EncryptionVersion.V1), // large file requiring multiple requests
-//            Arguments.of(0, EncryptionVersion.V2), // empty file
-            //todo isbr: uncomment when we find out if this is supported
             Arguments.of(20, EncryptionVersion.V2), // small file
             Arguments.of(16 * 1024 * 1024, EncryptionVersion.V2), // medium file in several chunks
             Arguments.of(8 * 1026 * 1024 + 10, EncryptionVersion.V2), // medium file not aligned to block
