@@ -7,8 +7,11 @@
 * Added support to allow `queryChangeFeed` to complete when all changes available when the query starts have been fetched. - See [PR 42160](https://github.com/Azure/azure-sdk-for-java/pull/42160)
 
 #### Breaking Changes
+* Fixed an issue where holding onto `CosmosException` instance would hold a strong reference to an `RxDocumentClientImpl` preventing garbage collection of the lattern. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178) 
 
 #### Bugs Fixed
+* Fixed an issue where a `NullPointerException` was thrown with circuit breaker enabled and partition split / merge scenarios. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)
+* Fixed a diagnostic issue when a `Batch` operation would hit end-to-end timeout. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)  
 
 #### Other Changes
 
