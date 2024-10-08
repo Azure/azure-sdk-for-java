@@ -16,8 +16,8 @@ public final class ReservationSummaryImpl implements ReservationSummary {
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    ReservationSummaryImpl(
-        ReservationSummaryInner innerObject, com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
+    ReservationSummaryImpl(ReservationSummaryInner innerObject,
+        com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

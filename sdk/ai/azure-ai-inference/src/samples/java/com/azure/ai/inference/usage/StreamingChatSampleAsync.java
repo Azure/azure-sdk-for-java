@@ -61,7 +61,7 @@ public final class StreamingChatSampleAsync {
                     return "";
                 }
 
-                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoices().get(0).getDelta();
+                StreamingChatResponseMessageUpdate delta = chatCompletions.getChoice().getDelta();
 
                 if (delta.getRole() != null) {
                     System.out.println("Role = " + delta.getRole());

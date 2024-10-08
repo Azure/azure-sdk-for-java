@@ -249,6 +249,12 @@
 # ServiceLabel: %Cognitive - Mgmt
 # ServiceOwners:                                     @yangyuan
 
+# PRLabel: %Cognitive - Health Insights
+/sdk/healthinsights/                                               @tomsft @koen-mertens
+
+# ServiceLabel: %Cognitive - Health Insights
+# ServiceOwners:                                                   @tomsft @koen-mertens
+
 # ServiceLabel: %Commerce
 # ServiceOwners:                                     @ms-premp @qiaozha
 
