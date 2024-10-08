@@ -1133,8 +1133,22 @@ public class BlobApiTests extends BlobTestBase {
          */
         Hooks.onErrorDropped(ignored -> /* do nothing with it */ { });
 
-        assertThrows(BlobStorageException.class, () -> bcDownloading.downloadToFileWithResponse(outFile.toPath().toString(),
-            null, options, null, null, false, null, null));
+        //sometimes returns a composite exception, so this block handles that
+        assertThrows(BlobStorageException.class, () -> {
+            try {
+                bcDownloading.downloadToFileWithResponse(outFile.toPath().toString(), null, options,
+                    null, null, false, null, null);
+            } catch (Exception e) {
+                Throwable cause = e;
+                while (cause != null) {
+                    if (cause instanceof BlobStorageException && ((BlobStorageException) cause).getStatusCode() == 412) {
+                        throw cause;
+                    }
+                    cause = cause.getCause();
+                }
+                throw e;
+            }
+        });
 
         // Give the file a chance to be deleted by the download operation before verifying its deletion
         sleepIfRunningAgainstService(500);
