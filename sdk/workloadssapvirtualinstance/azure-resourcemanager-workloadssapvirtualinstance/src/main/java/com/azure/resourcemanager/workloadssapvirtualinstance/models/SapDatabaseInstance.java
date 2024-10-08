@@ -50,7 +50,7 @@ public interface SapDatabaseInstance {
     Map<String, String> tags();
 
     /**
-     * Gets the properties property: Defines the Database properties.
+     * Gets the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -183,9 +183,9 @@ public interface SapDatabaseInstance {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: Defines the Database properties..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties Defines the Database properties.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(SapDatabaseProperties properties);
@@ -259,7 +259,7 @@ public interface SapDatabaseInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance();
+    OperationStatusResult start();
 
     /**
      * Starts the database instance of the SAP system.
@@ -271,7 +271,7 @@ public interface SapDatabaseInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(StartRequest body, Context context);
+    OperationStatusResult start(StartRequest body, Context context);
 
     /**
      * Stops the database instance of the SAP system.
@@ -280,7 +280,7 @@ public interface SapDatabaseInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance();
+    OperationStatusResult stop();
 
     /**
      * Stops the database instance of the SAP system.
@@ -292,5 +292,5 @@ public interface SapDatabaseInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(StopRequest body, Context context);
+    OperationStatusResult stop(StopRequest body, Context context);
 }

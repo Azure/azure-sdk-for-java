@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class NamingPatternType extends ExpandableStringEnum<NamingPatternT
      * @param name a name to look for.
      * @return the corresponding NamingPatternType.
      */
-    @JsonCreator
     public static NamingPatternType fromString(String name) {
         return fromString(name, NamingPatternType.class);
     }

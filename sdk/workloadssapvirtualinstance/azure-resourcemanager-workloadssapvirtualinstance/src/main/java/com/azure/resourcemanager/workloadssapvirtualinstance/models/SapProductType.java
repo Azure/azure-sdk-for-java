@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SapProductType extends ExpandableStringEnum<SapProductType> {
      * @param name a name to look for.
      * @return the corresponding SapProductType.
      */
-    @JsonCreator
     public static SapProductType fromString(String name) {
         return fromString(name, SapProductType.class);
     }

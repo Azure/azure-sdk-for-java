@@ -11,6 +11,13 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapSi
  */
 public interface SapSizingRecommendationResult {
     /**
+     * Gets the deploymentType property: The deployment type. Eg: SingleServer/ThreeTier.
+     * 
+     * @return the deploymentType value.
+     */
+    SapDeploymentType deploymentType();
+
+    /**
      * Gets the inner
      * com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapSizingRecommendationResultInner object.
      * 

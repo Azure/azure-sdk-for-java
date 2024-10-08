@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -32,7 +31,6 @@ public final class SapDatabaseScaleMethod extends ExpandableStringEnum<SapDataba
      * @param name a name to look for.
      * @return the corresponding SapDatabaseScaleMethod.
      */
-    @JsonCreator
     public static SapDatabaseScaleMethod fromString(String name) {
         return fromString(name, SapDatabaseScaleMethod.class);
     }

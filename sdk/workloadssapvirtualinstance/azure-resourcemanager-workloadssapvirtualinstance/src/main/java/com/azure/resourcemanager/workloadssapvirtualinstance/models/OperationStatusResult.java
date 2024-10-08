@@ -21,6 +21,14 @@ public interface OperationStatusResult {
     String id();
 
     /**
+     * Gets the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
+     * 
+     * @return the resourceId value.
+     */
+    String resourceId();
+
+    /**
      * Gets the name property: Name of the async operation.
      * 
      * @return the name value.

@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The supported disk size details for a disk type.
  */
 @Fluent
-public final class DiskDetails {
+public final class DiskDetails implements JsonSerializable<DiskDetails> {
     /*
      * The type of disk sku. For example, Standard_LRS, Standard_ZRS, Premium_LRS, Premium_ZRS.
      */
-    @JsonProperty(value = "sku")
     private DiskSku sku;
 
     /*
      * The disk size in GB.
      */
-    @JsonProperty(value = "sizeGB")
     private Long sizeGB;
 
     /*
      * The minimum supported disk count.
      */
-    @JsonProperty(value = "minimumSupportedDiskCount")
     private Long minimumSupportedDiskCount;
 
     /*
      * The maximum supported disk count.
      */
-    @JsonProperty(value = "maximumSupportedDiskCount")
     private Long maximumSupportedDiskCount;
 
     /*
      * The disk Iops.
      */
-    @JsonProperty(value = "iopsReadWrite")
     private Long iopsReadWrite;
 
     /*
      * The disk provisioned throughput in MBps.
      */
-    @JsonProperty(value = "mbpsReadWrite")
     private Long mbpsReadWrite;
 
     /*
      * The disk tier, e.g. P10, E10.
      */
-    @JsonProperty(value = "diskTier")
     private String diskTier;
 
     /**
@@ -209,5 +206,59 @@ public final class DiskDetails {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeNumberField("sizeGB", this.sizeGB);
+        jsonWriter.writeNumberField("minimumSupportedDiskCount", this.minimumSupportedDiskCount);
+        jsonWriter.writeNumberField("maximumSupportedDiskCount", this.maximumSupportedDiskCount);
+        jsonWriter.writeNumberField("iopsReadWrite", this.iopsReadWrite);
+        jsonWriter.writeNumberField("mbpsReadWrite", this.mbpsReadWrite);
+        jsonWriter.writeStringField("diskTier", this.diskTier);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiskDetails.
+     */
+    public static DiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskDetails deserializedDiskDetails = new DiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedDiskDetails.sku = DiskSku.fromJson(reader);
+                } else if ("sizeGB".equals(fieldName)) {
+                    deserializedDiskDetails.sizeGB = reader.getNullable(JsonReader::getLong);
+                } else if ("minimumSupportedDiskCount".equals(fieldName)) {
+                    deserializedDiskDetails.minimumSupportedDiskCount = reader.getNullable(JsonReader::getLong);
+                } else if ("maximumSupportedDiskCount".equals(fieldName)) {
+                    deserializedDiskDetails.maximumSupportedDiskCount = reader.getNullable(JsonReader::getLong);
+                } else if ("iopsReadWrite".equals(fieldName)) {
+                    deserializedDiskDetails.iopsReadWrite = reader.getNullable(JsonReader::getLong);
+                } else if ("mbpsReadWrite".equals(fieldName)) {
+                    deserializedDiskDetails.mbpsReadWrite = reader.getNullable(JsonReader::getLong);
+                } else if ("diskTier".equals(fieldName)) {
+                    deserializedDiskDetails.diskTier = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskDetails;
+        });
     }
 }

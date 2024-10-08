@@ -12,32 +12,33 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest
 public final class SapVirtualInstancesStartSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapvirtualinstances/SAPVirtualInstances_Start_WithInfraOperations.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_Start.json
      */
     /**
-     * Sample code: Start the virtual machines and the SAP system.
+     * Sample code: SAPVirtualInstances_Start.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void startTheVirtualMachinesAndTheSAPSystem(
+    public static void sAPVirtualInstancesStart(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().start("test-rg", "X00", new StartRequest().withStartVm(true),
-            com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances()
+            .start("test-rg", "X00", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapvirtualinstances/SAPVirtualInstances_Start.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_StartWithInfraOperations.json
      */
     /**
-     * Sample code: Start the SAP system.
+     * Sample code: SAPVirtualInstances_Start_WithInfraOperations.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void startTheSAPSystem(
+    public static void sAPVirtualInstancesStartWithInfraOperations(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().start("test-rg", "X00", null, com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances()
+            .start("test-rg", "X00", new StartRequest().withStartVm(true), com.azure.core.util.Context.NONE);
     }
 }

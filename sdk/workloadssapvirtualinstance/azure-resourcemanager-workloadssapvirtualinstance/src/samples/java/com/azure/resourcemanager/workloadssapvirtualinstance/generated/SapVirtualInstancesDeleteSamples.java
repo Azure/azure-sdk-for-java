@@ -10,8 +10,8 @@ package com.azure.resourcemanager.workloadssapvirtualinstance.generated;
 public final class SapVirtualInstancesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapvirtualinstances/SAPVirtualInstances_Delete.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_Delete.json
      */
     /**
      * Sample code: SAPVirtualInstances_Delete.

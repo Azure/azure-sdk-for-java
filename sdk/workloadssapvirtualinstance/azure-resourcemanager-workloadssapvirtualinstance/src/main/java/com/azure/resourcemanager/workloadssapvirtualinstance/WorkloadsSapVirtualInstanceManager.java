@@ -25,16 +25,14 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.WorkloadsClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.OperationsImpl;
-import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.ResourceProvidersImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapApplicationServerInstancesImpl;
-import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapCentralInstancesImpl;
+import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapCentralServerInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapDatabaseInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.SapVirtualInstancesImpl;
 import com.azure.resourcemanager.workloadssapvirtualinstance.implementation.WorkloadsClientBuilder;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.Operations;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.ResourceProviders;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapApplicationServerInstances;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralInstances;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapCentralServerInstances;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseInstances;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapVirtualInstances;
 import java.time.Duration;
@@ -49,15 +47,13 @@ import java.util.stream.Collectors;
  * Workloads client provides access to various workload operations.
  */
 public final class WorkloadsSapVirtualInstanceManager {
-    private ResourceProviders resourceProviders;
-
     private SapVirtualInstances sapVirtualInstances;
 
-    private SapCentralInstances sapCentralInstances;
+    private SapApplicationServerInstances sapApplicationServerInstances;
+
+    private SapCentralServerInstances sapCentralServerInstances;
 
     private SapDatabaseInstances sapDatabaseInstances;
-
-    private SapApplicationServerInstances sapApplicationServerInstances;
 
     private Operations operations;
 
@@ -68,8 +64,10 @@ public final class WorkloadsSapVirtualInstanceManager {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new WorkloadsClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -221,12 +219,19 @@ public final class WorkloadsSapVirtualInstanceManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-")
-                .append("com.azure.resourcemanager.workloadssapvirtualinstance").append("/").append("1.0.0-beta.1");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.workloadssapvirtualinstance")
+                .append("/")
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -245,32 +250,23 @@ public final class WorkloadsSapVirtualInstanceManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new WorkloadsSapVirtualInstanceManager(httpPipeline, profile, defaultPollInterval);
         }
-    }
-
-    /**
-     * Gets the resource collection API of ResourceProviders.
-     * 
-     * @return Resource collection API of ResourceProviders.
-     */
-    public ResourceProviders resourceProviders() {
-        if (this.resourceProviders == null) {
-            this.resourceProviders = new ResourceProvidersImpl(clientObject.getResourceProviders(), this);
-        }
-        return resourceProviders;
     }
 
     /**
@@ -286,15 +282,29 @@ public final class WorkloadsSapVirtualInstanceManager {
     }
 
     /**
-     * Gets the resource collection API of SapCentralInstances. It manages SapCentralServerInstance.
+     * Gets the resource collection API of SapApplicationServerInstances. It manages SapApplicationServerInstance.
      * 
-     * @return Resource collection API of SapCentralInstances.
+     * @return Resource collection API of SapApplicationServerInstances.
      */
-    public SapCentralInstances sapCentralInstances() {
-        if (this.sapCentralInstances == null) {
-            this.sapCentralInstances = new SapCentralInstancesImpl(clientObject.getSapCentralInstances(), this);
+    public SapApplicationServerInstances sapApplicationServerInstances() {
+        if (this.sapApplicationServerInstances == null) {
+            this.sapApplicationServerInstances
+                = new SapApplicationServerInstancesImpl(clientObject.getSapApplicationServerInstances(), this);
         }
-        return sapCentralInstances;
+        return sapApplicationServerInstances;
+    }
+
+    /**
+     * Gets the resource collection API of SapCentralServerInstances. It manages SapCentralServerInstance.
+     * 
+     * @return Resource collection API of SapCentralServerInstances.
+     */
+    public SapCentralServerInstances sapCentralServerInstances() {
+        if (this.sapCentralServerInstances == null) {
+            this.sapCentralServerInstances
+                = new SapCentralServerInstancesImpl(clientObject.getSapCentralServerInstances(), this);
+        }
+        return sapCentralServerInstances;
     }
 
     /**
@@ -307,19 +317,6 @@ public final class WorkloadsSapVirtualInstanceManager {
             this.sapDatabaseInstances = new SapDatabaseInstancesImpl(clientObject.getSapDatabaseInstances(), this);
         }
         return sapDatabaseInstances;
-    }
-
-    /**
-     * Gets the resource collection API of SapApplicationServerInstances. It manages SapApplicationServerInstance.
-     * 
-     * @return Resource collection API of SapApplicationServerInstances.
-     */
-    public SapApplicationServerInstances sapApplicationServerInstances() {
-        if (this.sapApplicationServerInstances == null) {
-            this.sapApplicationServerInstances
-                = new SapApplicationServerInstancesImpl(clientObject.getSapApplicationServerInstances(), this);
-        }
-        return sapApplicationServerInstances;
     }
 
     /**

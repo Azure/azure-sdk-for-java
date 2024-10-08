@@ -10,15 +10,15 @@ package com.azure.resourcemanager.workloadssapvirtualinstance.generated;
 public final class SapDatabaseInstancesListSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapdatabaseinstances/SAPDatabaseInstances_List.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapDatabaseInstances_List.json
      */
     /**
-     * Sample code: SAPDatabaseInstances_List.
+     * Sample code: SAPDatabaseInstances list by SAP virtual instance.
      * 
      * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
      */
-    public static void sAPDatabaseInstancesList(
+    public static void sAPDatabaseInstancesListBySAPVirtualInstance(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
         manager.sapDatabaseInstances().list("test-rg", "X00", com.azure.core.util.Context.NONE);
     }

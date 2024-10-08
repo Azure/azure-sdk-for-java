@@ -13,6 +13,158 @@ import com.azure.core.util.Context;
  */
 public interface SapVirtualInstances {
     /**
+     * Get the recommended SAP Availability Zone Pair Details for your region.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the recommended SAP Availability Zone Pair Details for your region along with {@link Response}.
+     */
+    Response<SapAvailabilityZoneDetailsResult> invokeAvailabilityZoneDetailsWithResponse(String location,
+        SapAvailabilityZoneDetailsRequest body, Context context);
+
+    /**
+     * Get the recommended SAP Availability Zone Pair Details for your region.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the recommended SAP Availability Zone Pair Details for your region.
+     */
+    SapAvailabilityZoneDetailsResult invokeAvailabilityZoneDetails(String location,
+        SapAvailabilityZoneDetailsRequest body);
+
+    /**
+     * Get the SAP Disk Configuration Layout prod/non-prod SAP System.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAP Disk Configuration Layout prod/non-prod SAP System along with {@link Response}.
+     */
+    Response<SapDiskConfigurationsResult> invokeDiskConfigurationsWithResponse(String location,
+        SapDiskConfigurationsRequest body, Context context);
+
+    /**
+     * Get the SAP Disk Configuration Layout prod/non-prod SAP System.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the SAP Disk Configuration Layout prod/non-prod SAP System.
+     */
+    SapDiskConfigurationsResult invokeDiskConfigurations(String location, SapDiskConfigurationsRequest body);
+
+    /**
+     * Get a list of SAP supported SKUs for ASCS, Application and Database tier.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of SAP supported SKUs for ASCS, Application and Database tier along with {@link Response}.
+     */
+    Response<SapSupportedResourceSkusResult> invokeSapSupportedSkuWithResponse(String location,
+        SapSupportedSkusRequest body, Context context);
+
+    /**
+     * Get a list of SAP supported SKUs for ASCS, Application and Database tier.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of SAP supported SKUs for ASCS, Application and Database tier.
+     */
+    SapSupportedResourceSkusResult invokeSapSupportedSku(String location, SapSupportedSkusRequest body);
+
+    /**
+     * Gets the sizing recommendations.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sizing recommendations along with {@link Response}.
+     */
+    Response<SapSizingRecommendationResult> invokeSizingRecommendationsWithResponse(String location,
+        SapSizingRecommendationRequest body, Context context);
+
+    /**
+     * Gets the sizing recommendations.
+     * 
+     * @param location The name of the Azure region.
+     * @param body The content of the action request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the sizing recommendations.
+     */
+    SapSizingRecommendationResult invokeSizingRecommendations(String location, SapSizingRecommendationRequest body);
+
+    /**
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SapVirtualInstance> list();
+
+    /**
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SapVirtualInstance> list(Context context);
+
+    /**
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName);
+
+    /**
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
      * Gets a Virtual Instance for SAP solutions resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -62,53 +214,6 @@ public interface SapVirtualInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void delete(String resourceGroupName, String sapVirtualInstanceName, Context context);
-
-    /**
-     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName);
-
-    /**
-     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<SapVirtualInstance> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
-     * 
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<SapVirtualInstance> list();
-
-    /**
-     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
-     * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with
-     * {@link PagedIterable}.
-     */
-    PagedIterable<SapVirtualInstance> list(Context context);
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ManagedResourcesNetworkAccessType extends ExpandableStringEnu
      * @param name a name to look for.
      * @return the corresponding ManagedResourcesNetworkAccessType.
      */
-    @JsonCreator
     public static ManagedResourcesNetworkAccessType fromString(String name) {
         return fromString(name, ManagedResourcesNetworkAccessType.class);
     }

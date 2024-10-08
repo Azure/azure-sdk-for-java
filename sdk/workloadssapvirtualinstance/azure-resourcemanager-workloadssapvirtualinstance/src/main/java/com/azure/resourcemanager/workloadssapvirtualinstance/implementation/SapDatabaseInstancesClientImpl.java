@@ -36,7 +36,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapDatabaseInstancesClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapDatabaseInstanceInner;
-import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseInstanceList;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseInstanceListResult;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StartRequest;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.UpdateSapDatabaseInstanceRequest;
@@ -77,92 +77,235 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     @ServiceInterface(name = "WorkloadsClientSapDa")
     public interface SapDatabaseInstancesService {
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SapDatabaseInstanceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapDatabaseInstanceInner>> get(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
-            @PathParam("databaseInstanceName") String databaseInstanceName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("databaseInstanceName") String databaseInstanceName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
             @PathParam("databaseInstanceName") String databaseInstanceName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") SapDatabaseInstanceInner body,
-            @HeaderParam("Accept") String accept, Context context);
+            @BodyParam("application/json") SapDatabaseInstanceInner resource, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapDatabaseInstanceInner>> update(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
             @PathParam("databaseInstanceName") String databaseInstanceName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") UpdateSapDatabaseInstanceRequest body, @HeaderParam("Accept") String accept,
-            Context context);
+            @BodyParam("application/json") UpdateSapDatabaseInstanceRequest properties,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
-            @PathParam("databaseInstanceName") String databaseInstanceName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapDatabaseInstanceList>> list(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @PathParam("databaseInstanceName") String databaseInstanceName, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}/start")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> startInstance(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
             @PathParam("databaseInstanceName") String databaseInstanceName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") StartRequest body,
-            @HeaderParam("Accept") String accept, Context context);
+            @BodyParam("application/json") StartRequest body, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/databaseInstances/{databaseInstanceName}/stop")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stopInstance(@HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sapVirtualInstanceName") String sapVirtualInstanceName,
             @PathParam("databaseInstanceName") String databaseInstanceName,
-            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") StopRequest body,
-            @HeaderParam("Accept") String accept, Context context);
+            @BodyParam("application/json") StopRequest body, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SapDatabaseInstanceList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SapDatabaseInstanceListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SAPDatabaseInstance list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SapDatabaseInstanceInner>> listSinglePageAsync(String resourceGroupName,
+        String sapVirtualInstanceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sapVirtualInstanceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, accept, context))
+            .<PagedResponse<SapDatabaseInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SAPDatabaseInstance list operation along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<SapDatabaseInstanceInner>> listSinglePageAsync(String resourceGroupName,
+        String sapVirtualInstanceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (sapVirtualInstanceName == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, sapVirtualInstanceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SAPDatabaseInstance list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SapDatabaseInstanceInner> listAsync(String resourceGroupName, String sapVirtualInstanceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, sapVirtualInstanceName),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SAPDatabaseInstance list operation as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<SapDatabaseInstanceInner> listAsync(String resourceGroupName, String sapVirtualInstanceName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, sapVirtualInstanceName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SAPDatabaseInstance list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SapDatabaseInstanceInner> list(String resourceGroupName, String sapVirtualInstanceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, sapVirtualInstanceName));
+    }
+
+    /**
+     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a SAPDatabaseInstance list operation as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SapDatabaseInstanceInner> list(String resourceGroupName, String sapVirtualInstanceName,
+        Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, sapVirtualInstanceName, context));
     }
 
     /**
@@ -202,9 +345,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -246,8 +389,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, sapVirtualInstanceName, databaseInstanceName, accept, context);
     }
 
     /**
@@ -309,13 +452,14 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -323,7 +467,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
-        String sapVirtualInstanceName, String databaseInstanceName, SapDatabaseInstanceInner body) {
+        String sapVirtualInstanceName, String databaseInstanceName, SapDatabaseInstanceInner resource) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -344,26 +488,29 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             return Mono
                 .error(new IllegalArgumentException("Parameter databaseInstanceName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (resource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body, accept, context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName,
+                resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -372,7 +519,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
-        String sapVirtualInstanceName, String databaseInstanceName, SapDatabaseInstanceInner body, Context context) {
+        String sapVirtualInstanceName, String databaseInstanceName, SapDatabaseInstanceInner resource,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -393,24 +541,27 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             return Mono
                 .error(new IllegalArgumentException("Parameter databaseInstanceName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (resource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resource is required and cannot be null."));
+        } else {
+            resource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body, accept, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource, accept, context);
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -419,9 +570,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreateAsync(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName,
-        SapDatabaseInstanceInner body) {
+        SapDatabaseInstanceInner resource) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
+            = createWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource);
         return this.client.<SapDatabaseInstanceInner, SapDatabaseInstanceInner>getLroResult(mono,
             this.client.getHttpPipeline(), SapDatabaseInstanceInner.class, SapDatabaseInstanceInner.class,
             this.client.getContext());
@@ -429,37 +580,14 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of define the Database resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner>
-        beginCreateAsync(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
-        final SapDatabaseInstanceInner body = null;
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
-        return this.client.<SapDatabaseInstanceInner, SapDatabaseInstanceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), SapDatabaseInstanceInner.class, SapDatabaseInstanceInner.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
-     * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -469,44 +597,47 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreateAsync(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName,
-        SapDatabaseInstanceInner body, Context context) {
+        SapDatabaseInstanceInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, sapVirtualInstanceName,
+            databaseInstanceName, resource, context);
         return this.client.<SapDatabaseInstanceInner, SapDatabaseInstanceInner>getLroResult(mono,
             this.client.getHttpPipeline(), SapDatabaseInstanceInner.class, SapDatabaseInstanceInner.class, context);
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
+     * @param resource Request body of Database resource of a SAP system.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of define the Database resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner>
-        beginCreate(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
-        final SapDatabaseInstanceInner body = null;
-        return this.beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body)
+    public SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreate(
+        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName,
+        SapDatabaseInstanceInner resource) {
+        return this.beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource)
             .getSyncPoller();
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -516,20 +647,21 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SapDatabaseInstanceInner>, SapDatabaseInstanceInner> beginCreate(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName,
-        SapDatabaseInstanceInner body, Context context) {
-        return this.beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
+        SapDatabaseInstanceInner resource, Context context) {
+        return this.beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource, context)
             .getSyncPoller();
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,41 +669,21 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapDatabaseInstanceInner> createAsync(String resourceGroupName, String sapVirtualInstanceName,
-        String databaseInstanceName, SapDatabaseInstanceInner body) {
-        return beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
+        String databaseInstanceName, SapDatabaseInstanceInner resource) {
+        return beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Database resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SapDatabaseInstanceInner> createAsync(String resourceGroupName, String sapVirtualInstanceName,
-        String databaseInstanceName) {
-        final SapDatabaseInstanceInner body = null;
-        return beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
-     * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -580,19 +692,22 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapDatabaseInstanceInner> createAsync(String resourceGroupName, String sapVirtualInstanceName,
-        String databaseInstanceName, SapDatabaseInstanceInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context).last()
+        String databaseInstanceName, SapDatabaseInstanceInner resource, Context context) {
+        return beginCreateAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource, context)
+            .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
+     * @param resource Request body of Database resource of a SAP system.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -600,20 +715,20 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapDatabaseInstanceInner create(String resourceGroupName, String sapVirtualInstanceName,
-        String databaseInstanceName) {
-        final SapDatabaseInstanceInner body = null;
-        return createAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).block();
+        String databaseInstanceName, SapDatabaseInstanceInner resource) {
+        return createAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource).block();
     }
 
     /**
      * Creates the Database resource corresponding to the Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. PUT by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. PUT by end user will return a Bad Request
+     * error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Request body of Database resource of a SAP system.
+     * @param resource Request body of Database resource of a SAP system.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -622,18 +737,18 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapDatabaseInstanceInner create(String resourceGroupName, String sapVirtualInstanceName,
-        String databaseInstanceName, SapDatabaseInstanceInner body, Context context) {
-        return createAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context).block();
+        String databaseInstanceName, SapDatabaseInstanceInner resource, Context context) {
+        return createAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, resource, context).block();
     }
 
     /**
-     * Updates the Database instance resource. This can be used to update tags on the resource.
+     * Updates the Database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Database resource update request body.
+     * @param properties Database resource update request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -641,7 +756,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapDatabaseInstanceInner>> updateWithResponseAsync(String resourceGroupName,
-        String sapVirtualInstanceName, String databaseInstanceName, UpdateSapDatabaseInstanceRequest body) {
+        String sapVirtualInstanceName, String databaseInstanceName, UpdateSapDatabaseInstanceRequest properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -662,25 +777,27 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             return Mono
                 .error(new IllegalArgumentException("Parameter databaseInstanceName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body, accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName,
+                properties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Updates the Database instance resource. This can be used to update tags on the resource.
+     * Updates the Database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Database resource update request body.
+     * @param properties Database resource update request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -689,7 +806,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapDatabaseInstanceInner>> updateWithResponseAsync(String resourceGroupName,
-        String sapVirtualInstanceName, String databaseInstanceName, UpdateSapDatabaseInstanceRequest body,
+        String sapVirtualInstanceName, String databaseInstanceName, UpdateSapDatabaseInstanceRequest properties,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -711,22 +828,25 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
             return Mono
                 .error(new IllegalArgumentException("Parameter databaseInstanceName is required and cannot be null."));
         }
-        if (body != null) {
-            body.validate();
+        if (properties == null) {
+            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        } else {
+            properties.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body, accept, context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, sapVirtualInstanceName, databaseInstanceName, properties, accept, context);
     }
 
     /**
-     * Updates the Database instance resource. This can be used to update tags on the resource.
+     * Updates the Database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
+     * @param properties Database resource update request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -734,20 +854,19 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapDatabaseInstanceInner> updateAsync(String resourceGroupName, String sapVirtualInstanceName,
-        String databaseInstanceName) {
-        final UpdateSapDatabaseInstanceRequest body = null;
-        return updateWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body)
+        String databaseInstanceName, UpdateSapDatabaseInstanceRequest properties) {
+        return updateWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Updates the Database instance resource. This can be used to update tags on the resource.
+     * Updates the Database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
-     * @param body Database resource update request body.
+     * @param properties Database resource update request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -756,19 +875,20 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SapDatabaseInstanceInner> updateWithResponse(String resourceGroupName,
-        String sapVirtualInstanceName, String databaseInstanceName, UpdateSapDatabaseInstanceRequest body,
+        String sapVirtualInstanceName, String databaseInstanceName, UpdateSapDatabaseInstanceRequest properties,
         Context context) {
-        return updateWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
-            .block();
+        return updateWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, properties,
+            context).block();
     }
 
     /**
-     * Updates the Database instance resource. This can be used to update tags on the resource.
+     * Updates the Database resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param databaseInstanceName Database resource name string modeled as parameter for auto generation to work
      * correctly.
+     * @param properties Database resource update request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -776,15 +896,15 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapDatabaseInstanceInner update(String resourceGroupName, String sapVirtualInstanceName,
-        String databaseInstanceName) {
-        final UpdateSapDatabaseInstanceRequest body = null;
-        return updateWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, Context.NONE)
-            .getValue();
+        String databaseInstanceName, UpdateSapDatabaseInstanceRequest properties) {
+        return updateWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, properties,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -820,15 +940,16 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-                    sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), accept, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -865,13 +986,14 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, sapVirtualInstanceName, databaseInstanceName, accept, context);
     }
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -893,7 +1015,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -917,7 +1040,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -936,7 +1060,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -957,7 +1082,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -977,7 +1103,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -998,7 +1125,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -1015,7 +1143,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
 
     /**
      * Deletes the Database resource corresponding to a Virtual Instance for SAP solutions resource.
-     * &lt;br&gt;&lt;br&gt;This will be used by service only. Delete by end user will return a Bad Request error.
+     * &amp;lt;br&amp;gt;&amp;lt;br&amp;gt;This will be used by service only. Delete by end user will return a Bad
+     * Request error.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
@@ -1033,151 +1162,6 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     }
 
     /**
-     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SapDatabaseInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String sapVirtualInstanceName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, sapVirtualInstanceName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SapDatabaseInstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SapDatabaseInstanceInner>> listSinglePageAsync(String resourceGroupName,
-        String sapVirtualInstanceName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (sapVirtualInstanceName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter sapVirtualInstanceName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName,
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SapDatabaseInstanceInner> listAsync(String resourceGroupName, String sapVirtualInstanceName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, sapVirtualInstanceName),
-            nextLink -> listNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SapDatabaseInstanceInner> listAsync(String resourceGroupName, String sapVirtualInstanceName,
-        Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, sapVirtualInstanceName, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SapDatabaseInstanceInner> list(String resourceGroupName, String sapVirtualInstanceName) {
-        return new PagedIterable<>(listAsync(resourceGroupName, sapVirtualInstanceName));
-    }
-
-    /**
-     * Lists the Database resources associated with a Virtual Instance for SAP solutions resource.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SapDatabaseInstanceInner> list(String resourceGroupName, String sapVirtualInstanceName,
-        Context context) {
-        return new PagedIterable<>(listAsync(resourceGroupName, sapVirtualInstanceName, context));
-    }
-
-    /**
      * Starts the database instance of the SAP system.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1192,7 +1176,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startInstanceWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String databaseInstanceName, StartRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1219,8 +1203,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.startInstance(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body,
+            .withContext(context -> service.start(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body,
                 accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1241,7 +1225,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startInstanceWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String databaseInstanceName, StartRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1268,8 +1252,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.startInstance(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body, accept, context);
+        return service.start(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, accept, context);
     }
 
     /**
@@ -1286,10 +1270,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartInstanceAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartAsync(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StartRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = startInstanceWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
+            = startWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
@@ -1309,10 +1293,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginStartInstanceAsync(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
+        beginStartAsync(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
         final StartRequest body = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = startInstanceWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
+            = startWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
@@ -1333,12 +1317,12 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartInstanceAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartAsync(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StartRequest body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = startInstanceWithResponseAsync(resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, body, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = startWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
@@ -1357,9 +1341,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginStartInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
+        beginStart(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
         final StartRequest body = null;
-        return this.beginStartInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body)
+        return this.beginStartAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body)
             .getSyncPoller();
     }
 
@@ -1378,11 +1362,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStartInstance(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StartRequest body,
         Context context) {
-        return this
-            .beginStartInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
+        return this.beginStartAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
             .getSyncPoller();
     }
 
@@ -1400,9 +1383,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> startInstanceAsync(String resourceGroupName, String sapVirtualInstanceName,
+    private Mono<OperationStatusResultInner> startAsync(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StartRequest body) {
-        return beginStartInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
+        return beginStartAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1419,10 +1402,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> startInstanceAsync(String resourceGroupName, String sapVirtualInstanceName,
+    private Mono<OperationStatusResultInner> startAsync(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName) {
         final StartRequest body = null;
-        return beginStartInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
+        return beginStartAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1441,10 +1424,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> startInstanceAsync(String resourceGroupName, String sapVirtualInstanceName,
+    private Mono<OperationStatusResultInner> startAsync(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StartRequest body, Context context) {
-        return beginStartInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+        return beginStartAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1460,10 +1443,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner startInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResultInner start(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName) {
         final StartRequest body = null;
-        return startInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).block();
+        return startAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).block();
     }
 
     /**
@@ -1481,10 +1464,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner startInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResultInner start(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StartRequest body, Context context) {
-        return startInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
-            .block();
+        return startAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context).block();
     }
 
     /**
@@ -1502,7 +1484,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopInstanceWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String databaseInstanceName, StopRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1529,8 +1511,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.stopInstance(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body,
+            .withContext(context -> service.stop(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body,
                 accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1551,7 +1533,7 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopInstanceWithResponseAsync(String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName,
         String sapVirtualInstanceName, String databaseInstanceName, StopRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -1578,8 +1560,8 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.stopInstance(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, this.client.getApiVersion(), body, accept, context);
+        return service.stop(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, accept, context);
     }
 
     /**
@@ -1596,10 +1578,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopInstanceAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopAsync(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StopRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = stopInstanceWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
+            = stopWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
@@ -1619,10 +1601,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginStopInstanceAsync(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
+        beginStopAsync(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
         final StopRequest body = null;
         Mono<Response<Flux<ByteBuffer>>> mono
-            = stopInstanceWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
+            = stopWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class,
             this.client.getContext());
@@ -1643,12 +1625,12 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopInstanceAsync(
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopAsync(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StopRequest body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = stopInstanceWithResponseAsync(resourceGroupName, sapVirtualInstanceName,
-            databaseInstanceName, body, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = stopWithResponseAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context);
         return this.client.<OperationStatusResultInner, OperationStatusResultInner>getLroResult(mono,
             this.client.getHttpPipeline(), OperationStatusResultInner.class, OperationStatusResultInner.class, context);
     }
@@ -1667,9 +1649,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner>
-        beginStopInstance(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
+        beginStop(String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
         final StopRequest body = null;
-        return this.beginStopInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body)
+        return this.beginStopAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body)
             .getSyncPoller();
     }
 
@@ -1688,11 +1670,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopInstance(
+    public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, StopRequest body,
         Context context) {
-        return this
-            .beginStopInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
+        return this.beginStopAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
             .getSyncPoller();
     }
 
@@ -1710,9 +1691,9 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> stopInstanceAsync(String resourceGroupName, String sapVirtualInstanceName,
+    private Mono<OperationStatusResultInner> stopAsync(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StopRequest body) {
-        return beginStopInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
+        return beginStopAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1729,10 +1710,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> stopInstanceAsync(String resourceGroupName, String sapVirtualInstanceName,
+    private Mono<OperationStatusResultInner> stopAsync(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName) {
         final StopRequest body = null;
-        return beginStopInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
+        return beginStopAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1751,10 +1732,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusResultInner> stopInstanceAsync(String resourceGroupName, String sapVirtualInstanceName,
+    private Mono<OperationStatusResultInner> stopAsync(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StopRequest body, Context context) {
-        return beginStopInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+        return beginStopAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1770,10 +1751,10 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResultInner stop(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName) {
         final StopRequest body = null;
-        return stopInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).block();
+        return stopAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body).block();
     }
 
     /**
@@ -1791,22 +1772,19 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResultInner stop(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StopRequest body, Context context) {
-        return stopInstanceAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context)
-            .block();
+        return stopAsync(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context).block();
     }
 
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances along with {@link PagedResponse} on successful
+     * @return the response of a SAPDatabaseInstance list operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1828,14 +1806,12 @@ public final class SapDatabaseInstancesClientImpl implements SapDatabaseInstance
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of SAP Database Instances along with {@link PagedResponse} on successful
+     * @return the response of a SAPDatabaseInstance list operation along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

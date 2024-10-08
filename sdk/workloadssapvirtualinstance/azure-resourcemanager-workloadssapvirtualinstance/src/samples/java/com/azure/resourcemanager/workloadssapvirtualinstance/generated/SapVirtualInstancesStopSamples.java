@@ -12,8 +12,8 @@ import com.azure.resourcemanager.workloadssapvirtualinstance.models.StopRequest;
 public final class SapVirtualInstancesStopSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapvirtualinstances/SAPVirtualInstances_Stop_WithInfraOperations.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_StopVMAndSystem.json
      */
     /**
      * Sample code: Stop the virtual machine(s) and the SAP system on it.
@@ -22,14 +22,32 @@ public final class SapVirtualInstancesStopSamples {
      */
     public static void stopTheVirtualMachineSAndTheSAPSystemOnIt(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().stop("test-rg", "X00",
-            new StopRequest().withSoftStopTimeoutSeconds(0L).withDeallocateVm(true), com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(0L).withDeallocateVm(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapvirtualinstances/SAPVirtualInstances_Stop.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_SoftStop.json
+     */
+    /**
+     * Sample code: Soft Stop of SapVirtualInstances_Stop.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void softStopOfSapVirtualInstancesStop(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(300L),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_Stop.json
      */
     /**
      * Sample code: SAPVirtualInstances_Stop.
@@ -38,7 +56,24 @@ public final class SapVirtualInstancesStopSamples {
      */
     public static void sAPVirtualInstancesStop(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(0L),
-            com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(0L), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_SoftStopVMAndSystem.json
+     */
+    /**
+     * Sample code: Soft Stop the virtual machine(s) and the SAP system on it.
+     * 
+     * @param manager Entry point to WorkloadsSapVirtualInstanceManager.
+     */
+    public static void softStopTheVirtualMachineSAndTheSAPSystemOnIt(
+        com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
+        manager.sapVirtualInstances()
+            .stop("test-rg", "X00", new StopRequest().withSoftStopTimeoutSeconds(300L).withDeallocateVm(true),
+                com.azure.core.util.Context.NONE);
     }
 }

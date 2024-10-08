@@ -5,19 +5,23 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapAvailabilityZonePair;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The list of supported availability zone pairs which are part of SAP HA deployment.
  */
 @Fluent
-public final class SapAvailabilityZoneDetailsResultInner {
+public final class SapAvailabilityZoneDetailsResultInner
+    implements JsonSerializable<SapAvailabilityZoneDetailsResultInner> {
     /*
      * Gets the list of availability zone pairs.
      */
-    @JsonProperty(value = "availabilityZonePairs")
     private List<SapAvailabilityZonePair> availabilityZonePairs;
 
     /**
@@ -56,5 +60,45 @@ public final class SapAvailabilityZoneDetailsResultInner {
         if (availabilityZonePairs() != null) {
             availabilityZonePairs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("availabilityZonePairs", this.availabilityZonePairs,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapAvailabilityZoneDetailsResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapAvailabilityZoneDetailsResultInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapAvailabilityZoneDetailsResultInner.
+     */
+    public static SapAvailabilityZoneDetailsResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapAvailabilityZoneDetailsResultInner deserializedSapAvailabilityZoneDetailsResultInner
+                = new SapAvailabilityZoneDetailsResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availabilityZonePairs".equals(fieldName)) {
+                    List<SapAvailabilityZonePair> availabilityZonePairs
+                        = reader.readArray(reader1 -> SapAvailabilityZonePair.fromJson(reader1));
+                    deserializedSapAvailabilityZoneDetailsResultInner.availabilityZonePairs = availabilityZonePairs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapAvailabilityZoneDetailsResultInner;
+        });
     }
 }

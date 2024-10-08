@@ -14,8 +14,8 @@ import java.util.Map;
 public final class SapApplicationServerInstancesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapapplicationinstances/SAPApplicationServerInstances_Create.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapApplicationServerInstances_Create.json
      */
     /**
      * Sample code: SAPApplicationServerInstances_Create.
@@ -24,15 +24,19 @@ public final class SapApplicationServerInstancesCreateSamples {
      */
     public static void sAPApplicationServerInstancesCreate(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapApplicationServerInstances().define("app01").withRegion("eastus")
-            .withExistingSapVirtualInstance("test-rg", "X00").withTags(mapOf())
-            .withProperties(new SapApplicationServerProperties()).create();
+        manager.sapApplicationServerInstances()
+            .define("app01")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapApplicationServerProperties())
+            .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapapplicationinstances/SAPApplicationServerInstances_Create_HA_AvSet.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapApplicationServerInstances_CreateForHaWithAvailabilitySet.json
      */
     /**
      * Sample code: Create SAP Application Server Instances for HA System with Availability Set.
@@ -41,9 +45,13 @@ public final class SapApplicationServerInstancesCreateSamples {
      */
     public static void createSAPApplicationServerInstancesForHASystemWithAvailabilitySet(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapApplicationServerInstances().define("app01").withRegion("eastus")
-            .withExistingSapVirtualInstance("test-rg", "X00").withTags(mapOf())
-            .withProperties(new SapApplicationServerProperties()).create();
+        manager.sapApplicationServerInstances()
+            .define("app01")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapApplicationServerProperties())
+            .create();
     }
 
     // Use "Map.of" if available

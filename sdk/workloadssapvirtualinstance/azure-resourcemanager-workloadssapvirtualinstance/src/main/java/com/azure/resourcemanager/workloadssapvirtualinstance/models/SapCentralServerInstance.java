@@ -50,7 +50,7 @@ public interface SapCentralServerInstance {
     Map<String, String> tags();
 
     /**
-     * Gets the properties property: Defines the SAP Central Services Instance properties.
+     * Gets the properties property: The resource-specific properties for this resource.
      * 
      * @return the properties value.
      */
@@ -183,9 +183,9 @@ public interface SapCentralServerInstance {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: Defines the SAP Central Services Instance properties..
+             * Specifies the properties property: The resource-specific properties for this resource..
              * 
-             * @param properties Defines the SAP Central Services Instance properties.
+             * @param properties The resource-specific properties for this resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(SapCentralServerProperties properties);
@@ -259,7 +259,7 @@ public interface SapCentralServerInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance();
+    OperationStatusResult start();
 
     /**
      * Starts the SAP Central Services Instance.
@@ -271,7 +271,7 @@ public interface SapCentralServerInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult startInstance(StartRequest body, Context context);
+    OperationStatusResult start(StartRequest body, Context context);
 
     /**
      * Stops the SAP Central Services Instance.
@@ -280,7 +280,7 @@ public interface SapCentralServerInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance();
+    OperationStatusResult stop();
 
     /**
      * Stops the SAP Central Services Instance.
@@ -292,5 +292,5 @@ public interface SapCentralServerInstance {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult stopInstance(StopRequest body, Context context);
+    OperationStatusResult stop(StopRequest body, Context context);
 }

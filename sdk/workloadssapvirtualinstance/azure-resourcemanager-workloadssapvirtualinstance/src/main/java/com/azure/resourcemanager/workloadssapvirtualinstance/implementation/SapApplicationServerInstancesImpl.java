@@ -31,10 +31,25 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         this.serviceManager = serviceManager;
     }
 
+    public PagedIterable<SapApplicationServerInstance> list(String resourceGroupName, String sapVirtualInstanceName) {
+        PagedIterable<SapApplicationServerInstanceInner> inner
+            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SapApplicationServerInstanceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SapApplicationServerInstance> list(String resourceGroupName, String sapVirtualInstanceName,
+        Context context) {
+        PagedIterable<SapApplicationServerInstanceInner> inner
+            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SapApplicationServerInstanceImpl(inner1, this.manager()));
+    }
+
     public Response<SapApplicationServerInstance> getWithResponse(String resourceGroupName,
         String sapVirtualInstanceName, String applicationInstanceName, Context context) {
-        Response<SapApplicationServerInstanceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            sapVirtualInstanceName, applicationInstanceName, context);
+        Response<SapApplicationServerInstanceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SapApplicationServerInstanceImpl(inner.getValue(), this.manager()));
@@ -63,25 +78,10 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         this.serviceClient().delete(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, context);
     }
 
-    public PagedIterable<SapApplicationServerInstance> list(String resourceGroupName, String sapVirtualInstanceName) {
-        PagedIterable<SapApplicationServerInstanceInner> inner
-            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new SapApplicationServerInstanceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<SapApplicationServerInstance> list(String resourceGroupName, String sapVirtualInstanceName,
-        Context context) {
-        PagedIterable<SapApplicationServerInstanceInner> inner
-            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
-        return ResourceManagerUtils.mapPage(inner,
-            inner1 -> new SapApplicationServerInstanceImpl(inner1, this.manager()));
-    }
-
-    public OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName) {
         OperationStatusResultInner inner
-            = this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
+            = this.serviceClient().start(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -89,10 +89,10 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         }
     }
 
-    public OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, StartRequest body, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName,
-            applicationInstanceName, body, context);
+        OperationStatusResultInner inner = this.serviceClient()
+            .start(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, body, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -100,10 +100,10 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         }
     }
 
-    public OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName) {
         OperationStatusResultInner inner
-            = this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
+            = this.serviceClient().stop(resourceGroupName, sapVirtualInstanceName, applicationInstanceName);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -111,10 +111,10 @@ public final class SapApplicationServerInstancesImpl implements SapApplicationSe
         }
     }
 
-    public OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName,
         String applicationInstanceName, StopRequest body, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName,
-            applicationInstanceName, body, context);
+        OperationStatusResultInner inner = this.serviceClient()
+            .stop(resourceGroupName, sapVirtualInstanceName, applicationInstanceName, body, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {

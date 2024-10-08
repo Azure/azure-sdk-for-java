@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class SapVirtualInstanceProvisioningState
      * @param name a name to look for.
      * @return the corresponding SapVirtualInstanceProvisioningState.
      */
-    @JsonCreator
     public static SapVirtualInstanceProvisioningState fromString(String name) {
         return fromString(name, SapVirtualInstanceProvisioningState.class);
     }

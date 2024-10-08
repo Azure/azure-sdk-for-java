@@ -14,8 +14,8 @@ import java.util.Map;
 public final class SapApplicationServerInstancesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapapplicationinstances/SAPApplicationServerInstances_Update.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapApplicationServerInstances_Update.json
      */
     /**
      * Sample code: SAPApplicationServerInstances_Update.
@@ -25,7 +25,8 @@ public final class SapApplicationServerInstancesUpdateSamples {
     public static void sAPApplicationServerInstancesUpdate(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
         SapApplicationServerInstance resource = manager.sapApplicationServerInstances()
-            .getWithResponse("test-rg", "X00", "app01", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("test-rg", "X00", "app01", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1")).apply();
     }
 

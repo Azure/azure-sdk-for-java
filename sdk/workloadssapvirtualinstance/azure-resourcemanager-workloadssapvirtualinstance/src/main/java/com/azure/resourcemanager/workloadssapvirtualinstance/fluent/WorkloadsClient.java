@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface WorkloadsClient {
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -47,13 +47,6 @@ public interface WorkloadsClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the ResourceProvidersClient object to access its operations.
-     * 
-     * @return the ResourceProvidersClient object.
-     */
-    ResourceProvidersClient getResourceProviders();
-
-    /**
      * Gets the SapVirtualInstancesClient object to access its operations.
      * 
      * @return the SapVirtualInstancesClient object.
@@ -61,11 +54,18 @@ public interface WorkloadsClient {
     SapVirtualInstancesClient getSapVirtualInstances();
 
     /**
-     * Gets the SapCentralInstancesClient object to access its operations.
+     * Gets the SapApplicationServerInstancesClient object to access its operations.
      * 
-     * @return the SapCentralInstancesClient object.
+     * @return the SapApplicationServerInstancesClient object.
      */
-    SapCentralInstancesClient getSapCentralInstances();
+    SapApplicationServerInstancesClient getSapApplicationServerInstances();
+
+    /**
+     * Gets the SapCentralServerInstancesClient object to access its operations.
+     * 
+     * @return the SapCentralServerInstancesClient object.
+     */
+    SapCentralServerInstancesClient getSapCentralServerInstances();
 
     /**
      * Gets the SapDatabaseInstancesClient object to access its operations.
@@ -73,13 +73,6 @@ public interface WorkloadsClient {
      * @return the SapDatabaseInstancesClient object.
      */
     SapDatabaseInstancesClient getSapDatabaseInstances();
-
-    /**
-     * Gets the SapApplicationServerInstancesClient object to access its operations.
-     * 
-     * @return the SapApplicationServerInstancesClient object.
-     */
-    SapApplicationServerInstancesClient getSapApplicationServerInstances();
 
     /**
      * Gets the OperationsClient object to access its operations.

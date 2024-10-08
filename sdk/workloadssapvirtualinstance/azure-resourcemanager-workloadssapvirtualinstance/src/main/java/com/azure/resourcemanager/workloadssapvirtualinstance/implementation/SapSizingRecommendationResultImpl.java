@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.implementation;
 
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models.SapSizingRecommendationResultInner;
+import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDeploymentType;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapSizingRecommendationResult;
 
 public final class SapSizingRecommendationResultImpl implements SapSizingRecommendationResult {
@@ -16,6 +17,10 @@ public final class SapSizingRecommendationResultImpl implements SapSizingRecomme
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public SapDeploymentType deploymentType() {
+        return this.innerModel().deploymentType();
     }
 
     public SapSizingRecommendationResultInner innerModel() {

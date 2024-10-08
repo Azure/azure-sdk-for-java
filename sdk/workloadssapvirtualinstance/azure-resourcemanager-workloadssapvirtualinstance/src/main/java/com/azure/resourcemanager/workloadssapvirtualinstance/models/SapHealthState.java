@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class SapHealthState extends ExpandableStringEnum<SapHealthState> {
      * @param name a name to look for.
      * @return the corresponding SapHealthState.
      */
-    @JsonCreator
     public static SapHealthState fromString(String name) {
         return fromString(name, SapHealthState.class);
     }

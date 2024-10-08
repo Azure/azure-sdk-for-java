@@ -10,7 +10,7 @@ package com.azure.resourcemanager.workloadssapvirtualinstance.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/operations/preview/2023-10-01-preview/examples/
+     * specification/workloads/resource-manager/Microsoft.Workloads/operations/stable/2024-09-01/examples/
      * Operations_List.json
      */
     /**

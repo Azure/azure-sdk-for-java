@@ -14,8 +14,8 @@ import java.util.Map;
 public final class SapDatabaseInstancesCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapdatabaseinstances/SAPDatabaseInstances_Create_HA_AvSet.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapDatabaseInstances_CreateForHaWithAvailabilitySet.json
      */
     /**
      * Sample code: Create SAP Database Instances for HA System with Availability Set.
@@ -24,15 +24,19 @@ public final class SapDatabaseInstancesCreateSamples {
      */
     public static void createSAPDatabaseInstancesForHASystemWithAvailabilitySet(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances().define("databaseServer").withRegion("eastus")
-            .withExistingSapVirtualInstance("test-rg", "X00").withTags(mapOf())
-            .withProperties(new SapDatabaseProperties()).create();
+        manager.sapDatabaseInstances()
+            .define("databaseServer")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapDatabaseProperties())
+            .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapdatabaseinstances/SAPDatabaseInstances_Create.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapDatabaseInstances_Create.json
      */
     /**
      * Sample code: SAPDatabaseInstances_Create.
@@ -41,9 +45,13 @@ public final class SapDatabaseInstancesCreateSamples {
      */
     public static void sAPDatabaseInstancesCreate(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapDatabaseInstances().define("databaseServer").withRegion("eastus")
-            .withExistingSapVirtualInstance("test-rg", "X00").withTags(mapOf())
-            .withProperties(new SapDatabaseProperties()).create();
+        manager.sapDatabaseInstances()
+            .define("databaseServer")
+            .withRegion("westcentralus")
+            .withExistingSapVirtualInstance("test-rg", "X00")
+            .withTags(mapOf())
+            .withProperties(new SapDatabaseProperties())
+            .create();
     }
 
     // Use "Map.of" if available

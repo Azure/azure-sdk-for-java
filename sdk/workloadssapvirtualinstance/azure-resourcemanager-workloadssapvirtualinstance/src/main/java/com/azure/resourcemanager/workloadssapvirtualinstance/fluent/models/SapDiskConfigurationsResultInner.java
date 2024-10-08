@@ -5,22 +5,23 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDiskConfiguration;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The list of disk configuration for vmSku which are part of SAP deployment.
  */
 @Fluent
-public final class SapDiskConfigurationsResultInner {
+public final class SapDiskConfigurationsResultInner implements JsonSerializable<SapDiskConfigurationsResultInner> {
     /*
-     * The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log',
-     * hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
+     * The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log', hana/shared',
+     * 'usr/sap', 'os'], Optional volume : ['backup'].
      */
-    @JsonProperty(value = "volumeConfigurations")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SapDiskConfiguration> volumeConfigurations;
 
     /**
@@ -65,5 +66,45 @@ public final class SapDiskConfigurationsResultInner {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("volumeConfigurations", this.volumeConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapDiskConfigurationsResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapDiskConfigurationsResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapDiskConfigurationsResultInner.
+     */
+    public static SapDiskConfigurationsResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapDiskConfigurationsResultInner deserializedSapDiskConfigurationsResultInner
+                = new SapDiskConfigurationsResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("volumeConfigurations".equals(fieldName)) {
+                    Map<String, SapDiskConfiguration> volumeConfigurations
+                        = reader.readMap(reader1 -> SapDiskConfiguration.fromJson(reader1));
+                    deserializedSapDiskConfigurationsResultInner.volumeConfigurations = volumeConfigurations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapDiskConfigurationsResultInner;
+        });
     }
 }

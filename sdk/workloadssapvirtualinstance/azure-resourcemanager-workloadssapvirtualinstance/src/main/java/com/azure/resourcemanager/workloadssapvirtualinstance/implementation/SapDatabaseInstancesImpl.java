@@ -31,10 +31,23 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         this.serviceManager = serviceManager;
     }
 
+    public PagedIterable<SapDatabaseInstance> list(String resourceGroupName, String sapVirtualInstanceName) {
+        PagedIterable<SapDatabaseInstanceInner> inner
+            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapDatabaseInstanceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<SapDatabaseInstance> list(String resourceGroupName, String sapVirtualInstanceName,
+        Context context) {
+        PagedIterable<SapDatabaseInstanceInner> inner
+            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapDatabaseInstanceImpl(inner1, this.manager()));
+    }
+
     public Response<SapDatabaseInstance> getWithResponse(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, Context context) {
-        Response<SapDatabaseInstanceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
-            sapVirtualInstanceName, databaseInstanceName, context);
+        Response<SapDatabaseInstanceInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SapDatabaseInstanceImpl(inner.getValue(), this.manager()));
@@ -63,23 +76,10 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         this.serviceClient().delete(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context);
     }
 
-    public PagedIterable<SapDatabaseInstance> list(String resourceGroupName, String sapVirtualInstanceName) {
-        PagedIterable<SapDatabaseInstanceInner> inner
-            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapDatabaseInstanceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<SapDatabaseInstance> list(String resourceGroupName, String sapVirtualInstanceName,
-        Context context) {
-        PagedIterable<SapDatabaseInstanceInner> inner
-            = this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
-        return ResourceManagerUtils.mapPage(inner, inner1 -> new SapDatabaseInstanceImpl(inner1, this.manager()));
-    }
-
-    public OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName) {
         OperationStatusResultInner inner
-            = this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
+            = this.serviceClient().start(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -87,10 +87,10 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         }
     }
 
-    public OperationStatusResult startInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult start(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StartRequest body, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName,
-            databaseInstanceName, body, context);
+        OperationStatusResultInner inner = this.serviceClient()
+            .start(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -98,10 +98,10 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         }
     }
 
-    public OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName) {
         OperationStatusResultInner inner
-            = this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
+            = this.serviceClient().stop(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {
@@ -109,10 +109,10 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         }
     }
 
-    public OperationStatusResult stopInstance(String resourceGroupName, String sapVirtualInstanceName,
+    public OperationStatusResult stop(String resourceGroupName, String sapVirtualInstanceName,
         String databaseInstanceName, StopRequest body, Context context) {
-        OperationStatusResultInner inner = this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName,
-            databaseInstanceName, body, context);
+        OperationStatusResultInner inner
+            = this.serviceClient().stop(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context);
         if (inner != null) {
             return new OperationStatusResultImpl(inner, this.manager());
         } else {

@@ -10,8 +10,8 @@ package com.azure.resourcemanager.workloadssapvirtualinstance.generated;
 public final class SapApplicationServerInstancesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapapplicationinstances/SAPApplicationServerInstances_Get.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapApplicationServerInstances_Get.json
      */
     /**
      * Sample code: SAPApplicationServerInstances_Get.
@@ -20,7 +20,7 @@ public final class SapApplicationServerInstancesGetSamples {
      */
     public static void sAPApplicationServerInstancesGet(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapApplicationServerInstances().getWithResponse("test-rg", "X00", "app01",
-            com.azure.core.util.Context.NONE);
+        manager.sapApplicationServerInstances()
+            .getWithResponse("test-rg", "X00", "app01", com.azure.core.util.Context.NONE);
     }
 }

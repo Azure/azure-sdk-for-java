@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -62,7 +61,6 @@ public final class DiskSkuName extends ExpandableStringEnum<DiskSkuName> {
      * @param name a name to look for.
      * @return the corresponding DiskSkuName.
      */
-    @JsonCreator
     public static DiskSkuName fromString(String name) {
         return fromString(name, DiskSkuName.class);
     }

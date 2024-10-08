@@ -10,8 +10,8 @@ package com.azure.resourcemanager.workloadssapvirtualinstance.generated;
 public final class SapVirtualInstancesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapvirtualinstances/SAPVirtualInstances_Get.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_Get.json
      */
     /**
      * Sample code: SAPVirtualInstances_Get.
@@ -20,14 +20,14 @@ public final class SapVirtualInstancesGetByResourceGroupSamples {
      */
     public static void sAPVirtualInstancesGet(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().getByResourceGroupWithResponse("test-rg", "X00",
-            com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances()
+            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapvirtualinstances/SAPVirtualInstances_Get_ACSSInstallationBlocked.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapVirtualInstances_GetAcssInstallationBlocked.json
      */
     /**
      * Sample code: SAPVirtualInstances Get With ACSS Installation Blocked.
@@ -36,7 +36,7 @@ public final class SapVirtualInstancesGetByResourceGroupSamples {
      */
     public static void sAPVirtualInstancesGetWithACSSInstallationBlocked(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
-        manager.sapVirtualInstances().getByResourceGroupWithResponse("test-rg", "X00",
-            com.azure.core.util.Context.NONE);
+        manager.sapVirtualInstances()
+            .getByResourceGroupWithResponse("test-rg", "X00", com.azure.core.util.Context.NONE);
     }
 }

@@ -14,8 +14,8 @@ import java.util.Map;
 public final class SapDatabaseInstancesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/preview/2023-10-01-preview/
-     * examples/sapdatabaseinstances/SAPDatabaseInstances_Update.json
+     * specification/workloads/resource-manager/Microsoft.Workloads/SAPVirtualInstance/stable/2024-09-01/examples/
+     * SapDatabaseInstances_Update.json
      */
     /**
      * Sample code: SAPDatabaseInstances_Update.
@@ -25,7 +25,8 @@ public final class SapDatabaseInstancesUpdateSamples {
     public static void sAPDatabaseInstancesUpdate(
         com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager manager) {
         SapDatabaseInstance resource = manager.sapDatabaseInstances()
-            .getWithResponse("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("test-rg", "X00", "databaseServer", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder")).apply();
     }
 

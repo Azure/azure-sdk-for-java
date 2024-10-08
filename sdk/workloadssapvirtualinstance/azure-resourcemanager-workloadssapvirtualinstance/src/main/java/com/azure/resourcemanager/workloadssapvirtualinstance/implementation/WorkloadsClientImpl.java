@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -23,9 +24,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.OperationsClient;
-import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapApplicationServerInstancesClient;
-import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapCentralInstancesClient;
+import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapCentralServerInstancesClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapDatabaseInstancesClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapVirtualInstancesClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.WorkloadsClient;
@@ -44,12 +44,12 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = WorkloadsClientBuilder.class)
 public final class WorkloadsClientImpl implements WorkloadsClient {
     /**
-     * The ID of the target subscription.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets The ID of the target subscription.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -128,20 +128,6 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
     }
 
     /**
-     * The ResourceProvidersClient object to access its operations.
-     */
-    private final ResourceProvidersClient resourceProviders;
-
-    /**
-     * Gets the ResourceProvidersClient object to access its operations.
-     * 
-     * @return the ResourceProvidersClient object.
-     */
-    public ResourceProvidersClient getResourceProviders() {
-        return this.resourceProviders;
-    }
-
-    /**
      * The SapVirtualInstancesClient object to access its operations.
      */
     private final SapVirtualInstancesClient sapVirtualInstances;
@@ -156,17 +142,31 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
     }
 
     /**
-     * The SapCentralInstancesClient object to access its operations.
+     * The SapApplicationServerInstancesClient object to access its operations.
      */
-    private final SapCentralInstancesClient sapCentralInstances;
+    private final SapApplicationServerInstancesClient sapApplicationServerInstances;
 
     /**
-     * Gets the SapCentralInstancesClient object to access its operations.
+     * Gets the SapApplicationServerInstancesClient object to access its operations.
      * 
-     * @return the SapCentralInstancesClient object.
+     * @return the SapApplicationServerInstancesClient object.
      */
-    public SapCentralInstancesClient getSapCentralInstances() {
-        return this.sapCentralInstances;
+    public SapApplicationServerInstancesClient getSapApplicationServerInstances() {
+        return this.sapApplicationServerInstances;
+    }
+
+    /**
+     * The SapCentralServerInstancesClient object to access its operations.
+     */
+    private final SapCentralServerInstancesClient sapCentralServerInstances;
+
+    /**
+     * Gets the SapCentralServerInstancesClient object to access its operations.
+     * 
+     * @return the SapCentralServerInstancesClient object.
+     */
+    public SapCentralServerInstancesClient getSapCentralServerInstances() {
+        return this.sapCentralServerInstances;
     }
 
     /**
@@ -181,20 +181,6 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
      */
     public SapDatabaseInstancesClient getSapDatabaseInstances() {
         return this.sapDatabaseInstances;
-    }
-
-    /**
-     * The SapApplicationServerInstancesClient object to access its operations.
-     */
-    private final SapApplicationServerInstancesClient sapApplicationServerInstances;
-
-    /**
-     * Gets the SapApplicationServerInstancesClient object to access its operations.
-     * 
-     * @return the SapApplicationServerInstancesClient object.
-     */
-    public SapApplicationServerInstancesClient getSapApplicationServerInstances() {
-        return this.sapApplicationServerInstances;
     }
 
     /**
@@ -218,7 +204,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId The ID of the target subscription.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     WorkloadsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
@@ -228,12 +214,11 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-10-01-preview";
-        this.resourceProviders = new ResourceProvidersClientImpl(this);
+        this.apiVersion = "2024-09-01";
         this.sapVirtualInstances = new SapVirtualInstancesClientImpl(this);
-        this.sapCentralInstances = new SapCentralInstancesClientImpl(this);
-        this.sapDatabaseInstances = new SapDatabaseInstancesClientImpl(this);
         this.sapApplicationServerInstances = new SapApplicationServerInstancesClientImpl(this);
+        this.sapCentralServerInstances = new SapCentralServerInstancesClientImpl(this);
+        this.sapDatabaseInstances = new SapDatabaseInstancesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 
@@ -297,8 +282,8 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
-                            SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -339,7 +324,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

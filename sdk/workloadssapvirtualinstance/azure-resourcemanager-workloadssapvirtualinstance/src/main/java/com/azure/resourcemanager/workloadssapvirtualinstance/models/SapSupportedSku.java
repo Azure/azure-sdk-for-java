@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.workloadssapvirtualinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The SAP supported SKU.
  */
 @Fluent
-public final class SapSupportedSku {
+public final class SapSupportedSku implements JsonSerializable<SapSupportedSku> {
     /*
      * The VM Sku.
      */
-    @JsonProperty(value = "vmSku")
     private String vmSku;
 
     /*
      * True if the Sku is certified for App server in the SAP system.
      */
-    @JsonProperty(value = "isAppServerCertified")
     private Boolean isAppServerCertified;
 
     /*
      * True if the Sku is certified for Database server in the SAP system.
      */
-    @JsonProperty(value = "isDatabaseCertified")
     private Boolean isDatabaseCertified;
 
     /**
@@ -102,5 +103,47 @@ public final class SapSupportedSku {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vmSku", this.vmSku);
+        jsonWriter.writeBooleanField("isAppServerCertified", this.isAppServerCertified);
+        jsonWriter.writeBooleanField("isDatabaseCertified", this.isDatabaseCertified);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapSupportedSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapSupportedSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapSupportedSku.
+     */
+    public static SapSupportedSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapSupportedSku deserializedSapSupportedSku = new SapSupportedSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vmSku".equals(fieldName)) {
+                    deserializedSapSupportedSku.vmSku = reader.getString();
+                } else if ("isAppServerCertified".equals(fieldName)) {
+                    deserializedSapSupportedSku.isAppServerCertified = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDatabaseCertified".equals(fieldName)) {
+                    deserializedSapSupportedSku.isDatabaseCertified = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapSupportedSku;
+        });
     }
 }
