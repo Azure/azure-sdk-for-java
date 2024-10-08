@@ -29,7 +29,7 @@ pr:
     exclude:
       - sdk/monitor/azure-monitor-ingestion/pom.xml
       - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
-      - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
+      - sdk/monitor/ azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
 
@@ -42,8 +42,8 @@ parameters:
   displayName: 'azure-monitor-ingestion'
   type: boolean
   default: true
-- name: release_azuremonitoropentelemetryexporter
-  displayName: 'azure-monitor-opentelemetry-exporter'
+- name: release_azuremonitoropentelemetryautoconfigure
+  displayName: 'azure-monitor-opentelemetry-autoconfigure'
   type: boolean
   default: true
 - name: release_azuremonitorquery
