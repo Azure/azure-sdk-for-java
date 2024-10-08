@@ -29,7 +29,7 @@ pr:
     exclude:
       - sdk/monitor/azure-monitor-ingestion/pom.xml
       - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
-      - sdk/monitor/ azure-monitor-opentelemetry-autoconfigure/pom.xml
+      - sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
       - sdk/monitor/azure-monitor-query-perf/pom.xml
 
