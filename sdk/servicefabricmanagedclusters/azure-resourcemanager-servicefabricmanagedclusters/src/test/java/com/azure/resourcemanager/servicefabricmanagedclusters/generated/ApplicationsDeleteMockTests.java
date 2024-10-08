@@ -27,7 +27,7 @@ public final class ApplicationsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.applications().delete("wotey", "wcluqovekqvgq", "uwifzmpjwyiv", com.azure.core.util.Context.NONE);
+        manager.applications().delete("qxtjjfzqlqhyca", "odggx", "beesmieknlra", com.azure.core.util.Context.NONE);
 
     }
 }

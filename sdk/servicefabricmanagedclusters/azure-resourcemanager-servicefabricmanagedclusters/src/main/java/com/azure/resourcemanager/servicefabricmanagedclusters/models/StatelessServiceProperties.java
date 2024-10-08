@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.servicefabricmanagedclusters.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -251,8 +252,33 @@ public final class StatelessServiceProperties extends ServiceResourceProperties 
      */
     @Override
     public void validate() {
-        super.validate();
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+        if (scalingPolicies() != null) {
+            scalingPolicies().forEach(e -> e.validate());
+        }
+        if (serviceTypeName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceTypeName in model StatelessServiceProperties"));
+        }
+        if (partitionDescription() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partitionDescription in model StatelessServiceProperties"));
+        } else {
+            partitionDescription().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StatelessServiceProperties.class);
 
     /**
      * {@inheritDoc}
