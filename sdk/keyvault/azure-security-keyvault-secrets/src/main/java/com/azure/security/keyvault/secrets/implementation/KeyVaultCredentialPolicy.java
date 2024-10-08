@@ -17,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -72,20 +73,17 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             return Collections.emptyMap();
         }
 
-        String[] attributes = authenticateHeader.substring(authChallengePrefix.length()).split(", ");
+        String[] attributes = authenticateHeader
+            .replace("\"", "")
+            .substring(authChallengePrefix.length())
+            .split(",");
         Map<String, String> attributeMap = new HashMap<>();
 
         for (String pair : attributes) {
-            // This is ugly, but we need to trim here because currently the 'claims' attribute comes after two spaces.
-            pair = pair.trim();
+            // Using trim is ugly, but we need it here because currently the 'claims' attribute comes after two spaces.
+            String[] keyValue = pair.trim().split("=", 2);
 
-            if (pair.startsWith("claims=")) {
-                attributeMap.put("claims", pair.substring("claims=".length()).replaceAll("\"", ""));
-            } else {
-                String[] keyValue = pair.split("=");
-
-                attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
-            }
+            attributeMap.put(keyValue[0], keyValue[1]);
         }
 
         return attributeMap;
@@ -215,13 +213,18 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             String error = challengeAttributes.get("error");
 
             if (error != null) {
-                LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
+                LOGGER.verbose("The challenge response contained an error: {}", error);
 
                 if ("insufficient_claims".equalsIgnoreCase(error)) {
                     String claims = challengeAttributes.get("claims");
 
                     if (claims != null) {
-                        tokenRequestContext.setClaims(new String(Base64Util.decodeString(claims)));
+                        try {
+                            tokenRequestContext.setClaims(new String(Base64Util.decodeString(claims), "UTF-8"));
+                        } catch (UnsupportedEncodingException e) {
+                            throw LOGGER.logExceptionAsError(
+                                new RuntimeException("Failed to decode the claims from the challenge.", e));
+                        }
                     }
                 }
             }
@@ -338,7 +341,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         String error = challengeAttributes.get("error");
 
         if (error != null) {
-            LOGGER.verbose(String.format("The challenge response contained an error: %s", error));
+            LOGGER.verbose("The challenge response contained an error: {}", error);
 
             if ("insufficient_claims".equalsIgnoreCase(error)) {
                 String claims = challengeAttributes.get("claims");
