@@ -30,7 +30,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 @EnableConfigurationProperties(AppConfigurationProviderProperties.class)
 public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfigDataResource> {
 
-    private static Log LOGGER = new DeferredLog();
+    private static Log logger = new DeferredLog();
 
     private Duration refreshInterval;
 
@@ -45,7 +45,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     private FeatureFlagClient featureFlagClient;
 
     public AzureAppConfigDataLoader(DeferredLogFactory logFactory) {
-        LOGGER = logFactory.getLog(getClass());
+        logger = logFactory.getLog(getClass());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     sourceList.addAll(createSettings(client));
                     List<FeatureFlags> featureFlags = createFeatureFlags(client);
 
-                    LOGGER.debug("PropertySource context.");
+                    logger.debug("PropertySource context.");
                     AppConfigurationStoreMonitoring monitoring = resource.getMonitoring();
 
                     storeState.setStateFeatureFlag(resource.getEndpoint(), featureFlags,
@@ -128,7 +128,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     }
 
     private void failedToGeneratePropertySource(Exception e) {
-        LOGGER.error("Fail fast is set and there was an error reading configuration from Azure App "
+        logger.error("Fail fast is set and there was an error reading configuration from Azure App "
             + "Configuration store " + resource.getEndpoint() + ".");
         delayException();
         throw new RuntimeException("Failed to generate property sources for " + resource.getEndpoint(), e);
@@ -199,7 +199,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
             try {
                 Thread.sleep(diffInMillies);
             } catch (InterruptedException e) {
-                LOGGER.error("Failed to wait before fast fail.");
+                logger.error("Failed to wait before fast fail.");
             }
         }
     }

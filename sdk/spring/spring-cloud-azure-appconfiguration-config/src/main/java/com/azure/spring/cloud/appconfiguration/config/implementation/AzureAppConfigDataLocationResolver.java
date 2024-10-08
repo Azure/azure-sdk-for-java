@@ -33,7 +33,7 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 public class AzureAppConfigDataLocationResolver
     implements ConfigDataLocationResolver<AzureAppConfigDataResource> {
     
-    private static Log LOGGER = new DeferredLog();
+    private static final Log LOGGER = new DeferredLog();
 
     public static final String PREFIX = "azureAppConfiguration";
 
