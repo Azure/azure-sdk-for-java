@@ -6,6 +6,17 @@
 
 ### Breaking Changes
 
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
 #### `models.FluidRelayServers` was modified
 
 * `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
