@@ -121,6 +121,7 @@ public class AzuriteTests extends BlobTestBase {
 
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()
             .connectionString(getAzuriteBlobConnectionString(AZURITE_ENDPOINTS[index]))
+            .httpClient(getHttpClient())
             .buildClient();
 
         assertEquals(serviceClient.getAccountUrl(), AZURITE_ENDPOINTS[index]);
@@ -160,6 +161,7 @@ public class AzuriteTests extends BlobTestBase {
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
             .endpoint(AZURITE_ENDPOINTS[index] + "/container")
             .credential(AZURITE_CREDENTIAL)
+            .httpClient(getHttpClient())
             .buildClient();
 
         assertEquals(containerClient.getAccountName(), "devstoreaccount1");
@@ -173,6 +175,7 @@ public class AzuriteTests extends BlobTestBase {
         BlobContainerClient containerClient = new BlobContainerClientBuilder()
             .endpoint(AZURITE_ENDPOINTS[index] + "/container")
             .credential(new DefaultAzureCredentialBuilder().build())
+            .httpClient(getHttpClient())
             .buildClient();
 
         assertEquals(containerClient.getAccountName(), "devstoreaccount1");
@@ -197,6 +200,7 @@ public class AzuriteTests extends BlobTestBase {
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint(AZURITE_ENDPOINTS[index] + "/container/blob")
             .credential(AZURITE_CREDENTIAL)
+            .httpClient(getHttpClient())
             .buildClient();
 
         validateBlobClient(blobClient,
@@ -209,6 +213,7 @@ public class AzuriteTests extends BlobTestBase {
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint(AZURITE_ENDPOINTS[index] + "/container/blob")
             .credential(new DefaultAzureCredentialBuilder().build())
+            .httpClient(getHttpClient())
             .buildClient();
 
         validateBlobClient(blobClient,
@@ -235,7 +240,8 @@ public class AzuriteTests extends BlobTestBase {
     public void azuriteURLConstructSpecializedClient(int index) {
         SpecializedBlobClientBuilder specializedClientBuilder = new SpecializedBlobClientBuilder()
             .endpoint(AZURITE_ENDPOINTS[index] + "/container/blob")
-            .credential(AZURITE_CREDENTIAL);
+            .credential(AZURITE_CREDENTIAL)
+            .httpClient(getHttpClient());
 
         validateBlobClient(specializedClientBuilder.buildAppendBlobClient(),
             AZURITE_ENDPOINTS[index] + "/container/blob");

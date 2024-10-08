@@ -4,16 +4,20 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.storage.blob.models.BlobRange;
+import com.azure.storage.common.implementation.Constants;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.GCM_ENCRYPTION_REGION_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
@@ -32,7 +36,9 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     @MethodSource("constructorV2Supplier")
     public void constructorV2(Integer offset, Integer count, String expectedString) {
         EncryptedBlobRange ebr = new EncryptedBlobRange(getBlobRange(offset, count),
-            new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2)));
+            new EncryptionData()
+                .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
+                .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH)));
 
         assertEquals(expectedString, ebr.toBlobRange().toString());
     }
@@ -54,10 +60,11 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     @ParameterizedTest
     @CsvSource(value = {",", "3,", "17,", "34,", "47,", "48,", "2,6", "18,2", "38,17"})
     public void testFromBlobRangeHeader(Integer offset, Integer count) {
-        EncryptionData encryptionDataV1 = new EncryptionData().setEncryptionAgent(
-            new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1));
-        EncryptionData encryptionDataV2 = new EncryptionData().setEncryptionAgent(
-            new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2));
+        EncryptionData encryptionDataV1 = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1));
+        EncryptionData encryptionDataV2 = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
         BlobRange range = getBlobRange(offset, count);
 
         EncryptedBlobRange encryptedRangeFromBlobRangeV1 = new EncryptedBlobRange(range, encryptionDataV1);
@@ -81,5 +88,53 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
         } else {
             return new BlobRange(offset, (long) count);
         }
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {
+        16,
+        4 * Constants.KB,
+        4 * Constants.MB,
+        Constants.GB
+    })
+    public void encryptedBlobRangeFromEncryptionData(int regionLength) {
+        long dataSize = 4 * Constants.MB;
+        EncryptionData encryptionData = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2, EncryptionAlgorithm.AES_GCM_256))
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(regionLength, NONCE_LENGTH));
+
+        EncryptedBlobRange encryptedBlobRange = new EncryptedBlobRange(new BlobRange(0, dataSize), encryptionData);
+
+        int expectedRegionCount = (int) (dataSize - 1) / regionLength;
+        int expectedAdjustedDownloadCount = (expectedRegionCount + 1) * (NONCE_LENGTH + regionLength + TAG_LENGTH);
+
+        // check if the region length is being used correctly with the expected adjusted download count
+        assertEquals(expectedAdjustedDownloadCount, encryptedBlobRange.getAdjustedDownloadCount());
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideRanges")
+    public void testAdjustedBlobRange(int originalOffset, long originalCount, int expectedNewOffset, long expectedNewCount) {
+        int regionLength = 16;
+        EncryptionData encryptionData = new EncryptionData()
+            .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2, EncryptionAlgorithm.AES_GCM_256))
+            .setEncryptedRegionInfo(new EncryptedRegionInfo(regionLength, NONCE_LENGTH));
+
+        BlobRange originalRange = new BlobRange(originalOffset, originalCount);
+        EncryptedBlobRange encryptedBlobRange = new EncryptedBlobRange(originalRange, encryptionData);
+
+        BlobRange resultRange = encryptedBlobRange.toBlobRange();
+
+        assertEquals(expectedNewOffset, resultRange.getOffset(), "Adjusted offset does not match expected value.");
+        assertEquals(expectedNewCount, resultRange.getCount(), "Adjusted count does not match expected value.");
+    }
+
+    private static Stream<Arguments> provideRanges() {
+        return Stream.of(
+            Arguments.of(5, 10, 0, 44), // Entirely within a single region, adjustment includes nonce and tag
+            Arguments.of(16, 16, 44, 44), // Exactly one region
+            Arguments.of(15, 35, 0, 176), // Straddles across four regions
+            Arguments.of(32, 15, 88, 44)  // Starts exactly at the second region
+        );
     }
 }

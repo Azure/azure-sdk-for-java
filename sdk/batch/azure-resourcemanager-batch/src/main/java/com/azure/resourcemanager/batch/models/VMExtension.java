@@ -6,36 +6,36 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The configuration for virtual machine extensions.
  */
 @Fluent
-public final class VMExtension {
+public final class VMExtension implements JsonSerializable<VMExtension> {
     /*
      * The name of the virtual machine extension.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The name of the extension handler publisher.
      */
-    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
      * The type of the extensions.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * The version of script handler.
      */
-    @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
@@ -43,35 +43,28 @@ public final class VMExtension {
      * deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set
      * to true.
      */
-    @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
      * Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of
      * the extension available.
      */
-    @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
 
     /*
      * JSON formatted public settings for the extension.
      */
-    @JsonProperty(value = "settings")
     private Object settings;
 
     /*
      * The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at
      * all.
      */
-    @JsonProperty(value = "protectedSettings")
     private Object protectedSettings;
 
     /*
-     * The collection of extension names.
-     * 
      * Collection of extension names after which this extension needs to be provisioned.
      */
-    @JsonProperty(value = "provisionAfterExtensions")
     private List<String> provisionAfterExtensions;
 
     /**
@@ -161,9 +154,9 @@ public final class VMExtension {
     }
 
     /**
-     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      * 
      * @return the autoUpgradeMinorVersion value.
      */
@@ -172,9 +165,9 @@ public final class VMExtension {
     }
 
     /**
-     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if
-     * one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions
-     * unless redeployed, even with this property set to true.
+     * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
+     * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
+     * redeployed, even with this property set to true.
      * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the VMExtension object itself.
@@ -249,9 +242,8 @@ public final class VMExtension {
     }
 
     /**
-     * Get the provisionAfterExtensions property: The collection of extension names.
-     * 
-     * Collection of extension names after which this extension needs to be provisioned.
+     * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
      * 
      * @return the provisionAfterExtensions value.
      */
@@ -260,9 +252,8 @@ public final class VMExtension {
     }
 
     /**
-     * Set the provisionAfterExtensions property: The collection of extension names.
-     * 
-     * Collection of extension names after which this extension needs to be provisioned.
+     * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
      * 
      * @param provisionAfterExtensions the provisionAfterExtensions value to set.
      * @return the VMExtension object itself.
@@ -279,18 +270,81 @@ public final class VMExtension {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model VMExtension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model VMExtension"));
         }
         if (publisher() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property publisher in model VMExtension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property publisher in model VMExtension"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model VMExtension"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model VMExtension"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMExtension.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("typeHandlerVersion", this.typeHandlerVersion);
+        jsonWriter.writeBooleanField("autoUpgradeMinorVersion", this.autoUpgradeMinorVersion);
+        jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
+        jsonWriter.writeUntypedField("settings", this.settings);
+        jsonWriter.writeUntypedField("protectedSettings", this.protectedSettings);
+        jsonWriter.writeArrayField("provisionAfterExtensions", this.provisionAfterExtensions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMExtension from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMExtension if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMExtension.
+     */
+    public static VMExtension fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMExtension deserializedVMExtension = new VMExtension();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVMExtension.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedVMExtension.publisher = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVMExtension.type = reader.getString();
+                } else if ("typeHandlerVersion".equals(fieldName)) {
+                    deserializedVMExtension.typeHandlerVersion = reader.getString();
+                } else if ("autoUpgradeMinorVersion".equals(fieldName)) {
+                    deserializedVMExtension.autoUpgradeMinorVersion = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAutomaticUpgrade".equals(fieldName)) {
+                    deserializedVMExtension.enableAutomaticUpgrade = reader.getNullable(JsonReader::getBoolean);
+                } else if ("settings".equals(fieldName)) {
+                    deserializedVMExtension.settings = reader.readUntyped();
+                } else if ("protectedSettings".equals(fieldName)) {
+                    deserializedVMExtension.protectedSettings = reader.readUntyped();
+                } else if ("provisionAfterExtensions".equals(fieldName)) {
+                    List<String> provisionAfterExtensions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVMExtension.provisionAfterExtensions = provisionAfterExtensions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMExtension;
+        });
+    }
 }

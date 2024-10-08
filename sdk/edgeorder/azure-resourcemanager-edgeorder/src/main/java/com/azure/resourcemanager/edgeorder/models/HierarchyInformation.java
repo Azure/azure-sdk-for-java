@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Holds details about product hierarchy information. */
+/**
+ * Holds details about product hierarchy information.
+ */
 @Fluent
-public final class HierarchyInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HierarchyInformation.class);
-
+public final class HierarchyInformation implements JsonSerializable<HierarchyInformation> {
     /*
      * Represents product family name that uniquely identifies product family
      */
-    @JsonProperty(value = "productFamilyName")
     private String productFamilyName;
 
     /*
      * Represents product line name that uniquely identifies product line
      */
-    @JsonProperty(value = "productLineName")
     private String productLineName;
 
     /*
      * Represents product name that uniquely identifies product
      */
-    @JsonProperty(value = "productName")
     private String productName;
 
     /*
      * Represents configuration name that uniquely identifies configuration
      */
-    @JsonProperty(value = "configurationName")
     private String configurationName;
 
     /**
+     * Creates an instance of HierarchyInformation class.
+     */
+    public HierarchyInformation() {
+    }
+
+    /**
      * Get the productFamilyName property: Represents product family name that uniquely identifies product family.
-     *
+     * 
      * @return the productFamilyName value.
      */
     public String productFamilyName() {
@@ -49,7 +53,7 @@ public final class HierarchyInformation {
 
     /**
      * Set the productFamilyName property: Represents product family name that uniquely identifies product family.
-     *
+     * 
      * @param productFamilyName the productFamilyName value to set.
      * @return the HierarchyInformation object itself.
      */
@@ -60,7 +64,7 @@ public final class HierarchyInformation {
 
     /**
      * Get the productLineName property: Represents product line name that uniquely identifies product line.
-     *
+     * 
      * @return the productLineName value.
      */
     public String productLineName() {
@@ -69,7 +73,7 @@ public final class HierarchyInformation {
 
     /**
      * Set the productLineName property: Represents product line name that uniquely identifies product line.
-     *
+     * 
      * @param productLineName the productLineName value to set.
      * @return the HierarchyInformation object itself.
      */
@@ -80,7 +84,7 @@ public final class HierarchyInformation {
 
     /**
      * Get the productName property: Represents product name that uniquely identifies product.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -89,7 +93,7 @@ public final class HierarchyInformation {
 
     /**
      * Set the productName property: Represents product name that uniquely identifies product.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the HierarchyInformation object itself.
      */
@@ -100,7 +104,7 @@ public final class HierarchyInformation {
 
     /**
      * Get the configurationName property: Represents configuration name that uniquely identifies configuration.
-     *
+     * 
      * @return the configurationName value.
      */
     public String configurationName() {
@@ -109,7 +113,7 @@ public final class HierarchyInformation {
 
     /**
      * Set the configurationName property: Represents configuration name that uniquely identifies configuration.
-     *
+     * 
      * @param configurationName the configurationName value to set.
      * @return the HierarchyInformation object itself.
      */
@@ -120,9 +124,54 @@ public final class HierarchyInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("productFamilyName", this.productFamilyName);
+        jsonWriter.writeStringField("productLineName", this.productLineName);
+        jsonWriter.writeStringField("productName", this.productName);
+        jsonWriter.writeStringField("configurationName", this.configurationName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HierarchyInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HierarchyInformation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HierarchyInformation.
+     */
+    public static HierarchyInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HierarchyInformation deserializedHierarchyInformation = new HierarchyInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("productFamilyName".equals(fieldName)) {
+                    deserializedHierarchyInformation.productFamilyName = reader.getString();
+                } else if ("productLineName".equals(fieldName)) {
+                    deserializedHierarchyInformation.productLineName = reader.getString();
+                } else if ("productName".equals(fieldName)) {
+                    deserializedHierarchyInformation.productName = reader.getString();
+                } else if ("configurationName".equals(fieldName)) {
+                    deserializedHierarchyInformation.configurationName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHierarchyInformation;
+        });
     }
 }

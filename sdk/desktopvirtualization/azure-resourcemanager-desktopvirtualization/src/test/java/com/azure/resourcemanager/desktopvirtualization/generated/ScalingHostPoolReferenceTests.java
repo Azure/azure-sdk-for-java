@@ -11,20 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ScalingHostPoolReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScalingHostPoolReference model =
-            BinaryData
-                .fromString("{\"hostPoolArmPath\":\"yav\",\"scalingPlanEnabled\":false}")
+        ScalingHostPoolReference model
+            = BinaryData.fromString("{\"hostPoolArmPath\":\"czfc\",\"scalingPlanEnabled\":true}")
                 .toObject(ScalingHostPoolReference.class);
-        Assertions.assertEquals("yav", model.hostPoolArmPath());
-        Assertions.assertEquals(false, model.scalingPlanEnabled());
+        Assertions.assertEquals("czfc", model.hostPoolArmPath());
+        Assertions.assertEquals(true, model.scalingPlanEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScalingHostPoolReference model =
-            new ScalingHostPoolReference().withHostPoolArmPath("yav").withScalingPlanEnabled(false);
+        ScalingHostPoolReference model
+            = new ScalingHostPoolReference().withHostPoolArmPath("czfc").withScalingPlanEnabled(true);
         model = BinaryData.fromObject(model).toObject(ScalingHostPoolReference.class);
-        Assertions.assertEquals("yav", model.hostPoolArmPath());
-        Assertions.assertEquals(false, model.scalingPlanEnabled());
+        Assertions.assertEquals("czfc", model.hostPoolArmPath());
+        Assertions.assertEquals(true, model.scalingPlanEnabled());
     }
 }

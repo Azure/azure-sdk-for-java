@@ -12,6 +12,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME;
+
 /**
  * A {@link JdbcConnectionStringEnhancer} will enhance a {@link JdbcConnectionString}
  * instance. It can add more properties to the JDBC connection string instance, or
@@ -66,28 +70,38 @@ public final class JdbcConnectionStringEnhancer {
         return value == null ? key : (key + "=" + value);
     }
 
-    public void enhanceProperties(Map<String, String> enhancedProperties) {
-        this.enhanceProperties(enhancedProperties, false);
+    public void enhanceProperties(Map<String, String> connectionProperties) {
+        this.enhanceProperties(connectionProperties, false);
     }
 
-    public void enhanceProperties(Map<String, String> enhancedProperties,
+    public void enhanceProperties(Map<String, String> connectionProperties,
                                   boolean silentWhenInconsistentValuePresent) {
-        for (Map.Entry<String, String> entry : enhancedProperties.entrySet()) {
+        for (Map.Entry<String, String> entry : connectionProperties.entrySet()) {
             String key = entry.getKey(), value = entry.getValue();
             String valueProvidedInConnectionString = this.connectionString.getProperty(key);
 
             if (valueProvidedInConnectionString == null) {
                 this.enhancedProperties.put(key, value);
             } else if (!value.equals(valueProvidedInConnectionString)) {
-                if (silentWhenInconsistentValuePresent) {
-                    LOGGER.debug("The property {} is set to another value than default {}", key, value);
+                if (silentWhenInconsistentValuePresent
+                    && !isAzureAuthenticationParameterKey(this.connectionString, key)) {
+                    LOGGER.debug("The property {} is set to another value than default {}.", key, value);
                 } else {
-                    throw new IllegalArgumentException("Inconsistent property of key [" + key +  "] detected");
+                    throw new IllegalArgumentException("Inconsistent property value of key [" + key +  "] detected.");
                 }
             } else {
-                LOGGER.debug("The property {} is already set", key);
+                LOGGER.debug("The property {} is already set.", key);
             }
         }
+    }
+
+    private boolean isAzureAuthenticationParameterKey(JdbcConnectionString connectionString, String key) {
+        return switch (connectionString.getDatabaseType()) {
+            case MYSQL -> MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN.equalsIgnoreCase(key)
+                || MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS.equalsIgnoreCase(key);
+            case POSTGRESQL -> POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME.equalsIgnoreCase(key);
+            default -> false;
+        };
     }
 
     public void enhancePropertyAttributes(String propertyKey, Map<String, String> enhancedAttributes,

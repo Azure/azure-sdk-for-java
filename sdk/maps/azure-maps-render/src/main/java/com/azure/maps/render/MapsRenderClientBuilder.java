@@ -147,7 +147,7 @@ public final class MapsRenderClientBuilder
     /**
      * Sets the Azure Maps client id for use with Azure AD Authentication. This client id
      * is the account-based GUID that appears on the Azure Maps Authentication page.
-     *
+     * <p>
      * More details: <a href="https://docs.microsoft.com/azure/azure-maps/azure-maps-authentication">Azure Maps AD Authentication</a>
      *
      * @param mapsClientId the clientId value.

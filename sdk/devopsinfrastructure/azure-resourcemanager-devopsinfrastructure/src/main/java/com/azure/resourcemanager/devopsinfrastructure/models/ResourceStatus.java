@@ -12,57 +12,57 @@ import java.util.Collection;
  */
 public final class ResourceStatus extends ExpandableStringEnum<ResourceStatus> {
     /**
-     * Static value Ready for ResourceStatus.
+     * Represents a machine resource that is ready.
      */
     public static final ResourceStatus READY = fromString("Ready");
 
     /**
-     * Static value NotReady for ResourceStatus.
+     * Represents a machine resource that is not ready.
      */
     public static final ResourceStatus NOT_READY = fromString("NotReady");
 
     /**
-     * Static value Allocated for ResourceStatus.
+     * Represents a machine resource that is allocated.
      */
     public static final ResourceStatus ALLOCATED = fromString("Allocated");
 
     /**
-     * Static value PendingReturn for ResourceStatus.
+     * Represents a machine resource that is pending return.
      */
     public static final ResourceStatus PENDING_RETURN = fromString("PendingReturn");
 
     /**
-     * Static value Returned for ResourceStatus.
+     * Represents a machine resource that is returned.
      */
     public static final ResourceStatus RETURNED = fromString("Returned");
 
     /**
-     * Static value Leased for ResourceStatus.
+     * Represents a machine resource that is leased.
      */
     public static final ResourceStatus LEASED = fromString("Leased");
 
     /**
-     * Static value Provisioning for ResourceStatus.
+     * Represents a machine resource that is provisioning.
      */
     public static final ResourceStatus PROVISIONING = fromString("Provisioning");
 
     /**
-     * Static value Updating for ResourceStatus.
+     * Represents a machine resource that is updating.
      */
     public static final ResourceStatus UPDATING = fromString("Updating");
 
     /**
-     * Static value Starting for ResourceStatus.
+     * Represents a machine resource that is starting.
      */
     public static final ResourceStatus STARTING = fromString("Starting");
 
     /**
-     * Static value PendingReimage for ResourceStatus.
+     * Represents a machine resource that is pending reimage.
      */
     public static final ResourceStatus PENDING_REIMAGE = fromString("PendingReimage");
 
     /**
-     * Static value Reimaging for ResourceStatus.
+     * Represents a machine resource that is reimaging.
      */
     public static final ResourceStatus REIMAGING = fromString("Reimaging");
 

@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = BoundariesClientBuilder.class, isAsync = true)
 public final class BoundariesAsyncClient {
-    @Generated private final BoundariesImpl serviceClient;
+    @Generated
+    private final BoundariesImpl serviceClient;
 
     /**
      * Initializes an instance of BoundariesAsyncClient class.
@@ -220,8 +221,8 @@ public final class BoundariesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String boundaryId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String boundaryId, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, boundaryId, requestOptions);
     }
 
@@ -258,8 +259,8 @@ public final class BoundariesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -412,8 +413,8 @@ public final class BoundariesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> searchByPartyId(
-            String partyId, BinaryData searchBoundaryQuery, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> searchByPartyId(String partyId, BinaryData searchBoundaryQuery,
+        RequestOptions requestOptions) {
         return this.serviceClient.searchByPartyIdAsync(partyId, searchBoundaryQuery, requestOptions);
     }
 
@@ -498,8 +499,8 @@ public final class BoundariesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String partyId, String boundaryId, BinaryData boundary, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String partyId, String boundaryId, BinaryData boundary,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(partyId, boundaryId, boundary, requestOptions);
     }
 
@@ -551,8 +552,8 @@ public final class BoundariesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponse(
-            String partyId, String boundaryId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getWithResponse(String partyId, String boundaryId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(partyId, boundaryId, requestOptions);
     }
 
@@ -600,13 +601,9 @@ public final class BoundariesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOverlapWithResponse(
-            String partyId,
-            String boundaryId,
-            String otherPartyId,
-            String otherBoundaryId,
-            RequestOptions requestOptions) {
-        return this.serviceClient.getOverlapWithResponseAsync(
-                partyId, boundaryId, otherPartyId, otherBoundaryId, requestOptions);
+    public Mono<Response<BinaryData>> getOverlapWithResponse(String partyId, String boundaryId, String otherPartyId,
+        String otherBoundaryId, RequestOptions requestOptions) {
+        return this.serviceClient.getOverlapWithResponseAsync(partyId, boundaryId, otherPartyId, otherBoundaryId,
+            requestOptions);
     }
 }

@@ -48,7 +48,8 @@ public final class LineageClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -129,7 +130,8 @@ public final class LineageClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -159,7 +161,8 @@ public final class LineageClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -240,7 +243,8 @@ public final class LineageClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param guid The globally unique identifier of the entity.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",
@@ -287,7 +291,8 @@ public final class LineageClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
@@ -368,7 +373,8 @@ public final class LineageClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param typeName The name of the type.
      * @param direction The direction of the lineage, which could be INPUT, OUTPUT or BOTH. Allowed values: "INPUT",

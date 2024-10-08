@@ -5,28 +5,340 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.consumption.fluent.models.LegacyReservationRecommendationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 
-/** The properties of the legacy reservation recommendation for shared scope. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scope")
-@JsonTypeName("Shared")
+/**
+ * The properties of the legacy reservation recommendation for shared scope.
+ */
 @Immutable
 public final class LegacySharedScopeReservationRecommendationProperties
     extends LegacyReservationRecommendationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LegacySharedScopeReservationRecommendationProperties.class);
+    /*
+     * Shared or single recommendation.
+     */
+    private String scope = "Shared";
+
+    /*
+     * List of sku properties
+     */
+    private List<SkuProperty> skuProperties;
+
+    /*
+     * The usage date for looking back.
+     */
+    private OffsetDateTime firstUsageDate;
+
+    /*
+     * Total estimated savings with reserved instances.
+     */
+    private BigDecimal netSavings;
+
+    /*
+     * The total amount of cost with reserved instances.
+     */
+    private BigDecimal totalCostWithReservedInstances;
+
+    /*
+     * Recommended quality for reserved instances.
+     */
+    private BigDecimal recommendedQuantity;
+
+    /*
+     * The total amount of cost without reserved instances.
+     */
+    private BigDecimal costWithNoReservedInstances;
+
+    /*
+     * RI recommendations in one or three year terms.
+     */
+    private String term;
+
+    /*
+     * The azure resource type.
+     */
+    private String resourceType;
+
+    /*
+     * The meter id (GUID)
+     */
+    private UUID meterId;
+
+    /*
+     * The recommended Quantity Normalized.
+     */
+    private Float recommendedQuantityNormalized;
+
+    /*
+     * The normalized Size.
+     */
+    private String normalizedSize;
+
+    /*
+     * The instance Flexibility Group.
+     */
+    private String instanceFlexibilityGroup;
+
+    /*
+     * The instance Flexibility Ratio.
+     */
+    private Float instanceFlexibilityRatio;
+
+    /*
+     * The number of days of usage to look back for recommendation.
+     */
+    private String lookBackPeriod;
+
+    /**
+     * Creates an instance of LegacySharedScopeReservationRecommendationProperties class.
+     */
+    public LegacySharedScopeReservationRecommendationProperties() {
+    }
+
+    /**
+     * Get the scope property: Shared or single recommendation.
+     * 
+     * @return the scope value.
+     */
+    @Override
+    public String scope() {
+        return this.scope;
+    }
+
+    /**
+     * Get the skuProperties property: List of sku properties.
+     * 
+     * @return the skuProperties value.
+     */
+    @Override
+    public List<SkuProperty> skuProperties() {
+        return this.skuProperties;
+    }
+
+    /**
+     * Get the firstUsageDate property: The usage date for looking back.
+     * 
+     * @return the firstUsageDate value.
+     */
+    @Override
+    public OffsetDateTime firstUsageDate() {
+        return this.firstUsageDate;
+    }
+
+    /**
+     * Get the netSavings property: Total estimated savings with reserved instances.
+     * 
+     * @return the netSavings value.
+     */
+    @Override
+    public BigDecimal netSavings() {
+        return this.netSavings;
+    }
+
+    /**
+     * Get the totalCostWithReservedInstances property: The total amount of cost with reserved instances.
+     * 
+     * @return the totalCostWithReservedInstances value.
+     */
+    @Override
+    public BigDecimal totalCostWithReservedInstances() {
+        return this.totalCostWithReservedInstances;
+    }
+
+    /**
+     * Get the recommendedQuantity property: Recommended quality for reserved instances.
+     * 
+     * @return the recommendedQuantity value.
+     */
+    @Override
+    public BigDecimal recommendedQuantity() {
+        return this.recommendedQuantity;
+    }
+
+    /**
+     * Get the costWithNoReservedInstances property: The total amount of cost without reserved instances.
+     * 
+     * @return the costWithNoReservedInstances value.
+     */
+    @Override
+    public BigDecimal costWithNoReservedInstances() {
+        return this.costWithNoReservedInstances;
+    }
+
+    /**
+     * Get the term property: RI recommendations in one or three year terms.
+     * 
+     * @return the term value.
+     */
+    @Override
+    public String term() {
+        return this.term;
+    }
+
+    /**
+     * Get the resourceType property: The azure resource type.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * Get the meterId property: The meter id (GUID).
+     * 
+     * @return the meterId value.
+     */
+    @Override
+    public UUID meterId() {
+        return this.meterId;
+    }
+
+    /**
+     * Get the recommendedQuantityNormalized property: The recommended Quantity Normalized.
+     * 
+     * @return the recommendedQuantityNormalized value.
+     */
+    @Override
+    public Float recommendedQuantityNormalized() {
+        return this.recommendedQuantityNormalized;
+    }
+
+    /**
+     * Get the normalizedSize property: The normalized Size.
+     * 
+     * @return the normalizedSize value.
+     */
+    @Override
+    public String normalizedSize() {
+        return this.normalizedSize;
+    }
+
+    /**
+     * Get the instanceFlexibilityGroup property: The instance Flexibility Group.
+     * 
+     * @return the instanceFlexibilityGroup value.
+     */
+    @Override
+    public String instanceFlexibilityGroup() {
+        return this.instanceFlexibilityGroup;
+    }
+
+    /**
+     * Get the instanceFlexibilityRatio property: The instance Flexibility Ratio.
+     * 
+     * @return the instanceFlexibilityRatio value.
+     */
+    @Override
+    public Float instanceFlexibilityRatio() {
+        return this.instanceFlexibilityRatio;
+    }
+
+    /**
+     * Get the lookBackPeriod property: The number of days of usage to look back for recommendation.
+     * 
+     * @return the lookBackPeriod value.
+     */
+    @Override
+    public String lookBackPeriod() {
+        return this.lookBackPeriod;
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (skuProperties() != null) {
+            skuProperties().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegacySharedScopeReservationRecommendationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegacySharedScopeReservationRecommendationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LegacySharedScopeReservationRecommendationProperties.
+     */
+    public static LegacySharedScopeReservationRecommendationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegacySharedScopeReservationRecommendationProperties deserializedLegacySharedScopeReservationRecommendationProperties
+                = new LegacySharedScopeReservationRecommendationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lookBackPeriod".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.lookBackPeriod
+                        = reader.getString();
+                } else if ("instanceFlexibilityRatio".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.instanceFlexibilityRatio
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("instanceFlexibilityGroup".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.instanceFlexibilityGroup
+                        = reader.getString();
+                } else if ("normalizedSize".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.normalizedSize
+                        = reader.getString();
+                } else if ("recommendedQuantityNormalized".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.recommendedQuantityNormalized
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("meterId".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.meterId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.resourceType = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.term = reader.getString();
+                } else if ("costWithNoReservedInstances".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.costWithNoReservedInstances
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("recommendedQuantity".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.recommendedQuantity
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("totalCostWithReservedInstances".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.totalCostWithReservedInstances
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("netSavings".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.netSavings
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("firstUsageDate".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.firstUsageDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("skuProperties".equals(fieldName)) {
+                    List<SkuProperty> skuProperties = reader.readArray(reader1 -> SkuProperty.fromJson(reader1));
+                    deserializedLegacySharedScopeReservationRecommendationProperties.skuProperties = skuProperties;
+                } else if ("scope".equals(fieldName)) {
+                    deserializedLegacySharedScopeReservationRecommendationProperties.scope = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegacySharedScopeReservationRecommendationProperties;
+        });
     }
 }

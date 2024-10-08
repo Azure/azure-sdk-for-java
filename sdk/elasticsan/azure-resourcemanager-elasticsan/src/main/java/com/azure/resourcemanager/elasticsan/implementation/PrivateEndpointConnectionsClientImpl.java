@@ -337,7 +337,8 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     private Mono<PrivateEndpointConnectionInner> createAsync(String resourceGroupName, String elasticSanName,
         String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context) {
         return beginCreateAsync(resourceGroupName, elasticSanName, privateEndpointConnectionName, parameters, context)
-            .last().flatMap(this.client::getLroFinalResultOrError);
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**

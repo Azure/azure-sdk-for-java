@@ -28,7 +28,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * &#64;UnexpectedResponseExceptionDetail&#40;exceptionBodyClass = MyCustomExceptionBody.class&#41;
  * &#64;HttpRequestInformation&#40;method = HttpMethod.POST, path = &quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&quot;
  *     + &quot;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.CustomerInsights&#47;hubs&#47;&#123;hubName&#125;&#47;images&#47;&quot;
- *     + &quot;getEntityTypeImageUploadUrl&quot;,
+ *     + &quot;getEntityTypeImageUploadUri&quot;,
  *     returnValueWireType = void.class&#41;
  * void singleExceptionType&#40;&#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String resourceGroupName,
  *     &#64;PathParam&#40;&quot;hubName&quot;&#41; String hubName, &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId,
@@ -40,7 +40,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * &#64;UnexpectedResponseExceptionDetail&#40;statusCode = &#123;404&#125;, exceptionBodyClass = MyCustomExceptionBody.class&#41;
  * &#64;HttpRequestInformation&#40;method = HttpMethod.POST, path = &quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&quot;
  *     + &quot;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.CustomerInsights&#47;hubs&#47;&#123;hubName&#125;&#47;images&#47;&quot;
- *     + &quot;getEntityTypeImageUploadUrl&quot;,
+ *     + &quot;getEntityTypeImageUploadUri&quot;,
  *     returnValueWireType = void.class&#41;
  * void multipleExceptionTypes&#40;&#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String resourceGroupName,
  *     &#64;PathParam&#40;&quot;hubName&quot;&#41; String hubName,

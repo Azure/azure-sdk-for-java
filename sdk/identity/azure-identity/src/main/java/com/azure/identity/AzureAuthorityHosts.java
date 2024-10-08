@@ -28,7 +28,10 @@ public final class AzureAuthorityHosts {
 
     /**
      * The host of the Microsoft Entra authority for tenants in the Azure German Cloud.
+     *
+     * @deprecated Microsoft Cloud Germany was closed on October 29th, 2021.
      */
+    @Deprecated
     public static final String AZURE_GERMANY = "https://login.microsoftonline.de/";
 
     /**

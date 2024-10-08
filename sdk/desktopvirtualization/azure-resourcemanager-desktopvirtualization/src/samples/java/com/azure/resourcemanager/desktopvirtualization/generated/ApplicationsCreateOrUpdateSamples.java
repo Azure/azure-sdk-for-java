@@ -6,20 +6,23 @@ package com.azure.resourcemanager.desktopvirtualization.generated;
 
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 
-/** Samples for Applications CreateOrUpdate. */
+/**
+ * Samples for Applications CreateOrUpdate.
+ */
 public final class ApplicationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2023-09-05/examples/Application_Create.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * Application_Create.json
      */
     /**
      * Sample code: Application_Create.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
-    public static void applicationCreate(
-        com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager
-            .applications()
+    public static void
+        applicationCreate(com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
+        manager.applications()
             .define("application1")
             .withExistingApplicationGroup("resourceGroup1", "applicationGroup1")
             .withCommandLineSetting(CommandLineSetting.ALLOW)

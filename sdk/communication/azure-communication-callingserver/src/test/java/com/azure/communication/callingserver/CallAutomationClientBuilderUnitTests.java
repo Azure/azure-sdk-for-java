@@ -4,7 +4,6 @@ package com.azure.communication.callingserver;
 
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
@@ -13,8 +12,8 @@ import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -197,11 +196,10 @@ public class CallAutomationClientBuilderUnitTests {
     @Test
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void argumentExceptionOnConnectionStringAndTokenCredential() {
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         assertThrows(
             IllegalArgumentException.class, () -> builder
                 .connectionString(MOCK_CONNECTION_STRING)
-                .credential(tokenCredential)
+                .credential(new MockTokenCredential())
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
     }
@@ -210,11 +208,10 @@ public class CallAutomationClientBuilderUnitTests {
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void argumentExceptionOnAzureKeyCredentialAndTokenCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("key");
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         assertThrows(
             IllegalArgumentException.class, () -> builder
                 .credential(credential)
-                .credential(tokenCredential)
+                .credential(new MockTokenCredential())
                 .httpClient(new NoOpHttpClient())
                 .buildAsyncClient());
     }
@@ -222,10 +219,9 @@ public class CallAutomationClientBuilderUnitTests {
     @Test
     @Disabled("Disabling test as calling sever is in the process of decommissioning")
     public void noPipelineWithToken() {
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
         CallAutomationAsyncClient callAutomationAsyncClient = builder
             .endpoint(MOCK_URL)
-            .credential(tokenCredential)
+            .credential(new MockTokenCredential())
             .httpClient(new NoOpHttpClient())
             .buildAsyncClient();
 

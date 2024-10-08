@@ -12,7 +12,7 @@ import com.azure.resourcemanager.privatedns.models.RecordType;
 public final class RecordSetsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetTXTDelete.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetTXTDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone TXT Record Set.
@@ -30,7 +30,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetMXDelete.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetMXDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone MX Record Set.
@@ -48,7 +48,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetCNAMEDelete.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetCNAMEDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone CNAME Record Set.
@@ -66,7 +66,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetAAAADelete.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetAAAADelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone AAAA Record Set.
@@ -84,7 +84,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetSRVDelete.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetSRVDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone SRV Record Set.
@@ -102,7 +102,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetADelete.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetADelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone A Record Set.
@@ -120,7 +120,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/RecordSetPTRDelete.json
+     * specification/privatedns/resource-manager/Microsoft.Network/stable/2024-06-01/examples/RecordSetPTRDelete.json
      */
     /**
      * Sample code: DELETE Private DNS Zone PTR Record Set.

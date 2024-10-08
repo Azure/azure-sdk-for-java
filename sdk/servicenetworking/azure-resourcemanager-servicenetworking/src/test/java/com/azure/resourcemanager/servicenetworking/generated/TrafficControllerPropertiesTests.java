@@ -5,19 +5,25 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurations;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerProperties;
+import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicy;
+import org.junit.jupiter.api.Assertions;
 
 public final class TrafficControllerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrafficControllerProperties model = BinaryData.fromString(
-            "{\"configurationEndpoints\":[\"fublj\",\"fxqeof\"],\"frontends\":[{\"id\":\"qjhqjbas\"}],\"associations\":[{\"id\":\"mjqulngsn\"},{\"id\":\"nbybkzgcwrwcl\"},{\"id\":\"xwrljdouskcqvkoc\"},{\"id\":\"cjdkwtnhxbnjbi\"}],\"provisioningState\":\"Canceled\"}")
+            "{\"configurationEndpoints\":[\"cwrwclxxwrljdous\"],\"frontends\":[{\"id\":\"vkocrcjdkwtn\"},{\"id\":\"xbnjbiksq\"}],\"associations\":[{\"id\":\"ssainqpjwnzll\"},{\"id\":\"fmppe\"}],\"securityPolicies\":[{\"id\":\"mgxsab\"},{\"id\":\"yqduujit\"}],\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"zdzevndh\"}},\"provisioningState\":\"Accepted\"}")
             .toObject(TrafficControllerProperties.class);
+        Assertions.assertEquals("zdzevndh", model.securityPolicyConfigurations().wafSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrafficControllerProperties model = new TrafficControllerProperties();
+        TrafficControllerProperties model = new TrafficControllerProperties().withSecurityPolicyConfigurations(
+            new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("zdzevndh")));
         model = BinaryData.fromObject(model).toObject(TrafficControllerProperties.class);
+        Assertions.assertEquals("zdzevndh", model.securityPolicyConfigurations().wafSecurityPolicy().id());
     }
 }

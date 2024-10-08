@@ -7,39 +7,52 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema for Desktop properties. */
+/**
+ * Schema for Desktop properties.
+ */
 @Fluent
 public final class DesktopInner extends ProxyResource {
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
     /*
      * Detailed properties for Desktop
      */
-    @JsonProperty(value = "properties")
     private DesktopProperties innerProperties;
 
-    /** Creates an instance of DesktopInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DesktopInner class.
+     */
     public DesktopInner() {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the innerProperties property: Detailed properties for Desktop.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DesktopProperties innerProperties() {
@@ -47,8 +60,47 @@ public final class DesktopInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the objectId property: ObjectId of Desktop. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -57,7 +109,7 @@ public final class DesktopInner extends ProxyResource {
 
     /**
      * Get the description property: Description of Desktop.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -66,7 +118,7 @@ public final class DesktopInner extends ProxyResource {
 
     /**
      * Set the description property: Description of Desktop.
-     *
+     * 
      * @param description the description value to set.
      * @return the DesktopInner object itself.
      */
@@ -80,7 +132,7 @@ public final class DesktopInner extends ProxyResource {
 
     /**
      * Get the friendlyName property: Friendly name of Desktop.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -89,7 +141,7 @@ public final class DesktopInner extends ProxyResource {
 
     /**
      * Set the friendlyName property: Friendly name of Desktop.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the DesktopInner object itself.
      */
@@ -103,7 +155,7 @@ public final class DesktopInner extends ProxyResource {
 
     /**
      * Get the iconHash property: Hash of the icon.
-     *
+     * 
      * @return the iconHash value.
      */
     public String iconHash() {
@@ -112,21 +164,66 @@ public final class DesktopInner extends ProxyResource {
 
     /**
      * Get the iconContent property: The icon a 64 bit string as a byte array.
-     *
+     * 
      * @return the iconContent value.
      */
     public byte[] iconContent() {
-        return this.innerProperties() == null ? new byte[0] : this.innerProperties().iconContent();
+        return this.innerProperties() == null ? EMPTY_BYTE_ARRAY : this.innerProperties().iconContent();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DesktopInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DesktopInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DesktopInner.
+     */
+    public static DesktopInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DesktopInner deserializedDesktopInner = new DesktopInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDesktopInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDesktopInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDesktopInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDesktopInner.innerProperties = DesktopProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDesktopInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDesktopInner;
+        });
     }
 }

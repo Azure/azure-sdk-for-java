@@ -684,7 +684,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -740,7 +741,8 @@ public final class GlossariesImpl {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -773,7 +775,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -829,7 +832,8 @@ public final class GlossariesImpl {
      *         usage: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -849,7 +853,8 @@ public final class GlossariesImpl {
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -903,11 +908,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -961,7 +968,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -983,7 +991,8 @@ public final class GlossariesImpl {
      * Create a glossary.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1037,11 +1046,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1095,7 +1106,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1116,7 +1128,8 @@ public final class GlossariesImpl {
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1176,11 +1189,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1240,7 +1255,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1263,7 +1279,8 @@ public final class GlossariesImpl {
      * Create glossary category in bulk.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1323,11 +1340,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -1387,7 +1406,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1409,7 +1429,8 @@ public final class GlossariesImpl {
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1467,11 +1488,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1529,7 +1552,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1551,7 +1575,8 @@ public final class GlossariesImpl {
      * Create a glossary category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1609,11 +1634,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1671,7 +1698,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1693,7 +1721,8 @@ public final class GlossariesImpl {
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1751,7 +1780,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1773,7 +1803,8 @@ public final class GlossariesImpl {
      * Get specific glossary category by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1831,7 +1862,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1851,7 +1883,8 @@ public final class GlossariesImpl {
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1909,11 +1942,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -1971,7 +2006,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body Body parameter.
@@ -1995,7 +2031,8 @@ public final class GlossariesImpl {
      * Update the given glossary category by its GUID.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2053,11 +2090,13 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2115,7 +2154,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body Body parameter.
@@ -2175,15 +2215,18 @@ public final class GlossariesImpl {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2241,7 +2284,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2267,15 +2311,18 @@ public final class GlossariesImpl {
      * updating shortDescription and longDescription for category.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2333,7 +2380,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -2368,7 +2416,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2380,7 +2429,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2413,7 +2463,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -2425,7 +2476,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2455,7 +2507,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -2467,7 +2520,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2499,7 +2553,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -2511,7 +2566,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param categoryId The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2539,7 +2595,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2698,11 +2755,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -2861,7 +2920,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -2890,7 +2950,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3049,11 +3110,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3212,7 +3275,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body Body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3234,7 +3298,8 @@ public final class GlossariesImpl {
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3393,7 +3458,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3415,7 +3481,8 @@ public final class GlossariesImpl {
      * Get a specific glossary term by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3574,7 +3641,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -3602,7 +3670,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3761,11 +3830,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -3924,7 +3995,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body Body parameter.
@@ -3955,7 +4027,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4114,11 +4187,13 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4277,7 +4352,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body Body parameter.
@@ -4343,15 +4419,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4510,7 +4589,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -4543,15 +4623,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -4710,7 +4793,8 @@ public final class GlossariesImpl {
      *         (recursive schema, see above)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -4742,7 +4826,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -4903,11 +4988,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5068,7 +5155,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5097,7 +5185,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5258,11 +5347,13 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5423,7 +5514,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param body An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5455,7 +5547,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5477,7 +5570,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5509,7 +5603,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5531,7 +5626,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5557,7 +5653,8 @@ public final class GlossariesImpl {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5579,7 +5676,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -5608,7 +5706,8 @@ public final class GlossariesImpl {
      * is an alternative to assign a term to multiple entities.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5630,7 +5729,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs to which the term has to be associated.
@@ -5654,7 +5754,8 @@ public final class GlossariesImpl {
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5676,7 +5777,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -5700,7 +5802,8 @@ public final class GlossariesImpl {
      * Delete the term assignment for the given list of related objects.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -5722,7 +5825,8 @@ public final class GlossariesImpl {
      *         relationshipStatus: String(ACTIVE/DELETED) (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param body An array of related object IDs from which the term has to be dissociated.
@@ -5756,7 +5860,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -5770,7 +5875,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5802,7 +5908,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String (Required): [
      *          (Required){
@@ -5816,7 +5923,8 @@ public final class GlossariesImpl {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param termId The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5837,7 +5945,8 @@ public final class GlossariesImpl {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -5891,7 +6000,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5912,7 +6022,8 @@ public final class GlossariesImpl {
      * Get a specific Glossary by its GUID.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -5966,7 +6077,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -5993,7 +6105,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6047,11 +6160,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6105,7 +6220,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body Body parameter.
@@ -6137,7 +6253,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6191,11 +6308,13 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6249,7 +6368,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body Body parameter.
@@ -6319,7 +6439,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -6379,7 +6500,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6411,7 +6533,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -6471,7 +6594,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6501,7 +6625,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -6511,7 +6636,8 @@ public final class GlossariesImpl {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6544,7 +6670,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         categoryGuid: String (Optional)
@@ -6554,7 +6681,8 @@ public final class GlossariesImpl {
      *         relationGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6582,7 +6710,8 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -6797,7 +6926,8 @@ public final class GlossariesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -6826,7 +6956,8 @@ public final class GlossariesImpl {
      * GET /datamap/api/atlas/v2/glossary/{glossaryId}/categories.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -7041,7 +7172,8 @@ public final class GlossariesImpl {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7076,15 +7208,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -7138,7 +7273,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -7178,15 +7314,18 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     String: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     guid: String (Optional)
      *     classifications (Optional): [
@@ -7240,7 +7379,8 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param body A map containing keys as attribute names and values as corresponding attribute
@@ -7275,7 +7415,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -7436,7 +7577,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7468,7 +7610,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         guid: String (Optional)
@@ -7629,7 +7772,8 @@ public final class GlossariesImpl {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7660,7 +7804,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -7672,7 +7817,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -7705,7 +7851,8 @@ public final class GlossariesImpl {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         description: String (Optional)
@@ -7717,7 +7864,8 @@ public final class GlossariesImpl {
      *         termGuid: String (Optional)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      * 
      * @param glossaryId The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

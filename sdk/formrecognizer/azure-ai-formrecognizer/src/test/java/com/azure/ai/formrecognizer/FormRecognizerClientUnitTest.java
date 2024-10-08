@@ -6,10 +6,12 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 
@@ -38,6 +40,7 @@ public class FormRecognizerClientUnitTest {
     protected static void beforeTest() {
         FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
             .endpoint(VALID_HTTPS_LOCALHOST)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .credential(new AzureKeyCredential("fakeKey"));
 
         client = builder.buildClient();
@@ -185,7 +188,7 @@ public class FormRecognizerClientUnitTest {
                     new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
                     Context.NONE)
                 .setPollInterval(ONE_NANO_DURATION));
-        assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
     /**
@@ -196,7 +199,7 @@ public class FormRecognizerClientUnitTest {
         IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
             () -> client.beginRecognizeCustomFormsFromUrl("", FAKE_ENCODED_EMPTY_SPACE_URL,
                 new RecognizeCustomFormsOptions().setPollInterval(ONE_NANO_DURATION), Context.NONE));
-        assertEquals(INVALID_UUID_EXCEPTION_MESSAGE, ex.getMessage());
+        assertEquals(MODEL_ID_IS_REQUIRED_EXCEPTION_MESSAGE, ex.getMessage());
     }
 
     /**
@@ -219,6 +222,7 @@ public class FormRecognizerClientUnitTest {
             () -> new FormRecognizerClientBuilder()
                 .credential(new AzureKeyCredential("fakeKey"))
                 .endpoint(INVALID_ENDPOINT)
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
                 .buildClient()
                 .beginRecognizeContentFromUrl(URL_TEST_FILE_FORMAT + CONTENT_FORM_JPG).getFinalResult());
     }

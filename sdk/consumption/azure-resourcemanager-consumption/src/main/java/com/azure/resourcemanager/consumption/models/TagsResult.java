@@ -7,25 +7,27 @@ package com.azure.resourcemanager.consumption.models;
 import com.azure.resourcemanager.consumption.fluent.models.TagsResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of TagsResult. */
+/**
+ * An immutable client-side representation of TagsResult.
+ */
 public interface TagsResult {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -33,35 +35,35 @@ public interface TagsResult {
     /**
      * Gets the etag property: eTag of the resource. To handle concurrent update scenario, this field will be used to
      * determine whether the user is updating the latest version or not.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the tags property: A list of Tag.
-     *
+     * 
      * @return the tags value.
      */
     List<Tag> tags();
 
     /**
      * Gets the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the previousLink property: The link (url) to the previous page of results.
-     *
+     * 
      * @return the previousLink value.
      */
     String previousLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.consumption.fluent.models.TagsResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     TagsResultInner innerModel();

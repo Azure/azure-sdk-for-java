@@ -35,22 +35,28 @@ import com.azure.resourcemanager.desktopvirtualization.models.MsixPackageList;
 import com.azure.resourcemanager.desktopvirtualization.models.MsixPackagePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MsixPackagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MsixPackagesClient.
+ */
 public final class MsixPackagesClientImpl implements MsixPackagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MsixPackagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DesktopVirtualizationApiClientImpl client;
 
     /**
      * Initializes an instance of MsixPackagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MsixPackagesClientImpl(DesktopVirtualizationApiClientImpl client) {
-        this.service =
-            RestProxy.create(MsixPackagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MsixPackagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,99 +67,69 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
     @Host("{$host}")
     @ServiceInterface(name = "DesktopVirtualizatio")
     public interface MsixPackagesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MsixPackageInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
+        Mono<Response<MsixPackageInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("msixPackageFullName") String msixPackageFullName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MsixPackageInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
             @PathParam("msixPackageFullName") String msixPackageFullName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MsixPackageInner msixPackage, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MsixPackageInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @PathParam("msixPackageFullName") String msixPackageFullName, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<MsixPackageInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
             @PathParam("msixPackageFullName") String msixPackageFullName,
-            @BodyParam("application/json") MsixPackageInner msixPackage,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") MsixPackagePatch msixPackage, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @PathParam("msixPackageFullName") String msixPackageFullName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MsixPackageList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostPoolName") String hostPoolName,
+            @QueryParam("pageSize") Integer pageSize, @QueryParam("isDescending") Boolean isDescending,
+            @QueryParam("initialSkip") Integer initialSkip, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages/{msixPackageFullName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MsixPackageInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @PathParam("msixPackageFullName") String msixPackageFullName,
-            @BodyParam("application/json") MsixPackagePatch msixPackage,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/hostPools/{hostPoolName}/msixPackages")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MsixPackageList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hostPoolName") String hostPoolName,
-            @QueryParam("pageSize") Integer pageSize,
-            @QueryParam("isDescending") Boolean isDescending,
-            @QueryParam("initialSkip") Integer initialSkip,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MsixPackageList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<MsixPackageList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -163,19 +139,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return a msixpackage along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MsixPackageInner>> getWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName) {
+    public Mono<Response<MsixPackageInner>> getWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,24 +162,14 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            msixPackageFullName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, msixPackageFullName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -218,19 +180,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return a msixpackage along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MsixPackageInner>> getWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context) {
+    private Mono<Response<MsixPackageInner>> getWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -245,21 +203,13 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                msixPackageFullName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, hostPoolName, msixPackageFullName, accept, context);
     }
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -276,7 +226,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -287,14 +237,14 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return a msixpackage along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MsixPackageInner> getWithResponse(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context) {
+    public Response<MsixPackageInner> getWithResponse(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, Context context) {
         return getWithResponseAsync(resourceGroupName, hostPoolName, msixPackageFullName, context).block();
     }
 
     /**
      * Get a msixpackage.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -310,7 +260,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -321,19 +271,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage) {
+    public Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -353,25 +299,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            msixPackageFullName,
-                            msixPackage,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, msixPackageFullName, msixPackage,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -383,23 +319,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String msixPackageFullName,
-        MsixPackageInner msixPackage,
-        Context context) {
+    private Mono<Response<MsixPackageInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -419,22 +347,14 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                msixPackageFullName,
-                msixPackage,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, hostPoolName, msixPackageFullName, msixPackage, accept,
+            context);
     }
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -445,15 +365,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MsixPackageInner> createOrUpdateAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage) {
+    public Mono<MsixPackageInner> createOrUpdateAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackageInner msixPackage) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hostPoolName, msixPackageFullName, msixPackage)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -465,20 +385,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MsixPackageInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String msixPackageFullName,
-        MsixPackageInner msixPackage,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, hostPoolName, msixPackageFullName, msixPackage, context)
-            .block();
+    public Response<MsixPackageInner> createOrUpdateWithResponse(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackageInner msixPackage, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, hostPoolName, msixPackageFullName, msixPackage,
+            context).block();
     }
 
     /**
      * Create or update a MSIX package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -489,16 +404,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MsixPackageInner createOrUpdate(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackageInner msixPackage) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, hostPoolName, msixPackageFullName, msixPackage, Context.NONE)
-            .getValue();
+    public MsixPackageInner createOrUpdate(String resourceGroupName, String hostPoolName, String msixPackageFullName,
+        MsixPackageInner msixPackage) {
+        return createOrUpdateWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, msixPackage,
+            Context.NONE).getValue();
     }
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -508,19 +422,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -535,24 +445,14 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            msixPackageFullName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, msixPackageFullName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -563,19 +463,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -590,21 +486,13 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                msixPackageFullName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, hostPoolName, msixPackageFullName, accept, context);
     }
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -621,7 +509,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -632,14 +520,14 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String hostPoolName, String msixPackageFullName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, hostPoolName, msixPackageFullName, context).block();
     }
 
     /**
      * Remove an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -654,7 +542,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -665,19 +553,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MsixPackageInner>> updateWithResponseAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName, MsixPackagePatch msixPackage) {
+    public Mono<Response<MsixPackageInner>> updateWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackagePatch msixPackage) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -695,25 +579,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            msixPackageFullName,
-                            msixPackage,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, msixPackageFullName, msixPackage,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -725,23 +599,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MsixPackageInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        String msixPackageFullName,
-        MsixPackagePatch msixPackage,
-        Context context) {
+    private Mono<Response<MsixPackageInner>> updateWithResponseAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackagePatch msixPackage, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -759,22 +625,13 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                msixPackageFullName,
-                msixPackage,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, hostPoolName, msixPackageFullName, msixPackage, accept, context);
     }
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -784,8 +641,8 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MsixPackageInner> updateAsync(
-        String resourceGroupName, String hostPoolName, String msixPackageFullName) {
+    public Mono<MsixPackageInner> updateAsync(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName) {
         final MsixPackagePatch msixPackage = null;
         return updateWithResponseAsync(resourceGroupName, hostPoolName, msixPackageFullName, msixPackage)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -793,7 +650,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -805,19 +662,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return schema for MSIX Package properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MsixPackageInner> updateWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String msixPackageFullName,
-        MsixPackagePatch msixPackage,
-        Context context) {
+    public Response<MsixPackageInner> updateWithResponse(String resourceGroupName, String hostPoolName,
+        String msixPackageFullName, MsixPackagePatch msixPackage, Context context) {
         return updateWithResponseAsync(resourceGroupName, hostPoolName, msixPackageFullName, msixPackage, context)
             .block();
     }
 
     /**
      * Update an MSIX Package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixPackageFullName The version specific package full name of the MSIX package within specified hostpool.
@@ -835,7 +688,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -847,19 +700,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return msixPackageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MsixPackageInner>> listSinglePageAsync(
-        String resourceGroupName, String hostPoolName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
+    private Mono<PagedResponse<MsixPackageInner>> listSinglePageAsync(String resourceGroupName, String hostPoolName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -870,35 +719,17 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            hostPoolName,
-                            pageSize,
-                            isDescending,
-                            initialSkip,
-                            accept,
-                            context))
-            .<PagedResponse<MsixPackageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip,
+                accept, context))
+            .<PagedResponse<MsixPackageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -911,24 +742,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return msixPackageList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MsixPackageInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    private Mono<PagedResponse<MsixPackageInner>> listSinglePageAsync(String resourceGroupName, String hostPoolName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -940,31 +762,15 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                hostPoolName,
-                pageSize,
-                isDescending,
-                initialSkip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -976,8 +782,8 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return msixPackageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MsixPackageInner> listAsync(
-        String resourceGroupName, String hostPoolName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
+    public PagedFlux<MsixPackageInner> listAsync(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -985,7 +791,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,7 +811,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -1018,13 +824,8 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return msixPackageList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MsixPackageInner> listAsync(
-        String resourceGroupName,
-        String hostPoolName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    private PagedFlux<MsixPackageInner> listAsync(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1032,7 +833,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1050,7 +851,7 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
 
     /**
      * List MSIX packages in hostpool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param pageSize Number of items per page.
@@ -1063,22 +864,16 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
      * @return msixPackageList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MsixPackageInner> list(
-        String resourceGroupName,
-        String hostPoolName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    public PagedIterable<MsixPackageInner> list(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1090,31 +885,20 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MsixPackageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<MsixPackageInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1127,23 +911,13 @@ public final class MsixPackagesClientImpl implements MsixPackagesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

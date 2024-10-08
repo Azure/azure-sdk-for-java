@@ -10,7 +10,7 @@ package com.azure.resourcemanager.network.generated;
 public final class VirtualHubRouteTableV2SDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/VirtualHubRouteTableV2Delete.
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/VirtualHubRouteTableV2Delete.
      * json
      */
     /**
