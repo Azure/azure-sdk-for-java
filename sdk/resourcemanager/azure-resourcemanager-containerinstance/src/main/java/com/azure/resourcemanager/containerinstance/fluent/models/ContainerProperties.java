@@ -5,11 +5,11 @@
 package com.azure.resourcemanager.containerinstance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.containerinstance.models.ConfigMap;
 import com.azure.resourcemanager.containerinstance.models.ContainerPort;
 import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
 import com.azure.resourcemanager.containerinstance.models.ContainerPropertiesInstanceView;
@@ -74,6 +74,11 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
      * The container security properties.
      */
     private SecurityContextDefinition securityContext;
+
+    /*
+     * The config map.
+     */
+    private ConfigMap configMap;
 
     /**
      * Creates an instance of ContainerProperties class.
@@ -271,15 +276,31 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
     }
 
     /**
+     * Get the configMap property: The config map.
+     * 
+     * @return the configMap value.
+     */
+    public ConfigMap configMap() {
+        return this.configMap;
+    }
+
+    /**
+     * Set the configMap property: The config map.
+     * 
+     * @param configMap the configMap value to set.
+     * @return the ContainerProperties object itself.
+     */
+    public ContainerProperties withConfigMap(ConfigMap configMap) {
+        this.configMap = configMap;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (image() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property image in model ContainerProperties"));
-        }
         if (ports() != null) {
             ports().forEach(e -> e.validate());
         }
@@ -289,10 +310,7 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
         if (instanceView() != null) {
             instanceView().validate();
         }
-        if (resources() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property resources in model ContainerProperties"));
-        } else {
+        if (resources() != null) {
             resources().validate();
         }
         if (volumeMounts() != null) {
@@ -307,9 +325,10 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
         if (securityContext() != null) {
             securityContext().validate();
         }
+        if (configMap() != null) {
+            configMap().validate();
+        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerProperties.class);
 
     /**
      * {@inheritDoc}
@@ -318,15 +337,16 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("image", this.image);
-        jsonWriter.writeJsonField("resources", this.resources);
         jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
         jsonWriter.writeArrayField("ports", this.ports, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("environmentVariables", this.environmentVariables,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resources", this.resources);
         jsonWriter.writeArrayField("volumeMounts", this.volumeMounts, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("livenessProbe", this.livenessProbe);
         jsonWriter.writeJsonField("readinessProbe", this.readinessProbe);
         jsonWriter.writeJsonField("securityContext", this.securityContext);
+        jsonWriter.writeJsonField("configMap", this.configMap);
         return jsonWriter.writeEndObject();
     }
 
@@ -336,7 +356,6 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
      * @param jsonReader The JsonReader being read.
      * @return An instance of ContainerProperties if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ContainerProperties.
      */
     public static ContainerProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -348,8 +367,6 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
 
                 if ("image".equals(fieldName)) {
                     deserializedContainerProperties.image = reader.getString();
-                } else if ("resources".equals(fieldName)) {
-                    deserializedContainerProperties.resources = ResourceRequirements.fromJson(reader);
                 } else if ("command".equals(fieldName)) {
                     List<String> command = reader.readArray(reader1 -> reader1.getString());
                     deserializedContainerProperties.command = command;
@@ -362,6 +379,8 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
                     deserializedContainerProperties.environmentVariables = environmentVariables;
                 } else if ("instanceView".equals(fieldName)) {
                     deserializedContainerProperties.instanceView = ContainerPropertiesInstanceView.fromJson(reader);
+                } else if ("resources".equals(fieldName)) {
+                    deserializedContainerProperties.resources = ResourceRequirements.fromJson(reader);
                 } else if ("volumeMounts".equals(fieldName)) {
                     List<VolumeMount> volumeMounts = reader.readArray(reader1 -> VolumeMount.fromJson(reader1));
                     deserializedContainerProperties.volumeMounts = volumeMounts;
@@ -371,6 +390,8 @@ public final class ContainerProperties implements JsonSerializable<ContainerProp
                     deserializedContainerProperties.readinessProbe = ContainerProbe.fromJson(reader);
                 } else if ("securityContext".equals(fieldName)) {
                     deserializedContainerProperties.securityContext = SecurityContextDefinition.fromJson(reader);
+                } else if ("configMap".equals(fieldName)) {
+                    deserializedContainerProperties.configMap = ConfigMap.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

@@ -12,8 +12,7 @@ import java.time.Duration;
  */
 public interface ContainerInstanceManagementClient {
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -81,4 +80,18 @@ public interface ContainerInstanceManagementClient {
      * @return the SubnetServiceAssociationLinksClient object.
      */
     SubnetServiceAssociationLinksClient getSubnetServiceAssociationLinks();
+
+    /**
+     * Gets the ContainerGroupProfilesClient object to access its operations.
+     * 
+     * @return the ContainerGroupProfilesClient object.
+     */
+    ContainerGroupProfilesClient getContainerGroupProfiles();
+
+    /**
+     * Gets the ContainerGroupProfileOperationsClient object to access its operations.
+     * 
+     * @return the ContainerGroupProfileOperationsClient object.
+     */
+    ContainerGroupProfileOperationsClient getContainerGroupProfileOperations();
 }

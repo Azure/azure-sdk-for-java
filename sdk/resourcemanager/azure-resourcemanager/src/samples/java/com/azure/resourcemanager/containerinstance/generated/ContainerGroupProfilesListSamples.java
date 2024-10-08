@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.containerinstance.generated;
 
 /**
- * Samples for ContainerGroups Stop.
+ * Samples for ContainerGroupProfiles List.
  */
-public final class ContainerGroupsStopSamples {
+public final class ContainerGroupProfilesListSamples {
     /*
      * x-ms-original-file:
      * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupsStop.json
+     * ContainerGroupProfilesList.json
      */
     /**
-     * Sample code: ContainerStop.
+     * Sample code: ContainerGroupProfilesList.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void containerStop(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void containerGroupProfilesList(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.containerGroups()
             .manager()
             .serviceClient()
-            .getContainerGroups()
-            .stopWithResponse("demo", "demo1", com.azure.core.util.Context.NONE);
+            .getContainerGroupProfiles()
+            .list(com.azure.core.util.Context.NONE);
     }
 }

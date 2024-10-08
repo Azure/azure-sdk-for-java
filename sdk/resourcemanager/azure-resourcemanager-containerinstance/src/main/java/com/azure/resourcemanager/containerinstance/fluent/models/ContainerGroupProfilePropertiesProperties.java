@@ -14,33 +14,24 @@ import com.azure.resourcemanager.containerinstance.models.ConfidentialComputePro
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupPriority;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupProfileReferenceDefinition;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupPropertiesInstanceView;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSku;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
 import com.azure.resourcemanager.containerinstance.models.DeploymentExtensionSpec;
-import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
 import com.azure.resourcemanager.containerinstance.models.EncryptionProperties;
 import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
 import com.azure.resourcemanager.containerinstance.models.InitContainerDefinition;
 import com.azure.resourcemanager.containerinstance.models.IpAddress;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
-import com.azure.resourcemanager.containerinstance.models.StandbyPoolProfileDefinition;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import java.io.IOException;
 import java.util.List;
 
 /**
- * The container group properties.
+ * The container group profile properties.
  */
 @Fluent
-public final class ContainerGroupProperties implements JsonSerializable<ContainerGroupProperties> {
-    /*
-     * The provisioning state of the container group. This only appears in the response.
-     */
-    private String provisioningState;
-
+public final class ContainerGroupProfilePropertiesProperties
+    implements JsonSerializable<ContainerGroupProfilePropertiesProperties> {
     /*
      * The containers within the container group.
      */
@@ -75,24 +66,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
     private List<Volume> volumes;
 
     /*
-     * The instance view of the container group. Only valid in response.
-     */
-    private ContainerGroupPropertiesInstanceView instanceView;
-
-    /*
      * The diagnostic information for a container group.
      */
     private ContainerGroupDiagnostics diagnostics;
-
-    /*
-     * The subnet resource IDs for a container group.
-     */
-    private List<ContainerGroupSubnetId> subnetIds;
-
-    /*
-     * The DNS config information for a container group.
-     */
-    private DnsConfiguration dnsConfig;
 
     /*
      * The SKU for a container group.
@@ -125,34 +101,14 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
     private ContainerGroupPriority priority;
 
     /*
-     * The reference container group profile properties.
+     * The container group profile current revision number. This only appears in the response.
      */
-    private ContainerGroupProfileReferenceDefinition containerGroupProfile;
-
-    /*
-     * The reference standby pool profile properties.
-     */
-    private StandbyPoolProfileDefinition standbyPoolProfile;
-
-    /*
-     * The flag indicating whether the container group is created by standby pool.
-     */
-    private Boolean isCreatedFromStandbyPool;
+    private Integer revision;
 
     /**
-     * Creates an instance of ContainerGroupProperties class.
+     * Creates an instance of ContainerGroupProfilePropertiesProperties class.
      */
-    public ContainerGroupProperties() {
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the container group. This only appears in the
-     * response.
-     * 
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
+    public ContainerGroupProfilePropertiesProperties() {
     }
 
     /**
@@ -168,9 +124,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the containers property: The containers within the container group.
      * 
      * @param containers the containers value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withContainers(List<Container> containers) {
+    public ContainerGroupProfilePropertiesProperties withContainers(List<Container> containers) {
         this.containers = containers;
         return this;
     }
@@ -190,9 +146,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * from.
      * 
      * @param imageRegistryCredentials the imageRegistryCredentials value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties
+    public ContainerGroupProfilePropertiesProperties
         withImageRegistryCredentials(List<ImageRegistryCredential> imageRegistryCredentials) {
         this.imageRegistryCredentials = imageRegistryCredentials;
         return this;
@@ -217,9 +173,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * - `Never` Never restart.
      * 
      * @param restartPolicy the restartPolicy value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withRestartPolicy(ContainerGroupRestartPolicy restartPolicy) {
+    public ContainerGroupProfilePropertiesProperties withRestartPolicy(ContainerGroupRestartPolicy restartPolicy) {
         this.restartPolicy = restartPolicy;
         return this;
     }
@@ -237,9 +193,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the ipAddress property: The IP address type of the container group.
      * 
      * @param ipAddress the ipAddress value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withIpAddress(IpAddress ipAddress) {
+    public ContainerGroupProfilePropertiesProperties withIpAddress(IpAddress ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }
@@ -257,9 +213,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the osType property: The operating system type required by the containers in the container group.
      * 
      * @param osType the osType value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withOsType(OperatingSystemTypes osType) {
+    public ContainerGroupProfilePropertiesProperties withOsType(OperatingSystemTypes osType) {
         this.osType = osType;
         return this;
     }
@@ -277,20 +233,11 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the volumes property: The list of volumes that can be mounted by containers in this container group.
      * 
      * @param volumes the volumes value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withVolumes(List<Volume> volumes) {
+    public ContainerGroupProfilePropertiesProperties withVolumes(List<Volume> volumes) {
         this.volumes = volumes;
         return this;
-    }
-
-    /**
-     * Get the instanceView property: The instance view of the container group. Only valid in response.
-     * 
-     * @return the instanceView value.
-     */
-    public ContainerGroupPropertiesInstanceView instanceView() {
-        return this.instanceView;
     }
 
     /**
@@ -306,50 +253,10 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the diagnostics property: The diagnostic information for a container group.
      * 
      * @param diagnostics the diagnostics value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withDiagnostics(ContainerGroupDiagnostics diagnostics) {
+    public ContainerGroupProfilePropertiesProperties withDiagnostics(ContainerGroupDiagnostics diagnostics) {
         this.diagnostics = diagnostics;
-        return this;
-    }
-
-    /**
-     * Get the subnetIds property: The subnet resource IDs for a container group.
-     * 
-     * @return the subnetIds value.
-     */
-    public List<ContainerGroupSubnetId> subnetIds() {
-        return this.subnetIds;
-    }
-
-    /**
-     * Set the subnetIds property: The subnet resource IDs for a container group.
-     * 
-     * @param subnetIds the subnetIds value to set.
-     * @return the ContainerGroupProperties object itself.
-     */
-    public ContainerGroupProperties withSubnetIds(List<ContainerGroupSubnetId> subnetIds) {
-        this.subnetIds = subnetIds;
-        return this;
-    }
-
-    /**
-     * Get the dnsConfig property: The DNS config information for a container group.
-     * 
-     * @return the dnsConfig value.
-     */
-    public DnsConfiguration dnsConfig() {
-        return this.dnsConfig;
-    }
-
-    /**
-     * Set the dnsConfig property: The DNS config information for a container group.
-     * 
-     * @param dnsConfig the dnsConfig value to set.
-     * @return the ContainerGroupProperties object itself.
-     */
-    public ContainerGroupProperties withDnsConfig(DnsConfiguration dnsConfig) {
-        this.dnsConfig = dnsConfig;
         return this;
     }
 
@@ -366,9 +273,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the sku property: The SKU for a container group.
      * 
      * @param sku the sku value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withSku(ContainerGroupSku sku) {
+    public ContainerGroupProfilePropertiesProperties withSku(ContainerGroupSku sku) {
         this.sku = sku;
         return this;
     }
@@ -386,9 +293,10 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the encryptionProperties property: The encryption properties for a container group.
      * 
      * @param encryptionProperties the encryptionProperties value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withEncryptionProperties(EncryptionProperties encryptionProperties) {
+    public ContainerGroupProfilePropertiesProperties
+        withEncryptionProperties(EncryptionProperties encryptionProperties) {
         this.encryptionProperties = encryptionProperties;
         return this;
     }
@@ -406,9 +314,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the initContainers property: The init containers for a container group.
      * 
      * @param initContainers the initContainers value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withInitContainers(List<InitContainerDefinition> initContainers) {
+    public ContainerGroupProfilePropertiesProperties withInitContainers(List<InitContainerDefinition> initContainers) {
         this.initContainers = initContainers;
         return this;
     }
@@ -426,9 +334,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the extensions property: extensions used by virtual kubelet.
      * 
      * @param extensions the extensions value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withExtensions(List<DeploymentExtensionSpec> extensions) {
+    public ContainerGroupProfilePropertiesProperties withExtensions(List<DeploymentExtensionSpec> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -446,9 +354,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the confidentialComputeProperties property: The properties for confidential container group.
      * 
      * @param confidentialComputeProperties the confidentialComputeProperties value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties
+    public ContainerGroupProfilePropertiesProperties
         withConfidentialComputeProperties(ConfidentialComputeProperties confidentialComputeProperties) {
         this.confidentialComputeProperties = confidentialComputeProperties;
         return this;
@@ -467,62 +375,21 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
      * Set the priority property: The priority of the container group.
      * 
      * @param priority the priority value to set.
-     * @return the ContainerGroupProperties object itself.
+     * @return the ContainerGroupProfilePropertiesProperties object itself.
      */
-    public ContainerGroupProperties withPriority(ContainerGroupPriority priority) {
+    public ContainerGroupProfilePropertiesProperties withPriority(ContainerGroupPriority priority) {
         this.priority = priority;
         return this;
     }
 
     /**
-     * Get the containerGroupProfile property: The reference container group profile properties.
+     * Get the revision property: The container group profile current revision number. This only appears in the
+     * response.
      * 
-     * @return the containerGroupProfile value.
+     * @return the revision value.
      */
-    public ContainerGroupProfileReferenceDefinition containerGroupProfile() {
-        return this.containerGroupProfile;
-    }
-
-    /**
-     * Set the containerGroupProfile property: The reference container group profile properties.
-     * 
-     * @param containerGroupProfile the containerGroupProfile value to set.
-     * @return the ContainerGroupProperties object itself.
-     */
-    public ContainerGroupProperties
-        withContainerGroupProfile(ContainerGroupProfileReferenceDefinition containerGroupProfile) {
-        this.containerGroupProfile = containerGroupProfile;
-        return this;
-    }
-
-    /**
-     * Get the standbyPoolProfile property: The reference standby pool profile properties.
-     * 
-     * @return the standbyPoolProfile value.
-     */
-    public StandbyPoolProfileDefinition standbyPoolProfile() {
-        return this.standbyPoolProfile;
-    }
-
-    /**
-     * Set the standbyPoolProfile property: The reference standby pool profile properties.
-     * 
-     * @param standbyPoolProfile the standbyPoolProfile value to set.
-     * @return the ContainerGroupProperties object itself.
-     */
-    public ContainerGroupProperties withStandbyPoolProfile(StandbyPoolProfileDefinition standbyPoolProfile) {
-        this.standbyPoolProfile = standbyPoolProfile;
-        return this;
-    }
-
-    /**
-     * Get the isCreatedFromStandbyPool property: The flag indicating whether the container group is created by standby
-     * pool.
-     * 
-     * @return the isCreatedFromStandbyPool value.
-     */
-    public Boolean isCreatedFromStandbyPool() {
-        return this.isCreatedFromStandbyPool;
+    public Integer revision() {
+        return this.revision;
     }
 
     /**
@@ -534,7 +401,7 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
         if (containers() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
-                    "Missing required property containers in model ContainerGroupProperties"));
+                    "Missing required property containers in model ContainerGroupProfilePropertiesProperties"));
         } else {
             containers().forEach(e -> e.validate());
         }
@@ -544,20 +411,16 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
         if (ipAddress() != null) {
             ipAddress().validate();
         }
+        if (osType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property osType in model ContainerGroupProfilePropertiesProperties"));
+        }
         if (volumes() != null) {
             volumes().forEach(e -> e.validate());
         }
-        if (instanceView() != null) {
-            instanceView().validate();
-        }
         if (diagnostics() != null) {
             diagnostics().validate();
-        }
-        if (subnetIds() != null) {
-            subnetIds().forEach(e -> e.validate());
-        }
-        if (dnsConfig() != null) {
-            dnsConfig().validate();
         }
         if (encryptionProperties() != null) {
             encryptionProperties().validate();
@@ -571,15 +434,9 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
         if (confidentialComputeProperties() != null) {
             confidentialComputeProperties().validate();
         }
-        if (containerGroupProfile() != null) {
-            containerGroupProfile().validate();
-        }
-        if (standbyPoolProfile() != null) {
-            standbyPoolProfile().validate();
-        }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(ContainerGroupProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerGroupProfilePropertiesProperties.class);
 
     /**
      * {@inheritDoc}
@@ -588,15 +445,13 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("containers", this.containers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
         jsonWriter.writeArrayField("imageRegistryCredentials", this.imageRegistryCredentials,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("restartPolicy", this.restartPolicy == null ? null : this.restartPolicy.toString());
         jsonWriter.writeJsonField("ipAddress", this.ipAddress);
-        jsonWriter.writeStringField("osType", this.osType == null ? null : this.osType.toString());
         jsonWriter.writeArrayField("volumes", this.volumes, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("diagnostics", this.diagnostics);
-        jsonWriter.writeArrayField("subnetIds", this.subnetIds, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("dnsConfig", this.dnsConfig);
         jsonWriter.writeStringField("sku", this.sku == null ? null : this.sku.toString());
         jsonWriter.writeJsonField("encryptionProperties", this.encryptionProperties);
         jsonWriter.writeArrayField("initContainers", this.initContainers,
@@ -604,90 +459,77 @@ public final class ContainerGroupProperties implements JsonSerializable<Containe
         jsonWriter.writeArrayField("extensions", this.extensions, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("confidentialComputeProperties", this.confidentialComputeProperties);
         jsonWriter.writeStringField("priority", this.priority == null ? null : this.priority.toString());
-        jsonWriter.writeJsonField("containerGroupProfile", this.containerGroupProfile);
-        jsonWriter.writeJsonField("standbyPoolProfile", this.standbyPoolProfile);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of ContainerGroupProperties from the JsonReader.
+     * Reads an instance of ContainerGroupProfilePropertiesProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ContainerGroupProperties if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of ContainerGroupProfilePropertiesProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ContainerGroupProperties.
+     * @throws IOException If an error occurs while reading the ContainerGroupProfilePropertiesProperties.
      */
-    public static ContainerGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static ContainerGroupProfilePropertiesProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ContainerGroupProperties deserializedContainerGroupProperties = new ContainerGroupProperties();
+            ContainerGroupProfilePropertiesProperties deserializedContainerGroupProfilePropertiesProperties
+                = new ContainerGroupProfilePropertiesProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("containers".equals(fieldName)) {
                     List<Container> containers = reader.readArray(reader1 -> Container.fromJson(reader1));
-                    deserializedContainerGroupProperties.containers = containers;
-                } else if ("provisioningState".equals(fieldName)) {
-                    deserializedContainerGroupProperties.provisioningState = reader.getString();
+                    deserializedContainerGroupProfilePropertiesProperties.containers = containers;
+                } else if ("osType".equals(fieldName)) {
+                    deserializedContainerGroupProfilePropertiesProperties.osType
+                        = OperatingSystemTypes.fromString(reader.getString());
                 } else if ("imageRegistryCredentials".equals(fieldName)) {
                     List<ImageRegistryCredential> imageRegistryCredentials
                         = reader.readArray(reader1 -> ImageRegistryCredential.fromJson(reader1));
-                    deserializedContainerGroupProperties.imageRegistryCredentials = imageRegistryCredentials;
+                    deserializedContainerGroupProfilePropertiesProperties.imageRegistryCredentials
+                        = imageRegistryCredentials;
                 } else if ("restartPolicy".equals(fieldName)) {
-                    deserializedContainerGroupProperties.restartPolicy
+                    deserializedContainerGroupProfilePropertiesProperties.restartPolicy
                         = ContainerGroupRestartPolicy.fromString(reader.getString());
                 } else if ("ipAddress".equals(fieldName)) {
-                    deserializedContainerGroupProperties.ipAddress = IpAddress.fromJson(reader);
-                } else if ("osType".equals(fieldName)) {
-                    deserializedContainerGroupProperties.osType = OperatingSystemTypes.fromString(reader.getString());
+                    deserializedContainerGroupProfilePropertiesProperties.ipAddress = IpAddress.fromJson(reader);
                 } else if ("volumes".equals(fieldName)) {
                     List<Volume> volumes = reader.readArray(reader1 -> Volume.fromJson(reader1));
-                    deserializedContainerGroupProperties.volumes = volumes;
-                } else if ("instanceView".equals(fieldName)) {
-                    deserializedContainerGroupProperties.instanceView
-                        = ContainerGroupPropertiesInstanceView.fromJson(reader);
+                    deserializedContainerGroupProfilePropertiesProperties.volumes = volumes;
                 } else if ("diagnostics".equals(fieldName)) {
-                    deserializedContainerGroupProperties.diagnostics = ContainerGroupDiagnostics.fromJson(reader);
-                } else if ("subnetIds".equals(fieldName)) {
-                    List<ContainerGroupSubnetId> subnetIds
-                        = reader.readArray(reader1 -> ContainerGroupSubnetId.fromJson(reader1));
-                    deserializedContainerGroupProperties.subnetIds = subnetIds;
-                } else if ("dnsConfig".equals(fieldName)) {
-                    deserializedContainerGroupProperties.dnsConfig = DnsConfiguration.fromJson(reader);
+                    deserializedContainerGroupProfilePropertiesProperties.diagnostics
+                        = ContainerGroupDiagnostics.fromJson(reader);
                 } else if ("sku".equals(fieldName)) {
-                    deserializedContainerGroupProperties.sku = ContainerGroupSku.fromString(reader.getString());
+                    deserializedContainerGroupProfilePropertiesProperties.sku
+                        = ContainerGroupSku.fromString(reader.getString());
                 } else if ("encryptionProperties".equals(fieldName)) {
-                    deserializedContainerGroupProperties.encryptionProperties = EncryptionProperties.fromJson(reader);
+                    deserializedContainerGroupProfilePropertiesProperties.encryptionProperties
+                        = EncryptionProperties.fromJson(reader);
                 } else if ("initContainers".equals(fieldName)) {
                     List<InitContainerDefinition> initContainers
                         = reader.readArray(reader1 -> InitContainerDefinition.fromJson(reader1));
-                    deserializedContainerGroupProperties.initContainers = initContainers;
+                    deserializedContainerGroupProfilePropertiesProperties.initContainers = initContainers;
                 } else if ("extensions".equals(fieldName)) {
                     List<DeploymentExtensionSpec> extensions
                         = reader.readArray(reader1 -> DeploymentExtensionSpec.fromJson(reader1));
-                    deserializedContainerGroupProperties.extensions = extensions;
+                    deserializedContainerGroupProfilePropertiesProperties.extensions = extensions;
                 } else if ("confidentialComputeProperties".equals(fieldName)) {
-                    deserializedContainerGroupProperties.confidentialComputeProperties
+                    deserializedContainerGroupProfilePropertiesProperties.confidentialComputeProperties
                         = ConfidentialComputeProperties.fromJson(reader);
                 } else if ("priority".equals(fieldName)) {
-                    deserializedContainerGroupProperties.priority
+                    deserializedContainerGroupProfilePropertiesProperties.priority
                         = ContainerGroupPriority.fromString(reader.getString());
-                } else if ("containerGroupProfile".equals(fieldName)) {
-                    deserializedContainerGroupProperties.containerGroupProfile
-                        = ContainerGroupProfileReferenceDefinition.fromJson(reader);
-                } else if ("standbyPoolProfile".equals(fieldName)) {
-                    deserializedContainerGroupProperties.standbyPoolProfile
-                        = StandbyPoolProfileDefinition.fromJson(reader);
-                } else if ("isCreatedFromStandbyPool".equals(fieldName)) {
-                    deserializedContainerGroupProperties.isCreatedFromStandbyPool
-                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("revision".equals(fieldName)) {
+                    deserializedContainerGroupProfilePropertiesProperties.revision
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedContainerGroupProperties;
+            return deserializedContainerGroupProfilePropertiesProperties;
         });
     }
 }

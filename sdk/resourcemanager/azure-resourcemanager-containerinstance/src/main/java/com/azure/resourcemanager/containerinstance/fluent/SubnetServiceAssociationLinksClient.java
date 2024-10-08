@@ -25,7 +25,7 @@ public interface SubnetServiceAssociationLinksClient {
      * Delete container group virtual network association links. The operation does not delete other resources provided
      * by the user.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +43,7 @@ public interface SubnetServiceAssociationLinksClient {
      * Delete container group virtual network association links. The operation does not delete other resources provided
      * by the user.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,7 +61,7 @@ public interface SubnetServiceAssociationLinksClient {
      * Delete container group virtual network association links. The operation does not delete other resources provided
      * by the user.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -79,7 +79,7 @@ public interface SubnetServiceAssociationLinksClient {
      * Delete container group virtual network association links. The operation does not delete other resources provided
      * by the user.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param context The context to associate with this operation.
@@ -98,7 +98,7 @@ public interface SubnetServiceAssociationLinksClient {
      * Delete container group virtual network association links. The operation does not delete other resources provided
      * by the user.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +115,7 @@ public interface SubnetServiceAssociationLinksClient {
      * Delete container group virtual network association links. The operation does not delete other resources provided
      * by the user.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +131,7 @@ public interface SubnetServiceAssociationLinksClient {
      * Delete container group virtual network association links. The operation does not delete other resources provided
      * by the user.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param context The context to associate with this operation.

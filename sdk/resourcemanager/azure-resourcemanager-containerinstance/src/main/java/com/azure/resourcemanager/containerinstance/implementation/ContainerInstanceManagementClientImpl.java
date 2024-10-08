@@ -8,6 +8,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupProfileOperationsClient;
+import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupProfilesClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerGroupsClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainerInstanceManagementClient;
 import com.azure.resourcemanager.containerinstance.fluent.ContainersClient;
@@ -24,14 +26,12 @@ import java.time.Duration;
 public final class ContainerInstanceManagementClientImpl extends AzureServiceClient
     implements ContainerInstanceManagementClient {
     /**
-     * Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of
-     * the URI for every service call.
+     * The ID of the target subscription. The value must be an UUID.
      */
     private final String subscriptionId;
 
     /**
-     * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-     * part of the URI for every service call.
+     * Gets The ID of the target subscription. The value must be an UUID.
      * 
      * @return the subscriptionId value.
      */
@@ -180,14 +180,41 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
     }
 
     /**
+     * The ContainerGroupProfilesClient object to access its operations.
+     */
+    private final ContainerGroupProfilesClient containerGroupProfiles;
+
+    /**
+     * Gets the ContainerGroupProfilesClient object to access its operations.
+     * 
+     * @return the ContainerGroupProfilesClient object.
+     */
+    public ContainerGroupProfilesClient getContainerGroupProfiles() {
+        return this.containerGroupProfiles;
+    }
+
+    /**
+     * The ContainerGroupProfileOperationsClient object to access its operations.
+     */
+    private final ContainerGroupProfileOperationsClient containerGroupProfileOperations;
+
+    /**
+     * Gets the ContainerGroupProfileOperationsClient object to access its operations.
+     * 
+     * @return the ContainerGroupProfileOperationsClient object.
+     */
+    public ContainerGroupProfileOperationsClient getContainerGroupProfileOperations() {
+        return this.containerGroupProfileOperations;
+    }
+
+    /**
      * Initializes an instance of ContainerInstanceManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     * subscription ID forms part of the URI for every service call.
+     * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
     ContainerInstanceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -198,11 +225,13 @@ public final class ContainerInstanceManagementClientImpl extends AzureServiceCli
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-01";
+        this.apiVersion = "2024-05-01-preview";
         this.containerGroups = new ContainerGroupsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
         this.containers = new ContainersClientImpl(this);
         this.subnetServiceAssociationLinks = new SubnetServiceAssociationLinksClientImpl(this);
+        this.containerGroupProfiles = new ContainerGroupProfilesClientImpl(this);
+        this.containerGroupProfileOperations = new ContainerGroupProfileOperationsClientImpl(this);
     }
 }

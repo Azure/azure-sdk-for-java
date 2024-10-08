@@ -5,24 +5,24 @@
 package com.azure.resourcemanager.containerinstance.generated;
 
 /**
- * Samples for ContainerGroups Stop.
+ * Samples for ContainerGroupProfiles Delete.
  */
-public final class ContainerGroupsStopSamples {
+public final class ContainerGroupProfilesDeleteSamples {
     /*
      * x-ms-original-file:
      * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupsStop.json
+     * ContainerGroupProfilesDelete.json
      */
     /**
-     * Sample code: ContainerStop.
+     * Sample code: ContainerGroupProfilesDelete.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void containerStop(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void containerGroupProfilesDelete(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.containerGroups()
             .manager()
             .serviceClient()
-            .getContainerGroups()
-            .stopWithResponse("demo", "demo1", com.azure.core.util.Context.NONE);
+            .getContainerGroupProfiles()
+            .deleteWithResponse("demo", "demo1", com.azure.core.util.Context.NONE);
     }
 }
