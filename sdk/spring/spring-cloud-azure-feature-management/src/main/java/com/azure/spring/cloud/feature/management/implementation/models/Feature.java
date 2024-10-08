@@ -4,7 +4,8 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -23,7 +24,7 @@ public class Feature {
     private Boolean evaluate = true;
 
     @JsonProperty("enabled-for")
-    private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
+    private List<FeatureFilterEvaluationContext> enabledFor = new ArrayList<>();
 
     @JsonProperty("requirement-type")
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;
@@ -38,8 +39,9 @@ public class Feature {
     /**
      * @param key the key to set
      */
-    public void setKey(String key) {
+    public Feature setKey(String key) {
         this.key = key;
+        return this;
     }
 
     /**
@@ -52,22 +54,24 @@ public class Feature {
     /**
      * @param evaluate the evaluate to set
      */
-    public void setEvaluate(Boolean evaluate) {
+    public Feature setEvaluate(Boolean evaluate) {
         this.evaluate = evaluate;
+        return this;
     }
 
     /**
      * @return the enabledFor
      */
-    public Map<Integer, FeatureFilterEvaluationContext> getEnabledFor() {
+    public List<FeatureFilterEvaluationContext> getEnabledFor() {
         return enabledFor;
     }
 
     /**
      * @param enabledFor the enabledFor to set
      */
-    public void setEnabledFor(Map<Integer, FeatureFilterEvaluationContext> enabledFor) {
+    public Feature setEnabledFor(List<FeatureFilterEvaluationContext> enabledFor) {
         this.enabledFor = enabledFor;
+        return this;
     }
 
     /**
@@ -80,8 +84,9 @@ public class Feature {
     /**
      * @param requirementType the requirementType to set
      */
-    public void setRequirementType(String requirementType) {
+    public Feature setRequirementType(String requirementType) {
         this.requirementType = requirementType;
+        return this;
     }
 
 }

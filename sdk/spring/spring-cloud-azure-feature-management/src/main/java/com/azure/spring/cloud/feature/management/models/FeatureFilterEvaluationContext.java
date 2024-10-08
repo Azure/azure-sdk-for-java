@@ -39,8 +39,9 @@ public final class FeatureFilterEvaluationContext {
      * Set the name
      * @param name the name to set
      */
-    public void setName(String name) {
+    public FeatureFilterEvaluationContext setName(String name) {
         this.name = name;
+        return this;
     }
 
     /**
@@ -59,8 +60,9 @@ public final class FeatureFilterEvaluationContext {
      * Set the parameters
      * @param parameters the parameters to set
      */
-    public void setParameters(Map<String, Object> parameters) {
+    public FeatureFilterEvaluationContext setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
+        return this;
     }
 
     /**
@@ -75,8 +77,9 @@ public final class FeatureFilterEvaluationContext {
      * Set the featureName
      * @param featureName the featureName to set
      */
-    public void setFeatureName(String featureName) {
+    public FeatureFilterEvaluationContext setFeatureName(String featureName) {
         this.featureName = featureName;
+        return this;
     }
 
 }

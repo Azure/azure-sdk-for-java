@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.feature.management;
 
 import java.util.HashSet;
-import java.util.Map;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -51,9 +51,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
-     * returns true it returns true. If no filter returns true, it returns false. If there are no
-     * filters, it returns true. If feature isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
+     * isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
@@ -64,9 +64,9 @@ public class FeatureManager {
     }
 
     /**
-     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter
-     * returns true it returns true. If no filter returns true, it returns false. If there are no
-     * filters, it returns true. If feature isn't found it returns false.
+     * Checks to see if the feature is enabled. If enabled it check each filter, once a single filter returns true it
+     * returns true. If no filter returns true, it returns false. If there are no filters, it returns true. If feature
+     * isn't found it returns false.
      *
      * @param feature Feature being checked.
      * @return state of the feature
@@ -76,34 +76,32 @@ public class FeatureManager {
         return checkFeature(feature);
     }
 
-    private boolean checkFeature(String feature) throws FilterNotFoundException {
-        if (featureManagementConfigurations.getFeatureManagement() == null
-            || featureManagementConfigurations.getOnOff() == null) {
+    private boolean checkFeature(String featureName) throws FilterNotFoundException {
+        if (featureManagementConfigurations.getFeatureFlags() == null) {
             return false;
         }
 
-        Boolean boolFeature = featureManagementConfigurations.getOnOff().get(feature);
+        Feature feature= featureManagementConfigurations.getFeatureFlags().stream()
+            .filter(featureFlag -> featureFlag.getKey().equals(featureName)).findAny().orElse(null);
 
-        if (boolFeature != null) {
-            return boolFeature;
-        }
-
-        Feature featureItem = featureManagementConfigurations.getFeatureManagement().get(feature);
-
-        if (featureItem == null || !featureItem.getEvaluate()) {
+        if (feature == null || !feature.getEvaluate()) {
             return false;
         }
 
-        Stream<FeatureFilterEvaluationContext> filters = featureItem.getEnabledFor().values().stream()
+        Stream<FeatureFilterEvaluationContext> filters = feature.getEnabledFor().stream()
             .filter(Objects::nonNull).filter(featureFilter -> featureFilter.getName() != null);
+        
+        if (feature.getEnabledFor().size() == 0) {
+            return feature.getEvaluate();
+        }
 
         // All Filters must be true
-        if (featureItem.getRequirementType().equals("All")) {
-            return filters.allMatch(featureFilter -> isFeatureOn(featureFilter, feature));
+        if (feature.getRequirementType().equals("All")) {
+            return filters.allMatch(featureFilter -> isFeatureOn(featureFilter, featureName));
         }
 
         // Any Filter must be true
-        return filters.anyMatch(featureFilter -> isFeatureOn(featureFilter, feature));
+        return filters.anyMatch(featureFilter -> isFeatureOn(featureFilter, featureName));
     }
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {
@@ -129,25 +127,14 @@ public class FeatureManager {
      * @return a set of all feature names
      */
     public Set<String> getAllFeatureNames() {
-        Set<String> allFeatures = new HashSet<>();
-
-        allFeatures.addAll(featureManagementConfigurations.getOnOff().keySet());
-        allFeatures.addAll(featureManagementConfigurations.getFeatureManagement().keySet());
-        return allFeatures;
+        return new HashSet<String>(featureManagementConfigurations.getFeatureFlags().stream().map(feature -> feature.getKey()).toList());
     }
 
     /**
      * @return the featureManagement
      */
-    Map<String, Feature> getFeatureManagement() {
-        return featureManagementConfigurations.getFeatureManagement();
-    }
-
-    /**
-     * @return the onOff
-     */
-    Map<String, Boolean> getOnOff() {
-        return featureManagementConfigurations.getOnOff();
+    List<Feature> getFeatureManagement() {
+        return featureManagementConfigurations.getFeatureFlags();
     }
 
 }
