@@ -168,7 +168,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     }
 
     private PatientDocument getPatientDocument() {
-    	ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, this.getDocumentContent());
         return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 
