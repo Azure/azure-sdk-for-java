@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.common.StorageInputStream;
+import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -54,7 +55,8 @@ public final class BlobInputStream extends StorageInputStream {
     BlobInputStream(BlobClientBase blobClient, long blobRangeOffset, Long blobRangeLength, int chunkSize,
         ByteBuffer initialBuffer, BlobRequestConditions accessCondition, BlobProperties blobProperties, Context context)
         throws BlobStorageException {
-        super(blobRangeOffset, blobRangeLength, chunkSize, blobProperties.getBlobSize(), initialBuffer);
+
+        super(blobRangeOffset, blobRangeLength, chunkSize, adjustBlobLength(blobProperties.getBlobSize(), context), initialBuffer);
 
         this.blobClient = blobClient;
         this.accessCondition = accessCondition;
@@ -95,6 +97,16 @@ public final class BlobInputStream extends StorageInputStream {
      */
     public BlobProperties getProperties() {
         return this.properties;
+    }
+
+    /**
+     * Allows for encrypted blobs to use BlobInputStream correctly by using the non-encrypted blob length
+     */
+    private static long adjustBlobLength(long initialLength, Context context) {
+        if (context != null && context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).isPresent()) {
+            return (long) context.getData(Constants.ADJUSTED_BLOB_LENGTH_KEY).get();
+        }
+        return initialLength;
     }
 
 }
