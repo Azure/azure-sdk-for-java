@@ -81,7 +81,7 @@ See [Credential classes](#credential-classes) for a complete list of available c
 
 ### DefaultAzureCredential
 
-`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview](https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#defaultazurecredential-overview).
+`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview][dac_overview].
 
 #### Continuation policy
 
@@ -255,7 +255,7 @@ public void createManagedIdentityCredential() {
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
-While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview](https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains#chainedtokencredential-overview).
+While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
 
 ## Sovereign cloud configuration
 
@@ -452,6 +452,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_wic]: https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable
 [cred_wic_example]: https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=java#azure-identity-client-libraries
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
+[ctc_overview]: https://aka.ms/azsdk/java/identity/credential-chains#chainedtokencredential-overview
+[dac_overview]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
