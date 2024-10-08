@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class VersionTest {
     @Test
     public void testArtifactName() {
-        assertThat(VersionGenerator.getArtifactName()).isEqualTo("azure-monitor-opentelemetry-exporter");
+        assertThat(VersionGenerator.getArtifactName()).isEqualTo("azure-monitor-opentelemetry-autoconfigure");
     }
 
     @Test

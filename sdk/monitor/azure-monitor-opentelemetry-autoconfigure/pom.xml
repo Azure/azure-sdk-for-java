@@ -13,7 +13,7 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
+  <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
   <version>1.0.0-beta.30</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
 
   <name>Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter</name>

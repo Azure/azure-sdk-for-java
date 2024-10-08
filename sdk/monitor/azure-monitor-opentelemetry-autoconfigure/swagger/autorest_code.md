@@ -4,14 +4,14 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/
 java: true
 use: '@autorest/java@4.1.29'
 output-folder: ../
-namespace: com.azure.monitor.opentelemetry.exporter
+namespace: com.azure.monitor.opentelemetry
 generate-client-interfaces: false
 service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 context-client-method-parameter: true
 generate-client-as-impl: true
-artifact-id: azure-monitor-opentelemetry-exporter
+artifact-id: azure-monitor-opentelemetry-autoconfigure
 directive:
     - rename-model:
         from: TrackResponse
