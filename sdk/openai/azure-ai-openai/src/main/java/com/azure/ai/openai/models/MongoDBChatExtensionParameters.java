@@ -29,7 +29,7 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
      * authentication.
      */
     @Generated
-    private OnYourDataAuthenticationOptions authentication;
+    private OnYourDataUsernameAndPasswordAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
@@ -119,25 +119,8 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
      * @return the authentication value.
      */
     @Generated
-    public OnYourDataAuthenticationOptions getAuthentication() {
+    public OnYourDataUsernameAndPasswordAuthenticationOptions getAuthentication() {
         return this.authentication;
-    }
-
-    /**
-     * Set the authentication property: The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
-     * the data source for supported mechanisms.
-     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
-     * authentication.
-     *
-     * @param authentication the authentication value to set.
-     * @return the MongoDBChatExtensionParameters object itself.
-     */
-    @Generated
-    public MongoDBChatExtensionParameters setAuthentication(OnYourDataAuthenticationOptions authentication) {
-        this.authentication = authentication;
-        return this;
     }
 
     /**
@@ -359,7 +342,6 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
         jsonWriter.writeStringField("index_name", this.indexName);
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
         jsonWriter.writeUntypedField("embedding_dependency", this.embeddingDependency.toObject(Object.class));
-        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
         jsonWriter.writeBooleanField("in_scope", this.inScope);
         jsonWriter.writeNumberField("strictness", this.strictness);
@@ -367,6 +349,7 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
         jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
         jsonWriter.writeArrayField("include_contexts", this.includeContexts,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authentication", this.authentication);
         return jsonWriter.writeEndObject();
     }
 
@@ -389,13 +372,13 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
             String indexName = null;
             MongoDBChatExtensionParametersFieldsMapping fieldsMapping = null;
             BinaryData embeddingDependency = null;
-            OnYourDataAuthenticationOptions authentication = null;
             Integer topNDocuments = null;
             Boolean inScope = null;
             Integer strictness = null;
             Integer maxSearchQueries = null;
             Boolean allowPartialResult = null;
             List<OnYourDataContextProperty> includeContexts = null;
+            OnYourDataUsernameAndPasswordAuthenticationOptions authentication = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -414,8 +397,6 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
                 } else if ("embedding_dependency".equals(fieldName)) {
                     embeddingDependency
                         = reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped()));
-                } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else if ("top_n_documents".equals(fieldName)) {
                     topNDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("in_scope".equals(fieldName)) {
@@ -429,6 +410,8 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
                 } else if ("include_contexts".equals(fieldName)) {
                     includeContexts
                         = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataUsernameAndPasswordAuthenticationOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
@@ -436,13 +419,13 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
             MongoDBChatExtensionParameters deserializedMongoDBChatExtensionParameters
                 = new MongoDBChatExtensionParameters(endpoint, collectionName, databaseName, appName, indexName,
                     fieldsMapping, embeddingDependency);
-            deserializedMongoDBChatExtensionParameters.authentication = authentication;
             deserializedMongoDBChatExtensionParameters.topNDocuments = topNDocuments;
             deserializedMongoDBChatExtensionParameters.inScope = inScope;
             deserializedMongoDBChatExtensionParameters.strictness = strictness;
             deserializedMongoDBChatExtensionParameters.maxSearchQueries = maxSearchQueries;
             deserializedMongoDBChatExtensionParameters.allowPartialResult = allowPartialResult;
             deserializedMongoDBChatExtensionParameters.includeContexts = includeContexts;
+            deserializedMongoDBChatExtensionParameters.authentication = authentication;
             return deserializedMongoDBChatExtensionParameters;
         });
     }
@@ -484,5 +467,23 @@ public final class MongoDBChatExtensionParameters implements JsonSerializable<Mo
     @Generated
     public String getIndexName() {
         return this.indexName;
+    }
+
+    /**
+     * Set the authentication property: The authentication method to use when accessing the defined data source.
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
+     * the data source for supported mechanisms.
+     * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
+     * authentication.
+     *
+     * @param authentication the authentication value to set.
+     * @return the MongoDBChatExtensionParameters object itself.
+     */
+    @Generated
+    public MongoDBChatExtensionParameters
+        setAuthentication(OnYourDataUsernameAndPasswordAuthenticationOptions authentication) {
+        this.authentication = authentication;
+        return this;
     }
 }

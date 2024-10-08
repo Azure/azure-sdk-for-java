@@ -344,7 +344,6 @@ public final class AzureSearchChatExtensionParameters implements JsonSerializabl
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("endpoint", this.endpoint);
         jsonWriter.writeStringField("index_name", this.indexName);
-        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
         jsonWriter.writeBooleanField("in_scope", this.inScope);
         jsonWriter.writeNumberField("strictness", this.strictness);
@@ -352,6 +351,7 @@ public final class AzureSearchChatExtensionParameters implements JsonSerializabl
         jsonWriter.writeBooleanField("allow_partial_result", this.allowPartialResult);
         jsonWriter.writeArrayField("include_contexts", this.includeContexts,
             (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("authentication", this.authentication);
         jsonWriter.writeJsonField("fields_mapping", this.fieldsMapping);
         jsonWriter.writeStringField("query_type", this.queryType == null ? null : this.queryType.toString());
         jsonWriter.writeStringField("semantic_configuration", this.semanticConfiguration);
@@ -374,13 +374,13 @@ public final class AzureSearchChatExtensionParameters implements JsonSerializabl
         return jsonReader.readObject(reader -> {
             String endpoint = null;
             String indexName = null;
-            OnYourDataAuthenticationOptions authentication = null;
             Integer topNDocuments = null;
             Boolean inScope = null;
             Integer strictness = null;
             Integer maxSearchQueries = null;
             Boolean allowPartialResult = null;
             List<OnYourDataContextProperty> includeContexts = null;
+            OnYourDataAuthenticationOptions authentication = null;
             AzureSearchIndexFieldMappingOptions fieldsMapping = null;
             AzureSearchQueryType queryType = null;
             String semanticConfiguration = null;
@@ -393,8 +393,6 @@ public final class AzureSearchChatExtensionParameters implements JsonSerializabl
                     endpoint = reader.getString();
                 } else if ("index_name".equals(fieldName)) {
                     indexName = reader.getString();
-                } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else if ("top_n_documents".equals(fieldName)) {
                     topNDocuments = reader.getNullable(JsonReader::getInt);
                 } else if ("in_scope".equals(fieldName)) {
@@ -408,6 +406,8 @@ public final class AzureSearchChatExtensionParameters implements JsonSerializabl
                 } else if ("include_contexts".equals(fieldName)) {
                     includeContexts
                         = reader.readArray(reader1 -> OnYourDataContextProperty.fromString(reader1.getString()));
+                } else if ("authentication".equals(fieldName)) {
+                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
                 } else if ("fields_mapping".equals(fieldName)) {
                     fieldsMapping = AzureSearchIndexFieldMappingOptions.fromJson(reader);
                 } else if ("query_type".equals(fieldName)) {
@@ -424,13 +424,13 @@ public final class AzureSearchChatExtensionParameters implements JsonSerializabl
             }
             AzureSearchChatExtensionParameters deserializedAzureSearchChatExtensionParameters
                 = new AzureSearchChatExtensionParameters(endpoint, indexName);
-            deserializedAzureSearchChatExtensionParameters.authentication = authentication;
             deserializedAzureSearchChatExtensionParameters.topNDocuments = topNDocuments;
             deserializedAzureSearchChatExtensionParameters.inScope = inScope;
             deserializedAzureSearchChatExtensionParameters.strictness = strictness;
             deserializedAzureSearchChatExtensionParameters.maxSearchQueries = maxSearchQueries;
             deserializedAzureSearchChatExtensionParameters.allowPartialResult = allowPartialResult;
             deserializedAzureSearchChatExtensionParameters.includeContexts = includeContexts;
+            deserializedAzureSearchChatExtensionParameters.authentication = authentication;
             deserializedAzureSearchChatExtensionParameters.fieldsMapping = fieldsMapping;
             deserializedAzureSearchChatExtensionParameters.queryType = queryType;
             deserializedAzureSearchChatExtensionParameters.semanticConfiguration = semanticConfiguration;
