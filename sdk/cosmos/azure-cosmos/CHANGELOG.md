@@ -11,7 +11,7 @@
 
 #### Bugs Fixed
 * Fixed an issue where a `NullPointerException` was thrown with circuit breaker enabled and partition split / merge scenarios. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)
-* Fixed a diagnostic issue when a `Batch` operation would hit end-to-end timeout. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)  
+* Fixed an issue when a `Batch` operation hitting end-to-end timeout would not capture diagnostics correctly. - See [PR 42178](https://github.com/Azure/azure-sdk-for-java/pull/42178)  
 
 #### Other Changes
 
