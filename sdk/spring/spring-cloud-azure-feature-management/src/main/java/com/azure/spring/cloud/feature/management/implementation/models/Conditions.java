@@ -3,15 +3,15 @@
 
 package com.azure.spring.cloud.feature.management.implementation.models;
 
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
+import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Conditions {

@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Context passed into Feature Filters used for evaluation.

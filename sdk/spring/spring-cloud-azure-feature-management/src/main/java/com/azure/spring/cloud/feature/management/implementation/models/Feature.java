@@ -26,6 +26,12 @@ public class Feature {
     @JsonProperty("enabled-for")
     private List<FeatureFilterEvaluationContext> enabledFor = new ArrayList<>();
 
+    @JsonProperty("allocation")
+    private Allocation allocation = new Allocation();
+
+    @JsonProperty("variants")
+    private List<VariantReference> variants = new ArrayList<>();
+
     @JsonProperty("requirement-type")
     private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
@@ -86,6 +92,36 @@ public class Feature {
      */
     public Feature setRequirementType(String requirementType) {
         this.requirementType = requirementType;
+        return this;
+    }
+
+    /**
+     * @return the allocation
+     */
+    public Allocation getAllocation() {
+        return allocation;
+    }
+
+    /**
+     * @param allocation the allocation to set
+     */
+    public Feature setAllocation(Allocation allocation) {
+        this.allocation = allocation;
+        return this;
+    }
+
+    /**
+     * @return the variants
+     */
+    public List<VariantReference> getVariants() {
+        return variants;
+    }
+
+    /**
+     * @param variants the variants to set
+     */
+    public Feature setVariants(List<VariantReference> variants) {
+        this.variants = variants;
         return this;
     }
 

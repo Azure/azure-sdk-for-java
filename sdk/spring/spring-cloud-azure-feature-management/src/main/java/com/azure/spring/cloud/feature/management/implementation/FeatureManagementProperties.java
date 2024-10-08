@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @ConfigurationProperties(prefix = "feature-management")
 public class FeatureManagementProperties {
-    
+
     @JsonProperty("feature-flags")
     private List<Feature> featureFlags;
 
@@ -25,6 +25,5 @@ public class FeatureManagementProperties {
     public void setFeatureFlags(List<Feature> featureFlags) {
         this.featureFlags = featureFlags;
     }
-    
 
 }
