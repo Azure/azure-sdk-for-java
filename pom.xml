@@ -120,6 +120,7 @@
     <module>sdk/iothub</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
+    <module>sdk/kubernetesruntime</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
     <module>sdk/largeinstance</module>
