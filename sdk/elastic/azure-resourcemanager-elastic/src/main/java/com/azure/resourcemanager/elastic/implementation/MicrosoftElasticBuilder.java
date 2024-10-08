@@ -14,17 +14,19 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the MicrosoftElasticImpl type. */
-@ServiceClientBuilder(serviceClients = {MicrosoftElasticImpl.class})
+/**
+ * A builder for creating a new instance of the MicrosoftElasticImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { MicrosoftElasticImpl.class })
 public final class MicrosoftElasticBuilder {
     /*
-     * The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+     * The ID of the target subscription. The value must be an UUID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-     *
+     * Sets The ID of the target subscription. The value must be an UUID.
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the MicrosoftElasticBuilder.
      */
@@ -40,7 +42,7 @@ public final class MicrosoftElasticBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the MicrosoftElasticBuilder.
      */
@@ -56,7 +58,7 @@ public final class MicrosoftElasticBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the MicrosoftElasticBuilder.
      */
@@ -72,7 +74,7 @@ public final class MicrosoftElasticBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the MicrosoftElasticBuilder.
      */
@@ -88,7 +90,7 @@ public final class MicrosoftElasticBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the MicrosoftElasticBuilder.
      */
@@ -104,7 +106,7 @@ public final class MicrosoftElasticBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the MicrosoftElasticBuilder.
      */
@@ -115,30 +117,22 @@ public final class MicrosoftElasticBuilder {
 
     /**
      * Builds an instance of MicrosoftElasticImpl with the provided parameters.
-     *
+     * 
      * @return an instance of MicrosoftElasticImpl.
      */
     public MicrosoftElasticImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        MicrosoftElasticImpl client =
-            new MicrosoftElasticImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        MicrosoftElasticImpl client = new MicrosoftElasticImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

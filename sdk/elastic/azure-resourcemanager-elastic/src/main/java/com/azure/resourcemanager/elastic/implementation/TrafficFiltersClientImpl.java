@@ -24,22 +24,28 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.elastic.fluent.TrafficFiltersClient;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TrafficFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TrafficFiltersClient.
+ */
 public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TrafficFiltersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftElasticImpl client;
 
     /**
      * Initializes an instance of TrafficFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TrafficFiltersClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy.create(TrafficFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(TrafficFiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -50,26 +56,20 @@ public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticTraf")
     public interface TrafficFiltersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/deleteTrafficFilter")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/deleteTrafficFilter")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("rulesetId") String rulesetId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("rulesetId") String rulesetId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Delete traffic filter from the account.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,19 +78,15 @@ public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        String rulesetId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -101,25 +97,15 @@ public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            rulesetId,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete traffic filter from the account.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -129,19 +115,15 @@ public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String monitorName, String rulesetId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -152,22 +134,14 @@ public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                rulesetId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, rulesetId, accept, context);
     }
 
     /**
      * Delete traffic filter from the account.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -182,8 +156,8 @@ public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
 
     /**
      * Delete traffic filter from the account.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -193,15 +167,15 @@ public final class TrafficFiltersClientImpl implements TrafficFiltersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String monitorName, String rulesetId,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, monitorName, rulesetId, context).block();
     }
 
     /**
      * Delete traffic filter from the account.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

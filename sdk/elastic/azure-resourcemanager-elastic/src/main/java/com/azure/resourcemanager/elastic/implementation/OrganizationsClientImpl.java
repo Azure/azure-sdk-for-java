@@ -23,26 +23,33 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.elastic.fluent.OrganizationsClient;
+import com.azure.resourcemanager.elastic.fluent.models.ElasticOrganizationToAzureSubscriptionMappingResponseInner;
 import com.azure.resourcemanager.elastic.fluent.models.UserApiKeyResponseInner;
 import com.azure.resourcemanager.elastic.models.UserEmailId;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OrganizationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OrganizationsClient.
+ */
 public final class OrganizationsClientImpl implements OrganizationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OrganizationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftElasticImpl client;
 
     /**
      * Initializes an instance of OrganizationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OrganizationsClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy.create(OrganizationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OrganizationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,111 +60,93 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftElasticOrga")
     public interface OrganizationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/getOrganizationApiKey")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<UserApiKeyResponseInner>> getApiKey(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") UserEmailId body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<UserApiKeyResponseInner>> getApiKey(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") UserEmailId body, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Elastic/getElasticOrganizationToAzureSubscriptionMapping")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ElasticOrganizationToAzureSubscriptionMappingResponseInner>> getElasticToAzureSubscriptionMapping(
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
      * Organization.
-     *
+     * 
      * @param body Email Id parameter of the User Organization, of which the API Key must be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the User Api Key created for the Organization associated with the User Email Id that was passed in the
-     *     request along with {@link Response} on successful completion of {@link Mono}.
+     * request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserApiKeyResponseInner>> getApiKeyWithResponseAsync(UserEmailId body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getApiKey(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.getApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
      * Organization.
-     *
+     * 
      * @param body Email Id parameter of the User Organization, of which the API Key must be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the User Api Key created for the Organization associated with the User Email Id that was passed in the
-     *     request along with {@link Response} on successful completion of {@link Mono}.
+     * request along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserApiKeyResponseInner>> getApiKeyWithResponseAsync(UserEmailId body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (body != null) {
             body.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getApiKey(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                body,
-                accept,
-                context);
+        return service.getApiKey(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), body, accept, context);
     }
 
     /**
      * Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
      * Organization.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the User Api Key created for the Organization associated with the User Email Id that was passed in the
-     *     request on successful completion of {@link Mono}.
+     * request on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<UserApiKeyResponseInner> getApiKeyAsync() {
@@ -168,14 +157,14 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
      * Organization.
-     *
+     * 
      * @param body Email Id parameter of the User Organization, of which the API Key must be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the User Api Key created for the Organization associated with the User Email Id that was passed in the
-     *     request along with {@link Response}.
+     * request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserApiKeyResponseInner> getApiKeyWithResponse(UserEmailId body, Context context) {
@@ -185,15 +174,110 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * Fetch User API Key from internal database, if it was generated and stored while creating the Elasticsearch
      * Organization.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the User Api Key created for the Organization associated with the User Email Id that was passed in the
-     *     request.
+     * request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UserApiKeyResponseInner getApiKey() {
         final UserEmailId body = null;
         return getApiKeyWithResponse(body, Context.NONE).getValue();
+    }
+
+    /**
+     * Get Elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return elastic Organization To Azure Subscription Mapping details for the logged-in user along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ElasticOrganizationToAzureSubscriptionMappingResponseInner>>
+        getElasticToAzureSubscriptionMappingWithResponseAsync() {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getElasticToAzureSubscriptionMapping(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get Elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return elastic Organization To Azure Subscription Mapping details for the logged-in user along with
+     * {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ElasticOrganizationToAzureSubscriptionMappingResponseInner>>
+        getElasticToAzureSubscriptionMappingWithResponseAsync(Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getElasticToAzureSubscriptionMapping(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Get Elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return elastic Organization To Azure Subscription Mapping details for the logged-in user on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ElasticOrganizationToAzureSubscriptionMappingResponseInner>
+        getElasticToAzureSubscriptionMappingAsync() {
+        return getElasticToAzureSubscriptionMappingWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get Elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return elastic Organization To Azure Subscription Mapping details for the logged-in user along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ElasticOrganizationToAzureSubscriptionMappingResponseInner>
+        getElasticToAzureSubscriptionMappingWithResponse(Context context) {
+        return getElasticToAzureSubscriptionMappingWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get Elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return elastic Organization To Azure Subscription Mapping details for the logged-in user.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ElasticOrganizationToAzureSubscriptionMappingResponseInner getElasticToAzureSubscriptionMapping() {
+        return getElasticToAzureSubscriptionMappingWithResponse(Context.NONE).getValue();
     }
 }
