@@ -92,6 +92,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
@@ -2543,34 +2544,16 @@ public class BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
-        StorageImplUtils.assertNotNull("options", queryOptions);
-        BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
-            ? new BlobRequestConditions() : queryOptions.getRequestConditions();
-        QuerySerialization in = BlobQueryReader.transformInputSerialization(queryOptions.getInputSerialization(),
-            LOGGER);
-        QuerySerialization out = BlobQueryReader.transformOutputSerialization(queryOptions.getOutputSerialization(),
-            LOGGER);
 
-        QueryRequest qr = new QueryRequest()
-            .setExpression(queryOptions.getExpression())
-            .setInputSerialization(in)
-            .setOutputSerialization(out);
+        // Data to subscribe to and read from.
+        BlobQueryAsyncResponse response = client.queryWithResponse(queryOptions).block();
 
-        ResponseBase<BlobsQueryHeaders, InputStream> response =
-            this.azureBlobStorage.getBlobs().queryWithResponse(containerName, blobName, getSnapshotId(), null,
-                requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, qr,
-                getCustomerProvidedKey(), Context.NONE);
-        InputStream avroInputStream = response.getValue();
-        BlobQueryReader reader = new BlobQueryReader(null, queryOptions.getProgressConsumer(),
-            queryOptions.getErrorConsumer());
-        try {
-            InputStream resultStream = reader.readInputStream(avroInputStream);
-            return new SimpleResponse<>(response, resultStream);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        // Create input stream from the data.
+        if (response == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
+        return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
     }
 
     /**
@@ -2647,49 +2630,12 @@ public class BlobClientBase {
     public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", queryOptions);
         StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
-        Context finalContext = context == null ? Context.NONE : context;
-        BlobRequestConditions requestConditions = queryOptions.getRequestConditions() == null
-            ? new BlobRequestConditions() : queryOptions.getRequestConditions();
-        QuerySerialization in = BlobQueryReader.transformInputSerialization(queryOptions.getInputSerialization(),
-            LOGGER);
-        QuerySerialization out = BlobQueryReader.transformOutputSerialization(queryOptions.getOutputSerialization(),
-            LOGGER);
+        Mono<BlobQueryResponse> download = client
+            .queryWithResponse(queryOptions, context)
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), queryOptions.getOutputStream())
+                .thenReturn(new BlobQueryResponse(response)));
 
-        QueryRequest qr = new QueryRequest()
-            .setExpression(queryOptions.getExpression())
-            .setInputSerialization(in)
-            .setOutputSerialization(out);
-
-        Callable<ResponseBase<BlobsQueryHeaders, InputStream>> operation = () -> {
-            ResponseBase<BlobsQueryHeaders, InputStream> response =
-                this.azureBlobStorage.getBlobs().queryWithResponse(containerName, blobName, getSnapshotId(), null,
-                    requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
-                    requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                    requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, qr,
-                    getCustomerProvidedKey(), finalContext);
-
-            InputStream avroInputStream = response.getValue();
-            BlobQueryReader reader = new BlobQueryReader(null, queryOptions.getProgressConsumer(),
-                queryOptions.getErrorConsumer());
-            InputStream resultStream = reader.readInputStream(avroInputStream);
-            OutputStream outputStream = queryOptions.getOutputStream();
-            byte[] buffer = new byte[4096];
-            int bytesRead;
-            while ((bytesRead = resultStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-
-            return response;
-        };
-
-        ResponseBase<BlobsQueryHeaders, InputStream> response = sendRequest(operation, timeout,
-            BlobStorageException.class);
-
-        BlobQueryAsyncResponse asyncResponse = new BlobQueryAsyncResponse(response.getRequest(),
-            response.getStatusCode(), response.getHeaders(), null,
-            ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders()));
-
-        return new BlobQueryResponse(asyncResponse);
+        return blockWithOptionalTimeout(download, timeout);
     }
 
     /**
