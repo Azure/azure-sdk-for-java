@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter;
+package com.azure.monitor.opentelemetry;
 
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorExporterProviderKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.AzureMonitorLogRecordExporterProvider;

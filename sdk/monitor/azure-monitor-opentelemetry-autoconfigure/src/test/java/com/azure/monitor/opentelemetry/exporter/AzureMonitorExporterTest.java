@@ -3,6 +3,8 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.monitor.opentelemetry.AzureMonitorExporter;
+import com.azure.monitor.opentelemetry.AzureMonitorExporterOptions;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdkBuilder;
 import org.junit.jupiter.api.Assertions;

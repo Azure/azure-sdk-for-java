@@ -1,17 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.monitor.opentelemetry.exporter;
+package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.LogDataMapper;
-import com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import io.opentelemetry.sdk.common.CompletableResultCode;
-import io.opentelemetry.sdk.logs.data.LogRecordData;
-import io.opentelemetry.sdk.logs.export.LogRecordExporter;
+import io.opentelemetry.sdk.metrics.InstrumentType;
+import io.opentelemetry.sdk.metrics.data.AggregationTemporality;
+import io.opentelemetry.sdk.metrics.data.MetricData;
+import io.opentelemetry.sdk.metrics.export.AggregationTemporalitySelector;
+import io.opentelemetry.sdk.metrics.export.MetricExporter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,25 +22,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.EXPORTER_MAPPING_ERROR;
 
 /**
- * This class is an implementation of OpenTelemetry {@link LogRecordExporter} that allows different
- * logging services to export recorded data for sampled logs in their own format.
+ * This class is an implementation of OpenTelemetry {@link MetricExporter}
  */
-class AzureMonitorLogRecordExporter implements LogRecordExporter {
+public final class AzureMonitorMetricExporter implements MetricExporter {
 
-    private static final String EXPORTER_LOGGER_PREFIX = "com.azure.monitor.opentelemetry.exporter";
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogRecordExporter.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorMetricExporter.class);
     private static final OperationLogger OPERATION_LOGGER
-        = new OperationLogger(AzureMonitorLogRecordExporter.class, "Exporting log");
+        = new OperationLogger(AzureMonitorMetricExporter.class, "Exporting metric");
 
     private final AtomicBoolean stopped = new AtomicBoolean();
-    private final LogDataMapper mapper;
+    private final MetricDataMapper mapper;
     private final TelemetryItemExporter telemetryItemExporter;
 
     /**
-     * Creates an instance of log exporter that is configured with given exporter client that sends
-     * telemetry events to Application Insights resource identified by the instrumentation key.
+     * Creates an instance of metric exporter that is configured with given exporter client that sends
+     * metrics to Application Insights resource identified by the instrumentation key.
      */
-    AzureMonitorLogRecordExporter(LogDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
+    public AzureMonitorMetricExporter(MetricDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
         this.mapper = mapper;
         this.telemetryItemExporter = telemetryItemExporter;
     }
@@ -48,21 +47,24 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
      * {@inheritDoc}
      */
     @Override
-    public CompletableResultCode export(Collection<LogRecordData> logs) {
+    public AggregationTemporality getAggregationTemporality(InstrumentType instrumentType) {
+        return AggregationTemporalitySelector.deltaPreferred().getAggregationTemporality(instrumentType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CompletableResultCode export(Collection<MetricData> metrics) {
         if (stopped.get()) {
             return CompletableResultCode.ofFailure();
         }
 
         List<TelemetryItem> telemetryItems = new ArrayList<>();
-        for (LogRecordData log : logs) {
-            // TODO (heya) consider using suppress_instrumentation https://github.com/open-telemetry/opentelemetry-java/pull/6546 later when available
-            if (log.getInstrumentationScopeInfo().getName().startsWith(EXPORTER_LOGGER_PREFIX)) {
-                continue;
-            }
-            LOGGER.verbose("exporting log: {}", log);
+        for (MetricData metricData : metrics) {
+            LOGGER.verbose("exporting metric: {}", metricData);
             try {
-                String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
-                telemetryItems.add(mapper.map(log, stack, null));
+                mapper.map(metricData, telemetryItems::add);
                 OPERATION_LOGGER.recordSuccess();
             } catch (Throwable t) {
                 OPERATION_LOGGER.recordFailure(t.getMessage(), t, EXPORTER_MAPPING_ERROR);

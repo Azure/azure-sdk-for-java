@@ -6,6 +6,7 @@ package com.azure.monitor.opentelemetry.exporter;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.monitor.opentelemetry.AzureMonitorExporter;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.trace.Span;

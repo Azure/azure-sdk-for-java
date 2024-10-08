@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.exporter;
 
+import com.azure.monitor.opentelemetry.AzureMonitorExporter;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
