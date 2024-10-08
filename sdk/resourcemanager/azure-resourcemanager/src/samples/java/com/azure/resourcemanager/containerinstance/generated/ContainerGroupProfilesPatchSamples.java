@@ -4,31 +4,32 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.core.management.Resource;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupProfilePatch;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for ContainerGroups Update.
+ * Samples for ContainerGroupProfiles Patch.
  */
-public final class ContainerGroupsUpdateSamples {
+public final class ContainerGroupProfilesPatchSamples {
     /*
      * x-ms-original-file:
      * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupsUpdate.json
+     * ContainerGroupProfilesPatch.json
      */
     /**
-     * Sample code: ContainerGroupsUpdate.
+     * Sample code: ContainerGroupProfilesPatch.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void containerGroupsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void containerGroupProfilesPatch(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.containerGroups()
             .manager()
             .serviceClient()
-            .getContainerGroups()
-            .updateWithResponse("demoResource", "demo1",
-                new Resource().withTags(mapOf("tag1key", "fakeTokenPlaceholder", "tag2key", "fakeTokenPlaceholder")),
+            .getContainerGroupProfiles()
+            .patchWithResponse("demoResource", "demo1",
+                new ContainerGroupProfilePatch()
+                    .withTags(mapOf("tag1key", "fakeTokenPlaceholder", "tag2key", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 

@@ -335,7 +335,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * of each container group including containers, image registry credentials, restart policy, IP address type, OS
      * type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -372,7 +372,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * of each container group including containers, image registry credentials, restart policy, IP address type, OS
      * type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -411,7 +411,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * of each container group including containers, image registry credentials, restart policy, IP address type, OS
      * type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -431,7 +431,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * of each container group including containers, image registry credentials, restart policy, IP address type, OS
      * type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -452,7 +452,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * of each container group including containers, image registry credentials, restart policy, IP address type, OS
      * type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -471,7 +471,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * of each container group including containers, image registry credentials, restart policy, IP address type, OS
      * type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -491,7 +491,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -533,7 +533,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -574,7 +574,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -595,7 +595,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -617,7 +617,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * operation returns the properties of each container group including containers, image registry credentials,
      * restart policy, IP address type, OS type, state, and volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -634,7 +634,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,7 +678,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
@@ -722,7 +722,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -744,7 +744,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
@@ -768,7 +768,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -787,7 +787,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
@@ -808,7 +808,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -828,7 +828,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
@@ -849,7 +849,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -868,7 +868,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Create or update container groups with specified configurations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerGroup The properties of the container group to be created or updated.
      * @param context The context to associate with this operation.
@@ -888,7 +888,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Updates container group tags with specified values.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -930,7 +930,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Updates container group tags with specified values.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
      * @param context The context to associate with this operation.
@@ -972,7 +972,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Updates container group tags with specified values.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -992,7 +992,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Updates container group tags with specified values.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
      * @param context The context to associate with this operation.
@@ -1012,7 +1012,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Updates container group tags with specified values.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param resource The container group resource with just the tags to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1031,7 +1031,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1070,7 +1070,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1109,7 +1109,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1130,7 +1130,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1153,7 +1153,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1172,7 +1172,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1192,7 +1192,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1211,7 +1211,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1232,7 +1232,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1250,7 +1250,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Delete the specified container group in the specified subscription and resource group. The operation does not
      * delete other resources provided by the user, such as volumes.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1269,7 +1269,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1308,7 +1308,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1347,7 +1347,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1367,7 +1367,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1391,7 +1391,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1409,7 +1409,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1429,7 +1429,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1448,7 +1448,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1468,7 +1468,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1485,7 +1485,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Restarts all containers in a container group in place. If container image has updates, new image will be
      * downloaded.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1502,7 +1502,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1539,7 +1539,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1577,7 +1577,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1594,7 +1594,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1612,7 +1612,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Stops all containers in a container group. Compute resources will be deallocated and billing will stop.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1628,7 +1628,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1666,7 +1666,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1704,7 +1704,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1723,7 +1723,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1745,7 +1745,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1762,7 +1762,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1781,7 +1781,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1799,7 +1799,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1818,7 +1818,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1834,7 +1834,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * 
      * Starts all containers in a container group. Compute resources will be allocated and billing will start.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1852,7 +1852,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1893,7 +1893,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1934,7 +1934,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1955,7 +1955,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1977,7 +1977,7 @@ public final class ContainerGroupsClientImpl implements InnerSupportsGet<Contain
      * Gets all the network dependencies for this container group to allow complete control of network setting and
      * configuration. For container groups, this will always be an empty list.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

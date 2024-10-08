@@ -6,25 +6,18 @@ package com.azure.resourcemanager.containerinstance.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupProfileInner;
 import com.azure.resourcemanager.containerinstance.models.AzureFileVolume;
 import com.azure.resourcemanager.containerinstance.models.ConfidentialComputeProperties;
-import com.azure.resourcemanager.containerinstance.models.ConfigMap;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupPriority;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupProfileReferenceDefinition;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSku;
-import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
 import com.azure.resourcemanager.containerinstance.models.ContainerPort;
 import com.azure.resourcemanager.containerinstance.models.DeploymentExtensionSpec;
-import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
-import com.azure.resourcemanager.containerinstance.models.DnsNameLabelReusePolicy;
 import com.azure.resourcemanager.containerinstance.models.EncryptionProperties;
 import com.azure.resourcemanager.containerinstance.models.GpuResource;
 import com.azure.resourcemanager.containerinstance.models.GpuSku;
@@ -33,12 +26,10 @@ import com.azure.resourcemanager.containerinstance.models.LogAnalytics;
 import com.azure.resourcemanager.containerinstance.models.LogAnalyticsLogType;
 import com.azure.resourcemanager.containerinstance.models.OperatingSystemTypes;
 import com.azure.resourcemanager.containerinstance.models.Port;
-import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequests;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
 import com.azure.resourcemanager.containerinstance.models.SecurityContextCapabilitiesDefinition;
 import com.azure.resourcemanager.containerinstance.models.SecurityContextDefinition;
-import com.azure.resourcemanager.containerinstance.models.StandbyPoolProfileDefinition;
 import com.azure.resourcemanager.containerinstance.models.Volume;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
 import java.io.IOException;
@@ -47,141 +38,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for ContainerGroups CreateOrUpdate.
+ * Samples for ContainerGroupProfiles CreateOrUpdate.
  */
-public final class ContainerGroupsCreateOrUpdateSamples {
+public final class ContainerGroupProfilesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
      * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupCreateOrUpdateStandbyPool.json
+     * ContainerGroupProfileCreateOrUpdate_CreateConfidential.json
      */
     /**
-     * Sample code: ContainerGroupCreateOrUpdateWithStandbyPool.
+     * Sample code: ConfidentialContainerGroupProfile.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void
-        containerGroupCreateOrUpdateWithStandbyPool(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void confidentialContainerGroupProfile(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.containerGroups()
             .manager()
             .serviceClient()
-            .getContainerGroups()
-            .createOrUpdate("demo", "demo1", new ContainerGroupInner().withLocation("west us")
-                .withContainers(Arrays.asList(new Container().withName("demo1")
-                    .withConfigMap(new ConfigMap().withKeyValuePairs(mapOf("Newkey", "fakeTokenPlaceholder")))))
-                .withContainerGroupProfile(new ContainerGroupProfileReferenceDefinition().withId(
-                    "/subscriptions/subid/resourceGroups/demo/providers/Microsoft.ContainerInstance/containerGroupProfiles/democgp")
-                    .withRevision(1))
-                .withStandbyPoolProfile(new StandbyPoolProfileDefinition().withId(
-                    "/subscriptions/subid/resourceGroups/demo/providers/Microsoft.StandbyPool/standbyContainerGroupPools/demopool")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupExtensions.json
-     */
-    /**
-     * Sample code: ContainerGroupCreateWithExtensions.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void containerGroupCreateWithExtensions(com.azure.resourcemanager.AzureResourceManager azure)
-        throws IOException {
-        azure.containerGroups()
-            .manager()
-            .serviceClient()
-            .getContainerGroups()
-            .createOrUpdate("demo", "demo1", new ContainerGroupInner().withLocation("eastus2")
-                .withContainers(Arrays.asList(new Container().withName("demo1")
-                    .withImage("nginx")
-                    .withCommand(Arrays.asList())
-                    .withPorts(Arrays.asList(new ContainerPort().withPort(80)))
-                    .withEnvironmentVariables(Arrays.asList())
-                    .withResources(new ResourceRequirements()
-                        .withRequests(new ResourceRequests().withMemoryInGB(1.5).withCpu(1.0)))))
-                .withImageRegistryCredentials(Arrays.asList())
-                .withIpAddress(new IpAddress()
-                    .withPorts(Arrays.asList(new Port().withProtocol(ContainerGroupNetworkProtocol.TCP).withPort(80)))
-                    .withType(ContainerGroupIpAddressType.PRIVATE))
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withSubnetIds(Arrays.asList(new ContainerGroupSubnetId().withId(
-                    "/subscriptions/00000000-0000-0000-0000-00000000/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-rg-vnet/subnets/test-subnet")))
-                .withExtensions(Arrays.asList(
-                    new DeploymentExtensionSpec().withName("kube-proxy")
-                        .withExtensionType("kube-proxy")
-                        .withVersion("1.0")
-                        .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"clusterCidr\":\"10.240.0.0/16\",\"kubeVersion\":\"v1.9.10\"}",
-                                Object.class, SerializerEncoding.JSON))
-                        .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
-                            .deserialize("{\"kubeConfig\":\"<kubeconfig encoded string>\"}", Object.class,
-                                SerializerEncoding.JSON)),
-                    new DeploymentExtensionSpec().withName("vk-realtime-metrics")
-                        .withExtensionType("realtime-metrics")
-                        .withVersion("1.0"))),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupEncryptionProperties.json
-     */
-    /**
-     * Sample code: ContainerGroupWithEncryptionProperties.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void containerGroupWithEncryptionProperties(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerGroups()
-            .manager()
-            .serviceClient()
-            .getContainerGroups()
-            .createOrUpdate("demo", "demo1", new ContainerGroupInner().withLocation("eastus2")
-                .withIdentity(new ContainerGroupIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/container-group-identity",
-                        new ContainerGroupIdentityUserAssignedIdentities())))
-                .withContainers(Arrays.asList(new Container().withName("demo1")
-                    .withImage("nginx")
-                    .withCommand(Arrays.asList())
-                    .withPorts(Arrays.asList(new ContainerPort().withPort(80)))
-                    .withEnvironmentVariables(Arrays.asList())
-                    .withResources(new ResourceRequirements()
-                        .withRequests(new ResourceRequests().withMemoryInGB(1.5).withCpu(1.0)))))
-                .withImageRegistryCredentials(Arrays.asList())
-                .withIpAddress(new IpAddress()
-                    .withPorts(Arrays.asList(new Port().withProtocol(ContainerGroupNetworkProtocol.TCP).withPort(80)))
-                    .withType(ContainerGroupIpAddressType.PUBLIC))
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withEncryptionProperties(new EncryptionProperties()
-                    .withVaultBaseUrl("https://testkeyvault.vault.azure.net")
-                    .withKeyName("fakeTokenPlaceholder")
-                    .withKeyVersion("fakeTokenPlaceholder")
-                    .withIdentity(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/container-group-identity")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupCreateConfidential.json
-     */
-    /**
-     * Sample code: ConfidentialContainerGroup.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void confidentialContainerGroup(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerGroups()
-            .manager()
-            .serviceClient()
-            .getContainerGroups()
-            .createOrUpdate("demo", "demo1",
-                new ContainerGroupInner().withLocation("westeurope")
+            .getContainerGroupProfiles()
+            .createOrUpdateWithResponse("demo", "demo1",
+                new ContainerGroupProfileInner().withLocation("westeurope")
+                    .withZones(Arrays.asList("1"))
                     .withContainers(
                         Arrays.asList(new Container().withName("accdemo")
                             .withImage("confiimage")
@@ -208,24 +85,106 @@ public final class ContainerGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
      * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupsCreateOrUpdate.json
+     * ContainerGroupProfileCreateOrUpdate_EncryptionProperties.json
      */
     /**
-     * Sample code: ContainerGroupsCreateOrUpdate.
+     * Sample code: ContainerGroupProfileWithEncryptionProperties.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void containerGroupsCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure)
+    public static void
+        containerGroupProfileWithEncryptionProperties(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerGroups()
+            .manager()
+            .serviceClient()
+            .getContainerGroupProfiles()
+            .createOrUpdateWithResponse("demo", "demo1", new ContainerGroupProfileInner().withLocation("eastus2")
+                .withZones(Arrays.asList("1"))
+                .withContainers(Arrays.asList(new Container().withName("demo1")
+                    .withImage("nginx")
+                    .withCommand(Arrays.asList())
+                    .withPorts(Arrays.asList(new ContainerPort().withPort(80)))
+                    .withEnvironmentVariables(Arrays.asList())
+                    .withResources(new ResourceRequirements()
+                        .withRequests(new ResourceRequests().withMemoryInGB(1.5).withCpu(1.0)))))
+                .withImageRegistryCredentials(Arrays.asList())
+                .withIpAddress(new IpAddress()
+                    .withPorts(Arrays.asList(new Port().withProtocol(ContainerGroupNetworkProtocol.TCP).withPort(80)))
+                    .withType(ContainerGroupIpAddressType.PUBLIC))
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withEncryptionProperties(new EncryptionProperties()
+                    .withVaultBaseUrl("https://testkeyvault.vault.azure.net")
+                    .withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder")
+                    .withIdentity(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/test-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/container-group-identity")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
+     * ContainerGroupProfileCreateOrUpdate_Extensions.json
+     */
+    /**
+     * Sample code: ContainerGroupProfileCreateWithExtensions.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void containerGroupProfileCreateWithExtensions(com.azure.resourcemanager.AzureResourceManager azure)
         throws IOException {
         azure.containerGroups()
             .manager()
             .serviceClient()
-            .getContainerGroups()
-            .createOrUpdate("demo", "demo1", new ContainerGroupInner().withLocation("west us")
-                .withIdentity(new ContainerGroupIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                    .withUserAssignedIdentities(mapOf(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-name",
-                        new ContainerGroupIdentityUserAssignedIdentities())))
+            .getContainerGroupProfiles()
+            .createOrUpdateWithResponse("demo", "demo1", new ContainerGroupProfileInner().withLocation("eastus2")
+                .withZones(Arrays.asList("1"))
+                .withContainers(Arrays.asList(new Container().withName("demo1")
+                    .withImage("nginx")
+                    .withCommand(Arrays.asList())
+                    .withPorts(Arrays.asList(new ContainerPort().withPort(80)))
+                    .withEnvironmentVariables(Arrays.asList())
+                    .withResources(new ResourceRequirements()
+                        .withRequests(new ResourceRequests().withMemoryInGB(1.5).withCpu(1.0)))))
+                .withImageRegistryCredentials(Arrays.asList())
+                .withIpAddress(new IpAddress()
+                    .withPorts(Arrays.asList(new Port().withProtocol(ContainerGroupNetworkProtocol.TCP).withPort(80)))
+                    .withType(ContainerGroupIpAddressType.PRIVATE))
+                .withOsType(OperatingSystemTypes.LINUX)
+                .withExtensions(Arrays.asList(
+                    new DeploymentExtensionSpec().withName("kube-proxy")
+                        .withExtensionType("kube-proxy")
+                        .withVersion("1.0")
+                        .withSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                            .deserialize("{\"clusterCidr\":\"10.240.0.0/16\",\"kubeVersion\":\"v1.9.10\"}",
+                                Object.class, SerializerEncoding.JSON))
+                        .withProtectedSettings(SerializerFactory.createDefaultManagementSerializerAdapter()
+                            .deserialize("{\"kubeConfig\":\"<kubeconfig encoded string>\"}", Object.class,
+                                SerializerEncoding.JSON)),
+                    new DeploymentExtensionSpec().withName("vk-realtime-metrics")
+                        .withExtensionType("realtime-metrics")
+                        .withVersion("1.0"))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
+     * ContainerGroupProfilesCreateOrUpdate.json
+     */
+    /**
+     * Sample code: ContainerGroupProfilesCreateOrUpdate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void containerGroupProfilesCreateOrUpdate(com.azure.resourcemanager.AzureResourceManager azure)
+        throws IOException {
+        azure.containerGroups()
+            .manager()
+            .serviceClient()
+            .getContainerGroupProfiles()
+            .createOrUpdateWithResponse("demo", "demo1", new ContainerGroupProfileInner().withLocation("west us")
+                .withZones(Arrays.asList("1"))
                 .withContainers(Arrays.asList(new Container().withName("demo1")
                     .withImage("nginx")
                     .withCommand(Arrays.asList())
@@ -241,9 +200,7 @@ public final class ContainerGroupsCreateOrUpdateSamples {
                 .withImageRegistryCredentials(Arrays.asList())
                 .withIpAddress(new IpAddress()
                     .withPorts(Arrays.asList(new Port().withProtocol(ContainerGroupNetworkProtocol.TCP).withPort(80)))
-                    .withType(ContainerGroupIpAddressType.PUBLIC)
-                    .withDnsNameLabel("dnsnamelabel1")
-                    .withAutoGeneratedDomainNameLabelScope(DnsNameLabelReusePolicy.UNSECURE))
+                    .withType(ContainerGroupIpAddressType.PUBLIC))
                 .withOsType(OperatingSystemTypes.LINUX)
                 .withVolumes(Arrays.asList(
                     new Volume().withName("volume1")
@@ -259,21 +216,16 @@ public final class ContainerGroupsCreateOrUpdateSamples {
                     .withWorkspaceId("workspaceid")
                     .withWorkspaceKey("fakeTokenPlaceholder")
                     .withLogType(LogAnalyticsLogType.CONTAINER_INSIGHTS)
-                    .withMetadata(mapOf("test-key", "fakeTokenPlaceholder"))
+                    .withMetadata(mapOf("pod-uuid", "test-metadata-value"))
                     .withWorkspaceResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/microsoft.operationalinsights/workspaces/workspace")))
-                .withSubnetIds(Arrays.asList(new ContainerGroupSubnetId().withId(
-                    "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]")))
-                .withDnsConfig(new DnsConfiguration().withNameServers(Arrays.asList("1.1.1.1"))
-                    .withSearchDomains("cluster.local svc.cluster.local")
-                    .withOptions("ndots:2")),
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg/providers/microsoft.operationalinsights/workspaces/workspace"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
      * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/preview/2024-05-01-preview/examples/
-     * ContainerGroupsCreatePriority.json
+     * ContainerGroupsProfileCreateOrUpdate_CreatePriority.json
      */
     /**
      * Sample code: ContainerGroupsCreateWithPriority.
@@ -284,9 +236,9 @@ public final class ContainerGroupsCreateOrUpdateSamples {
         azure.containerGroups()
             .manager()
             .serviceClient()
-            .getContainerGroups()
-            .createOrUpdate("demo", "demo1",
-                new ContainerGroupInner().withLocation("eastus")
+            .getContainerGroupProfiles()
+            .createOrUpdateWithResponse("demo", "demo1",
+                new ContainerGroupProfileInner().withLocation("eastus")
                     .withContainers(Arrays.asList(new Container().withName("test-container-001")
                         .withImage("alpine:latest")
                         .withCommand(Arrays.asList("/bin/sh", "-c", "sleep 10"))

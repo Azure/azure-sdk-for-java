@@ -110,7 +110,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the usage for a subscription.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -141,7 +141,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the usage for a subscription.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -173,7 +173,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the usage for a subscription.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -187,7 +187,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the usage for a subscription.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -202,7 +202,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the usage for a subscription.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -216,7 +216,7 @@ public final class LocationsClientImpl implements LocationsClient {
     /**
      * Get the usage for a subscription.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -233,7 +233,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of cached images on specific OS type for a subscription in a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -267,7 +267,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of cached images on specific OS type for a subscription in a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -302,7 +302,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of cached images on specific OS type for a subscription in a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -320,7 +320,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of cached images on specific OS type for a subscription in a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -339,7 +339,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of cached images on specific OS type for a subscription in a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -356,7 +356,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of cached images on specific OS type for a subscription in a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -374,7 +374,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of CPU/memory/GPU capabilities of a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -408,7 +408,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of CPU/memory/GPU capabilities of a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,7 +443,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of CPU/memory/GPU capabilities of a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -460,7 +460,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of CPU/memory/GPU capabilities of a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -478,7 +478,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of CPU/memory/GPU capabilities of a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -494,7 +494,7 @@ public final class LocationsClientImpl implements LocationsClient {
      * 
      * Get the list of CPU/memory/GPU capabilities of a region.
      * 
-     * @param location The identifier for the physical azure location.
+     * @param location The name of the Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

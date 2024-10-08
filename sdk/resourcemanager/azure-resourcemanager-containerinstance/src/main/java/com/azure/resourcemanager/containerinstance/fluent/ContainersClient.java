@@ -23,7 +23,7 @@ public interface ContainersClient {
      * 
      * Get the logs for a specified container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
@@ -45,7 +45,7 @@ public interface ContainersClient {
      * 
      * Get the logs for a specified container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,7 +62,7 @@ public interface ContainersClient {
      * 
      * Get the logs for a specified container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param tail The number of lines to show from the tail of the container instance log. If not provided, all
@@ -85,7 +85,7 @@ public interface ContainersClient {
      * 
      * Get the logs for a specified container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,7 +101,7 @@ public interface ContainersClient {
      * 
      * Executes a command for a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param containerExecRequest The request for the exec command.
@@ -120,7 +120,7 @@ public interface ContainersClient {
      * 
      * Executes a command for a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param containerExecRequest The request for the exec command.
@@ -138,7 +138,7 @@ public interface ContainersClient {
      * 
      * Executes a command for a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param containerExecRequest The request for the exec command.
@@ -157,7 +157,7 @@ public interface ContainersClient {
      * 
      * Executes a command for a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param containerExecRequest The request for the exec command.
@@ -175,7 +175,7 @@ public interface ContainersClient {
      * 
      * Attach to the output stream of a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +193,7 @@ public interface ContainersClient {
      * 
      * Attach to the output stream of a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +210,7 @@ public interface ContainersClient {
      * 
      * Attach to the output stream of a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @param context The context to associate with this operation.
@@ -228,7 +228,7 @@ public interface ContainersClient {
      * 
      * Attach to the output stream of a specific container instance in a specified resource group and container group.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerGroupName The name of the container group.
      * @param containerName The name of the container instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

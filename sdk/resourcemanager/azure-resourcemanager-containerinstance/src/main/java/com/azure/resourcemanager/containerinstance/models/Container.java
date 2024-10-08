@@ -281,6 +281,29 @@ public final class Container implements JsonSerializable<Container> {
     }
 
     /**
+     * Get the configMap property: The config map.
+     * 
+     * @return the configMap value.
+     */
+    public ConfigMap configMap() {
+        return this.innerProperties() == null ? null : this.innerProperties().configMap();
+    }
+
+    /**
+     * Set the configMap property: The config map.
+     * 
+     * @param configMap the configMap value to set.
+     * @return the Container object itself.
+     */
+    public Container withConfigMap(ConfigMap configMap) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerProperties();
+        }
+        this.innerProperties().withConfigMap(configMap);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
