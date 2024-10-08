@@ -110,12 +110,14 @@ public class ChangeFeedContinuationTokenUtilsTests extends TestSuiteBase {
             }
 
             // extract continuation tokens and make sure we can still use the new continuation token to read back all items
-            List<Integer> expectedContinuationTokenCounts = Arrays.asList(-1, 0, 1, 2, 3, 4);
-            for (int expectedContinuationTokenCount : expectedContinuationTokenCounts) {
+            List<Integer> expectedContinuationTokenCounts = Arrays.asList(null, -1, 0, 1, 2, 3, 4);
+            for (Integer expectedContinuationTokenCount : expectedContinuationTokenCounts) {
                 Map<FeedRange, String> extractedTokens =
                     CosmosChangeFeedContinuationTokenUtils.extractContinuationTokens(continuationToken.get(), expectedContinuationTokenCount);
 
-                if (expectedContinuationTokenCount <= 0 || expectedContinuationTokenCount > 3) {
+                if (expectedContinuationTokenCount == null ||
+                    expectedContinuationTokenCount <= 0 ||
+                    expectedContinuationTokenCount > 3) {
                     assertThat(extractedTokens.size()).isEqualTo(3);
                 } else {
                     assertThat(extractedTokens.size()).isEqualTo(expectedContinuationTokenCount);
