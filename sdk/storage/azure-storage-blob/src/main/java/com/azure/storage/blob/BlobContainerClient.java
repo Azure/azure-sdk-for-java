@@ -119,18 +119,6 @@ public final class BlobContainerClient {
     /**
      * Package-private constructor for use by {@link BlobContainerClientBuilder}.
      *
-     * @param client the async container client
-     */
-    BlobContainerClient(BlobContainerAsyncClient client) {
-        this(client.getHttpPipeline(), client.getAccountUrl(), client.getServiceVersion(),
-            client.getAccountName(), client.getBlobContainerName(), client.getCustomerProvidedKey(),
-            new EncryptionScope().setEncryptionScope(client.getEncryptionScope()),
-            client.getBlobContainerEncryptionScope());
-    }
-
-    /**
-     * Package-private constructor for use by {@link BlobContainerClientBuilder}.
-     *
      * @param pipeline The pipeline used to send and receive service requests.
      * @param url The endpoint where to send service requests.
      * @param serviceVersion The version of the service to receive requests.

@@ -315,19 +315,6 @@ public final class BlobContainerAsyncClient {
     }
 
     /**
-     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
-     *
-     * @return the encryption scope used for encryption.
-     */
-    BlobContainerEncryptionScope getBlobContainerEncryptionScope() {
-        if (blobContainerEncryptionScope == null) {
-            return null;
-        }
-        return blobContainerEncryptionScope;
-    }
-
-
-    /**
      * Gets if the container this client represents exists in the cloud.
      *
      * <p><strong>Code Samples</strong></p>
