@@ -199,7 +199,7 @@ public class FeatureManager {
 
         if (feature.getAllocation() != null && feature.getVariants() != null) {
             String defaultDisabledVariant = feature.getAllocation().getDefaultWhenDisabled();
-            Collection<VariantReference> variants = feature.getVariants().values();
+            Collection<VariantReference> variants = feature.getVariants();
             if (results.size() > 0) {
                 return evaluateFeatureFlagResults(feature, results).map(filterAssignedValue -> {
                     if (filterAssignedValue && feature.getVariants().size() > 0) {
@@ -209,7 +209,7 @@ public class FeatureManager {
                         VariantAssignment variantAssignment = new VariantAssignment(evaluationOptions,
                             propertiesProvider);
                         // Checking if allocation overrides true result
-                        return checkDefaultOverride(feature.getVariants().values(), true,
+                        return checkDefaultOverride(feature.getVariants(), true,
                             variantAssignment.assignVariant(feature.getAllocation(), buildContext(featureContext)));
                     } else if (filterAssignedValue) {
                         return true;
@@ -222,7 +222,7 @@ public class FeatureManager {
             }
         }
 
-        return Mono.just(false);
+        return Mono.just(feature.getEvaluate());
     }
 
     private Boolean checkDefaultOverride(Collection<VariantReference> variants, Boolean result,
@@ -266,7 +266,7 @@ public class FeatureManager {
 
         VariantAssignment variantAssignment = new VariantAssignment(evaluationOptions, propertiesProvider);
 
-        Collection<VariantReference> variants = feature.getVariants().values();
+        Collection<VariantReference> variants = feature.getVariants();
         String defaultDisabledVariant = feature.getAllocation().getDefaultWhenDisabled();
 
         // Disabled?
@@ -311,7 +311,7 @@ public class FeatureManager {
             throw new FeatureManagementException("The feature " + feature.getKey() + " has no assigned Variants.");
         }
 
-        for (VariantReference variant : feature.getVariants().values()) {
+        for (VariantReference variant : feature.getVariants()) {
             if (!StringUtils.hasText(variant.getName())) {
                 throw new FeatureManagementException("Variant needs a name");
             }

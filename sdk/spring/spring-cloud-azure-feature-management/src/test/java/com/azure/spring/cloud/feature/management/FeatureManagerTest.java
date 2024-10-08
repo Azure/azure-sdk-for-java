@@ -90,8 +90,7 @@ public class FeatureManagerTest {
 
         assertTrue(featureManager.isEnabled("On"));
         assertTrue(featureManager.isEnabledAsync("On").block());
-        verify(featureManagementPropertiesMock, times(2)).getFeatureFlags();
-        ;
+        verify(featureManagementPropertiesMock, times(4)).getFeatureFlags();
     }
 
     @Test

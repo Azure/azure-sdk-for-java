@@ -238,7 +238,7 @@ public class FeatureManagerVariantTest {
         List<Feature> features = List
             .of(new Feature().setKey("No Assigner").setVariants(createVariants())
                 .setRequirementType("All")
-                .setAllocation(new Allocation().setDefaultWhenEnabled("small")).setEnabledFor(
+                .setAllocation(new Allocation()).setEnabledFor(
                     List.of(new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"),
                         new FeatureFilterEvaluationContext().setFeatureName("No Assigner").setName("AlwaysOn"))));
 
