@@ -61,6 +61,7 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                 null,
                 null,
                 null,
+                false,
                 false);
         init(null, null);
     }
