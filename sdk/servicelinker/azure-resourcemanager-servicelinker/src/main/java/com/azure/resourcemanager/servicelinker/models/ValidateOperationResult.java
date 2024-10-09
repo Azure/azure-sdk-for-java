@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface ValidateOperationResult {
     /**
-     * Gets the resourceId property: Validated linker id.
+     * Gets the resourceId property: Validated Linker id.
      * 
      * @return the resourceId value.
      */
@@ -55,7 +55,7 @@ public interface ValidateOperationResult {
     OffsetDateTime reportEndTimeUtc();
 
     /**
-     * Gets the sourceId property: The resource id of the linker source application.
+     * Gets the sourceId property: The resource id of the Linker source application.
      * 
      * @return the sourceId value.
      */

@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
- * The validation result for a linker.
+ * The validation result for a Linker.
  */
 @Fluent
 public final class ValidateResult implements JsonSerializable<ValidateResult> {
@@ -43,7 +43,7 @@ public final class ValidateResult implements JsonSerializable<ValidateResult> {
     private OffsetDateTime reportEndTimeUtc;
 
     /*
-     * The resource id of the linker source application.
+     * The resource id of the Linker source application.
      */
     private String sourceId;
 
@@ -149,7 +149,7 @@ public final class ValidateResult implements JsonSerializable<ValidateResult> {
     }
 
     /**
-     * Get the sourceId property: The resource id of the linker source application.
+     * Get the sourceId property: The resource id of the Linker source application.
      * 
      * @return the sourceId value.
      */
@@ -158,7 +158,7 @@ public final class ValidateResult implements JsonSerializable<ValidateResult> {
     }
 
     /**
-     * Set the sourceId property: The resource id of the linker source application.
+     * Set the sourceId property: The resource id of the Linker source application.
      * 
      * @param sourceId the sourceId value to set.
      * @return the ValidateResult object itself.

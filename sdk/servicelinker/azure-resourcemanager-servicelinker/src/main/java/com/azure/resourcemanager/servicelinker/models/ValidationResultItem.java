@@ -12,7 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The validation item for a linker.
+ * The validation item for a Linker.
  */
 @Fluent
 public final class ValidationResultItem implements JsonSerializable<ValidationResultItem> {

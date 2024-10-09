@@ -13,6 +13,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicelinker.models.AuthInfoBase;
 import com.azure.resourcemanager.servicelinker.models.ClientType;
+import com.azure.resourcemanager.servicelinker.models.ConfigurationInfo;
+import com.azure.resourcemanager.servicelinker.models.PublicNetworkSolution;
 import com.azure.resourcemanager.servicelinker.models.SecretStore;
 import com.azure.resourcemanager.servicelinker.models.TargetServiceBase;
 import com.azure.resourcemanager.servicelinker.models.VNetSolution;
@@ -24,12 +26,12 @@ import java.io.IOException;
 @Fluent
 public final class LinkerResourceInner extends ProxyResource {
     /*
-     * The properties of the linker.
+     * The properties of the Linker.
      */
     private LinkerProperties innerProperties = new LinkerProperties();
 
     /*
-     * The system data.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     private SystemData systemData;
 
@@ -55,7 +57,7 @@ public final class LinkerResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: The properties of the linker.
+     * Get the innerProperties property: The properties of the Linker.
      * 
      * @return the innerProperties value.
      */
@@ -64,7 +66,7 @@ public final class LinkerResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system data.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
      */
@@ -246,6 +248,54 @@ public final class LinkerResourceInner extends ProxyResource {
             this.innerProperties = new LinkerProperties();
         }
         this.innerProperties().withScope(scope);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkSolution property: The network solution.
+     * 
+     * @return the publicNetworkSolution value.
+     */
+    public PublicNetworkSolution publicNetworkSolution() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkSolution();
+    }
+
+    /**
+     * Set the publicNetworkSolution property: The network solution.
+     * 
+     * @param publicNetworkSolution the publicNetworkSolution value to set.
+     * @return the LinkerResourceInner object itself.
+     */
+    public LinkerResourceInner withPublicNetworkSolution(PublicNetworkSolution publicNetworkSolution) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkerProperties();
+        }
+        this.innerProperties().withPublicNetworkSolution(publicNetworkSolution);
+        return this;
+    }
+
+    /**
+     * Get the configurationInfo property: The connection information consumed by applications, including secrets,
+     * connection strings.
+     * 
+     * @return the configurationInfo value.
+     */
+    public ConfigurationInfo configurationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationInfo();
+    }
+
+    /**
+     * Set the configurationInfo property: The connection information consumed by applications, including secrets,
+     * connection strings.
+     * 
+     * @param configurationInfo the configurationInfo value to set.
+     * @return the LinkerResourceInner object itself.
+     */
+    public LinkerResourceInner withConfigurationInfo(ConfigurationInfo configurationInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkerProperties();
+        }
+        this.innerProperties().withConfigurationInfo(configurationInfo);
         return this;
     }
 
