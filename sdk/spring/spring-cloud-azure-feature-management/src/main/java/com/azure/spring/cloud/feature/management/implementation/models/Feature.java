@@ -1,97 +1,96 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.spring.cloud.feature.management.implementation.models;
 
-import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * App Configuration Feature defines the feature name and a Map of FeatureFilterEvaluationContexts.
  */
+/**
+ * 
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
+    @JsonProperty("id")
+    private String id;
 
-    @JsonProperty("key")
-    private String key;
+    @JsonProperty("description")
+    private String description;
 
-    @JsonProperty("evaluate")
-    private Boolean evaluate = true;
+    @JsonProperty("enabled")
+    private boolean enabled;
 
-    @JsonProperty("enabled-for")
-    private List<FeatureFilterEvaluationContext> enabledFor = new ArrayList<>();
-
+    @JsonProperty("conditions")
+    private Conditions conditions;
+    
     @JsonProperty("allocation")
-    private Allocation allocation = new Allocation();
-
+    private Allocation allocation;
+    
     @JsonProperty("variants")
-    private List<VariantReference> variants = new ArrayList<>();
-
-    @JsonProperty("requirement-type")
-    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
+    private List<VariantReference> variants;
 
     /**
-     * @return the key
+     * @return the id
      */
-    public String getKey() {
-        return key;
+    public String getId() {
+        return id;
     }
 
     /**
-     * @param key the key to set
+     * @param id the id to set
      */
-    public Feature setKey(String key) {
-        this.key = key;
+    public Feature setId(String id) {
+        this.id = id;
         return this;
     }
 
     /**
-     * @return the evaluate
+     * @return the enabled
      */
-    public Boolean getEvaluate() {
-        return evaluate;
+    public boolean isEnabled() {
+        return enabled;
     }
 
     /**
-     * @param evaluate the evaluate to set
+     * @param enabled the enabled to set
      */
-    public Feature setEvaluate(Boolean evaluate) {
-        this.evaluate = evaluate;
+    public Feature setEnabled(boolean enabled) {
+        this.enabled = enabled;
         return this;
     }
 
     /**
-     * @return the enabledFor
-     */
-    public List<FeatureFilterEvaluationContext> getEnabledFor() {
-        return enabledFor;
+     * @return the description
+     * */
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * @param enabledFor the enabledFor to set
-     */
-    public Feature setEnabledFor(List<FeatureFilterEvaluationContext> enabledFor) {
-        this.enabledFor = enabledFor;
+     * @param description the description to set
+     * */
+    public Feature setDescription(String description) {
+        this.description = description;
         return this;
     }
 
     /**
-     * @return the requirementType
-     */
-    public String getRequirementType() {
-        return requirementType;
+     * @return the conditions
+     * */
+    public Conditions getConditions() {
+        return conditions;
     }
 
     /**
-     * @param requirementType the requirementType to set
-     */
-    public Feature setRequirementType(String requirementType) {
-        this.requirementType = requirementType;
+     * @param conditions the conditions to set
+     * */
+    public Feature setConditions(Conditions conditions) {
+        this.conditions = conditions;
         return this;
     }
 
@@ -124,5 +123,6 @@ public class Feature {
         this.variants = variants;
         return this;
     }
-
+    
+    
 }

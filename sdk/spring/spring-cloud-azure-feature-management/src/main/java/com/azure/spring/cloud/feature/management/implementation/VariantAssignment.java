@@ -57,7 +57,7 @@ public final class VariantAssignment {
         String targetedUser = targetingContext.getUserId();
 
         if (targetedUser != null) {
-            for (UserAllocation users : allocation.getUsers().values()) {
+            for (UserAllocation users : allocation.getUsers()) {
                 for (String user : users.getUsers().values()) {
                     if (evaluationOptions.isIgnoreCase()) {
                         user = user.toLowerCase(Locale.getDefault());
@@ -74,7 +74,7 @@ public final class VariantAssignment {
         if (targetingContext.getGroups() != null) {
             for (String targetedGroup : targetingContext.getGroups()) {
                 if (targetedGroup != null) {
-                    for (GroupAllocation groups : allocation.getGroups().values()) {
+                    for (GroupAllocation groups : allocation.getGroups()) {
                         for (String group : groups.getGroups().values()) {
                             if (evaluationOptions.isIgnoreCase()) {
                                 group = group.toLowerCase(Locale.getDefault());
@@ -102,7 +102,7 @@ public final class VariantAssignment {
         }
         double value = FeatureFilterUtils.isTargetedPercentage(contextId);
 
-        for (PercentileAllocation percentile : allocation.getPercentile().values()) {
+        for (PercentileAllocation percentile : allocation.getPercentile()) {
             if (percentile.getFrom().doubleValue() <= value
                 && (percentile.getTo().doubleValue() > value || 100 == percentile.getTo().doubleValue())) {
                 return percentile.getVariant();

@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.models;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -14,11 +14,11 @@ public class Allocation {
 
     private String defaultWhenDisabled;
 
-    private Map<String, UserAllocation> users = new HashMap<>();
+    private List<UserAllocation> users = new ArrayList<>();
 
-    private Map<String, GroupAllocation> groups = new HashMap<>();
+    private List<GroupAllocation> groups = new ArrayList<>();
 
-    private Map<String, PercentileAllocation> percentile = new HashMap<>();
+    private List<PercentileAllocation> percentile = new ArrayList<>();
 
     private String seed;
 
@@ -55,14 +55,14 @@ public class Allocation {
     /**
      * @return the users
      */
-    public Map<String, UserAllocation> getUsers() {
+    public List<UserAllocation> getUsers() {
         return users;
     }
 
     /**
      * @param users the users to set
      */
-    public Allocation setUsers(Map<String, UserAllocation> users) {
+    public Allocation setUsers(List<UserAllocation> users) {
         this.users = users;
         return this;
     }
@@ -70,14 +70,14 @@ public class Allocation {
     /**
      * @return the groups
      */
-    public Map<String, GroupAllocation> getGroups() {
+    public List<GroupAllocation> getGroups() {
         return groups;
     }
 
     /**
      * @param groups the groups to set
      */
-    public Allocation setGroups(Map<String, GroupAllocation> groups) {
+    public Allocation setGroups(List<GroupAllocation> groups) {
         this.groups = groups;
         return this;
     }
@@ -85,14 +85,14 @@ public class Allocation {
     /**
      * @return the percentile
      */
-    public Map<String, PercentileAllocation> getPercentile() {
+    public List<PercentileAllocation> getPercentile() {
         return percentile;
     }
 
     /**
      * @param percentile the percentile to set
      */
-    public Allocation setPercentile(Map<String, PercentileAllocation> percentile) {
+    public Allocation setPercentile(List<PercentileAllocation> percentile) {
         this.percentile = percentile;
         return this;
     }

@@ -29,6 +29,7 @@ import com.azure.spring.cloud.feature.management.filters.FeatureFilter;
 import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementConfigProperties;
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
+import com.azure.spring.cloud.feature.management.implementation.models.Conditions;
 import com.azure.spring.cloud.feature.management.implementation.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
@@ -76,7 +77,7 @@ public class FeatureManagerTest {
 
     @Test
     public void isEnabledFeatureOff() {
-        List<Feature> features = List.of(new Feature().setKey("Off").setEvaluate(false));
+        List<Feature> features = List.of(new Feature().setId("Off").setEnabled(false));
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertFalse(featureManager.isEnabledAsync("Off").block());
@@ -85,7 +86,7 @@ public class FeatureManagerTest {
 
     @Test
     public void isEnabledOnBoolean() throws InterruptedException, ExecutionException, FilterNotFoundException {
-        List<Feature> features = List.of(new Feature().setKey("On").setEvaluate(true));
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true));
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertTrue(featureManager.isEnabled("On"));
@@ -95,9 +96,9 @@ public class FeatureManagerTest {
 
     @Test
     public void isEnabledOnContext() throws InterruptedException, ExecutionException, FilterNotFoundException {
-        List<Feature> features = List.of(new Feature().setKey("On")
-            .setEnabledFor(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOnContext"))));
-        
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true).setConditions(new Conditions()
+            .setClientFilters(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOnContext")))));
+
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOnContext"))).thenReturn(new AlwaysOnContextFilter());
@@ -108,7 +109,8 @@ public class FeatureManagerTest {
 
     @Test
     public void isEnabledFeatureHasNoFilters() {
-        List<Feature> features = List.of(new Feature().setKey("NoFilters").setEvaluate(false).setEnabledFor(List.of()));
+        List<Feature> features = List.of(new Feature().setId("NoFilters").setEnabled(false)
+            .setConditions(new Conditions().setClientFilters(List.of())));
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         assertFalse(featureManager.isEnabledAsync("NoFilters").block());
@@ -116,8 +118,8 @@ public class FeatureManagerTest {
 
     @Test
     public void isEnabledOn() throws InterruptedException, ExecutionException, FilterNotFoundException {
-        List<Feature> features = List.of(new Feature().setKey("On")
-            .setEnabledFor(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn"))));
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true).setConditions(
+            new Conditions().setClientFilters(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn")))));
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter());
@@ -127,8 +129,8 @@ public class FeatureManagerTest {
 
     @Test
     public void noFilter() throws FilterNotFoundException {
-        List<Feature> features = List.of(new Feature().setKey("Off")
-            .setEnabledFor(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOff"))));
+        List<Feature> features = List.of(new Feature().setId("Off").setEnabled(true).setConditions(
+            new Conditions().setClientFilters(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOff")))));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
@@ -141,10 +143,10 @@ public class FeatureManagerTest {
 
     @Test
     public void allOn() {
-        List<Feature> features = List.of(new Feature().setKey("On")
-            .setEnabledFor(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn"),
-                new FeatureFilterEvaluationContext().setName("AlwaysOn")))
-            .setRequirementType("All"));
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true)
+            .setConditions(new Conditions().setRequirementType("All")
+                .setClientFilters(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn"),
+                    new FeatureFilterEvaluationContext().setName("AlwaysOn")))));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
@@ -156,10 +158,10 @@ public class FeatureManagerTest {
 
     @Test
     public void oneOffAny() {
-        List<Feature> features = List.of(new Feature().setKey("On")
-            .setEnabledFor(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn"),
-                new FeatureFilterEvaluationContext().setName("AlwaysOff")))
-            .setRequirementType("Any"));
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true)
+            .setConditions(new Conditions().setRequirementType("Any")
+                .setClientFilters(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn"),
+                    new FeatureFilterEvaluationContext().setName("AlwaysOff")))));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
@@ -171,11 +173,11 @@ public class FeatureManagerTest {
 
     @Test
     public void oneOffAll() {
-        List<Feature> features = List.of(new Feature().setKey("On")
-            .setEnabledFor(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn"),
-                new FeatureFilterEvaluationContext().setName("AlwaysOffFilter")))
-            .setRequirementType("All"));
-        
+        List<Feature> features = List.of(new Feature().setId("On").setEnabled(true)
+            .setConditions(new Conditions().setRequirementType("All")
+                .setClientFilters(List.of(new FeatureFilterEvaluationContext().setName("AlwaysOn"),
+                    new FeatureFilterEvaluationContext().setName("AlwaysOffFilter")))));
+
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
 
         when(context.getBean(Mockito.matches("AlwaysOn"))).thenReturn(new AlwaysOnFilter());
@@ -203,9 +205,9 @@ public class FeatureManagerTest {
         final FeatureFilterEvaluationContext weeklyAlwaysOn = new FeatureFilterEvaluationContext();
         weeklyAlwaysOn.setName("TimeWindowFilter");
         weeklyAlwaysOn.setParameters(parameters);
-        
-        List<Feature> features = List.of(new Feature().setKey("Alpha")
-            .setEnabledFor(List.of(weeklyAlwaysOn)));
+
+        List<Feature> features = List
+            .of(new Feature().setId("Alpha").setEnabled(true).setConditions(new Conditions().setClientFilters(List.of(weeklyAlwaysOn))));
 
         when(featureManagementPropertiesMock.getFeatureFlags()).thenReturn(features);
         when(context.getBean(Mockito.matches("TimeWindowFilter"))).thenReturn(new TimeWindowFilter());

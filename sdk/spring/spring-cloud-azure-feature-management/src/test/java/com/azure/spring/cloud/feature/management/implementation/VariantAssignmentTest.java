@@ -73,21 +73,18 @@ public class VariantAssignmentTest {
     @Test
     public void userAllocation() {
         Allocation allocation = new Allocation();
-        Map<String, UserAllocation> usersAllocations = new HashMap<>();
         UserAllocation userAllocation = new UserAllocation();
         Map<String, String> users = new HashMap<>();
         users.put("0", "Jane");
         userAllocation.setVariant("small");
         userAllocation.setUsers(users);
-        usersAllocations.put("0", userAllocation);
-        allocation.setUsers(usersAllocations);
+        allocation.setUsers(List.of(userAllocation));
 
         assertNull(variantAssignment.assignVariant(allocation, targetingContext));
 
         users.put("1", "test-user-id");
         userAllocation.setUsers(users);
-        usersAllocations.put("0", userAllocation);
-        allocation.setUsers(usersAllocations);
+        allocation.setUsers(List.of(userAllocation));
 
         String assignedVariant = variantAssignment.assignVariant(allocation, targetingContext);
         assertEquals("small", assignedVariant);
@@ -105,21 +102,18 @@ public class VariantAssignmentTest {
     @Test
     public void groupAllocation() {
         Allocation allocation = new Allocation();
-        Map<String, GroupAllocation> groupAllocations = new HashMap<>();
         GroupAllocation groupAllocation = new GroupAllocation();
         Map<String, String> groups = new HashMap<>();
         groups.put("0", "prod");
         groupAllocation.setVariant("small");
         groupAllocation.setGroups(groups);
-        groupAllocations.put("0", groupAllocation);
-        allocation.setGroups(groupAllocations);
+        allocation.setGroups(List.of(groupAllocation));
 
         assertNull(variantAssignment.assignVariant(allocation, targetingContext));
 
         groups.put("1", "test-group-id2");
         groupAllocation.setGroups(groups);
-        groupAllocations.put("0", groupAllocation);
-        allocation.setGroups(groupAllocations);
+        allocation.setGroups(List.of(groupAllocation));
 
         String assignedVariant = variantAssignment.assignVariant(allocation, targetingContext);
         assertEquals("small", assignedVariant);

@@ -5,9 +5,7 @@ package com.azure.spring.cloud.feature.management.implementation.models;
 
 import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -31,8 +29,9 @@ public class Conditions {
     /**
      * @param requirementType the requirementType to set
      */
-    public void setRequirementType(String requirementType) {
+    public Conditions setRequirementType(String requirementType) {
         this.requirementType = requirementType;
+        return this;
     }
 
     /**
@@ -43,21 +42,11 @@ public class Conditions {
     }
 
     /**
-     * @return the clientFilters in Map format using index of list as key
-     */
-    public Map<Integer, FeatureFilterEvaluationContext> getClientFiltersAsMap() {
-        final Map<Integer, FeatureFilterEvaluationContext> clientFiltersMap = new HashMap<>();
-        for (int i = 0; i < clientFilters.size(); i++) {
-            clientFiltersMap.put(i, clientFilters.get(i));
-        }
-        return clientFiltersMap;
-    }
-
-    /**
      * @param clientFilters the clientFilters to set
      */
-    public void setClientFilters(List<FeatureFilterEvaluationContext> clientFilters) {
+    public Conditions setClientFilters(List<FeatureFilterEvaluationContext> clientFilters) {
         this.clientFilters = clientFilters;
+        return this;
     }
 
 }
