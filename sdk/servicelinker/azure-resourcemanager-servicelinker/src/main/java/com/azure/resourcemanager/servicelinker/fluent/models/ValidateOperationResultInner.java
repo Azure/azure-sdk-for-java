@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * The validation operation result for a linker.
+ * The validation operation result for a Linker.
  */
 @Fluent
 public final class ValidateOperationResultInner implements JsonSerializable<ValidateOperationResultInner> {
@@ -26,7 +26,7 @@ public final class ValidateOperationResultInner implements JsonSerializable<Vali
     private ValidateResult innerProperties;
 
     /*
-     * Validated linker id.
+     * Validated Linker id.
      */
     private String resourceId;
 
@@ -51,7 +51,7 @@ public final class ValidateOperationResultInner implements JsonSerializable<Vali
     }
 
     /**
-     * Get the resourceId property: Validated linker id.
+     * Get the resourceId property: Validated Linker id.
      * 
      * @return the resourceId value.
      */
@@ -60,7 +60,7 @@ public final class ValidateOperationResultInner implements JsonSerializable<Vali
     }
 
     /**
-     * Set the resourceId property: Validated linker id.
+     * Set the resourceId property: Validated Linker id.
      * 
      * @param resourceId the resourceId value to set.
      * @return the ValidateOperationResultInner object itself.
@@ -183,7 +183,7 @@ public final class ValidateOperationResultInner implements JsonSerializable<Vali
     }
 
     /**
-     * Get the sourceId property: The resource id of the linker source application.
+     * Get the sourceId property: The resource id of the Linker source application.
      * 
      * @return the sourceId value.
      */
@@ -192,7 +192,7 @@ public final class ValidateOperationResultInner implements JsonSerializable<Vali
     }
 
     /**
-     * Set the sourceId property: The resource id of the linker source application.
+     * Set the sourceId property: The resource id of the Linker source application.
      * 
      * @param sourceId the sourceId value to set.
      * @return the ValidateOperationResultInner object itself.

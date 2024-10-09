@@ -24,10 +24,16 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicelinker.fluent.ServiceLinkerManagementClient;
+import com.azure.resourcemanager.servicelinker.implementation.ConfigurationNamesOperationsImpl;
+import com.azure.resourcemanager.servicelinker.implementation.ConnectorsImpl;
 import com.azure.resourcemanager.servicelinker.implementation.LinkersImpl;
+import com.azure.resourcemanager.servicelinker.implementation.LinkersOperationsImpl;
 import com.azure.resourcemanager.servicelinker.implementation.OperationsImpl;
 import com.azure.resourcemanager.servicelinker.implementation.ServiceLinkerManagementClientBuilder;
+import com.azure.resourcemanager.servicelinker.models.ConfigurationNamesOperations;
+import com.azure.resourcemanager.servicelinker.models.Connectors;
 import com.azure.resourcemanager.servicelinker.models.Linkers;
+import com.azure.resourcemanager.servicelinker.models.LinkersOperations;
 import com.azure.resourcemanager.servicelinker.models.Operations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -41,9 +47,15 @@ import java.util.stream.Collectors;
  * Microsoft.ServiceLinker provider.
  */
 public final class ServiceLinkerManager {
+    private Connectors connectors;
+
     private Linkers linkers;
 
+    private LinkersOperations linkersOperations;
+
     private Operations operations;
+
+    private ConfigurationNamesOperations configurationNamesOperations;
 
     private final ServiceLinkerManagementClient clientObject;
 
@@ -208,7 +220,7 @@ public final class ServiceLinkerManager {
                 .append("-")
                 .append("com.azure.resourcemanager.servicelinker")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -255,6 +267,18 @@ public final class ServiceLinkerManager {
     }
 
     /**
+     * Gets the resource collection API of Connectors. It manages DryrunResource.
+     * 
+     * @return Resource collection API of Connectors.
+     */
+    public Connectors connectors() {
+        if (this.connectors == null) {
+            this.connectors = new ConnectorsImpl(clientObject.getConnectors(), this);
+        }
+        return connectors;
+    }
+
+    /**
      * Gets the resource collection API of Linkers. It manages LinkerResource.
      * 
      * @return Resource collection API of Linkers.
@@ -267,6 +291,18 @@ public final class ServiceLinkerManager {
     }
 
     /**
+     * Gets the resource collection API of LinkersOperations.
+     * 
+     * @return Resource collection API of LinkersOperations.
+     */
+    public LinkersOperations linkersOperations() {
+        if (this.linkersOperations == null) {
+            this.linkersOperations = new LinkersOperationsImpl(clientObject.getLinkersOperations(), this);
+        }
+        return linkersOperations;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
      * 
      * @return Resource collection API of Operations.
@@ -276,6 +312,19 @@ public final class ServiceLinkerManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
+    }
+
+    /**
+     * Gets the resource collection API of ConfigurationNamesOperations.
+     * 
+     * @return Resource collection API of ConfigurationNamesOperations.
+     */
+    public ConfigurationNamesOperations configurationNamesOperations() {
+        if (this.configurationNamesOperations == null) {
+            this.configurationNamesOperations
+                = new ConfigurationNamesOperationsImpl(clientObject.getConfigurationNamesOperations(), this);
+        }
+        return configurationNamesOperations;
     }
 
     /**
