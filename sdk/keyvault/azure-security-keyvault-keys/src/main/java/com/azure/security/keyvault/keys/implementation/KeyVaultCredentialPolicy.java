@@ -17,11 +17,11 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -219,12 +219,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                     String claims = challengeAttributes.get("claims");
 
                     if (claims != null) {
-                        try {
-                            tokenRequestContext.setClaims(new String(Base64Util.decodeString(claims), "UTF-8"));
-                        } catch (UnsupportedEncodingException e) {
-                            throw LOGGER.logExceptionAsError(
-                                new RuntimeException("Failed to decode the claims from the challenge.", e));
-                        }
+                        tokenRequestContext.setClaims(
+                            new String(Base64Util.decodeString(claims), StandardCharsets.UTF_8));
                     }
                 }
             }
