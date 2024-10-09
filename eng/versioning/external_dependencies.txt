@@ -10,6 +10,7 @@
 ch.qos.logback:logback-classic;1.3.14
 com.azure:azure-servicebus-jms;2.0.0
 com.azure.tools:azure-autorest-customization;1.0.0-beta.8
+com.fasterxml:aalto-xml;1.3.3
 com.fasterxml.jackson.core:jackson-annotations;2.17.2
 com.fasterxml.jackson.core:jackson-core;2.17.2
 com.fasterxml.jackson.core:jackson-databind;2.17.2
@@ -105,6 +106,7 @@ org.asynchttpclient:async-http-client;2.12.1
 org.codehaus.gmavenplus:gmavenplus-plugin;3.0.2
 org.codehaus.groovy:groovy-jsr223;3.0.19
 org.codehaus.janino:janino;3.1.10
+org.codehaus.woodstox:stax2-api;4.2.2
 org.conscrypt:conscrypt-openjdk-uber;2.5.2
 org.glassfish.tyrus:tyrus-client;1.16
 org.hibernate.validator:hibernate-validator;6.2.5.Final
