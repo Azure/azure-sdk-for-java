@@ -132,6 +132,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         return false;
     }
 
+    public boolean isPerPartitionAutomaticFailoverEnabled() {
+        return this.isPerPartitionAutomaticFailoverEnabled;
+    }
+
     private boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
         if (this.globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList()).size() <= 1) {
             return false;

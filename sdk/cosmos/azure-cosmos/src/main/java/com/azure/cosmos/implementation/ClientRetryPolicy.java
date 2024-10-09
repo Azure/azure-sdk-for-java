@@ -403,7 +403,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        if (!this.canUseMultipleWriteLocations && !isReadRequest && !Configs.isPerPartitionAutomaticFailoverEnabled()) {
+        if (!this.canUseMultipleWriteLocations && !isReadRequest && !this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
             // Write requests on single master cannot be retried, no other regions available
             // but retry when PPAF is enabled
             return Mono.just(ShouldRetryResult.noRetry());
@@ -504,7 +504,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean isWebExceptionRetriable,
         CosmosException cosmosException) {
 
-        if (Configs.isPerPartitionAutomaticFailoverEnabled()) {
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
             return true;
         }
 

@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.Utils;
@@ -51,7 +52,8 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
     private CosmosAsyncDatabase sharedDatabase;
     private CosmosAsyncContainer sharedSinglePartitionContainer;
     private AccountLevelLocationContext accountLevelLocationReadableLocationContext;
-
+    private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor cosmosClientBuilderAccessor
+        = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests(CosmosClientBuilder clientBuilder) {
@@ -86,10 +88,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 .setProactiveConnectionRegionsCount(2)
                 .build();
 
-            CosmosAsyncClient asyncClient = getClientBuilder()
+            CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
                 .openConnectionsAndInitCaches(proactiveInitConfig)
-                .preferredRegions(preferredRegions)
-                .buildAsyncClient();
+                .preferredRegions(preferredRegions);
+
+            cosmosClientBuilderAccessor.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
+
+            CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
 
             CosmosAsyncContainer asyncContainer = asyncClient
                 .getDatabase(this.sharedDatabase.getId())
