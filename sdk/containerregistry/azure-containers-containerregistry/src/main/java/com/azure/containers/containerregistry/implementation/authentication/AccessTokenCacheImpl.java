@@ -43,11 +43,11 @@ public class AccessTokenCacheImpl {
     private final TokenCredential tokenCredential;
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
-    private Supplier<Mono<AccessToken>> tokenSupplierAsync;
-    private Supplier<AccessToken> tokenSupplierSync;
+    private final Supplier<Mono<AccessToken>> tokenSupplierAsync;
+    private final Supplier<AccessToken> tokenSupplierSync;
     private final Predicate<AccessToken> shouldRefresh;
     // Used for sync flow.
-    private Lock lock;
+    private final Lock lock;
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
@@ -250,8 +250,8 @@ public class AccessTokenCacheImpl {
     private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-            : (tokenRequestContext.getClaims() == null ? false
-            : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+            : (tokenRequestContext.getClaims() != null && tokenRequestContext.getClaims()
+                .equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
@@ -287,7 +287,7 @@ public class AccessTokenCacheImpl {
             return logBuilder;
         }
 
-        Duration tte = Duration.between(now, cache.getExpiresAt());
+        Duration tte = Duration.between(cache.getExpiresAt(), now).negated();
         return logBuilder
             .addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
