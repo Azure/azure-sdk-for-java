@@ -12,15 +12,15 @@ public final class ConfluentSchemaRegistryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfluentSchemaRegistry model
-            = BinaryData.fromString("{\"type\":\"ConfluentSchemaRegistry\",\"endpoint\":\"kpode\"}")
+            = BinaryData.fromString("{\"type\":\"ConfluentSchemaRegistry\",\"endpoint\":\"b\"}")
                 .toObject(ConfluentSchemaRegistry.class);
-        Assertions.assertEquals("kpode", model.endpoint());
+        Assertions.assertEquals("b", model.endpoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfluentSchemaRegistry model = new ConfluentSchemaRegistry().withEndpoint("kpode");
+        ConfluentSchemaRegistry model = new ConfluentSchemaRegistry().withEndpoint("b");
         model = BinaryData.fromObject(model).toObject(ConfluentSchemaRegistry.class);
-        Assertions.assertEquals("kpode", model.endpoint());
+        Assertions.assertEquals("b", model.endpoint());
     }
 }

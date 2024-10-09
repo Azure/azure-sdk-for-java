@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.servicelinker.generated;
 
 import com.azure.resourcemanager.servicelinker.models.AzureResource;
-import com.azure.resourcemanager.servicelinker.models.LinkerResource;
+import com.azure.resourcemanager.servicelinker.models.LinkerPatch;
 import com.azure.resourcemanager.servicelinker.models.ServicePrincipalSecretAuthInfo;
 
 /**
@@ -14,25 +14,24 @@ import com.azure.resourcemanager.servicelinker.models.ServicePrincipalSecretAuth
 public final class LinkerUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PatchLink.json
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/preview/2024-07-01-preview/examples/
+     * PatchLinker.json
      */
     /**
-     * Sample code: PatchLink.
+     * Sample code: PatchLinker.
      * 
      * @param manager Entry point to ServiceLinkerManager.
      */
-    public static void patchLink(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
-        LinkerResource resource = manager.linkers()
-            .getWithResponse(
+    public static void patchLinker(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
+        manager.linkers()
+            .update(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app",
-                "linkName", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withTargetService(new AzureResource().withId(
-                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"))
-            .withAuthInfo(new ServicePrincipalSecretAuthInfo().withClientId("name")
-                .withPrincipalId("id")
-                .withSecret("fakeTokenPlaceholder"))
-            .apply();
+                "linkName",
+                new LinkerPatch().withTargetService(new AzureResource().withId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"))
+                    .withAuthInfo(new ServicePrincipalSecretAuthInfo().withClientId("name")
+                        .withPrincipalId("id")
+                        .withSecret("fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 }

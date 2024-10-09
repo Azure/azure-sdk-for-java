@@ -17,16 +17,16 @@ import java.util.List;
  * Configurations for source resource, include appSettings, connectionString and serviceBindings.
  */
 @Fluent
-public final class SourceConfigurationResultInner implements JsonSerializable<SourceConfigurationResultInner> {
+public final class ConfigurationResultInner implements JsonSerializable<ConfigurationResultInner> {
     /*
      * The configuration properties for source resource.
      */
     private List<SourceConfiguration> configurations;
 
     /**
-     * Creates an instance of SourceConfigurationResultInner class.
+     * Creates an instance of ConfigurationResultInner class.
      */
-    public SourceConfigurationResultInner() {
+    public ConfigurationResultInner() {
     }
 
     /**
@@ -42,9 +42,9 @@ public final class SourceConfigurationResultInner implements JsonSerializable<So
      * Set the configurations property: The configuration properties for source resource.
      * 
      * @param configurations the configurations value to set.
-     * @return the SourceConfigurationResultInner object itself.
+     * @return the ConfigurationResultInner object itself.
      */
-    public SourceConfigurationResultInner withConfigurations(List<SourceConfiguration> configurations) {
+    public ConfigurationResultInner withConfigurations(List<SourceConfiguration> configurations) {
         this.configurations = configurations;
         return this;
     }
@@ -72,17 +72,16 @@ public final class SourceConfigurationResultInner implements JsonSerializable<So
     }
 
     /**
-     * Reads an instance of SourceConfigurationResultInner from the JsonReader.
+     * Reads an instance of ConfigurationResultInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SourceConfigurationResultInner if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SourceConfigurationResultInner.
+     * @return An instance of ConfigurationResultInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationResultInner.
      */
-    public static SourceConfigurationResultInner fromJson(JsonReader jsonReader) throws IOException {
+    public static ConfigurationResultInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            SourceConfigurationResultInner deserializedSourceConfigurationResultInner
-                = new SourceConfigurationResultInner();
+            ConfigurationResultInner deserializedConfigurationResultInner = new ConfigurationResultInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -90,13 +89,13 @@ public final class SourceConfigurationResultInner implements JsonSerializable<So
                 if ("configurations".equals(fieldName)) {
                     List<SourceConfiguration> configurations
                         = reader.readArray(reader1 -> SourceConfiguration.fromJson(reader1));
-                    deserializedSourceConfigurationResultInner.configurations = configurations;
+                    deserializedConfigurationResultInner.configurations = configurations;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedSourceConfigurationResultInner;
+            return deserializedConfigurationResultInner;
         });
     }
 }

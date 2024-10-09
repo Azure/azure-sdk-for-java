@@ -10,12 +10,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicelinker.fluent.LinkersClient;
+import com.azure.resourcemanager.servicelinker.fluent.models.ConfigurationResultInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
-import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner;
 import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
+import com.azure.resourcemanager.servicelinker.models.ConfigurationResult;
+import com.azure.resourcemanager.servicelinker.models.LinkerPatch;
 import com.azure.resourcemanager.servicelinker.models.LinkerResource;
 import com.azure.resourcemanager.servicelinker.models.Linkers;
-import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.ValidateOperationResult;
 
 public final class LinkersImpl implements Linkers {
@@ -60,12 +61,49 @@ public final class LinkersImpl implements Linkers {
         }
     }
 
+    public LinkerResource createOrUpdate(String resourceUri, String linkerName, LinkerResourceInner parameters) {
+        LinkerResourceInner inner = this.serviceClient().createOrUpdate(resourceUri, linkerName, parameters);
+        if (inner != null) {
+            return new LinkerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public LinkerResource createOrUpdate(String resourceUri, String linkerName, LinkerResourceInner parameters,
+        Context context) {
+        LinkerResourceInner inner = this.serviceClient().createOrUpdate(resourceUri, linkerName, parameters, context);
+        if (inner != null) {
+            return new LinkerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceUri, String linkerName) {
         this.serviceClient().delete(resourceUri, linkerName);
     }
 
     public void delete(String resourceUri, String linkerName, Context context) {
         this.serviceClient().delete(resourceUri, linkerName, context);
+    }
+
+    public LinkerResource update(String resourceUri, String linkerName, LinkerPatch parameters) {
+        LinkerResourceInner inner = this.serviceClient().update(resourceUri, linkerName, parameters);
+        if (inner != null) {
+            return new LinkerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public LinkerResource update(String resourceUri, String linkerName, LinkerPatch parameters, Context context) {
+        LinkerResourceInner inner = this.serviceClient().update(resourceUri, linkerName, parameters, context);
+        if (inner != null) {
+            return new LinkerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public ValidateOperationResult validate(String resourceUri, String linkerName) {
@@ -86,89 +124,25 @@ public final class LinkersImpl implements Linkers {
         }
     }
 
-    public Response<SourceConfigurationResult> listConfigurationsWithResponse(String resourceUri, String linkerName,
+    public Response<ConfigurationResult> listConfigurationsWithResponse(String resourceUri, String linkerName,
         Context context) {
-        Response<SourceConfigurationResultInner> inner
+        Response<ConfigurationResultInner> inner
             = this.serviceClient().listConfigurationsWithResponse(resourceUri, linkerName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
-                new SourceConfigurationResultImpl(inner.getValue(), this.manager()));
+                new ConfigurationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public SourceConfigurationResult listConfigurations(String resourceUri, String linkerName) {
-        SourceConfigurationResultInner inner = this.serviceClient().listConfigurations(resourceUri, linkerName);
+    public ConfigurationResult listConfigurations(String resourceUri, String linkerName) {
+        ConfigurationResultInner inner = this.serviceClient().listConfigurations(resourceUri, linkerName);
         if (inner != null) {
-            return new SourceConfigurationResultImpl(inner, this.manager());
+            return new ConfigurationResultImpl(inner, this.manager());
         } else {
             return null;
         }
-    }
-
-    public LinkerResource getById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
-        if (linkerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
-        }
-        return this.getWithResponse(resourceUri, linkerName, Context.NONE).getValue();
-    }
-
-    public Response<LinkerResource> getByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
-        if (linkerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
-        }
-        return this.getWithResponse(resourceUri, linkerName, context);
-    }
-
-    public void deleteById(String id) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
-        if (linkerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
-        }
-        this.delete(resourceUri, linkerName, Context.NONE);
-    }
-
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
-        if (resourceUri == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceUri'.", id)));
-        }
-        String linkerName = ResourceManagerUtils.getValueFromIdByParameterName(id,
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
-        if (linkerName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'linkers'.", id)));
-        }
-        this.delete(resourceUri, linkerName, context);
     }
 
     private LinkersClient serviceClient() {
@@ -177,9 +151,5 @@ public final class LinkersImpl implements Linkers {
 
     private com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager() {
         return this.serviceManager;
-    }
-
-    public LinkerResourceImpl define(String name) {
-        return new LinkerResourceImpl(name, this.manager());
     }
 }

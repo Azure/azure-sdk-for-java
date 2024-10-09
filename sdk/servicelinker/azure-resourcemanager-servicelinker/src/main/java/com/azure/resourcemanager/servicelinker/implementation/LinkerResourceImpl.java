@@ -10,10 +10,12 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
 import com.azure.resourcemanager.servicelinker.models.AuthInfoBase;
 import com.azure.resourcemanager.servicelinker.models.ClientType;
+import com.azure.resourcemanager.servicelinker.models.ConfigurationInfo;
+import com.azure.resourcemanager.servicelinker.models.ConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.LinkerPatch;
 import com.azure.resourcemanager.servicelinker.models.LinkerResource;
+import com.azure.resourcemanager.servicelinker.models.PublicNetworkSolution;
 import com.azure.resourcemanager.servicelinker.models.SecretStore;
-import com.azure.resourcemanager.servicelinker.models.SourceConfigurationResult;
 import com.azure.resourcemanager.servicelinker.models.TargetServiceBase;
 import com.azure.resourcemanager.servicelinker.models.VNetSolution;
 import com.azure.resourcemanager.servicelinker.models.ValidateOperationResult;
@@ -67,6 +69,18 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
         return this.innerModel().scope();
     }
 
+    public PublicNetworkSolution publicNetworkSolution() {
+        return this.innerModel().publicNetworkSolution();
+    }
+
+    public ConfigurationInfo configurationInfo() {
+        return this.innerModel().configurationInfo();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LinkerResourceInner innerModel() {
         return this.innerObject;
     }
@@ -75,35 +89,42 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
         return this.serviceManager;
     }
 
-    private String resourceUri;
+    private String subscriptionId;
 
-    private String linkerName;
+    private String resourceGroupName;
+
+    private String location;
+
+    private String connectorName;
 
     private LinkerPatch updateParameters;
 
-    public LinkerResourceImpl withExistingResourceUri(String resourceUri) {
-        this.resourceUri = resourceUri;
+    public LinkerResourceImpl withExistingLocation(String subscriptionId, String resourceGroupName, String location) {
+        this.subscriptionId = subscriptionId;
+        this.resourceGroupName = resourceGroupName;
+        this.location = location;
         return this;
     }
 
     public LinkerResource create() {
         this.innerObject = serviceManager.serviceClient()
-            .getLinkers()
-            .createOrUpdate(resourceUri, linkerName, this.innerModel(), Context.NONE);
+            .getConnectors()
+            .createOrUpdate(subscriptionId, resourceGroupName, location, connectorName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public LinkerResource create(Context context) {
         this.innerObject = serviceManager.serviceClient()
-            .getLinkers()
-            .createOrUpdate(resourceUri, linkerName, this.innerModel(), context);
+            .getConnectors()
+            .createOrUpdate(subscriptionId, resourceGroupName, location, connectorName, this.innerModel(), context);
         return this;
     }
 
     LinkerResourceImpl(String name, com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
         this.innerObject = new LinkerResourceInner();
         this.serviceManager = serviceManager;
-        this.linkerName = name;
+        this.connectorName = name;
     }
 
     public LinkerResourceImpl update() {
@@ -113,14 +134,15 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
 
     public LinkerResource apply() {
         this.innerObject = serviceManager.serviceClient()
-            .getLinkers()
-            .update(resourceUri, linkerName, updateParameters, Context.NONE);
+            .getConnectors()
+            .update(subscriptionId, resourceGroupName, location, connectorName, updateParameters, Context.NONE);
         return this;
     }
 
     public LinkerResource apply(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getLinkers().update(resourceUri, linkerName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .update(subscriptionId, resourceGroupName, location, connectorName, updateParameters, context);
         return this;
     }
 
@@ -128,40 +150,47 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
         com.azure.resourcemanager.servicelinker.ServiceLinkerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceUri = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "resourceUri");
-        this.linkerName = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
-            "/{resourceUri}/providers/Microsoft.ServiceLinker/linkers/{linkerName}", "linkerName");
+        this.subscriptionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "subscriptions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "connectors");
     }
 
     public LinkerResource refresh() {
         this.innerObject = serviceManager.serviceClient()
-            .getLinkers()
-            .getWithResponse(resourceUri, linkerName, Context.NONE)
+            .getConnectors()
+            .getWithResponse(subscriptionId, resourceGroupName, location, connectorName, Context.NONE)
             .getValue();
         return this;
     }
 
     public LinkerResource refresh(Context context) {
-        this.innerObject
-            = serviceManager.serviceClient().getLinkers().getWithResponse(resourceUri, linkerName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConnectors()
+            .getWithResponse(subscriptionId, resourceGroupName, location, connectorName, context)
+            .getValue();
         return this;
     }
 
     public ValidateOperationResult validate() {
-        return serviceManager.linkers().validate(resourceUri, linkerName);
+        return serviceManager.connectors().validate(subscriptionId, resourceGroupName, location, connectorName);
     }
 
     public ValidateOperationResult validate(Context context) {
-        return serviceManager.linkers().validate(resourceUri, linkerName, context);
+        return serviceManager.connectors()
+            .validate(subscriptionId, resourceGroupName, location, connectorName, context);
     }
 
-    public Response<SourceConfigurationResult> listConfigurationsWithResponse(Context context) {
-        return serviceManager.linkers().listConfigurationsWithResponse(resourceUri, linkerName, context);
+    public Response<ConfigurationResult> generateConfigurationsWithResponse(ConfigurationInfo parameters,
+        Context context) {
+        return serviceManager.connectors()
+            .generateConfigurationsWithResponse(subscriptionId, resourceGroupName, location, connectorName, parameters,
+                context);
     }
 
-    public SourceConfigurationResult listConfigurations() {
-        return serviceManager.linkers().listConfigurations(resourceUri, linkerName);
+    public ConfigurationResult generateConfigurations() {
+        return serviceManager.connectors()
+            .generateConfigurations(subscriptionId, resourceGroupName, location, connectorName);
     }
 
     public LinkerResourceImpl withTargetService(TargetServiceBase targetService) {
@@ -220,6 +249,26 @@ public final class LinkerResourceImpl implements LinkerResource, LinkerResource.
             return this;
         } else {
             this.updateParameters.withScope(scope);
+            return this;
+        }
+    }
+
+    public LinkerResourceImpl withPublicNetworkSolution(PublicNetworkSolution publicNetworkSolution) {
+        if (isInCreateMode()) {
+            this.innerModel().withPublicNetworkSolution(publicNetworkSolution);
+            return this;
+        } else {
+            this.updateParameters.withPublicNetworkSolution(publicNetworkSolution);
+            return this;
+        }
+    }
+
+    public LinkerResourceImpl withConfigurationInfo(ConfigurationInfo configurationInfo) {
+        if (isInCreateMode()) {
+            this.innerModel().withConfigurationInfo(configurationInfo);
+            return this;
+        } else {
+            this.updateParameters.withConfigurationInfo(configurationInfo);
             return this;
         }
     }

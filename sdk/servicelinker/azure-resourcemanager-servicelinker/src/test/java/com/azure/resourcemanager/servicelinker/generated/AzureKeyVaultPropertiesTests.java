@@ -12,15 +12,15 @@ public final class AzureKeyVaultPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureKeyVaultProperties model
-            = BinaryData.fromString("{\"type\":\"KeyVault\",\"connectAsKubernetesCsiDriver\":true}")
+            = BinaryData.fromString("{\"type\":\"KeyVault\",\"connectAsKubernetesCsiDriver\":false}")
                 .toObject(AzureKeyVaultProperties.class);
-        Assertions.assertEquals(true, model.connectAsKubernetesCsiDriver());
+        Assertions.assertEquals(false, model.connectAsKubernetesCsiDriver());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureKeyVaultProperties model = new AzureKeyVaultProperties().withConnectAsKubernetesCsiDriver(true);
+        AzureKeyVaultProperties model = new AzureKeyVaultProperties().withConnectAsKubernetesCsiDriver(false);
         model = BinaryData.fromObject(model).toObject(AzureKeyVaultProperties.class);
-        Assertions.assertEquals(true, model.connectAsKubernetesCsiDriver());
+        Assertions.assertEquals(false, model.connectAsKubernetesCsiDriver());
     }
 }
