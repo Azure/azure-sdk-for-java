@@ -25,13 +25,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.28.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.29.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob-cryptography</artifactId>
-      <version>12.27.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+      <version>12.28.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
     </dependency>
 
     <dependency>

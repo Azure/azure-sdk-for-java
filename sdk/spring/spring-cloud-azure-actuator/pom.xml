@@ -90,7 +90,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.27.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.28.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>

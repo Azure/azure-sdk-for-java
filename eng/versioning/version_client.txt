@@ -186,12 +186,12 @@ com.azure:azure-security-keyvault-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template;1.1.1234;1.2.2-beta.1
 com.azure:azure-sdk-template-two;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-storage-blob;12.27.1;12.28.1
+com.azure:azure-storage-blob;12.28.1;12.29.0-beta.1
 com.azure:azure-storage-blob-batch;12.23.1;12.24.0
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.24;12.0.0-beta.25
-com.azure:azure-storage-blob-cryptography;12.26.1;12.27.1
+com.azure:azure-storage-blob-cryptography;12.27.1;12.28.0-beta.1
 com.azure:azure-storage-blob-nio;12.0.0-beta.25;12.0.0-beta.26
-com.azure:azure-storage-common;12.26.1;12.27.1
+com.azure:azure-storage-common;12.27.1;12.28.0-beta.1
 com.azure:azure-storage-file-share;12.23.1;12.24.0
 com.azure:azure-storage-file-datalake;12.20.1;12.21.0
 com.azure:azure-storage-internal-avro;12.12.1;12.13.0
