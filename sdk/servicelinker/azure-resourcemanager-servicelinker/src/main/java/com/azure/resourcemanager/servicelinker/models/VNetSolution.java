@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The VNet solution for linker. */
+/**
+ * The VNet solution for linker.
+ */
 @Fluent
-public final class VNetSolution {
+public final class VNetSolution implements JsonSerializable<VNetSolution> {
     /*
      * Type of VNet solution.
      */
-    @JsonProperty(value = "type")
     private VNetSolutionType type;
 
     /**
+     * Creates an instance of VNetSolution class.
+     */
+    public VNetSolution() {
+    }
+
+    /**
      * Get the type property: Type of VNet solution.
-     *
+     * 
      * @return the type value.
      */
     public VNetSolutionType type() {
@@ -27,7 +38,7 @@ public final class VNetSolution {
 
     /**
      * Set the type property: Type of VNet solution.
-     *
+     * 
      * @param type the type value to set.
      * @return the VNetSolution object itself.
      */
@@ -38,9 +49,45 @@ public final class VNetSolution {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VNetSolution from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VNetSolution if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VNetSolution.
+     */
+    public static VNetSolution fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VNetSolution deserializedVNetSolution = new VNetSolution();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedVNetSolution.type = VNetSolutionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVNetSolution;
+        });
     }
 }

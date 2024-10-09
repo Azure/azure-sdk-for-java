@@ -5,30 +5,50 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The authentication info when authType is secret. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("secret")
+/**
+ * The authentication info when authType is secret.
+ */
 @Fluent
 public final class SecretAuthInfo extends AuthInfoBase {
     /*
+     * The authentication type.
+     */
+    private AuthType authType = AuthType.SECRET;
+
+    /*
      * Username or account name for secret auth.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Password or key vault secret for secret auth.
      */
-    @JsonProperty(value = "secretInfo")
     private SecretInfoBase secretInfo;
 
     /**
+     * Creates an instance of SecretAuthInfo class.
+     */
+    public SecretAuthInfo() {
+    }
+
+    /**
+     * Get the authType property: The authentication type.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public AuthType authType() {
+        return this.authType;
+    }
+
+    /**
      * Get the name property: Username or account name for secret auth.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +57,7 @@ public final class SecretAuthInfo extends AuthInfoBase {
 
     /**
      * Set the name property: Username or account name for secret auth.
-     *
+     * 
      * @param name the name value to set.
      * @return the SecretAuthInfo object itself.
      */
@@ -48,7 +68,7 @@ public final class SecretAuthInfo extends AuthInfoBase {
 
     /**
      * Get the secretInfo property: Password or key vault secret for secret auth.
-     *
+     * 
      * @return the secretInfo value.
      */
     public SecretInfoBase secretInfo() {
@@ -57,7 +77,7 @@ public final class SecretAuthInfo extends AuthInfoBase {
 
     /**
      * Set the secretInfo property: Password or key vault secret for secret auth.
-     *
+     * 
      * @param secretInfo the secretInfo value to set.
      * @return the SecretAuthInfo object itself.
      */
@@ -68,14 +88,55 @@ public final class SecretAuthInfo extends AuthInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (secretInfo() != null) {
             secretInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("secretInfo", this.secretInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretAuthInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretAuthInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecretAuthInfo.
+     */
+    public static SecretAuthInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretAuthInfo deserializedSecretAuthInfo = new SecretAuthInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authType".equals(fieldName)) {
+                    deserializedSecretAuthInfo.authType = AuthType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecretAuthInfo.name = reader.getString();
+                } else if ("secretInfo".equals(fieldName)) {
+                    deserializedSecretAuthInfo.secretInfo = SecretInfoBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretAuthInfo;
+        });
     }
 }

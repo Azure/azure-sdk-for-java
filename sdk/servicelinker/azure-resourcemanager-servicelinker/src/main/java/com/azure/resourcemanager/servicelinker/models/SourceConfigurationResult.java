@@ -7,18 +7,20 @@ package com.azure.resourcemanager.servicelinker.models;
 import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of SourceConfigurationResult. */
+/**
+ * An immutable client-side representation of SourceConfigurationResult.
+ */
 public interface SourceConfigurationResult {
     /**
      * Gets the configurations property: The configuration properties for source resource.
-     *
+     * 
      * @return the configurations value.
      */
     List<SourceConfiguration> configurations();
 
     /**
      * Gets the inner com.azure.resourcemanager.servicelinker.fluent.models.SourceConfigurationResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     SourceConfigurationResultInner innerModel();
