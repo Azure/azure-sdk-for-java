@@ -545,8 +545,6 @@ public final class BlobContainerClient {
         BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions()
             : requestConditions;
         if (!ModelHelper.validateNoETag(requestConditions)) {
-            // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
-            // subscription.
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
@@ -749,8 +747,6 @@ public final class BlobContainerClient {
         BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions()
             : requestConditions;
         if (!ModelHelper.validateNoETag(finalRequestConditions) || finalRequestConditions.getIfUnmodifiedSince() != null) {
-            // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
-            // subscription.
             throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                 "If-Modified-Since is the only HTTP access condition supported for this API"));
         }
@@ -916,8 +912,6 @@ public final class BlobContainerClient {
         BlobRequestConditions finalRequestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
 
         if (!ModelHelper.validateNoETag(requestConditions)) {
-            // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
-            // subscription.
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }

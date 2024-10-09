@@ -340,8 +340,6 @@ public final class PageBlobClient extends BlobClientBase {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PageBlobItem> createWithResponse(PageBlobCreateOptions options, Duration timeout, Context context) {
-//        Mono<Response<PageBlobItem>> response = pageBlobAsyncClient.createWithResponse(options, context);
-//        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         BlobRequestConditions requestConditions = options.getRequestConditions() == null ? new BlobRequestConditions()
