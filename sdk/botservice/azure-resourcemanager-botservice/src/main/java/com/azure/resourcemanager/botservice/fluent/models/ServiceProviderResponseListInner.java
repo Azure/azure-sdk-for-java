@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.botservice.models.ServiceProvider;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of bot service providers response. */
+/**
+ * The list of bot service providers response.
+ */
 @Fluent
-public final class ServiceProviderResponseListInner {
+public final class ServiceProviderResponseListInner implements JsonSerializable<ServiceProviderResponseListInner> {
     /*
      * The link used to get the next page of bot service providers.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Gets the list of bot service providers and their properties.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceProvider> value;
 
     /**
+     * Creates an instance of ServiceProviderResponseListInner class.
+     */
+    public ServiceProviderResponseListInner() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of bot service providers.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class ServiceProviderResponseListInner {
 
     /**
      * Set the nextLink property: The link used to get the next page of bot service providers.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ServiceProviderResponseListInner object itself.
      */
@@ -46,7 +56,7 @@ public final class ServiceProviderResponseListInner {
 
     /**
      * Get the value property: Gets the list of bot service providers and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceProvider> value() {
@@ -55,12 +65,52 @@ public final class ServiceProviderResponseListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceProviderResponseListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceProviderResponseListInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceProviderResponseListInner.
+     */
+    public static ServiceProviderResponseListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceProviderResponseListInner deserializedServiceProviderResponseListInner
+                = new ServiceProviderResponseListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedServiceProviderResponseListInner.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<ServiceProvider> value = reader.readArray(reader1 -> ServiceProvider.fromJson(reader1));
+                    deserializedServiceProviderResponseListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceProviderResponseListInner;
+        });
     }
 }

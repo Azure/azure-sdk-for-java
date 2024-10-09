@@ -6,130 +6,142 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A site for the channel. */
+/**
+ * A site for the channel.
+ */
 @Fluent
-public final class Site extends WebChatSite {
+public class Site implements JsonSerializable<Site> {
     /*
-     * Whether this site is token enabled for channel
+     * Tenant Id
      */
-    @JsonProperty(value = "isTokenEnabled")
-    private Boolean isTokenEnabled;
-
-    /*
-     * Entity Tag
-     */
-    @JsonProperty(value = "eTag")
-    private String etag;
+    private String tenantId;
 
     /*
      * Site Id
      */
-    @JsonProperty(value = "siteId", access = JsonProperty.Access.WRITE_ONLY)
     private String siteId;
 
     /*
      * Site name
      */
-    @JsonProperty(value = "siteName", required = true)
     private String siteName;
 
     /*
-     * Primary key. Value only returned through POST to the action Channel List
-     * API, otherwise empty.
+     * Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /*
-     * Secondary key. Value only returned through POST to the action Channel
-     * List API, otherwise empty.
+     * Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "key2", access = JsonProperty.Access.WRITE_ONLY)
     private String key2;
 
     /*
-     * Whether this site is enabled for DirectLine channel.
+     * Whether this site is enabled for DirectLine channel
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /*
-     * Whether this site is enabled for Bot Framework V1 protocol.
+     * Whether this site is token enabled for channel
      */
-    @JsonProperty(value = "isV1Enabled", required = true)
-    private boolean isV1Enabled;
+    private Boolean isTokenEnabled;
 
     /*
-     * Whether this site is enabled for Bot Framework V1 protocol.
+     * Whether this site is EndpointParameters enabled for channel
      */
-    @JsonProperty(value = "isV3Enabled", required = true)
-    private boolean isV3Enabled;
+    private Boolean isEndpointParametersEnabled;
 
     /*
-     * Whether this site is enabled for authentication with Bot Framework.
+     * Whether this site is disabled detailed logging for
      */
-    @JsonProperty(value = "isSecureSiteEnabled")
-    private Boolean isSecureSiteEnabled;
+    private Boolean isDetailedLoggingEnabled;
 
     /*
      * Whether this site is enabled for block user upload.
      */
-    @JsonProperty(value = "isBlockUserUploadEnabled")
     private Boolean isBlockUserUploadEnabled;
 
     /*
-     * List of Trusted Origin URLs for this site. This field is applicable only
-     * if isSecureSiteEnabled is True.
+     * Whether this no-storage site is disabled detailed logging for
      */
-    @JsonProperty(value = "trustedOrigins")
+    private Boolean isNoStorageEnabled;
+
+    /*
+     * Entity Tag
+     */
+    private String etag;
+
+    /*
+     * DirectLine application id
+     */
+    private String appId;
+
+    /*
+     * Whether this site is enabled for Bot Framework V1 protocol.
+     */
+    private Boolean isV1Enabled;
+
+    /*
+     * Whether this site is enabled for Bot Framework V3 protocol.
+     */
+    private Boolean isV3Enabled;
+
+    /*
+     * Whether this site is enabled for authentication with Bot Framework.
+     */
+    private Boolean isSecureSiteEnabled;
+
+    /*
+     * List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True.
+     */
     private List<String> trustedOrigins;
 
-    /**
-     * Get the isTokenEnabled property: Whether this site is token enabled for channel.
-     *
-     * @return the isTokenEnabled value.
+    /*
+     * Whether this site is enabled for Webchat Speech
      */
-    public Boolean isTokenEnabled() {
-        return this.isTokenEnabled;
+    private Boolean isWebChatSpeechEnabled;
+
+    /*
+     * Whether this site is enabled for preview versions of Webchat
+     */
+    private Boolean isWebchatPreviewEnabled;
+
+    /**
+     * Creates an instance of Site class.
+     */
+    public Site() {
     }
 
     /**
-     * Set the isTokenEnabled property: Whether this site is token enabled for channel.
-     *
-     * @param isTokenEnabled the isTokenEnabled value to set.
+     * Get the tenantId property: Tenant Id.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: Tenant Id.
+     * 
+     * @param tenantId the tenantId value to set.
      * @return the Site object itself.
      */
-    public Site withIsTokenEnabled(Boolean isTokenEnabled) {
-        this.isTokenEnabled = isTokenEnabled;
-        return this;
-    }
-
-    /**
-     * Get the etag property: Entity Tag.
-     *
-     * @return the etag value.
-     */
-    public String etag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: Entity Tag.
-     *
-     * @param etag the etag value to set.
-     * @return the Site object itself.
-     */
-    public Site withEtag(String etag) {
-        this.etag = etag;
+    public Site withTenantId(String tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 
     /**
      * Get the siteId property: Site Id.
-     *
+     * 
      * @return the siteId value.
      */
     public String siteId() {
@@ -137,8 +149,19 @@ public final class Site extends WebChatSite {
     }
 
     /**
+     * Set the siteId property: Site Id.
+     * 
+     * @param siteId the siteId value to set.
+     * @return the Site object itself.
+     */
+    Site withSiteId(String siteId) {
+        this.siteId = siteId;
+        return this;
+    }
+
+    /**
      * Get the siteName property: Site name.
-     *
+     * 
      * @return the siteName value.
      */
     public String siteName() {
@@ -147,7 +170,7 @@ public final class Site extends WebChatSite {
 
     /**
      * Set the siteName property: Site name.
-     *
+     * 
      * @param siteName the siteName value to set.
      * @return the Site object itself.
      */
@@ -159,7 +182,7 @@ public final class Site extends WebChatSite {
     /**
      * Get the key property: Primary key. Value only returned through POST to the action Channel List API, otherwise
      * empty.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -167,9 +190,21 @@ public final class Site extends WebChatSite {
     }
 
     /**
+     * Set the key property: Primary key. Value only returned through POST to the action Channel List API, otherwise
+     * empty.
+     * 
+     * @param key the key value to set.
+     * @return the Site object itself.
+     */
+    Site withKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    /**
      * Get the key2 property: Secondary key. Value only returned through POST to the action Channel List API, otherwise
      * empty.
-     *
+     * 
      * @return the key2 value.
      */
     public String key2() {
@@ -177,8 +212,20 @@ public final class Site extends WebChatSite {
     }
 
     /**
+     * Set the key2 property: Secondary key. Value only returned through POST to the action Channel List API, otherwise
+     * empty.
+     * 
+     * @param key2 the key2 value to set.
+     * @return the Site object itself.
+     */
+    Site withKey2(String key2) {
+        this.key2 = key2;
+        return this;
+    }
+
+    /**
      * Get the isEnabled property: Whether this site is enabled for DirectLine channel.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -187,7 +234,7 @@ public final class Site extends WebChatSite {
 
     /**
      * Set the isEnabled property: Whether this site is enabled for DirectLine channel.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the Site object itself.
      */
@@ -197,68 +244,68 @@ public final class Site extends WebChatSite {
     }
 
     /**
-     * Get the isV1Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @return the isV1Enabled value.
+     * Get the isTokenEnabled property: Whether this site is token enabled for channel.
+     * 
+     * @return the isTokenEnabled value.
      */
-    public boolean isV1Enabled() {
-        return this.isV1Enabled;
+    public Boolean isTokenEnabled() {
+        return this.isTokenEnabled;
     }
 
     /**
-     * Set the isV1Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @param isV1Enabled the isV1Enabled value to set.
+     * Set the isTokenEnabled property: Whether this site is token enabled for channel.
+     * 
+     * @param isTokenEnabled the isTokenEnabled value to set.
      * @return the Site object itself.
      */
-    public Site withIsV1Enabled(boolean isV1Enabled) {
-        this.isV1Enabled = isV1Enabled;
+    Site withIsTokenEnabled(Boolean isTokenEnabled) {
+        this.isTokenEnabled = isTokenEnabled;
         return this;
     }
 
     /**
-     * Get the isV3Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @return the isV3Enabled value.
+     * Get the isEndpointParametersEnabled property: Whether this site is EndpointParameters enabled for channel.
+     * 
+     * @return the isEndpointParametersEnabled value.
      */
-    public boolean isV3Enabled() {
-        return this.isV3Enabled;
+    public Boolean isEndpointParametersEnabled() {
+        return this.isEndpointParametersEnabled;
     }
 
     /**
-     * Set the isV3Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @param isV3Enabled the isV3Enabled value to set.
+     * Set the isEndpointParametersEnabled property: Whether this site is EndpointParameters enabled for channel.
+     * 
+     * @param isEndpointParametersEnabled the isEndpointParametersEnabled value to set.
      * @return the Site object itself.
      */
-    public Site withIsV3Enabled(boolean isV3Enabled) {
-        this.isV3Enabled = isV3Enabled;
+    public Site withIsEndpointParametersEnabled(Boolean isEndpointParametersEnabled) {
+        this.isEndpointParametersEnabled = isEndpointParametersEnabled;
         return this;
     }
 
     /**
-     * Get the isSecureSiteEnabled property: Whether this site is enabled for authentication with Bot Framework.
-     *
-     * @return the isSecureSiteEnabled value.
+     * Get the isDetailedLoggingEnabled property: Whether this site is disabled detailed logging for.
+     * 
+     * @return the isDetailedLoggingEnabled value.
      */
-    public Boolean isSecureSiteEnabled() {
-        return this.isSecureSiteEnabled;
+    public Boolean isDetailedLoggingEnabled() {
+        return this.isDetailedLoggingEnabled;
     }
 
     /**
-     * Set the isSecureSiteEnabled property: Whether this site is enabled for authentication with Bot Framework.
-     *
-     * @param isSecureSiteEnabled the isSecureSiteEnabled value to set.
+     * Set the isDetailedLoggingEnabled property: Whether this site is disabled detailed logging for.
+     * 
+     * @param isDetailedLoggingEnabled the isDetailedLoggingEnabled value to set.
      * @return the Site object itself.
      */
-    public Site withIsSecureSiteEnabled(Boolean isSecureSiteEnabled) {
-        this.isSecureSiteEnabled = isSecureSiteEnabled;
+    public Site withIsDetailedLoggingEnabled(Boolean isDetailedLoggingEnabled) {
+        this.isDetailedLoggingEnabled = isDetailedLoggingEnabled;
         return this;
     }
 
     /**
      * Get the isBlockUserUploadEnabled property: Whether this site is enabled for block user upload.
-     *
+     * 
      * @return the isBlockUserUploadEnabled value.
      */
     public Boolean isBlockUserUploadEnabled() {
@@ -267,7 +314,7 @@ public final class Site extends WebChatSite {
 
     /**
      * Set the isBlockUserUploadEnabled property: Whether this site is enabled for block user upload.
-     *
+     * 
      * @param isBlockUserUploadEnabled the isBlockUserUploadEnabled value to set.
      * @return the Site object itself.
      */
@@ -277,9 +324,129 @@ public final class Site extends WebChatSite {
     }
 
     /**
+     * Get the isNoStorageEnabled property: Whether this no-storage site is disabled detailed logging for.
+     * 
+     * @return the isNoStorageEnabled value.
+     */
+    public Boolean isNoStorageEnabled() {
+        return this.isNoStorageEnabled;
+    }
+
+    /**
+     * Set the isNoStorageEnabled property: Whether this no-storage site is disabled detailed logging for.
+     * 
+     * @param isNoStorageEnabled the isNoStorageEnabled value to set.
+     * @return the Site object itself.
+     */
+    public Site withIsNoStorageEnabled(Boolean isNoStorageEnabled) {
+        this.isNoStorageEnabled = isNoStorageEnabled;
+        return this;
+    }
+
+    /**
+     * Get the etag property: Entity Tag.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Set the etag property: Entity Tag.
+     * 
+     * @param etag the etag value to set.
+     * @return the Site object itself.
+     */
+    public Site withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the appId property: DirectLine application id.
+     * 
+     * @return the appId value.
+     */
+    public String appId() {
+        return this.appId;
+    }
+
+    /**
+     * Set the appId property: DirectLine application id.
+     * 
+     * @param appId the appId value to set.
+     * @return the Site object itself.
+     */
+    public Site withAppId(String appId) {
+        this.appId = appId;
+        return this;
+    }
+
+    /**
+     * Get the isV1Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
+     * 
+     * @return the isV1Enabled value.
+     */
+    public Boolean isV1Enabled() {
+        return this.isV1Enabled;
+    }
+
+    /**
+     * Set the isV1Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
+     * 
+     * @param isV1Enabled the isV1Enabled value to set.
+     * @return the Site object itself.
+     */
+    public Site withIsV1Enabled(Boolean isV1Enabled) {
+        this.isV1Enabled = isV1Enabled;
+        return this;
+    }
+
+    /**
+     * Get the isV3Enabled property: Whether this site is enabled for Bot Framework V3 protocol.
+     * 
+     * @return the isV3Enabled value.
+     */
+    public Boolean isV3Enabled() {
+        return this.isV3Enabled;
+    }
+
+    /**
+     * Set the isV3Enabled property: Whether this site is enabled for Bot Framework V3 protocol.
+     * 
+     * @param isV3Enabled the isV3Enabled value to set.
+     * @return the Site object itself.
+     */
+    public Site withIsV3Enabled(Boolean isV3Enabled) {
+        this.isV3Enabled = isV3Enabled;
+        return this;
+    }
+
+    /**
+     * Get the isSecureSiteEnabled property: Whether this site is enabled for authentication with Bot Framework.
+     * 
+     * @return the isSecureSiteEnabled value.
+     */
+    public Boolean isSecureSiteEnabled() {
+        return this.isSecureSiteEnabled;
+    }
+
+    /**
+     * Set the isSecureSiteEnabled property: Whether this site is enabled for authentication with Bot Framework.
+     * 
+     * @param isSecureSiteEnabled the isSecureSiteEnabled value to set.
+     * @return the Site object itself.
+     */
+    public Site withIsSecureSiteEnabled(Boolean isSecureSiteEnabled) {
+        this.isSecureSiteEnabled = isSecureSiteEnabled;
+        return this;
+    }
+
+    /**
      * Get the trustedOrigins property: List of Trusted Origin URLs for this site. This field is applicable only if
      * isSecureSiteEnabled is True.
-     *
+     * 
      * @return the trustedOrigins value.
      */
     public List<String> trustedOrigins() {
@@ -289,7 +456,7 @@ public final class Site extends WebChatSite {
     /**
      * Set the trustedOrigins property: List of Trusted Origin URLs for this site. This field is applicable only if
      * isSecureSiteEnabled is True.
-     *
+     * 
      * @param trustedOrigins the trustedOrigins value to set.
      * @return the Site object itself.
      */
@@ -298,26 +465,146 @@ public final class Site extends WebChatSite {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public Site withIsWebchatPreviewEnabled(boolean isWebchatPreviewEnabled) {
-        super.withIsWebchatPreviewEnabled(isWebchatPreviewEnabled);
+    /**
+     * Get the isWebChatSpeechEnabled property: Whether this site is enabled for Webchat Speech.
+     * 
+     * @return the isWebChatSpeechEnabled value.
+     */
+    public Boolean isWebChatSpeechEnabled() {
+        return this.isWebChatSpeechEnabled;
+    }
+
+    /**
+     * Set the isWebChatSpeechEnabled property: Whether this site is enabled for Webchat Speech.
+     * 
+     * @param isWebChatSpeechEnabled the isWebChatSpeechEnabled value to set.
+     * @return the Site object itself.
+     */
+    public Site withIsWebChatSpeechEnabled(Boolean isWebChatSpeechEnabled) {
+        this.isWebChatSpeechEnabled = isWebChatSpeechEnabled;
+        return this;
+    }
+
+    /**
+     * Get the isWebchatPreviewEnabled property: Whether this site is enabled for preview versions of Webchat.
+     * 
+     * @return the isWebchatPreviewEnabled value.
+     */
+    public Boolean isWebchatPreviewEnabled() {
+        return this.isWebchatPreviewEnabled;
+    }
+
+    /**
+     * Set the isWebchatPreviewEnabled property: Whether this site is enabled for preview versions of Webchat.
+     * 
+     * @param isWebchatPreviewEnabled the isWebchatPreviewEnabled value to set.
+     * @return the Site object itself.
+     */
+    public Site withIsWebchatPreviewEnabled(Boolean isWebchatPreviewEnabled) {
+        this.isWebchatPreviewEnabled = isWebchatPreviewEnabled;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        super.validate();
         if (siteName() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property siteName in model Site"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property siteName in model Site"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Site.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("siteName", this.siteName);
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeBooleanField("isEndpointParametersEnabled", this.isEndpointParametersEnabled);
+        jsonWriter.writeBooleanField("isDetailedLoggingEnabled", this.isDetailedLoggingEnabled);
+        jsonWriter.writeBooleanField("isBlockUserUploadEnabled", this.isBlockUserUploadEnabled);
+        jsonWriter.writeBooleanField("isNoStorageEnabled", this.isNoStorageEnabled);
+        jsonWriter.writeStringField("eTag", this.etag);
+        jsonWriter.writeStringField("appId", this.appId);
+        jsonWriter.writeBooleanField("isV1Enabled", this.isV1Enabled);
+        jsonWriter.writeBooleanField("isV3Enabled", this.isV3Enabled);
+        jsonWriter.writeBooleanField("isSecureSiteEnabled", this.isSecureSiteEnabled);
+        jsonWriter.writeArrayField("trustedOrigins", this.trustedOrigins,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isWebChatSpeechEnabled", this.isWebChatSpeechEnabled);
+        jsonWriter.writeBooleanField("isWebchatPreviewEnabled", this.isWebchatPreviewEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Site from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Site if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Site.
+     */
+    public static Site fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Site deserializedSite = new Site();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("siteName".equals(fieldName)) {
+                    deserializedSite.siteName = reader.getString();
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedSite.isEnabled = reader.getBoolean();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedSite.tenantId = reader.getString();
+                } else if ("siteId".equals(fieldName)) {
+                    deserializedSite.siteId = reader.getString();
+                } else if ("key".equals(fieldName)) {
+                    deserializedSite.key = reader.getString();
+                } else if ("key2".equals(fieldName)) {
+                    deserializedSite.key2 = reader.getString();
+                } else if ("isTokenEnabled".equals(fieldName)) {
+                    deserializedSite.isTokenEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEndpointParametersEnabled".equals(fieldName)) {
+                    deserializedSite.isEndpointParametersEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isDetailedLoggingEnabled".equals(fieldName)) {
+                    deserializedSite.isDetailedLoggingEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isBlockUserUploadEnabled".equals(fieldName)) {
+                    deserializedSite.isBlockUserUploadEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isNoStorageEnabled".equals(fieldName)) {
+                    deserializedSite.isNoStorageEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedSite.etag = reader.getString();
+                } else if ("appId".equals(fieldName)) {
+                    deserializedSite.appId = reader.getString();
+                } else if ("isV1Enabled".equals(fieldName)) {
+                    deserializedSite.isV1Enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isV3Enabled".equals(fieldName)) {
+                    deserializedSite.isV3Enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isSecureSiteEnabled".equals(fieldName)) {
+                    deserializedSite.isSecureSiteEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("trustedOrigins".equals(fieldName)) {
+                    List<String> trustedOrigins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSite.trustedOrigins = trustedOrigins;
+                } else if ("isWebChatSpeechEnabled".equals(fieldName)) {
+                    deserializedSite.isWebChatSpeechEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isWebchatPreviewEnabled".equals(fieldName)) {
+                    deserializedSite.isWebchatPreviewEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSite;
+        });
+    }
 }
