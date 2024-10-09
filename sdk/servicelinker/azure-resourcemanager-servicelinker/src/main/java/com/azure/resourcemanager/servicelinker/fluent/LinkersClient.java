@@ -16,11 +16,13 @@ import com.azure.resourcemanager.servicelinker.fluent.models.SourceConfiguration
 import com.azure.resourcemanager.servicelinker.fluent.models.ValidateOperationResultInner;
 import com.azure.resourcemanager.servicelinker.models.LinkerPatch;
 
-/** An instance of this class provides access to all the operations defined in LinkersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LinkersClient.
+ */
 public interface LinkersClient {
     /**
      * Returns list of Linkers which connects to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface LinkersClient {
 
     /**
      * Returns list of Linkers which connects to the resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,20 +47,7 @@ public interface LinkersClient {
 
     /**
      * Returns Linker resource for a given name.
-     *
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
-     * @param linkerName The name Linker resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return linker of source and target resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkerResourceInner get(String resourceUri, String linkerName);
-
-    /**
-     * Returns Linker resource for a given name.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param context The context to associate with this operation.
@@ -71,8 +60,21 @@ public interface LinkersClient {
     Response<LinkerResourceInner> getWithResponse(String resourceUri, String linkerName, Context context);
 
     /**
+     * Returns Linker resource for a given name.
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
+     * @param linkerName The name Linker resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return linker of source and target resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LinkerResourceInner get(String resourceUri, String linkerName);
+
+    /**
      * Create or update linker resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -82,12 +84,12 @@ public interface LinkersClient {
      * @return the {@link SyncPoller} for polling of linker of source and target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginCreateOrUpdate(
-        String resourceUri, String linkerName, LinkerResourceInner parameters);
+    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginCreateOrUpdate(String resourceUri,
+        String linkerName, LinkerResourceInner parameters);
 
     /**
      * Create or update linker resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -98,12 +100,12 @@ public interface LinkersClient {
      * @return the {@link SyncPoller} for polling of linker of source and target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginCreateOrUpdate(
-        String resourceUri, String linkerName, LinkerResourceInner parameters, Context context);
+    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginCreateOrUpdate(String resourceUri,
+        String linkerName, LinkerResourceInner parameters, Context context);
 
     /**
      * Create or update linker resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -117,7 +119,7 @@ public interface LinkersClient {
 
     /**
      * Create or update linker resource.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -128,12 +130,12 @@ public interface LinkersClient {
      * @return linker of source and target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkerResourceInner createOrUpdate(
-        String resourceUri, String linkerName, LinkerResourceInner parameters, Context context);
+    LinkerResourceInner createOrUpdate(String resourceUri, String linkerName, LinkerResourceInner parameters,
+        Context context);
 
     /**
      * Delete a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,7 +148,7 @@ public interface LinkersClient {
 
     /**
      * Delete a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param context The context to associate with this operation.
@@ -160,7 +162,7 @@ public interface LinkersClient {
 
     /**
      * Delete a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface LinkersClient {
 
     /**
      * Delete a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param context The context to associate with this operation.
@@ -185,7 +187,7 @@ public interface LinkersClient {
 
     /**
      * Operation to update an existing link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -195,12 +197,12 @@ public interface LinkersClient {
      * @return the {@link SyncPoller} for polling of linker of source and target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginUpdate(
-        String resourceUri, String linkerName, LinkerPatch parameters);
+    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginUpdate(String resourceUri, String linkerName,
+        LinkerPatch parameters);
 
     /**
      * Operation to update an existing link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -211,12 +213,12 @@ public interface LinkersClient {
      * @return the {@link SyncPoller} for polling of linker of source and target resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginUpdate(
-        String resourceUri, String linkerName, LinkerPatch parameters, Context context);
+    SyncPoller<PollResult<LinkerResourceInner>, LinkerResourceInner> beginUpdate(String resourceUri, String linkerName,
+        LinkerPatch parameters, Context context);
 
     /**
      * Operation to update an existing link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -230,7 +232,7 @@ public interface LinkersClient {
 
     /**
      * Operation to update an existing link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param parameters Linker details.
@@ -245,7 +247,7 @@ public interface LinkersClient {
 
     /**
      * Validate a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,12 +256,12 @@ public interface LinkersClient {
      * @return the {@link SyncPoller} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner> beginValidate(
-        String resourceUri, String linkerName);
+    SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner> beginValidate(String resourceUri,
+        String linkerName);
 
     /**
      * Validate a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param context The context to associate with this operation.
@@ -269,12 +271,12 @@ public interface LinkersClient {
      * @return the {@link SyncPoller} for polling of the validation operation result for a linker.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner> beginValidate(
-        String resourceUri, String linkerName, Context context);
+    SyncPoller<PollResult<ValidateOperationResultInner>, ValidateOperationResultInner> beginValidate(String resourceUri,
+        String linkerName, Context context);
 
     /**
      * Validate a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -287,7 +289,7 @@ public interface LinkersClient {
 
     /**
      * Validate a link.
-     *
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @param context The context to associate with this operation.
@@ -301,7 +303,23 @@ public interface LinkersClient {
 
     /**
      * list source configurations for a linker.
-     *
+     * 
+     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
+     * @param linkerName The name Linker resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configurations for source resource, include appSettings, connectionString and serviceBindings along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SourceConfigurationResultInner> listConfigurationsWithResponse(String resourceUri, String linkerName,
+        Context context);
+
+    /**
+     * list source configurations for a linker.
+     * 
      * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
      * @param linkerName The name Linker resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,20 +329,4 @@ public interface LinkersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SourceConfigurationResultInner listConfigurations(String resourceUri, String linkerName);
-
-    /**
-     * list source configurations for a linker.
-     *
-     * @param resourceUri The fully qualified Azure Resource manager identifier of the resource to be connected.
-     * @param linkerName The name Linker resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configurations for source resource, include appSettings, connectionString and serviceBindings along with
-     *     {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SourceConfigurationResultInner> listConfigurationsWithResponse(
-        String resourceUri, String linkerName, Context context);
 }

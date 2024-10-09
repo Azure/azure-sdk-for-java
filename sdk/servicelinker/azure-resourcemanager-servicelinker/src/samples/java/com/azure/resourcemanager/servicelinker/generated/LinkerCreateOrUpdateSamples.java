@@ -12,82 +12,73 @@ import com.azure.resourcemanager.servicelinker.models.VNetSolution;
 import com.azure.resourcemanager.servicelinker.models.VNetSolutionType;
 import com.azure.resourcemanager.servicelinker.models.ValueSecretInfo;
 
-/** Samples for Linker CreateOrUpdate. */
+/**
+ * Samples for Linker CreateOrUpdate.
+ */
 public final class LinkerCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PutLinkWithSecretStore.json
+     * x-ms-original-file:
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/
+     * PutLinkWithSecretStore.json
      */
     /**
      * Sample code: PutLinkWithSecretStore.
-     *
+     * 
      * @param manager Entry point to ServiceLinkerManager.
      */
     public static void putLinkWithSecretStore(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
-        manager
-            .linkers()
+        manager.linkers()
             .define("linkName")
             .withExistingResourceUri(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app")
-            .withTargetService(
-                new AzureResource()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"))
+            .withTargetService(new AzureResource().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DocumentDb/databaseAccounts/test-acc/mongodbDatabases/test-db"))
             .withAuthInfo(new SecretAuthInfo())
-            .withSecretStore(
-                new SecretStore()
-                    .withKeyVaultId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.KeyVault/vaults/test-kv"))
+            .withSecretStore(new SecretStore().withKeyVaultId("fakeTokenPlaceholder"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PutLinkWithServiceEndpoint.json
+     * x-ms-original-file:
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/
+     * PutLinkWithServiceEndpoint.json
      */
     /**
      * Sample code: PutLinkWithServiceEndpoint.
-     *
+     * 
      * @param manager Entry point to ServiceLinkerManager.
      */
-    public static void putLinkWithServiceEndpoint(
-        com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
-        manager
-            .linkers()
+    public static void
+        putLinkWithServiceEndpoint(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
+        manager.linkers()
             .define("linkName")
             .withExistingResourceUri(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app")
-            .withTargetService(
-                new AzureResource()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DBforPostgreSQL/servers/test-pg/databases/test-db"))
-            .withAuthInfo(
-                new SecretAuthInfo()
-                    .withName("name")
-                    .withSecretInfo(
-                        new KeyVaultSecretUriSecretInfo()
-                            .withValue(
-                                "https://vault-name.vault.azure.net/secrets/secret-name/00000000000000000000000000000000")))
+            .withTargetService(new AzureResource().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DBforPostgreSQL/servers/test-pg/databases/test-db"))
+            .withAuthInfo(new SecretAuthInfo().withName("name")
+                .withSecretInfo(new KeyVaultSecretUriSecretInfo().withValue(
+                    "https://vault-name.vault.azure.net/secrets/secret-name/00000000000000000000000000000000")))
             .withVNetSolution(new VNetSolution().withType(VNetSolutionType.SERVICE_ENDPOINT))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PutLink.json
+     * x-ms-original-file:
+     * specification/servicelinker/resource-manager/Microsoft.ServiceLinker/stable/2022-05-01/examples/PutLink.json
      */
     /**
      * Sample code: PutLink.
-     *
+     * 
      * @param manager Entry point to ServiceLinkerManager.
      */
     public static void putLink(com.azure.resourcemanager.servicelinker.ServiceLinkerManager manager) {
-        manager
-            .linkers()
+        manager.linkers()
             .define("linkName")
             .withExistingResourceUri(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.Web/sites/test-app")
-            .withTargetService(
-                new AzureResource()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DBforPostgreSQL/servers/test-pg/databases/test-db"))
+            .withTargetService(new AzureResource().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/test-rg/providers/Microsoft.DBforPostgreSQL/servers/test-pg/databases/test-db"))
             .withAuthInfo(
                 new SecretAuthInfo().withName("name").withSecretInfo(new ValueSecretInfo().withValue("secret")))
             .create();
