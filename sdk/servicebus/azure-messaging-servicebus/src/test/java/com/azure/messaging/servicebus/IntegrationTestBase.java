@@ -9,7 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.models.AmqpMessageBody;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestConfigurationSource;
@@ -58,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-public abstract class IntegrationTestBase extends TestBase {
+public abstract class IntegrationTestBase extends TestProxyTestBase {
     protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     // Tests use timeouts of 20-60 seconds to verify something has happened
