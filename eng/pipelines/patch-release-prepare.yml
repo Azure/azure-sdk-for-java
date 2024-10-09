@@ -27,7 +27,7 @@ extends:
             pool:
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
-              os: $(LINUXOS)
+              os: linux
             steps:
               # Checkout a new release branch
               - pwsh: |
