@@ -42,13 +42,11 @@ public class IotCentralManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        iotCentralManager = IotCentralManager
-            .configure()
+        iotCentralManager = IotCentralManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -59,10 +57,7 @@ public class IotCentralManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -86,8 +81,7 @@ public class IotCentralManagerTests extends TestBase {
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new AppSkuInfo().withName(AppSku.ST2))
                 .withIdentity(new SystemAssignedServiceIdentity().withType(SystemAssignedServiceIdentityType.NONE))
-                .withNetworkRuleSets(new NetworkRuleSets()
-                    .withApplyToDevices(false)
+                .withNetworkRuleSets(new NetworkRuleSets().withApplyToDevices(false)
                     .withApplyToIoTCentral(false)
                     .withDefaultAction(NetworkAction.ALLOW)
                     .withIpRules(Collections.emptyList()))

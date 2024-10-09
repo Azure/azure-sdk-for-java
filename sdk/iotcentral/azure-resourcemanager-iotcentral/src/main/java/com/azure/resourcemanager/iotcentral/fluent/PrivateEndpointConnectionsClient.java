@@ -13,11 +13,30 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.iotcentral.fluent.models.PrivateEndpointConnectionInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public interface PrivateEndpointConnectionsClient {
     /**
      * Get the metadata of a private endpoint connection for the IoT Central Application.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group that contains the IoT Central application.
+     * @param resourceName The ARM resource name of the IoT Central application.
+     * @param privateEndpointConnectionName The private endpoint connection name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the metadata of a private endpoint connection for the IoT Central Application along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
+
+    /**
+     * Get the metadata of a private endpoint connection for the IoT Central Application.
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -27,29 +46,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the metadata of a private endpoint connection for the IoT Central Application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
-
-    /**
-     * Get the metadata of a private endpoint connection for the IoT Central Application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT Central application.
-     * @param resourceName The ARM resource name of the IoT Central application.
-     * @param privateEndpointConnectionName The private endpoint connection name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of a private endpoint connection for the IoT Central Application along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    PrivateEndpointConnectionInner get(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Update a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -61,14 +63,12 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Update a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -81,15 +81,12 @@ public interface PrivateEndpointConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginCreate(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context);
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context);
 
     /**
      * Update a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -100,15 +97,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner create(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection);
+    PrivateEndpointConnectionInner create(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection);
 
     /**
      * Update a private endpoint connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -120,16 +114,13 @@ public interface PrivateEndpointConnectionsClient {
      * @return the private endpoint connection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner create(
-        String resourceGroupName,
-        String resourceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+    PrivateEndpointConnectionInner create(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context);
 
     /**
      * Deletes a private endpoint connection from the IoT Central Application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -139,12 +130,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection from the IoT Central Application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -155,12 +146,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes a private endpoint connection from the IoT Central Application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -173,7 +164,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes a private endpoint connection from the IoT Central Application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param privateEndpointConnectionName The private endpoint connection name.
@@ -187,29 +178,29 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Get all private endpoint connections of a IoT Central Application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections of a IoT Central Application as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections of a IoT Central Application as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Get all private endpoint connections of a IoT Central Application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the IoT Central application.
      * @param resourceName The ARM resource name of the IoT Central application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections of a IoT Central Application as paginated response with {@link
-     *     PagedIterable}.
+     * @return all private endpoint connections of a IoT Central Application as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PrivateEndpointConnectionInner> list(String resourceGroupName, String resourceName, Context context);
