@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 12.27.1 (2024-10-08)
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 12.27.0 (2024-09-17)
 
 ### Features Added
