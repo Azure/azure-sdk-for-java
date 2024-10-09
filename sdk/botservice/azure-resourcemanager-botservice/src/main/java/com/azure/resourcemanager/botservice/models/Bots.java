@@ -8,11 +8,26 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Bots. */
+/**
+ * Resource collection API of Bots.
+ */
 public interface Bots {
     /**
      * Deletes a Bot Service from the resource group.
-     *
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Deletes a Bot Service from the resource group.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -22,33 +37,8 @@ public interface Bots {
     void deleteByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Deletes a Bot Service from the resource group.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
-
-    /**
      * Returns a BotService specified by the parameters.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return bot resource definition.
-     */
-    Bot getByResourceGroup(String resourceGroupName, String resourceName);
-
-    /**
-     * Returns a BotService specified by the parameters.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.
@@ -60,8 +50,20 @@ public interface Bots {
     Response<Bot> getByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
+     * Returns a BotService specified by the parameters.
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bot resource definition.
+     */
+    Bot getByResourceGroup(String resourceGroupName, String resourceName);
+
+    /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,7 +74,7 @@ public interface Bots {
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -84,7 +86,7 @@ public interface Bots {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of bot service operation response as paginated response with {@link PagedIterable}.
@@ -93,7 +95,7 @@ public interface Bots {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,7 +106,21 @@ public interface Bots {
 
     /**
      * Check whether a bot name is available.
-     *
+     * 
+     * @param parameters The request body parameters to provide for the check name availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body returned for a request to Bot Service Management to check availability of a bot name
+     * along with {@link Response}.
+     */
+    Response<CheckNameAvailabilityResponseBody>
+        getCheckNameAvailabilityWithResponse(CheckNameAvailabilityRequestBody parameters, Context context);
+
+    /**
+     * Check whether a bot name is available.
+     * 
      * @param parameters The request body parameters to provide for the check name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,22 +130,8 @@ public interface Bots {
     CheckNameAvailabilityResponseBody getCheckNameAvailability(CheckNameAvailabilityRequestBody parameters);
 
     /**
-     * Check whether a bot name is available.
-     *
-     * @param parameters The request body parameters to provide for the check name availability request.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body returned for a request to Bot Service Management to check availability of a bot name
-     *     along with {@link Response}.
-     */
-    Response<CheckNameAvailabilityResponseBody> getCheckNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequestBody parameters, Context context);
-
-    /**
      * Returns a BotService specified by the parameters.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,7 +142,7 @@ public interface Bots {
 
     /**
      * Returns a BotService specified by the parameters.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,7 +154,7 @@ public interface Bots {
 
     /**
      * Deletes a Bot Service from the resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,7 +164,7 @@ public interface Bots {
 
     /**
      * Deletes a Bot Service from the resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,7 +176,7 @@ public interface Bots {
 
     /**
      * Begins definition for a new Bot resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Bot definition.
      */

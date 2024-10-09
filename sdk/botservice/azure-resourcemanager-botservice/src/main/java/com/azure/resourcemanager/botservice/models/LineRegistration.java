@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties corresponding to a line channel registration. */
+/**
+ * The properties corresponding to a line channel registration.
+ */
 @Fluent
-public final class LineRegistration {
+public final class LineRegistration implements JsonSerializable<LineRegistration> {
     /*
      * Id generated for the line channel registration
      */
-    @JsonProperty(value = "generatedId", access = JsonProperty.Access.WRITE_ONLY)
     private String generatedId;
 
     /*
      * Secret for the line channel registration
      */
-    @JsonProperty(value = "channelSecret")
     private String channelSecret;
 
     /*
      * Access token for the line channel registration
      */
-    @JsonProperty(value = "channelAccessToken")
     private String channelAccessToken;
 
     /**
+     * Creates an instance of LineRegistration class.
+     */
+    public LineRegistration() {
+    }
+
+    /**
      * Get the generatedId property: Id generated for the line channel registration.
-     *
+     * 
      * @return the generatedId value.
      */
     public String generatedId() {
@@ -39,7 +48,7 @@ public final class LineRegistration {
 
     /**
      * Get the channelSecret property: Secret for the line channel registration.
-     *
+     * 
      * @return the channelSecret value.
      */
     public String channelSecret() {
@@ -48,7 +57,7 @@ public final class LineRegistration {
 
     /**
      * Set the channelSecret property: Secret for the line channel registration.
-     *
+     * 
      * @param channelSecret the channelSecret value to set.
      * @return the LineRegistration object itself.
      */
@@ -59,7 +68,7 @@ public final class LineRegistration {
 
     /**
      * Get the channelAccessToken property: Access token for the line channel registration.
-     *
+     * 
      * @return the channelAccessToken value.
      */
     public String channelAccessToken() {
@@ -68,7 +77,7 @@ public final class LineRegistration {
 
     /**
      * Set the channelAccessToken property: Access token for the line channel registration.
-     *
+     * 
      * @param channelAccessToken the channelAccessToken value to set.
      * @return the LineRegistration object itself.
      */
@@ -79,9 +88,50 @@ public final class LineRegistration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("channelSecret", this.channelSecret);
+        jsonWriter.writeStringField("channelAccessToken", this.channelAccessToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LineRegistration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LineRegistration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LineRegistration.
+     */
+    public static LineRegistration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LineRegistration deserializedLineRegistration = new LineRegistration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("generatedId".equals(fieldName)) {
+                    deserializedLineRegistration.generatedId = reader.getString();
+                } else if ("channelSecret".equals(fieldName)) {
+                    deserializedLineRegistration.channelSecret = reader.getString();
+                } else if ("channelAccessToken".equals(fieldName)) {
+                    deserializedLineRegistration.channelAccessToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLineRegistration;
+        });
     }
 }
