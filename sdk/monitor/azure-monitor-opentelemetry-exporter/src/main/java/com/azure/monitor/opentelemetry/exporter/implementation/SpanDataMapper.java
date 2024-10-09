@@ -816,7 +816,7 @@ public final class SpanDataMapper {
         setTime(telemetryBuilder, event.getEpochNanos());
         setSampleRate(telemetryBuilder, sampleRate);
 
-        // should this map the span attributes or the event attributes?
+        // TODO (trask) should this map the span attributes or the event attributes?
         MAPPINGS.map(span.getAttributes(), telemetryBuilder);
 
         // set exception-specific properties
