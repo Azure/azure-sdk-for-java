@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.azureadexternalidentities.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for GuestUsages ListByResourceGroup. */
+/**
+ * Samples for GuestUsages ListByResourceGroup.
+ */
 public final class GuestUsagesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/GuestUsagesResourceGroupGet.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/
+     * GuestUsagesResourceGroupGet.json
      */
     /**
      * Sample code: GuestUsagesResourceGroup_List.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void guestUsagesResourceGroupList(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager.guestUsages().listByResourceGroup("contosoResourceGroup", Context.NONE);
+        manager.guestUsages().listByResourceGroup("contosoResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

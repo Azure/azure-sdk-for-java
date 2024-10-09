@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for B2CResourceSkuTier. */
+/**
+ * The tier of the tenant.
+ */
 public final class B2CResourceSkuTier extends ExpandableStringEnum<B2CResourceSkuTier> {
-    /** Static value A0 for B2CResourceSkuTier. */
+    /**
+     * Static value A0 for B2CResourceSkuTier.
+     */
     public static final B2CResourceSkuTier A0 = fromString("A0");
 
     /**
+     * Creates a new instance of B2CResourceSkuTier value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public B2CResourceSkuTier() {
+    }
+
+    /**
      * Creates or finds a B2CResourceSkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding B2CResourceSkuTier.
      */
-    @JsonCreator
     public static B2CResourceSkuTier fromString(String name) {
         return fromString(name, B2CResourceSkuTier.class);
     }
 
-    /** @return known B2CResourceSkuTier values. */
+    /**
+     * Gets known B2CResourceSkuTier values.
+     * 
+     * @return known B2CResourceSkuTier values.
+     */
     public static Collection<B2CResourceSkuTier> values() {
         return values(B2CResourceSkuTier.class);
     }

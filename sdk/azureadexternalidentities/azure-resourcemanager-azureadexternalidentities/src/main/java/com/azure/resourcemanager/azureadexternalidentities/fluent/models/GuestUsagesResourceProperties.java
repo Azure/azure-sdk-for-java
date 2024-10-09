@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.azureadexternalidentities.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Guest Usages Resource Properties. */
+/**
+ * Guest Usages Resource Properties.
+ */
 @Fluent
-public final class GuestUsagesResourceProperties {
+public final class GuestUsagesResourceProperties implements JsonSerializable<GuestUsagesResourceProperties> {
     /*
      * An identifier for the tenant for which the resource is being created
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /**
+     * Creates an instance of GuestUsagesResourceProperties class.
+     */
+    public GuestUsagesResourceProperties() {
+    }
+
+    /**
      * Get the tenantId property: An identifier for the tenant for which the resource is being created.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -27,7 +38,7 @@ public final class GuestUsagesResourceProperties {
 
     /**
      * Set the tenantId property: An identifier for the tenant for which the resource is being created.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the GuestUsagesResourceProperties object itself.
      */
@@ -38,9 +49,46 @@ public final class GuestUsagesResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GuestUsagesResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GuestUsagesResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GuestUsagesResourceProperties.
+     */
+    public static GuestUsagesResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GuestUsagesResourceProperties deserializedGuestUsagesResourceProperties
+                = new GuestUsagesResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedGuestUsagesResourceProperties.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGuestUsagesResourceProperties;
+        });
     }
 }

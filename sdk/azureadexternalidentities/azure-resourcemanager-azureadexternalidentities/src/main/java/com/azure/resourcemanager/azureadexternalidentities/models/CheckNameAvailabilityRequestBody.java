@@ -6,30 +6,38 @@ package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The information required to check the availability of the name for the tenant. */
+/**
+ * The information required to check the availability of the name for the tenant.
+ */
 @Fluent
-public final class CheckNameAvailabilityRequestBody {
+public final class CheckNameAvailabilityRequestBody implements JsonSerializable<CheckNameAvailabilityRequestBody> {
     /*
      * The domain name to check for availability.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Country code of Azure tenant (e.g. 'US'). Refer to
-     * [aka.ms/B2CDataResidency](https://aka.ms/B2CDataResidency) to see valid
-     * country codes and corresponding data residency locations. If you do not
-     * see a country code in an valid data residency location, choose one from
-     * the list.
+     * Country code of Azure tenant (e.g. 'US'). Refer to [aka.ms/B2CDataResidency](https://aka.ms/B2CDataResidency) to
+     * see valid country codes and corresponding data residency locations. If you do not see a country code in an valid
+     * data residency location, choose one from the list.
      */
-    @JsonProperty(value = "countryCode", required = true)
     private String countryCode;
 
     /**
+     * Creates an instance of CheckNameAvailabilityRequestBody class.
+     */
+    public CheckNameAvailabilityRequestBody() {
+    }
+
+    /**
      * Get the name property: The domain name to check for availability.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +46,7 @@ public final class CheckNameAvailabilityRequestBody {
 
     /**
      * Set the name property: The domain name to check for availability.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityRequestBody object itself.
      */
@@ -52,7 +60,7 @@ public final class CheckNameAvailabilityRequestBody {
      * [aka.ms/B2CDataResidency](https://aka.ms/B2CDataResidency) to see valid country codes and corresponding data
      * residency locations. If you do not see a country code in an valid data residency location, choose one from the
      * list.
-     *
+     * 
      * @return the countryCode value.
      */
     public String countryCode() {
@@ -64,7 +72,7 @@ public final class CheckNameAvailabilityRequestBody {
      * [aka.ms/B2CDataResidency](https://aka.ms/B2CDataResidency) to see valid country codes and corresponding data
      * residency locations. If you do not see a country code in an valid data residency location, choose one from the
      * list.
-     *
+     * 
      * @param countryCode the countryCode value to set.
      * @return the CheckNameAvailabilityRequestBody object itself.
      */
@@ -75,23 +83,62 @@ public final class CheckNameAvailabilityRequestBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model CheckNameAvailabilityRequestBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model CheckNameAvailabilityRequestBody"));
         }
         if (countryCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property countryCode in model CheckNameAvailabilityRequestBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property countryCode in model CheckNameAvailabilityRequestBody"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityRequestBody.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("countryCode", this.countryCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityRequestBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityRequestBody if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityRequestBody.
+     */
+    public static CheckNameAvailabilityRequestBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityRequestBody deserializedCheckNameAvailabilityRequestBody
+                = new CheckNameAvailabilityRequestBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequestBody.name = reader.getString();
+                } else if ("countryCode".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityRequestBody.countryCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityRequestBody;
+        });
+    }
 }

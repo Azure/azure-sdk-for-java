@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.azureadexternalidentities.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for B2CTenants List. */
+/**
+ * Samples for B2CTenants List.
+ */
 public final class B2CTenantsListSamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/listTenantsBySubscription.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/
+     * listTenantsBySubscription.json
      */
     /**
      * Sample code: B2CTenants_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void b2CTenantsListBySubscription(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager.b2CTenants().list(Context.NONE);
+        manager.b2CTenants().list(com.azure.core.util.Context.NONE);
     }
 }

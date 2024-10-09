@@ -6,9 +6,12 @@ package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azureadexternalidentities.fluent.models.CreateTenantRequestBodyProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -16,41 +19,40 @@ import java.util.Map;
  * purposes.
  */
 @Fluent
-public final class CreateTenantRequestBody {
+public final class CreateTenantRequestBody implements JsonSerializable<CreateTenantRequestBody> {
     /*
-     * The location in which the resource is hosted and data resides. Can be
-     * one of 'United States', 'Europe', 'Asia Pacific', or 'Australia'. Refer
-     * to [this documentation](https://aka.ms/B2CDataResidency) for more
-     * information.
+     * The location in which the resource is hosted and data resides. Can be one of 'United States', 'Europe', 'Asia
+     * Pacific', or 'Australia'. Refer to [this documentation](https://aka.ms/B2CDataResidency) for more information.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties", required = true)
     private CreateTenantRequestBodyProperties innerProperties = new CreateTenantRequestBodyProperties();
 
     /*
-     * SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C
-     * billing at [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
+     * SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
+     * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
      */
-    @JsonProperty(value = "sku", required = true)
     private B2CResourceSku sku;
 
     /*
      * Resource Tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /**
+     * Creates an instance of CreateTenantRequestBody class.
+     */
+    public CreateTenantRequestBody() {
+    }
 
     /**
      * Get the location property: The location in which the resource is hosted and data resides. Can be one of 'United
      * States', 'Europe', 'Asia Pacific', or 'Australia'. Refer to [this documentation](https://aka.ms/B2CDataResidency)
      * for more information.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -61,7 +63,7 @@ public final class CreateTenantRequestBody {
      * Set the location property: The location in which the resource is hosted and data resides. Can be one of 'United
      * States', 'Europe', 'Asia Pacific', or 'Australia'. Refer to [this documentation](https://aka.ms/B2CDataResidency)
      * for more information.
-     *
+     * 
      * @param location the location value to set.
      * @return the CreateTenantRequestBody object itself.
      */
@@ -72,7 +74,7 @@ public final class CreateTenantRequestBody {
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CreateTenantRequestBodyProperties innerProperties() {
@@ -82,7 +84,7 @@ public final class CreateTenantRequestBody {
     /**
      * Get the sku property: SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
-     *
+     * 
      * @return the sku value.
      */
     public B2CResourceSku sku() {
@@ -92,7 +94,7 @@ public final class CreateTenantRequestBody {
     /**
      * Set the sku property: SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
-     *
+     * 
      * @param sku the sku value to set.
      * @return the CreateTenantRequestBody object itself.
      */
@@ -103,7 +105,7 @@ public final class CreateTenantRequestBody {
 
     /**
      * Get the tags property: Resource Tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -112,7 +114,7 @@ public final class CreateTenantRequestBody {
 
     /**
      * Set the tags property: Resource Tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CreateTenantRequestBody object itself.
      */
@@ -123,7 +125,7 @@ public final class CreateTenantRequestBody {
 
     /**
      * Get the displayName property: The display name of the Azure AD B2C tenant.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -132,7 +134,7 @@ public final class CreateTenantRequestBody {
 
     /**
      * Set the displayName property: The display name of the Azure AD B2C tenant.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the CreateTenantRequestBody object itself.
      */
@@ -149,7 +151,7 @@ public final class CreateTenantRequestBody {
      * [aka.ms/B2CDataResidency](https://aka.ms/B2CDataResidency) to see valid country codes and corresponding data
      * residency locations. If you do not see a country code in an valid data residency location, choose one from the
      * list.
-     *
+     * 
      * @return the countryCode value.
      */
     public String countryCode() {
@@ -161,7 +163,7 @@ public final class CreateTenantRequestBody {
      * [aka.ms/B2CDataResidency](https://aka.ms/B2CDataResidency) to see valid country codes and corresponding data
      * residency locations. If you do not see a country code in an valid data residency location, choose one from the
      * list.
-     *
+     * 
      * @param countryCode the countryCode value to set.
      * @return the CreateTenantRequestBody object itself.
      */
@@ -175,32 +177,77 @@ public final class CreateTenantRequestBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model CreateTenantRequestBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model CreateTenantRequestBody"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model CreateTenantRequestBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CreateTenantRequestBody"));
         } else {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model CreateTenantRequestBody"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model CreateTenantRequestBody"));
         } else {
             sku().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CreateTenantRequestBody.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateTenantRequestBody from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateTenantRequestBody if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateTenantRequestBody.
+     */
+    public static CreateTenantRequestBody fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateTenantRequestBody deserializedCreateTenantRequestBody = new CreateTenantRequestBody();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedCreateTenantRequestBody.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCreateTenantRequestBody.innerProperties
+                        = CreateTenantRequestBodyProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedCreateTenantRequestBody.sku = B2CResourceSku.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCreateTenantRequestBody.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateTenantRequestBody;
+        });
+    }
 }

@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for B2CResourceSkuName. */
+/**
+ * The name of the SKU for the tenant.
+ */
 public final class B2CResourceSkuName extends ExpandableStringEnum<B2CResourceSkuName> {
-    /** Static value Standard for B2CResourceSkuName. */
+    /**
+     * Static value Standard for B2CResourceSkuName.
+     */
     public static final B2CResourceSkuName STANDARD = fromString("Standard");
 
-    /** Static value PremiumP1 for B2CResourceSkuName. */
+    /**
+     * Static value PremiumP1 for B2CResourceSkuName.
+     */
     public static final B2CResourceSkuName PREMIUM_P1 = fromString("PremiumP1");
 
-    /** Static value PremiumP2 for B2CResourceSkuName. */
+    /**
+     * Static value PremiumP2 for B2CResourceSkuName.
+     */
     public static final B2CResourceSkuName PREMIUM_P2 = fromString("PremiumP2");
 
     /**
+     * Creates a new instance of B2CResourceSkuName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public B2CResourceSkuName() {
+    }
+
+    /**
      * Creates or finds a B2CResourceSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding B2CResourceSkuName.
      */
-    @JsonCreator
     public static B2CResourceSkuName fromString(String name) {
         return fromString(name, B2CResourceSkuName.class);
     }
 
-    /** @return known B2CResourceSkuName values. */
+    /**
+     * Gets known B2CResourceSkuName values.
+     * 
+     * @return known B2CResourceSkuName values.
+     */
     public static Collection<B2CResourceSkuName> values() {
         return values(B2CResourceSkuName.class);
     }

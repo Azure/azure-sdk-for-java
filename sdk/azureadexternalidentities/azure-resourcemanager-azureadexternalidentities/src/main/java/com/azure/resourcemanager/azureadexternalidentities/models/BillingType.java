@@ -5,29 +5,47 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingType. */
+/**
+ * The type of billing. Will be MAU for all new customers. If 'Auths', it can be updated to 'MAU'. Cannot be changed if
+ * value is 'MAU'. Learn more about Azure AD B2C billing at [aka.ms/b2cBilling](https://aka.ms/b2cbilling).
+ */
 public final class BillingType extends ExpandableStringEnum<BillingType> {
-    /** Static value MAU for BillingType. */
+    /**
+     * Static value MAU for BillingType.
+     */
     public static final BillingType MAU = fromString("MAU");
 
-    /** Static value Auths for BillingType. */
+    /**
+     * Static value Auths for BillingType.
+     */
     public static final BillingType AUTHS = fromString("Auths");
 
     /**
+     * Creates a new instance of BillingType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingType() {
+    }
+
+    /**
      * Creates or finds a BillingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingType.
      */
-    @JsonCreator
     public static BillingType fromString(String name) {
         return fromString(name, BillingType.class);
     }
 
-    /** @return known BillingType values. */
+    /**
+     * Gets known BillingType values.
+     * 
+     * @return known BillingType values.
+     */
     public static Collection<BillingType> values() {
         return values(BillingType.class);
     }

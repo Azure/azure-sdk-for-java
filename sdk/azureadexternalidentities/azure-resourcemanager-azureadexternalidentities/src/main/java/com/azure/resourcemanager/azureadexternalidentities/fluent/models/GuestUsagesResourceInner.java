@@ -7,27 +7,51 @@ package com.azure.resourcemanager.azureadexternalidentities.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Guest Usages Resource. */
+/**
+ * Guest Usages Resource.
+ */
 @Fluent
 public final class GuestUsagesResourceInner extends Resource {
     /*
      * The Guest Usages Resource Properties
      */
-    @JsonProperty(value = "properties")
     private GuestUsagesResourceProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GuestUsagesResourceInner class.
+     */
+    public GuestUsagesResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: The Guest Usages Resource Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GuestUsagesResourceProperties innerProperties() {
@@ -36,21 +60,55 @@ public final class GuestUsagesResourceInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GuestUsagesResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GuestUsagesResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -59,7 +117,7 @@ public final class GuestUsagesResourceInner extends Resource {
 
     /**
      * Get the tenantId property: An identifier for the tenant for which the resource is being created.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -68,7 +126,7 @@ public final class GuestUsagesResourceInner extends Resource {
 
     /**
      * Set the tenantId property: An identifier for the tenant for which the resource is being created.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the GuestUsagesResourceInner object itself.
      */
@@ -82,12 +140,65 @@ public final class GuestUsagesResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GuestUsagesResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GuestUsagesResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GuestUsagesResourceInner.
+     */
+    public static GuestUsagesResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GuestUsagesResourceInner deserializedGuestUsagesResourceInner = new GuestUsagesResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGuestUsagesResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGuestUsagesResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGuestUsagesResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGuestUsagesResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGuestUsagesResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGuestUsagesResourceInner.innerProperties
+                        = GuestUsagesResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedGuestUsagesResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGuestUsagesResourceInner;
+        });
     }
 }

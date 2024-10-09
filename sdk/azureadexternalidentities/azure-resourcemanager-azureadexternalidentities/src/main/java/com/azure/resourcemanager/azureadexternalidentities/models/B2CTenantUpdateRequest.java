@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azureadexternalidentities.fluent.models.B2CTenantResourceProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The request body to update the Azure AD B2C tenant resource. */
+/**
+ * The request body to update the Azure AD B2C tenant resource.
+ */
 @Fluent
-public final class B2CTenantUpdateRequest {
+public final class B2CTenantUpdateRequest implements JsonSerializable<B2CTenantUpdateRequest> {
     /*
-     * SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C
-     * billing at [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
+     * SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
+     * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
      */
-    @JsonProperty(value = "sku")
     private B2CResourceSku sku;
 
     /*
      * The Azure AD B2C tenant resource properties.
      */
-    @JsonProperty(value = "properties")
     private B2CTenantResourceProperties innerProperties;
 
     /*
      * Resource Tags
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /**
+     * Creates an instance of B2CTenantUpdateRequest class.
+     */
+    public B2CTenantUpdateRequest() {
+    }
 
     /**
      * Get the sku property: SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
-     *
+     * 
      * @return the sku value.
      */
     public B2CResourceSku sku() {
@@ -46,7 +53,7 @@ public final class B2CTenantUpdateRequest {
     /**
      * Set the sku property: SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
-     *
+     * 
      * @param sku the sku value to set.
      * @return the B2CTenantUpdateRequest object itself.
      */
@@ -57,7 +64,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Get the innerProperties property: The Azure AD B2C tenant resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private B2CTenantResourceProperties innerProperties() {
@@ -66,7 +73,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Get the tags property: Resource Tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -75,7 +82,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Set the tags property: Resource Tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the B2CTenantUpdateRequest object itself.
      */
@@ -86,7 +93,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Get the billingConfig property: The billing configuration for the tenant.
-     *
+     * 
      * @return the billingConfig value.
      */
     public B2CTenantResourcePropertiesBillingConfig billingConfig() {
@@ -95,7 +102,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Set the billingConfig property: The billing configuration for the tenant.
-     *
+     * 
      * @param billingConfig the billingConfig value to set.
      * @return the B2CTenantUpdateRequest object itself.
      */
@@ -109,7 +116,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Get the tenantId property: An identifier of the Azure AD B2C tenant.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -118,7 +125,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Set the tenantId property: An identifier of the Azure AD B2C tenant.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the B2CTenantUpdateRequest object itself.
      */
@@ -132,7 +139,7 @@ public final class B2CTenantUpdateRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -142,5 +149,48 @@ public final class B2CTenantUpdateRequest {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of B2CTenantUpdateRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of B2CTenantUpdateRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the B2CTenantUpdateRequest.
+     */
+    public static B2CTenantUpdateRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            B2CTenantUpdateRequest deserializedB2CTenantUpdateRequest = new B2CTenantUpdateRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedB2CTenantUpdateRequest.sku = B2CResourceSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedB2CTenantUpdateRequest.innerProperties = B2CTenantResourceProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedB2CTenantUpdateRequest.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedB2CTenantUpdateRequest;
+        });
     }
 }

@@ -44,22 +44,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in B2CTenantsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in B2CTenantsClient.
+ */
 public final class B2CTenantsClientImpl implements B2CTenantsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final B2CTenantsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ExternalIdentitiesConfigurationClientImpl client;
 
     /**
      * Initializes an instance of B2CTenantsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     B2CTenantsClientImpl(ExternalIdentitiesConfigurationClientImpl client) {
-        this.service =
-            RestProxy.create(B2CTenantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(B2CTenantsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,132 +75,92 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ExternalIdentitiesCo")
-    private interface B2CTenantsService {
-        @Headers({"Content-Type: application/json"})
+    public interface B2CTenantsService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AzureActiveDirectory/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityResponseInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<NameAvailabilityResponseInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureActiveDirectory/b2cDirectories")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<B2CTenantResourceList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AzureActiveDirectory/b2cDirectories")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<B2CTenantResourceList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<B2CTenantResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") CreateTenantRequestBody createTenantRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<B2CTenantResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<B2CTenantResourceInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @BodyParam("application/json") B2CTenantUpdateRequest updateTenantRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureActiveDirectory/b2cDirectories/{resourceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Checks the availability and validity of a domain name for the tenant.
-     *
-     * @param checkNameAvailabilityRequestBody The information required to check the availability of the name for the
-     *     tenant.
+     * 
+     * @param checkNameAvailabilityRequestBody The checkNameAvailabilityRequestBody parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of the CheckNameAvailability operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody) {
+    private Mono<Response<NameAvailabilityResponseInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityRequestBody != null) {
             checkNameAvailabilityRequestBody.validate();
@@ -202,87 +168,45 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            checkNameAvailabilityRequestBody,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), checkNameAvailabilityRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks the availability and validity of a domain name for the tenant.
-     *
-     * @param checkNameAvailabilityRequestBody The information required to check the availability of the name for the
-     *     tenant.
+     * 
+     * @param checkNameAvailabilityRequestBody The checkNameAvailabilityRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of the CheckNameAvailability operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
         CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityRequestBody != null) {
             checkNameAvailabilityRequestBody.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                checkNameAvailabilityRequestBody,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), checkNameAvailabilityRequestBody, accept, context);
     }
 
     /**
      * Checks the availability and validity of a domain name for the tenant.
-     *
-     * @param checkNameAvailabilityRequestBody The information required to check the availability of the name for the
-     *     tenant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of the CheckNameAvailability operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityResponseInner> checkNameAvailabilityAsync(
-        CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody) {
-        return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequestBody)
-            .flatMap(
-                (Response<NameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Checks the availability and validity of a domain name for the tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of the CheckNameAvailability operation on successful completion of {@link Mono}.
@@ -291,34 +215,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     private Mono<NameAvailabilityResponseInner> checkNameAvailabilityAsync() {
         final CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody = null;
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityRequestBody)
-            .flatMap(
-                (Response<NameAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks the availability and validity of a domain name for the tenant.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of the CheckNameAvailability operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityResponseInner checkNameAvailability() {
-        final CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody = null;
-        return checkNameAvailabilityAsync(checkNameAvailabilityRequestBody).block();
-    }
-
-    /**
-     * Checks the availability and validity of a domain name for the tenant.
-     *
-     * @param checkNameAvailabilityRequestBody The information required to check the availability of the name for the
-     *     tenant.
+     * 
+     * @param checkNameAvailabilityRequestBody The checkNameAvailabilityRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -332,28 +235,37 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     }
 
     /**
+     * Checks the availability and validity of a domain name for the tenant.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of the CheckNameAvailability operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NameAvailabilityResponseInner checkNameAvailability() {
+        final CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody = null;
+        return checkNameAvailabilityWithResponse(checkNameAvailabilityRequestBody, Context.NONE).getValue();
+    }
+
+    /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure AD B2C tenant resources in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<B2CTenantResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -361,48 +273,34 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            accept,
-                            context))
-            .<PagedResponse<B2CTenantResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), resourceGroupName, accept, context))
+            .<PagedResponse<B2CTenantResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure AD B2C tenant resources in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<B2CTenantResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<B2CTenantResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -411,22 +309,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -440,7 +331,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -455,13 +346,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<B2CTenantResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -470,14 +361,14 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<B2CTenantResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -486,86 +377,63 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure AD B2C tenant resources in a subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<B2CTenantResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<B2CTenantResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<B2CTenantResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure AD B2C tenant resources in a subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<B2CTenantResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure AD B2C tenant resources in a subscription as paginated response with {@link PagedFlux}.
@@ -577,7 +445,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -591,7 +459,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure AD B2C tenant resources in a subscription as paginated response with {@link PagedIterable}.
@@ -603,7 +471,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -617,7 +485,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
 
     /**
      * Get the Azure AD B2C tenant resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -626,19 +494,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the Azure AD B2C tenant resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -650,22 +514,14 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the Azure AD B2C tenant resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -675,19 +531,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the Azure AD B2C tenant resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<B2CTenantResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -698,20 +550,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), resourceGroupName, resourceName, accept, context);
     }
 
     /**
      * Get the Azure AD B2C tenant resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -722,34 +567,12 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<B2CTenantResourceInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<B2CTenantResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the Azure AD B2C tenant resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Azure AD B2C tenant resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public B2CTenantResourceInner getByResourceGroup(String resourceGroupName, String resourceName) {
-        return getByResourceGroupAsync(resourceGroupName, resourceName).block();
-    }
-
-    /**
-     * Get the Azure AD B2C tenant resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -759,38 +582,48 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the Azure AD B2C tenant resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<B2CTenantResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<B2CTenantResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
+    }
+
+    /**
+     * Get the Azure AD B2C tenant resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Azure AD B2C tenant resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public B2CTenantResourceInner getByResourceGroup(String resourceGroupName, String resourceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -804,29 +637,18 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            createTenantRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, createTenantRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -834,22 +656,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -863,26 +678,17 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                createTenantRequestBody,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, createTenantRequestBody, accept, context);
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -891,26 +697,42 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreateAsync(
         String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody);
-        return this
-            .client
-            .<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                B2CTenantResourceInner.class,
-                B2CTenantResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody);
+        return this.client.<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), B2CTenantResourceInner.class, B2CTenantResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner>
+        beginCreateAsync(String resourceGroupName, String resourceName) {
+        final CreateTenantRequestBody createTenantRequestBody = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody);
+        return this.client.<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), B2CTenantResourceInner.class, B2CTenantResourceInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
+     * a subscription.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -919,50 +741,40 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreateAsync(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
+        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody, context);
-        return this
-            .client
-            .<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                B2CTenantResourceInner.class,
-                B2CTenantResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, resourceName, createTenantRequestBody, context);
+        return this.client.<B2CTenantResourceInner, B2CTenantResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), B2CTenantResourceInner.class, B2CTenantResourceInner.class, context);
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody).getSyncPoller();
+    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName) {
+        final CreateTenantRequestBody createTenantRequestBody = null;
+        return this.beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody).getSyncPoller();
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -970,39 +782,34 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody, context).getSyncPoller();
+    public SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName, CreateTenantRequestBody createTenantRequestBody, Context context) {
+        return this.beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody, context).getSyncPoller();
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<B2CTenantResourceInner> createAsync(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody)
-            .last()
+    private Mono<B2CTenantResourceInner> createAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody) {
+        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1013,19 +820,17 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<B2CTenantResourceInner> createAsync(String resourceGroupName, String resourceName) {
         final CreateTenantRequestBody createTenantRequestBody = null;
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody)
-            .last()
+        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1033,39 +838,16 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<B2CTenantResourceInner> createAsync(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody, context)
-            .last()
+    private Mono<B2CTenantResourceInner> createAsync(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context) {
+        return beginCreateAsync(resourceGroupName, resourceName, createTenantRequestBody, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public B2CTenantResourceInner create(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody) {
-        return createAsync(resourceGroupName, resourceName, createTenantRequestBody).block();
-    }
-
-    /**
-     * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
-     * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,11 +864,10 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1094,39 +875,32 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public B2CTenantResourceInner create(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context) {
+    public B2CTenantResourceInner create(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context) {
         return createAsync(resourceGroupName, resourceName, createTenantRequestBody, context).block();
     }
 
     /**
      * Update the Azure AD B2C tenant resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param updateTenantRequestBody The request body to update the Azure AD B2C tenant resource.
+     * @param updateTenantRequestBody The updateTenantRequestBody parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, B2CTenantUpdateRequest updateTenantRequestBody) {
+    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, B2CTenantUpdateRequest updateTenantRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1140,27 +914,17 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            updateTenantRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, updateTenantRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the Azure AD B2C tenant resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param updateTenantRequestBody The request body to update the Azure AD B2C tenant resource.
+     * @param updateTenantRequestBody The updateTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1168,22 +932,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        B2CTenantUpdateRequest updateTenantRequestBody,
-        Context context) {
+    private Mono<Response<B2CTenantResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String resourceName, B2CTenantUpdateRequest updateTenantRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1197,46 +954,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                updateTenantRequestBody,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, updateTenantRequestBody, accept, context);
     }
 
     /**
      * Update the Azure AD B2C tenant resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param updateTenantRequestBody The request body to update the Azure AD B2C tenant resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<B2CTenantResourceInner> updateAsync(
-        String resourceGroupName, String resourceName, B2CTenantUpdateRequest updateTenantRequestBody) {
-        return updateWithResponseAsync(resourceGroupName, resourceName, updateTenantRequestBody)
-            .flatMap(
-                (Response<B2CTenantResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update the Azure AD B2C tenant resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1248,19 +972,30 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     private Mono<B2CTenantResourceInner> updateAsync(String resourceGroupName, String resourceName) {
         final B2CTenantUpdateRequest updateTenantRequestBody = null;
         return updateWithResponseAsync(resourceGroupName, resourceName, updateTenantRequestBody)
-            .flatMap(
-                (Response<B2CTenantResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update the Azure AD B2C tenant resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @param updateTenantRequestBody The updateTenantRequestBody parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<B2CTenantResourceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        B2CTenantUpdateRequest updateTenantRequestBody, Context context) {
+        return updateWithResponseAsync(resourceGroupName, resourceName, updateTenantRequestBody, context).block();
+    }
+
+    /**
+     * Update the Azure AD B2C tenant resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1271,34 +1006,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public B2CTenantResourceInner update(String resourceGroupName, String resourceName) {
         final B2CTenantUpdateRequest updateTenantRequestBody = null;
-        return updateAsync(resourceGroupName, resourceName, updateTenantRequestBody).block();
-    }
-
-    /**
-     * Update the Azure AD B2C tenant resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param updateTenantRequestBody The request body to update the Azure AD B2C tenant resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<B2CTenantResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        B2CTenantUpdateRequest updateTenantRequestBody,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, resourceName, updateTenantRequestBody, context).block();
+        return updateWithResponse(resourceGroupName, resourceName, updateTenantRequestBody, Context.NONE).getValue();
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1309,16 +1023,12 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1329,24 +1039,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            resourceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -1356,19 +1057,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1379,21 +1076,14 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                resourceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+            resourceGroupName, resourceName, accept, context);
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1404,16 +1094,14 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -1423,19 +1111,18 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1445,13 +1132,13 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -1461,15 +1148,15 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1485,7 +1172,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -1496,15 +1183,14 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, resourceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1519,7 +1205,7 @@ public final class B2CTenantsClientImpl implements B2CTenantsClient {
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.

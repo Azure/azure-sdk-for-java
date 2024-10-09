@@ -4,22 +4,23 @@
 
 package com.azure.resourcemanager.azureadexternalidentities.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for B2CTenants GetByResourceGroup. */
+/**
+ * Samples for B2CTenants GetByResourceGroup.
+ */
 public final class B2CTenantsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/getTenant.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/getTenant.json
      */
     /**
      * Sample code: Get tenant.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
-    public static void getTenant(
-        com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager
-            .b2CTenants()
-            .getByResourceGroupWithResponse("contosoResourceGroup", "contoso.onmicrosoft.com", Context.NONE);
+    public static void
+        getTenant(com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
+        manager.b2CTenants()
+            .getByResourceGroupWithResponse("contosoResourceGroup", "contoso.onmicrosoft.com",
+                com.azure.core.util.Context.NONE);
     }
 }

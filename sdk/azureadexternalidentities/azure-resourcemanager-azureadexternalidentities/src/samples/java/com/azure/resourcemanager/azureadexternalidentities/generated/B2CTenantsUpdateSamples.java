@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azureadexternalidentities.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CResourceSku;
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CResourceSkuName;
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CTenantResource;
@@ -13,31 +12,33 @@ import com.azure.resourcemanager.azureadexternalidentities.models.BillingType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for B2CTenants Update. */
+/**
+ * Samples for B2CTenants Update.
+ */
 public final class B2CTenantsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/updateTenant.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/updateTenant.json
      */
     /**
      * Sample code: Update tenant.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void updateTenant(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        B2CTenantResource resource =
-            manager
-                .b2CTenants()
-                .getByResourceGroupWithResponse("contosoResourceGroup", "contoso.onmicrosoft.com", Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("key", "value"))
+        B2CTenantResource resource = manager.b2CTenants()
+            .getByResourceGroupWithResponse("contosoResourceGroup", "contoso.onmicrosoft.com",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withSku(new B2CResourceSku().withName(B2CResourceSkuName.PREMIUM_P1))
             .withBillingConfig(new B2CTenantResourcePropertiesBillingConfig().withBillingType(BillingType.MAU))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

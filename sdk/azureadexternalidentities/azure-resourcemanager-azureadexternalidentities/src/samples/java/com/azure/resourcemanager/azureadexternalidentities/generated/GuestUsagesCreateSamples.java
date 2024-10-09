@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.azureadexternalidentities.generated;
 
-/** Samples for GuestUsages Create. */
+/**
+ * Samples for GuestUsages Create.
+ */
 public final class GuestUsagesCreateSamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/GuestUsagesCreate.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/GuestUsagesCreate.
+     * json
      */
     /**
      * Sample code: GuestUsages_Create.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void guestUsagesCreate(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager
-            .guestUsages()
+        manager.guestUsages()
             .define("contoso.onmicrosoft.com")
             .withRegion("United States")
             .withExistingResourceGroup("contosoResourceGroup")

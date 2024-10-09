@@ -17,23 +17,14 @@ import com.azure.resourcemanager.azureadexternalidentities.models.B2CTenantUpdat
 import com.azure.resourcemanager.azureadexternalidentities.models.CheckNameAvailabilityRequestBody;
 import com.azure.resourcemanager.azureadexternalidentities.models.CreateTenantRequestBody;
 
-/** An instance of this class provides access to all the operations defined in B2CTenantsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in B2CTenantsClient.
+ */
 public interface B2CTenantsClient {
     /**
      * Checks the availability and validity of a domain name for the tenant.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of the CheckNameAvailability operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NameAvailabilityResponseInner checkNameAvailability();
-
-    /**
-     * Checks the availability and validity of a domain name for the tenant.
-     *
-     * @param checkNameAvailabilityRequestBody The information required to check the availability of the name for the
-     *     tenant.
+     * 
+     * @param checkNameAvailabilityRequestBody The checkNameAvailabilityRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,35 +36,45 @@ public interface B2CTenantsClient {
         CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody, Context context);
 
     /**
+     * Checks the availability and validity of a domain name for the tenant.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of the CheckNameAvailability operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NameAvailabilityResponseInner checkNameAvailability();
+
+    /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<B2CTenantResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get all the Azure AD B2C tenant resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Azure AD B2C tenant resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<B2CTenantResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure AD B2C tenant resources in a subscription as paginated response with {@link PagedIterable}.
@@ -83,7 +84,7 @@ public interface B2CTenantsClient {
 
     /**
      * Get all the Azure AD B2C tenant resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,7 +96,22 @@ public interface B2CTenantsClient {
 
     /**
      * Get the Azure AD B2C tenant resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Azure AD B2C tenant resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<B2CTenantResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
+
+    /**
+     * Get the Azure AD B2C tenant resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,45 +123,27 @@ public interface B2CTenantsClient {
     B2CTenantResourceInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Get the Azure AD B2C tenant resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Azure AD B2C tenant resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<B2CTenantResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody);
+    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName);
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,33 +151,13 @@ public interface B2CTenantsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context);
+    SyncPoller<PollResult<B2CTenantResourceInner>, B2CTenantResourceInner> beginCreate(String resourceGroupName,
+        String resourceName, CreateTenantRequestBody createTenantRequestBody, Context context);
 
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    B2CTenantResourceInner create(
-        String resourceGroupName, String resourceName, CreateTenantRequestBody createTenantRequestBody);
-
-    /**
-     * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
-     * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,11 +171,10 @@ public interface B2CTenantsClient {
     /**
      * Initiates an async request to create both the Azure AD B2C tenant and the corresponding Azure resource linked to
      * a subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param createTenantRequestBody The information needed to create the Azure AD B2C tenant and corresponding Azure
-     *     resource, which is used for billing purposes.
+     * @param createTenantRequestBody The createTenantRequestBody parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -205,15 +182,28 @@ public interface B2CTenantsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    B2CTenantResourceInner create(
-        String resourceGroupName,
-        String resourceName,
-        CreateTenantRequestBody createTenantRequestBody,
-        Context context);
+    B2CTenantResourceInner create(String resourceGroupName, String resourceName,
+        CreateTenantRequestBody createTenantRequestBody, Context context);
 
     /**
      * Update the Azure AD B2C tenant resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @param updateTenantRequestBody The updateTenantRequestBody parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<B2CTenantResourceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        B2CTenantUpdateRequest updateTenantRequestBody, Context context);
+
+    /**
+     * Update the Azure AD B2C tenant resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,25 +215,9 @@ public interface B2CTenantsClient {
     B2CTenantResourceInner update(String resourceGroupName, String resourceName);
 
     /**
-     * Update the Azure AD B2C tenant resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param updateTenantRequestBody The request body to update the Azure AD B2C tenant resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<B2CTenantResourceInner> updateWithResponse(
-        String resourceGroupName, String resourceName, B2CTenantUpdateRequest updateTenantRequestBody, Context context);
-
-    /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +231,7 @@ public interface B2CTenantsClient {
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -272,7 +246,7 @@ public interface B2CTenantsClient {
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -285,7 +259,7 @@ public interface B2CTenantsClient {
     /**
      * Initiates an async operation to delete the Azure AD B2C tenant and Azure resource. The resource deletion can only
      * happen as the last step in [the tenant deletion process](https://aka.ms/deleteB2Ctenant).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.

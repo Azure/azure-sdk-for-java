@@ -5,29 +5,37 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
  * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
  */
 @Fluent
-public final class B2CResourceSku {
+public final class B2CResourceSku implements JsonSerializable<B2CResourceSku> {
     /*
      * The name of the SKU for the tenant.
      */
-    @JsonProperty(value = "name")
     private B2CResourceSkuName name;
 
     /*
      * The tier of the tenant.
      */
-    @JsonProperty(value = "tier")
     private B2CResourceSkuTier tier;
 
     /**
+     * Creates an instance of B2CResourceSku class.
+     */
+    public B2CResourceSku() {
+    }
+
+    /**
      * Get the name property: The name of the SKU for the tenant.
-     *
+     * 
      * @return the name value.
      */
     public B2CResourceSkuName name() {
@@ -36,7 +44,7 @@ public final class B2CResourceSku {
 
     /**
      * Set the name property: The name of the SKU for the tenant.
-     *
+     * 
      * @param name the name value to set.
      * @return the B2CResourceSku object itself.
      */
@@ -47,7 +55,7 @@ public final class B2CResourceSku {
 
     /**
      * Get the tier property: The tier of the tenant.
-     *
+     * 
      * @return the tier value.
      */
     public B2CResourceSkuTier tier() {
@@ -56,7 +64,7 @@ public final class B2CResourceSku {
 
     /**
      * Set the tier property: The tier of the tenant.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the B2CResourceSku object itself.
      */
@@ -67,9 +75,48 @@ public final class B2CResourceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of B2CResourceSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of B2CResourceSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the B2CResourceSku.
+     */
+    public static B2CResourceSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            B2CResourceSku deserializedB2CResourceSku = new B2CResourceSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedB2CResourceSku.name = B2CResourceSkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedB2CResourceSku.tier = B2CResourceSkuTier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedB2CResourceSku;
+        });
     }
 }

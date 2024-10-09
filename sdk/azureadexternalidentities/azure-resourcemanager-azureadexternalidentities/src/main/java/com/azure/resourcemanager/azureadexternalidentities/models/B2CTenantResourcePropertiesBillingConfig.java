@@ -5,31 +5,40 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The billing configuration for the tenant. */
+/**
+ * The billing configuration for the tenant.
+ */
 @Fluent
-public final class B2CTenantResourcePropertiesBillingConfig {
+public final class B2CTenantResourcePropertiesBillingConfig
+    implements JsonSerializable<B2CTenantResourcePropertiesBillingConfig> {
     /*
-     * The type of billing. Will be MAU for all new customers. If 'Auths', it
-     * can be updated to 'MAU'. Cannot be changed if value is 'MAU'. Learn more
-     * about Azure AD B2C billing at
-     * [aka.ms/b2cBilling](https://aka.ms/b2cbilling).
+     * The type of billing. Will be MAU for all new customers. If 'Auths', it can be updated to 'MAU'. Cannot be changed
+     * if value is 'MAU'. Learn more about Azure AD B2C billing at [aka.ms/b2cBilling](https://aka.ms/b2cbilling).
      */
-    @JsonProperty(value = "billingType")
     private BillingType billingType;
 
     /*
      * The data from which the billing type took effect
      */
-    @JsonProperty(value = "effectiveStartDateUtc", access = JsonProperty.Access.WRITE_ONLY)
     private String effectiveStartDateUtc;
+
+    /**
+     * Creates an instance of B2CTenantResourcePropertiesBillingConfig class.
+     */
+    public B2CTenantResourcePropertiesBillingConfig() {
+    }
 
     /**
      * Get the billingType property: The type of billing. Will be MAU for all new customers. If 'Auths', it can be
      * updated to 'MAU'. Cannot be changed if value is 'MAU'. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cbilling).
-     *
+     * 
      * @return the billingType value.
      */
     public BillingType billingType() {
@@ -40,7 +49,7 @@ public final class B2CTenantResourcePropertiesBillingConfig {
      * Set the billingType property: The type of billing. Will be MAU for all new customers. If 'Auths', it can be
      * updated to 'MAU'. Cannot be changed if value is 'MAU'. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cbilling).
-     *
+     * 
      * @param billingType the billingType value to set.
      * @return the B2CTenantResourcePropertiesBillingConfig object itself.
      */
@@ -51,7 +60,7 @@ public final class B2CTenantResourcePropertiesBillingConfig {
 
     /**
      * Get the effectiveStartDateUtc property: The data from which the billing type took effect.
-     *
+     * 
      * @return the effectiveStartDateUtc value.
      */
     public String effectiveStartDateUtc() {
@@ -60,9 +69,49 @@ public final class B2CTenantResourcePropertiesBillingConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("billingType", this.billingType == null ? null : this.billingType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of B2CTenantResourcePropertiesBillingConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of B2CTenantResourcePropertiesBillingConfig if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the B2CTenantResourcePropertiesBillingConfig.
+     */
+    public static B2CTenantResourcePropertiesBillingConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            B2CTenantResourcePropertiesBillingConfig deserializedB2CTenantResourcePropertiesBillingConfig
+                = new B2CTenantResourcePropertiesBillingConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingType".equals(fieldName)) {
+                    deserializedB2CTenantResourcePropertiesBillingConfig.billingType
+                        = BillingType.fromString(reader.getString());
+                } else if ("effectiveStartDateUtc".equals(fieldName)) {
+                    deserializedB2CTenantResourcePropertiesBillingConfig.effectiveStartDateUtc = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedB2CTenantResourcePropertiesBillingConfig;
+        });
     }
 }

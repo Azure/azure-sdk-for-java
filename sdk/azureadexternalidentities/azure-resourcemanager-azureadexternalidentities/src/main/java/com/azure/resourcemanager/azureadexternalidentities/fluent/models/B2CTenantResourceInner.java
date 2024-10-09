@@ -8,37 +8,60 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CResourceSku;
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CTenantResourcePropertiesBillingConfig;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The B2CTenantResource model. */
+/**
+ * The B2CTenantResource model.
+ */
 @Fluent
 public final class B2CTenantResourceInner extends Resource {
     /*
-     * SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C
-     * billing at [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
+     * SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
+     * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
      */
-    @JsonProperty(value = "sku", required = true)
     private B2CResourceSku sku;
 
     /*
      * The Azure AD B2C tenant resource properties
      */
-    @JsonProperty(value = "properties")
     private B2CTenantResourceProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of B2CTenantResourceInner class.
+     */
+    public B2CTenantResourceInner() {
+    }
 
     /**
      * Get the sku property: SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
-     *
+     * 
      * @return the sku value.
      */
     public B2CResourceSku sku() {
@@ -48,7 +71,7 @@ public final class B2CTenantResourceInner extends Resource {
     /**
      * Set the sku property: SKU properties of the Azure AD B2C tenant. Learn more about Azure AD B2C billing at
      * [aka.ms/b2cBilling](https://aka.ms/b2cBilling).
-     *
+     * 
      * @param sku the sku value to set.
      * @return the B2CTenantResourceInner object itself.
      */
@@ -59,7 +82,7 @@ public final class B2CTenantResourceInner extends Resource {
 
     /**
      * Get the innerProperties property: The Azure AD B2C tenant resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private B2CTenantResourceProperties innerProperties() {
@@ -68,21 +91,55 @@ public final class B2CTenantResourceInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public B2CTenantResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public B2CTenantResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +148,7 @@ public final class B2CTenantResourceInner extends Resource {
 
     /**
      * Get the billingConfig property: The billing configuration for the tenant.
-     *
+     * 
      * @return the billingConfig value.
      */
     public B2CTenantResourcePropertiesBillingConfig billingConfig() {
@@ -100,7 +157,7 @@ public final class B2CTenantResourceInner extends Resource {
 
     /**
      * Set the billingConfig property: The billing configuration for the tenant.
-     *
+     * 
      * @param billingConfig the billingConfig value to set.
      * @return the B2CTenantResourceInner object itself.
      */
@@ -114,7 +171,7 @@ public final class B2CTenantResourceInner extends Resource {
 
     /**
      * Get the tenantId property: An identifier of the Azure AD B2C tenant.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -123,7 +180,7 @@ public final class B2CTenantResourceInner extends Resource {
 
     /**
      * Set the tenantId property: An identifier of the Azure AD B2C tenant.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the B2CTenantResourceInner object itself.
      */
@@ -137,14 +194,13 @@ public final class B2CTenantResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model B2CTenantResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model B2CTenantResourceInner"));
         } else {
             sku().validate();
         }
@@ -154,4 +210,59 @@ public final class B2CTenantResourceInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(B2CTenantResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of B2CTenantResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of B2CTenantResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the B2CTenantResourceInner.
+     */
+    public static B2CTenantResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            B2CTenantResourceInner deserializedB2CTenantResourceInner = new B2CTenantResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedB2CTenantResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedB2CTenantResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedB2CTenantResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedB2CTenantResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedB2CTenantResourceInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedB2CTenantResourceInner.sku = B2CResourceSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedB2CTenantResourceInner.innerProperties = B2CTenantResourceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedB2CTenantResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedB2CTenantResourceInner;
+        });
+    }
 }

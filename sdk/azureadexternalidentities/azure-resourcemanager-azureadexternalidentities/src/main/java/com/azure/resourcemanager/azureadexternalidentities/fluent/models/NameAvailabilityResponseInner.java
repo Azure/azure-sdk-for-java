@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.azureadexternalidentities.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azureadexternalidentities.models.NameAvailabilityReasonType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Response of the CheckNameAvailability operation. */
+/**
+ * Response of the CheckNameAvailability operation.
+ */
 @Fluent
-public final class NameAvailabilityResponseInner {
+public final class NameAvailabilityResponseInner implements JsonSerializable<NameAvailabilityResponseInner> {
     /*
      * Description of the reason if name is not available.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
-     * True if the name is available and can be used to create a new tenant.
-     * Otherwise false.
+     * True if the name is available and can be used to create a new tenant. Otherwise false.
      */
-    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /*
      * Describes the reason for the 'nameAvailable' value.
      */
-    @JsonProperty(value = "reason")
     private NameAvailabilityReasonType reason;
 
     /**
+     * Creates an instance of NameAvailabilityResponseInner class.
+     */
+    public NameAvailabilityResponseInner() {
+    }
+
+    /**
      * Get the message property: Description of the reason if name is not available.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -41,7 +49,7 @@ public final class NameAvailabilityResponseInner {
 
     /**
      * Set the message property: Description of the reason if name is not available.
-     *
+     * 
      * @param message the message value to set.
      * @return the NameAvailabilityResponseInner object itself.
      */
@@ -53,7 +61,7 @@ public final class NameAvailabilityResponseInner {
     /**
      * Get the nameAvailable property: True if the name is available and can be used to create a new tenant. Otherwise
      * false.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -63,7 +71,7 @@ public final class NameAvailabilityResponseInner {
     /**
      * Set the nameAvailable property: True if the name is available and can be used to create a new tenant. Otherwise
      * false.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the NameAvailabilityResponseInner object itself.
      */
@@ -74,7 +82,7 @@ public final class NameAvailabilityResponseInner {
 
     /**
      * Get the reason property: Describes the reason for the 'nameAvailable' value.
-     *
+     * 
      * @return the reason value.
      */
     public NameAvailabilityReasonType reason() {
@@ -83,7 +91,7 @@ public final class NameAvailabilityResponseInner {
 
     /**
      * Set the reason property: Describes the reason for the 'nameAvailable' value.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the NameAvailabilityResponseInner object itself.
      */
@@ -94,9 +102,54 @@ public final class NameAvailabilityResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeBooleanField("nameAvailable", this.nameAvailable);
+        jsonWriter.writeStringField("reason", this.reason == null ? null : this.reason.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NameAvailabilityResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NameAvailabilityResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NameAvailabilityResponseInner.
+     */
+    public static NameAvailabilityResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NameAvailabilityResponseInner deserializedNameAvailabilityResponseInner
+                = new NameAvailabilityResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedNameAvailabilityResponseInner.message = reader.getString();
+                } else if ("nameAvailable".equals(fieldName)) {
+                    deserializedNameAvailabilityResponseInner.nameAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reason".equals(fieldName)) {
+                    deserializedNameAvailabilityResponseInner.reason
+                        = NameAvailabilityReasonType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNameAvailabilityResponseInner;
+        });
     }
 }

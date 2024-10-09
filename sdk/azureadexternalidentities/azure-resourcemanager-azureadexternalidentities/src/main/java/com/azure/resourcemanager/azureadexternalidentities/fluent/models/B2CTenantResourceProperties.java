@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.azureadexternalidentities.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CTenantResourcePropertiesBillingConfig;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the Azure AD B2C tenant Azure resource. */
+/**
+ * Properties of the Azure AD B2C tenant Azure resource.
+ */
 @Fluent
-public final class B2CTenantResourceProperties {
+public final class B2CTenantResourceProperties implements JsonSerializable<B2CTenantResourceProperties> {
     /*
      * The billing configuration for the tenant.
      */
-    @JsonProperty(value = "billingConfig")
     private B2CTenantResourcePropertiesBillingConfig billingConfig;
 
     /*
      * An identifier of the Azure AD B2C tenant.
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /**
+     * Creates an instance of B2CTenantResourceProperties class.
+     */
+    public B2CTenantResourceProperties() {
+    }
+
+    /**
      * Get the billingConfig property: The billing configuration for the tenant.
-     *
+     * 
      * @return the billingConfig value.
      */
     public B2CTenantResourcePropertiesBillingConfig billingConfig() {
@@ -34,7 +44,7 @@ public final class B2CTenantResourceProperties {
 
     /**
      * Set the billingConfig property: The billing configuration for the tenant.
-     *
+     * 
      * @param billingConfig the billingConfig value to set.
      * @return the B2CTenantResourceProperties object itself.
      */
@@ -45,7 +55,7 @@ public final class B2CTenantResourceProperties {
 
     /**
      * Get the tenantId property: An identifier of the Azure AD B2C tenant.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -54,7 +64,7 @@ public final class B2CTenantResourceProperties {
 
     /**
      * Set the tenantId property: An identifier of the Azure AD B2C tenant.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the B2CTenantResourceProperties object itself.
      */
@@ -65,12 +75,52 @@ public final class B2CTenantResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (billingConfig() != null) {
             billingConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("billingConfig", this.billingConfig);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of B2CTenantResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of B2CTenantResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the B2CTenantResourceProperties.
+     */
+    public static B2CTenantResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            B2CTenantResourceProperties deserializedB2CTenantResourceProperties = new B2CTenantResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingConfig".equals(fieldName)) {
+                    deserializedB2CTenantResourceProperties.billingConfig
+                        = B2CTenantResourcePropertiesBillingConfig.fromJson(reader);
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedB2CTenantResourceProperties.tenantId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedB2CTenantResourceProperties;
+        });
     }
 }

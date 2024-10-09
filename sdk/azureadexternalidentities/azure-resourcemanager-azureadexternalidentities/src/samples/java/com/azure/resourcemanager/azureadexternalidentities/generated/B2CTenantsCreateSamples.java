@@ -8,20 +8,22 @@ import com.azure.resourcemanager.azureadexternalidentities.models.B2CResourceSku
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CResourceSkuName;
 import com.azure.resourcemanager.azureadexternalidentities.models.B2CResourceSkuTier;
 
-/** Samples for B2CTenants Create. */
+/**
+ * Samples for B2CTenants Create.
+ */
 public final class B2CTenantsCreateSamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/createTenant.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/createTenant.json
      */
     /**
      * Sample code: Create tenant.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void createTenant(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager
-            .b2CTenants()
+        manager.b2CTenants()
             .define("contoso.onmicrosoft.com")
             .withRegion("United States")
             .withExistingResourceGroup("contosoResourceGroup")

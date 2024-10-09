@@ -22,14 +22,24 @@ public final class B2CTenantsImpl implements B2CTenants {
 
     private final B2CTenantsClient innerClient;
 
-    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager
-        serviceManager;
+    private final com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager;
 
-    public B2CTenantsImpl(
-        B2CTenantsClient innerClient,
+    public B2CTenantsImpl(B2CTenantsClient innerClient,
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<NameAvailabilityResponse> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody, Context context) {
+        Response<NameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityRequestBody, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NameAvailabilityResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NameAvailabilityResponse checkNameAvailability() {
@@ -41,61 +51,43 @@ public final class B2CTenantsImpl implements B2CTenants {
         }
     }
 
-    public Response<NameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequestBody checkNameAvailabilityRequestBody, Context context) {
-        Response<NameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityRequestBody, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new NameAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<B2CTenantResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<B2CTenantResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<B2CTenantResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<B2CTenantResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
+        PagedIterable<B2CTenantResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<B2CTenantResource> list() {
         PagedIterable<B2CTenantResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<B2CTenantResource> list(Context context) {
         PagedIterable<B2CTenantResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new B2CTenantResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<B2CTenantResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<B2CTenantResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new B2CTenantResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public B2CTenantResource getByResourceGroup(String resourceGroupName, String resourceName) {
         B2CTenantResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
         if (inner != null) {
             return new B2CTenantResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<B2CTenantResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<B2CTenantResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new B2CTenantResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -110,81 +102,57 @@ public final class B2CTenantsImpl implements B2CTenants {
     }
 
     public B2CTenantResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "b2cDirectories");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "b2cDirectories");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<B2CTenantResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "b2cDirectories");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "b2cDirectories");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "b2cDirectories");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "b2cDirectories");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
         }
         this.delete(resourceGroupName, resourceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "b2cDirectories");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "b2cDirectories");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'b2cDirectories'.", id)));
         }
         this.delete(resourceGroupName, resourceName, context);
     }

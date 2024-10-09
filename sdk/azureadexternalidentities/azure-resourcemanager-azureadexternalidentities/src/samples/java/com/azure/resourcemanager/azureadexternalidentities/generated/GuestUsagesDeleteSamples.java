@@ -4,20 +4,24 @@
 
 package com.azure.resourcemanager.azureadexternalidentities.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for GuestUsages Delete. */
+/**
+ * Samples for GuestUsages Delete.
+ */
 public final class GuestUsagesDeleteSamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/GuestUsagesDelete.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/GuestUsagesDelete.
+     * json
      */
     /**
      * Sample code: GuestUsages_Delete.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void guestUsagesDelete(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager.guestUsages().deleteWithResponse("contosoResourceGroup", "contoso.onmicrosoft.com", Context.NONE);
+        manager.guestUsages()
+            .deleteByResourceGroupWithResponse("contosoResourceGroup", "contoso.onmicrosoft.com",
+                com.azure.core.util.Context.NONE);
     }
 }

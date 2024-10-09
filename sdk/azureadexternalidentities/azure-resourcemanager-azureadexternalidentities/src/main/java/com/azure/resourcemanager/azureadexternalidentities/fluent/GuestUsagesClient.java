@@ -12,12 +12,35 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.azureadexternalidentities.fluent.models.GuestUsagesResourceInner;
 import com.azure.resourcemanager.azureadexternalidentities.models.GuestUsagesResourcePatch;
 
-/** An instance of this class provides access to all the operations defined in GuestUsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GuestUsagesClient.
+ */
 public interface GuestUsagesClient {
     /**
+     * Creates a Guest Usages resource
+     * 
      * Creates a Guest Usages resource, which is used to linking a subscription to an instance of Azure AD External
      * Identities. [Learn more](https://aka.ms/extidbilling).
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @param resource Guest Usages resource to be created.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return guest Usages Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GuestUsagesResourceInner> createWithResponse(String resourceGroupName, String resourceName,
+        GuestUsagesResourceInner resource, Context context);
+
+    /**
+     * Creates a Guest Usages resource
+     * 
+     * Creates a Guest Usages resource, which is used to linking a subscription to an instance of Azure AD External
+     * Identities. [Learn more](https://aka.ms/extidbilling).
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,12 +52,13 @@ public interface GuestUsagesClient {
     GuestUsagesResourceInner create(String resourceGroupName, String resourceName);
 
     /**
-     * Creates a Guest Usages resource, which is used to linking a subscription to an instance of Azure AD External
-     * Identities. [Learn more](https://aka.ms/extidbilling).
-     *
+     * Updates a Guest Usages resource
+     * 
+     * Updates a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param resource Guest Usages resource to be created.
+     * @param resourcePatch Guest Usages Resource to be updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,12 +66,14 @@ public interface GuestUsagesClient {
      * @return guest Usages Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GuestUsagesResourceInner> createWithResponse(
-        String resourceGroupName, String resourceName, GuestUsagesResourceInner resource, Context context);
+    Response<GuestUsagesResourceInner> updateWithResponse(String resourceGroupName, String resourceName,
+        GuestUsagesResourcePatch resourcePatch, Context context);
 
     /**
+     * Updates a Guest Usages resource
+     * 
      * Updates a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,36 +85,10 @@ public interface GuestUsagesClient {
     GuestUsagesResourceInner update(String resourceGroupName, String resourceName);
 
     /**
-     * Updates a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param resourcePatch Guest Usages Resource to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return guest Usages Resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GuestUsagesResourceInner> updateWithResponse(
-        String resourceGroupName, String resourceName, GuestUsagesResourcePatch resourcePatch, Context context);
-
-    /**
+     * Deletes a Guest Usages resource
+     * 
      * Deletes a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName);
-
-    /**
-     * Deletes a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @param context The context to associate with this operation.
@@ -101,8 +101,42 @@ public interface GuestUsagesClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
+     * Deletes a Guest Usages resource
+     * 
+     * Deletes a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String resourceName);
+
+    /**
+     * Gets a Guest Usages resource
+     * 
      * Gets a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The initial domain name of the Azure AD B2C tenant.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GuestUsagesResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
+
+    /**
+     * Gets a Guest Usages resource
+     * 
+     * Gets a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The initial domain name of the Azure AD B2C tenant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,68 +148,60 @@ public interface GuestUsagesClient {
     GuestUsagesResourceInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceName The initial domain name of the Azure AD B2C tenant.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Guest Usages resource for the Microsoft.AzureActiveDirectory resource provider along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GuestUsagesResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
+     * Gets Guest Usages resources under a subscription
+     * 
      * Gets Guest Usages resources under a subscription for the Microsoft.AzureActiveDirectory resource provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return guest Usages resources under a subscription for the Microsoft.AzureActiveDirectory resource provider as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GuestUsagesResourceInner> list();
 
     /**
+     * Gets Guest Usages resources under a subscription
+     * 
      * Gets Guest Usages resources under a subscription for the Microsoft.AzureActiveDirectory resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return guest Usages resources under a subscription for the Microsoft.AzureActiveDirectory resource provider as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GuestUsagesResourceInner> list(Context context);
 
     /**
+     * Gets Guest Usages resources under resource group
+     * 
      * Gets Guest Usages resources under a resource group for the Microsoft.AzureActiveDirectory resource provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return guest Usages resources under a resource group for the Microsoft.AzureActiveDirectory resource provider as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GuestUsagesResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
+     * Gets Guest Usages resources under resource group
+     * 
      * Gets Guest Usages resources under a resource group for the Microsoft.AzureActiveDirectory resource provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return guest Usages resources under a resource group for the Microsoft.AzureActiveDirectory resource provider as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GuestUsagesResourceInner> listByResourceGroup(String resourceGroupName, Context context);

@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NameAvailabilityReasonType. */
+/**
+ * Describes the reason for the 'nameAvailable' value.
+ */
 public final class NameAvailabilityReasonType extends ExpandableStringEnum<NameAvailabilityReasonType> {
-    /** Static value AlreadyExists for NameAvailabilityReasonType. */
+    /**
+     * Static value AlreadyExists for NameAvailabilityReasonType.
+     */
     public static final NameAvailabilityReasonType ALREADY_EXISTS = fromString("AlreadyExists");
 
-    /** Static value Invalid for NameAvailabilityReasonType. */
+    /**
+     * Static value Invalid for NameAvailabilityReasonType.
+     */
     public static final NameAvailabilityReasonType INVALID = fromString("Invalid");
 
     /**
+     * Creates a new instance of NameAvailabilityReasonType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NameAvailabilityReasonType() {
+    }
+
+    /**
      * Creates or finds a NameAvailabilityReasonType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NameAvailabilityReasonType.
      */
-    @JsonCreator
     public static NameAvailabilityReasonType fromString(String name) {
         return fromString(name, NameAvailabilityReasonType.class);
     }
 
-    /** @return known NameAvailabilityReasonType values. */
+    /**
+     * Gets known NameAvailabilityReasonType values.
+     * 
+     * @return known NameAvailabilityReasonType values.
+     */
     public static Collection<NameAvailabilityReasonType> values() {
         return values(NameAvailabilityReasonType.class);
     }

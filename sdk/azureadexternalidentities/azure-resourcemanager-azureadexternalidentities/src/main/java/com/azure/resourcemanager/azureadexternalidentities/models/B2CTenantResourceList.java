@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.azureadexternalidentities.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azureadexternalidentities.fluent.models.B2CTenantResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The collection of Azure AD B2C tenant resources. */
+/**
+ * The collection of Azure AD B2C tenant resources.
+ */
 @Immutable
-public final class B2CTenantResourceList {
+public final class B2CTenantResourceList implements JsonSerializable<B2CTenantResourceList> {
     /*
      * List of Azure AD B2C tenant resources
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<B2CTenantResourceInner> value;
 
     /**
+     * Creates an instance of B2CTenantResourceList class.
+     */
+    public B2CTenantResourceList() {
+    }
+
+    /**
      * Get the value property: List of Azure AD B2C tenant resources.
-     *
+     * 
      * @return the value value.
      */
     public List<B2CTenantResourceInner> value() {
@@ -29,12 +40,49 @@ public final class B2CTenantResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of B2CTenantResourceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of B2CTenantResourceList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the B2CTenantResourceList.
+     */
+    public static B2CTenantResourceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            B2CTenantResourceList deserializedB2CTenantResourceList = new B2CTenantResourceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<B2CTenantResourceInner> value
+                        = reader.readArray(reader1 -> B2CTenantResourceInner.fromJson(reader1));
+                    deserializedB2CTenantResourceList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedB2CTenantResourceList;
+        });
     }
 }

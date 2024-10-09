@@ -4,42 +4,47 @@
 
 package com.azure.resourcemanager.azureadexternalidentities.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.azureadexternalidentities.models.CheckNameAvailabilityRequestBody;
 
-/** Samples for B2CTenants CheckNameAvailability. */
+/**
+ * Samples for B2CTenants CheckNameAvailability.
+ */
 public final class B2CTenantsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/checkNameAvailability-taken.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/
+     * checkNameAvailability-taken.json
      */
     /**
      * Sample code: Check name availability - taken.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void checkNameAvailabilityTaken(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager
-            .b2CTenants()
+        manager.b2CTenants()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailabilityRequestBody().withName("constoso.onmicrosoft.com").withCountryCode("US"),
-                Context.NONE);
+                new CheckNameAvailabilityRequestBody().withName("constoso.onmicrosoft.com")
+                    .withCountryCode("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/checkNameAvailability-available.json
+     * x-ms-original-file:
+     * specification/cpim/resource-manager/Microsoft.AzureActiveDirectory/stable/2021-04-01/examples/
+     * checkNameAvailability-available.json
      */
     /**
      * Sample code: Check name availability - available.
-     *
+     * 
      * @param manager Entry point to ExternalIdentitiesConfigurationManager.
      */
     public static void checkNameAvailabilityAvailable(
         com.azure.resourcemanager.azureadexternalidentities.ExternalIdentitiesConfigurationManager manager) {
-        manager
-            .b2CTenants()
+        manager.b2CTenants()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailabilityRequestBody().withName("constoso.onmicrosoft.com").withCountryCode("US"),
-                Context.NONE);
+                new CheckNameAvailabilityRequestBody().withName("constoso.onmicrosoft.com")
+                    .withCountryCode("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }
