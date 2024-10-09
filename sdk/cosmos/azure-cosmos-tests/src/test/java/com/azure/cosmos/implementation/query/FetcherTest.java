@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.GlobalEndpointManager;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -64,7 +64,7 @@ public class FetcherTest {
     public void query(CosmosQueryRequestOptions options, int top) {
 
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreakerMock = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
 
         FeedResponse<Document> fp1 = FeedResponseBuilder.queryFeedResponseBuilder(Document.class)
                 .withContinuationToken("cp1")
@@ -101,7 +101,7 @@ public class FetcherTest {
                 return Mono.just(rsp);
         };
 
-        Mockito.when(globalPartitionEndpointManagerForCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
+        Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
 
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
@@ -116,7 +116,7 @@ public class FetcherTest {
                         .getCosmosQueryRequestOptionsAccessor()
                         .getCancelledRequestDiagnosticsTracker(options),
                     globalEndpointManagerMock,
-                    globalPartitionEndpointManagerForCircuitBreakerMock);
+                    globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock);
 
         validateFetcher(fetcher, options, top, feedResponseList);
     }
@@ -145,7 +145,7 @@ public class FetcherTest {
     public void changeFeed() {
 
         GlobalEndpointManager globalEndpointManagerMock = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreakerMock = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
 
         CosmosChangeFeedRequestOptions options =
             CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
@@ -177,7 +177,7 @@ public class FetcherTest {
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
 
-        Mockito.when(globalPartitionEndpointManagerForCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
+        Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
 
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
@@ -188,7 +188,7 @@ public class FetcherTest {
                             .getOperationContext(options),
                     null,
                     globalEndpointManagerMock,
-                    globalPartitionEndpointManagerForCircuitBreakerMock);
+                    globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock);
 
         validateFetcher(fetcher, options, feedResponseList);
     }

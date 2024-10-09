@@ -9,9 +9,10 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -53,14 +54,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private RxDocumentServiceRequest request;
     private RxCollectionCache rxCollectionCache;
     private final FaultInjectionRequestContext faultInjectionRequestContext;
-    private final GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+    private final GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions,
                              RxCollectionCache rxCollectionCache,
-                             GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
+                             GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker,
+                             GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover) {
 
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
@@ -76,7 +79,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             false);
         this.rxCollectionCache = rxCollectionCache;
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
-        this.globalPartitionEndpointManagerForCircuitBreaker = globalPartitionEndpointManagerForCircuitBreaker;
+        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker = globalPartitionEndpointManagerForPerPartitionCircuitBreaker;
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover = globalPartitionEndpointManagerForPerPartitionAutomaticFailover;
     }
 
     @Override
@@ -101,9 +105,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         }
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
-                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN))
-        {
+                Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN)) {
             logger.info("Endpoint not writable. Will refresh cache and retry ", e);
+
+            // todo: should master resource writes be forced to the hub region
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
             return this.shouldRetryOnEndpointFailureAsync(false, true, false);
         }
 
@@ -119,7 +125,11 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
         if (WebExceptionUtility.isNetworkFailure(e)) {
+
+            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
+
             if (clientException != null && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
+
                 if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
                     logger.info("Gateway endpoint not reachable. Will refresh cache and retry. ", e);
                     return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false, true);
@@ -165,9 +175,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 clientException);
         }
 
-        if (clientException != null
-            && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)
-            && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT)) {
+        if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.REQUEST_TIMEOUT)) {
 
             if (logger.isDebugEnabled()) {
                 logger.debug(
@@ -180,8 +188,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
             return this.shouldRetryOnRequestTimeout(
                 this.isReadRequest,
-                this.request.getNonIdempotentWriteRetriesEnabled()
-            );
+                this.request.getNonIdempotentWriteRetriesEnabled(),
+                clientException.getSubStatusCode());
         }
 
         if (clientException != null && Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.INTERNAL_SERVER_ERROR)) {
@@ -303,8 +311,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(this.request);
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
-            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
         }
 
         //if operation is data plane read, metadata read, or query plan it can be retried on a different endpoint.
@@ -354,10 +362,12 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean nonIdempotentWriteRetriesEnabled,
         CosmosException cosmosException) {
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
-            this.globalPartitionEndpointManagerForCircuitBreaker
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
         }
+
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
 
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
         // For server generated retries, it is safe to retry
@@ -373,6 +383,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // 1. For any connection related errors, it will be covered under isWebExceptionRetriable -> which SDK will retry
         // 2. For any server returned 503s, SDK will retry
         // 3. For SDK generated 503, SDK will only retry if the subStatusCode is SERVER_GENERATED_410
+        //
+        // With PPAF enabled, 503 for a write request should be used as a signal to mark the region unavailable for the partition
+        // With PPAF enabled, 503 for a write request should be eligible for cross-region retry too
         if (!isReadRequest
             && !shouldRetryWriteOnServiceUnavailable(
                 nonIdempotentWriteRetriesEnabled,
@@ -390,8 +403,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        if (!this.canUseMultipleWriteLocations && !isReadRequest) {
+        if (!this.canUseMultipleWriteLocations && !isReadRequest && !this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
             // Write requests on single master cannot be retried, no other regions available
+            // but retry when PPAF is enabled
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
@@ -411,13 +425,18 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private Mono<ShouldRetryResult> shouldRetryOnRequestTimeout(
         boolean isReadRequest,
-        boolean nonIdempotentWriteRetriesEnabled) {
+        boolean nonIdempotentWriteRetriesEnabled,
+        int subStatusCode) {
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
-            if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {
-                this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
-                    request,
-                    request.requestContext.locationEndpointToRoute);
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
+
+        if (subStatusCode == HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT) {
+            if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+                if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {
+                    this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
+                        request,
+                        request.requestContext.locationEndpointToRoute);
+                }
             }
         }
 
@@ -426,8 +445,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private Mono<ShouldRetryResult> shouldRetryOnInternalServerError() {
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
-            this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+            this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
                 request,
                 request.requestContext.locationEndpointToRoute);
         }
@@ -462,6 +481,9 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.locationEndpoint);
         }
+
+        // In case PPAF is enabled and a location override exists for the partition key range assigned to the request
+        this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryAddPartitionLevelLocationOverride(request);
     }
 
     @Override
@@ -481,6 +503,10 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean nonIdempotentWriteRetriesEnabled,
         boolean isWebExceptionRetriable,
         CosmosException cosmosException) {
+
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+            return true;
+        }
 
         if (nonIdempotentWriteRetriesEnabled || isWebExceptionRetriable) {
             return true;
