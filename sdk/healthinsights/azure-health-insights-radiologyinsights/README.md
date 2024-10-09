@@ -150,7 +150,7 @@ private static List<PatientRecord> createPatientRecords() {
     patientDocument.setClinicalType(ClinicalDocumentType.RADIOLOGY_REPORT);
     patientDocument.setLanguage("EN");
 
-    DocumentAuthor author = new DocumentAuthor();
+    ClinicalDocumentAuthor author = new ClinicalDocumentAuthor();
     author.setId("authorid1");
     author.setFullName("authorname1");
 
@@ -192,8 +192,8 @@ private static List<PatientRecord> createPatientRecords() {
  * @return The patient document.
  */
 private static PatientDocument getPatientDocument() {
-    DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
-    return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
+	ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+    return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
 }
 
 /**

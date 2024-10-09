@@ -15,7 +15,7 @@ import java.io.IOException;
  * The content of the patient document.
  */
 @Immutable
-public final class DocumentContent implements JsonSerializable<DocumentContent> {
+public final class ClinicalDocumentContent implements JsonSerializable<ClinicalDocumentContent> {
 
     /*
      * The type of the content's source.
@@ -32,13 +32,13 @@ public final class DocumentContent implements JsonSerializable<DocumentContent> 
     private final String value;
 
     /**
-     * Creates an instance of DocumentContent class.
+     * Creates an instance of ClinicalDocumentContent class.
      *
      * @param sourceType the sourceType value to set.
      * @param value the value value to set.
      */
     @Generated
-    public DocumentContent(DocumentContentSourceType sourceType, String value) {
+    public ClinicalDocumentContent(DocumentContentSourceType sourceType, String value) {
         this.sourceType = sourceType;
         this.value = value;
     }
@@ -78,16 +78,16 @@ public final class DocumentContent implements JsonSerializable<DocumentContent> 
     }
 
     /**
-     * Reads an instance of DocumentContent from the JsonReader.
+     * Reads an instance of ClinicalDocumentContent from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentContent if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of ClinicalDocumentContent if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentContent.
+     * @throws IOException If an error occurs while reading the ClinicalDocumentContent.
      */
     @Generated
-    public static DocumentContent fromJson(JsonReader jsonReader) throws IOException {
+    public static ClinicalDocumentContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             DocumentContentSourceType sourceType = null;
             String value = null;
@@ -102,7 +102,7 @@ public final class DocumentContent implements JsonSerializable<DocumentContent> 
                     reader.skipChildren();
                 }
             }
-            return new DocumentContent(sourceType, value);
+            return new ClinicalDocumentContent(sourceType, value);
         });
     }
 }
