@@ -27,7 +27,7 @@ parameters:
       GenerateVMJobs: true
 - name: UseFederatedAuth
   type: boolean
-  default: false
+  default: true
 - name: CloudConfig
   type: object
   default:
