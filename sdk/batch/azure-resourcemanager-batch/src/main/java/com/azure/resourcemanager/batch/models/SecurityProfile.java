@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the security profile settings for the virtual machine or virtual machine scale set.
  */
 @Fluent
-public final class SecurityProfile {
+public final class SecurityProfile implements JsonSerializable<SecurityProfile> {
     /*
      * Specifies the SecurityType of the virtual machine. It has to be set to any specified value to enable
      * UefiSettings.
      */
-    @JsonProperty(value = "securityType")
     private SecurityTypes securityType;
 
     /*
-     * This property can be used by user in the request to enable or disable the Host Encryption for the virtual
-     * machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp
-     * disk at host itself.
+     * This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine
+     * or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at
+     * host itself.
      */
-    @JsonProperty(value = "encryptionAtHost")
     private Boolean encryptionAtHost;
 
     /*
      * Specifies the security settings like secure boot and vTPM used while creating the virtual machine.
      */
-    @JsonProperty(value = "uefiSettings")
     private UefiSettings uefiSettings;
 
     /**
@@ -62,9 +63,9 @@ public final class SecurityProfile {
     }
 
     /**
-     * Get the encryptionAtHost property: This property can be used by user in the request to enable or disable the
-     * Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all
-     * the disks including Resource/Temp disk at host itself.
+     * Get the encryptionAtHost property: This property can be used by user in the request to enable or disable the Host
+     * Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the
+     * disks including Resource/Temp disk at host itself.
      * 
      * @return the encryptionAtHost value.
      */
@@ -73,9 +74,9 @@ public final class SecurityProfile {
     }
 
     /**
-     * Set the encryptionAtHost property: This property can be used by user in the request to enable or disable the
-     * Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all
-     * the disks including Resource/Temp disk at host itself.
+     * Set the encryptionAtHost property: This property can be used by user in the request to enable or disable the Host
+     * Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the
+     * disks including Resource/Temp disk at host itself.
      * 
      * @param encryptionAtHost the encryptionAtHost value to set.
      * @return the SecurityProfile object itself.
@@ -116,5 +117,47 @@ public final class SecurityProfile {
         if (uefiSettings() != null) {
             uefiSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityType", this.securityType == null ? null : this.securityType.toString());
+        jsonWriter.writeBooleanField("encryptionAtHost", this.encryptionAtHost);
+        jsonWriter.writeJsonField("uefiSettings", this.uefiSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityProfile.
+     */
+    public static SecurityProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityProfile deserializedSecurityProfile = new SecurityProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("securityType".equals(fieldName)) {
+                    deserializedSecurityProfile.securityType = SecurityTypes.fromString(reader.getString());
+                } else if ("encryptionAtHost".equals(fieldName)) {
+                    deserializedSecurityProfile.encryptionAtHost = reader.getNullable(JsonReader::getBoolean);
+                } else if ("uefiSettings".equals(fieldName)) {
+                    deserializedSecurityProfile.uefiSettings = UefiSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityProfile;
+        });
     }
 }

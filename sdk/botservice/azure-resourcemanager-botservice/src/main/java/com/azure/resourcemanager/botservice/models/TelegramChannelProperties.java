@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters to provide for the Telegram channel. */
+/**
+ * The parameters to provide for the Telegram channel.
+ */
 @Fluent
-public final class TelegramChannelProperties {
+public final class TelegramChannelProperties implements JsonSerializable<TelegramChannelProperties> {
     /*
-     * The Telegram access token. Value only returned through POST to the
-     * action Channel List API, otherwise empty.
+     * The Telegram access token. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "accessToken")
     private String accessToken;
 
     /*
      * Whether this channel is validated for the bot
      */
-    @JsonProperty(value = "isValidated")
     private Boolean isValidated;
 
     /*
      * Whether this channel is enabled for the bot
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
+
+    /**
+     * Creates an instance of TelegramChannelProperties class.
+     */
+    public TelegramChannelProperties() {
+    }
 
     /**
      * Get the accessToken property: The Telegram access token. Value only returned through POST to the action Channel
      * List API, otherwise empty.
-     *
+     * 
      * @return the accessToken value.
      */
     public String accessToken() {
@@ -42,7 +50,7 @@ public final class TelegramChannelProperties {
     /**
      * Set the accessToken property: The Telegram access token. Value only returned through POST to the action Channel
      * List API, otherwise empty.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the TelegramChannelProperties object itself.
      */
@@ -53,7 +61,7 @@ public final class TelegramChannelProperties {
 
     /**
      * Get the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @return the isValidated value.
      */
     public Boolean isValidated() {
@@ -62,7 +70,7 @@ public final class TelegramChannelProperties {
 
     /**
      * Set the isValidated property: Whether this channel is validated for the bot.
-     *
+     * 
      * @param isValidated the isValidated value to set.
      * @return the TelegramChannelProperties object itself.
      */
@@ -73,7 +81,7 @@ public final class TelegramChannelProperties {
 
     /**
      * Get the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -82,7 +90,7 @@ public final class TelegramChannelProperties {
 
     /**
      * Set the isEnabled property: Whether this channel is enabled for the bot.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the TelegramChannelProperties object itself.
      */
@@ -93,9 +101,52 @@ public final class TelegramChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("accessToken", this.accessToken);
+        jsonWriter.writeBooleanField("isValidated", this.isValidated);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TelegramChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TelegramChannelProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TelegramChannelProperties.
+     */
+    public static TelegramChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TelegramChannelProperties deserializedTelegramChannelProperties = new TelegramChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedTelegramChannelProperties.isEnabled = reader.getBoolean();
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedTelegramChannelProperties.accessToken = reader.getString();
+                } else if ("isValidated".equals(fieldName)) {
+                    deserializedTelegramChannelProperties.isValidated = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTelegramChannelProperties;
+        });
     }
 }

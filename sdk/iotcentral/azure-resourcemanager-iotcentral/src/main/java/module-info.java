@@ -10,10 +10,6 @@ module com.azure.resourcemanager.iotcentral {
     exports com.azure.resourcemanager.iotcentral.fluent.models;
     exports com.azure.resourcemanager.iotcentral.models;
 
-    opens com.azure.resourcemanager.iotcentral.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.iotcentral.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.iotcentral.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.iotcentral.models to com.azure.core;
 }

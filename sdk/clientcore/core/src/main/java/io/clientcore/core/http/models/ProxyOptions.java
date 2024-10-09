@@ -3,15 +3,16 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.core.util.configuration.ConfigurationProperty;
 import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
-import io.clientcore.core.util.ClientLogger;
+
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Proxy;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -25,7 +26,7 @@ import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
-    private static final String INVALID_PROXY_URL = "URL is invalid and is being ignored.";
+    private static final String INVALID_PROXY_URI = "URI is invalid and is being ignored.";
 
     /*
      * This indicates whether system proxy configurations (HTTPS_PROXY, HTTP_PROXY) are allowed to be used.
@@ -281,15 +282,19 @@ public class ProxyOptions {
         }
 
         try {
-            // TODO (alzimmer): UrlBuilder needs to add support for userinfo
+            // TODO (alzimmer): UriBuilder needs to add support for userinfo
             //  https://www.rfc-editor.org/rfc/rfc3986#section-3.2.1
-            @SuppressWarnings("deprecation")
-            URL proxyUrl = new URL(proxyConfiguration);
-            int port = (proxyUrl.getPort() == -1) ? proxyUrl.getDefaultPort() : proxyUrl.getPort();
+            URI proxyUri = new URI(proxyConfiguration);
+            int port;
+            if (proxyUri.getPort() == -1) {
+                port = "https".equals(proxyUri.getScheme()) ? 443 : 80;
+            } else {
+                port = proxyUri.getPort();
+            }
 
             InetSocketAddress socketAddress = (createUnresolved)
-                ? InetSocketAddress.createUnresolved(proxyUrl.getHost(), port)
-                : new InetSocketAddress(proxyUrl.getHost(), port);
+                ? InetSocketAddress.createUnresolved(proxyUri.getHost(), port)
+                : new InetSocketAddress(proxyUri.getHost(), port);
 
             ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
@@ -302,7 +307,7 @@ public class ProxyOptions {
                     .log("Using non-proxy hosts");
             }
 
-            String userInfo = proxyUrl.getUserInfo();
+            String userInfo = proxyUri.getUserInfo();
             if (userInfo != null) {
                 String[] usernamePassword = userInfo.split(":", 2);
                 if (usernamePassword.length == 2) {
@@ -318,10 +323,10 @@ public class ProxyOptions {
             }
 
             return proxyOptions;
-        } catch (MalformedURLException ex) {
+        } catch (URISyntaxException ex) {
             LOGGER.atWarning()
-                .addKeyValue("url", proxyProperty)
-                .log(INVALID_PROXY_URL, ex);
+                .addKeyValue("uri", proxyProperty)
+                .log(INVALID_PROXY_URI, ex);
             return null;
         }
     }

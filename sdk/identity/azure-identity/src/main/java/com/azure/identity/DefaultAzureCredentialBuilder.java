@@ -35,8 +35,7 @@ import java.util.concurrent.ForkJoinPool;
  *
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
  * <pre>
- * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
  *
@@ -52,9 +51,8 @@ import java.util.concurrent.ForkJoinPool;
  *
  * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  * <pre>
- * TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
- *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential dacWithUserAssignedManagedIdentity
+ *     = new DefaultAzureCredentialBuilder&#40;&#41;.managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
@@ -254,10 +252,12 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      */
     public DefaultAzureCredential build() {
         loadFallbackValuesFromEnvironment();
+
         if (managedIdentityClientId != null && managedIdentityResourceId != null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Only one of managedIdentityResourceId and managedIdentityClientId can be specified."));
+                new IllegalStateException("Only one of managedIdentityClientId and managedIdentityResourceId can be specified."));
         }
+
         if (!CoreUtils.isNullOrEmpty(additionallyAllowedTenants)) {
             identityClientOptions.setAdditionallyAllowedTenants(additionallyAllowedTenants);
         }
@@ -275,7 +275,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
         output.add(getWorkloadIdentityCredential());
-        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
+        output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, null, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
             tenantId, identityClientOptions.clone()));
         output.add(new IntelliJCredential(tenantId, identityClientOptions.clone()));

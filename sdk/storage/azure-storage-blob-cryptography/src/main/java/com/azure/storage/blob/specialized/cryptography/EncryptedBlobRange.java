@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobRange;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_BLOCK_SIZE;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2_1;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.NONCE_LENGTH;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
@@ -34,7 +35,7 @@ final class EncryptedBlobRange {
      * 0-31 for v1
      * 0-(4mb+12-1)
      */
-    private final int offsetAdjustment;
+    private final Long offsetAdjustment;
 
     /**
      * How many bytes to download, including the adjustments for encryption block boundaries and the IV.
@@ -77,7 +78,7 @@ final class EncryptedBlobRange {
     EncryptedBlobRange(BlobRange originalRange, EncryptionData encryptionData) {
         if (originalRange == null) {
             this.originalRange = new BlobRange(0);
-            this.offsetAdjustment = 0;
+            this.offsetAdjustment = 0L;
             this.amountPlaintextToSkip = 0; // In cases where this block is executed, this value does not matter
             return;
         }
@@ -110,7 +111,7 @@ final class EncryptedBlobRange {
                     }
                 }
 
-                this.offsetAdjustment = tempOffsetAdjustment;
+                this.offsetAdjustment = (long) tempOffsetAdjustment;
 
                 /*
                 Align adjustedDownloadCount with encryption block boundary at the end of the range. Note that it is impossible
@@ -125,6 +126,7 @@ final class EncryptedBlobRange {
                 this.amountPlaintextToSkip = offsetAdjustment;
                 break;
             case ENCRYPTION_PROTOCOL_V2:
+            case ENCRYPTION_PROTOCOL_V2_1:
                 // Calculate offsetAdjustment.
                 // Get the start of the encryption region for the original offset
                 long authenticatedRegionDataLength = encryptionData.getEncryptedRegionInfo().getDataLength();
@@ -151,7 +153,7 @@ final class EncryptedBlobRange {
                 }
 
                 // Offset adjustment is difference in two starting values
-                this.offsetAdjustment = (int) (originalRange.getOffset() - regionStartOffset);
+                this.offsetAdjustment = (originalRange.getOffset() - regionStartOffset);
 
                 break;
             default:
@@ -169,7 +171,7 @@ final class EncryptedBlobRange {
     /**
      * @return Offset from beginning of BlobRange, 0-31.
      */
-    int getOffsetAdjustment() {
+    Long getOffsetAdjustment() {
         return this.offsetAdjustment;
     }
 

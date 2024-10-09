@@ -5,36 +5,40 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanPersonalScheduleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * ScalingPlanPersonalScheduleList
- *
- * <p>List of ScalingPlanPersonalSchedule definitions.
+ * 
+ * List of ScalingPlanPersonalSchedule definitions.
  */
 @Fluent
-public final class ScalingPlanPersonalScheduleList {
+public final class ScalingPlanPersonalScheduleList implements JsonSerializable<ScalingPlanPersonalScheduleList> {
     /*
      * List of ScalingPlanPersonalSchedule definitions.
      */
-    @JsonProperty(value = "value")
     private List<ScalingPlanPersonalScheduleInner> value;
 
     /*
      * Link to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ScalingPlanPersonalScheduleList class. */
+    /**
+     * Creates an instance of ScalingPlanPersonalScheduleList class.
+     */
     public ScalingPlanPersonalScheduleList() {
     }
 
     /**
      * Get the value property: List of ScalingPlanPersonalSchedule definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<ScalingPlanPersonalScheduleInner> value() {
@@ -43,7 +47,7 @@ public final class ScalingPlanPersonalScheduleList {
 
     /**
      * Set the value property: List of ScalingPlanPersonalSchedule definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the ScalingPlanPersonalScheduleList object itself.
      */
@@ -54,7 +58,7 @@ public final class ScalingPlanPersonalScheduleList {
 
     /**
      * Get the nextLink property: Link to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,12 +67,53 @@ public final class ScalingPlanPersonalScheduleList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScalingPlanPersonalScheduleList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScalingPlanPersonalScheduleList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScalingPlanPersonalScheduleList.
+     */
+    public static ScalingPlanPersonalScheduleList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScalingPlanPersonalScheduleList deserializedScalingPlanPersonalScheduleList
+                = new ScalingPlanPersonalScheduleList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ScalingPlanPersonalScheduleInner> value
+                        = reader.readArray(reader1 -> ScalingPlanPersonalScheduleInner.fromJson(reader1));
+                    deserializedScalingPlanPersonalScheduleList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedScalingPlanPersonalScheduleList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScalingPlanPersonalScheduleList;
+        });
     }
 }

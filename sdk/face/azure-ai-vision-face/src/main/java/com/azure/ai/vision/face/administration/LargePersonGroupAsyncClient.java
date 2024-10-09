@@ -64,13 +64,15 @@ public final class LargePersonGroupAsyncClient {
      * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     userData: String (Optional)
      *     recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param createRequest The createRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -116,14 +118,16 @@ public final class LargePersonGroupAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     userData: String (Optional)
      *     recognitionModel: String(recognition_01/recognition_02/recognition_03/recognition_04) (Optional)
      *     largePersonGroupId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -144,12 +148,14 @@ public final class LargePersonGroupAsyncClient {
      * more details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param updateRequest The updateRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -184,7 +190,8 @@ public final class LargePersonGroupAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         name: String (Required)
@@ -193,7 +200,8 @@ public final class LargePersonGroupAsyncClient {
      *         largePersonGroupId: String (Required)
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -217,7 +225,8 @@ public final class LargePersonGroupAsyncClient {
      * details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     status: String(notStarted/running/succeeded/failed) (Required)
      *     createdDateTime: OffsetDateTime (Required)
@@ -225,7 +234,8 @@ public final class LargePersonGroupAsyncClient {
      *     lastSuccessfulTrainingDateTime: OffsetDateTime (Required)
      *     message: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -269,20 +279,24 @@ public final class LargePersonGroupAsyncClient {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Required)
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     personId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param createPersonRequest The createPersonRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -323,7 +337,8 @@ public final class LargePersonGroupAsyncClient {
      * for more details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     personId: String (Required)
      *     name: String (Required)
@@ -332,7 +347,8 @@ public final class LargePersonGroupAsyncClient {
      *         String (Optional)
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param personId ID of the person.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -355,12 +371,14 @@ public final class LargePersonGroupAsyncClient {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     name: String (Optional)
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param personId ID of the person.
      * @param updatePersonRequest The updatePersonRequest parameter.
@@ -396,7 +414,8 @@ public final class LargePersonGroupAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * [
      *      (Required){
      *         personId: String (Required)
@@ -407,7 +426,8 @@ public final class LargePersonGroupAsyncClient {
      *         ]
      *     }
      * ]
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -444,19 +464,23 @@ public final class LargePersonGroupAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     url: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     persistedFaceId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param personId ID of the person.
      * @param addFaceFromUrlRequest The addFaceFromUrlRequest parameter.
@@ -496,17 +520,21 @@ public final class LargePersonGroupAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * BinaryData
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     persistedFaceId: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param personId ID of the person.
      * @param imageContent The image to be analyzed.
@@ -554,12 +582,14 @@ public final class LargePersonGroupAsyncClient {
      * details.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     persistedFaceId: String (Required)
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param personId ID of the person.
      * @param persistedFaceId Face ID of the face.
@@ -584,11 +614,13 @@ public final class LargePersonGroupAsyncClient {
      * details.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     userData: String (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param personId ID of the person.
      * @param persistedFaceId Face ID of the face.

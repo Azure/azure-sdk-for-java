@@ -38,7 +38,6 @@ public final class PrivateLinkServicePropertiesAutoApproval extends ResourceSet 
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

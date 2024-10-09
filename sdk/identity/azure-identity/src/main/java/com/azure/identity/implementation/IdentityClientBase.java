@@ -4,10 +4,9 @@
 package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.ProofOfPossessionOptions;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.experimental.credential.PopTokenRequestContext;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
@@ -42,23 +41,24 @@ import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.DeviceCodeFlowParameters;
+import com.microsoft.aad.msal4j.HttpMethod;
 import com.microsoft.aad.msal4j.IBroker;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
-import com.microsoft.aad.msal4j.ManagedIdentityId;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
+import com.microsoft.aad.msal4j.ManagedIdentityId;
+import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import com.microsoft.aad.msal4j.HttpMethod;
 import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -134,6 +134,7 @@ public abstract class IdentityClientBase {
     final String tenantId;
     final String clientId;
     final String resourceId;
+    final String objectId;
     final String clientSecret;
     final String clientAssertionFilePath;
     final byte[] certificate;
@@ -168,6 +169,7 @@ public abstract class IdentityClientBase {
                        String certificatePath,
                        String clientAssertionFilePath,
                        String resourceId,
+                       String objectId,
                        Supplier<String> clientAssertionSupplier,
                        Function<HttpPipeline, String> clientAssertionSupplierWithHttpPipeline,
                        byte[] certificate,
@@ -184,6 +186,7 @@ public abstract class IdentityClientBase {
         }
         this.tenantId = tenantId;
         this.clientId = clientId;
+        this.objectId = objectId;
         this.resourceId = resourceId;
         this.clientSecret = clientSecret;
         this.clientAssertionFilePath = clientAssertionFilePath;
@@ -461,16 +464,25 @@ public abstract class IdentityClientBase {
 
     ManagedIdentityApplication getManagedIdentityMsalApplication() {
 
-        ManagedIdentityId managedIdentityId = CoreUtils.isNullOrEmpty(clientId)
-            ? (CoreUtils.isNullOrEmpty(resourceId)
-            ? ManagedIdentityId.systemAssigned() : ManagedIdentityId.userAssignedResourceId(resourceId))
-            : ManagedIdentityId.userAssignedClientId(clientId);
+        ManagedIdentityId managedIdentityId;
+
+        if (!CoreUtils.isNullOrEmpty(clientId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedClientId(clientId);
+        } else if (!CoreUtils.isNullOrEmpty(resourceId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedResourceId(resourceId);
+        } else if (!CoreUtils.isNullOrEmpty(objectId)) {
+            managedIdentityId = ManagedIdentityId.userAssignedObjectId(objectId);
+        } else {
+            managedIdentityId = ManagedIdentityId.systemAssigned();
+        }
 
         ManagedIdentityApplication.Builder miBuilder = ManagedIdentityApplication
             .builder(managedIdentityId)
             .logPii(options.isUnsafeSupportLoggingEnabled());
 
-        if ("DEFAULT_TO_IMDS".equals(String.valueOf(ManagedIdentityApplication.getManagedIdentitySource()))) {
+        ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
+
+        if (ManagedIdentitySourceType.DEFAULT_TO_IMDS.equals(managedIdentitySourceType)) {
             options.setUseImdsRetryStrategy();
         }
 
@@ -487,7 +499,6 @@ public abstract class IdentityClientBase {
 
         return miBuilder.build();
     }
-
     ConfidentialClientApplication getWorkloadIdentityConfidentialClient() {
         String authorityUrl = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("")
             + "/" + tenantId;
@@ -596,12 +607,11 @@ public abstract class IdentityClientBase {
                 builder.extraQueryParameters(extraQueryParameters);
             }
 
-            if (request instanceof PopTokenRequestContext
-                && ((PopTokenRequestContext) request).isProofOfPossessionEnabled()) {
-                PopTokenRequestContext requestContext = (PopTokenRequestContext) request;
+            if (request.getProofOfPossessionOptions() != null) {
+                ProofOfPossessionOptions proofOfPossessionOptions = request.getProofOfPossessionOptions();
                 try {
-                    builder.proofOfPossession(mapToMsalHttpMethod(requestContext.getResourceRequestMethod()),
-                        requestContext.getResourceRequestUrl().toURI(), requestContext.getProofOfPossessionNonce());
+                    builder.proofOfPossession(mapToMsalHttpMethod(proofOfPossessionOptions.getRequestMethod().toString()),
+                        proofOfPossessionOptions.getRequestUrl().toURI(), proofOfPossessionOptions.getProofOfPossessionNonce());
                 } catch (URISyntaxException e) {
                     throw new IllegalArgumentException(e);
                 }
@@ -924,7 +934,7 @@ public abstract class IdentityClientBase {
     abstract Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext);
 
 
-    HttpPipeline setupPipeline(HttpClient httpClient) {
+    HttpPipeline setupPipeline() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
@@ -956,7 +966,9 @@ public abstract class IdentityClientBase {
         policies.addAll(options.getPerRetryPolicies());
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder().httpClient(httpClient)
+        // if the user has not supplied an httpClient, the builder will create a default using localClientOptions.
+        // If the user has supplied an HttpClient, it will be used as is.
+        return new HttpPipelineBuilder().httpClient(options.getHttpClient())
             .clientOptions(localClientOptions)
             .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
     }
@@ -982,9 +994,9 @@ public abstract class IdentityClientBase {
             return this.httpPipeline;
         }
 
-        // if the user has supplied an HttpClient, use it
-        HttpClient httpClient = options.getHttpClient();
-        this.httpPipeline = setupPipeline(httpClient != null ? httpClient : HttpClient.createDefault());
+        // setupPipeline will use the user's HttpClient and HttpClientOptions if they're set
+        // otherwise it will use defaults.
+        this.httpPipeline = setupPipeline();
         return this.httpPipeline;
     }
 

@@ -6,64 +6,48 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AssociationsInterfacesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"wflzlfbxzpuzy\"},\"provisioningState\":\"Succeeded\"},\"location\":\"nqzahmgkbrpyyd\",\"tags\":{\"agnb\":\"nuqqkpikadrgvt\",\"fsiarbutr\":\"ynhijggme\",\"jrunmpxtt\":\"vpnazzm\"},\"id\":\"bh\",\"name\":\"bnlankxmyskpb\",\"type\":\"enbtkcxywny\"}";
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"dxyt\"},\"provisioningState\":\"Succeeded\"},\"location\":\"rxv\",\"tags\":{\"zntxhdz\":\"dw\"},\"id\":\"lrqjbhckfr\",\"name\":\"hrxsbk\",\"type\":\"vpycanuzbp\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        TrafficControllerManager manager = TrafficControllerManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Association response = manager.associationsInterfaces().define("ctq").withRegion("utttxfvjrbirp")
-            .withExistingTrafficController("qylihkaetckt", "fcivfsnkym")
-            .withTags(mapOf("vuujq", "pcyvahfnljkyqx", "oxgvclt", "idokgjlj", "bijhtxfvgxbf", "gsncghkjeszz"))
+        Association response = manager.associationsInterfaces()
+            .define("nmic")
+            .withRegion("jbkcnxdhbttkph")
+            .withExistingTrafficController("svlxotogtwrup", "sx")
+            .withTags(mapOf("t", "nv", "crpab", "qnermclfplphoxu", "sbj", "ye", "wfqkquj", "azqugxywpmueefj"))
             .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("ebrjcxe")))
+                .withSubnet(new AssociationSubnet().withId("eoveilovnotyf")))
             .create();
 
-        Assertions.assertEquals("nqzahmgkbrpyyd", response.location());
-        Assertions.assertEquals("nuqqkpikadrgvt", response.tags().get("agnb"));
+        Assertions.assertEquals("rxv", response.location());
+        Assertions.assertEquals("dw", response.tags().get("zntxhdz"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
-        Assertions.assertEquals("wflzlfbxzpuzy", response.properties().subnet().id());
+        Assertions.assertEquals("dxyt", response.properties().subnet().id());
     }
 
     // Use "Map.of" if available

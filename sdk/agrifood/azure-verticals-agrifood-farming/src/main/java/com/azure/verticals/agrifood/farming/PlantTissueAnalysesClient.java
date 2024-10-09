@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = PlantTissueAnalysesClientBuilder.class)
 public final class PlantTissueAnalysesClient {
-    @Generated private final PlantTissueAnalysesAsyncClient client;
+    @Generated
+    private final PlantTissueAnalysesAsyncClient client;
 
     /**
      * Initializes an instance of PlantTissueAnalysesClient class.
@@ -172,8 +173,8 @@ public final class PlantTissueAnalysesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
+    public Response<BinaryData> getWithResponse(String partyId, String plantTissueAnalysisId,
+        RequestOptions requestOptions) {
         return this.client.getWithResponse(partyId, plantTissueAnalysisId, requestOptions).block();
     }
 
@@ -274,14 +275,11 @@ public final class PlantTissueAnalysesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId,
-            String plantTissueAnalysisId,
-            BinaryData plantTissueAnalysis,
-            RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String plantTissueAnalysisId,
+        BinaryData plantTissueAnalysis, RequestOptions requestOptions) {
         return this.client
-                .createOrUpdateWithResponse(partyId, plantTissueAnalysisId, plantTissueAnalysis, requestOptions)
-                .block();
+            .createOrUpdateWithResponse(partyId, plantTissueAnalysisId, plantTissueAnalysis, requestOptions)
+            .block();
     }
 
     /**
@@ -298,8 +296,8 @@ public final class PlantTissueAnalysesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
+    public Response<Void> deleteWithResponse(String partyId, String plantTissueAnalysisId,
+        RequestOptions requestOptions) {
         return this.client.deleteWithResponse(partyId, plantTissueAnalysisId, requestOptions).block();
     }
 
@@ -420,11 +418,10 @@ public final class PlantTissueAnalysesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String plantTissueAnalysisId, RequestOptions requestOptions) {
-        return this.client
-                .beginCreateCascadeDeleteJob(jobId, partyId, plantTissueAnalysisId, requestOptions)
-                .getSyncPoller();
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String plantTissueAnalysisId, RequestOptions requestOptions) {
+        return this.client.beginCreateCascadeDeleteJob(jobId, partyId, plantTissueAnalysisId, requestOptions)
+            .getSyncPoller();
     }
 
     /**

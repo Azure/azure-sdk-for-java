@@ -38,6 +38,7 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.maps.render.implementation.models.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -217,6 +218,25 @@ public final class RenderClientImplBuilder
     }
 
     /*
+     * The Accept header field can be used to specify preferences regarding response media types. Allowed media types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
+     */
+    @Generated
+    private MediaType accept;
+
+    /**
+     * Sets The Accept header field can be used to specify preferences regarding response media types. Allowed media
+     * types include image/jpeg and image/png. Return image in image/png if Accept header is not specified.
+     * 
+     * @param accept the accept value.
+     * @return the RenderClientImplBuilder.
+     */
+    @Generated
+    public RenderClientImplBuilder accept(MediaType accept) {
+        this.accept = accept;
+        return this;
+    }
+
+    /*
      * Specifies which account is intended for usage in conjunction with the Microsoft Entra ID security model.  It represents a unique ID for the Azure Maps account and can be retrieved from the Azure Maps management  plane Account API. To use Microsoft Entra ID security in Azure Maps see the following [articles](https://aka.ms/amauthdetails) for guidance.
      */
     @Generated
@@ -318,11 +338,11 @@ public final class RenderClientImplBuilder
     public RenderClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://atlas.microsoft.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2022-08-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-04-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        RenderClientImpl client
-            = new RenderClientImpl(localPipeline, localSerializerAdapter, this.clientId, localHost, localApiVersion);
+        RenderClientImpl client = new RenderClientImpl(localPipeline, localSerializerAdapter, this.accept,
+            this.clientId, localHost, localApiVersion);
         return client;
     }
 

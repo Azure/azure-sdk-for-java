@@ -8,8 +8,8 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.HostPoolPro
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.RegistrationInfoInner;
 import com.azure.resourcemanager.desktopvirtualization.models.AgentUpdateProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.HostPoolProperties;
-import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.HostpoolPublicNetworkAccess;
+import com.azure.resourcemanager.desktopvirtualization.models.HostPoolType;
 import com.azure.resourcemanager.desktopvirtualization.models.LoadBalancerType;
 import com.azure.resourcemanager.desktopvirtualization.models.PersonalDesktopAssignmentType;
 import com.azure.resourcemanager.desktopvirtualization.models.PreferredAppGroupType;
@@ -24,8 +24,7 @@ public final class HostPoolPropertiesImpl implements HostPoolProperties {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    HostPoolPropertiesImpl(
-        HostPoolPropertiesInner innerObject,
+    HostPoolPropertiesImpl(HostPoolPropertiesInner innerObject,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -86,6 +85,15 @@ public final class HostPoolPropertiesImpl implements HostPoolProperties {
 
     public List<String> applicationGroupReferences() {
         List<String> inner = this.innerModel().applicationGroupReferences();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> appAttachPackageReferences() {
+        List<String> inner = this.innerModel().appAttachPackageReferences();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

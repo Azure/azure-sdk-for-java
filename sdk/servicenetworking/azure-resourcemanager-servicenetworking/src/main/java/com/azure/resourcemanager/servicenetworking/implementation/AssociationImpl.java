@@ -88,14 +88,16 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association create() {
-        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces().createOrUpdate(resourceGroupName,
-            trafficControllerName, associationName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAssociationsInterfaces()
+            .createOrUpdate(resourceGroupName, trafficControllerName, associationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Association create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces().createOrUpdate(resourceGroupName,
-            trafficControllerName, associationName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAssociationsInterfaces()
+            .createOrUpdate(resourceGroupName, trafficControllerName, associationName, this.innerModel(), context);
         return this;
     }
 
@@ -111,14 +113,17 @@ public final class AssociationImpl implements Association, Association.Definitio
     }
 
     public Association apply() {
-        this.innerObject
-            = serviceManager.serviceClient().getAssociationsInterfaces().updateWithResponse(resourceGroupName,
-                trafficControllerName, associationName, updateProperties, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssociationsInterfaces()
+            .updateWithResponse(resourceGroupName, trafficControllerName, associationName, updateProperties,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Association apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces()
+        this.innerObject = serviceManager.serviceClient()
+            .getAssociationsInterfaces()
             .updateWithResponse(resourceGroupName, trafficControllerName, associationName, updateProperties, context)
             .getValue();
         return this;
@@ -128,20 +133,24 @@ public final class AssociationImpl implements Association, Association.Definitio
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.trafficControllerName = Utils.getValueFromIdByName(innerObject.id(), "trafficControllers");
-        this.associationName = Utils.getValueFromIdByName(innerObject.id(), "associations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.trafficControllerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "trafficControllers");
+        this.associationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "associations");
     }
 
     public Association refresh() {
-        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces()
-            .getWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssociationsInterfaces()
+            .getWithResponse(resourceGroupName, trafficControllerName, associationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Association refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getAssociationsInterfaces()
-            .getWithResponse(resourceGroupName, trafficControllerName, associationName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssociationsInterfaces()
+            .getWithResponse(resourceGroupName, trafficControllerName, associationName, context)
+            .getValue();
         return this;
     }
 

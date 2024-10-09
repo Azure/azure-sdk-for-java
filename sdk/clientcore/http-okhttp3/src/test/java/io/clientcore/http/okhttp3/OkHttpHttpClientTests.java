@@ -23,10 +23,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -112,7 +110,7 @@ public class OkHttpHttpClientTests {
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, "/connectionClose"));
 
         assertThrows(IOException.class, () -> client.send(request).getBody().toBytes());
     }
@@ -154,7 +152,7 @@ public class OkHttpHttpClientTests {
             .set(multiValueHeaderName, multiValueHeaderValue);
 
         try (Response<?> response = client.send(
-            new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+            new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
 
             assertEquals(200, response.getStatusCode());
 
@@ -184,23 +182,23 @@ public class OkHttpHttpClientTests {
             .hostnameVerifier((hostname, session) -> true)
             .build();
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUrl(server, "/short")))) {
+        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
-    static URL url(LocalTestServer server, String path) {
+    static URI uri(LocalTestServer server, String path) {
         try {
-            return new URI(server.getHttpUri() + path).toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
+            return new URI(server.getHttpUri() + path);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
 
-    static URL httpsUrl(LocalTestServer server, String path) {
+    static URI httpsUri(LocalTestServer server, String path) {
         try {
-            return new URI(server.getHttpsUri() + path).toURL();
-        } catch (URISyntaxException | MalformedURLException e) {
+            return new URI(server.getHttpsUri() + path);
+        } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
     }
@@ -226,7 +224,7 @@ public class OkHttpHttpClientTests {
     }
 
     private static Response<?> doRequest(HttpClient client, String path) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
+        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path));
 
         return client.send(request);
     }
