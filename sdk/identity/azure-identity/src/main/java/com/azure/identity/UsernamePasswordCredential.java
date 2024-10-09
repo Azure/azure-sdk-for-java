@@ -96,14 +96,14 @@ public class UsernamePasswordCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return Mono.defer(() -> {
-                isCachePopulated = isCachePopulated(request);
-                if (isCachePopulated) {
-                    return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
-                        .onErrorResume(t -> Mono.empty());
-                } else {
-                    return Mono.empty();
-                }
-            })
+            isCachePopulated = isCachePopulated(request);
+            if (isCachePopulated) {
+                return identityClient.authenticateWithPublicClientCache(request, cachedToken.get())
+                    .onErrorResume(t -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        })
             .switchIfEmpty(
                 Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
             .map(msalToken -> {
