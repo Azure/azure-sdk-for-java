@@ -36,12 +36,12 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <p>
  * The shared access key can be obtained by creating a <i>shared access policy</i> for the Service Bus namespace or for
  * a specific Service Bus instance. See
- * <a href="https://docs.microsoft.com/azure/event-hubs/
+ * <a href="https://learn.microsoft.com/azure/event-hubs/
  * authorize-access-shared-access-signature#shared-access-authorization-policies">Shared access authorization policies
  * </a> for more information.
  * </p>
  *
- * @see <a href="https://docs.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature">Authorize
+ * @see <a href="https://learn.microsoft.com/azure/event-hubs/authorize-access-shared-access-signature">Authorize
  *     access with shared access signature.</a>
  */
 @Immutable

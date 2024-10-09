@@ -180,7 +180,8 @@ public class UsernamePasswordCredential implements TokenCredential {
     }
 
     private boolean isCachePopulated(TokenRequestContext request) {
-        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached) || (
-            !request.isCaeEnabled() && isCaeDisabledRequestCached));
+        return (cachedToken.get() != null)
+            && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+            || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }

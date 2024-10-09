@@ -85,7 +85,7 @@ public final class MSIToken extends AccessToken {
 
         // if we have an expiresOn, we'll use it. Otherwise, we use expiresIn.
         boolean isExpiresOn = !CoreUtils.isNullOrEmpty(expiresOn);
-        String dateToParse = !isExpiresOn ? expiresIn : expiresOn;
+        String dateToParse = isExpiresOn ? expiresOn : expiresIn;
 
         try {
             long seconds = Long.parseLong(dateToParse);
