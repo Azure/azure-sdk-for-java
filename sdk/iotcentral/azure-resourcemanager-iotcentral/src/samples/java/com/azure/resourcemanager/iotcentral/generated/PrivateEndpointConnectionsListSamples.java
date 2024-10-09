@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.iotcentral.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections List. */
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/PrivateEndpointConnections_List.json
+     * x-ms-original-file:
+     * specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/
+     * PrivateEndpointConnections_List.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.
-     *
+     * 
      * @param manager Entry point to IotCentralManager.
      */
     public static void privateEndpointConnectionsList(com.azure.resourcemanager.iotcentral.IotCentralManager manager) {
-        manager.privateEndpointConnections().list("resRg", "myIoTCentralApp", Context.NONE);
+        manager.privateEndpointConnections().list("resRg", "myIoTCentralApp", com.azure.core.util.Context.NONE);
     }
 }
