@@ -10,10 +10,6 @@ module com.azure.resourcemanager.oep {
     exports com.azure.resourcemanager.oep.fluent.models;
     exports com.azure.resourcemanager.oep.models;
 
-    opens com.azure.resourcemanager.oep.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.oep.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.oep.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.oep.models to com.azure.core;
 }
