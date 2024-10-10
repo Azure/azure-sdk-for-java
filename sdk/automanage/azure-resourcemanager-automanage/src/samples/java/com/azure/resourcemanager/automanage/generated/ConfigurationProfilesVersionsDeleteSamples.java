@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.automanage.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConfigurationProfilesVersions Delete. */
+/**
+ * Samples for ConfigurationProfilesVersions Delete.
+ */
 public final class ConfigurationProfilesVersionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/deleteConfigurationProfileVersion.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/
+     * deleteConfigurationProfileVersion.json
      */
     /**
      * Sample code: Delete a configuration profile version.
-     *
+     * 
      * @param manager Entry point to AutomanageManager.
      */
-    public static void deleteAConfigurationProfileVersion(
-        com.azure.resourcemanager.automanage.AutomanageManager manager) {
-        manager
-            .configurationProfilesVersions()
-            .deleteWithResponse("rg", "customConfigurationProfile", "version1", Context.NONE);
+    public static void
+        deleteAConfigurationProfileVersion(com.azure.resourcemanager.automanage.AutomanageManager manager) {
+        manager.configurationProfilesVersions()
+            .deleteWithResponse("rg", "customConfigurationProfile", "version1", com.azure.core.util.Context.NONE);
     }
 }
