@@ -13,4 +13,5 @@ module com.azure.ai.openai {
     opens com.azure.ai.openai.models to com.azure.core;
     opens com.azure.ai.openai.implementation.models to com.azure.core;
     opens com.azure.ai.openai.implementation to com.azure.core;
+    exports com.azure.ai.openai.implementation;
 }
