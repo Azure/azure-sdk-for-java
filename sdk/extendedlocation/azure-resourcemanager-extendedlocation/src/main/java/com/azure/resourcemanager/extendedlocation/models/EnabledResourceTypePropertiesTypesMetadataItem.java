@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Metadata of the Resource Type. */
+/**
+ * Metadata of the Resource Type.
+ */
 @Fluent
-public final class EnabledResourceTypePropertiesTypesMetadataItem {
+public final class EnabledResourceTypePropertiesTypesMetadataItem
+    implements JsonSerializable<EnabledResourceTypePropertiesTypesMetadataItem> {
     /*
      * Api Version of Resource Type
      */
-    @JsonProperty(value = "apiVersion")
     private String apiVersion;
 
     /*
      * Resource Provider Namespace of Resource Type
      */
-    @JsonProperty(value = "resourceProviderNamespace")
     private String resourceProviderNamespace;
 
     /*
      * Resource Type
      */
-    @JsonProperty(value = "resourceType")
     private String resourceType;
 
     /**
+     * Creates an instance of EnabledResourceTypePropertiesTypesMetadataItem class.
+     */
+    public EnabledResourceTypePropertiesTypesMetadataItem() {
+    }
+
+    /**
      * Get the apiVersion property: Api Version of Resource Type.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String apiVersion() {
@@ -39,7 +49,7 @@ public final class EnabledResourceTypePropertiesTypesMetadataItem {
 
     /**
      * Set the apiVersion property: Api Version of Resource Type.
-     *
+     * 
      * @param apiVersion the apiVersion value to set.
      * @return the EnabledResourceTypePropertiesTypesMetadataItem object itself.
      */
@@ -50,7 +60,7 @@ public final class EnabledResourceTypePropertiesTypesMetadataItem {
 
     /**
      * Get the resourceProviderNamespace property: Resource Provider Namespace of Resource Type.
-     *
+     * 
      * @return the resourceProviderNamespace value.
      */
     public String resourceProviderNamespace() {
@@ -59,19 +69,19 @@ public final class EnabledResourceTypePropertiesTypesMetadataItem {
 
     /**
      * Set the resourceProviderNamespace property: Resource Provider Namespace of Resource Type.
-     *
+     * 
      * @param resourceProviderNamespace the resourceProviderNamespace value to set.
      * @return the EnabledResourceTypePropertiesTypesMetadataItem object itself.
      */
-    public EnabledResourceTypePropertiesTypesMetadataItem withResourceProviderNamespace(
-        String resourceProviderNamespace) {
+    public EnabledResourceTypePropertiesTypesMetadataItem
+        withResourceProviderNamespace(String resourceProviderNamespace) {
         this.resourceProviderNamespace = resourceProviderNamespace;
         return this;
     }
 
     /**
      * Get the resourceType property: Resource Type.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -80,7 +90,7 @@ public final class EnabledResourceTypePropertiesTypesMetadataItem {
 
     /**
      * Set the resourceType property: Resource Type.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the EnabledResourceTypePropertiesTypesMetadataItem object itself.
      */
@@ -91,9 +101,53 @@ public final class EnabledResourceTypePropertiesTypesMetadataItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("apiVersion", this.apiVersion);
+        jsonWriter.writeStringField("resourceProviderNamespace", this.resourceProviderNamespace);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnabledResourceTypePropertiesTypesMetadataItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnabledResourceTypePropertiesTypesMetadataItem if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnabledResourceTypePropertiesTypesMetadataItem.
+     */
+    public static EnabledResourceTypePropertiesTypesMetadataItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnabledResourceTypePropertiesTypesMetadataItem deserializedEnabledResourceTypePropertiesTypesMetadataItem
+                = new EnabledResourceTypePropertiesTypesMetadataItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiVersion".equals(fieldName)) {
+                    deserializedEnabledResourceTypePropertiesTypesMetadataItem.apiVersion = reader.getString();
+                } else if ("resourceProviderNamespace".equals(fieldName)) {
+                    deserializedEnabledResourceTypePropertiesTypesMetadataItem.resourceProviderNamespace
+                        = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedEnabledResourceTypePropertiesTypesMetadataItem.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnabledResourceTypePropertiesTypesMetadataItem;
+        });
     }
 }

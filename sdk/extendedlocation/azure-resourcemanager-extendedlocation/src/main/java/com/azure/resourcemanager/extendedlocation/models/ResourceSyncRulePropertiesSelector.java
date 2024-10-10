@@ -5,8 +5,11 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,31 +23,32 @@ import java.util.Map;
  * in order to match.
  */
 @Fluent
-public final class ResourceSyncRulePropertiesSelector {
+public final class ResourceSyncRulePropertiesSelector implements JsonSerializable<ResourceSyncRulePropertiesSelector> {
     /*
-     * MatchExpressions is a list of resource selector requirements. Valid
-     * operators include In, NotIn, Exists, and DoesNotExist. The values set
-     * must be non-empty in the case of In and NotIn. The values set must be
-     * empty in the case of Exists and DoesNotExist.
+     * MatchExpressions is a list of resource selector requirements. Valid operators include In, NotIn, Exists, and
+     * DoesNotExist. The values set must be non-empty in the case of In and NotIn. The values set must be empty in the
+     * case of Exists and DoesNotExist.
      */
-    @JsonProperty(value = "matchExpressions")
     private List<MatchExpressionsProperties> matchExpressions;
 
     /*
-     * MatchLabels is a map of {key,value} pairs. A single {key,value} in the
-     * matchLabels map is equivalent to an element of matchExpressions, whose
-     * key field is 'key', the operator is 'In', and the values array contains
-     * only 'value'.
+     * MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels map is equivalent to an
+     * element of matchExpressions, whose key field is 'key', the operator is 'In', and the values array contains only
+     * 'value'.
      */
-    @JsonProperty(value = "matchLabels")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> matchLabels;
+
+    /**
+     * Creates an instance of ResourceSyncRulePropertiesSelector class.
+     */
+    public ResourceSyncRulePropertiesSelector() {
+    }
 
     /**
      * Get the matchExpressions property: MatchExpressions is a list of resource selector requirements. Valid operators
      * include In, NotIn, Exists, and DoesNotExist. The values set must be non-empty in the case of In and NotIn. The
      * values set must be empty in the case of Exists and DoesNotExist.
-     *
+     * 
      * @return the matchExpressions value.
      */
     public List<MatchExpressionsProperties> matchExpressions() {
@@ -55,7 +59,7 @@ public final class ResourceSyncRulePropertiesSelector {
      * Set the matchExpressions property: MatchExpressions is a list of resource selector requirements. Valid operators
      * include In, NotIn, Exists, and DoesNotExist. The values set must be non-empty in the case of In and NotIn. The
      * values set must be empty in the case of Exists and DoesNotExist.
-     *
+     * 
      * @param matchExpressions the matchExpressions value to set.
      * @return the ResourceSyncRulePropertiesSelector object itself.
      */
@@ -68,7 +72,7 @@ public final class ResourceSyncRulePropertiesSelector {
      * Get the matchLabels property: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
      * map is equivalent to an element of matchExpressions, whose key field is 'key', the operator is 'In', and the
      * values array contains only 'value'.
-     *
+     * 
      * @return the matchLabels value.
      */
     public Map<String, String> matchLabels() {
@@ -79,7 +83,7 @@ public final class ResourceSyncRulePropertiesSelector {
      * Set the matchLabels property: MatchLabels is a map of {key,value} pairs. A single {key,value} in the matchLabels
      * map is equivalent to an element of matchExpressions, whose key field is 'key', the operator is 'In', and the
      * values array contains only 'value'.
-     *
+     * 
      * @param matchLabels the matchLabels value to set.
      * @return the ResourceSyncRulePropertiesSelector object itself.
      */
@@ -90,12 +94,56 @@ public final class ResourceSyncRulePropertiesSelector {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (matchExpressions() != null) {
             matchExpressions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("matchExpressions", this.matchExpressions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("matchLabels", this.matchLabels, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSyncRulePropertiesSelector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSyncRulePropertiesSelector if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSyncRulePropertiesSelector.
+     */
+    public static ResourceSyncRulePropertiesSelector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSyncRulePropertiesSelector deserializedResourceSyncRulePropertiesSelector
+                = new ResourceSyncRulePropertiesSelector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("matchExpressions".equals(fieldName)) {
+                    List<MatchExpressionsProperties> matchExpressions
+                        = reader.readArray(reader1 -> MatchExpressionsProperties.fromJson(reader1));
+                    deserializedResourceSyncRulePropertiesSelector.matchExpressions = matchExpressions;
+                } else if ("matchLabels".equals(fieldName)) {
+                    Map<String, String> matchLabels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedResourceSyncRulePropertiesSelector.matchLabels = matchLabels;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSyncRulePropertiesSelector;
+        });
     }
 }
