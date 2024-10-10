@@ -87,7 +87,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         when(firstClient.isConnectionClosed()).thenReturn(false, true); // connection transition to terminated on second poll.
         doNothing().when(firstClient).close();
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
+        final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -138,7 +138,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
             consumedMessages.add(messageContext.getMessage());
         };
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, false);
+        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, false, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -189,7 +189,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
             consumedMessages.add(messageContext.getMessage());
         };
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, false);
+        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, false, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -260,7 +260,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
             consumedErrors.add(errorContext.getException());
         };
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, false);
+        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, false, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -314,7 +314,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
             consumedMessages.add(messageContext.getMessage());
         };
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, true);
+        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, false, true);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -356,7 +356,7 @@ public class ServiceBusProcessorRollingMessagePumpIsolatedTest {
             consumedErrors.add(errorContext.getException());
         };
 
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, true);
+        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, false, true);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())

@@ -14,6 +14,7 @@ public final class ServiceBusProcessorClientOptions {
 
     private int maxConcurrentCalls = 1;
     private boolean disableAutoComplete;
+    private boolean useDedicatedThreadPool;
     private boolean isV2;
 
     /**
@@ -49,6 +50,27 @@ public final class ServiceBusProcessorClientOptions {
      */
     public ServiceBusProcessorClientOptions setMaxConcurrentCalls(int maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;
+        return this;
+    }
+
+    /**
+     * Check if the processor should create a thread pool exclusively to pump messages from the entity.
+     *
+     * @return {@code true} if the processor uses dedicated thread pool for message pumping.
+     */
+    public boolean isDedicatedThreadPool() {
+        return this.useDedicatedThreadPool;
+    }
+
+    /**
+     * Set if the processor should create a thread pool exclusively to pump messages or message should be pumped using
+     * a shared global thread pool.
+     *
+     * @param useDedicatedThreadPool whether to use exclusive or shared pool.
+     * @return The updated instance of {@link ServiceBusProcessorClientOptions}.
+     */
+    public ServiceBusProcessorClientOptions setUseDedicatedThreadPool(boolean useDedicatedThreadPool) {
+        this.useDedicatedThreadPool = useDedicatedThreadPool;
         return this;
     }
 

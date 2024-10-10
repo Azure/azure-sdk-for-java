@@ -17,6 +17,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -26,6 +27,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED
 import static com.azure.core.amqp.implementation.ClientConstants.PUMP_ID_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CONCURRENCY_PER_CORE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.CORES_VS_CONCURRENCY_MESSAGE;
+import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE;
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
 /**
@@ -52,9 +54,9 @@ final class MessagePump {
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
     private final int concurrency;
+    private final boolean useDedicatedThreadPool;
     private final boolean enableAutoDisposition;
     private final boolean enableAutoLockRenew;
-    private final Scheduler workerScheduler;
     private final ServiceBusReceiverInstrumentation instrumentation;
 
     /**
@@ -65,10 +67,11 @@ final class MessagePump {
      * @param processMessage The consumer that the pump should invoke for each message.
      * @param processError The consumer that the pump should report the errors.
      * @param concurrency The pumping concurrency, i.e., how many invocations of {@code processMessage} should happen in parallel.
+     * @param useDedicatedThreadPool Indicates if a dedicated thread pool with lifetime same as this MessagePump should be used to pump messages.
      * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
      */
     MessagePump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
-        Consumer<ServiceBusErrorContext> processError, int concurrency, boolean enableAutoDisposition) {
+        Consumer<ServiceBusErrorContext> processError, int concurrency, boolean useDedicatedThreadPool, boolean enableAutoDisposition) {
         this.pumpId = COUNTER.incrementAndGet();
         this.client = client;
         this.fullyQualifiedNamespace = this.client.getFullyQualifiedNamespace();
@@ -83,17 +86,9 @@ final class MessagePump {
         this.processMessage = processMessage;
         this.processError = processError;
         this.concurrency = concurrency;
+        this.useDedicatedThreadPool = useDedicatedThreadPool;
         this.enableAutoDisposition = enableAutoDisposition;
         this.enableAutoLockRenew = client.isAutoLockRenewRequested();
-        if (concurrency > 1) {
-            this.workerScheduler = Schedulers.boundedElastic();
-        } else {
-            // For the max-concurrent-calls == 1 (the default) case, the message handler can be invoked in the same
-            // BoundedElastic thread that the ServiceBusReactorReceiver::receive() API (backing the MessageFlux)
-            // publishes the message. In this case, we use 'Schedulers.immediate' to avoid the thread switch that
-            // is only needed for higher parallelism (max-concurrent-calls > 1) case.
-            this.workerScheduler = Schedulers.immediate();
-        }
         this.instrumentation = this.client.getInstrumentation();
     }
 
@@ -107,8 +102,13 @@ final class MessagePump {
     Mono<Void> begin() {
         logCPUResourcesConcurrencyMismatch();
         final Mono<Void> terminatePumping = pollConnectionState();
-        final Mono<Void> pumping = client.nonSessionProcessorReceiveV2()
-            .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
+        final Mono<Void> pumping = Mono.usingWhen(getWorkerScheduler(),
+            workerScheduler -> {
+                final RunOnWorker handleMessageOnWorker = new RunOnWorker(this::handleMessage, workerScheduler);
+                return client.nonSessionProcessorReceiveV2()
+                    .flatMap(handleMessageOnWorker, concurrency, 1).then();
+            },
+            this::disposeWorkerScheduler);
 
         final Mono<Void> pumpingMessages = Mono.firstWithSignal(pumping, terminatePumping);
 
@@ -191,9 +191,68 @@ final class MessagePump {
         }
     }
 
+    /**
+     * Obtain the worker scheduler facilitating the threads to pump messages to the {@link #processMessage} handler.
+     *
+     * @return the worker scheduler for message pumping.
+     */
+    private Publisher<Scheduler> getWorkerScheduler() {
+        return Mono.fromSupplier(() -> {
+            if (useDedicatedThreadPool) {
+                // We set the upper limit ("threadCap") that pool can grow dynamically to twice the "concurrency". However,
+                // due to the operator setup in the 'begin()' method, the max threads that gets created in the pool will be
+                // limited to "concurrency", despite the higher cap.
+                //
+                // Since this is an exclusive pool per message pump instance, the scheduler will be disposed of upon this
+                // pump termination.
+                return Schedulers.newBoundedElastic(concurrency * 2, DEFAULT_BOUNDED_ELASTIC_QUEUESIZE, "message-pump-" + pumpId);
+            } else {
+                if (concurrency > 1) {
+                    // Uses the global thread pool with lifetime scoped to the JVM. Since this is a shared global pool,
+                    // any attempt to dispose this scheduler at later point will have no effect.
+                    return Schedulers.boundedElastic();
+                } else {
+                    // For the max-concurrent-calls == 1 (the default) case, the message handler can be invoked in the same
+                    // BoundedElastic thread that the ServiceBusReactorReceiver::receive() API (backing the MessageFlux)
+                    // publishes the message. In this case, we use 'Schedulers.immediate' to avoid the thread switch that
+                    // is only needed for higher parallelism (max-concurrent-calls > 1) case.
+                    return Schedulers.immediate();
+                }
+            }
+        });
+    }
+
+    /**
+     * Disposes the worker scheduler obtained from {@link #getWorkerScheduler()}.
+     * <p>
+     * If the {@code workerScheduler} is the shared global {@link Schedulers#boundedElastic()} pool, then this method call
+     * will not have any effect given this scheduler lifetime is scoped to the JVM.
+     * </p>
+     *
+     * @param workerScheduler the worker scheduler to dispose.
+     * @return mono that terminates after the disposal.
+     */
+    private Mono<Void> disposeWorkerScheduler(Scheduler workerScheduler) {
+        if (!useDedicatedThreadPool) {
+            // No op, the MessagePump used shared global pool.
+            return Mono.empty();
+        }
+
+        // The "disposeGracefully()" will trigger shutdown() in underlying executor services allowing running or queued
+        // for running tasks to finish. The method won't internally call "awaitForTermination()", the Reactor API
+        // documentation recommends applying timeout then call "dispose()" to interrupt any tasks hanging around.
+        return workerScheduler.disposeGracefully()
+            .timeout(Duration.ofSeconds(5))         // TODO (anuchan): make 'timeout' configurable?
+            .onErrorResume(TimeoutException.class, e -> {
+                workerScheduler.dispose();
+                // logger.log(..)                  // TODO (anuchan): WARN log about timeout and forceful interruption of user code.
+                return Mono.empty();
+            });
+    }
+
     private void logCPUResourcesConcurrencyMismatch() {
         final int cores = Runtime.getRuntime().availableProcessors();
-        final int poolSize = DEFAULT_BOUNDED_ELASTIC_SIZE;
+        final int poolSize = useDedicatedThreadPool ? concurrency : DEFAULT_BOUNDED_ELASTIC_SIZE;
         if (concurrency > poolSize || concurrency > CONCURRENCY_PER_CORE * cores) {
             logger.atWarning().log(CORES_VS_CONCURRENCY_MESSAGE, poolSize, cores, concurrency);
         }
