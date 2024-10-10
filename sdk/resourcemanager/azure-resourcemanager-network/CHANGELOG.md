@@ -12,6 +12,14 @@
 
 ## 2.43.0 (2024-09-27)
 
+### Features Added
+
+- Add `VirtualWans` and `VirtualWan` support in `NetworkManager`.
+
+- Add `VpnSites` and `VpnSite` support in `NetworkManage`.
+
+### Breaking Changes
+
 ### Other Changes
 
 #### Dependency Updates
