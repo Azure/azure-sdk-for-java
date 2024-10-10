@@ -8,6 +8,7 @@ import com.azure.storage.blob.perf.DownloadBlobTest;
 import com.azure.storage.blob.perf.DownloadBlobToFileTest;
 import com.azure.storage.blob.perf.ListBlobsTest;
 import com.azure.storage.blob.perf.DownloadBlobNonSharedClientTest;
+import com.azure.storage.blob.perf.QueryBlobTest;
 import com.azure.storage.blob.perf.UploadBlobNoLengthTest;
 import com.azure.storage.blob.perf.UploadBlobTest;
 import com.azure.storage.blob.perf.UploadBlockBlobTest;
@@ -35,23 +36,24 @@ import com.azure.storage.file.share.perf.UploadFromFileShareTest;
 public class App {
     public static void main(String[] args) {
         PerfStressProgram.run(new Class<?>[]{
-            DownloadBlobTest.class,
-            DownloadBlobToFileTest.class,
-            ListBlobsTest.class,
-            UploadBlobTest.class,
-            UploadBlobNoLengthTest.class,
-            UploadBlockBlobTest.class,
-            UploadFromFileTest.class,
-            UploadOutputStreamTest.class,
-            DownloadFileShareTest.class,
-            DownloadToFileShareTest.class,
-            UploadFileShareTest.class,
-            UploadFromFileShareTest.class,
-            AppendFileDatalakeTest.class,
-            ReadFileDatalakeTest.class,
-            UploadFileDatalakeTest.class,
-            UploadFromFileDatalakeTest.class,
-            DownloadBlobNonSharedClientTest.class
+//            DownloadBlobTest.class,
+//            DownloadBlobToFileTest.class,
+//            ListBlobsTest.class,
+//            UploadBlobTest.class,
+//            UploadBlobNoLengthTest.class,
+//            UploadBlockBlobTest.class,
+//            UploadFromFileTest.class,
+//            UploadOutputStreamTest.class,
+//            DownloadFileShareTest.class,
+//            DownloadToFileShareTest.class,
+//            UploadFileShareTest.class,
+//            UploadFromFileShareTest.class,
+//            AppendFileDatalakeTest.class,
+//            ReadFileDatalakeTest.class,
+//            UploadFileDatalakeTest.class,
+//            UploadFromFileDatalakeTest.class,
+//            DownloadBlobNonSharedClientTest.class,
+            QueryBlobTest.class
         }, args);
     }
 }
