@@ -6,13 +6,16 @@ package com.azure.storage.blob;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -32,6 +35,8 @@ import reactor.core.publisher.Mono;
 
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
@@ -61,19 +66,26 @@ public class BlobClient extends BlobClientBase {
     /**
      * The block size to use if none is specified in parallel operations.
      */
-    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+    public static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
 
     /**
      * The number of buffers to use if none is specied on the buffered upload method.
      */
-    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+    public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = 8;
     /**
      * If a blob  is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.
      */
-    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE;
+    public static final int BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE = 8 * Constants.MB;
 
+    /**
+     * The default block size used in {@link FluxUtil#readFile(AsynchronousFileChannel)}.
+     * This is to make sure we're using same size when using {@link BinaryData#fromFile(Path, int)}
+     * and {@link BinaryData#fromFile(Path, Long, Long, int)}
+     * to represent the content.
+     */
+    private static final int DEFAULT_FILE_READ_CHUNK_SIZE = 1024 * 64;
     private final BlobAsyncClient client;
 
     private BlockBlobClient blockBlobClient;
@@ -90,6 +102,31 @@ public class BlobClient extends BlobClientBase {
     }
 
     /**
+     * Protected constructor for use by {@link BlobClientBuilder}.
+     *
+     * @param client the async blob client
+     * @param pipeline The pipeline used to send and receive service requests.
+     * @param url The endpoint where to send service requests.
+     * @param serviceVersion The version of the service to receive requests.
+     * @param accountName The storage account name.
+     * @param containerName The container name.
+     * @param blobName The blob name.
+     * @param snapshot The snapshot identifier for the blob, pass {@code null} to interact with the blob directly.
+     * @param customerProvidedKey Customer provided key used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param encryptionScope Encryption scope used during encryption of the blob's data on the server, pass
+     * {@code null} to allow the service to use its own encryption.
+     * @param versionId The version identifier for the blob, pass {@code null} to interact with the latest blob version.
+     */
+    protected BlobClient(BlobAsyncClient client, HttpPipeline pipeline, String url, BlobServiceVersion serviceVersion,
+        String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
+        EncryptionScope encryptionScope, String versionId) {
+        super(client, pipeline, url, serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey,
+            encryptionScope, versionId);
+        this.client = client;
+    }
+
+    /**
      * Creates a new {@link BlobClient} linked to the {@code snapshot} of this blob resource.
      *
      * @param snapshot the identifier for a specific snapshot of this blob
@@ -97,7 +134,11 @@ public class BlobClient extends BlobClientBase {
      */
     @Override
     public BlobClient getSnapshotClient(String snapshot) {
-        return new BlobClient(client.getSnapshotClient(snapshot));
+        BlobAsyncClient asyncClient = new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(),
+            encryptionScope, getVersionId());
+        return new BlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), snapshot, getCustomerProvidedKey(), encryptionScope, getVersionId());
     }
 
     /**
@@ -109,7 +150,11 @@ public class BlobClient extends BlobClientBase {
      */
     @Override
     public BlobClient getVersionClient(String versionId) {
-        return new BlobClient(client.getVersionClient(versionId));
+        BlobAsyncClient asyncClient = new BlobAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
+            getAccountName(), getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(),
+            encryptionScope, versionId);
+        return new BlobClient(asyncClient, getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
+            getContainerName(), getBlobName(), getSnapshotId(), getCustomerProvidedKey(), encryptionScope, versionId);
     }
 
     /**
@@ -120,7 +165,13 @@ public class BlobClient extends BlobClientBase {
      */
     @Override
     public BlobClient getEncryptionScopeClient(String encryptionScope) {
-        return new BlobClient(client.getEncryptionScopeAsyncClient(encryptionScope));
+        EncryptionScope finalEncryptionScope = null;
+        if (encryptionScope != null) {
+            finalEncryptionScope = new EncryptionScope().setEncryptionScope(encryptionScope);
+        }
+        return new BlobClient(this.client.getEncryptionScopeAsyncClient(encryptionScope), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            getCustomerProvidedKey(), finalEncryptionScope, getVersionId());
     }
 
     /**
@@ -132,7 +183,16 @@ public class BlobClient extends BlobClientBase {
      */
     @Override
     public BlobClient getCustomerProvidedKeyClient(CustomerProvidedKey customerProvidedKey) {
-        return new BlobClient(client.getCustomerProvidedKeyAsyncClient(customerProvidedKey));
+        CpkInfo finalCustomerProvidedKey = null;
+        if (customerProvidedKey != null) {
+            finalCustomerProvidedKey = new CpkInfo()
+                .setEncryptionKey(customerProvidedKey.getKey())
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
+                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+        }
+        return new BlobClient(this.client.getCustomerProvidedKeyAsyncClient(customerProvidedKey), getHttpPipeline(),
+            getAccountUrl(), getServiceVersion(), getAccountName(), getContainerName(), getBlobName(), getSnapshotId(),
+            finalCustomerProvidedKey, encryptionScope, getVersionId());
     }
 
     /**

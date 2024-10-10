@@ -89,14 +89,11 @@ import reactor.core.publisher.SignalType;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
@@ -764,7 +761,7 @@ public class BlobAsyncClientBase {
             destinationRequestConditions.getIfModifiedSince(), destinationRequestConditions.getIfUnmodifiedSince(),
             destinationRequestConditions.getIfMatch(), destinationRequestConditions.getIfNoneMatch(),
             destinationRequestConditions.getTagsConditions(), destinationRequestConditions.getLeaseId(), null,
-            tagsToString(tags), sealBlob, immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            ModelHelper.tagsToString(tags), sealBlob, immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             legalHold, context))
             .map(response -> {
                 final BlobsStartCopyFromURLHeaders headers = response.getDeserializedHeaders();
@@ -773,26 +770,6 @@ public class BlobAsyncClientBase {
                     headers.getETag(), headers.getLastModified(), ModelHelper.getErrorCode(response.getHeaders()),
                     headers.getXMsVersionId());
             });
-    }
-
-    String tagsToString(Map<String, String> tags) {
-        if (tags == null || tags.isEmpty()) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, String> entry : tags.entrySet()) {
-            try {
-                sb.append(URLEncoder.encode(entry.getKey(), Charset.defaultCharset().toString()));
-                sb.append("=");
-                sb.append(URLEncoder.encode(entry.getValue(), Charset.defaultCharset().toString()));
-                sb.append("&");
-            } catch (UnsupportedEncodingException e) {
-                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-            }
-        }
-
-        sb.deleteCharAt(sb.length() - 1); // Remove the last '&'
-        return sb.toString();
     }
 
     private Mono<PollResponse<BlobCopyInfo>> onPoll(PollResponse<BlobCopyInfo> pollResponse) {
@@ -814,25 +791,7 @@ public class BlobAsyncClientBase {
                 response.getETag(), response.getCopyCompletionTime(), response.getCopyStatusDescription(),
                 response.getVersionId());
 
-            LongRunningOperationStatus operationStatus;
-            switch (status) {
-                case SUCCESS:
-                    operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                    break;
-                case FAILED:
-                    operationStatus = LongRunningOperationStatus.FAILED;
-                    break;
-                case ABORTED:
-                    operationStatus = LongRunningOperationStatus.USER_CANCELLED;
-                    break;
-                case PENDING:
-                    operationStatus = LongRunningOperationStatus.IN_PROGRESS;
-                    break;
-                default:
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "CopyStatusType is not supported. Status: " + status));
-            }
-
+            LongRunningOperationStatus operationStatus = ModelHelper.mapStatusToLongRunningOperationStatus(status);
             return new PollResponse<>(operationStatus, result);
         }).onErrorReturn(
             new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED", true), lastInfo));
@@ -1034,7 +993,7 @@ public class BlobAsyncClientBase {
             destRequestConditions.getIfUnmodifiedSince(), destRequestConditions.getIfMatch(),
             destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
             destRequestConditions.getLeaseId(), null, null,
-            tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+            ModelHelper.tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
             options.hasLegalHold(), sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
