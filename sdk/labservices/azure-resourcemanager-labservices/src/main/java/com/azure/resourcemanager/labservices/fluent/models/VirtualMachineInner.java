@@ -4,34 +4,58 @@
 
 package com.azure.resourcemanager.labservices.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.VirtualMachineConnectionProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineState;
 import com.azure.resourcemanager.labservices.models.VirtualMachineType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A lab virtual machine resource. */
-@Fluent
+/**
+ * A lab virtual machine resource.
+ */
+@Immutable
 public final class VirtualMachineInner extends ProxyResource {
     /*
      * System data of the Lab virtual machine.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Virtual machine resource properties
      */
-    @JsonProperty(value = "properties", required = true)
     private VirtualMachineProperties innerProperties = new VirtualMachineProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualMachineInner class.
+     */
+    public VirtualMachineInner() {
+    }
 
     /**
      * Get the systemData property: System data of the Lab virtual machine.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -40,7 +64,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Virtual machine resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineProperties innerProperties() {
@@ -48,8 +72,38 @@ public final class VirtualMachineInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the virtual machine.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +112,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the state property: The current state of the virtual machine.
-     *
+     * 
      * @return the state value.
      */
     public VirtualMachineState state() {
@@ -67,7 +121,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the connectionProfile property: Profile for information about connecting to the virtual machine.
-     *
+     * 
      * @return the connectionProfile value.
      */
     public VirtualMachineConnectionProfile connectionProfile() {
@@ -76,7 +130,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the claimedByUserId property: The lab user ID (not the PUID!) of who claimed the virtual machine.
-     *
+     * 
      * @return the claimedByUserId value.
      */
     public String claimedByUserId() {
@@ -85,7 +139,7 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Get the vmType property: The type of this VM resource.
-     *
+     * 
      * @return the vmType value.
      */
     public VirtualMachineType vmType() {
@@ -94,19 +148,63 @@ public final class VirtualMachineInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualMachineInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VirtualMachineInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineInner.
+     */
+    public static VirtualMachineInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineInner deserializedVirtualMachineInner = new VirtualMachineInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineInner.innerProperties = VirtualMachineProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualMachineInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineInner;
+        });
+    }
 }
