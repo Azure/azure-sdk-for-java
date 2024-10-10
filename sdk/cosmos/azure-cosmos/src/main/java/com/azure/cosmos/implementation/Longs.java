@@ -10,7 +10,7 @@ public class Longs {
         }
 
         try {
-            return Long.valueOf(value);
+            return Long.parseLong(value);
         } catch (NumberFormatException e) {
             return defaultValue;
         }

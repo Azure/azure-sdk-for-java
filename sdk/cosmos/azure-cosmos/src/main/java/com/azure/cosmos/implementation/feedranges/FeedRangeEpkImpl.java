@@ -199,6 +199,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                             // we need to bubble that up to the higher layers to update their
                             // datastructures
                             GoneException goneException = new GoneException(
+                                // TODO: too many arguments for this string.format
                                     String.format(
                                             "EpkRange %s spans %s physical partitions: %s",
                                             this.range,
