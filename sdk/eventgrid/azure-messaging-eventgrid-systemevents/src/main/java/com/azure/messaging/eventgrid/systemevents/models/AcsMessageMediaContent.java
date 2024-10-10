@@ -27,7 +27,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * The media identifier
      */
     @Generated
-    private String id;
+    private String mediaId;
 
     /*
      * The filename of the underlying media file as specified when uploaded
@@ -59,13 +59,13 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
     }
 
     /**
-     * Get the id property: The media identifier.
+     * Get the mediaId property: The media identifier.
      * 
-     * @return the id value.
+     * @return the mediaId value.
      */
     @Generated
-    public String getId() {
-        return this.id;
+    public String getMediaId() {
+        return this.mediaId;
     }
 
     /**
@@ -96,7 +96,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("mimeType", this.mimeType);
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("id", this.mediaId);
         jsonWriter.writeStringField("fileName", this.fileName);
         jsonWriter.writeStringField("caption", this.caption);
         return jsonWriter.writeEndObject();
@@ -121,7 +121,7 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
                 if ("mimeType".equals(fieldName)) {
                     deserializedAcsMessageMediaContent.mimeType = reader.getString();
                 } else if ("id".equals(fieldName)) {
-                    deserializedAcsMessageMediaContent.id = reader.getString();
+                    deserializedAcsMessageMediaContent.mediaId = reader.getString();
                 } else if ("fileName".equals(fieldName)) {
                     deserializedAcsMessageMediaContent.fileName = reader.getString();
                 } else if ("caption".equals(fieldName)) {

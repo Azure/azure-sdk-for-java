@@ -35,17 +35,14 @@ public final class AvsClusterUpdatedEventData extends AvsClusterEventData {
     @Generated
     private List<String> addedHostNames;
 
-    /*
-     * Id of the operation that caused this event.
-     */
-    @Generated
-    private String operationId;
-
     /**
      * Creates an instance of AvsClusterUpdatedEventData class.
+     * 
+     * @param operationId the operationId value to set.
      */
     @Generated
-    private AvsClusterUpdatedEventData() {
+    private AvsClusterUpdatedEventData(String operationId) {
+        super(operationId);
     }
 
     /**
@@ -82,17 +79,6 @@ public final class AvsClusterUpdatedEventData extends AvsClusterEventData {
     }
 
     /**
-     * Get the operationId property: Id of the operation that caused this event.
-     * 
-     * @return the operationId value.
-     */
-    @Generated
-    @Override
-    public String getOperationId() {
-        return this.operationId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -115,31 +101,37 @@ public final class AvsClusterUpdatedEventData extends AvsClusterEventData {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AvsClusterUpdatedEventData if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AvsClusterUpdatedEventData.
      */
     @Generated
     public static AvsClusterUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AvsClusterUpdatedEventData deserializedAvsClusterUpdatedEventData = new AvsClusterUpdatedEventData();
+            String operationId = null;
+            List<String> addedHostNames = null;
+            List<String> removedHostNames = null;
+            List<String> inMaintenanceHostNames = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("operationId".equals(fieldName)) {
-                    deserializedAvsClusterUpdatedEventData.operationId = reader.getString();
+                    operationId = reader.getString();
                 } else if ("addedHostNames".equals(fieldName)) {
-                    List<String> addedHostNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAvsClusterUpdatedEventData.addedHostNames = addedHostNames;
+                    addedHostNames = reader.readArray(reader1 -> reader1.getString());
                 } else if ("removedHostNames".equals(fieldName)) {
-                    List<String> removedHostNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAvsClusterUpdatedEventData.removedHostNames = removedHostNames;
+                    removedHostNames = reader.readArray(reader1 -> reader1.getString());
                 } else if ("inMaintenanceHostNames".equals(fieldName)) {
-                    List<String> inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
-                    deserializedAvsClusterUpdatedEventData.inMaintenanceHostNames = inMaintenanceHostNames;
+                    inMaintenanceHostNames = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
+            AvsClusterUpdatedEventData deserializedAvsClusterUpdatedEventData
+                = new AvsClusterUpdatedEventData(operationId);
+            deserializedAvsClusterUpdatedEventData.addedHostNames = addedHostNames;
+            deserializedAvsClusterUpdatedEventData.removedHostNames = removedHostNames;
+            deserializedAvsClusterUpdatedEventData.inMaintenanceHostNames = inMaintenanceHostNames;
 
             return deserializedAvsClusterUpdatedEventData;
         });

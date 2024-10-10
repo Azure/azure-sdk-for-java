@@ -22,17 +22,14 @@ public final class AvsPrivateCloudFailedEventData extends AvsPrivateCloudEventDa
     @Generated
     private String failureMessage;
 
-    /*
-     * Id of the operation that caused this event.
-     */
-    @Generated
-    private String operationId;
-
     /**
      * Creates an instance of AvsPrivateCloudFailedEventData class.
+     * 
+     * @param operationId the operationId value to set.
      */
     @Generated
-    private AvsPrivateCloudFailedEventData() {
+    private AvsPrivateCloudFailedEventData(String operationId) {
+        super(operationId);
     }
 
     /**
@@ -43,17 +40,6 @@ public final class AvsPrivateCloudFailedEventData extends AvsPrivateCloudEventDa
     @Generated
     public String getFailureMessage() {
         return this.failureMessage;
-    }
-
-    /**
-     * Get the operationId property: Id of the operation that caused this event.
-     * 
-     * @return the operationId value.
-     */
-    @Generated
-    @Override
-    public String getOperationId() {
-        return this.operationId;
     }
 
     /**
@@ -74,25 +60,29 @@ public final class AvsPrivateCloudFailedEventData extends AvsPrivateCloudEventDa
      * @param jsonReader The JsonReader being read.
      * @return An instance of AvsPrivateCloudFailedEventData if the JsonReader was pointing to an instance of it, or
      * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AvsPrivateCloudFailedEventData.
      */
     @Generated
     public static AvsPrivateCloudFailedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AvsPrivateCloudFailedEventData deserializedAvsPrivateCloudFailedEventData
-                = new AvsPrivateCloudFailedEventData();
+            String operationId = null;
+            String failureMessage = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("operationId".equals(fieldName)) {
-                    deserializedAvsPrivateCloudFailedEventData.operationId = reader.getString();
+                    operationId = reader.getString();
                 } else if ("failureMessage".equals(fieldName)) {
-                    deserializedAvsPrivateCloudFailedEventData.failureMessage = reader.getString();
+                    failureMessage = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+            AvsPrivateCloudFailedEventData deserializedAvsPrivateCloudFailedEventData
+                = new AvsPrivateCloudFailedEventData(operationId);
+            deserializedAvsPrivateCloudFailedEventData.failureMessage = failureMessage;
 
             return deserializedAvsPrivateCloudFailedEventData;
         });

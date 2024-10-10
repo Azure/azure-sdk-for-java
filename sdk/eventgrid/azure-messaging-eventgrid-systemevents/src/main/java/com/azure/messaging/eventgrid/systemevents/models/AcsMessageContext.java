@@ -27,7 +27,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
      * The message ID for the sent message for an inbound reply
      */
     @Generated
-    private String id;
+    private String messageId;
 
     /**
      * Creates an instance of AcsMessageContext class.
@@ -47,13 +47,13 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
     }
 
     /**
-     * Get the id property: The message ID for the sent message for an inbound reply.
+     * Get the messageId property: The message ID for the sent message for an inbound reply.
      * 
-     * @return the id value.
+     * @return the messageId value.
      */
     @Generated
-    public String getId() {
-        return this.id;
+    public String getMessageId() {
+        return this.messageId;
     }
 
     /**
@@ -64,7 +64,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", this.from);
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("id", this.messageId);
         return jsonWriter.writeEndObject();
     }
 
@@ -87,7 +87,7 @@ public final class AcsMessageContext implements JsonSerializable<AcsMessageConte
                 if ("from".equals(fieldName)) {
                     deserializedAcsMessageContext.from = reader.getString();
                 } else if ("id".equals(fieldName)) {
-                    deserializedAcsMessageContext.id = reader.getString();
+                    deserializedAcsMessageContext.messageId = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
