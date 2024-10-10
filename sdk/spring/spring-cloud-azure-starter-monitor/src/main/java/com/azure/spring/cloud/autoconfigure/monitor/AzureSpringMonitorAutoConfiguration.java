@@ -20,9 +20,6 @@ import java.util.HashMap;
 
 import static java.util.Collections.singletonMap;
 
-/**
- * Auto-configuration for Azure Monitor OpenTelemetry Distro / Application Insights in Spring Boot native image Java application.
- */
 @Configuration(proxyBeanMethods = false)
 @AutoConfigureBefore(OpenTelemetryAutoConfiguration.class)
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
@@ -92,11 +89,6 @@ class AzureSpringMonitorAutoConfiguration {
         return autoConfigurationCustomizer -> AzureMonitorExporter.customize(autoConfigurationCustomizer, connectionString);
     }
 
-    /**
-     * Declare OpenTelemetryVersionCheckRunner bean to check the OpenTelemetry version
-     *
-     * @return OpenTelemetryVersionCheckRunner
-     */
     @Bean
     OpenTelemetryVersionCheckRunner openTelemetryVersionCheckRunner() {
         return new OpenTelemetryVersionCheckRunner();
