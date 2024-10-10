@@ -77,16 +77,14 @@ public class UsernamePasswordCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     UsernamePasswordCredential(String clientId, String tenantId, String username, String password,
-                               IdentityClientOptions identityClientOptions) {
+        IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(username, "'username' cannot be null.");
         Objects.requireNonNull(password, "'password' cannot be null.");
         this.username = username;
         this.password = password;
-        IdentityClientBuilder builder =
-            new IdentityClientBuilder()
-                .tenantId(tenantId)
-                .clientId(clientId)
-                .identityClientOptions(identityClientOptions);
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
+            .clientId(clientId)
+            .identityClientOptions(identityClientOptions);
 
         identityClient = builder.build();
         identitySyncClient = builder.buildSyncClient();
@@ -105,7 +103,9 @@ public class UsernamePasswordCredential implements TokenCredential {
             } else {
                 return Mono.empty();
             }
-        }).switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
+        })
+            .switchIfEmpty(
+                Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password)))
             .map(msalToken -> {
                 AccessToken accessToken = updateCache(msalToken);
                 if (request.isCaeEnabled()) {
@@ -116,8 +116,8 @@ public class UsernamePasswordCredential implements TokenCredential {
                 return accessToken;
             })
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
-                request, error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
@@ -129,7 +129,8 @@ public class UsernamePasswordCredential implements TokenCredential {
                     LoggingUtil.logTokenSuccess(LOGGER, request);
                     return token;
                 }
-            } catch (Exception e) { }
+            } catch (Exception ignored) {
+            }
         }
 
         try {
@@ -147,13 +148,12 @@ public class UsernamePasswordCredential implements TokenCredential {
      * Authenticates the user using the specified username and password.
      *
      * @param request The details of the authentication request.
-     *
      * @return The {@link AuthenticationRecord} of the authenticated account.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
         return Mono.defer(() -> identityClient.authenticateWithUsernamePassword(request, username, password))
-                       .map(this::updateCache)
-                       .map(msalToken -> cachedToken.get().getAuthenticationRecord());
+            .map(this::updateCache)
+            .map(msalToken -> cachedToken.get().getAuthenticationRecord());
     }
 
     /**
@@ -164,24 +164,24 @@ public class UsernamePasswordCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
-                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
-                                                        + "environment requires specifying a TokenRequestContext.")));
+            return Mono.error(
+                LoggingUtil.logCredentialUnavailableException(LOGGER, identityClient.getIdentityClientOptions(),
+                    new CredentialUnavailableException(
+                        "Authenticating in this " + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }
 
     private AccessToken updateCache(MsalToken msalToken) {
-        cachedToken.set(
-                new MsalAuthenticationAccount(
-                    new AuthenticationRecord(msalToken.getAuthenticationResult(),
-                                identityClient.getTenantId(), identityClient.getClientId()),
-                    msalToken.getAccount().getTenantProfiles()));
+        cachedToken.set(new MsalAuthenticationAccount(
+            new AuthenticationRecord(msalToken.getAuthenticationResult(), identityClient.getTenantId(),
+                identityClient.getClientId()), msalToken.getAccount().getTenantProfiles()));
         return msalToken;
     }
 
     private boolean isCachePopulated(TokenRequestContext request) {
-        return (cachedToken.get() != null) && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
+        return (cachedToken.get() != null)
+            && ((request.isCaeEnabled() && isCaeEnabledRequestCached)
             || (!request.isCaeEnabled() && isCaeDisabledRequestCached));
     }
 }
