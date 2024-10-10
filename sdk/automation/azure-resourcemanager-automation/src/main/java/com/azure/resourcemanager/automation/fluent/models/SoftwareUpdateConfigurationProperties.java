@@ -6,73 +6,78 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.SoftwareUpdateConfigurationTasks;
 import com.azure.resourcemanager.automation.models.SucScheduleProperties;
 import com.azure.resourcemanager.automation.models.UpdateConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Software update configuration properties. */
+/**
+ * Software update configuration properties.
+ */
 @Fluent
-public final class SoftwareUpdateConfigurationProperties {
+public final class SoftwareUpdateConfigurationProperties
+    implements JsonSerializable<SoftwareUpdateConfigurationProperties> {
     /*
      * update specific properties for the Software update configuration
      */
-    @JsonProperty(value = "updateConfiguration", required = true)
     private UpdateConfiguration updateConfiguration;
 
     /*
      * Schedule information for the Software update configuration
      */
-    @JsonProperty(value = "scheduleInfo", required = true)
     private SucScheduleProperties scheduleInfo;
 
     /*
      * Provisioning state for the software update configuration, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Details of provisioning error
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /*
      * Creation time of the resource, which only appears in the response.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * CreatedBy property, which only appears in the response.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
     private String createdBy;
 
     /*
      * Last time resource was modified, which only appears in the response.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * LastModifiedBy property, which only appears in the response.
      */
-    @JsonProperty(value = "lastModifiedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String lastModifiedBy;
 
     /*
      * Tasks information for the Software update configuration.
      */
-    @JsonProperty(value = "tasks")
     private SoftwareUpdateConfigurationTasks tasks;
 
     /**
+     * Creates an instance of SoftwareUpdateConfigurationProperties class.
+     */
+    public SoftwareUpdateConfigurationProperties() {
+    }
+
+    /**
      * Get the updateConfiguration property: update specific properties for the Software update configuration.
-     *
+     * 
      * @return the updateConfiguration value.
      */
     public UpdateConfiguration updateConfiguration() {
@@ -81,7 +86,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Set the updateConfiguration property: update specific properties for the Software update configuration.
-     *
+     * 
      * @param updateConfiguration the updateConfiguration value to set.
      * @return the SoftwareUpdateConfigurationProperties object itself.
      */
@@ -92,7 +97,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Get the scheduleInfo property: Schedule information for the Software update configuration.
-     *
+     * 
      * @return the scheduleInfo value.
      */
     public SucScheduleProperties scheduleInfo() {
@@ -101,7 +106,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Set the scheduleInfo property: Schedule information for the Software update configuration.
-     *
+     * 
      * @param scheduleInfo the scheduleInfo value to set.
      * @return the SoftwareUpdateConfigurationProperties object itself.
      */
@@ -113,7 +118,7 @@ public final class SoftwareUpdateConfigurationProperties {
     /**
      * Get the provisioningState property: Provisioning state for the software update configuration, which only appears
      * in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -122,7 +127,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Get the error property: Details of provisioning error.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -131,7 +136,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Set the error property: Details of provisioning error.
-     *
+     * 
      * @param error the error value to set.
      * @return the SoftwareUpdateConfigurationProperties object itself.
      */
@@ -142,7 +147,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Get the creationTime property: Creation time of the resource, which only appears in the response.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -151,7 +156,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Get the createdBy property: CreatedBy property, which only appears in the response.
-     *
+     * 
      * @return the createdBy value.
      */
     public String createdBy() {
@@ -160,7 +165,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Get the lastModifiedTime property: Last time resource was modified, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -169,7 +174,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Get the lastModifiedBy property: LastModifiedBy property, which only appears in the response.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -178,7 +183,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Get the tasks property: Tasks information for the Software update configuration.
-     *
+     * 
      * @return the tasks value.
      */
     public SoftwareUpdateConfigurationTasks tasks() {
@@ -187,7 +192,7 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Set the tasks property: Tasks information for the Software update configuration.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the SoftwareUpdateConfigurationProperties object itself.
      */
@@ -198,24 +203,21 @@ public final class SoftwareUpdateConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (updateConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property updateConfiguration in model"
-                            + " SoftwareUpdateConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property updateConfiguration in model SoftwareUpdateConfigurationProperties"));
         } else {
             updateConfiguration().validate();
         }
         if (scheduleInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scheduleInfo in model SoftwareUpdateConfigurationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scheduleInfo in model SoftwareUpdateConfigurationProperties"));
         } else {
             scheduleInfo().validate();
         }
@@ -225,4 +227,66 @@ public final class SoftwareUpdateConfigurationProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SoftwareUpdateConfigurationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("updateConfiguration", this.updateConfiguration);
+        jsonWriter.writeJsonField("scheduleInfo", this.scheduleInfo);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("tasks", this.tasks);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SoftwareUpdateConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SoftwareUpdateConfigurationProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SoftwareUpdateConfigurationProperties.
+     */
+    public static SoftwareUpdateConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SoftwareUpdateConfigurationProperties deserializedSoftwareUpdateConfigurationProperties
+                = new SoftwareUpdateConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("updateConfiguration".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.updateConfiguration
+                        = UpdateConfiguration.fromJson(reader);
+                } else if ("scheduleInfo".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.scheduleInfo
+                        = SucScheduleProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.provisioningState = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.error = ManagementError.fromJson(reader);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdBy".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.createdBy = reader.getString();
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.lastModifiedBy = reader.getString();
+                } else if ("tasks".equals(fieldName)) {
+                    deserializedSoftwareUpdateConfigurationProperties.tasks
+                        = SoftwareUpdateConfigurationTasks.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSoftwareUpdateConfigurationProperties;
+        });
+    }
 }
