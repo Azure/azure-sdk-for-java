@@ -48,13 +48,17 @@ public enum HttpLogDetailLevel {
 
     /**
      * Logs everything in BASIC, plus all the request and response headers.
-     * Values of the headers will be logged only for allowed headers. See {@link HttpLogOptions#getAllowedHeaderNames()}.
+     * <p>
+     * Values of the headers will be logged only for allowed headers.
+     * See {@link HttpLogOptions#getAllowedHttpHeaderNames()}.
      */
     HEADERS,
 
     /**
      * Logs everything in BASIC, plus all the request and response body.
-     * Note that only payloads in plain text or plain text encoded in GZIP will be logged.
+     * <p>
+     * <b>NOTE:</b> Only payloads in plain text or plain text encoded in GZIP will be logged.
+     * <p>
      * The response body will be buffered into memory even if it is never consumed by an application, possibly impacting
      * performance.
      */
@@ -62,7 +66,10 @@ public enum HttpLogDetailLevel {
 
     /**
      * Logs everything in HEADERS and BODY.
-     * Values of the headers will be logged only for allowed headers. See {@link HttpLogOptions#getAllowedHeaderNames()}.
+     * <p>
+     * Values of the headers will be logged only for allowed headers.
+     * See {@link HttpLogOptions#getAllowedHttpHeaderNames()}.
+     * <p>
      * The response body will be buffered into memory even if it is never consumed by an application, possibly impacting
      * performance.
      */

@@ -5,6 +5,7 @@ package com.azure.identity.implementation.util;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,6 +31,9 @@ public final class IdentityUtil {
     public static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
     public static final String ALL_TENANTS = "*";
     public static final String DEFAULT_TENANT = "organizations";
+    public static final HttpHeaderName X_TFS_FED_AUTH_REDIRECT = HttpHeaderName.fromString("X-TFS-FedAuthRedirect");
+    public static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
+    public static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
 
     public static final File NULL_FILE =
         new File((System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
