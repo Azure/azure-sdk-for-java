@@ -2,7 +2,8 @@
 
 ## Deprecation Notice
 
-> **Note:** This SDK is deprecated and will be removed on March 2026. Please plan to migrate to use `azure-ai-translation-document`.
+> [!WARNING] 
+> This SDK is deprecated and will be removed on March 2026. Please plan to migrate to use `azure-ai-translation-document`.
 > For more information, refer to the [README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/translation/azure-ai-translation-document/README.md).
 
 Microsoft Azure Cognitive Services Document Translator API enables you to translate documents in batch.
