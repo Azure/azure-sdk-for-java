@@ -120,6 +120,18 @@ public final class Constants {
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
 
+        // Full text search
+        public static final String FULL_TEXT_SEARCH_PATHS = "fullTextIndexes";
+        public static final String GLOBAL_STATISTICS_QUERY_INFO = "globalStatisticsQueryInfo";
+        public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
+        public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
+        public static final String SKIP = "skip";
+        public static final String TAKE = "take";
+        public static final String DEFAULT_LANGUAGE = "defaultLanguage";
+        public static final String LANGUAGE = "language";
+        public static final String FULL_TEXT_POLICY = "fullTextPolicy";
+
+
         // Vector Embedding Policy
         public static final String VECTOR_EMBEDDING_POLICY = "vectorEmbeddingPolicy";
         public static final String VECTOR_INDEXES = "vectorIndexes";

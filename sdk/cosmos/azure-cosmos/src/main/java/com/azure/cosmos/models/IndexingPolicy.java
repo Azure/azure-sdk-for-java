@@ -26,6 +26,7 @@ public final class IndexingPolicy {
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
     private List<CosmosVectorIndexSpec> vectorIndexes;
+    private List<CosmosFullTextIndex> cosmosFullTextIndexes;
     private final JsonSerializable jsonSerializable;
 
     /**
@@ -307,6 +308,34 @@ public final class IndexingPolicy {
     public IndexingPolicy setVectorIndexes(List<CosmosVectorIndexSpec> vectorIndexes) {
         this.vectorIndexes = vectorIndexes;
         this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXES,this.vectorIndexes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        return this;
+    }
+
+    /**
+     * Gets the full text search paths.
+     *
+     * @return the full text indexes.
+     */
+    public List<CosmosFullTextIndex> getCosmosFullTextIndexes() {
+        if (this.cosmosFullTextIndexes == null) {
+            this.cosmosFullTextIndexes = this.jsonSerializable.getList(Constants.Properties.FULL_TEXT_SEARCH_PATHS, CosmosFullTextIndex.class);
+
+            if (this.cosmosFullTextIndexes == null) {
+                this.cosmosFullTextIndexes = new ArrayList<CosmosFullTextIndex>();
+            }
+        }
+
+        return this.cosmosFullTextIndexes;
+    }
+
+    /**
+     * Sets the full text search paths.
+     *
+     * @param cosmosFullTextIndexes the fullText indexes
+     * @return the excluded paths
+     */
+    public IndexingPolicy setCosmosFullTextIndexes(List<CosmosFullTextIndex> cosmosFullTextIndexes) {
+        this.cosmosFullTextIndexes = cosmosFullTextIndexes;
         return this;
     }
 

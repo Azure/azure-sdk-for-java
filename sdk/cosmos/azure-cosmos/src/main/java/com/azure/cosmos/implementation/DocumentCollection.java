@@ -10,6 +10,7 @@ import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.CosmosFullTextPolicy;
 import com.azure.cosmos.models.CosmosVectorEmbeddingPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -44,6 +45,7 @@ public final class DocumentCollection extends Resource {
     private PartitionKeyDefinition partitionKeyDefinition;
     private ClientEncryptionPolicy clientEncryptionPolicyInternal;
     private CosmosVectorEmbeddingPolicy cosmosVectorEmbeddingPolicy;
+    private CosmosFullTextPolicy cosmosFullTextPolicy;
 
     /**
      * Constructor.
@@ -439,6 +441,33 @@ public final class DocumentCollection extends Resource {
     public void setVectorEmbeddingPolicy(CosmosVectorEmbeddingPolicy value) {
         checkNotNull(value, "cosmosVectorEmbeddingPolicy cannot be null");
         this.set(Constants.Properties.VECTOR_EMBEDDING_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
+    }
+
+    /**
+     * Gets the Full Test Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @return the FullTextPolicy
+     */
+    public CosmosFullTextPolicy getFullTextPolicy() {
+        if (this.cosmosFullTextPolicy == null) {
+            if (super.has(Constants.Properties.FULL_TEXT_POLICY)) {
+                this.cosmosFullTextPolicy = super.getObject(Constants.Properties.FULL_TEXT_POLICY,
+                    CosmosFullTextPolicy.class);
+            }
+        }
+        return this.cosmosFullTextPolicy;
+    }
+
+    /**
+     * Gets the Full Test Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @param value the FullTextPolicy
+     */
+    public void setFullTextPolicy(CosmosFullTextPolicy value) {
+        checkNotNull(value, "cosmosFullTextPolicy cannot be null");
+        this.set(Constants.Properties.FULL_TEXT_POLICY, value, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     public void populatePropertyBag() {
