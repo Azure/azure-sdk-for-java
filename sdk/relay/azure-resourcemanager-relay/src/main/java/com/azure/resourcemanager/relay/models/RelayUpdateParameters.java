@@ -5,29 +5,53 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.relay.fluent.models.RelayNamespaceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Description of a namespace resource. */
+/**
+ * Description of a namespace resource.
+ */
 @Fluent
 public final class RelayUpdateParameters extends ResourceNamespacePatch {
     /*
      * SKU of the namespace.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Description of Relay namespace.
      */
-    @JsonProperty(value = "properties")
     private RelayNamespaceProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RelayUpdateParameters class.
+     */
+    public RelayUpdateParameters() {
+    }
 
     /**
      * Get the sku property: SKU of the namespace.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -36,7 +60,7 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Set the sku property: SKU of the namespace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RelayUpdateParameters object itself.
      */
@@ -47,14 +71,46 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Get the innerProperties property: Description of Relay namespace.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RelayNamespaceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RelayUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -63,7 +119,7 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStateEnum provisioningState() {
@@ -72,7 +128,7 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Get the createdAt property: The time the namespace was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -81,7 +137,7 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Get the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -90,7 +146,7 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
+     * 
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
@@ -99,7 +155,7 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Get the metricId property: Identifier for Azure Insights metrics.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -108,17 +164,66 @@ public final class RelayUpdateParameters extends ResourceNamespacePatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (sku() != null) {
             sku().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelayUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelayUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelayUpdateParameters.
+     */
+    public static RelayUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelayUpdateParameters deserializedRelayUpdateParameters = new RelayUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRelayUpdateParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRelayUpdateParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRelayUpdateParameters.type = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRelayUpdateParameters.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRelayUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRelayUpdateParameters.innerProperties = RelayNamespaceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelayUpdateParameters;
+        });
     }
 }

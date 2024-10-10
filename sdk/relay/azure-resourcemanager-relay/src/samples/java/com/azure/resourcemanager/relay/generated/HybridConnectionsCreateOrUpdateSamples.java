@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.relay.generated;
 
-/** Samples for HybridConnections CreateOrUpdate. */
+/**
+ * Samples for HybridConnections CreateOrUpdate.
+ */
 public final class HybridConnectionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/RelayHybridConnectionCreate.json
+     * x-ms-original-file:
+     * specification/relay/resource-manager/Microsoft.Relay/stable/2017-04-01/examples/HybridConnection/
+     * RelayHybridConnectionCreate.json
      */
     /**
      * Sample code: RelayHybridConnectionCreate.
-     *
+     * 
      * @param manager Entry point to RelayManager.
      */
     public static void relayHybridConnectionCreate(com.azure.resourcemanager.relay.RelayManager manager) {
-        manager
-            .hybridConnections()
+        manager.hybridConnections()
             .define("example-Relay-Hybrid-01")
             .withExistingNamespace("resourcegroup", "example-RelayNamespace-01")
             .withRequiresClientAuthorization(true)

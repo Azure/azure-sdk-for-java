@@ -4,30 +4,43 @@
 
 package com.azure.resourcemanager.relay.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ProvisioningStateEnum. */
+/**
+ * Defines values for ProvisioningStateEnum.
+ */
 public enum ProvisioningStateEnum {
-    /** Enum value Created. */
+    /**
+     * Enum value Created.
+     */
     CREATED("Created"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Deleted. */
+    /**
+     * Enum value Deleted.
+     */
     DELETED("Deleted"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Updating. */
+    /**
+     * Enum value Updating.
+     */
     UPDATING("Updating"),
 
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown");
 
-    /** The actual serialized value for a ProvisioningStateEnum instance. */
+    /**
+     * The actual serialized value for a ProvisioningStateEnum instance.
+     */
     private final String value;
 
     ProvisioningStateEnum(String value) {
@@ -36,12 +49,14 @@ public enum ProvisioningStateEnum {
 
     /**
      * Parses a serialized value to a ProvisioningStateEnum instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningStateEnum object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProvisioningStateEnum fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProvisioningStateEnum[] items = ProvisioningStateEnum.values();
         for (ProvisioningStateEnum item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -51,7 +66,9 @@ public enum ProvisioningStateEnum {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;
