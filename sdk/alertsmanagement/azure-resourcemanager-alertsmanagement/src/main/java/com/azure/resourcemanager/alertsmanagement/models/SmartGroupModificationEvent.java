@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.alertsmanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Reason for the modification. */
+/**
+ * Reason for the modification.
+ */
 public enum SmartGroupModificationEvent {
-    /** Enum value SmartGroupCreated. */
+    /**
+     * Enum value SmartGroupCreated.
+     */
     SMART_GROUP_CREATED("SmartGroupCreated"),
 
-    /** Enum value StateChange. */
+    /**
+     * Enum value StateChange.
+     */
     STATE_CHANGE("StateChange"),
 
-    /** Enum value AlertAdded. */
+    /**
+     * Enum value AlertAdded.
+     */
     ALERT_ADDED("AlertAdded"),
 
-    /** Enum value AlertRemoved. */
+    /**
+     * Enum value AlertRemoved.
+     */
     ALERT_REMOVED("AlertRemoved");
 
-    /** The actual serialized value for a SmartGroupModificationEvent instance. */
+    /**
+     * The actual serialized value for a SmartGroupModificationEvent instance.
+     */
     private final String value;
 
     SmartGroupModificationEvent(String value) {
@@ -30,11 +39,10 @@ public enum SmartGroupModificationEvent {
 
     /**
      * Parses a serialized value to a SmartGroupModificationEvent instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SmartGroupModificationEvent object, or null if unable to parse.
      */
-    @JsonCreator
     public static SmartGroupModificationEvent fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum SmartGroupModificationEvent {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;
