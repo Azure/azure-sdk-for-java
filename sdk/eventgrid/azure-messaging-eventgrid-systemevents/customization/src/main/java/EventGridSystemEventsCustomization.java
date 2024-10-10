@@ -20,7 +20,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         List<String> lines = editor.getFileLines("src/main/java/module-info.java");
         StringBuilder sb = new StringBuilder();
         lines.forEach(line -> {
-            if (!line.trim().equals("exports com.azure.messaging.eventgrid.systemevents;")) {
+            if (!line.trim().equals("exports com.azure.messaging.eventgrid;")) {
                 sb.append(line).append(newLine);
             }
         });
