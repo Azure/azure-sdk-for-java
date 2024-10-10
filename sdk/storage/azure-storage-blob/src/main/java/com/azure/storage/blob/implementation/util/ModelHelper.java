@@ -32,7 +32,6 @@ import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -491,17 +490,17 @@ public final class ModelHelper {
     public static boolean checkBlobDoesNotExistStatusCode(Throwable t) {
         if (t instanceof BlobStorageException) {
             BlobStorageException s = (BlobStorageException) t;
-            return s.getStatusCode() == 404
-                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
-                || s.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND);
+            return s.getStatusCode() == 404;
+//                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
+//                || s.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND);
             /* HttpResponseException - file get properties is a head request so a body is not returned. Error
              conversion logic does not properly handle errors that don't return XML. */
         } else if (t instanceof HttpResponseException) {
             HttpResponseException h = (HttpResponseException) t;
-            String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
-            return h.getResponse().getStatusCode() == 404
-                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
-                || BlobErrorCode.BLOB_NOT_FOUND.toString().equals(errorCode));
+            //String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
+            return h.getResponse().getStatusCode() == 404;
+//                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
+//                || BlobErrorCode.BLOB_NOT_FOUND.toString().equals(errorCode));
         } else {
             return false;
         }
@@ -510,17 +509,17 @@ public final class ModelHelper {
     public static boolean checkContainerDoesNotExistStatusCode(Throwable t) {
         if (t instanceof BlobStorageException) {
             BlobStorageException s = (BlobStorageException) t;
-            return s.getStatusCode() == 404
-                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
-                || s.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND);
+            return s.getStatusCode() == 404;
+//                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
+//                || s.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND);
             /* HttpResponseException - file get properties is a head request so a body is not returned. Error
              conversion logic does not properly handle errors that don't return XML. */
         } else if (t instanceof HttpResponseException) {
             HttpResponseException h = (HttpResponseException) t;
-            String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
-            return h.getResponse().getStatusCode() == 404
-                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
-                || BlobErrorCode.CONTAINER_NOT_FOUND.toString().equals(errorCode));
+            //String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
+            return h.getResponse().getStatusCode() == 404;
+//                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
+//                || BlobErrorCode.CONTAINER_NOT_FOUND.toString().equals(errorCode));
         } else {
             return false;
         }

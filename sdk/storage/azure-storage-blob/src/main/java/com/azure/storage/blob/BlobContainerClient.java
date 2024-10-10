@@ -39,7 +39,6 @@ import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerProperties;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -479,7 +478,7 @@ public final class BlobContainerClient {
                 timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409 && e.getErrorCode().equals(BlobErrorCode.CONTAINER_ALREADY_EXISTS)) {
+            if (e.getStatusCode() == 409) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
             } else {
@@ -614,7 +613,7 @@ public final class BlobContainerClient {
             Response<Void> response = this.deleteWithResponse(requestConditions, timeout, context);
             return new SimpleResponse<>(response, true);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 404 && e.getErrorCode().equals(BlobErrorCode.CONTAINER_NOT_FOUND)) {
+            if (e.getStatusCode() == 404) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
             } else {

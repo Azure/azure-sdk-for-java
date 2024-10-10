@@ -24,7 +24,6 @@ import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -415,8 +414,7 @@ public final class AppendBlobClient extends BlobClientBase {
         try {
             return createWithResponse(finalOptions, timeout, context);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409 && (e.getErrorCode().equals(BlobErrorCode.BLOB_ALREADY_EXISTS)
-                || e.getErrorCode().equals(BlobErrorCode.RESOURCE_ALREADY_EXISTS))) {
+            if (e.getStatusCode() == 409) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
