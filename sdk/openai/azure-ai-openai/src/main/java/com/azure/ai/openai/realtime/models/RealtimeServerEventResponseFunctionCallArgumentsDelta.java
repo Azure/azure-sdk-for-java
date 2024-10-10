@@ -23,11 +23,11 @@ public final class RealtimeServerEventResponseFunctionCallArgumentsDelta extends
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_FUNCTION_CALL_ARGUMENTS_DELTA;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The ID of the response.
@@ -183,7 +183,7 @@ public final class RealtimeServerEventResponseFunctionCallArgumentsDelta extends
         throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
@@ -213,7 +213,7 @@ public final class RealtimeServerEventResponseFunctionCallArgumentsDelta extends
                 }
             }
             RealtimeServerEventResponseFunctionCallArgumentsDelta deserializedRealtimeServerEventResponseFunctionCallArgumentsDelta
-                = new RealtimeServerEventResponseFunctionCallArgumentsDelta(eventId, eventId, responseId, itemId,
+                = new RealtimeServerEventResponseFunctionCallArgumentsDelta(eventId, responseId, itemId,
                     outputIndex, callId, delta);
             deserializedRealtimeServerEventResponseFunctionCallArgumentsDelta.type = type;
 

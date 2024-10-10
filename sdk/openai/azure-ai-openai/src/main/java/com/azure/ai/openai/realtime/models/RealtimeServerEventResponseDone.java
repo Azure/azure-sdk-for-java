@@ -23,11 +23,11 @@ public final class RealtimeServerEventResponseDone extends RealtimeServerEvent {
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_DONE;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The response resource.
@@ -105,7 +105,7 @@ public final class RealtimeServerEventResponseDone extends RealtimeServerEvent {
     public static RealtimeServerEventResponseDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             RealtimeResponse response = null;
             RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_DONE;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -123,7 +123,7 @@ public final class RealtimeServerEventResponseDone extends RealtimeServerEvent {
                 }
             }
             RealtimeServerEventResponseDone deserializedRealtimeServerEventResponseDone
-                = new RealtimeServerEventResponseDone(eventId, eventId, response);
+                = new RealtimeServerEventResponseDone(eventId, response);
             deserializedRealtimeServerEventResponseDone.type = type;
 
             return deserializedRealtimeServerEventResponseDone;

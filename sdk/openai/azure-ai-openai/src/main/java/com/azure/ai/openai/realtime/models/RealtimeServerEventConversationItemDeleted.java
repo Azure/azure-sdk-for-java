@@ -23,11 +23,11 @@ public final class RealtimeServerEventConversationItemDeleted extends RealtimeSe
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_ITEM_DELETED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The ID of the item that was deleted.
@@ -105,7 +105,7 @@ public final class RealtimeServerEventConversationItemDeleted extends RealtimeSe
     public static RealtimeServerEventConversationItemDeleted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             String itemId = null;
             RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_ITEM_DELETED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -123,7 +123,7 @@ public final class RealtimeServerEventConversationItemDeleted extends RealtimeSe
                 }
             }
             RealtimeServerEventConversationItemDeleted deserializedRealtimeServerEventConversationItemDeleted
-                = new RealtimeServerEventConversationItemDeleted(eventId, eventId, itemId);
+                = new RealtimeServerEventConversationItemDeleted(eventId, itemId);
             deserializedRealtimeServerEventConversationItemDeleted.type = type;
 
             return deserializedRealtimeServerEventConversationItemDeleted;

@@ -38,14 +38,13 @@ public final class RealtimeResponseFunctionCallOutputItem extends RealtimeRespon
     /**
      * Creates an instance of RealtimeResponseFunctionCallOutputItem class.
      * 
-     * @param object the object value to set.
      * @param id the id value to set.
      * @param callId the callId value to set.
      * @param output the output value to set.
      */
     @Generated
-    private RealtimeResponseFunctionCallOutputItem(String object, String id, String callId, String output) {
-        super(object, id);
+    private RealtimeResponseFunctionCallOutputItem(String id, String callId, String output) {
+        super(id);
         this.callId = callId;
         this.output = output;
     }

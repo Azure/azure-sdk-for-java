@@ -24,11 +24,13 @@ public class RealtimeServerEvent implements JsonSerializable<RealtimeServerEvent
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.fromString("RealtimeServerEvent");
 
+    // TODO: communicate that the emitter set this member as private instead of protected and redefines it in the child classes
+    // The child classes correctly use the `super(eventId)` constructor, but this needs to be protected
     /*
      * The event_id property.
      */
     @Generated
-    private final String eventId;
+    protected final String eventId;
 
     /**
      * Creates an instance of RealtimeServerEvent class.

@@ -24,11 +24,11 @@ public final class RealtimeServerEventResponseAudioDone extends RealtimeServerEv
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_AUDIO_DONE;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The ID of the response.
@@ -164,7 +164,7 @@ public final class RealtimeServerEventResponseAudioDone extends RealtimeServerEv
     public static RealtimeServerEventResponseAudioDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
@@ -191,7 +191,7 @@ public final class RealtimeServerEventResponseAudioDone extends RealtimeServerEv
                 }
             }
             RealtimeServerEventResponseAudioDone deserializedRealtimeServerEventResponseAudioDone
-                = new RealtimeServerEventResponseAudioDone(eventId, eventId, responseId, itemId, outputIndex,
+                = new RealtimeServerEventResponseAudioDone(eventId, responseId, itemId, outputIndex,
                     contentIndex);
             deserializedRealtimeServerEventResponseAudioDone.type = type;
 

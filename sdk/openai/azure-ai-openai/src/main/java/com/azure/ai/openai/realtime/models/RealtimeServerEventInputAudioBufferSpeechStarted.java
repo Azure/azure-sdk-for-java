@@ -23,11 +23,11 @@ public final class RealtimeServerEventInputAudioBufferSpeechStarted extends Real
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * Milliseconds since the session started when speech was detected.
@@ -124,7 +124,7 @@ public final class RealtimeServerEventInputAudioBufferSpeechStarted extends Real
     public static RealtimeServerEventInputAudioBufferSpeechStarted fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             int audioStartMs = 0;
             String itemId = null;
             RealtimeServerEventType type = RealtimeServerEventType.INPUT_AUDIO_BUFFER_SPEECH_STARTED;
@@ -145,7 +145,7 @@ public final class RealtimeServerEventInputAudioBufferSpeechStarted extends Real
                 }
             }
             RealtimeServerEventInputAudioBufferSpeechStarted deserializedRealtimeServerEventInputAudioBufferSpeechStarted
-                = new RealtimeServerEventInputAudioBufferSpeechStarted(eventId, eventId, audioStartMs, itemId);
+                = new RealtimeServerEventInputAudioBufferSpeechStarted(eventId, audioStartMs, itemId);
             deserializedRealtimeServerEventInputAudioBufferSpeechStarted.type = type;
 
             return deserializedRealtimeServerEventInputAudioBufferSpeechStarted;

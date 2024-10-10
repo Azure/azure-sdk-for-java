@@ -23,11 +23,11 @@ public final class RealtimeServerEventError extends RealtimeServerEvent {
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.ERROR;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * Details of the error.
@@ -105,7 +105,7 @@ public final class RealtimeServerEventError extends RealtimeServerEvent {
     public static RealtimeServerEventError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             RealtimeServerEventErrorError error = null;
             RealtimeServerEventType type = RealtimeServerEventType.ERROR;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -123,7 +123,7 @@ public final class RealtimeServerEventError extends RealtimeServerEvent {
                 }
             }
             RealtimeServerEventError deserializedRealtimeServerEventError
-                = new RealtimeServerEventError(eventId, eventId, error);
+                = new RealtimeServerEventError(eventId, error);
             deserializedRealtimeServerEventError.type = type;
 
             return deserializedRealtimeServerEventError;

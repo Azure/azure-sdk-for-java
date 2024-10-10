@@ -23,11 +23,11 @@ public final class RealtimeServerEventConversationItemInputAudioTranscriptionFai
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_ITEM_INPUT_AUDIO_TRANSCRIPTION_FAILED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The ID of the user message item.
@@ -146,7 +146,7 @@ public final class RealtimeServerEventConversationItemInputAudioTranscriptionFai
         throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             String itemId = null;
             int contentIndex = 0;
             RealtimeServerEventConversationItemInputAudioTranscriptionFailedError error = null;
@@ -170,7 +170,7 @@ public final class RealtimeServerEventConversationItemInputAudioTranscriptionFai
                 }
             }
             RealtimeServerEventConversationItemInputAudioTranscriptionFailed deserializedRealtimeServerEventConversationItemInputAudioTranscriptionFailed
-                = new RealtimeServerEventConversationItemInputAudioTranscriptionFailed(eventId, eventId, itemId,
+                = new RealtimeServerEventConversationItemInputAudioTranscriptionFailed(eventId, itemId,
                     contentIndex, error);
             deserializedRealtimeServerEventConversationItemInputAudioTranscriptionFailed.type = type;
 

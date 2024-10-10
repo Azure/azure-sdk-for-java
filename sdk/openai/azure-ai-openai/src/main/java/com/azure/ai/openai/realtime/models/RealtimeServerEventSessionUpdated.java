@@ -23,11 +23,13 @@ public final class RealtimeServerEventSessionUpdated extends RealtimeServerEvent
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.SESSION_UPDATED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+    // This was doubly generated. We set `eventId` in the super class as protected, that way the constructor doesn't need
+    // to be changed.
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The updated session resource.
@@ -105,6 +107,7 @@ public final class RealtimeServerEventSessionUpdated extends RealtimeServerEvent
     public static RealtimeServerEventSessionUpdated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
+            // TODO: communicate that code gen adds 2 identical variables `eventId`
 //            String eventId = null;
             RealtimeResponseSession session = null;
             RealtimeServerEventType type = RealtimeServerEventType.SESSION_UPDATED;
@@ -122,6 +125,7 @@ public final class RealtimeServerEventSessionUpdated extends RealtimeServerEvent
                     reader.skipChildren();
                 }
             }
+            // TODO: removed `eventId` being passed twice
             RealtimeServerEventSessionUpdated deserializedRealtimeServerEventSessionUpdated
                 = new RealtimeServerEventSessionUpdated(eventId, session);
             deserializedRealtimeServerEventSessionUpdated.type = type;

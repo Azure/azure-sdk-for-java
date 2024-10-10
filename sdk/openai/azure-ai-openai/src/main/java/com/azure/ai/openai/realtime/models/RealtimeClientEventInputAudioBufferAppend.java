@@ -118,7 +118,7 @@ public final class RealtimeClientEventInputAudioBufferAppend extends RealtimeCli
             String eventId = null;
             byte[] audio = null;
             RealtimeClientEventType type = RealtimeClientEventType.INPUT_AUDIO_BUFFER_APPEND;
-            String eventId = null;
+//            String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

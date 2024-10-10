@@ -157,7 +157,7 @@ public final class RealtimeClientEventConversationItemTruncate extends RealtimeC
             int contentIndex = 0;
             int audioEndMs = 0;
             RealtimeClientEventType type = RealtimeClientEventType.CONVERSATION_ITEM_TRUNCATE;
-            String eventId = null;
+//            String eventId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

@@ -24,11 +24,11 @@ public final class RealtimeServerEventResponseTextDone extends RealtimeServerEve
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_TEXT_DONE;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The ID of the response.
@@ -183,7 +183,7 @@ public final class RealtimeServerEventResponseTextDone extends RealtimeServerEve
     public static RealtimeServerEventResponseTextDone fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
@@ -213,7 +213,7 @@ public final class RealtimeServerEventResponseTextDone extends RealtimeServerEve
                 }
             }
             RealtimeServerEventResponseTextDone deserializedRealtimeServerEventResponseTextDone
-                = new RealtimeServerEventResponseTextDone(eventId, eventId, responseId, itemId, outputIndex,
+                = new RealtimeServerEventResponseTextDone(eventId, responseId, itemId, outputIndex,
                     contentIndex, text);
             deserializedRealtimeServerEventResponseTextDone.type = type;
 

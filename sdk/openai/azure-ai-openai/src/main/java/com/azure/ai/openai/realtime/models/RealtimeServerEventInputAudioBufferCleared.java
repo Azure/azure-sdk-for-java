@@ -23,11 +23,11 @@ public final class RealtimeServerEventInputAudioBufferCleared extends RealtimeSe
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.INPUT_AUDIO_BUFFER_CLEARED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /**
      * Creates an instance of RealtimeServerEventInputAudioBufferCleared class.
@@ -86,7 +86,7 @@ public final class RealtimeServerEventInputAudioBufferCleared extends RealtimeSe
     public static RealtimeServerEventInputAudioBufferCleared fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             RealtimeServerEventType type = RealtimeServerEventType.INPUT_AUDIO_BUFFER_CLEARED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -101,7 +101,7 @@ public final class RealtimeServerEventInputAudioBufferCleared extends RealtimeSe
                 }
             }
             RealtimeServerEventInputAudioBufferCleared deserializedRealtimeServerEventInputAudioBufferCleared
-                = new RealtimeServerEventInputAudioBufferCleared(eventId, eventId);
+                = new RealtimeServerEventInputAudioBufferCleared(eventId);
             deserializedRealtimeServerEventInputAudioBufferCleared.type = type;
 
             return deserializedRealtimeServerEventInputAudioBufferCleared;

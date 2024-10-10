@@ -23,11 +23,11 @@ public final class RealtimeServerEventConversationItemTruncated extends Realtime
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_ITEM_TRUNCATED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The ID of the assistant message item that was truncated.
@@ -144,7 +144,7 @@ public final class RealtimeServerEventConversationItemTruncated extends Realtime
     public static RealtimeServerEventConversationItemTruncated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             String itemId = null;
             int contentIndex = 0;
             int audioEndMs = 0;
@@ -168,7 +168,7 @@ public final class RealtimeServerEventConversationItemTruncated extends Realtime
                 }
             }
             RealtimeServerEventConversationItemTruncated deserializedRealtimeServerEventConversationItemTruncated
-                = new RealtimeServerEventConversationItemTruncated(eventId, eventId, itemId, contentIndex, audioEndMs);
+                = new RealtimeServerEventConversationItemTruncated(eventId, itemId, contentIndex, audioEndMs);
             deserializedRealtimeServerEventConversationItemTruncated.type = type;
 
             return deserializedRealtimeServerEventConversationItemTruncated;

@@ -146,7 +146,7 @@ public final class RealtimeClientEventConversationItemCreate extends RealtimeCli
             String eventId = null;
             RealtimeRequestItem item = null;
             RealtimeClientEventType type = RealtimeClientEventType.CONVERSATION_ITEM_CREATE;
-            String eventId = null;
+//            String eventId = null;
             String previousItemId = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();

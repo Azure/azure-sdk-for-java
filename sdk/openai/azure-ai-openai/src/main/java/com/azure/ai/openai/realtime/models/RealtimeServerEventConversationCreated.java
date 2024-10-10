@@ -23,11 +23,11 @@ public final class RealtimeServerEventConversationCreated extends RealtimeServer
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_CREATED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The conversation resource.
@@ -106,7 +106,7 @@ public final class RealtimeServerEventConversationCreated extends RealtimeServer
     public static RealtimeServerEventConversationCreated fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             RealtimeServerEventConversationCreatedConversation conversation = null;
             RealtimeServerEventType type = RealtimeServerEventType.CONVERSATION_CREATED;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -124,7 +124,7 @@ public final class RealtimeServerEventConversationCreated extends RealtimeServer
                 }
             }
             RealtimeServerEventConversationCreated deserializedRealtimeServerEventConversationCreated
-                = new RealtimeServerEventConversationCreated(eventId, eventId, conversation);
+                = new RealtimeServerEventConversationCreated(eventId, conversation);
             deserializedRealtimeServerEventConversationCreated.type = type;
 
             return deserializedRealtimeServerEventConversationCreated;

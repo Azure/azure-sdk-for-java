@@ -42,6 +42,7 @@ public final class RealtimeResponseMessageItem extends RealtimeResponseItem {
     @Generated
     private final RealtimeItemStatus status;
 
+    // TODO: removed `String Object` as ctx parameter
     /**
      * Creates an instance of RealtimeResponseMessageItem class.
      * 
@@ -52,9 +53,9 @@ public final class RealtimeResponseMessageItem extends RealtimeResponseItem {
      * @param status the status value to set.
      */
     @Generated
-    private RealtimeResponseMessageItem(String object, String id, RealtimeMessageRole role,
+    private RealtimeResponseMessageItem(String id, RealtimeMessageRole role,
         List<RealtimeContentPart> content, RealtimeItemStatus status) {
-        super(object, id);
+        super(id);
         this.role = role;
         this.content = content;
         this.status = status;

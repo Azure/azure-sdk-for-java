@@ -23,11 +23,11 @@ public final class RealtimeServerEventResponseContentPartAdded extends RealtimeS
     @Generated
     private RealtimeServerEventType type = RealtimeServerEventType.RESPONSE_CONTENT_PART_ADDED;
 
-    /*
-     * The unique ID of the server event.
-     */
-    @Generated
-    private final String eventId;
+//    /*
+//     * The unique ID of the server event.
+//     */
+//    @Generated
+//    private final String eventId;
 
     /*
      * The ID of the response.
@@ -182,7 +182,7 @@ public final class RealtimeServerEventResponseContentPartAdded extends RealtimeS
     public static RealtimeServerEventResponseContentPartAdded fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String eventId = null;
-            String eventId = null;
+//            String eventId = null;
             String responseId = null;
             String itemId = null;
             int outputIndex = 0;
@@ -212,7 +212,7 @@ public final class RealtimeServerEventResponseContentPartAdded extends RealtimeS
                 }
             }
             RealtimeServerEventResponseContentPartAdded deserializedRealtimeServerEventResponseContentPartAdded
-                = new RealtimeServerEventResponseContentPartAdded(eventId, eventId, responseId, itemId, outputIndex,
+                = new RealtimeServerEventResponseContentPartAdded(eventId, responseId, itemId, outputIndex,
                     contentIndex, part);
             deserializedRealtimeServerEventResponseContentPartAdded.type = type;
 
