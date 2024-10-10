@@ -598,6 +598,12 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
         = fromString("AuthorizationResourceTypeMismatch");
 
     /**
+     * Static value BlobAccessTierNotSupportedForAccountType for BlobErrorCode.
+     */
+    public static final BlobErrorCode BLOB_ACCESS_TIER_NOT_SUPPORTED_FOR_ACCOUNT_TYPE
+        = fromString("BlobAccessTierNotSupportedForAccountType");
+
+    /**
      * Static value SnapshotOperationRateExceeded for BlobErrorCode.
      * 
      * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}

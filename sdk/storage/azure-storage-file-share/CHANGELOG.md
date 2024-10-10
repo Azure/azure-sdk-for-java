@@ -3,6 +3,10 @@
 ## 12.25.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added support for the provisioned V2 billing model.
+- Added support for specifying the binary file permission format for ShareFileClient.beginCopy and
+ShareFileAsyncClient.beginCopy
+- Added ShareAccessTier Premium value.
 
 ### Breaking Changes
 

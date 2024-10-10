@@ -23,21 +23,6 @@ public final class StorageError implements XmlSerializable<StorageError> {
      */
     private String message;
 
-    /*
-     * The CopySourceStatusCode property.
-     */
-    private Long copySourceStatusCode;
-
-    /*
-     * The CopySourceErrorCode property.
-     */
-    private String copySourceErrorCode;
-
-    /*
-     * The CopySourceErrorMessage property.
-     */
-    private String copySourceErrorMessage;
-
     /**
      * Creates an instance of StorageError class.
      */
@@ -64,66 +49,6 @@ public final class StorageError implements XmlSerializable<StorageError> {
         return this;
     }
 
-    /**
-     * Get the copySourceStatusCode property: The CopySourceStatusCode property.
-     * 
-     * @return the copySourceStatusCode value.
-     */
-    public Long getCopySourceStatusCode() {
-        return this.copySourceStatusCode;
-    }
-
-    /**
-     * Set the copySourceStatusCode property: The CopySourceStatusCode property.
-     * 
-     * @param copySourceStatusCode the copySourceStatusCode value to set.
-     * @return the StorageError object itself.
-     */
-    public StorageError setCopySourceStatusCode(Long copySourceStatusCode) {
-        this.copySourceStatusCode = copySourceStatusCode;
-        return this;
-    }
-
-    /**
-     * Get the copySourceErrorCode property: The CopySourceErrorCode property.
-     * 
-     * @return the copySourceErrorCode value.
-     */
-    public String getCopySourceErrorCode() {
-        return this.copySourceErrorCode;
-    }
-
-    /**
-     * Set the copySourceErrorCode property: The CopySourceErrorCode property.
-     * 
-     * @param copySourceErrorCode the copySourceErrorCode value to set.
-     * @return the StorageError object itself.
-     */
-    public StorageError setCopySourceErrorCode(String copySourceErrorCode) {
-        this.copySourceErrorCode = copySourceErrorCode;
-        return this;
-    }
-
-    /**
-     * Get the copySourceErrorMessage property: The CopySourceErrorMessage property.
-     * 
-     * @return the copySourceErrorMessage value.
-     */
-    public String getCopySourceErrorMessage() {
-        return this.copySourceErrorMessage;
-    }
-
-    /**
-     * Set the copySourceErrorMessage property: The CopySourceErrorMessage property.
-     * 
-     * @param copySourceErrorMessage the copySourceErrorMessage value to set.
-     * @return the StorageError object itself.
-     */
-    public StorageError setCopySourceErrorMessage(String copySourceErrorMessage) {
-        this.copySourceErrorMessage = copySourceErrorMessage;
-        return this;
-    }
-
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
         return toXml(xmlWriter, null);
@@ -134,9 +59,6 @@ public final class StorageError implements XmlSerializable<StorageError> {
         rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "StorageError" : rootElementName;
         xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeStringElement("Message", this.message);
-        xmlWriter.writeNumberElement("CopySourceStatusCode", this.copySourceStatusCode);
-        xmlWriter.writeStringElement("CopySourceErrorCode", this.copySourceErrorCode);
-        xmlWriter.writeStringElement("CopySourceErrorMessage", this.copySourceErrorMessage);
         return xmlWriter.writeEndElement();
     }
 
@@ -171,12 +93,6 @@ public final class StorageError implements XmlSerializable<StorageError> {
 
                 if ("Message".equals(elementName.getLocalPart())) {
                     deserializedStorageError.message = reader.getStringElement();
-                } else if ("CopySourceStatusCode".equals(elementName.getLocalPart())) {
-                    deserializedStorageError.copySourceStatusCode = reader.getNullableElement(Long::parseLong);
-                } else if ("CopySourceErrorCode".equals(elementName.getLocalPart())) {
-                    deserializedStorageError.copySourceErrorCode = reader.getStringElement();
-                } else if ("CopySourceErrorMessage".equals(elementName.getLocalPart())) {
-                    deserializedStorageError.copySourceErrorMessage = reader.getStringElement();
                 } else {
                     reader.skipElement();
                 }
