@@ -15,7 +15,7 @@ import java.util.Map;
 public final class RecordSetsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchMXRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchMXRecordset.json
      */
     /**
      * Sample code: Patch MX recordset.
@@ -34,7 +34,7 @@ public final class RecordSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchNSRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchNSRecordset.json
      */
     /**
      * Sample code: Patch NS recordset.
@@ -53,7 +53,7 @@ public final class RecordSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchPTRRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchPTRRecordset.json
      */
     /**
      * Sample code: Patch PTR recordset.
@@ -72,26 +72,26 @@ public final class RecordSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchSOARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchDSRecordset.json
      */
     /**
-     * Sample code: Patch SOA recordset.
+     * Sample code: Patch DS recordset.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void patchSOARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void patchDSRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .updateWithResponse("rg1", "zone1", "@", RecordType.SOA,
+            .updateWithResponse("rg1", "zone1", "record1", RecordType.DS,
                 new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchARecordset.json
      */
     /**
      * Sample code: Patch A recordset.
@@ -110,7 +110,7 @@ public final class RecordSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchTXTRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchTXTRecordset.json
      */
     /**
      * Sample code: Patch TXT recordset.
@@ -129,26 +129,7 @@ public final class RecordSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchCaaRecordset.json
-     */
-    /**
-     * Sample code: Patch CAA recordset.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void patchCAARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.dnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .updateWithResponse("rg1", "zone1", "record1", RecordType.CAA,
-                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchAAAARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchAAAARecordset.json
      */
     /**
      * Sample code: Patch AAAA recordset.
@@ -167,7 +148,83 @@ public final class RecordSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchCNAMERecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchSRVRecordset.json
+     */
+    /**
+     * Sample code: Patch SRV recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void patchSRVRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .updateWithResponse("rg1", "zone1", "record1", RecordType.SRV,
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchSOARecordset.json
+     */
+    /**
+     * Sample code: Patch SOA recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void patchSOARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .updateWithResponse("rg1", "zone1", "@", RecordType.SOA,
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchTLSARecordset.json
+     */
+    /**
+     * Sample code: Patch TLSA recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void patchTLSARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .updateWithResponse("rg1", "zone1", "record1", RecordType.TLSA,
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchCaaRecordset.json
+     */
+    /**
+     * Sample code: Patch CAA recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void patchCAARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .updateWithResponse("rg1", "zone1", "record1", RecordType.CAA,
+                new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchCNAMERecordset.json
      */
     /**
      * Sample code: Patch CNAME recordset.
@@ -186,19 +243,19 @@ public final class RecordSetsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchSRVRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchNAPTRRecordset.json
      */
     /**
-     * Sample code: Patch SRV recordset.
+     * Sample code: Patch NAPTR recordset.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void patchSRVRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void patchNAPTRRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .updateWithResponse("rg1", "zone1", "record1", RecordType.SRV,
+            .updateWithResponse("rg1", "zone1", "record1", RecordType.NAPTR,
                 new RecordSetInner().withMetadata(mapOf("key2", "fakeTokenPlaceholder")), null,
                 com.azure.core.util.Context.NONE);
     }

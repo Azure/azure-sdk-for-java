@@ -12,58 +12,7 @@ import com.azure.resourcemanager.dns.models.RecordType;
 public final class RecordSetsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetNSRecordset.json
-     */
-    /**
-     * Sample code: Get NS recordset.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void getNSRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.dnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.NS, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetAAAARecordset.json
-     */
-    /**
-     * Sample code: Get AAAA recordset.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void getAAAARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.dnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.AAAA, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetSRVRecordset.json
-     */
-    /**
-     * Sample code: Get SRV recordset.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void getSRVRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.dnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.SRV, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetCaaRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetCaaRecordset.json
      */
     /**
      * Sample code: Get CAA recordset.
@@ -80,24 +29,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetCNAMERecordset.json
-     */
-    /**
-     * Sample code: Get CNAME recordset.
-     * 
-     * @param azure The entry point for accessing resource management APIs in Azure.
-     */
-    public static void getCNAMERecordset(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.dnsZones()
-            .manager()
-            .serviceClient()
-            .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.CNAME, com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetPTRRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetPTRRecordset.json
      */
     /**
      * Sample code: Get PTR recordset.
@@ -114,24 +46,24 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetTXTRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetDSRecordset.json
      */
     /**
-     * Sample code: Get TXT recordset.
+     * Sample code: Get DS recordset.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getTXTRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getDSRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.dnsZones()
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.TXT, com.azure.core.util.Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.DS, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetARecordset.json
      */
     /**
      * Sample code: Get A recordset.
@@ -148,7 +80,126 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetMXRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetNAPTRRecordset.json
+     */
+    /**
+     * Sample code: Get NAPTR recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getNAPTRRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("rg1", "zone1", "record1", RecordType.NAPTR, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetNSRecordset.json
+     */
+    /**
+     * Sample code: Get NS recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getNSRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("rg1", "zone1", "record1", RecordType.NS, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetAAAARecordset.json
+     */
+    /**
+     * Sample code: Get AAAA recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getAAAARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("rg1", "zone1", "record1", RecordType.AAAA, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetSRVRecordset.json
+     */
+    /**
+     * Sample code: Get SRV recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getSRVRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("rg1", "zone1", "record1", RecordType.SRV, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetCNAMERecordset.json
+     */
+    /**
+     * Sample code: Get CNAME recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getCNAMERecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("rg1", "zone1", "record1", RecordType.CNAME, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetTXTRecordset.json
+     */
+    /**
+     * Sample code: Get TXT recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getTXTRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("rg1", "zone1", "record1", RecordType.TXT, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetTLSARecordset.json
+     */
+    /**
+     * Sample code: Get TLSA recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void getTLSARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .getWithResponse("rg1", "zone1", "record1", RecordType.TLSA, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetMXRecordset.json
      */
     /**
      * Sample code: Get MX recordset.
@@ -165,7 +216,7 @@ public final class RecordSetsGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/GetSOARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetSOARecordset.json
      */
     /**
      * Sample code: Get SOA recordset.

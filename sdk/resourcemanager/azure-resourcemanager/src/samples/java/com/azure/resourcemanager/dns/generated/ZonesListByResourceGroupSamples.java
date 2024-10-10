@@ -10,7 +10,8 @@ package com.azure.resourcemanager.dns.generated;
 public final class ZonesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListZonesByResourceGroup.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListZonesByResourceGroup
+     * .json
      */
     /**
      * Sample code: List zones by resource group.

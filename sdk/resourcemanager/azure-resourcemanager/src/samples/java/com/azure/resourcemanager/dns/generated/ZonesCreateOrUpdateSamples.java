@@ -14,7 +14,7 @@ import java.util.Map;
 public final class ZonesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/CreateOrUpdateZone.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/CreateOrUpdateZone.json
      */
     /**
      * Sample code: Create zone.

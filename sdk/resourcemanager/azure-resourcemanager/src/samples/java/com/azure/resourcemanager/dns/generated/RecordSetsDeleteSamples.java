@@ -12,7 +12,25 @@ import com.azure.resourcemanager.dns.models.RecordType;
 public final class RecordSetsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteNAPTRRecordset.
+     * json
+     */
+    /**
+     * Sample code: Delete NAPTR recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void deleteNAPTRRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.NAPTR, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteARecordset.json
      */
     /**
      * Sample code: Delete A recordset.
@@ -29,7 +47,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteAAAARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteAAAARecordset.json
      */
     /**
      * Sample code: Delete AAAA recordset.
@@ -46,7 +64,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteTXTRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteTXTRecordset.json
      */
     /**
      * Sample code: Delete TXT recordset.
@@ -63,7 +81,41 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeletePTRRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteDSRecordset.json
+     */
+    /**
+     * Sample code: Delete DS recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void deleteDSRecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.DS, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteTLSARecordset.json
+     */
+    /**
+     * Sample code: Delete TLSA recordset.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void deleteTLSARecordset(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.dnsZones()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.TLSA, null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeletePTRRecordset.json
      */
     /**
      * Sample code: Delete PTR recordset.
@@ -81,7 +133,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteSRVRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteSRVRecordset.json
      */
     /**
      * Sample code: Delete SRV recordset.
@@ -98,7 +150,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteMXRecordset.json
      */
     /**
      * Sample code: Delete MX recordset.
@@ -110,12 +162,12 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.MX, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteCaaRecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteCaaRecordset.json
      */
     /**
      * Sample code: Delete CAA recordset.
@@ -132,7 +184,7 @@ public final class RecordSetsDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteNSRecordset.json
      */
     /**
      * Sample code: Delete NS recordset.
@@ -144,12 +196,13 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.NS, null, com.azure.core.util.Context.NONE);
     }
 
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/DeleteARecordset.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteCNAMERecordset.
+     * json
      */
     /**
      * Sample code: Delete CNAME recordset.
@@ -161,6 +214,6 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("rg1", "zone1", "record1", RecordType.A, null, com.azure.core.util.Context.NONE);
+            .deleteWithResponse("rg1", "zone1", "record1", RecordType.CNAME, null, com.azure.core.util.Context.NONE);
     }
 }

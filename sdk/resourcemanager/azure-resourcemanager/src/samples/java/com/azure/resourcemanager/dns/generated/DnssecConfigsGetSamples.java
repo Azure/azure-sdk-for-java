@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.dns.generated;
 
 /**
- * Samples for Zones GetByResourceGroup.
+ * Samples for DnssecConfigs Get.
  */
-public final class ZonesGetByResourceGroupSamples {
+public final class DnssecConfigsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetZone.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/GetDnssecConfig.json
      */
     /**
-     * Sample code: Get zone.
+     * Sample code: Get DnssecConfig.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getZone(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void getDnssecConfig(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.dnsZones()
             .manager()
             .serviceClient()
-            .getZones()
-            .getByResourceGroupWithResponse("rg1", "zone1", com.azure.core.util.Context.NONE);
+            .getDnssecConfigs()
+            .getWithResponse("rg1", "zone1", com.azure.core.util.Context.NONE);
     }
 }
