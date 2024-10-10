@@ -24,6 +24,7 @@
 
 #### Bugs Fixed
 * Fixed a direct buffer memory leak due to not explicitly stopping the partition recovery flow in per-partition circuit breaker. - See [PR 41486](https://github.com/Azure/azure-sdk-for-java/pull/41486)
+* Fixed an issue where client-level end-to-end timeout is not getting applied for `Batch` operations. - See [PR 41553](https://github.com/Azure/azure-sdk-for-java/pull/41553)
 
 #### Other Changes
 * Fixed an issue to avoid transient `IllegalArgumentException` due to duplicate json properties for the `uniqueKeyPolicy` property. - See [PR 41608](https://github.com/Azure/azure-sdk-for-java/pull/41608)
