@@ -24,6 +24,7 @@ public class BlobServiceVersionTests {
         assertEquals(Constants.SAS_SERVICE_VERSION, BlobServiceVersion.getLatest().getVersion());
     }
 
+    @SuppressWarnings("deprecation")
     @DisabledIf("doNotRun")
     @Test
     public void headerVersionShouldMatchLastWhenWeRelease() {

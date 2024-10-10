@@ -109,7 +109,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<String>> response = bc.setTags(t)
-            .then(setupBlobMatchConditionAsync(bc, match))
+            .then(setupBlobMatchCondition(bc, match))
             .flatMap(r -> {
                 String newMatch = r;
                 if ("null".equals(newMatch)) {
@@ -145,7 +145,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
                                        String noneMatch, String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<String>> response = setupBlobMatchConditionAsync(bc, noneMatch)
+        Mono<Response<String>> response = setupBlobMatchCondition(bc, noneMatch)
             .flatMap(r -> {
                 String newNoneMatch = r;
                 if ("null".equals(newNoneMatch)) {
@@ -186,7 +186,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void renewBlobLease() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Tuple2<Response<String>, BlobLeaseAsyncClient>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+        Mono<Tuple2<Response<String>, BlobLeaseAsyncClient>> response = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID)
             .flatMap(r -> {
                 BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(bc, r);
                 sleepIfRunningAgainstService(16000);
@@ -210,7 +210,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void renewBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<String>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+        Mono<Response<String>> response = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID)
             .flatMap(r -> createLeaseAsyncClient(bc, r).renewLeaseWithResponse(new BlobRenewLeaseOptions()));
 
         assertAsyncResponseStatusCode(response, 200);
@@ -226,7 +226,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<String>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -256,7 +256,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
                                      String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<String>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<String>> response = Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID), setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -292,7 +292,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void releaseBlobLease() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+        Mono<Response<Void>> response = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID)
             .flatMap(r -> createLeaseAsyncClient(bc, r).releaseLeaseWithResponse(new BlobReleaseLeaseOptions()));
 
         StepVerifier.create(response)
@@ -308,7 +308,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void releaseBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<Void>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+        Mono<Response<Void>> response = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID)
             .flatMap(r -> createLeaseAsyncClient(bc, r).releaseLeaseWithResponse(
                 new BlobReleaseLeaseOptions()));
 
@@ -325,7 +325,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<Void>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -355,7 +355,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
                                        String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID), setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -419,7 +419,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void breakBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        assertAsyncResponseStatusCode(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+        assertAsyncResponseStatusCode(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID)
             .then(createLeaseAsyncClient(bc).breakLeaseWithResponse(new BlobBreakLeaseOptions())),
             202);
     }
@@ -434,7 +434,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<Integer>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_ETAG), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_ETAG), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newMatch = tuple.getT2();
                 if ("null".equals(newMatch)) {
@@ -460,7 +460,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
                                      String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<Integer>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<Integer>> response = Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID), setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if ("null".equals(newNoneMatch)) {
@@ -511,7 +511,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void changeBlobLeaseMin() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<String>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+        Mono<Response<String>> response = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID)
             .flatMap(r -> createLeaseAsyncClient(bc, r).changeLeaseWithResponse(
                 new BlobChangeLeaseOptions(testResourceNamer.randomUuid())));
 
@@ -528,7 +528,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<String>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, match)))
+            .then(Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID), setupBlobMatchCondition(bc, match)))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -558,7 +558,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
                                       String noneMatch, String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
 
-        Mono<Response<String>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+        Mono<Response<String>> response = Mono.zip(setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID), setupBlobMatchCondition(bc, noneMatch))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();

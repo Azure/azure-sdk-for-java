@@ -10,9 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
@@ -56,13 +54,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -81,7 +77,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -95,7 +90,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SuppressWarnings("deprecation") // Using old APIs for testing purposes
 public class BlockBlobApiTests extends BlobTestBase {
     private BlockBlobClient blockBlobClient;
-    private BlobAsyncClient blobAsyncClient;
     private BlobClient blobClient;
     private String blobName;
     private final List<File> createdFiles = new ArrayList<>();
@@ -106,7 +100,6 @@ public class BlockBlobApiTests extends BlobTestBase {
         blobClient = cc.getBlobClient(blobName);
         blockBlobClient = blobClient.getBlockBlobClient();
         blockBlobClient.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize(), true);
-        blobAsyncClient = ccAsync.getBlobAsyncClient(generateBlobName());
     }
 
     @AfterEach
@@ -920,8 +913,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         file.deleteOnExit();
         createdFiles.add(file);
 
-        BlobAsyncClient uploadBlobAsyncClient = getBlobAsyncClient(
-            ENVIRONMENT.getPrimaryAccount().getCredential(), blobAsyncClient.getBlobUrl(),
+        BlobClient uploadBlobClient = getBlobClient(
+            ENVIRONMENT.getPrimaryAccount().getCredential(), blobClient.getBlobUrl(),
             new RequestAssertionPolicy(
                 request -> request.getBodyAsBinaryData() == null || request.getBodyAsBinaryData().isReplayable(),
                 "File upload should be sending replayable request data"
@@ -929,8 +922,8 @@ public class BlockBlobApiTests extends BlobTestBase {
         );
 
         // Block length will be ignored for single shot.
-        StepVerifier.create(uploadBlobAsyncClient.uploadFromFile(file.getPath(), new ParallelTransferOptions()
-            .setBlockSizeLong(blockSize), null, null, null, null)).verifyComplete();
+        uploadBlobClient.uploadFromFile(file.getPath(), new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize), null, null, null, null, null);
 
         File outFile = new File(file.getPath() + "result");
         createdFiles.add(outFile);
@@ -938,15 +931,12 @@ public class BlockBlobApiTests extends BlobTestBase {
         outFile.deleteOnExit();
         Files.deleteIfExists(outFile.toPath());
 
-        FileOutputStream outStream = new FileOutputStream(outFile);
-        outStream.write(Objects.requireNonNull(FluxUtil.collectBytesInByteBufferStream(blobAsyncClient.downloadStream())
-            .block()));
-        outStream.close();
+        blobClient.downloadToFile(outFile.toPath().toString());
 
         compareFiles(file, outFile, 0, fileSize);
-        StepVerifier.create(blobAsyncClient.getBlockBlobAsyncClient().listBlocks(BlockListType.COMMITTED))
-            .assertNext(it -> assertEquals(it.getCommittedBlocks().size(), committedBlockCount))
-            .verifyComplete();
+
+        BlockList response = blobClient.getBlockBlobClient().listBlocks(BlockListType.COMMITTED);
+        assertEquals(response.getCommittedBlocks().size(), committedBlockCount);
     }
 
     @SuppressWarnings("deprecation")
@@ -956,9 +946,9 @@ public class BlockBlobApiTests extends BlobTestBase {
             Arguments.of(10, null, 0), // Size is too small to trigger stage block uploading
             Arguments.of(10 * Constants.KB, null, 0), // Size is too small to trigger stage block uploading
             Arguments.of(50 * Constants.MB, null, 0), // Size is too small to trigger stage block uploading
-            Arguments.of(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1, null,
+            Arguments.of(BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1, null,
                 // HTBB optimizations should trigger when file size is >100MB and defaults are used.
-                (int) Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1.0) / BlobAsyncClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE)),
+                (int) Math.ceil((BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1.0) / BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE)),
             // Size is too small to trigger stage block uploading
             Arguments.of(101 * Constants.MB, 4L * 1024 * 1024, 0)
         );
@@ -1045,10 +1035,10 @@ public class BlockBlobApiTests extends BlobTestBase {
     private static Stream<Arguments> uploadFromFileOptionsSupplier() {
         return Stream.of(
             // Test that the default for singleUploadSize is the maximum
-            Arguments.of(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES - 1, null, null, 0),
-            Arguments.of(BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1, null, null,
+            Arguments.of(BlockBlobClient.MAX_UPLOAD_BLOB_BYTES - 1, null, null, 0),
+            Arguments.of(BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1, null, null,
                 /* This also validates the default for blockSize*/
-                Math.ceil(((double) BlockBlobAsyncClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE)),
+                Math.ceil(((double) BlockBlobClient.MAX_UPLOAD_BLOB_BYTES + 1) / (double) BlobClient.BLOB_DEFAULT_HTBB_UPLOAD_BLOCK_SIZE)),
             // Test that singleUploadSize is respected
             Arguments.of(100, 50L, null, 1),
             // Test that blockSize is respected
@@ -1393,8 +1383,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         createdFiles.add(file);
 
         blobClient.uploadFromFile(file.toPath().toString(), true);
-        StepVerifier.create(blobAsyncClient.uploadFromFile(getRandomFile(50).toPath().toString(), true))
-            .verifyComplete();
+        assertDoesNotThrow(() -> blobClient.uploadFromFile(getRandomFile(50).toPath().toString(), true));
     }
 
     @Test
