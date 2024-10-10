@@ -21,7 +21,7 @@ public final class NetworkProfilesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"uyilflqoiquvrehm\",\"ipAddressVersion\":\"jhvsujztczyt\",\"subnet\":{}},{\"address\":\"w\",\"ipAddressVersion\":\"uunfprnjletlxsm\",\"subnet\":{}},{\"address\":\"do\",\"ipAddressVersion\":\"fa\",\"subnet\":{}},{\"address\":\"aziynknlqwzdv\",\"ipAddressVersion\":\"w\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"dtmaa\",\"ipAddressVersion\":\"uhuxylrjvmtyg\",\"subnet\":{}},{\"address\":\"zyos\",\"ipAddressVersion\":\"p\",\"subnet\":{}},{\"address\":\"kfkyjp\",\"ipAddressVersion\":\"pbpssdfpp\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"eyujtvczkcnyxrx\",\"ipAddressVersion\":\"njdxvglnkvxl\",\"subnet\":{}},{\"address\":\"glqivbgkcv\",\"ipAddressVersion\":\"pzvuqdflvo\",\"subnet\":{}},{\"address\":\"pfpubcpzgpx\",\"ipAddressVersion\":\"vhjknidi\",\"subnet\":{}},{\"address\":\"jxgpnrhgovfg\",\"ipAddressVersion\":\"kqmhhaowjr\",\"subnet\":{}}]}]}";
+            = "{\"networkInterfaces\":[{\"ipAddresses\":[{\"address\":\"du\",\"ipAddressVersion\":\"birdsvuwcobiegs\",\"subnet\":{}},{\"address\":\"inwjizcilngh\",\"ipAddressVersion\":\"h\",\"subnet\":{}}]},{\"ipAddresses\":[{\"address\":\"xqmul\",\"ipAddressVersion\":\"lxqzvn\",\"subnet\":{}},{\"address\":\"bycucrwnamikz\",\"ipAddressVersion\":\"rqbsmswziq\",\"subnet\":{}},{\"address\":\"hokzrusw\",\"ipAddressVersion\":\"hczznvf\",\"subnet\":{}}]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class NetworkProfilesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkProfile response = manager.networkProfiles()
-            .getWithResponse("zqaclna", "xbiygnugjknfsmf", com.azure.core.util.Context.NONE)
+            .getWithResponse("epqw", "ixmonstshiyxg", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("uyilflqoiquvrehm", response.networkInterfaces().get(0).ipAddresses().get(0).address());
-        Assertions.assertEquals("jhvsujztczyt",
+        Assertions.assertEquals("du", response.networkInterfaces().get(0).ipAddresses().get(0).address());
+        Assertions.assertEquals("birdsvuwcobiegs",
             response.networkInterfaces().get(0).ipAddresses().get(0).ipAddressVersion());
     }
 }

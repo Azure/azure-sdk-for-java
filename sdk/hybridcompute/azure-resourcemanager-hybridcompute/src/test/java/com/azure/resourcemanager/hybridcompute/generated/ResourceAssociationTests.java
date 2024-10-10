@@ -10,7 +10,7 @@ import com.azure.resourcemanager.hybridcompute.models.ResourceAssociation;
 public final class ResourceAssociationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceAssociation model = BinaryData.fromString("{\"name\":\"qddrihpfhoqcaae\",\"accessMode\":\"learning\"}")
+        ResourceAssociation model = BinaryData.fromString("{\"name\":\"joxoism\",\"accessMode\":\"audit\"}")
             .toObject(ResourceAssociation.class);
     }
 

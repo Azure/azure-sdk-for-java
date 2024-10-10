@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,8 +35,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.LicensesClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.LicenseInner;
-import com.azure.resourcemanager.hybridcompute.models.LicensesListResult;
 import com.azure.resourcemanager.hybridcompute.models.LicenseUpdate;
+import com.azure.resourcemanager.hybridcompute.models.LicensesListResult;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -71,6 +72,15 @@ public final class LicensesClientImpl implements LicensesClient {
     @Host("{$host}")
     @ServiceInterface(name = "HybridComputeManagem")
     public interface LicensesService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/validateLicense")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> validateLicense(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") LicenseInner parameters, @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/licenses/{licenseName}")
         @ExpectedResponses({ 200 })
@@ -140,6 +150,194 @@ public final class LicensesClientImpl implements LicensesClient {
         Mono<Response<LicensesListResult>> listBySubscriptionNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateLicenseWithResponseAsync(LicenseInner parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.validateLicense(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> validateLicenseWithResponseAsync(LicenseInner parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.validateLicense(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginValidateLicenseAsync(LicenseInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono = validateLicenseWithResponseAsync(parameters);
+        return this.client.<LicenseInner, LicenseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseInner.class, LicenseInner.class, this.client.getContext());
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LicenseInner>, LicenseInner> beginValidateLicenseAsync(LicenseInner parameters,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = validateLicenseWithResponseAsync(parameters, context);
+        return this.client.<LicenseInner, LicenseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            LicenseInner.class, LicenseInner.class, context);
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(LicenseInner parameters) {
+        return this.beginValidateLicenseAsync(parameters).getSyncPoller();
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LicenseInner>, LicenseInner> beginValidateLicense(LicenseInner parameters,
+        Context context) {
+        return this.beginValidateLicenseAsync(parameters, context).getSyncPoller();
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LicenseInner> validateLicenseAsync(LicenseInner parameters) {
+        return beginValidateLicenseAsync(parameters).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LicenseInner> validateLicenseAsync(LicenseInner parameters, Context context) {
+        return beginValidateLicenseAsync(parameters, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LicenseInner validateLicense(LicenseInner parameters) {
+        return validateLicenseAsync(parameters).block();
+    }
+
+    /**
+     * The operation to validate a license.
+     * 
+     * @param parameters Parameters supplied to the license validation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a license in a hybrid machine.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LicenseInner validateLicense(LicenseInner parameters, Context context) {
+        return validateLicenseAsync(parameters, context).block();
     }
 
     /**

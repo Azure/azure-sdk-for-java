@@ -23,7 +23,7 @@ public final class PrivateLinkScopesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"bebjfu\",\"privateLinkScopeId\":\"moichdlpnfpubntn\",\"privateEndpointConnections\":[{\"id\":\"viqsowsaaelcattc\",\"name\":\"hplrvkmjcwmjvlg\",\"type\":\"gcvkyyli\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"jpsfxsfu\",\"description\":\"tl\"},\"provisioningState\":\"mvagbwidqlvhuko\",\"groupIds\":[\"fizr\",\"jfnmjmvlwyz\",\"iblkujr\",\"lfojuidjp\"]}},{\"id\":\"yjucejikzoeo\",\"name\":\"tzejetjklnt\",\"type\":\"yjuzkdb\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"xrzvhqjwtrhtgvgz\",\"description\":\"c\"},\"provisioningState\":\"kolawjmjsmwrokc\",\"groupIds\":[\"zzzwy\",\"afitlhguynuchlg\",\"ltxdwhmozu\",\"gzvlnsnn\"]}},{\"id\":\"fpafolpymwamxq\",\"name\":\"agpgdph\",\"type\":\"dulajvlejchcs\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"nmzlanru\",\"description\":\"dwv\"},\"provisioningState\":\"hcnzqt\",\"groupIds\":[\"mqrhvthl\",\"iwdcxsmlzzhzd\",\"xetlgydlhqv\",\"n\"]}},{\"id\":\"xybafiqgea\",\"name\":\"bgj\",\"type\":\"glklb\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"dw\",\"description\":\"wvmzegjonfhjir\"},\"provisioningState\":\"dnqzbrfkspzhzmt\",\"groupIds\":[\"cit\",\"igsxcdgljplk\",\"ua\",\"htomflrytswfp\"]}}]},\"location\":\"dgycxnmskwhqjjy\",\"tags\":{\"edwqslsrh\":\"rlpshhkv\",\"wwsko\":\"pq\"},\"id\":\"dcbrwimuvq\",\"name\":\"josovyrrl\",\"type\":\"a\"}]}";
+            = "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"jww\",\"privateLinkScopeId\":\"z\",\"privateEndpointConnections\":[{\"id\":\"mxqhndvnoamldse\",\"name\":\"ohdjhhflzok\",\"type\":\"ox\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"jetagltsxoatft\",\"description\":\"zpnpbswv\"},\"provisioningState\":\"loccsrmozihm\",\"groupIds\":[\"awtxxpk\"]}},{\"id\":\"cxcjxgry\",\"name\":\"mpcycilrmcaykgg\",\"type\":\"xu\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"sxwpndfcpfnznthj\",\"description\":\"wkjaos\"},\"provisioningState\":\"uzvoamktcqiosm\",\"groupIds\":[\"ahgx\"]}},{\"id\":\"lyrtltlaprlt\",\"name\":\"atbhjmznn\",\"type\":\"oqeq\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"vlagun\",\"description\":\"tgfebwln\"},\"provisioningState\":\"hyreeu\",\"groupIds\":[\"av\",\"pdqmjxlyyzglgouw\",\"lmjjyuo\"]}},{\"id\":\"tob\",\"name\":\"kjeytunl\",\"type\":\"jkwrusnkq\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"rqunjq\",\"description\":\"denxau\"},\"provisioningState\":\"pakdkifmjnnawt\",\"groupIds\":[\"pxuckpggq\",\"wey\",\"rdhlis\",\"gwflq\"]}}]},\"location\":\"pizruwnpqxpxiw\",\"tags\":{\"zjvkviirhgfgrws\":\"gjsaasiixtm\",\"tctbrxkjzwrgxffm\":\"pgratzvzbglbyvi\"},\"id\":\"hkwfbkgozxwop\",\"name\":\"bydpizqaclnapxb\",\"type\":\"yg\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -35,9 +35,9 @@ public final class PrivateLinkScopesListMockTests {
         PagedIterable<HybridComputePrivateLinkScope> response
             = manager.privateLinkScopes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dgycxnmskwhqjjy", response.iterator().next().location());
-        Assertions.assertEquals("rlpshhkv", response.iterator().next().tags().get("edwqslsrh"));
-        Assertions.assertEquals(PublicNetworkAccessType.DISABLED,
+        Assertions.assertEquals("pizruwnpqxpxiw", response.iterator().next().location());
+        Assertions.assertEquals("gjsaasiixtm", response.iterator().next().tags().get("zjvkviirhgfgrws"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
             response.iterator().next().properties().publicNetworkAccess());
     }
 }

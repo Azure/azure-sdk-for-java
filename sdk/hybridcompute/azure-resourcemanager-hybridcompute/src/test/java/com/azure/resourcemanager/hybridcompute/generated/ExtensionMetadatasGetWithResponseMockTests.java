@@ -20,7 +20,7 @@ public final class ExtensionMetadatasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"version\":\"bpdqmjxlyy\",\"extensionType\":\"lgouwtlmjj\",\"publisher\":\"ojqtobaxk\"},\"id\":\"ytunlbfjkwr\",\"name\":\"snkq\",\"type\":\"hsyrqunj\"}";
+            = "{\"properties\":{\"version\":\"tbzbkiwbuqnyophz\",\"extensionType\":\"l\",\"publisher\":\"crpfbcunez\"},\"id\":\"e\",\"name\":\"elfwy\",\"type\":\"wl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,8 @@ public final class ExtensionMetadatasGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ExtensionValue response = manager.extensionMetadatas()
-            .getWithResponse("katbhjm", "nnbsoqeqa", "arvlagunbt", "febwlnbmhyreeudz", com.azure.core.util.Context.NONE)
+            .getWithResponse("mspofapvuhryl", "iofrzgbzjedmstk", "nlvxbcuii", "nktwfansnvpdibmi",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
     }

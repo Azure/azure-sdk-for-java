@@ -10,8 +10,8 @@ package com.azure.resourcemanager.hybridcompute.generated;
 public final class ExtensionMetadataGetSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/
-     * extension/ExtensionMetadata_Get.json
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/extension/
+     * ExtensionMetadata_Get.json
      */
     /**
      * Sample code: GET an extensions metadata.
