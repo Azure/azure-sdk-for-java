@@ -78,7 +78,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
 
-        if (this.isPerPartitionAutomaticFailoverEnabled) {
+        if (!this.isPerPartitionAutomaticFailoverEnabled) {
             return false;
         }
 
@@ -106,7 +106,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        if (StringUtils.isNotEmpty(resolvedCollectionRid)) {
+        if (StringUtils.isEmpty(resolvedCollectionRid)) {
             return false;
         }
 

@@ -11,10 +11,12 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
+import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
 import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -23,12 +25,15 @@ import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -42,6 +47,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,8 +58,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
     private CosmosAsyncDatabase sharedDatabase;
     private CosmosAsyncContainer sharedSinglePartitionContainer;
     private AccountLevelLocationContext accountLevelLocationReadableLocationContext;
-    private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor cosmosClientBuilderAccessor
+    private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor COSMOS_CLIENT_BUILDER_ACCESSOR
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests(CosmosClientBuilder clientBuilder) {
@@ -74,9 +81,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
     }
 
     @Test(groups = {"multi-region"})
-    public void testPpafWithServiceUnavailable() throws URISyntaxException {
+    public void testPpafWithServiceUnavailable() throws URISyntaxException, JsonProcessingException {
 
-        RntbdTransportClient rntbdTransportClientMock = Mockito.mock(RntbdTransportClient.class);
+        TransportClient transportClientMock = Mockito.mock(TransportClient.class);
         List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
         Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
 
@@ -92,7 +99,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 .openConnectionsAndInitCaches(proactiveInitConfig)
                 .preferredRegions(preferredRegions);
 
-            cosmosClientBuilderAccessor.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
+            COSMOS_CLIENT_BUILDER_ACCESSOR.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
 
             CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
 
@@ -106,6 +113,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
             ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(replicatedResourceClient);
             RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
 
@@ -134,11 +144,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             String regionWithIssues = preferredRegions.get(0);
             URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
 
-            ReflectionUtils.setTransportClient(storeReader, rntbdTransportClientMock);
+            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
 
-            setupRntbdTransportClientToReturnSuccessResponse(rntbdTransportClientMock, null);
-            setupRntbdTransportClientToThrowCosmosException(
-                rntbdTransportClientMock,
+            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(201));
+            setupTransportClientToThrowCosmosException(
+                transportClientMock,
                 partitionKeyRangeWithIssues,
                 locationEndpointWithIssues,
                 new GoneException("", HttpConstants.SubStatusCodes.SERVER_GENERATED_410));
@@ -154,18 +165,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             assertThat(createItemResponseAfterFailover).isNotNull();
             validateDiagnosticsContext(createItemResponseAfterFailover.getDiagnostics(), 1, HttpConstants.StatusCodes.CREATED);
         } finally {
-
         }
     }
 
-    private void setupRntbdTransportClientToThrowCosmosException(
-        RntbdTransportClient rntbdTransportClientMock,
+    private void setupTransportClientToThrowCosmosException(
+        TransportClient transportClientMock,
         PartitionKeyRange partitionKeyRange,
         URI locationEndpointToRoute,
         CosmosException cosmosException) {
 
         Mockito.when(
-            rntbdTransportClientMock.invokeStoreAsync(
+            transportClientMock.invokeResourceOperationAsync(
                 Mockito.any(),
                 Mockito.argThat(argument ->
                     argument.requestContext.resolvedPartitionKeyRange
@@ -175,11 +185,11 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             .thenReturn(Mono.error(cosmosException));
     }
 
-    private void setupRntbdTransportClientToReturnSuccessResponse(
-        RntbdTransportClient rntbdTransportClientMock,
+    private void setupTransportClientToReturnSuccessResponse(
+        TransportClient transportClientMock,
         StoreResponse storeResponse) {
 
-        Mockito.when(rntbdTransportClientMock.invokeStoreAsync(Mockito.any(), Mockito.any())).thenReturn(Mono.just(storeResponse));
+        Mockito.when(transportClientMock.invokeResourceOperationAsync(Mockito.any(), Mockito.any())).thenReturn(Mono.just(storeResponse));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getPartitionKeyRangesForContainer(
@@ -234,6 +244,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         assertThat(actualCosmosDiagnostics.getDiagnosticsContext().getStatusCode()).isEqualTo(expectedStatusCode);
     }
 
+    private StoreResponse constructStoreResponse(int statusCode) throws JsonProcessingException {
+        return StoreResponseBuilder.create()
+            .withContent(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()))
+            .withStatus(statusCode)
+            .build();
+    }
+
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
         private final List<String> serviceOrderedWriteableRegions;
@@ -248,5 +265,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             this.serviceOrderedWriteableRegions = serviceOrderedWriteableRegions;
             this.regionNameToEndpoint = regionNameToEndpoint;
         }
+    }
+
+    private TestPojo getTestPojoObject() {
+        TestPojo testPojo = new TestPojo();
+        String uuid = UUID.randomUUID().toString();
+        testPojo.setId(uuid);
+        testPojo.setMypk(uuid);
+        return testPojo;
     }
 }
