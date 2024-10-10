@@ -34,14 +34,14 @@ public class RealtimesImpl {
     /**
      * The service client containing this operation class.
      */
-    private final OpenAIClientImpl client;
+    private final BaseOpenAIClient client;
 
     /**
      * Initializes an instance of RealtimesImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    RealtimesImpl(OpenAIClientImpl client) {
+    RealtimesImpl(BaseOpenAIClient client) {
         this.service
                 = RestProxy.create(RealtimesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;

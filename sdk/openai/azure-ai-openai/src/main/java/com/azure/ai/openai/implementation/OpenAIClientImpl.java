@@ -40,7 +40,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the OpenAIClient type.
  */
-public final class OpenAIClientImpl {
+public final class OpenAIClientImpl implements BaseOpenAIClient {
     /**
      * The proxy service used to perform REST calls.
      */

@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Implementation for calling Non-Azure OpenAI Service
  */
-public final class NonAzureOpenAIClientImpl {
+public final class NonAzureOpenAIClientImpl implements BaseOpenAIClient {
     /** The proxy service used to perform REST calls. */
     private final NonAzureOpenAIClientService service;
 
@@ -661,11 +661,15 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getEmbeddings(
-                                OPEN_AI_ENDPOINT,
+                                getEndpoint(),
                                 accept,
                                 embeddingsOptionsUpdated,
                                 requestOptions,
                                 context));
+    }
+
+    public String getEndpoint() {
+        return OPEN_AI_ENDPOINT;
     }
 
     /**
@@ -722,7 +726,7 @@ public final class NonAzureOpenAIClientImpl {
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData embeddingsOptionsUpdated = addModelIdJson(embeddingsOptions, modelId);
         return service.getEmbeddingsSync(
-                OPEN_AI_ENDPOINT,
+                getEndpoint(),
                 accept,
                 embeddingsOptionsUpdated,
                 requestOptions,
@@ -820,7 +824,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
             context ->
                 service.getCompletions(
-                    OPEN_AI_ENDPOINT,
+                        getEndpoint(),
                     accept,
                     completionsOptionsUpdated,
                     requestOptions,
@@ -914,7 +918,7 @@ public final class NonAzureOpenAIClientImpl {
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData completionsOptionsUpdated = addModelIdJson(completionsOptions, modelId);
         return service.getCompletionsSync(
-            OPEN_AI_ENDPOINT,
+                getEndpoint(),
             accept,
             completionsOptionsUpdated,
             requestOptions,
@@ -1003,7 +1007,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
             context ->
                 service.getChatCompletions(
-                    OPEN_AI_ENDPOINT,
+                        getEndpoint(),
                     accept,
                     chatCompletionsOptionsUpdated,
                     requestOptions,
@@ -1089,7 +1093,7 @@ public final class NonAzureOpenAIClientImpl {
         // modelId is part of the request body in nonAzure OpenAI
         final BinaryData chatCompletionsOptionsUpdated = addModelIdJson(chatCompletionsOptions, modelId);
         return service.getChatCompletionsSync(
-            OPEN_AI_ENDPOINT,
+                getEndpoint(),
             accept,
             chatCompletionsOptionsUpdated,
             requestOptions,
@@ -1148,7 +1152,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getImageGenerations(
-                                OPEN_AI_ENDPOINT,
+                                getEndpoint(),
                                 accept,
                                 imageGenerationOptionsUpdated,
                                 requestOptions,
@@ -1204,7 +1208,7 @@ public final class NonAzureOpenAIClientImpl {
         final String accept = "application/json";
         final BinaryData imageGenerationOptionsUpdated = addModelIdJson(imageGenerationOptions, modelId);
         return service.getImageGenerationsSync(
-            OPEN_AI_ENDPOINT,
+                getEndpoint(),
             accept,
             imageGenerationOptionsUpdated,
             requestOptions,
@@ -1290,7 +1294,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranscriptionAsResponseObject(
-                                OPEN_AI_ENDPOINT,
+                                getEndpoint(),
                                 accept,
                                 audioTranscriptionOptions,
                                 requestOptions,
@@ -1355,7 +1359,7 @@ public final class NonAzureOpenAIClientImpl {
             String modelId, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getAudioTranscriptionAsResponseObjectSync(
-                OPEN_AI_ENDPOINT,
+                getEndpoint(),
                 accept,
                 audioTranscriptionOptions,
                 requestOptions,
@@ -1402,7 +1406,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranscriptionAsPlainText(
-                                OPEN_AI_ENDPOINT,
+                                getEndpoint(),
                                 accept,
                                 audioTranscriptionOptions,
                                 requestOptions,
@@ -1446,7 +1450,7 @@ public final class NonAzureOpenAIClientImpl {
             String modelId, BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getAudioTranscriptionAsPlainTextSync(
-                OPEN_AI_ENDPOINT,
+                getEndpoint(),
                 accept,
                 audioTranscriptionOptions,
                 requestOptions,
@@ -1512,7 +1516,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranslationAsResponseObject(
-                                OPEN_AI_ENDPOINT,
+                                getEndpoint(),
                                 accept,
                                 audioTranslationOptions,
                                 requestOptions,
@@ -1576,7 +1580,7 @@ public final class NonAzureOpenAIClientImpl {
             String modelId, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getAudioTranslationAsResponseObjectSync(
-                OPEN_AI_ENDPOINT,
+                getEndpoint(),
                 accept,
                 audioTranslationOptions,
                 requestOptions,
@@ -1621,7 +1625,7 @@ public final class NonAzureOpenAIClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getAudioTranslationAsPlainText(
-                                OPEN_AI_ENDPOINT,
+                                getEndpoint(),
                                 accept,
                                 audioTranslationOptions,
                                 requestOptions,
@@ -1664,7 +1668,7 @@ public final class NonAzureOpenAIClientImpl {
             String modelId, BinaryData audioTranslationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         return service.getAudioTranslationAsPlainTextSync(
-                OPEN_AI_ENDPOINT,
+                getEndpoint(),
                 accept,
                 audioTranslationOptions,
                 requestOptions,
@@ -1706,7 +1710,7 @@ public final class NonAzureOpenAIClientImpl {
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(context -> service.generateSpeechFromText(
-                    OPEN_AI_ENDPOINT, accept, speechGenerationOptions, requestOptions, context));
+                getEndpoint(), accept, speechGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1742,7 +1746,7 @@ public final class NonAzureOpenAIClientImpl {
     public Response<BinaryData> generateSpeechFromTextWithResponse(BinaryData speechGenerationOptions,
                                                                    RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        return service.generateSpeechFromTextSync(OPEN_AI_ENDPOINT, accept, speechGenerationOptions,
+        return service.generateSpeechFromTextSync(getEndpoint(), accept, speechGenerationOptions,
                 requestOptions, Context.NONE);
     }
 
@@ -1787,7 +1791,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listFilesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listFiles(OPEN_AI_ENDPOINT, accept, requestOptions, context));
+        return FluxUtil.withContext(context -> service.listFiles(getEndpoint(), accept, requestOptions, context));
     }
 
     /**
@@ -1831,7 +1835,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listFilesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listFilesSync(OPEN_AI_ENDPOINT, accept, requestOptions, Context.NONE);
+        return service.listFilesSync(getEndpoint(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1865,7 +1869,7 @@ public final class NonAzureOpenAIClientImpl {
                                                                   RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.uploadFile(OPEN_AI_ENDPOINT, contentType, accept,
+        return FluxUtil.withContext(context -> service.uploadFile(getEndpoint(), contentType, accept,
             uploadFileRequest, requestOptions, context));
     }
 
@@ -1898,7 +1902,7 @@ public final class NonAzureOpenAIClientImpl {
     public Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.uploadFileSync(OPEN_AI_ENDPOINT, contentType, accept, uploadFileRequest, requestOptions,
+        return service.uploadFileSync(getEndpoint(), contentType, accept, uploadFileRequest, requestOptions,
             Context.NONE);
     }
 
@@ -1927,7 +1931,7 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> deleteFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.deleteFile(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, context));
+            .withContext(context -> service.deleteFile(getEndpoint(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -1953,7 +1957,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.deleteFileSync(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, Context.NONE);
+        return service.deleteFileSync(getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -1986,7 +1990,7 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> getFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getFile(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, context));
+            .withContext(context -> service.getFile(getEndpoint(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -2017,7 +2021,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getFileSync(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, Context.NONE);
+        return service.getFileSync(getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2040,7 +2044,7 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.getFileContent(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, context));
+            context -> service.getFileContent(getEndpoint(), fileId, accept, requestOptions, context));
     }
 
     /**
@@ -2062,7 +2066,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getFileContentSync(OPEN_AI_ENDPOINT, fileId, accept, requestOptions, Context.NONE);
+        return service.getFileContentSync(getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2139,7 +2143,7 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> listBatchesWithResponseAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listBatches(OPEN_AI_ENDPOINT, accept, requestOptions, context));
+            .withContext(context -> service.listBatches(getEndpoint(), accept, requestOptions, context));
     }
 
     /**
@@ -2214,7 +2218,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listBatchesWithResponse(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.listBatchesSync(OPEN_AI_ENDPOINT, accept, requestOptions, Context.NONE);
+        return service.listBatchesSync(getEndpoint(), accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2290,7 +2294,7 @@ public final class NonAzureOpenAIClientImpl {
                                                                    RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.createBatch(OPEN_AI_ENDPOINT, accept, createBatchRequest, requestOptions, context));
+            context -> service.createBatch(getEndpoint(), accept, createBatchRequest, requestOptions, context));
     }
 
     /**
@@ -2364,7 +2368,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createBatchWithResponse(BinaryData createBatchRequest, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.createBatchSync(OPEN_AI_ENDPOINT, accept, createBatchRequest, requestOptions, Context.NONE);
+        return service.createBatchSync(getEndpoint(), accept, createBatchRequest, requestOptions, Context.NONE);
     }
 
     /**
@@ -2425,7 +2429,7 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> getBatchWithResponseAsync(String batchId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getBatch(OPEN_AI_ENDPOINT, batchId, accept, requestOptions, context));
+            .withContext(context -> service.getBatch(getEndpoint(), batchId, accept, requestOptions, context));
     }
 
     /**
@@ -2484,7 +2488,7 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getBatchWithResponse(String batchId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getBatchSync(OPEN_AI_ENDPOINT, batchId, accept, requestOptions, Context.NONE);
+        return service.getBatchSync(getEndpoint(), batchId, accept, requestOptions, Context.NONE);
     }
 
     /**
@@ -2545,7 +2549,7 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> cancelBatchWithResponseAsync(String batchId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.cancelBatch(OPEN_AI_ENDPOINT, batchId, accept, requestOptions, context));
+            .withContext(context -> service.cancelBatch(getEndpoint(), batchId, accept, requestOptions, context));
     }
 
     /**
@@ -2604,6 +2608,6 @@ public final class NonAzureOpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelBatchWithResponse(String batchId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.cancelBatchSync(OPEN_AI_ENDPOINT, batchId, accept, requestOptions, Context.NONE);
+        return service.cancelBatchSync(getEndpoint(), batchId, accept, requestOptions, Context.NONE);
     }
 }
