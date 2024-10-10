@@ -10,6 +10,7 @@ import com.azure.ai.vision.face.FaceClientBuilder;
 import com.azure.ai.vision.face.models.FaceTrainingResult;
 import com.azure.ai.vision.face.models.FaceDetectionModel;
 import com.azure.ai.vision.face.models.FaceDetectionResult;
+import com.azure.ai.vision.face.models.FaceFindSimilarResult;
 import com.azure.ai.vision.face.models.FaceRecognitionModel;
 import com.azure.ai.vision.face.models.FindSimilarMatchMode;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
@@ -18,12 +19,10 @@ import com.azure.ai.vision.face.samples.utils.Utils;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
-import com.nimbusds.jose.util.Pair;
 
 import java.util.List;
 
 import static com.azure.ai.vision.face.samples.utils.Utils.log;
-import static com.azure.ai.vision.face.samples.utils.Utils.logObject;
 
 public class FindSimilarWithLargeFaceList {
     public static void main(String[] args) {
@@ -41,7 +40,7 @@ public class FindSimilarWithLargeFaceList {
         largeFaceListClient.create("List of Face", "Large Face List for Test", FaceRecognitionModel.RECOGNITION_04);
 
         try {
-            addFaceToLargeFaceListAndTrain(largeFaceListId, largeFaceListClient);
+            addFaceToLargeFaceListAndTrain(largeFaceListClient);
 
             //Create client to run Detect and FindSimilar operations
             FaceClient client = new FaceClientBuilder()
@@ -55,19 +54,19 @@ public class FindSimilarWithLargeFaceList {
             List<FaceDetectionResult> faceToFindSimilar = client.detect(
                 imageBinary, FaceDetectionModel.DETECTION_03, FaceRecognitionModel.RECOGNITION_04, true);
 
-            faceToFindSimilar.stream()
-                .map(face -> Pair.of(face,
-                    // Call FindSimilar for each face.
-                    client.findSimilarFromLargeFaceList(
-                        face.getFaceId(), largeFaceListId, 2, FindSimilarMatchMode.MATCH_FACE)))
-                .forEach(result -> logObject("FindSimilar faces for " + result.getLeft().getFaceId() + ": ", result.getRight(), true));
+            for (FaceDetectionResult face : faceToFindSimilar) {
+                List<FaceFindSimilarResult> results = client.findSimilarFromLargeFaceList(face.getFaceId(), largeFaceListId, 2, FindSimilarMatchMode.MATCH_FACE);
+                for (FaceFindSimilarResult result : results) {
+                    log("FindSimilar face for " + face.getFaceId() + ": " + result.getConfidence() + " with persistedFaceId: " + result.getPersistedFaceId());
+                }
+            }
         } finally {
             // Delete the LargeFaceList
             largeFaceListClient.delete();
         }
     }
 
-    private static void addFaceToLargeFaceListAndTrain(String largeFaceListId, LargeFaceListClient client) {
+    private static void addFaceToLargeFaceListAndTrain(LargeFaceListClient client) {
         log("Add face to LargeFaceList ... ");
         //Add six image to the LargeFaceList
         client.addFace(

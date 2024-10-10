@@ -41,7 +41,7 @@ public class IdentifyFromLargePersonGroups {
             "Family 1", "A sweet family", FaceRecognitionModel.RECOGNITION_04);
         try {
             //Add 3 Persons with 2 faces for each of them to LargePersonGroup
-            createThreePersonInLargePersonGroupAndTrain(largePersonGroupClient, largePersonGroupId);
+            createThreePersonInLargePersonGroupAndTrain(largePersonGroupClient);
 
             //Create client to run Detect and Verify and Identify operations
             FaceClient client = createFaceClient();
@@ -73,7 +73,7 @@ public class IdentifyFromLargePersonGroups {
             identifyIfFaceBelongsToAPerson(client, largePersonGroupClient, largePersonGroupId, faceIdGill);
 
             // Add another Person to whom the second face belongs to.
-            createAnotherPersonInLargePersonGroupAndTrain(largePersonGroupClient, largePersonGroupId);
+            createAnotherPersonInLargePersonGroupAndTrain(largePersonGroupClient);
 
             // Call Identify to again, we expect that we can find Gill this time.
             log("Identify the second face again");
@@ -109,20 +109,20 @@ public class IdentifyFromLargePersonGroups {
     }
 
     private static void createThreePersonInLargePersonGroupAndTrain(
-        LargePersonGroupClient client, String largePersonGroupId) {
+        LargePersonGroupClient client) {
 
         log("Add 3 Persons with 2 faces for each of them to LargePersonGroup... ");
         //Add 3 People with 2 faces from two different images to the LargePersonGroup
         createPersonToLargePersonGroupAndAddFaces(
-            client, largePersonGroupId, "Bill", "Dad",
+            client, "Bill", "Dad",
             Resources.TEST_IMAGE_PATH_FAMILY1_DAD1, Resources.TEST_IMAGE_PATH_FAMILY1_DAD2);
 
         createPersonToLargePersonGroupAndAddFaces(
-            client, largePersonGroupId, "Clare", "Mon",
+            client, "Clare", "Mon",
             Resources.TEST_IMAGE_PATH_FAMILY1_MON1, Resources.TEST_IMAGE_PATH_FAMILY1_MON2);
 
         createPersonToLargePersonGroupAndAddFaces(
-            client, largePersonGroupId, "Ron", "Son",
+            client, "Ron", "Son",
             Resources.TEST_IMAGE_PATH_FAMILY1_SON1, Resources.TEST_IMAGE_PATH_FAMILY1_SON2);
         log("Done");
 
@@ -134,12 +134,12 @@ public class IdentifyFromLargePersonGroups {
     }
 
     private static void createAnotherPersonInLargePersonGroupAndTrain(
-        LargePersonGroupClient client, String largePersonGroupId) {
+        LargePersonGroupClient client) {
 
         log("Add another Person to LargePersonGroup and add faces to the Person... ");
         //Add 3 People with 2 faces from two different images to the LargePersonGroup
         createPersonToLargePersonGroupAndAddFaces(
-            client, largePersonGroupId, "Gill", "Daughter",
+            client, "Gill", "Daughter",
             Resources.TEST_IMAGE_PATH_FAMILY1_DAUGHTER1, Resources.TEST_IMAGE_PATH_FAMILY1_DAUGHTER2);
         log("Done");
 
