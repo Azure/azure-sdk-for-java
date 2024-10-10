@@ -8,8 +8,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelayOptions;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.BodilessMatcher;
@@ -74,12 +72,10 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isLiveMode()) {
             credential = new AzurePowerShellCredentialBuilder()
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .additionallyAllowedTenants("*")
                 .build();
         } else if (interceptorManager.isRecordMode()) {
             credential = new DefaultAzureCredentialBuilder()
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .additionallyAllowedTenants("*")
                 .build();
         } else {
@@ -91,7 +87,6 @@ public abstract class SecretClientTestBase extends TestProxyTestBase {
         }
 
         SecretClientBuilder builder = new SecretClientBuilder()
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .vaultUrl(endpoint)
             .serviceVersion(serviceVersion)
             .credential(credential)

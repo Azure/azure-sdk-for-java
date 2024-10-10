@@ -45,7 +45,6 @@ public class SecretClientTest extends SecretClientTestBase {
     private void createClient(HttpClient httpClient, SecretServiceVersion serviceVersion, String testTenantId) {
         secretClient = getClientBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode()
             ? interceptorManager.getPlaybackClient() : httpClient), testTenantId, getEndpoint(), serviceVersion)
-            .disableChallengeResourceVerification()
             .buildClient();
 
         if (!interceptorManager.isLiveMode()) {
