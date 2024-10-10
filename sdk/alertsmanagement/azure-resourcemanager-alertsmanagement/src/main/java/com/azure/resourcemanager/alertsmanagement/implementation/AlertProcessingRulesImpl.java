@@ -23,8 +23,7 @@ public final class AlertProcessingRulesImpl implements AlertProcessingRules {
 
     private final com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager;
 
-    public AlertProcessingRulesImpl(
-        AlertProcessingRulesClient innerClient,
+    public AlertProcessingRulesImpl(AlertProcessingRulesClient innerClient,
         com.azure.resourcemanager.alertsmanagement.AlertsManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -32,28 +31,40 @@ public final class AlertProcessingRulesImpl implements AlertProcessingRules {
 
     public PagedIterable<AlertProcessingRule> list() {
         PagedIterable<AlertProcessingRuleInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AlertProcessingRule> list(Context context) {
         PagedIterable<AlertProcessingRuleInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AlertProcessingRule> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AlertProcessingRuleInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AlertProcessingRule> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<AlertProcessingRuleInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
+        PagedIterable<AlertProcessingRuleInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AlertProcessingRuleImpl(inner1, this.manager()));
+    }
+
+    public Response<AlertProcessingRule> getByResourceGroupWithResponse(String resourceGroupName,
+        String alertProcessingRuleName, Context context) {
+        AlertProcessingRulesGetByResourceGroupResponse inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AlertProcessingRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AlertProcessingRule getByResourceGroup(String resourceGroupName, String alertProcessingRuleName) {
-        AlertProcessingRuleInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, alertProcessingRuleName);
+        AlertProcessingRuleInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, alertProcessingRuleName);
         if (inner != null) {
             return new AlertProcessingRuleImpl(inner, this.manager());
         } else {
@@ -61,104 +72,69 @@ public final class AlertProcessingRulesImpl implements AlertProcessingRules {
         }
     }
 
-    public Response<AlertProcessingRule> getByResourceGroupWithResponse(
-        String resourceGroupName, String alertProcessingRuleName, Context context) {
-        AlertProcessingRulesGetByResourceGroupResponse inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AlertProcessingRuleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public AlertProcessingRulesDeleteResponse deleteByResourceGroupWithResponse(String resourceGroupName,
+        String alertProcessingRuleName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, alertProcessingRuleName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String alertProcessingRuleName) {
         this.serviceClient().delete(resourceGroupName, alertProcessingRuleName);
     }
 
-    public AlertProcessingRulesDeleteResponse deleteWithResponse(
-        String resourceGroupName, String alertProcessingRuleName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, alertProcessingRuleName, context);
-    }
-
     public AlertProcessingRule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String alertProcessingRuleName = Utils.getValueFromIdByName(id, "actionRules");
+        String alertProcessingRuleName = ResourceManagerUtils.getValueFromIdByName(id, "actionRules");
         if (alertProcessingRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, Context.NONE).getValue();
     }
 
     public Response<AlertProcessingRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String alertProcessingRuleName = Utils.getValueFromIdByName(id, "actionRules");
+        String alertProcessingRuleName = ResourceManagerUtils.getValueFromIdByName(id, "actionRules");
         if (alertProcessingRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String alertProcessingRuleName = Utils.getValueFromIdByName(id, "actionRules");
+        String alertProcessingRuleName = ResourceManagerUtils.getValueFromIdByName(id, "actionRules");
         if (alertProcessingRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, alertProcessingRuleName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, Context.NONE);
     }
 
     public AlertProcessingRulesDeleteResponse deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String alertProcessingRuleName = Utils.getValueFromIdByName(id, "actionRules");
+        String alertProcessingRuleName = ResourceManagerUtils.getValueFromIdByName(id, "actionRules");
         if (alertProcessingRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'actionRules'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, alertProcessingRuleName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, alertProcessingRuleName, context);
     }
 
     private AlertProcessingRulesClient serviceClient() {
