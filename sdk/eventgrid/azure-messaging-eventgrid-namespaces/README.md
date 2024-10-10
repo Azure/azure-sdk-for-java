@@ -28,7 +28,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid-namespaces</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
