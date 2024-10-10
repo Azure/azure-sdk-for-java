@@ -10,7 +10,8 @@ package com.azure.resourcemanager.dns.generated;
 public final class ZonesListSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListZonesBySubscription.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListZonesBySubscription.
+     * json
      */
     /**
      * Sample code: List zones by subscription.

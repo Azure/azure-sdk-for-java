@@ -5,23 +5,23 @@
 package com.azure.resourcemanager.dns.generated;
 
 /**
- * Samples for Zones Delete.
+ * Samples for DnssecConfigs Delete.
  */
-public final class ZonesDeleteSamples {
+public final class DnssecConfigsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteZone.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/DeleteDnssecConfig.json
      */
     /**
-     * Sample code: Delete zone.
+     * Sample code: Delete DnssecConfig.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void deleteZone(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void deleteDnssecConfig(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.dnsZones()
             .manager()
             .serviceClient()
-            .getZones()
+            .getDnssecConfigs()
             .delete("rg1", "zone1", null, com.azure.core.util.Context.NONE);
     }
 }

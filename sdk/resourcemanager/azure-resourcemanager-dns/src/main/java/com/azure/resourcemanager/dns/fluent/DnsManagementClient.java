@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface DnsManagementClient {
     /**
-     * Gets Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -45,6 +45,13 @@ public interface DnsManagementClient {
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
+
+    /**
+     * Gets the DnssecConfigsClient object to access its operations.
+     * 
+     * @return the DnssecConfigsClient object.
+     */
+    DnssecConfigsClient getDnssecConfigs();
 
     /**
      * Gets the RecordSetsClient object to access its operations.

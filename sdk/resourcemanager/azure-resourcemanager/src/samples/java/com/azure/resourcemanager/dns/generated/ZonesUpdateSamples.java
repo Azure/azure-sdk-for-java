@@ -14,7 +14,7 @@ import java.util.Map;
 public final class ZonesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/PatchZone.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/PatchZone.json
      */
     /**
      * Sample code: Patch zone.

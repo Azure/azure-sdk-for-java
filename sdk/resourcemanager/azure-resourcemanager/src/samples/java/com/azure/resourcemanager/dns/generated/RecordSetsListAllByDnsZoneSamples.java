@@ -10,14 +10,15 @@ package com.azure.resourcemanager.dns.generated;
 public final class RecordSetsListAllByDnsZoneSamples {
     /*
      * x-ms-original-file:
-     * specification/dns/resource-manager/Microsoft.Network/stable/2018-05-01/examples/ListRecordSetsByZone.json
+     * specification/dns/resource-manager/Microsoft.Network/preview/2023-07-01-preview/examples/ListRecordSetsByZone.
+     * json
      */
     /**
-     * Sample code: List recordsets by zone.
+     * Sample code: List all recordsets by zone.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void listRecordsetsByZone(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void listAllRecordsetsByZone(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.dnsZones()
             .manager()
             .serviceClient()
