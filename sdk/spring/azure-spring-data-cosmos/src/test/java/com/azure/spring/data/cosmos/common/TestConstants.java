@@ -5,6 +5,7 @@ package com.azure.spring.data.cosmos.common;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -117,6 +118,9 @@ public final class TestConstants {
 
     public static final String PROPERTY_CITY = "city";
     public static final String PROPERTY_STREET = "street";
+
+    public static final String PROPERTY_AMOUNT = "amount";
+    public static final BigDecimal BIG_DECIMAL_VALUE = new BigDecimal("123.40");
 
     public static final int PAGE_SIZE_1 = 1;
     public static final int PAGE_SIZE_2 = 2;
