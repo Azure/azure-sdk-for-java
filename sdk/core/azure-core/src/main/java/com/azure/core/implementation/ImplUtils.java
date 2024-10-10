@@ -37,6 +37,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -499,6 +500,36 @@ public final class ImplUtils {
     }
 
     /**
+     * Wrapper method around reflective invocations of {@code AccessController.doPrivileged(PrivilegedAction)} which
+     * checks for the ability to actually run privileged actions.
+     * <p>
+     * If it's not possible to run actions with privileged, {@link Supplier#get()} will be called directly.
+     *
+     * @param <T> The return value of the action.
+     * @param privilegedAction The privileged action to run.
+     * @return The results of running the action.
+     * @throws RuntimeException If an error occurs during execution.
+     */
+    public static <T> T doPrivileged(Supplier<T> privilegedAction) {
+        return AccessControllerUtils.doPrivileged(privilegedAction);
+    }
+
+    /**
+     * Wrapper method around reflective invocations of {@code AccessController.doPrivileged(PrivilegedExceptionAction)}
+     * which checks for the ability to actually run privileged actions.
+     * <p>
+     * If it's not possible to run actions with privileged, {@link Supplier#get()} will be called directly.
+     *
+     * @param <T> The return value of the action.
+     * @param privilegedActionException The privileged action that can throw an {@link Exception} to run.
+     * @return The results of running the action.
+     * @throws Exception If an error occurs while running the action.
+     */
+    public static <T> T doPrivilegedException(Callable<T> privilegedActionException) throws Exception {
+        return AccessControllerUtils.doPrivilegedException(privilegedActionException);
+    }
+
+    /**
      * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
      * shutting down.
      * <p>
@@ -513,14 +544,13 @@ public final class ImplUtils {
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      * @return The {@link Thread} that was passed in.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
         if (shutdownThread == null) {
             return null;
         }
 
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+            doPrivileged(() -> {
                 Runtime.getRuntime().addShutdownHook(shutdownThread);
                 return null;
             });
@@ -544,14 +574,13 @@ public final class ImplUtils {
      * @param shutdownThread The {@link Thread} that will be added as a
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      */
-    @SuppressWarnings({ "deprecation", "removal" })
     public static void removeShutdownHookSafely(Thread shutdownThread) {
         if (shutdownThread == null) {
             return;
         }
 
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
-            java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
+            doPrivileged(() -> {
                 Runtime.getRuntime().removeShutdownHook(shutdownThread);
                 return null;
             });
