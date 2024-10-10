@@ -17,8 +17,8 @@ public final class FarmBeatsPropertiesImpl implements FarmBeatsProperties {
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
 
-    FarmBeatsPropertiesImpl(
-        FarmBeatsPropertiesInner innerObject, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+    FarmBeatsPropertiesImpl(FarmBeatsPropertiesInner innerObject,
+        com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

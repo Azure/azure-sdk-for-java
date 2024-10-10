@@ -8,30 +8,27 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.agrifood.models.PrivateLinkServiceConnectionState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceConnectionStateTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"status\":\"Pending\",\"description\":\"vsnb\",\"actionsRequired\":\"qabnmoc\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("vsnb", model.description());
-        Assertions.assertEquals("qabnmoc", model.actionsRequired());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Rejected\",\"description\":\"rbnwbxgjvtbvpy\",\"actionsRequired\":\"zdn\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("rbnwbxgjvtbvpy", model.description());
+        Assertions.assertEquals("zdn", model.actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                .withDescription("vsnb")
-                .withActionsRequired("qabnmoc");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                .withDescription("rbnwbxgjvtbvpy")
+                .withActionsRequired("zdn");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING, model.status());
-        Assertions.assertEquals("vsnb", model.description());
-        Assertions.assertEquals("qabnmoc", model.actionsRequired());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
+        Assertions.assertEquals("rbnwbxgjvtbvpy", model.description());
+        Assertions.assertEquals("zdn", model.actionsRequired());
     }
 }

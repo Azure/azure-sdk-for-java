@@ -8,30 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.agrifood.models.CheckNameAvailabilityReason;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameAvailabilityResponseInnerTests {
-    @Test
-    public void testDeserialize() {
-        CheckNameAvailabilityResponseInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"wlbjnpgacftade\"}")
-                .toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CheckNameAvailabilityResponseInner model = BinaryData
+            .fromString("{\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"irsoodqxhcrmnohj\"}")
+            .toObject(CheckNameAvailabilityResponseInner.class);
+        Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("wlbjnpgacftade", model.message());
+        Assertions.assertEquals("irsoodqxhcrmnohj", model.message());
     }
 
-    @Test
-    public void testSerialize() {
-        CheckNameAvailabilityResponseInner model =
-            new CheckNameAvailabilityResponseInner()
-                .withNameAvailable(true)
-                .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
-                .withMessage("wlbjnpgacftade");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckNameAvailabilityResponseInner model = new CheckNameAvailabilityResponseInner().withNameAvailable(false)
+            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
+            .withMessage("irsoodqxhcrmnohj");
         model = BinaryData.fromObject(model).toObject(CheckNameAvailabilityResponseInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("wlbjnpgacftade", model.message());
+        Assertions.assertEquals("irsoodqxhcrmnohj", model.message());
     }
 }

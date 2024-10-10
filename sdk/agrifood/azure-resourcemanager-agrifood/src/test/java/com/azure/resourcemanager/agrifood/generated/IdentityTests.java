@@ -8,20 +8,18 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.models.Identity;
 import com.azure.resourcemanager.agrifood.models.ResourceIdentityType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityTests {
-    @Test
-    public void testDeserialize() {
-        Identity model =
-            BinaryData
-                .fromString("{\"principalId\":\"sszdnru\",\"tenantId\":\"guhmuouqfpr\",\"type\":\"SystemAssigned\"}")
-                .toObject(Identity.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Identity model = BinaryData.fromString(
+            "{\"principalId\":\"5ba1b0b3-d678-498e-bdad-4bbf0133390a\",\"tenantId\":\"76cb1f99-d2f4-4d09-b553-aa7d4d9af53f\",\"type\":\"SystemAssigned\"}")
+            .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Identity model = new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());

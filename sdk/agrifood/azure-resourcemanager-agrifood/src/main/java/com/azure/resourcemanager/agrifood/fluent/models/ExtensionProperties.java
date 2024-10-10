@@ -5,44 +5,58 @@
 package com.azure.resourcemanager.agrifood.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.agrifood.models.ApiProperties;
+import java.io.IOException;
+import java.util.Map;
 
-/** Extension resource properties. */
+/**
+ * Extension resource properties.
+ */
 @Immutable
-public final class ExtensionProperties {
+public final class ExtensionProperties implements JsonSerializable<ExtensionProperties> {
     /*
      * Extension Id.
      */
-    @JsonProperty(value = "extensionId", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionId;
 
     /*
      * Extension category. e.g. weather/sensor/satellite.
      */
-    @JsonProperty(value = "extensionCategory", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionCategory;
 
     /*
      * Installed extension version.
      */
-    @JsonProperty(value = "installedExtensionVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String installedExtensionVersion;
 
     /*
      * Extension auth link.
      */
-    @JsonProperty(value = "extensionAuthLink", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionAuthLink;
 
     /*
      * Extension api docs link.
      */
-    @JsonProperty(value = "extensionApiDocsLink", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionApiDocsLink;
+
+    /*
+     * Additional api properties.
+     */
+    private Map<String, ApiProperties> additionalApiProperties;
+
+    /**
+     * Creates an instance of ExtensionProperties class.
+     */
+    public ExtensionProperties() {
+    }
 
     /**
      * Get the extensionId property: Extension Id.
-     *
+     * 
      * @return the extensionId value.
      */
     public String extensionId() {
@@ -51,7 +65,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the extensionCategory property: Extension category. e.g. weather/sensor/satellite.
-     *
+     * 
      * @return the extensionCategory value.
      */
     public String extensionCategory() {
@@ -60,7 +74,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the installedExtensionVersion property: Installed extension version.
-     *
+     * 
      * @return the installedExtensionVersion value.
      */
     public String installedExtensionVersion() {
@@ -69,7 +83,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the extensionAuthLink property: Extension auth link.
-     *
+     * 
      * @return the extensionAuthLink value.
      */
     public String extensionAuthLink() {
@@ -78,7 +92,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the extensionApiDocsLink property: Extension api docs link.
-     *
+     * 
      * @return the extensionApiDocsLink value.
      */
     public String extensionApiDocsLink() {
@@ -86,10 +100,73 @@ public final class ExtensionProperties {
     }
 
     /**
+     * Get the additionalApiProperties property: Additional api properties.
+     * 
+     * @return the additionalApiProperties value.
+     */
+    public Map<String, ApiProperties> additionalApiProperties() {
+        return this.additionalApiProperties;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (additionalApiProperties() != null) {
+            additionalApiProperties().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtensionProperties.
+     */
+    public static ExtensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionProperties deserializedExtensionProperties = new ExtensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extensionId".equals(fieldName)) {
+                    deserializedExtensionProperties.extensionId = reader.getString();
+                } else if ("extensionCategory".equals(fieldName)) {
+                    deserializedExtensionProperties.extensionCategory = reader.getString();
+                } else if ("installedExtensionVersion".equals(fieldName)) {
+                    deserializedExtensionProperties.installedExtensionVersion = reader.getString();
+                } else if ("extensionAuthLink".equals(fieldName)) {
+                    deserializedExtensionProperties.extensionAuthLink = reader.getString();
+                } else if ("extensionApiDocsLink".equals(fieldName)) {
+                    deserializedExtensionProperties.extensionApiDocsLink = reader.getString();
+                } else if ("additionalApiProperties".equals(fieldName)) {
+                    Map<String, ApiProperties> additionalApiProperties
+                        = reader.readMap(reader1 -> ApiProperties.fromJson(reader1));
+                    deserializedExtensionProperties.additionalApiProperties = additionalApiProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionProperties;
+        });
     }
 }

@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.agrifood.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for FarmBeatsModels GetByResourceGroup. */
+/**
+ * Samples for FarmBeatsModels GetByResourceGroup.
+ */
 public final class FarmBeatsModelsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/FarmBeatsModels_Get.json
+     * x-ms-original-file:
+     * specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/
+     * FarmBeatsModels_Get.json
      */
     /**
      * Sample code: FarmBeatsModels_Get.
-     *
+     * 
      * @param manager Entry point to AgriFoodManager.
      */
     public static void farmBeatsModelsGet(com.azure.resourcemanager.agrifood.AgriFoodManager manager) {
-        manager
-            .farmBeatsModels()
-            .getByResourceGroupWithResponse("examples-rg", "examples-farmBeatsResourceName", Context.NONE);
+        manager.farmBeatsModels()
+            .getByResourceGroupWithResponse("examples-rg", "examples-farmBeatsResourceName",
+                com.azure.core.util.Context.NONE);
     }
 }

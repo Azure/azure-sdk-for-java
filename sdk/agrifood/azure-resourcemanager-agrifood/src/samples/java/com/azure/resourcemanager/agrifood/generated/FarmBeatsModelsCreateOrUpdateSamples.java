@@ -7,26 +7,30 @@ package com.azure.resourcemanager.agrifood.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for FarmBeatsModels CreateOrUpdate. */
+/**
+ * Samples for FarmBeatsModels CreateOrUpdate.
+ */
 public final class FarmBeatsModelsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/FarmBeatsModels_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/agrifood/resource-manager/Microsoft.AgFoodPlatform/preview/2021-09-01-preview/examples/
+     * FarmBeatsModels_CreateOrUpdate.json
      */
     /**
      * Sample code: FarmBeatsModels_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to AgriFoodManager.
      */
     public static void farmBeatsModelsCreateOrUpdate(com.azure.resourcemanager.agrifood.AgriFoodManager manager) {
-        manager
-            .farmBeatsModels()
+        manager.farmBeatsModels()
             .define("examples-farmbeatsResourceName")
             .withRegion("eastus2")
             .withExistingResourceGroup("examples-rg")
-            .withTags(mapOf("key1", "value1", "key2", "value2"))
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

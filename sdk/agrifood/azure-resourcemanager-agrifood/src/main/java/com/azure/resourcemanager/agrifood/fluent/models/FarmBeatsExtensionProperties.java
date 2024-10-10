@@ -5,65 +5,62 @@
 package com.azure.resourcemanager.agrifood.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.agrifood.models.DetailedInformation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** FarmBeatsExtension properties. */
+/**
+ * FarmBeatsExtension properties.
+ */
 @Immutable
-public final class FarmBeatsExtensionProperties {
+public final class FarmBeatsExtensionProperties implements JsonSerializable<FarmBeatsExtensionProperties> {
     /*
      * Target ResourceType of the farmBeatsExtension.
      */
-    @JsonProperty(value = "targetResourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceType;
 
     /*
      * FarmBeatsExtension ID.
      */
-    @JsonProperty(value = "farmBeatsExtensionId", access = JsonProperty.Access.WRITE_ONLY)
     private String farmBeatsExtensionId;
 
     /*
      * FarmBeatsExtension name.
      */
-    @JsonProperty(value = "farmBeatsExtensionName", access = JsonProperty.Access.WRITE_ONLY)
     private String farmBeatsExtensionName;
 
     /*
      * FarmBeatsExtension version.
      */
-    @JsonProperty(value = "farmBeatsExtensionVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String farmBeatsExtensionVersion;
 
     /*
      * Publisher ID.
      */
-    @JsonProperty(value = "publisherId", access = JsonProperty.Access.WRITE_ONLY)
     private String publisherId;
 
     /*
      * Textual description.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Category of the extension. e.g. weather/sensor/satellite.
      */
-    @JsonProperty(value = "extensionCategory", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionCategory;
 
     /*
      * FarmBeatsExtension auth link.
      */
-    @JsonProperty(value = "extensionAuthLink", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionAuthLink;
 
     /*
      * FarmBeatsExtension api docs link.
      */
-    @JsonProperty(value = "extensionApiDocsLink", access = JsonProperty.Access.WRITE_ONLY)
     private String extensionApiDocsLink;
 
     /*
@@ -72,12 +69,17 @@ public final class FarmBeatsExtensionProperties {
      * Information for weather category per api included are apisSupported,
      * customParameters, PlatformParameters and Units supported.
      */
-    @JsonProperty(value = "detailedInformation", access = JsonProperty.Access.WRITE_ONLY)
     private List<DetailedInformation> detailedInformation;
 
     /**
+     * Creates an instance of FarmBeatsExtensionProperties class.
+     */
+    public FarmBeatsExtensionProperties() {
+    }
+
+    /**
      * Get the targetResourceType property: Target ResourceType of the farmBeatsExtension.
-     *
+     * 
      * @return the targetResourceType value.
      */
     public String targetResourceType() {
@@ -86,7 +88,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the farmBeatsExtensionId property: FarmBeatsExtension ID.
-     *
+     * 
      * @return the farmBeatsExtensionId value.
      */
     public String farmBeatsExtensionId() {
@@ -95,7 +97,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the farmBeatsExtensionName property: FarmBeatsExtension name.
-     *
+     * 
      * @return the farmBeatsExtensionName value.
      */
     public String farmBeatsExtensionName() {
@@ -104,7 +106,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the farmBeatsExtensionVersion property: FarmBeatsExtension version.
-     *
+     * 
      * @return the farmBeatsExtensionVersion value.
      */
     public String farmBeatsExtensionVersion() {
@@ -113,7 +115,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the publisherId property: Publisher ID.
-     *
+     * 
      * @return the publisherId value.
      */
     public String publisherId() {
@@ -122,7 +124,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the description property: Textual description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -131,7 +133,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the extensionCategory property: Category of the extension. e.g. weather/sensor/satellite.
-     *
+     * 
      * @return the extensionCategory value.
      */
     public String extensionCategory() {
@@ -140,7 +142,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the extensionAuthLink property: FarmBeatsExtension auth link.
-     *
+     * 
      * @return the extensionAuthLink value.
      */
     public String extensionAuthLink() {
@@ -149,7 +151,7 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Get the extensionApiDocsLink property: FarmBeatsExtension api docs link.
-     *
+     * 
      * @return the extensionApiDocsLink value.
      */
     public String extensionApiDocsLink() {
@@ -157,10 +159,11 @@ public final class FarmBeatsExtensionProperties {
     }
 
     /**
-     * Get the detailedInformation property: Detailed information which shows summary of requested data. Used in
-     * descriptive get extension metadata call. Information for weather category per api included are apisSupported,
+     * Get the detailedInformation property: Detailed information which shows summary of requested data.
+     * Used in descriptive get extension metadata call.
+     * Information for weather category per api included are apisSupported,
      * customParameters, PlatformParameters and Units supported.
-     *
+     * 
      * @return the detailedInformation value.
      */
     public List<DetailedInformation> detailedInformation() {
@@ -169,12 +172,67 @@ public final class FarmBeatsExtensionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (detailedInformation() != null) {
             detailedInformation().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FarmBeatsExtensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FarmBeatsExtensionProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FarmBeatsExtensionProperties.
+     */
+    public static FarmBeatsExtensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FarmBeatsExtensionProperties deserializedFarmBeatsExtensionProperties = new FarmBeatsExtensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceType".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.targetResourceType = reader.getString();
+                } else if ("farmBeatsExtensionId".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.farmBeatsExtensionId = reader.getString();
+                } else if ("farmBeatsExtensionName".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.farmBeatsExtensionName = reader.getString();
+                } else if ("farmBeatsExtensionVersion".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.farmBeatsExtensionVersion = reader.getString();
+                } else if ("publisherId".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.publisherId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.description = reader.getString();
+                } else if ("extensionCategory".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.extensionCategory = reader.getString();
+                } else if ("extensionAuthLink".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.extensionAuthLink = reader.getString();
+                } else if ("extensionApiDocsLink".equals(fieldName)) {
+                    deserializedFarmBeatsExtensionProperties.extensionApiDocsLink = reader.getString();
+                } else if ("detailedInformation".equals(fieldName)) {
+                    List<DetailedInformation> detailedInformation
+                        = reader.readArray(reader1 -> DetailedInformation.fromJson(reader1));
+                    deserializedFarmBeatsExtensionProperties.detailedInformation = detailedInformation;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFarmBeatsExtensionProperties;
+        });
     }
 }

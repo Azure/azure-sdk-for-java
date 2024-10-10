@@ -5,50 +5,60 @@
 package com.azure.resourcemanager.agrifood.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.UUID;
 
-/** Identity for the resource. */
+/**
+ * Identity for the resource.
+ */
 @Fluent
-public class Identity {
+public final class Identity implements JsonSerializable<Identity> {
     /*
-     * The principal ID of resource identity.
+     * The principal ID of resource identity. The value must be an UUID.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
-    private String principalId;
+    private UUID principalId;
 
     /*
-     * The tenant ID of resource.
+     * The tenant ID of resource. The value must be an UUID.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private UUID tenantId;
 
     /*
      * The identity type.
      */
-    @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /**
-     * Get the principalId property: The principal ID of resource identity.
-     *
+     * Creates an instance of Identity class.
+     */
+    public Identity() {
+    }
+
+    /**
+     * Get the principalId property: The principal ID of resource identity. The value must be an UUID.
+     * 
      * @return the principalId value.
      */
-    public String principalId() {
+    public UUID principalId() {
         return this.principalId;
     }
 
     /**
-     * Get the tenantId property: The tenant ID of resource.
-     *
+     * Get the tenantId property: The tenant ID of resource. The value must be an UUID.
+     * 
      * @return the tenantId value.
      */
-    public String tenantId() {
+    public UUID tenantId() {
         return this.tenantId;
     }
 
     /**
      * Get the type property: The identity type.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -57,7 +67,7 @@ public class Identity {
 
     /**
      * Set the type property: The identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -68,9 +78,51 @@ public class Identity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Identity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Identity if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Identity.
+     */
+    public static Identity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Identity deserializedIdentity = new Identity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedIdentity.principalId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedIdentity.tenantId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("type".equals(fieldName)) {
+                    deserializedIdentity.type = ResourceIdentityType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentity;
+        });
     }
 }

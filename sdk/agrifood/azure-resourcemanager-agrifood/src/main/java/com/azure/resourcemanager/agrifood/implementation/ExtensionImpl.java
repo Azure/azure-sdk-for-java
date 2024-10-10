@@ -4,18 +4,19 @@
 
 package com.azure.resourcemanager.agrifood.implementation;
 
+import com.azure.core.management.SystemData;
+import com.azure.core.util.Context;
 import com.azure.resourcemanager.agrifood.fluent.models.ExtensionInner;
+import com.azure.resourcemanager.agrifood.models.ApiProperties;
 import com.azure.resourcemanager.agrifood.models.Extension;
+import com.azure.resourcemanager.agrifood.models.ExtensionInstallationRequest;
+import java.util.Collections;
+import java.util.Map;
 
-public final class ExtensionImpl implements Extension {
+public final class ExtensionImpl implements Extension, Extension.Definition, Extension.Update {
     private ExtensionInner innerObject;
 
     private final com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager;
-
-    ExtensionImpl(ExtensionInner innerObject, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -31,6 +32,10 @@ public final class ExtensionImpl implements Extension {
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String extensionId() {
@@ -53,11 +58,136 @@ public final class ExtensionImpl implements Extension {
         return this.innerModel().extensionApiDocsLink();
     }
 
+    public Map<String, ApiProperties> additionalApiProperties() {
+        Map<String, ApiProperties> inner = this.innerModel().additionalApiProperties();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ExtensionInner innerModel() {
         return this.innerObject;
     }
 
     private com.azure.resourcemanager.agrifood.AgriFoodManager manager() {
         return this.serviceManager;
+    }
+
+    private String resourceGroupName;
+
+    private String farmBeatsResourceName;
+
+    private String extensionId;
+
+    private ExtensionInstallationRequest createRequestBody;
+
+    private ExtensionInstallationRequest updateRequestBody;
+
+    public ExtensionImpl withExistingFarmBeat(String resourceGroupName, String farmBeatsResourceName) {
+        this.resourceGroupName = resourceGroupName;
+        this.farmBeatsResourceName = farmBeatsResourceName;
+        return this;
+    }
+
+    public Extension create() {
+        this.innerObject = serviceManager.serviceClient()
+            .getExtensions()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, extensionId, createRequestBody,
+                Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public Extension create(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getExtensions()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, extensionId, createRequestBody,
+                context)
+            .getValue();
+        return this;
+    }
+
+    ExtensionImpl(String name, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+        this.innerObject = new ExtensionInner();
+        this.serviceManager = serviceManager;
+        this.extensionId = name;
+        this.createRequestBody = new ExtensionInstallationRequest();
+    }
+
+    public ExtensionImpl update() {
+        this.updateRequestBody = new ExtensionInstallationRequest();
+        return this;
+    }
+
+    public Extension apply() {
+        this.innerObject = serviceManager.serviceClient()
+            .getExtensions()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, extensionId, updateRequestBody,
+                Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public Extension apply(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getExtensions()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, extensionId, updateRequestBody,
+                context)
+            .getValue();
+        return this;
+    }
+
+    ExtensionImpl(ExtensionInner innerObject, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.farmBeatsResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "farmBeats");
+        this.extensionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "extensions");
+    }
+
+    public Extension refresh() {
+        this.innerObject = serviceManager.serviceClient()
+            .getExtensions()
+            .getWithResponse(resourceGroupName, farmBeatsResourceName, extensionId, Context.NONE)
+            .getValue();
+        return this;
+    }
+
+    public Extension refresh(Context context) {
+        this.innerObject = serviceManager.serviceClient()
+            .getExtensions()
+            .getWithResponse(resourceGroupName, farmBeatsResourceName, extensionId, context)
+            .getValue();
+        return this;
+    }
+
+    public ExtensionImpl withExtensionVersion(String extensionVersion) {
+        if (isInCreateMode()) {
+            this.createRequestBody.withExtensionVersion(extensionVersion);
+            return this;
+        } else {
+            this.updateRequestBody.withExtensionVersion(extensionVersion);
+            return this;
+        }
+    }
+
+    public ExtensionImpl withAdditionalApiProperties(Map<String, ApiProperties> additionalApiProperties) {
+        if (isInCreateMode()) {
+            this.createRequestBody.withAdditionalApiProperties(additionalApiProperties);
+            return this;
+        } else {
+            this.updateRequestBody.withAdditionalApiProperties(additionalApiProperties);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

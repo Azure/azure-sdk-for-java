@@ -8,25 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.fluent.models.PrivateLinkResourceInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceInnerTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"xzbinjeputt\",\"requiredMembers\":[\"wnuzoqftiyqzrnkc\",\"vyxlwhzlsicohoqq\"],\"requiredZoneNames\":[\"lryav\",\"hheunmmqhgyx\",\"konocu\",\"oklyaxuconuq\"]},\"id\":\"fkbey\",\"name\":\"ewrmjmwvvjektc\",\"type\":\"senhwlrs\"}")
-                .toObject(PrivateLinkResourceInner.class);
-        Assertions.assertEquals("lryav", model.requiredZoneNames().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"eipheoflokeyy\",\"requiredMembers\":[\"jbdlwtgrhpdjpju\"],\"requiredZoneNames\":[\"xazjpqyegual\",\"b\"]},\"id\":\"hejjz\",\"name\":\"v\",\"type\":\"udgwdslfho\"}")
+            .toObject(PrivateLinkResourceInner.class);
+        Assertions.assertEquals("xazjpqyegual", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkResourceInner model =
-            new PrivateLinkResourceInner()
-                .withRequiredZoneNames(Arrays.asList("lryav", "hheunmmqhgyx", "konocu", "oklyaxuconuq"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkResourceInner model
+            = new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("xazjpqyegual", "b"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceInner.class);
-        Assertions.assertEquals("lryav", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("xazjpqyegual", model.requiredZoneNames().get(0));
     }
 }
