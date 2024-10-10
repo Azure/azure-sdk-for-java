@@ -436,6 +436,8 @@ public final class ModelBridgeInternal {
             ((SpatialSpec) t).populatePropertyBag();
         } else if (t instanceof CosmosVectorIndexSpec) {
             ((CosmosVectorIndexSpec) t).populatePropertyBag();
+        } else if (t instanceof CosmosFullTextIndex) {
+            ((CosmosFullTextIndex) t).populatePropertyBag();
         } else if (t instanceof SqlParameter) {
             ((SqlParameter) t).populatePropertyBag();
         } else if (t instanceof SqlQuerySpec) {
@@ -471,6 +473,8 @@ public final class ModelBridgeInternal {
             return ((SpatialSpec) t).getJsonSerializable();
         } else if (t instanceof CosmosVectorIndexSpec) {
             return ((CosmosVectorIndexSpec) t).getJsonSerializable();
+        } else if (t instanceof CosmosFullTextIndex) {
+            return ((CosmosFullTextIndex) t).getJsonSerializable();
         } else if (t instanceof SqlParameter) {
             return ((SqlParameter) t).getJsonSerializable();
         } else if (t instanceof SqlQuerySpec) {

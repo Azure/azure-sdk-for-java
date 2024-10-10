@@ -369,6 +369,28 @@ public final class CosmosContainerProperties {
         return this;
     }
 
+    /**
+     * Gets the Full Test Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @return the FullTextPolicy
+     */
+    public CosmosFullTextPolicy getFullTextPolicy() {
+        return this.documentCollection.getFullTextPolicy();
+    }
+
+    /**
+     * Gets the Full Test Policy containing paths for full text search and the language specification for each path.
+     * It also contains the default language to be used.
+     *
+     * @param value the FullTextPolicy.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setFullTextPolicy(CosmosFullTextPolicy value) {
+        this.documentCollection.setFullTextPolicy(value);
+        return this;
+    }
+
     Resource getResource() {
         return this.documentCollection;
     }
