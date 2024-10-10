@@ -22,7 +22,7 @@ public final class AcsMessageInteractiveListReplyContent
      * The ID of the selected list item
      */
     @Generated
-    private String id;
+    private String listItemId;
 
     /*
      * The title of the selected list item
@@ -44,13 +44,13 @@ public final class AcsMessageInteractiveListReplyContent
     }
 
     /**
-     * Get the id property: The ID of the selected list item.
+     * Get the listItemId property: The ID of the selected list item.
      * 
-     * @return the id value.
+     * @return the listItemId value.
      */
     @Generated
-    public String getId() {
-        return this.id;
+    public String getListItemId() {
+        return this.listItemId;
     }
 
     /**
@@ -80,7 +80,7 @@ public final class AcsMessageInteractiveListReplyContent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("id", this.listItemId);
         jsonWriter.writeStringField("title", this.title);
         jsonWriter.writeStringField("description", this.description);
         return jsonWriter.writeEndObject();
@@ -104,7 +104,7 @@ public final class AcsMessageInteractiveListReplyContent
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedAcsMessageInteractiveListReplyContent.id = reader.getString();
+                    deserializedAcsMessageInteractiveListReplyContent.listItemId = reader.getString();
                 } else if ("title".equals(fieldName)) {
                     deserializedAcsMessageInteractiveListReplyContent.title = reader.getString();
                 } else if ("description".equals(fieldName)) {

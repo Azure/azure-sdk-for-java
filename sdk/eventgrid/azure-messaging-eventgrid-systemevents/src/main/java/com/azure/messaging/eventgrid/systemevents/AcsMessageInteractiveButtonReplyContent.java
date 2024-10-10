@@ -22,7 +22,7 @@ public final class AcsMessageInteractiveButtonReplyContent
      * The ID of the button
      */
     @Generated
-    private String id;
+    private String buttonId;
 
     /*
      * The title of the button
@@ -38,13 +38,13 @@ public final class AcsMessageInteractiveButtonReplyContent
     }
 
     /**
-     * Get the id property: The ID of the button.
+     * Get the buttonId property: The ID of the button.
      * 
-     * @return the id value.
+     * @return the buttonId value.
      */
     @Generated
-    public String getId() {
-        return this.id;
+    public String getButtonId() {
+        return this.buttonId;
     }
 
     /**
@@ -64,7 +64,7 @@ public final class AcsMessageInteractiveButtonReplyContent
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("id", this.buttonId);
         jsonWriter.writeStringField("title", this.title);
         return jsonWriter.writeEndObject();
     }
@@ -87,7 +87,7 @@ public final class AcsMessageInteractiveButtonReplyContent
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedAcsMessageInteractiveButtonReplyContent.id = reader.getString();
+                    deserializedAcsMessageInteractiveButtonReplyContent.buttonId = reader.getString();
                 } else if ("title".equals(fieldName)) {
                     deserializedAcsMessageInteractiveButtonReplyContent.title = reader.getString();
                 } else {

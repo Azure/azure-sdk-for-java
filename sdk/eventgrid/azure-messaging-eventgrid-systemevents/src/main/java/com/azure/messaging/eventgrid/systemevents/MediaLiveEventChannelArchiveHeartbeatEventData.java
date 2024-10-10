@@ -23,7 +23,7 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
      * Gets the channel latency in ms.
      */
     @Generated
-    private final String channelLatencyMs;
+    private final String channelLatency;
 
     /*
      * Gets the latency result code.
@@ -34,23 +34,23 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
     /**
      * Creates an instance of MediaLiveEventChannelArchiveHeartbeatEventData class.
      * 
-     * @param channelLatencyMs the channelLatencyMs value to set.
+     * @param channelLatency the channelLatency value to set.
      * @param latencyResultCode the latencyResultCode value to set.
      */
     @Generated
-    private MediaLiveEventChannelArchiveHeartbeatEventData(String channelLatencyMs, String latencyResultCode) {
-        this.channelLatencyMs = channelLatencyMs;
+    private MediaLiveEventChannelArchiveHeartbeatEventData(String channelLatency, String latencyResultCode) {
+        this.channelLatency = channelLatency;
         this.latencyResultCode = latencyResultCode;
     }
 
     /**
-     * Get the channelLatencyMs property: Gets the channel latency in ms.
+     * Get the channelLatency property: Gets the channel latency in ms.
      * 
-     * @return the channelLatencyMs value.
+     * @return the channelLatency value.
      */
     @Generated
-    public String getChannelLatencyMs() {
-        return this.channelLatencyMs;
+    public String getChannelLatency() {
+        return this.channelLatency;
     }
 
     /**
@@ -70,7 +70,7 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("channelLatencyMs", this.channelLatencyMs);
+        jsonWriter.writeStringField("channelLatencyMs", this.channelLatency);
         jsonWriter.writeStringField("latencyResultCode", this.latencyResultCode);
         return jsonWriter.writeEndObject();
     }
@@ -87,21 +87,21 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData
     @Generated
     public static MediaLiveEventChannelArchiveHeartbeatEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String channelLatencyMs = null;
+            String channelLatency = null;
             String latencyResultCode = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("channelLatencyMs".equals(fieldName)) {
-                    channelLatencyMs = reader.getString();
+                    channelLatency = reader.getString();
                 } else if ("latencyResultCode".equals(fieldName)) {
                     latencyResultCode = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new MediaLiveEventChannelArchiveHeartbeatEventData(channelLatencyMs, latencyResultCode);
+            return new MediaLiveEventChannelArchiveHeartbeatEventData(channelLatency, latencyResultCode);
         });
     }
 }

@@ -21,7 +21,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
      * The Message interactive reply type
      */
     @Generated
-    private final AcsInteractiveReplyKind type;
+    private final AcsInteractiveReplyKind replyKind;
 
     /*
      * The Message Sent when a customer clicks a button
@@ -38,26 +38,26 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
     /**
      * Creates an instance of AcsMessageInteractiveContent class.
      * 
-     * @param type the type value to set.
+     * @param replyKind the replyKind value to set.
      * @param buttonReply the buttonReply value to set.
      * @param listReply the listReply value to set.
      */
     @Generated
-    private AcsMessageInteractiveContent(AcsInteractiveReplyKind type,
+    private AcsMessageInteractiveContent(AcsInteractiveReplyKind replyKind,
         AcsMessageInteractiveButtonReplyContent buttonReply, AcsMessageInteractiveListReplyContent listReply) {
-        this.type = type;
+        this.replyKind = replyKind;
         this.buttonReply = buttonReply;
         this.listReply = listReply;
     }
 
     /**
-     * Get the type property: The Message interactive reply type.
+     * Get the replyKind property: The Message interactive reply type.
      * 
-     * @return the type value.
+     * @return the replyKind value.
      */
     @Generated
-    public AcsInteractiveReplyKind getType() {
-        return this.type;
+    public AcsInteractiveReplyKind getReplyKind() {
+        return this.replyKind;
     }
 
     /**
@@ -87,7 +87,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", this.replyKind == null ? null : this.replyKind.toString());
         jsonWriter.writeJsonField("buttonReply", this.buttonReply);
         jsonWriter.writeJsonField("listReply", this.listReply);
         return jsonWriter.writeEndObject();
@@ -105,7 +105,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
     @Generated
     public static AcsMessageInteractiveContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsInteractiveReplyKind type = null;
+            AcsInteractiveReplyKind replyKind = null;
             AcsMessageInteractiveButtonReplyContent buttonReply = null;
             AcsMessageInteractiveListReplyContent listReply = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -113,7 +113,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
                 reader.nextToken();
 
                 if ("type".equals(fieldName)) {
-                    type = AcsInteractiveReplyKind.fromString(reader.getString());
+                    replyKind = AcsInteractiveReplyKind.fromString(reader.getString());
                 } else if ("buttonReply".equals(fieldName)) {
                     buttonReply = AcsMessageInteractiveButtonReplyContent.fromJson(reader);
                 } else if ("listReply".equals(fieldName)) {
@@ -122,7 +122,7 @@ public final class AcsMessageInteractiveContent implements JsonSerializable<AcsM
                     reader.skipChildren();
                 }
             }
-            return new AcsMessageInteractiveContent(type, buttonReply, listReply);
+            return new AcsMessageInteractiveContent(replyKind, buttonReply, listReply);
         });
     }
 }
