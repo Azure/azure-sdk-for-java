@@ -8,6 +8,7 @@ module com.azure.ai.openai {
 
     exports com.azure.ai.openai;
     exports com.azure.ai.openai.models;
+    exports com.azure.ai.openai.realtime;
 
     opens com.azure.ai.openai.models to com.azure.core;
     opens com.azure.ai.openai.implementation.models to com.azure.core;
