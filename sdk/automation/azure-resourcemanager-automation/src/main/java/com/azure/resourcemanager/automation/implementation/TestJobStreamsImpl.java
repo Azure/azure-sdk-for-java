@@ -21,16 +21,28 @@ public final class TestJobStreamsImpl implements TestJobStreams {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public TestJobStreamsImpl(
-        TestJobStreamsClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public TestJobStreamsImpl(TestJobStreamsClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public JobStream get(
-        String resourceGroupName, String automationAccountName, String runbookName, String jobStreamId) {
-        JobStreamInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, runbookName, jobStreamId);
+    public Response<JobStream> getWithResponse(String resourceGroupName, String automationAccountName,
+        String runbookName, String jobStreamId, Context context) {
+        Response<JobStreamInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, runbookName, jobStreamId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new JobStreamImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobStream get(String resourceGroupName, String automationAccountName, String runbookName,
+        String jobStreamId) {
+        JobStreamInner inner
+            = this.serviceClient().get(resourceGroupName, automationAccountName, runbookName, jobStreamId);
         if (inner != null) {
             return new JobStreamImpl(inner, this.manager());
         } else {
@@ -38,39 +50,18 @@ public final class TestJobStreamsImpl implements TestJobStreams {
         }
     }
 
-    public Response<JobStream> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        String jobStreamId,
-        Context context) {
-        Response<JobStreamInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, automationAccountName, runbookName, jobStreamId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new JobStreamImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<JobStream> listByTestJob(String resourceGroupName, String automationAccountName,
+        String runbookName) {
+        PagedIterable<JobStreamInner> inner
+            = this.serviceClient().listByTestJob(resourceGroupName, automationAccountName, runbookName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobStreamImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<JobStream> listByTestJob(
-        String resourceGroupName, String automationAccountName, String runbookName) {
-        PagedIterable<JobStreamInner> inner =
-            this.serviceClient().listByTestJob(resourceGroupName, automationAccountName, runbookName);
-        return Utils.mapPage(inner, inner1 -> new JobStreamImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<JobStream> listByTestJob(
-        String resourceGroupName, String automationAccountName, String runbookName, String filter, Context context) {
-        PagedIterable<JobStreamInner> inner =
-            this.serviceClient().listByTestJob(resourceGroupName, automationAccountName, runbookName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new JobStreamImpl(inner1, this.manager()));
+    public PagedIterable<JobStream> listByTestJob(String resourceGroupName, String automationAccountName,
+        String runbookName, String filter, Context context) {
+        PagedIterable<JobStreamInner> inner = this.serviceClient()
+            .listByTestJob(resourceGroupName, automationAccountName, runbookName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobStreamImpl(inner1, this.manager()));
     }
 
     private TestJobStreamsClient serviceClient() {

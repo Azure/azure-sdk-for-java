@@ -6,28 +6,38 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.ScheduleCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The parameters supplied to the create or update schedule operation. */
+/**
+ * The parameters supplied to the create or update schedule operation.
+ */
 @Fluent
-public final class ScheduleCreateOrUpdateParameters {
+public final class ScheduleCreateOrUpdateParameters implements JsonSerializable<ScheduleCreateOrUpdateParameters> {
     /*
      * Gets or sets the name of the Schedule.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Gets or sets the list of schedule properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private ScheduleCreateOrUpdateProperties innerProperties = new ScheduleCreateOrUpdateProperties();
 
     /**
+     * Creates an instance of ScheduleCreateOrUpdateParameters class.
+     */
+    public ScheduleCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the Schedule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -36,7 +46,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the Schedule.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -47,7 +57,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the list of schedule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleCreateOrUpdateProperties innerProperties() {
@@ -56,7 +66,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the schedule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -65,7 +75,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the schedule.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -79,7 +89,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -88,7 +98,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the startTime property: Gets or sets the start time of the schedule.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -102,7 +112,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -111,7 +121,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the expiryTime property: Gets or sets the end time of the schedule.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -125,7 +135,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @return the interval value.
      */
     public Object interval() {
@@ -134,7 +144,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the interval property: Gets or sets the interval of the schedule.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -148,7 +158,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @return the frequency value.
      */
     public ScheduleFrequency frequency() {
@@ -157,7 +167,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the frequency property: Gets or sets the frequency of the schedule.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -171,7 +181,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -180,7 +190,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the timeZone property: Gets or sets the time zone of the schedule.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -194,7 +204,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Get the advancedSchedule property: Gets or sets the AdvancedSchedule.
-     *
+     * 
      * @return the advancedSchedule value.
      */
     public AdvancedSchedule advancedSchedule() {
@@ -203,7 +213,7 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Set the advancedSchedule property: Gets or sets the AdvancedSchedule.
-     *
+     * 
      * @param advancedSchedule the advancedSchedule value to set.
      * @return the ScheduleCreateOrUpdateParameters object itself.
      */
@@ -217,25 +227,65 @@ public final class ScheduleCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ScheduleCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ScheduleCreateOrUpdateParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ScheduleCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ScheduleCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ScheduleCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleCreateOrUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduleCreateOrUpdateParameters.
+     */
+    public static ScheduleCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleCreateOrUpdateParameters deserializedScheduleCreateOrUpdateParameters
+                = new ScheduleCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedScheduleCreateOrUpdateParameters.innerProperties
+                        = ScheduleCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleCreateOrUpdateParameters;
+        });
+    }
 }

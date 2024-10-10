@@ -21,19 +21,31 @@ public final class VariablesImpl implements Variables {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public VariablesImpl(
-        VariablesClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public VariablesImpl(VariablesClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String variableName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, variableName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String variableName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, variableName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String variableName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, variableName, context);
+    public Response<Variable> getWithResponse(String resourceGroupName, String automationAccountName,
+        String variableName, Context context) {
+        Response<VariableInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, variableName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VariableImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Variable get(String resourceGroupName, String automationAccountName, String variableName) {
@@ -45,142 +57,91 @@ public final class VariablesImpl implements Variables {
         }
     }
 
-    public Response<Variable> getWithResponse(
-        String resourceGroupName, String automationAccountName, String variableName, Context context) {
-        Response<VariableInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, variableName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new VariableImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<Variable> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<VariableInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new VariableImpl(inner1, this.manager()));
+        PagedIterable<VariableInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VariableImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Variable> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context) {
-        PagedIterable<VariableInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new VariableImpl(inner1, this.manager()));
+    public PagedIterable<Variable> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context) {
+        PagedIterable<VariableInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VariableImpl(inner1, this.manager()));
     }
 
     public Variable getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String variableName = Utils.getValueFromIdByName(id, "variables");
+        String variableName = ResourceManagerUtils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE).getValue();
     }
 
     public Response<Variable> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String variableName = Utils.getValueFromIdByName(id, "variables");
+        String variableName = ResourceManagerUtils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, variableName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String variableName = Utils.getValueFromIdByName(id, "variables");
+        String variableName = ResourceManagerUtils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, variableName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String variableName = Utils.getValueFromIdByName(id, "variables");
+        String variableName = ResourceManagerUtils.getValueFromIdByName(id, "variables");
         if (variableName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'variables'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, variableName, context);
     }
