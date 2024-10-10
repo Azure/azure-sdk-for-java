@@ -6,20 +6,17 @@ package com.azure.resourcemanager.agrifood.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.models.OperationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"tyfsoppusuesn\",\"isDataAction\":false,\"display\":{\"provider\":\"bavo\",\"resource\":\"zdmohctbqvu\",\"operation\":\"xdn\",\"description\":\"vo\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"gwdkcglhsl\",\"isDataAction\":true,\"display\":{\"provider\":\"ggd\",\"resource\":\"ixhbkuofqweykhm\",\"operation\":\"evfyexfwhybcib\",\"description\":\"vdcsitynn\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"tehfiqscjeypvh\",\"isDataAction\":true,\"display\":{\"provider\":\"q\",\"resource\":\"jrefovgmkqsle\",\"operation\":\"vxyqjpkcattpngjc\",\"description\":\"czsqpjhvm\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"sounqecanoaeu\",\"isDataAction\":false,\"display\":{\"provider\":\"ltrpmopj\",\"resource\":\"matuok\",\"operation\":\"fu\",\"description\":\"aodsfcpkv\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"zmyzydagf\"}")
-                .toObject(OperationListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"h\",\"isDataAction\":true,\"display\":{\"provider\":\"iy\",\"resource\":\"jxsqwpgrjbz\",\"operation\":\"rcjxvsnbyxqabn\",\"description\":\"cpc\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"afbljjgpbtoqcjmk\"}")
+            .toObject(OperationListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult();
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
     }

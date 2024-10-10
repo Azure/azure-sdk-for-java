@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.agrifood.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.agrifood.fluent.models.FarmBeatsInner;
 import com.azure.resourcemanager.agrifood.fluent.models.PrivateEndpointConnectionInner;
@@ -51,6 +52,10 @@ public final class FarmBeatsImpl implements FarmBeats, FarmBeats.Definition, Far
 
     public Identity identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String instanceUri() {
@@ -110,22 +115,18 @@ public final class FarmBeatsImpl implements FarmBeats, FarmBeats.Definition, Far
     }
 
     public FarmBeats create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public FarmBeats create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .createOrUpdateWithResponse(resourceGroupName, farmBeatsResourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -141,47 +142,39 @@ public final class FarmBeatsImpl implements FarmBeats, FarmBeats.Definition, Far
     }
 
     public FarmBeats apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .update(resourceGroupName, farmBeatsResourceName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .update(resourceGroupName, farmBeatsResourceName, updateBody, Context.NONE);
         return this;
     }
 
     public FarmBeats apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .update(resourceGroupName, farmBeatsResourceName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .update(resourceGroupName, farmBeatsResourceName, updateBody, context);
         return this;
     }
 
     FarmBeatsImpl(FarmBeatsInner innerObject, com.azure.resourcemanager.agrifood.AgriFoodManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.farmBeatsResourceName = Utils.getValueFromIdByName(innerObject.id(), "farmBeats");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.farmBeatsResourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "farmBeats");
     }
 
     public FarmBeats refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FarmBeats refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFarmBeatsModels()
-                .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFarmBeatsModels()
+            .getByResourceGroupWithResponse(resourceGroupName, farmBeatsResourceName, context)
+            .getValue();
         return this;
     }
 
