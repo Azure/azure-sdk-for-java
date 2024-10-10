@@ -15,6 +15,17 @@ public class EventGridSystemEventsCustomization extends Customization {
     private final String newLine = System.lineSeparator();
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
+        customizeModuleInfo(customization, logger);
+    }
+
+    /**
+     * Customize the module-info.java file. This is necessary due to having a models subpackage logically; we
+     * end up with an export for a package with no types, so we remove the export.
+     *
+     * @param customization The LibraryCustomization object.
+     * @param logger The logger object.
+     */
+    public void customizeModuleInfo(LibraryCustomization customization, Logger logger) {
 
         Editor editor = customization.getRawEditor();
         List<String> lines = editor.getFileLines("src/main/java/module-info.java");
