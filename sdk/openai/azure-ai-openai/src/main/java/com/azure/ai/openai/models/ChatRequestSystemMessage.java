@@ -5,10 +5,12 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * A request chat message containing system instructions that influence how the model will generate a chat completions
@@ -21,7 +23,11 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
      * The contents of the system message.
      */
     @Generated
-    private final String content;
+    private final BinaryData content;
+
+    private final String stringContent;
+
+    private final List<ChatMessageContentItem> chatMessageContentItem;
 
     /*
      * An optional name for the participant.
@@ -30,22 +36,12 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     private String name;
 
     /**
-     * Creates an instance of ChatRequestSystemMessage class.
-     *
-     * @param content the content value to set.
-     */
-    @Generated
-    public ChatRequestSystemMessage(String content) {
-        this.content = content;
-    }
-
-    /**
      * Get the content property: The contents of the system message.
      *
      * @return the content value.
      */
     @Generated
-    public String getContent() {
+    public BinaryData getContent() {
         return this.content;
     }
 
@@ -91,11 +87,14 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     /**
      * {@inheritDoc}
      */
-    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("content", this.content);
+        if (stringContent != null) {
+            jsonWriter.writeStringField("content", stringContent);
+        } else if (chatMessageContentItem != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
@@ -110,17 +109,24 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ChatRequestSystemMessage.
      */
-    @Generated
     public static ChatRequestSystemMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String content = null;
+            BinaryData content = null;
             ChatRole role = ChatRole.SYSTEM;
             String name = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                    if (reader.currentToken() == JsonToken.STRING) {
+                        content = BinaryData.fromString(reader.getString());
+                    } else if (reader.currentToken() == JsonToken.START_ARRAY) {
+                        content = BinaryData.fromObject(
+                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                    } else {
+                        throw new IllegalStateException("Unexpected 'content' type found when deserializing"
+                            + " ChatRequestSystemMessage JSON object: " + reader.currentToken());
+                    }
                 } else if ("role".equals(fieldName)) {
                     role = ChatRole.fromString(reader.getString());
                 } else if ("name".equals(fieldName)) {
@@ -134,5 +140,38 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
             deserializedChatRequestSystemMessage.name = name;
             return deserializedChatRequestSystemMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ChatRequestSystemMessage class.
+     *
+     * @param content the BinaryData content value to set.
+     */
+    private ChatRequestSystemMessage(BinaryData content) {
+        this.content = content;
+        this.stringContent = null;
+        this.chatMessageContentItem = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestSystemMessage class.
+     *
+     * @param content the String content value to set.
+     */
+    public ChatRequestSystemMessage(String content) {
+        this.content = BinaryData.fromString(content);
+        this.stringContent = content;
+        this.chatMessageContentItem = null;
+    }
+
+    /**
+     * Creates an instance of ChatRequestSystemMessage class.
+     *
+     * @param content the List of ChatMessageContentItem content value to set.
+     */
+    public ChatRequestSystemMessage(List<ChatMessageContentItem> content) {
+        this.content = BinaryData.fromObject(content);
+        this.stringContent = null;
+        this.chatMessageContentItem = content;
     }
 }

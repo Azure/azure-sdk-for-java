@@ -24,6 +24,8 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Text To Speech sample](#text-to-speech "Text To Speech")
 * [File operations sample](#file-operations "File Operations")
 * [Batch operations sample](#batch-operations "Batch Operations")
+* [Structured Outputs](#structured-outputs "Structured Outputs")
+* [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -45,7 +47,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.11</version>
+    <version>1.0.0-beta.12</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -162,6 +164,8 @@ The following sections provide several code snippets covering some of the most c
 * [Text To Speech sample](#text-to-speech "Text To Speech")
 * [File operations sample](#file-operations "File Operations")
 * [Batch operations sample](#batch-operations "Batch Operations")
+* [Structured Outputs](#structured-outputs "Structured Outputs")
+* [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
 
 ### Legacy completions
 
@@ -362,7 +366,7 @@ List<ChatRequestMessage> chatMessages = Arrays.asList(
         new ChatRequestUserMessage("What sort of clothing should I wear today in Berlin?")
 );
 ChatCompletionsToolDefinition toolDefinition = new ChatCompletionsFunctionToolDefinition(
-        new FunctionDefinition("MyFunctionName"));
+        new ChatCompletionsFunctionToolDefinitionFunction("MyFunctionName"));
 
 ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(chatMessages);
 chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
@@ -460,6 +464,51 @@ Batch cancelledBatch = client.cancelBatch(batch.getId());
 ```
 For a complete sample example, see sample [Batch Operations][sample_batch_operations].
 
+### Structured Outputs
+
+Structured Outputs can be enabled by setting the parameter `strict: true` in an API call with either a defined 
+`response format` or `function definitions`. 
+```java readme-sample-structuredOutputsResponseFormat
+ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")))
+    // Previously, the response_format parameter was only available to specify that the model should return a valid JSON.
+    // In addition to this, we are introducing a new way of specifying which JSON schema to follow.
+    .setResponseFormat(new ChatCompletionsJsonSchemaResponseFormat(
+        new ChatCompletionsJsonSchemaResponseFormatJsonSchema("get_weather")
+            .setStrict(true)
+            .setDescription("Fetches the weather in the given location")
+            .setSchema(BinaryData.fromObject(new Parameters()))));
+```
+
+For a full sample, see [Structured Output: Response Format][sample_chat_completions_json_schema].
+For more details see the [OpenAI structured output documentation](https://platform.openai.com/docs/guides/structured-output).
+
+### Upload large files in multiple parts
+
+`uploads` allows you to upload large files in multiple parts.
+
+```java readme-sample-uploadsLargeFilesMultipleParts
+CreateUploadRequest createUploadRequest = new CreateUploadRequest("{fileNameToCreate}", CreateUploadRequestPurpose.ASSISTANTS,
+    totalFilesSize, "text/plain");
+Upload upload = client.createUpload(createUploadRequest);
+String uploadId = upload.getId();
+
+UploadPart uploadPartAdded = client.addUploadPart(uploadId,
+    new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path)).setFilename("{fileName}")));
+String uploadPartAddedId = uploadPartAdded.getId();
+System.out.println("Upload part added, upload part ID = " + uploadPartAddedId);
+
+UploadPart uploadPartAdded2 = client.addUploadPart(uploadId,
+    new AddUploadPartRequest(new DataFileDetails(BinaryData.fromFile(path2)).setFilename("{fileName2}")));
+String uploadPartAddedId2 = uploadPartAdded2.getId();
+System.out.println("Upload part 2 added, upload part ID = " + uploadPartAddedId2);
+
+CompleteUploadRequest completeUploadRequest = new CompleteUploadRequest(Arrays.asList(uploadPartAddedId, uploadPartAddedId2));
+Upload completeUpload = client.completeUpload(uploadId, completeUploadRequest);
+System.out.println("Upload completed, upload ID = " + completeUpload.getId());
+```
+For a full sample, see  [Upload large files in multiple parts][sample_uploads_in_multi_parts].
+For more details see the [OpenAI uploads documentation](https://platform.openai.com/docs/api-reference/uploads).
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -516,6 +565,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_batch_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/BatchOperationsSample.java
 [sample_chat_completion_function_call]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsFunctionCall.java
 [sample_chat_completion_BYOD]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/ChatCompletionsWithYourData.java
+[sample_chat_completions_json_schema]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/StructuredOutputsResponseFormat.java
 [sample_file_operations]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/FileOperationsSample.java
 [sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsSample.java
 [sample_get_chat_completions_streaming]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsStreamSample.java
@@ -528,6 +578,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
 [sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
 [sample_text_to_speech]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/TextToSpeechSample.java
+[sample_uploads_in_multi_parts]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/UploadLargeFileInPartsSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java

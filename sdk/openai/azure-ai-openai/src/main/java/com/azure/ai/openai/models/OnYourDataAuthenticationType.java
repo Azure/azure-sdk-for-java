@@ -86,4 +86,10 @@ public final class OnYourDataAuthenticationType extends ExpandableStringEnum<OnY
     public static Collection<OnYourDataAuthenticationType> values() {
         return values(OnYourDataAuthenticationType.class);
     }
+
+    /**
+     * Authentication via username and password.
+     */
+    @Generated
+    public static final OnYourDataAuthenticationType USERNAME_AND_PASSWORD = fromString("username_and_password");
 }
