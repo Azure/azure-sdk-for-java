@@ -41,6 +41,7 @@ import java.util.regex.Pattern;
 public final class ImplUtils {
     private static final HttpHeaderName RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("retry-after-ms");
     private static final HttpHeaderName X_MS_RETRY_AFTER_MS_HEADER = HttpHeaderName.fromString("x-ms-retry-after-ms");
+    private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
     private static final byte ZERO = (byte) 0x00;
@@ -608,11 +609,41 @@ public final class ImplUtils {
         }
     }
 
-    static boolean isShutdownHookAccessHelper() {
-        return ShutdownHookAccessHelperHolder.shutdownHookAccessHelper;
-    }
+    /**
+     * Converts a byte array into a hex string.
+     *
+     * <p>The hex string returned uses characters {@code 0123456789abcdef}, if uppercase {@code ABCDEF} is required the
+     * returned string will need to be {@link String#toUpperCase() uppercased}.</p>
+     *
+     * <p>If {@code bytes} is null, null will be returned. If {@code bytes} was an empty array an empty string is
+     * returned.</p>
+     *
+     * @param bytes The byte array to convert into a hex string.
+     * @return A hex string representing the {@code bytes} that were passed, or null if {@code bytes} were null.
+     */
+    public static String bytesToHexString(byte[] bytes) {
+        if (bytes == null) {
+            return null;
+        }
 
-    static void setShutdownHookAccessHelper(boolean shutdownHookAccessHelper) {
-        ShutdownHookAccessHelperHolder.shutdownHookAccessHelper = shutdownHookAccessHelper;
+        if (bytes.length == 0) {
+            return "";
+        }
+
+        // Hex uses 4 bits, converting a byte to hex will double its size.
+        char[] hexString = new char[bytes.length * 2];
+
+        for (int i = 0; i < bytes.length; i++) {
+            // Convert the byte into an integer, masking all but the last 8 bits (the byte).
+            int b = bytes[i] & 0xFF;
+
+            // Shift 4 times to the right to get the leading 4 bits and get the corresponding hex character.
+            hexString[i * 2] = LOWERCASE_HEX_CHARACTERS[b >>> 4];
+
+            // Mask all but the last 4 bits and get the corresponding hex character.
+            hexString[i * 2 + 1] = LOWERCASE_HEX_CHARACTERS[b & 0x0F];
+        }
+
+        return new String(hexString);
     }
 }

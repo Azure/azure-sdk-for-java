@@ -20,6 +20,7 @@ module io.clientcore.core {
     exports io.clientcore.core.util.binarydata;
     exports io.clientcore.core.util.configuration;
     exports io.clientcore.core.util.serializer;
+    exports io.clientcore.core.util.auth;
 
     uses HttpClientProvider;
 }

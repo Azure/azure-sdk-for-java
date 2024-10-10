@@ -5,6 +5,8 @@ package io.clientcore.http.okhttp3.implementation;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.auth.AuthUtils;
+import io.clientcore.core.util.auth.AuthorizationChallengeHandler;
 import io.clientcore.core.util.binarydata.BinaryData;
 import okhttp3.Authenticator;
 import okhttp3.Challenge;
@@ -19,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHENTICATION_INFO;
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.PROXY_AUTHORIZATION;
-import static io.clientcore.http.okhttp3.implementation.AuthorizationChallengeHandler.isNullOrEmpty;
+import static io.clientcore.core.util.auth.AuthUtils.PROXY_AUTHENTICATION_INFO;
+import static io.clientcore.core.util.auth.AuthUtils.PROXY_AUTHORIZATION;
+import static io.clientcore.core.util.auth.AuthUtils.isNullOrEmpty;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
@@ -85,7 +87,7 @@ public final class ProxyAuthenticator implements Authenticator {
     @Override
     public Request authenticate(Route route, Response response) {
         String authorizationHeader =
-            challengeHandler.attemptToPipelineAuthorization(PROXY_METHOD, PROXY_URI_PATH, NO_BODY);
+            challengeHandler.attemptToPipelineAuthorization();
 
         // Pipelining was successful, use the generated authorization header.
         if (!isNullOrEmpty(authorizationHeader)) {
@@ -113,7 +115,7 @@ public final class ProxyAuthenticator implements Authenticator {
         // Prefer digest challenges over basic.
         if (digestChallenges.size() > 0) {
             authorizationHeader =
-                challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY);
+                challengeHandler.handleDigest(PROXY_METHOD, PROXY_URI_PATH, digestChallenges, NO_BODY, null);
         }
 
         /*
@@ -168,9 +170,9 @@ public final class ProxyAuthenticator implements Authenticator {
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
 
             if (!isNullOrEmpty(proxyAuthenticationInfoHeader)) {
-                Map<String, String> authenticationInfoPieces = AuthorizationChallengeHandler
+                Map<String, String> authenticationInfoPieces = AuthUtils
                     .parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
-                Map<String, String> authorizationPieces = AuthorizationChallengeHandler
+                Map<String, String> authorizationPieces = AuthUtils
                     .parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
 
                 /*
