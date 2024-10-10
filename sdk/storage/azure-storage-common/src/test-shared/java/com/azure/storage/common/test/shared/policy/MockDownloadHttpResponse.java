@@ -6,10 +6,13 @@ package com.azure.storage.common.test.shared.policy;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
@@ -69,4 +72,10 @@ public class MockDownloadHttpResponse extends HttpResponse {
     public Mono<String> getBodyAsString(Charset charset) {
         return Mono.error(new IOException());
     }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromObject(new IOException());
+    }
 }
+

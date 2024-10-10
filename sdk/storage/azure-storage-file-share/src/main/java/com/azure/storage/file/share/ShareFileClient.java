@@ -18,7 +18,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -35,6 +34,7 @@ import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
@@ -52,12 +52,15 @@ import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
+import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
 import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
+import com.azure.storage.file.share.models.ShareFileDownloadAsyncResponse;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
@@ -81,14 +84,21 @@ import com.azure.storage.file.share.options.ShareFileSeekableByteChannelWriteOpt
 import com.azure.storage.file.share.options.ShareFileSetPropertiesOptions;
 import com.azure.storage.file.share.options.ShareFileUploadRangeFromUrlOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
-import reactor.core.publisher.Mono;
+import reactor.core.Exceptions;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -214,7 +224,7 @@ public class ShareFileClient {
      * @throws ShareStorageException If a storage service error occurred.
      */
     public final StorageFileInputStream openInputStream(ShareFileRange range) {
-        return new StorageFileInputStream(shareFileAsyncClient, range.getStart(),
+        return new StorageFileInputStream(this, range.getStart(),
             range.getEnd() == null ? null : (range.getEnd() - range.getStart() + 1));
     }
 
@@ -1027,11 +1037,36 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileProperties> downloadToFileWithResponse(String downloadFilePath, ShareFileRange range,
-        ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.downloadToFileWithResponse(downloadFilePath,
-            range, requestConditions, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+                                                                    ShareRequestConditions requestConditions, Duration timeout, Context context) {
+        Objects.requireNonNull(downloadFilePath, "'downloadFilePath' cannot be null");
+        ShareRequestConditions finalRequestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+
+        Callable<Response<ShareFileProperties>> operation = () -> {
+            try (FileChannel fileChannel = FileChannel.open(Paths.get(downloadFilePath), StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)) {
+                Response<ShareFileProperties> propertiesResponse = getPropertiesWithResponse(null, context);
+                ShareFileProperties fileProperties = propertiesResponse.getValue();
+                long fileSize = fileProperties.getContentLength();
+
+                ShareFileRange currentRange = range == null ? new ShareFileRange(0, fileSize) : range;
+                long chunkSize = ModelHelper.FILE_DEFAULT_BLOCK_SIZE;
+                for (long pos = currentRange.getStart(); pos < currentRange.getEnd(); pos += chunkSize) {
+                    long count = Math.min(chunkSize, currentRange.getEnd() - pos);
+                    ShareFileRange chunkRange = new ShareFileRange(pos, pos + count - 1);
+                    OutputStream os = Channels.newOutputStream(fileChannel.position(pos));
+                    ShareFileDownloadOptions options = new ShareFileDownloadOptions()
+                        .setRange(chunkRange)
+                        .setRangeContentMd5Requested(false)
+                        .setRequestConditions(finalRequestConditions);
+                    downloadWithResponse(os, options, timeout, context);
+                }
+                return propertiesResponse;
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
+        };
+        return sendRequest(operation, timeout, ShareStorageException.class);
     }
+
 
     /**
      * Downloads a file from the system, including its metadata and properties
@@ -1195,12 +1230,72 @@ public class ShareFileClient {
     public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileDownloadOptions options,
         Duration timeout, Context context) {
         Objects.requireNonNull(stream, "'stream' cannot be null.");
+        options = options == null ? new ShareFileDownloadOptions() : options;
+        // using array as objects are captured by reference, allowing their contents to be modified
+        final long[] currentOffset = new long[] {options.getRange() == null ? 0 : options.getRange().getStart()};
+        Long fileLength = options.getRange() == null ? null : options.getRange().getEnd();
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        DownloadRetryOptions retryOptions = options.getRetryOptions() == null ? new DownloadRetryOptions()
+            : options.getRetryOptions();
+        Boolean getRangeContentMd5 = options.isRangeContentMd5Requested();
 
-        Mono<ShareFileDownloadResponse> download = shareFileAsyncClient.downloadWithResponse(options, context)
-            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
-                .thenReturn(new ShareFileDownloadResponse(response)));
+        Callable<ShareFileDownloadResponse> operation = () -> {
+            String initialETag = null;
+            int retryCount = 0;
+            while (retryCount <= (retryOptions.getMaxRetryRequests())) {
+                try {
+                    ShareFileRange currentRange = new ShareFileRange(currentOffset[0], fileLength);
+                    ResponseBase<FilesDownloadHeaders, InputStream> response = downloadRange(currentRange,
+                        getRangeContentMd5, requestConditions, context);
+                    String currentETag = ModelHelper.getETag(response.getHeaders());
+                    if (initialETag != null && !initialETag.equals(currentETag)) {
+                        throw LOGGER.logExceptionAsError(new ConcurrentModificationException(
+                            "File has been modified concurrently. Expected eTag: " + initialETag + ", Received eTag: "
+                                + currentETag));
+                    }
+                    initialETag = currentETag; // Update eTag for subsequent retries
 
-        return StorageImplUtils.blockWithOptionalTimeout(download, timeout);
+                    ShareFileDownloadHeaders headers = ModelHelper.transformFileDownloadHeaders(
+                        response.getDeserializedHeaders(), response.getHeaders());
+
+                    try (InputStream responseStream = response.getValue()) {
+                        if (responseStream != null) {
+                            byte[] buffer = new byte[8192];
+                            int bytesRead;
+                            while ((bytesRead = responseStream.read(buffer)) != -1) {
+                                stream.write(buffer, 0, bytesRead);
+                                currentOffset[0] += bytesRead; // Update current offset based on bytes read
+                            }
+                        }
+                    }
+                    return new ShareFileDownloadResponse(new ShareFileDownloadAsyncResponse(response.getRequest(),
+                        response.getStatusCode(), response.getHeaders(), null, headers));
+                } catch (Exception e) {
+                    Throwable t = Exceptions.unwrap(e);
+                    if (t instanceof IOException) {
+                        retryCount++;
+                        if (retryCount > retryOptions.getMaxRetryRequests()) {
+                            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file after retries: " + t.getMessage(), t));
+                        }
+                        LOGGER.info("Retrying download due to IOException. Attempt: " + retryCount);
+                    } else if (t instanceof ConcurrentModificationException) {
+                        throw LOGGER.logExceptionAsError((ConcurrentModificationException) t);
+                    } else { // General exception catch
+                        throw LOGGER.logExceptionAsError(new RuntimeException("An unexpected error occurred during file download", t));
+                    }
+                }
+            }
+            throw LOGGER.logExceptionAsError(new RuntimeException("Failed to download file. Max retry attempts reached."));
+        };
+        return sendRequest(operation, timeout, ShareStorageException.class);
+    }
+
+    private ResponseBase<FilesDownloadHeaders, InputStream> downloadRange(ShareFileRange range,
+        Boolean rangeGetContentMD5, ShareRequestConditions requestConditions, Context context) {
+        String rangeString = range == null ? null : range.toHeaderValue();
+        return azureFileStorageClient.getFiles().downloadWithResponse(shareName, filePath, null,
+            rangeString, rangeGetContentMD5, requestConditions.getLeaseId(),  context);
     }
 
     /**

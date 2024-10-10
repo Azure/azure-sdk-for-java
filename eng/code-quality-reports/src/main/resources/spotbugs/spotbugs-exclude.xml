@@ -568,6 +568,13 @@
   </Match>
 
   <Match>
+    <Class name="com.azure.storage.file.share.ShareFileClient"/>
+    <Method name="downloadWithResponse"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+
+  <Match>
     <Package name="com.azure.sdk.template.perf"/>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
   </Match>

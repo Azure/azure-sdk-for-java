@@ -89,4 +89,8 @@
     <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" />
     <Class name="com.azure.storage.file.share.StorageFileInputStream" />
   </Match>
+  <Match>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+    <Class name="com.azure.storage.file.share.ShareFileClient"/>
+  </Match>
 </FindBugsFilter>
