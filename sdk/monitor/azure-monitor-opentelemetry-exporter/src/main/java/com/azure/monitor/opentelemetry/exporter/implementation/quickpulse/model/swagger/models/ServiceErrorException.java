@@ -1,0 +1,38 @@
+package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models;
+
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpResponse;
+
+/**
+ * Exception thrown for an invalid response with ServiceError information.
+ */
+public final class ServiceErrorException extends HttpResponseException {
+    /**
+     * Initializes a new instance of the ServiceErrorException class.
+     *
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
+     */
+    public ServiceErrorException(String message, HttpResponse response) {
+        super(message, response);
+    }
+
+    /**
+     * Initializes a new instance of the ServiceErrorException class.
+     *
+     * @param message the exception message or the response content if a message is not available.
+     * @param response the HTTP response.
+     * @param value the deserialized response value.
+     */
+    public ServiceErrorException(String message, HttpResponse response, ServiceError value) {
+        super(message, response, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ServiceError getValue() {
+        return (ServiceError) super.getValue();
+    }
+}

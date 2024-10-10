@@ -1,0 +1,72 @@
+package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models;
+
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
+/**
+ * Telemetry type.
+ */
+public final class TelemetryType extends ExpandableStringEnum<TelemetryType> {
+    /**
+     * Represents a request telemetry type.
+     */
+    public static final TelemetryType REQUEST = fromString("Request");
+
+    /**
+     * Represents a dependency telemetry type.
+     */
+    public static final TelemetryType DEPENDENCY = fromString("Dependency");
+
+    /**
+     * Represents an exception telemetry type.
+     */
+    public static final TelemetryType EXCEPTION = fromString("Exception");
+
+    /**
+     * Represents an event telemetry type.
+     */
+    public static final TelemetryType EVENT = fromString("Event");
+
+    /**
+     * Represents a metric telemetry type.
+     */
+    public static final TelemetryType METRIC = fromString("Metric");
+
+    /**
+     * Represents a performance counter telemetry type.
+     */
+    public static final TelemetryType PERFORMANCE_COUNTER = fromString("PerformanceCounter");
+
+    /**
+     * Represents a trace telemetry type.
+     */
+    public static final TelemetryType TRACE = fromString("Trace");
+
+    /**
+     * Creates a new instance of TelemetryType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TelemetryType() {
+    }
+
+    /**
+     * Creates or finds a TelemetryType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding TelemetryType.
+     */
+    public static TelemetryType fromString(String name) {
+        return fromString(name, TelemetryType.class);
+    }
+
+    /**
+     * Gets known TelemetryType values.
+     *
+     * @return known TelemetryType values.
+     */
+    public static Collection<TelemetryType> values() {
+        return values(TelemetryType.class);
+    }
+}
