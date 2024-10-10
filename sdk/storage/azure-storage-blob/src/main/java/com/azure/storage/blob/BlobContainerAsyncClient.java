@@ -430,6 +430,13 @@ public final class BlobContainerAsyncClient {
             metadata, accessType, null, blobContainerEncryptionScope, context);
     }
 
+    Mono<Response<Void>> createIfNotExistsWithResponse(Map<String, String> metadata, PublicAccessType accessType,
+                                                       Context context) {
+        context = context == null ? Context.NONE : context;
+        return this.azureBlobStorage.getContainers().createIfNotExistsNoCustomHeadersWithResponseAsync(containerName, null,
+                                                                                                       metadata, accessType, null, blobContainerEncryptionScope, context);
+    }
+
     /**
      * Creates a new container within a storage account if it does not exist. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/create-container">Azure Docs</a>.
@@ -491,18 +498,15 @@ public final class BlobContainerAsyncClient {
         }
     }
 
+    /**
+     * If status code is 201, a new container was successfully created.
+     * If status code is 409, a container already existed at this location.
+     */
     Mono<Response<Boolean>> createIfNotExistsWithResponse(BlobContainerCreateOptions options, Context context) {
         try {
             options = options == null ? new BlobContainerCreateOptions() : options;
-            return createWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t)
-                    .getStatusCode() == 409,
-                    t -> {
-                        HttpResponse response = ((BlobStorageException) t).getResponse();
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), false));
-                    });
+            return createIfNotExistsWithResponse(options.getMetadata(), options.getPublicAccessType(), context)
+                .map(response -> new SimpleResponse<>(response, response.getStatusCode() == 201));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -645,18 +649,19 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<Boolean>> deleteIfExistsWithResponse(BlobRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
-        try {
-            return deleteWithResponse(requestConditions, context)
-                .map(response -> (Response<Boolean>) new SimpleResponse<>(response, true))
-                .onErrorResume(t -> t instanceof BlobStorageException && ((BlobStorageException) t).getStatusCode() == 404,
-                    t -> {
-                        HttpResponse response = ((BlobStorageException) t).getResponse();
-                        return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                            response.getHeaders(), false));
-                    });
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
+
+        if (!validateNoETag(requestConditions)) {
+            // Throwing is preferred to Mono.error because this will error out immediately instead of waiting until
+            // subscription.
+            throw LOGGER.logExceptionAsError(
+                new UnsupportedOperationException("ETag access conditions are not supported for this API."));
         }
+        context = context == null ? Context.NONE : context;
+
+        return this.azureBlobStorage.getContainers().deleteIfExistsNoCustomHeadersWithResponseAsync(containerName, null,
+                                                                                                    requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
+                                                                                                    requestConditions.getIfUnmodifiedSince(), null, context)
+            .map(response -> new SimpleResponse<>(response, response.getStatusCode() == 202));
     }
 
     /**

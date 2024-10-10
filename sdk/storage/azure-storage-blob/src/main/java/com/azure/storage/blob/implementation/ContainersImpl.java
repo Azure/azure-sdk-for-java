@@ -122,6 +122,21 @@ public final class ContainersImpl {
             @HeaderParam("x-ms-deny-encryption-scope-override") Boolean encryptionScopeOverridePrevented,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Put("/{containerName}")
+        // If status code is 201, a new container was successfully created.
+        // If status code is 409, a container already exists at this location.
+        // Both are acceptable responses.
+        @ExpectedResponses({ 201, 409 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<Response<Void>> createIfNotExistsNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata,
+            @HeaderParam("x-ms-blob-public-access") PublicAccessType access,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("x-ms-default-encryption-scope") String defaultEncryptionScope,
+            @HeaderParam("x-ms-deny-encryption-scope-override") Boolean encryptionScopeOverridePrevented,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Get("/{containerName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
@@ -155,6 +170,20 @@ public final class ContainersImpl {
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> deleteNoCustomHeaders(@HostParam("url") String url,
+            @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
+            @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
+            @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
+            @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Delete("/{containerName}")
+        // If status code is 202, the container was successfully deleted.
+        // If status code is 404, the container did not exist.
+        // Both are acceptable responses.
+        @ExpectedResponses({ 202, 404 })
+        @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
+        Mono<Response<Void>> deleteIfExistsNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
             @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId,
             @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince,
@@ -781,6 +810,53 @@ public final class ContainersImpl {
     }
 
     /**
+     * Creates a new container under the specified account if a container with the same name does not already exist.
+     *
+     * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param metadata Optional. Specifies a user-defined name-value pair associated with the blob. If no name-value
+     * pairs are specified, the operation will copy the metadata from the source blob or file to the destination blob.
+     * If one or more name-value pairs are specified, the destination blob is created with the specified metadata, and
+     * metadata is not copied from the source blob or file. Note that beginning with version 2009-09-19, metadata names
+     * must adhere to the naming rules for C# identifiers. See Naming and Referencing Containers, Blobs, and Metadata
+     * for more information.
+     * @param access Specifies whether data in the container may be accessed publicly and the level of access.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param blobContainerEncryptionScope Parameter group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> createIfNotExistsNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
+                                                                                  Map<String, String> metadata, PublicAccessType access, String requestId,
+                                                                                  BlobContainerEncryptionScope blobContainerEncryptionScope, Context context) {
+        final String restype = "container";
+        final String accept = "application/xml";
+        String defaultEncryptionScopeInternal = null;
+        if (blobContainerEncryptionScope != null) {
+            defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
+        }
+        String defaultEncryptionScope = defaultEncryptionScopeInternal;
+        Boolean encryptionScopeOverridePreventedInternal = null;
+        if (blobContainerEncryptionScope != null) {
+            encryptionScopeOverridePreventedInternal
+                = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
+        }
+        Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
+        return service
+            .createIfNotExistsNoCustomHeaders(this.client.getUrl(), containerName, restype, timeout, metadata, access,
+                                              this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented, accept,
+                                              context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
      * returns all user-defined metadata and system properties for the specified container. The data returned does not
      * include the container's list of blobs.
      *
@@ -1136,6 +1212,42 @@ public final class ContainersImpl {
             = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return service.deleteNoCustomHeaders(this.client.getUrl(), containerName, restype, timeout, leaseId,
             ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context)
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+    }
+
+    /**
+     * Operation marks the specified container, if it exists, for deletion.
+     * The container and any blobs contained within it are later deleted during garbage collection.
+     *
+     * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param ifModifiedSince Specify this header value to operate only on a blob if it has been modified since the
+     * specified date/time.
+     * @param ifUnmodifiedSince Specify this header value to operate only on a blob if it has not been modified since
+     * the specified date/time.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIfExistsNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
+                                                                               String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
+                                                                               Context context) {
+        final String restype = "container";
+        final String accept = "application/xml";
+        DateTimeRfc1123 ifModifiedSinceConverted
+            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+        DateTimeRfc1123 ifUnmodifiedSinceConverted
+            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+        return service.deleteIfExistsNoCustomHeaders(this.client.getUrl(), containerName, restype, timeout, leaseId,
+                                                     ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -4499,4 +4611,5 @@ public final class ContainersImpl {
                 accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
+    
 }
