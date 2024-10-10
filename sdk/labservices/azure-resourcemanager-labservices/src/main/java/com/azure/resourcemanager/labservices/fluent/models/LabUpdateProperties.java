@@ -5,71 +5,75 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.RosterProfile;
 import com.azure.resourcemanager.labservices.models.SecurityProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of a lab resource used for updates. */
+/**
+ * Properties of a lab resource used for updates.
+ */
 @Fluent
-public class LabUpdateProperties {
+public class LabUpdateProperties implements JsonSerializable<LabUpdateProperties> {
     /*
      * The resource auto shutdown configuration for the lab. This controls whether actions are taken on resources that
      * are sitting idle.
      */
-    @JsonProperty(value = "autoShutdownProfile")
     private AutoShutdownProfile autoShutdownProfile;
 
     /*
      * The connection profile for the lab. This controls settings such as web access to lab resources or whether RDP or
      * SSH ports are open.
      */
-    @JsonProperty(value = "connectionProfile")
     private ConnectionProfile connectionProfile;
 
     /*
      * The profile used for creating lab virtual machines.
      */
-    @JsonProperty(value = "virtualMachineProfile")
     private VirtualMachineProfile virtualMachineProfile;
 
     /*
      * The lab security profile.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * The lab user list management profile.
      */
-    @JsonProperty(value = "rosterProfile")
     private RosterProfile rosterProfile;
 
     /*
-     * The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container
-     * when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides organization..
+     * The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container when
+     * creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides organization..
      */
-    @JsonProperty(value = "labPlanId")
     private String labPlanId;
 
     /*
      * The title of the lab.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The description of the lab.
      */
-    @JsonProperty(value = "description")
     private String description;
+
+    /**
+     * Creates an instance of LabUpdateProperties class.
+     */
+    public LabUpdateProperties() {
+    }
 
     /**
      * Get the autoShutdownProfile property: The resource auto shutdown configuration for the lab. This controls whether
      * actions are taken on resources that are sitting idle.
-     *
+     * 
      * @return the autoShutdownProfile value.
      */
     public AutoShutdownProfile autoShutdownProfile() {
@@ -79,7 +83,7 @@ public class LabUpdateProperties {
     /**
      * Set the autoShutdownProfile property: The resource auto shutdown configuration for the lab. This controls whether
      * actions are taken on resources that are sitting idle.
-     *
+     * 
      * @param autoShutdownProfile the autoShutdownProfile value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -91,7 +95,7 @@ public class LabUpdateProperties {
     /**
      * Get the connectionProfile property: The connection profile for the lab. This controls settings such as web access
      * to lab resources or whether RDP or SSH ports are open.
-     *
+     * 
      * @return the connectionProfile value.
      */
     public ConnectionProfile connectionProfile() {
@@ -101,7 +105,7 @@ public class LabUpdateProperties {
     /**
      * Set the connectionProfile property: The connection profile for the lab. This controls settings such as web access
      * to lab resources or whether RDP or SSH ports are open.
-     *
+     * 
      * @param connectionProfile the connectionProfile value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -112,7 +116,7 @@ public class LabUpdateProperties {
 
     /**
      * Get the virtualMachineProfile property: The profile used for creating lab virtual machines.
-     *
+     * 
      * @return the virtualMachineProfile value.
      */
     public VirtualMachineProfile virtualMachineProfile() {
@@ -121,7 +125,7 @@ public class LabUpdateProperties {
 
     /**
      * Set the virtualMachineProfile property: The profile used for creating lab virtual machines.
-     *
+     * 
      * @param virtualMachineProfile the virtualMachineProfile value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -132,7 +136,7 @@ public class LabUpdateProperties {
 
     /**
      * Get the securityProfile property: The lab security profile.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -141,7 +145,7 @@ public class LabUpdateProperties {
 
     /**
      * Set the securityProfile property: The lab security profile.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -152,7 +156,7 @@ public class LabUpdateProperties {
 
     /**
      * Get the rosterProfile property: The lab user list management profile.
-     *
+     * 
      * @return the rosterProfile value.
      */
     public RosterProfile rosterProfile() {
@@ -161,7 +165,7 @@ public class LabUpdateProperties {
 
     /**
      * Set the rosterProfile property: The lab user list management profile.
-     *
+     * 
      * @param rosterProfile the rosterProfile value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -174,7 +178,7 @@ public class LabUpdateProperties {
      * Get the labPlanId property: The ID of the lab plan. Used during resource creation to provide defaults and acts as
      * a permission container when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
      * organization..
-     *
+     * 
      * @return the labPlanId value.
      */
     public String labPlanId() {
@@ -185,7 +189,7 @@ public class LabUpdateProperties {
      * Set the labPlanId property: The ID of the lab plan. Used during resource creation to provide defaults and acts as
      * a permission container when creating a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
      * organization..
-     *
+     * 
      * @param labPlanId the labPlanId value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -196,7 +200,7 @@ public class LabUpdateProperties {
 
     /**
      * Get the title property: The title of the lab.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -205,7 +209,7 @@ public class LabUpdateProperties {
 
     /**
      * Set the title property: The title of the lab.
-     *
+     * 
      * @param title the title value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -216,7 +220,7 @@ public class LabUpdateProperties {
 
     /**
      * Get the description property: The description of the lab.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -225,7 +229,7 @@ public class LabUpdateProperties {
 
     /**
      * Set the description property: The description of the lab.
-     *
+     * 
      * @param description the description value to set.
      * @return the LabUpdateProperties object itself.
      */
@@ -236,7 +240,7 @@ public class LabUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -255,5 +259,62 @@ public class LabUpdateProperties {
         if (rosterProfile() != null) {
             rosterProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("autoShutdownProfile", this.autoShutdownProfile);
+        jsonWriter.writeJsonField("connectionProfile", this.connectionProfile);
+        jsonWriter.writeJsonField("virtualMachineProfile", this.virtualMachineProfile);
+        jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("rosterProfile", this.rosterProfile);
+        jsonWriter.writeStringField("labPlanId", this.labPlanId);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabUpdateProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabUpdateProperties.
+     */
+    public static LabUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabUpdateProperties deserializedLabUpdateProperties = new LabUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoShutdownProfile".equals(fieldName)) {
+                    deserializedLabUpdateProperties.autoShutdownProfile = AutoShutdownProfile.fromJson(reader);
+                } else if ("connectionProfile".equals(fieldName)) {
+                    deserializedLabUpdateProperties.connectionProfile = ConnectionProfile.fromJson(reader);
+                } else if ("virtualMachineProfile".equals(fieldName)) {
+                    deserializedLabUpdateProperties.virtualMachineProfile = VirtualMachineProfile.fromJson(reader);
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedLabUpdateProperties.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("rosterProfile".equals(fieldName)) {
+                    deserializedLabUpdateProperties.rosterProfile = RosterProfile.fromJson(reader);
+                } else if ("labPlanId".equals(fieldName)) {
+                    deserializedLabUpdateProperties.labPlanId = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedLabUpdateProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedLabUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabUpdateProperties;
+        });
     }
 }
