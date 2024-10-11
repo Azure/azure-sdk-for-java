@@ -19,8 +19,8 @@ import com.azure.ai.vision.face.models.LargePersonGroupPerson;
 import com.azure.ai.vision.face.samples.utils.ConfigurationHelper;
 import com.azure.ai.vision.face.samples.utils.Resources;
 import com.azure.ai.vision.face.samples.utils.Utils;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +33,7 @@ public class IdentifyFromLargePersonGroups {
         //Create LargePersonGroupClient
         LargePersonGroupClient largePersonGroupClient = new FaceAdministrationClientBuilder()
             .endpoint(ConfigurationHelper.getEndpoint())
-            .credential(new AzureKeyCredential(ConfigurationHelper.getAccountKey()))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient()
             .getLargePersonGroupClient(largePersonGroupId);
 
@@ -166,7 +166,7 @@ public class IdentifyFromLargePersonGroups {
     private static FaceClient createFaceClient() {
         return new FaceClientBuilder()
             .endpoint(ConfigurationHelper.getEndpoint())
-            .credential(new AzureKeyCredential(ConfigurationHelper.getAccountKey()))
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
     }
 }
