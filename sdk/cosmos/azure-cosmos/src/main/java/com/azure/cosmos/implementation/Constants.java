@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import java.util.List;
+
 /**
  * Used internally. Constants in the Azure Cosmos DB database service Java SDK.
  */
@@ -128,6 +130,9 @@ public final class Constants {
         public static final String VECTOR_DATA_TYPE = "dataType";
         public static final String VECTOR_DIMENSIONS = "dimensions";
         public static final String DISTANCE_FUNCTION = "distanceFunction";
+        public static final String VECTOR_QUANTIZATION_BYTE_SIZE = "quantizationByteSize";
+        public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
+        public static final String VECTOR_INDEX_SHARD_KEY = "vectorIndexShardKey";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";

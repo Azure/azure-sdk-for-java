@@ -84,19 +84,19 @@ public class NonStreamingOrderByQueryVectorSearchTest {
 
         CosmosContainerProperties containerProperties = new CosmosContainerProperties(flatContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.FLAT));
-        containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128L));
+        containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128));
         database.createContainer(containerProperties).block();
         flatIndexContainer = database.getContainer(flatContainerId);
 
         containerProperties = new CosmosContainerProperties(quantizedContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.QUANTIZED_FLAT));
-        containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128L));
+        containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(128));
         database.createContainer(containerProperties, ThroughputProperties.createManualThroughput(20000)).block();
         quantizedIndexContainer = database.getContainer(quantizedContainerId);
 
         containerProperties = new CosmosContainerProperties(largeDataContainerId, partitionKeyDef);
         containerProperties.setIndexingPolicy(populateIndexingPolicy(CosmosVectorIndexType.QUANTIZED_FLAT));
-        containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(2L));
+        containerProperties.setVectorEmbeddingPolicy(populateVectorEmbeddingPolicy(2));
         database.createContainer(containerProperties).block();
         largeDataContainer = database.getContainer(largeDataContainerId);
 
@@ -284,7 +284,7 @@ public class NonStreamingOrderByQueryVectorSearchTest {
         }
     }
 
-    private CosmosVectorEmbeddingPolicy populateVectorEmbeddingPolicy(Long dimensions) {
+    private CosmosVectorEmbeddingPolicy populateVectorEmbeddingPolicy(Integer dimensions) {
         CosmosVectorEmbeddingPolicy policy = new CosmosVectorEmbeddingPolicy();
         CosmosVectorEmbedding embedding = new CosmosVectorEmbedding();
         embedding.setPath("/embedding");
