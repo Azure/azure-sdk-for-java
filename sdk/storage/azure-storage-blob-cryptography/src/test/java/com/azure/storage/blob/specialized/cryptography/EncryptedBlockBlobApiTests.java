@@ -196,11 +196,6 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         assertThrows(IllegalArgumentException.class, () -> getEncryptedClientBuilder(null, null,
             ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
             .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient());
-
-        assertThrows(IllegalArgumentException.class, () -> getEncryptedClientBuilder(null, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
             .buildEncryptedBlobClient());
     }
 
@@ -210,11 +205,6 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     public void createEncryptionClientSucceeds(boolean passKey, boolean passKeyResolver) {
         FakeKey key = passKey ? fakeKey : null;
         FakeKeyResolver keyResolver = passKeyResolver ? fakeKeyResolver : null;
-
-        assertDoesNotThrow(() -> getEncryptedClientBuilder(key, keyResolver, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl())
-            .blobName(generateBlobName())
-            .buildEncryptedBlobAsyncClient());
 
         assertDoesNotThrow(() -> getEncryptedClientBuilder(key, keyResolver, ENV.getPrimaryAccount().getCredential(),
             cc.getBlobContainerUrl())
@@ -1995,19 +1985,6 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
             Arguments.of("EncryptionData", EncryptionVersion.V2),
             Arguments.of("eNcRyPtIoNdAtA", EncryptionVersion.V2)
         );
-    }
-
-    private static void compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
-        result.position(0);
-
-        for (ByteBuffer buffer : buffers) {
-            buffer.position(0);
-            result.limit(result.position() + buffer.remaining());
-            assertByteBuffersEqual(buffer, result);
-            result.position(result.position() + buffer.remaining());
-        }
-
-        assertEquals(0, result.remaining());
     }
 
     static class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {

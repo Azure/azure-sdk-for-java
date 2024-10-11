@@ -4,20 +4,31 @@
 package com.azure.storage.blob.specialized.cryptography;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.cryptography.AsyncKeyEncryptionKey;
 import com.azure.core.cryptography.AsyncKeyEncryptionKeyResolver;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -47,8 +58,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -420,5 +433,43 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
 
     protected HttpClient getHttpClient() {
         return StorageCommonTestUtils.getHttpClient(interceptorManager);
+    }
+
+    protected HttpPipeline getHttpPipeline(KeyServiceVersion serviceVersion) {
+        Configuration global = Configuration.getGlobalConfiguration().clone();
+        TokenCredential credential;
+
+        credential = StorageCommonTestUtils.getTokenCredential(interceptorManager);
+
+        // Closest to API goes first, closest to wire goes last.
+        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        policies.add(new UserAgentPolicy("client_name", "client_version", global, serviceVersion));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
+        policies.add(new RetryPolicy(strategy));
+        policies.add(new BearerTokenAuthenticationPolicy(credential, "https://vault.azure.net/.default"));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        if (getTestMode() == TestMode.RECORD) {
+            policies.add(interceptorManager.getRecordPolicy());
+        }
+
+        return new HttpPipelineBuilder()
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(getHttpClient())
+            .build();
+    }
+
+    protected static void compareListToBuffer(List<ByteBuffer> buffers, ByteBuffer result) {
+        result.position(0);
+
+        for (ByteBuffer buffer : buffers) {
+            buffer.position(0);
+            result.limit(result.position() + buffer.remaining());
+            assertByteBuffersEqual(buffer, result);
+            result.position(result.position() + buffer.remaining());
+        }
+
+        assertEquals(0, result.remaining());
     }
 }
