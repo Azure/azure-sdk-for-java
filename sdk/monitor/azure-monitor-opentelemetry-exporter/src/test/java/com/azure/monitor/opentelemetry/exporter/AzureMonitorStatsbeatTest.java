@@ -63,8 +63,6 @@ public class AzureMonitorStatsbeatTest {
         // close to flush
         openTelemetry.close();
 
-        Thread.sleep(2000);
-
         // wait for export
         if (!countDownLatch.await(15, SECONDS)) {
             throw new IllegalStateException("timed out");
@@ -106,8 +104,6 @@ public class AzureMonitorStatsbeatTest {
 
         // close to flush
         openTelemetrySdk.close();
-
-        Thread.sleep(2000);
 
         // wait for export
         if (!countDownLatch.await(15, SECONDS)) {
