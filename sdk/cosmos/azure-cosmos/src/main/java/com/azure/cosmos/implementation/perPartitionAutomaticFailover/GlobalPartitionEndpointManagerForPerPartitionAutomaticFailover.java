@@ -61,7 +61,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        if (StringUtils.isNotEmpty(resolvedCollectionRid)) {
+        if (StringUtils.isEmpty(resolvedCollectionRid)) {
             return false;
         }
 
@@ -118,7 +118,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         PartitionLevelFailoverInfo partitionLevelFailoverInfo
-            = this.partitionKeyRangeToLocation.putIfAbsent(partitionKeyRangeWrapper, new PartitionLevelFailoverInfo(failedLocation));
+            = this.partitionKeyRangeToLocation.computeIfAbsent(partitionKeyRangeWrapper, partitionKeyRangeWrapper1 -> new PartitionLevelFailoverInfo(failedLocation));
 
         // Rely on account-level read endpoints for new write region discovery
         List<URI> accountLevelReadEndpoints = this.globalEndpointManager.getAvailableReadEndpoints();
@@ -138,6 +138,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
     private boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
         if (this.globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList()).size() <= 1) {
+            return false;
+        }
+
+        if (!this.isPerPartitionAutomaticFailoverEnabled) {
             return false;
         }
 
@@ -172,18 +176,22 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         synchronized boolean tryMoveToNextLocation(List<URI> readLocations, URI failedLocation) {
 
+            if (failedLocation != this.current) {
+                return true;
+            }
+
             for (URI location : readLocations) {
+
+                if (location.equals(this.current)) {
+                    continue;
+                }
+
                 if (this.failedLocations.contains(location)) {
                     continue;
                 }
 
-                if (failedLocation.equals(this.current)) {
-                    continue;
-                }
-
-                this.current = location;
                 this.failedLocations.add(failedLocation);
-
+                this.current = location;
                 return true;
             }
 
