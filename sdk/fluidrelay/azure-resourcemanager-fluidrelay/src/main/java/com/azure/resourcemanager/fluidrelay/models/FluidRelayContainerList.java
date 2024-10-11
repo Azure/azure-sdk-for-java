@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.fluidrelay.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.fluidrelay.fluent.models.FluidRelayContainerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged response. */
+/**
+ * Paged response.
+ */
 @Fluent
-public final class FluidRelayContainerList {
+public final class FluidRelayContainerList implements JsonSerializable<FluidRelayContainerList> {
     /*
      * A sequence of FluidRelay containers.
      */
-    @JsonProperty(value = "value")
     private List<FluidRelayContainerInner> value;
 
     /*
      * A link to the next page of results, if any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of FluidRelayContainerList class.
+     */
+    public FluidRelayContainerList() {
+    }
+
+    /**
      * Get the value property: A sequence of FluidRelay containers.
-     *
+     * 
      * @return the value value.
      */
     public List<FluidRelayContainerInner> value() {
@@ -35,7 +45,7 @@ public final class FluidRelayContainerList {
 
     /**
      * Set the value property: A sequence of FluidRelay containers.
-     *
+     * 
      * @param value the value value to set.
      * @return the FluidRelayContainerList object itself.
      */
@@ -46,7 +56,7 @@ public final class FluidRelayContainerList {
 
     /**
      * Get the nextLink property: A link to the next page of results, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,12 +65,52 @@ public final class FluidRelayContainerList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FluidRelayContainerList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FluidRelayContainerList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FluidRelayContainerList.
+     */
+    public static FluidRelayContainerList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FluidRelayContainerList deserializedFluidRelayContainerList = new FluidRelayContainerList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<FluidRelayContainerInner> value
+                        = reader.readArray(reader1 -> FluidRelayContainerInner.fromJson(reader1));
+                    deserializedFluidRelayContainerList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedFluidRelayContainerList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFluidRelayContainerList;
+        });
     }
 }

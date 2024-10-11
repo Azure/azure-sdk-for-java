@@ -6,71 +6,39 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkServiceConnectionStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WebPubSubPrivateEndpointConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Running\",\"privateEndpoint\":{\"id\":\"zudnigrfiho\"},\"groupIds\":[\"wlpxuzzjg\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"yhqotoihiqakydi\",\"actionsRequired\":\"brkwpzdqt\"}},\"id\":\"cspodaqax\",\"name\":\"ipietgbe\",\"type\":\"jfulbmoic\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{\"id\":\"ntsj\"},\"groupIds\":[\"sxypruuu\",\"bnchrsziz\",\"yuel\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"nb\",\"actionsRequired\":\"yggagflnlgmt\"}},\"id\":\"ahzjmucftb\",\"name\":\"r\",\"type\":\"lrohkpig\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        WebPubSubManager manager = WebPubSubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PrivateEndpointConnection response = manager.webPubSubPrivateEndpointConnections()
+            .getWithResponse("memczjkmmyk", "ujxsglhsr", "rye", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        WebPubSubManager manager =
-            WebPubSubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PrivateEndpointConnection response =
-            manager
-                .webPubSubPrivateEndpointConnections()
-                .getWithResponse("nlaxpunjqikcz", "vitac", "xmfcsserxhtv", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("ntsj", response.privateEndpoint().id());
-        Assertions
-            .assertEquals(
-                PrivateLinkServiceConnectionStatus.APPROVED, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("nb", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("yggagflnlgmt", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("zudnigrfiho", response.privateEndpoint().id());
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+            response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("yhqotoihiqakydi", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("brkwpzdqt", response.privateLinkServiceConnectionState().actionsRequired());
     }
 }

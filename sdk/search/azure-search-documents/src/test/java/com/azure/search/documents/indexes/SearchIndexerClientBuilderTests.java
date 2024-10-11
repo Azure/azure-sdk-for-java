@@ -5,6 +5,7 @@ package com.azure.search.documents.indexes;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -49,6 +50,7 @@ public class SearchIndexerClientBuilderTests {
     @Test
     public void buildSyncClientTest() {
         SearchIndexerClient client = new SearchIndexerClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
@@ -61,6 +63,7 @@ public class SearchIndexerClientBuilderTests {
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
         SearchIndexerClient client = new SearchIndexerClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
@@ -72,6 +75,7 @@ public class SearchIndexerClientBuilderTests {
     @Test
     public void buildAsyncClientTest() {
         SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
@@ -84,6 +88,7 @@ public class SearchIndexerClientBuilderTests {
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
         SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildAsyncClient();
@@ -95,6 +100,7 @@ public class SearchIndexerClientBuilderTests {
     @Test
     public void whenBuildClientAndVerifyPropertiesThenSuccess() {
         SearchIndexerClient client = new SearchIndexerClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .buildClient();
@@ -102,6 +108,7 @@ public class SearchIndexerClientBuilderTests {
         assertEquals(searchEndpoint, client.getEndpoint());
 
         SearchIndexerAsyncClient asyncClient = new SearchIndexerClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)
@@ -141,7 +148,7 @@ public class SearchIndexerClientBuilderTests {
 
     static HttpRequest request(String url) throws MalformedURLException {
         return new HttpRequest(HttpMethod.HEAD,
-            new URL(url), new HttpHeaders().set("Content-Length", "0"),
+            new URL(url), new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0"),
             Flux.empty());
     }
 
@@ -151,11 +158,11 @@ public class SearchIndexerClientBuilderTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (firstDate == null) {
-                firstDate = convertToDateObject(request.getHeaders().getValue("Date"));
+                firstDate = convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE));
                 return Mono.error(new IOException("IOException!"));
             }
 
-            assert !firstDate.equals(convertToDateObject(request.getHeaders().getValue("Date")));
+            assert !firstDate.equals(convertToDateObject(request.getHeaders().getValue(HttpHeaderName.DATE)));
             return Mono.just(new MockHttpResponse(request, 200));
         }
 
@@ -178,7 +185,7 @@ public class SearchIndexerClientBuilderTests {
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
                 return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
@@ -195,7 +202,7 @@ public class SearchIndexerClientBuilderTests {
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("anOldApplication"));
                 return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
@@ -212,7 +219,7 @@ public class SearchIndexerClientBuilderTests {
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .retryPolicy(new RetryPolicy(new FixedDelay(3, Duration.ofMillis(1))))
             .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 return Mono.just(new MockHttpResponse(httpRequest, 400));
             })
             .buildClient();
@@ -223,6 +230,7 @@ public class SearchIndexerClientBuilderTests {
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
         assertThrows(IllegalStateException.class, () -> new SearchIndexerClientBuilder()
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .endpoint(searchEndpoint)
             .credential(searchApiKeyCredential)
             .serviceVersion(apiVersion)

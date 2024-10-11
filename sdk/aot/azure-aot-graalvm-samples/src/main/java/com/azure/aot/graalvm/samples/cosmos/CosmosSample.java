@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 /**
  * A sample to demonstrate creating containers, databases and items in Cosmos DB using GraalVM.
  */
-public class CosmosSample {
+public final class CosmosSample {
     private static final String AZURE_COSMOS_ENDPOINT = System.getenv("AZURE_COSMOS_ENDPOINT");
     private static final String AZURE_COSMOS_KEY = System.getenv("AZURE_COSMOS_KEY");
 
@@ -82,13 +82,12 @@ public class CosmosSample {
 
     private void startSample() throws Exception {
         //  Create sync client
-        client = new CosmosClientBuilder()
-             .endpoint(AZURE_COSMOS_ENDPOINT)
-             .key(AZURE_COSMOS_KEY)
-             .preferredRegions(Arrays.asList("West US"))
-             .consistencyLevel(ConsistencyLevel.EVENTUAL)
-             .contentResponseOnWriteEnabled(true)
-             .buildClient();
+        client = new CosmosClientBuilder().endpoint(AZURE_COSMOS_ENDPOINT)
+            .key(AZURE_COSMOS_KEY)
+            .preferredRegions(Arrays.asList("West US"))
+            .consistencyLevel(ConsistencyLevel.EVENTUAL)
+            .contentResponseOnWriteEnabled(true)
+            .buildClient();
 
         createDatabaseIfNotExists();
         System.out.println("Creating container");
@@ -136,13 +135,12 @@ public class CosmosSample {
 
         //  Create container if not exists
         //  <CreateContainerIfNotExists>
-        CosmosContainerProperties containerProperties =
-            new CosmosContainerProperties(containerName, "/lastName");
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerName, "/lastName");
 
         //  Create container with 400 RU/s
         ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(400);
-        CosmosContainerResponse
-            containerResponse = database.createContainerIfNotExists(containerProperties, throughputProperties);
+        CosmosContainerResponse containerResponse
+            = database.createContainerIfNotExists(containerProperties, throughputProperties);
         container = database.getContainer(containerResponse.getProperties().getId());
         //  </CreateContainerIfNotExists>
 
@@ -159,8 +157,8 @@ public class CosmosSample {
             //  Use lastName as partitionKey for cosmos item
             //  Using appropriate partition key improves the performance of database operations
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
-            CosmosItemResponse<Family>
-                item = container.createItem(family, new PartitionKey(family.getLastName()), cosmosItemRequestOptions);
+            CosmosItemResponse<Family> item
+                = container.createItem(family, new PartitionKey(family.getLastName()), cosmosItemRequestOptions);
             //  </CreateItem>
 
             //  Get request charge and other properties like latency, and diagnostics strings, etc.
@@ -169,11 +167,12 @@ public class CosmosSample {
 
             totalRequestCharge += item.getRequestCharge();
         }
-        System.out.println(String.format("Created %d items with total request charge of %.2f",
-            families.size(), totalRequestCharge));
+        System.out.println(
+            String.format("Created %d items with total request charge of %.2f", families.size(), totalRequestCharge));
 
         Family familyToUpsert = families.get(0);
-        System.out.println(String.format("Upserting the item with id %s after modifying the isRegistered field...", familyToUpsert.getId()));
+        System.out.println(String.format("Upserting the item with id %s after modifying the isRegistered field...",
+            familyToUpsert.getId()));
         familyToUpsert.setRegistered(!familyToUpsert.isRegistered());
 
         CosmosItemResponse<Family> item = container.upsertItem(familyToUpsert);
@@ -189,11 +188,13 @@ public class CosmosSample {
         familiesToCreate.forEach(family -> {
             //  <ReadItem>
             try {
-                CosmosItemResponse<Family> item = container.readItem(family.getId(), new PartitionKey(family.getLastName()), Family.class);
+                CosmosItemResponse<Family> item
+                    = container.readItem(family.getId(), new PartitionKey(family.getLastName()), Family.class);
                 double requestCharge = item.getRequestCharge();
                 Duration requestLatency = item.getDuration();
-                System.out.println(String.format("Item successfully read with id %s with a charge of %.2f and within duration %s",
-                    item.getItem().getId(), requestCharge, requestLatency));
+                System.out.println(
+                    String.format("Item successfully read with id %s with a charge of %.2f and within duration %s",
+                        item.getItem().getId(), requestCharge, requestLatency));
             } catch (CosmosException e) {
                 e.printStackTrace();
                 System.out.println(String.format("Read Item failed with %s", e));
@@ -231,19 +232,18 @@ public class CosmosSample {
         //  Set populate query metrics to get metrics around query executions
         queryOptions.setQueryMetricsEnabled(true);
 
-        CosmosPagedIterable<Family> familiesPagedIterable = container.queryItems(
-            "SELECT * FROM Family WHERE Family.lastName IN ('Andersen', 'Wakefield', 'Johnson')", queryOptions, Family.class);
+        CosmosPagedIterable<Family> familiesPagedIterable
+            = container.queryItems("SELECT * FROM Family WHERE Family.lastName IN ('Andersen', 'Wakefield', 'Johnson')",
+                queryOptions, Family.class);
 
         familiesPagedIterable.iterableByPage(preferredPageSize).forEach(cosmosItemPropertiesFeedResponse -> {
-            System.out.println("Got a page of query result with "
-                    + cosmosItemPropertiesFeedResponse.getResults().size() + " items(s)"
-                    + " and request charge of " + cosmosItemPropertiesFeedResponse.getRequestCharge());
+            System.out.println("Got a page of query result with " + cosmosItemPropertiesFeedResponse.getResults().size()
+                + " items(s)" + " and request charge of " + cosmosItemPropertiesFeedResponse.getRequestCharge());
 
-            System.out.println("Item Ids " + cosmosItemPropertiesFeedResponse
-                                          .getResults()
-                                          .stream()
-                                          .map(Family::getId)
-                                          .collect(Collectors.toList()));
+            System.out.println("Item Ids " + cosmosItemPropertiesFeedResponse.getResults()
+                .stream()
+                .map(Family::getId)
+                .collect(Collectors.toList()));
         });
         //  </QueryItems>
     }
@@ -266,10 +266,14 @@ public class CosmosSample {
             }
             System.out.println("-Closing the client...");
         } catch (Exception err) {
-            LOGGER.error("Deleting Cosmos DB resources failed, will still attempt to close the client. See stack trace below.");
+            LOGGER.error(
+                "Deleting Cosmos DB resources failed, will still attempt to close the client. See stack trace below.");
             err.printStackTrace();
         }
         client.close();
         System.out.println("Done.");
+    }
+
+    private CosmosSample() {
     }
 }

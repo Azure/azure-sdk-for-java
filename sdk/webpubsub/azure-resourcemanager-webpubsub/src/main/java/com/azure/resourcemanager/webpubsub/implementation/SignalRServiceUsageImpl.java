@@ -13,8 +13,8 @@ public final class SignalRServiceUsageImpl implements SignalRServiceUsage {
 
     private final com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager;
 
-    SignalRServiceUsageImpl(
-        SignalRServiceUsageInner innerObject, com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
+    SignalRServiceUsageImpl(SignalRServiceUsageInner innerObject,
+        com.azure.resourcemanager.webpubsub.WebPubSubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

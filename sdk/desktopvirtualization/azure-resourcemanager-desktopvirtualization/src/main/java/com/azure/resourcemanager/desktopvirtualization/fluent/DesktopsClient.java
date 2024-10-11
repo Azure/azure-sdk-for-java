@@ -14,11 +14,13 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.DesktopInne
 import com.azure.resourcemanager.desktopvirtualization.models.DesktopPatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DesktopsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DesktopsClient.
+ */
 public interface DesktopsClient {
     /**
      * Get a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -28,12 +30,12 @@ public interface DesktopsClient {
      * @return a desktop along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DesktopInner>> getWithResponseAsync(
-        String resourceGroupName, String applicationGroupName, String desktopName);
+    Mono<Response<DesktopInner>> getWithResponseAsync(String resourceGroupName, String applicationGroupName,
+        String desktopName);
 
     /**
      * Get a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -47,7 +49,7 @@ public interface DesktopsClient {
 
     /**
      * Get a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -58,12 +60,12 @@ public interface DesktopsClient {
      * @return a desktop along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DesktopInner> getWithResponse(
-        String resourceGroupName, String applicationGroupName, String desktopName, Context context);
+    Response<DesktopInner> getWithResponse(String resourceGroupName, String applicationGroupName, String desktopName,
+        Context context);
 
     /**
      * Get a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -77,7 +79,7 @@ public interface DesktopsClient {
 
     /**
      * Update a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -88,12 +90,12 @@ public interface DesktopsClient {
      * @return schema for Desktop properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DesktopInner>> updateWithResponseAsync(
-        String resourceGroupName, String applicationGroupName, String desktopName, DesktopPatch desktop);
+    Mono<Response<DesktopInner>> updateWithResponseAsync(String resourceGroupName, String applicationGroupName,
+        String desktopName, DesktopPatch desktop);
 
     /**
      * Update a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -107,7 +109,7 @@ public interface DesktopsClient {
 
     /**
      * Update a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -119,16 +121,12 @@ public interface DesktopsClient {
      * @return schema for Desktop properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DesktopInner> updateWithResponse(
-        String resourceGroupName,
-        String applicationGroupName,
-        String desktopName,
-        DesktopPatch desktop,
-        Context context);
+    Response<DesktopInner> updateWithResponse(String resourceGroupName, String applicationGroupName, String desktopName,
+        DesktopPatch desktop, Context context);
 
     /**
      * Update a desktop.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
@@ -142,7 +140,7 @@ public interface DesktopsClient {
 
     /**
      * List desktops.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param pageSize Number of items per page.
@@ -154,16 +152,12 @@ public interface DesktopsClient {
      * @return desktopList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DesktopInner> listAsync(
-        String resourceGroupName,
-        String applicationGroupName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip);
+    PagedFlux<DesktopInner> listAsync(String resourceGroupName, String applicationGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip);
 
     /**
      * List desktops.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,7 +170,7 @@ public interface DesktopsClient {
 
     /**
      * List desktops.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +183,7 @@ public interface DesktopsClient {
 
     /**
      * List desktops.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param pageSize Number of items per page.
@@ -202,11 +196,6 @@ public interface DesktopsClient {
      * @return desktopList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DesktopInner> list(
-        String resourceGroupName,
-        String applicationGroupName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context);
+    PagedIterable<DesktopInner> list(String resourceGroupName, String applicationGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 }

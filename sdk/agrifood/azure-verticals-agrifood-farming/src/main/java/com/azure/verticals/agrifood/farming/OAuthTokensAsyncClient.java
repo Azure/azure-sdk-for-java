@@ -23,7 +23,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = OAuthTokensClientBuilder.class, isAsync = true)
 public final class OAuthTokensAsyncClient {
-    @Generated private final OAuthTokensImpl serviceClient;
+    @Generated
+    private final OAuthTokensImpl serviceClient;
 
     /**
      * Initializes an instance of OAuthTokensAsyncClient class.
@@ -114,8 +115,8 @@ public final class OAuthTokensAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getOAuthConnectionLinkWithResponse(
-            BinaryData oauthConnectRequest, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getOAuthConnectionLinkWithResponse(BinaryData oauthConnectRequest,
+        RequestOptions requestOptions) {
         return this.serviceClient.getOAuthConnectionLinkWithResponseAsync(oauthConnectRequest, requestOptions);
     }
 
@@ -151,8 +152,8 @@ public final class OAuthTokensAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(
-            String jobId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCascadeDeleteJobDetailsWithResponse(String jobId,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCascadeDeleteJobDetailsWithResponseAsync(jobId, requestOptions);
     }
 
@@ -190,8 +191,8 @@ public final class OAuthTokensAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String oauthProviderId, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId,
+        String oauthProviderId, RequestOptions requestOptions) {
         return this.serviceClient.beginCreateCascadeDeleteJobAsync(jobId, partyId, oauthProviderId, requestOptions);
     }
 }

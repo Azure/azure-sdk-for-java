@@ -52,8 +52,7 @@ import java.util.function.Consumer;
  *
  * <!-- src_embed com.azure.identity.credential.devicecodecredential.construct -->
  * <pre>
- * TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder&#40;&#41;
- *     .build&#40;&#41;;
+ * TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * </pre>
  * <!-- end com.azure.identity.credential.devicecodecredential.construct -->
  *

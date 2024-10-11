@@ -5,7 +5,7 @@ package com.azure.resourcemanager.resourcegraph;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ResourceGraphTests extends TestBase {
+public class ResourceGraphTests extends TestProxyTestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)

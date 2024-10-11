@@ -15,10 +15,6 @@ public final class OperationInnerTests {
         OperationInner model = BinaryData.fromString(
             "{\"name\":\"nygj\",\"isDataAction\":true,\"display\":{\"provider\":\"eqsrdeupewnwreit\",\"resource\":\"yflusarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}")
             .toObject(OperationInner.class);
-        Assertions.assertEquals("eqsrdeupewnwreit", model.display().provider());
-        Assertions.assertEquals("yflusarhmofc", model.display().resource());
-        Assertions.assertEquals("smy", model.display().operation());
-        Assertions.assertEquals("kdtmlxhekuk", model.display().description());
         Assertions.assertEquals(ActionType.INTERNAL, model.actionType());
     }
 }

@@ -20,11 +20,9 @@ public class StorageFileShareFeature implements GraalVMFeature {
 
     @Override
     public Set<String[]> getDynamicProxies() {
-        return setsOf(
-            interfaces("com.azure.storage.file.share.implementation.DirectoriesImpl$DirectoriesService"),
+        return setsOf(interfaces("com.azure.storage.file.share.implementation.DirectoriesImpl$DirectoriesService"),
             interfaces("com.azure.storage.file.share.implementation.FilesImpl$FilesService"),
             interfaces("com.azure.storage.file.share.implementation.ServicesImpl$ServicesService"),
-            interfaces("com.azure.storage.file.share.implementation.SharesImpl$SharesService")
-        );
+            interfaces("com.azure.storage.file.share.implementation.SharesImpl$SharesService"));
     }
 }

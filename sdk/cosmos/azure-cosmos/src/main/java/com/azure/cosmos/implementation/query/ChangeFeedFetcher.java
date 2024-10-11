@@ -4,9 +4,9 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
@@ -37,9 +37,12 @@ import java.util.function.Supplier;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedFetcher<T> extends Fetcher<T> {
+    private final static ImplementationBridgeHelpers.FeedResponseHelper.FeedResponseAccessor  feedResponseAccessor =
+        ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor();
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
+    private final boolean completeAfterAllCurrentChangesRetrieved;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -50,6 +53,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int top,
         int maxItemCount,
         boolean isSplitHandlingDisabled,
+        boolean completeAfterAllCurrentChangesRetrieved,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
@@ -74,6 +78,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 collectionLink,
                 isSplitHandlingDisabled);
         this.createRequestFunc = createRequestFunc;
+        this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
     }
 
     @Override
@@ -110,13 +115,32 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (continuationSnapshot != null &&
-                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+                       if (this.completeAfterAllCurrentChangesRetrieved) {
+                           if (continuationSnapshot != null) {
+                               //track the end-LSN available now for each sub-feedRange and then find the next sub-feedRange to fetch more changes
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChangesAvailableNow(r);
+                               if (shouldComplete) {
+                                   this.disableShouldFetchMore();
+                                   return Mono.just(r);
+                               }
 
-                           // not all continuations have been drained yet
-                           // repeat with the next continuation
-                           this.reEnableShouldFetchMoreForRetry();
-                           return Mono.empty();
+                               if (ModelBridgeInternal.<T>noChanges(r)) {
+                                   // if we have reached here, it means we have got 304 for the current feedRange,
+                                   // but we need to continue drain the changes from other sub-feedRange
+                                   this.reEnableShouldFetchMoreForRetry();
+                                   return Mono.empty();
+                               }
+                           }
+                       } else {
+                           // complete query based on 304s
+                           if (continuationSnapshot != null &&
+                               continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+
+                               // not all continuations have been drained yet
+                               // repeat with the next continuation
+                               this.reEnableShouldFetchMoreForRetry();
+                               return Mono.empty();
+                           }
                        }
 
                        return Mono.just(r);
@@ -127,10 +151,13 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     @Override
     protected String applyServerResponseContinuation(
         String serverContinuationToken,
-        RxDocumentServiceRequest request) {
+        RxDocumentServiceRequest request,
+        FeedResponse<T> response) {
 
+        boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAllCurrentChangesRetrieved;
         return this.changeFeedState.applyServerResponseContinuation(
-            serverContinuationToken, request);
+            serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }
 
     @Override
@@ -271,7 +298,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         String collectionLink,
         boolean isSplitHandlingDisabled) {
 
-        DocumentClientRetryPolicy feedRangeContinuationRetryPolicy = null;
+        DocumentClientRetryPolicy feedRangeContinuationRetryPolicy;
 
         // constructing retry policies for changeFeed requests
         DocumentClientRetryPolicy retryPolicyInstance =

@@ -5,6 +5,9 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.AutoShutdownProfile;
 import com.azure.resourcemanager.labservices.models.ConnectionProfile;
 import com.azure.resourcemanager.labservices.models.LabNetworkProfile;
@@ -13,33 +16,38 @@ import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RosterProfile;
 import com.azure.resourcemanager.labservices.models.SecurityProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of a lab resource. */
+/**
+ * Properties of a lab resource.
+ */
 @Fluent
 public final class LabProperties extends LabUpdateProperties {
     /*
      * Current provisioning state of the lab.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The network profile for the lab, typically applied via a lab plan. This profile cannot be modified once a lab
-     * has been created.
+     * The network profile for the lab, typically applied via a lab plan. This profile cannot be modified once a lab has
+     * been created.
      */
-    @JsonProperty(value = "networkProfile")
     private LabNetworkProfile networkProfile;
 
     /*
      * The lab state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private LabState state;
 
     /**
+     * Creates an instance of LabProperties class.
+     */
+    public LabProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the lab.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -49,7 +57,7 @@ public final class LabProperties extends LabUpdateProperties {
     /**
      * Get the networkProfile property: The network profile for the lab, typically applied via a lab plan. This profile
      * cannot be modified once a lab has been created.
-     *
+     * 
      * @return the networkProfile value.
      */
     public LabNetworkProfile networkProfile() {
@@ -59,7 +67,7 @@ public final class LabProperties extends LabUpdateProperties {
     /**
      * Set the networkProfile property: The network profile for the lab, typically applied via a lab plan. This profile
      * cannot be modified once a lab has been created.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the LabProperties object itself.
      */
@@ -70,63 +78,79 @@ public final class LabProperties extends LabUpdateProperties {
 
     /**
      * Get the state property: The lab state.
-     *
+     * 
      * @return the state value.
      */
     public LabState state() {
         return this.state;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withAutoShutdownProfile(AutoShutdownProfile autoShutdownProfile) {
         super.withAutoShutdownProfile(autoShutdownProfile);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withConnectionProfile(ConnectionProfile connectionProfile) {
         super.withConnectionProfile(connectionProfile);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withVirtualMachineProfile(VirtualMachineProfile virtualMachineProfile) {
         super.withVirtualMachineProfile(virtualMachineProfile);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withSecurityProfile(SecurityProfile securityProfile) {
         super.withSecurityProfile(securityProfile);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withRosterProfile(RosterProfile rosterProfile) {
         super.withRosterProfile(rosterProfile);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withLabPlanId(String labPlanId) {
         super.withLabPlanId(labPlanId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withTitle(String title) {
         super.withTitle(title);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LabProperties withDescription(String description) {
         super.withDescription(description);
@@ -135,14 +159,92 @@ public final class LabProperties extends LabUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (networkProfile() != null) {
             networkProfile().validate();
         }
+        if (autoShutdownProfile() != null) {
+            autoShutdownProfile().validate();
+        }
+        if (connectionProfile() != null) {
+            connectionProfile().validate();
+        }
+        if (virtualMachineProfile() != null) {
+            virtualMachineProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
+        }
+        if (rosterProfile() != null) {
+            rosterProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("autoShutdownProfile", autoShutdownProfile());
+        jsonWriter.writeJsonField("connectionProfile", connectionProfile());
+        jsonWriter.writeJsonField("virtualMachineProfile", virtualMachineProfile());
+        jsonWriter.writeJsonField("securityProfile", securityProfile());
+        jsonWriter.writeJsonField("rosterProfile", rosterProfile());
+        jsonWriter.writeStringField("labPlanId", labPlanId());
+        jsonWriter.writeStringField("title", title());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LabProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LabProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LabProperties.
+     */
+    public static LabProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LabProperties deserializedLabProperties = new LabProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoShutdownProfile".equals(fieldName)) {
+                    deserializedLabProperties.withAutoShutdownProfile(AutoShutdownProfile.fromJson(reader));
+                } else if ("connectionProfile".equals(fieldName)) {
+                    deserializedLabProperties.withConnectionProfile(ConnectionProfile.fromJson(reader));
+                } else if ("virtualMachineProfile".equals(fieldName)) {
+                    deserializedLabProperties.withVirtualMachineProfile(VirtualMachineProfile.fromJson(reader));
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedLabProperties.withSecurityProfile(SecurityProfile.fromJson(reader));
+                } else if ("rosterProfile".equals(fieldName)) {
+                    deserializedLabProperties.withRosterProfile(RosterProfile.fromJson(reader));
+                } else if ("labPlanId".equals(fieldName)) {
+                    deserializedLabProperties.withLabPlanId(reader.getString());
+                } else if ("title".equals(fieldName)) {
+                    deserializedLabProperties.withTitle(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedLabProperties.withDescription(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLabProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedLabProperties.networkProfile = LabNetworkProfile.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    deserializedLabProperties.state = LabState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLabProperties;
+        });
     }
 }

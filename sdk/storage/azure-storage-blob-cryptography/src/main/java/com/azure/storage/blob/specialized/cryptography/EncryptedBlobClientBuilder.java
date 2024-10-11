@@ -152,6 +152,7 @@ public final class EncryptedBlobClientBuilder implements
     private BlobServiceVersion version;
     private CpkInfo customerProvidedKey;
     private EncryptionScope encryptionScope;
+    private BlobClientSideEncryptionOptions clientSideEncryptionOptions;
 
     /**
      * Creates a new instance of the EncryptedBlobClientBuilder
@@ -248,9 +249,11 @@ public final class EncryptedBlobClientBuilder implements
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
+        this.clientSideEncryptionOptions = this.clientSideEncryptionOptions == null ? new BlobClientSideEncryptionOptions() : this.clientSideEncryptionOptions;
+
         return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()), endpoint,
             serviceVersion, accountName, containerName, blobName, snapshot, customerProvidedKey, encryptionScope,
-            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption);
+            keyWrapper, keyWrapAlgorithm, versionId, encryptionVersion, requiresEncryption, clientSideEncryptionOptions);
     }
 
 
@@ -272,12 +275,23 @@ public final class EncryptedBlobClientBuilder implements
             .build();
     }
 
+    private String getVersionString(EncryptionVersion encryptionVersion) {
+        switch (encryptionVersion) {
+            case V2:
+                return "2.0";
+            case V2_1:
+                return "2.1";
+            default:
+                return "1.0";
+        }
+    }
+
     private String modifyUserAgentString(String applicationId, Configuration userAgentConfiguration) {
         Pattern pattern = Pattern.compile(USER_AGENT_MODIFICATION_REGEX);
         String userAgent = UserAgentUtil.toUserAgentString(applicationId, BLOB_CLIENT_NAME, BLOB_CLIENT_VERSION,
             userAgentConfiguration);
         Matcher matcher = pattern.matcher(userAgent);
-        String version = encryptionVersion == EncryptionVersion.V2 ? "2.0" : "1.0";
+        String version = getVersionString(encryptionVersion);
         String stringToAppend = "azstorage-clientsideencryption/" + version;
         if (matcher.matches() && !userAgent.contains(stringToAppend)) {
             String segment1 = matcher.group(1) == null ? "" : matcher.group(1);
@@ -913,6 +927,22 @@ public final class EncryptedBlobClientBuilder implements
      */
     public EncryptedBlobClientBuilder requiresEncryption(boolean requiresEncryption) {
         this.requiresEncryption = requiresEncryption;
+        return this;
+    }
+
+    /**
+     * Sets the encryption options for the blob.
+     *
+     * @param clientSideEncryptionOptions The {@link BlobClientSideEncryptionOptions} for the blob.
+     * @return the updated EncryptedBlobClientBuilder object
+     * @throws IllegalArgumentException If {@link EncryptionVersion} is not V2_1.
+     */
+    public EncryptedBlobClientBuilder clientSideEncryptionOptions(
+        BlobClientSideEncryptionOptions clientSideEncryptionOptions) {
+        if (this.encryptionVersion != EncryptionVersion.V2_1) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("ClientSideEncryptionOptions can only be set if encryption version is V2_1."));
+        }
+        this.clientSideEncryptionOptions = clientSideEncryptionOptions;
         return this;
     }
 }

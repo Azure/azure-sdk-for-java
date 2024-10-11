@@ -12,6 +12,9 @@ import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.ComputeNode;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeAddUserHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeAddUserOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocateHeaders;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocateOption;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeDeallocateOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeDeleteUserHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeDeleteUserOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeDisableSchedulingHeaders;
@@ -20,8 +23,6 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeEnableSchedulingHead
 import com.microsoft.azure.batch.protocol.models.ComputeNodeEnableSchedulingOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetOptions;
-import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopHeaders;
-import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteDesktopOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeGetRemoteLoginSettingsResult;
@@ -34,6 +35,8 @@ import com.microsoft.azure.batch.protocol.models.ComputeNodeRebootOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOption;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeReimageOptions;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeStartHeaders;
+import com.microsoft.azure.batch.protocol.models.ComputeNodeStartOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeUpdateUserHeaders;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeUpdateUserOptions;
 import com.microsoft.azure.batch.protocol.models.ComputeNodeUploadBatchServiceLogsHeaders;
@@ -49,43 +52,15 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.List;
 import rx.Observable;
-
-// CUSTOM IMPORT
-import java.io.OutputStream;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in ComputeNodes.
  */
 public interface ComputeNodes {
-    // CUSTOM METHOD
-    /**
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
-     * @param outputStream The OutputStream object which data will be written to if successful.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void getRemoteDesktop(String poolId, String nodeId, OutputStream outputStream);
-
-    // CUSTOM METHOD
-    /**
-     * Gets the Remote Desktop Protocol file for the specified compute node.
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
-     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
-     * @param outputStream The OutputStream object which data will be written to if successful.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void getRemoteDesktop(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, OutputStream outputStream);
-
     /**
      * Adds a user Account to the specified Compute Node.
      * You can add a user Account to a Compute Node only when it is in the idle or running state.
@@ -593,7 +568,7 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -605,7 +580,7 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -617,7 +592,7 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -628,7 +603,7 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -638,7 +613,7 @@ public interface ComputeNodes {
     Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>> reimageWithServiceResponseAsync(String poolId, String nodeId);
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -652,7 +627,7 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -666,7 +641,7 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -679,7 +654,7 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified Compute Node.
-     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state. This API can be invoked only on Pools created with the cloud service configuration property.
+     * You can reinstall the operating system on a Compute Node only if it is in an idle or running state.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node that you want to restart.
@@ -885,8 +860,202 @@ public interface ComputeNodes {
     Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>> enableSchedulingWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions);
 
     /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void start(String poolId, String nodeId);
+
+    /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> startAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> startAsync(String poolId, String nodeId);
+
+    /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeStartHeaders>> startWithServiceResponseAsync(String poolId, String nodeId);
+    /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param computeNodeStartOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void start(String poolId, String nodeId, ComputeNodeStartOptions computeNodeStartOptions);
+
+    /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param computeNodeStartOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> startAsync(String poolId, String nodeId, ComputeNodeStartOptions computeNodeStartOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param computeNodeStartOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> startAsync(String poolId, String nodeId, ComputeNodeStartOptions computeNodeStartOptions);
+
+    /**
+     * Starts the specified Compute Node.
+     * You can start a Compute Node only if it has been deallocated.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to start.
+     * @param computeNodeStartOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeStartHeaders>> startWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeStartOptions computeNodeStartOptions);
+
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void deallocate(String poolId, String nodeId);
+
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> deallocateAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> deallocateAsync(String poolId, String nodeId);
+
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeallocateHeaders>> deallocateWithServiceResponseAsync(String poolId, String nodeId);
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param nodeDeallocateOption When to deallocate the Compute Node and what to do with currently running Tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param computeNodeDeallocateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws BatchErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void deallocate(String poolId, String nodeId, ComputeNodeDeallocateOption nodeDeallocateOption, ComputeNodeDeallocateOptions computeNodeDeallocateOptions);
+
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param nodeDeallocateOption When to deallocate the Compute Node and what to do with currently running Tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param computeNodeDeallocateOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> deallocateAsync(String poolId, String nodeId, ComputeNodeDeallocateOption nodeDeallocateOption, ComputeNodeDeallocateOptions computeNodeDeallocateOptions, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param nodeDeallocateOption When to deallocate the Compute Node and what to do with currently running Tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param computeNodeDeallocateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<Void> deallocateAsync(String poolId, String nodeId, ComputeNodeDeallocateOption nodeDeallocateOption, ComputeNodeDeallocateOptions computeNodeDeallocateOptions);
+
+    /**
+     * Deallocates the specified Compute Node.
+     * You can deallocate a Compute Node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the Pool that contains the Compute Node.
+     * @param nodeId The ID of the Compute Node that you want to deallocate.
+     * @param nodeDeallocateOption When to deallocate the Compute Node and what to do with currently running Tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param computeNodeDeallocateOptions Additional parameters for the operation
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeallocateHeaders>> deallocateWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeDeallocateOption nodeDeallocateOption, ComputeNodeDeallocateOptions computeNodeDeallocateOptions);
+
+    /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -899,7 +1068,7 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -911,7 +1080,7 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -922,7 +1091,7 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -932,7 +1101,7 @@ public interface ComputeNodes {
     Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>> getRemoteLoginSettingsWithServiceResponseAsync(String poolId, String nodeId);
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -946,7 +1115,7 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -959,7 +1128,7 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -971,7 +1140,7 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a Compute Node.
-     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node. This API can be invoked only on Pools created with the virtual machine configuration property. For Pools created with a cloud service configuration, see the GetRemoteDesktop API.
+     * Before you can remotely login to a Compute Node using the remote login settings, you must create a user Account on the Compute Node.
      *
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which to obtain the remote login settings.
@@ -980,103 +1149,6 @@ public interface ComputeNodes {
      * @return the observable to the ComputeNodeGetRemoteLoginSettingsResult object
      */
     Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>> getRemoteLoginSettingsWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions);
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    InputStream getRemoteDesktop(String poolId, String nodeId);
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> getRemoteDesktopAsync(String poolId, String nodeId);
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>> getRemoteDesktopWithServiceResponseAsync(String poolId, String nodeId);
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the InputStream object if successful.
-     */
-    InputStream getRemoteDesktop(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions);
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final ServiceCallback<InputStream> serviceCallback);
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions);
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified Compute Node.
-     * Before you can access a Compute Node by using the RDP file, you must create a user Account on the Compute Node. This API can only be invoked on Pools created with a cloud service configuration. For Pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
-     *
-     * @param poolId The ID of the Pool that contains the Compute Node.
-     * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop Protocol file.
-     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the InputStream object
-     */
-    Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>> getRemoteDesktopWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions);
 
     /**
      * Upload Azure Batch service log files from the specified Compute Node to Azure Blob Storage.

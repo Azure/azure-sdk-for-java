@@ -5,43 +5,62 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResourceModelWithAllowedPropertySetSku model. */
+/**
+ * The ResourceModelWithAllowedPropertySetSku model.
+ */
 @Fluent
 public final class ResourceModelWithAllowedPropertySetSku extends Sku {
-    /** Creates an instance of ResourceModelWithAllowedPropertySetSku class. */
+    /**
+     * Creates an instance of ResourceModelWithAllowedPropertySetSku class.
+     */
     public ResourceModelWithAllowedPropertySetSku() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySetSku withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySetSku withTier(SkuTier tier) {
         super.withTier(tier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySetSku withSize(String size) {
         super.withSize(size);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySetSku withFamily(String family) {
         super.withFamily(family);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceModelWithAllowedPropertySetSku withCapacity(Integer capacity) {
         super.withCapacity(capacity);
@@ -50,11 +69,68 @@ public final class ResourceModelWithAllowedPropertySetSku extends Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ResourceModelWithAllowedPropertySetSku"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceModelWithAllowedPropertySetSku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("tier", tier() == null ? null : tier().toString());
+        jsonWriter.writeStringField("size", size());
+        jsonWriter.writeStringField("family", family());
+        jsonWriter.writeNumberField("capacity", capacity());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceModelWithAllowedPropertySetSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceModelWithAllowedPropertySetSku if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceModelWithAllowedPropertySetSku.
+     */
+    public static ResourceModelWithAllowedPropertySetSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceModelWithAllowedPropertySetSku deserializedResourceModelWithAllowedPropertySetSku
+                = new ResourceModelWithAllowedPropertySetSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetSku.withName(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetSku.withTier(SkuTier.fromString(reader.getString()));
+                } else if ("size".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetSku.withSize(reader.getString());
+                } else if ("family".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetSku.withFamily(reader.getString());
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedResourceModelWithAllowedPropertySetSku
+                        .withCapacity(reader.getNullable(JsonReader::getInt));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceModelWithAllowedPropertySetSku;
+        });
     }
 }

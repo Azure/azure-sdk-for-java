@@ -9,11 +9,28 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.UUID;
 
-/** Resource collection API of DscCompilationJobs. */
+/**
+ * Resource collection API of DscCompilationJobs.
+ */
 public interface DscCompilationJobs {
     /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param compilationJobName The DSC configuration Id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the Dsc Compilation job along with {@link Response}.
+     */
+    Response<DscCompilationJob> getWithResponse(String resourceGroupName, String automationAccountName,
+        String compilationJobName, Context context);
+
+    /**
+     * Retrieve the Dsc configuration compilation job identified by job id.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param compilationJobName The DSC configuration Id.
@@ -25,23 +42,8 @@ public interface DscCompilationJobs {
     DscCompilationJob get(String resourceGroupName, String automationAccountName, String compilationJobName);
 
     /**
-     * Retrieve the Dsc configuration compilation job identified by job id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param compilationJobName The DSC configuration Id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the Dsc Compilation job along with {@link Response}.
-     */
-    Response<DscCompilationJob> getWithResponse(
-        String resourceGroupName, String automationAccountName, String compilationJobName, Context context);
-
-    /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -53,7 +55,7 @@ public interface DscCompilationJobs {
 
     /**
      * Retrieve a list of dsc compilation jobs.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -63,12 +65,28 @@ public interface DscCompilationJobs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list job operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DscCompilationJob> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context);
+    PagedIterable<DscCompilationJob> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context);
 
     /**
      * Retrieve the job stream identified by job stream id.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobId The job id.
+     * @param jobStreamId The job stream id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the job stream along with {@link Response}.
+     */
+    Response<JobStream> getStreamWithResponse(String resourceGroupName, String automationAccountName, UUID jobId,
+        String jobStreamId, Context context);
+
+    /**
+     * Retrieve the job stream identified by job stream id.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -81,24 +99,8 @@ public interface DscCompilationJobs {
     JobStream getStream(String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId);
 
     /**
-     * Retrieve the job stream identified by job stream id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobId The job id.
-     * @param jobStreamId The job stream id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the job stream along with {@link Response}.
-     */
-    Response<JobStream> getStreamWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobId, String jobStreamId, Context context);
-
-    /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,7 +111,7 @@ public interface DscCompilationJobs {
 
     /**
      * Retrieve the Dsc configuration compilation job identified by job id.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,7 +123,7 @@ public interface DscCompilationJobs {
 
     /**
      * Begins definition for a new DscCompilationJob resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DscCompilationJob definition.
      */

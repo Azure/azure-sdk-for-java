@@ -6,12 +6,11 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.implementation.SynchronousEventSubscriber;
 import com.azure.messaging.eventhubs.implementation.SynchronousReceiveWork;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
@@ -20,7 +19,6 @@ import reactor.core.publisher.FluxSink;
 
 import java.io.Closeable;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -126,16 +124,16 @@ public class EventHubConsumerClient implements Closeable {
     private final ReceiveOptions defaultReceiveOptions = new ReceiveOptions();
     private final Duration timeout;
     private final AtomicInteger idGenerator = new AtomicInteger();
-    private final EventHubsTracer tracer;
-    private final SynchronousReceiver syncReceiver;
+    private final EventHubsConsumerInstrumentation instrumentation;
+    private final SynchronousPartitionReceiver syncReceiver;
 
     EventHubConsumerClient(EventHubConsumerAsyncClient consumer, Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null.");
 
         this.consumer = Objects.requireNonNull(consumer, "'consumer' cannot be null.");
         this.timeout = tryTimeout;
-        this.tracer = consumer.getInstrumentation().getTracer();
-        this.syncReceiver = new SynchronousReceiver(LOGGER, consumer);
+        this.instrumentation = consumer.getInstrumentation();
+        this.syncReceiver = new SynchronousPartitionReceiver(consumer); // used in V2 mode.
     }
 
     /**
@@ -262,19 +260,16 @@ public class EventHubConsumerClient implements Closeable {
         }
 
         if (consumer.isV2()) {
+            // Sync receiver instrumentation is implemented in the SynchronousPartitionReceiver class
             return syncReceiver.receive(partitionId, startingPosition, defaultReceiveOptions, maximumMessageCount,
                 maximumWaitTime);
         }
 
-        Instant startTime = tracer.isEnabled() ? Instant.now() : null;
+        Flux<PartitionEvent> events =
+            Flux.create(emitter -> queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, defaultReceiveOptions,
+                emitter));
 
-        Flux<PartitionEvent> events = Flux.create(emitter -> {
-            queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, defaultReceiveOptions,
-                emitter);
-        });
-
-        events = tracer.reportSyncReceiveSpan("EventHubs.receiveFromPartition", startTime, events, Context.NONE);
-        return new IterableStream<>(events);
+        return new IterableStream<>(instrumentation.syncReceive(events, partitionId));
     }
 
     /**
@@ -320,16 +315,16 @@ public class EventHubConsumerClient implements Closeable {
         }
 
         if (consumer.isV2()) {
+            // Sync receiver instrumentation is implemented in the SynchronousPartitionReceiver class
             return syncReceiver.receive(partitionId, startingPosition, receiveOptions, maximumMessageCount,
                 maximumWaitTime);
         }
 
-        Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         Flux<PartitionEvent> events = Flux.create(emitter -> {
             queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, receiveOptions, emitter);
         });
-        events = tracer.reportSyncReceiveSpan("EventHubs.receiveFromPartition", startTime, events, Context.NONE);
-        return new IterableStream<>(events);
+
+        return new IterableStream<>(instrumentation.syncReceive(events, partitionId));
     }
 
     /**
@@ -337,6 +332,7 @@ public class EventHubConsumerClient implements Closeable {
      */
     @Override
     public void close() {
+        syncReceiver.dispose();
         consumer.close();
     }
 

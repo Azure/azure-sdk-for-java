@@ -15,7 +15,6 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -119,6 +118,6 @@ public abstract class KeyVaultAdministrationClientTestBase extends TestProxyTest
      * @return A stream of {@link HttpClient HTTP clients} to test.
      */
     static Stream<Arguments> createHttpClients() {
-        return TestBase.getHttpClients().map(Arguments::of);
+        return TestProxyTestBase.getHttpClients().map(Arguments::of);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.annotation.LiveOnly;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -14,7 +15,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-
+// Package marked to be deprecated
+@LiveOnly()
 public class DeleteAsyncLiveTests extends CallAutomationLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")

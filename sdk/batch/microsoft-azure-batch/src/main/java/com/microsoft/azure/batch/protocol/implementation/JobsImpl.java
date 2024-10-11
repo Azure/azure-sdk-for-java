@@ -107,7 +107,7 @@ public class JobsImpl implements Jobs {
     interface JobsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs delete" })
         @HTTP(path = "jobs/{jobId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Query("force") Boolean force, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs get" })
         @GET("jobs/{jobId}")
@@ -131,7 +131,7 @@ public class JobsImpl implements Jobs {
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs terminate" })
         @POST("jobs/{jobId}/terminate")
-        Observable<Response<ResponseBody>> terminate(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Body JobTerminateParameter jobTerminateParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> terminate(@Path("jobId") String jobId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") UUID clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Match") String ifMatch, @Header("If-None-Match") String ifNoneMatch, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Query("force") Boolean force, @Body JobTerminateParameter jobTerminateParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; odata=minimalmetadata; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.batch.protocol.Jobs add" })
         @POST("jobs")
@@ -237,6 +237,7 @@ public class JobsImpl implements Jobs {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        Boolean force = null;
         String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
@@ -250,7 +251,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
+        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, force, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -362,6 +363,10 @@ public class JobsImpl implements Jobs {
         if (jobDeleteOptions != null) {
             ifUnmodifiedSince = jobDeleteOptions.ifUnmodifiedSince();
         }
+        Boolean force = null;
+        if (jobDeleteOptions != null) {
+            force = jobDeleteOptions.force();
+        }
         String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
         DateTimeRfc1123 ocpDateConverted = null;
         if (ocpDate != null) {
@@ -375,7 +380,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, parameterizedHost, this.client.userAgent())
+        return service.delete(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, force, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobDeleteHeaders>> call(Response<ResponseBody> response) {
@@ -1666,6 +1671,7 @@ public class JobsImpl implements Jobs {
         String ifNoneMatch = null;
         DateTime ifModifiedSince = null;
         DateTime ifUnmodifiedSince = null;
+        Boolean force = null;
         JobTerminateParameter jobTerminateParameter = new JobTerminateParameter();
         jobTerminateParameter.withTerminateReason(null);
         String parameterizedHost = Joiner.on(", ").join("{batchUrl}", this.client.batchUrl());
@@ -1681,7 +1687,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, parameterizedHost, this.client.userAgent())
+        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, force, jobTerminateParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> call(Response<ResponseBody> response) {
@@ -1797,6 +1803,10 @@ public class JobsImpl implements Jobs {
         if (jobTerminateOptions != null) {
             ifUnmodifiedSince = jobTerminateOptions.ifUnmodifiedSince();
         }
+        Boolean force = null;
+        if (jobTerminateOptions != null) {
+            force = jobTerminateOptions.force();
+        }
         JobTerminateParameter jobTerminateParameter = null;
         if (terminateReason != null) {
             jobTerminateParameter = new JobTerminateParameter();
@@ -1815,7 +1825,7 @@ public class JobsImpl implements Jobs {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, jobTerminateParameter, parameterizedHost, this.client.userAgent())
+        return service.terminate(jobId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifMatch, ifNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, force, jobTerminateParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>>>() {
                 @Override
                 public Observable<ServiceResponseWithHeaders<Void, JobTerminateHeaders>> call(Response<ResponseBody> response) {

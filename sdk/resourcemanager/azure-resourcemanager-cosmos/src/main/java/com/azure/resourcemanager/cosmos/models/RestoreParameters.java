@@ -145,13 +145,21 @@ public final class RestoreParameters extends RestoreParametersBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        super.withRestoreWithTtlDisabled(restoreWithTtlDisabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (databasesToRestore() != null) {
             databasesToRestore().forEach(e -> e.validate());
         }
@@ -171,6 +179,7 @@ public final class RestoreParameters extends RestoreParametersBase {
             restoreTimestampInUtc() == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(restoreTimestampInUtc()));
+        jsonWriter.writeBooleanField("restoreWithTtlDisabled", restoreWithTtlDisabled());
         jsonWriter.writeStringField("restoreMode", this.restoreMode == null ? null : this.restoreMode.toString());
         jsonWriter.writeArrayField("databasesToRestore", this.databasesToRestore,
             (writer, element) -> writer.writeJson(element));
@@ -201,6 +210,9 @@ public final class RestoreParameters extends RestoreParametersBase {
                 } else if ("restoreTimestampInUtc".equals(fieldName)) {
                     deserializedRestoreParameters.withRestoreTimestampInUtc(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("restoreWithTtlDisabled".equals(fieldName)) {
+                    deserializedRestoreParameters
+                        .withRestoreWithTtlDisabled(reader.getNullable(JsonReader::getBoolean));
                 } else if ("restoreMode".equals(fieldName)) {
                     deserializedRestoreParameters.restoreMode = RestoreMode.fromString(reader.getString());
                 } else if ("databasesToRestore".equals(fieldName)) {

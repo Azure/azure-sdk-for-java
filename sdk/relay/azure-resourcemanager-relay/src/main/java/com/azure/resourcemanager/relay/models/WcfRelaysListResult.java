@@ -5,29 +5,38 @@
 package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.relay.fluent.models.WcfRelayInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of the list WCF relay operation. */
+/**
+ * The response of the list WCF relay operation.
+ */
 @Fluent
-public final class WcfRelaysListResult {
+public final class WcfRelaysListResult implements JsonSerializable<WcfRelaysListResult> {
     /*
      * Result of the list WCF relay operation.
      */
-    @JsonProperty(value = "value")
     private List<WcfRelayInner> value;
 
     /*
-     * Link to the next set of results. Not empty if value contains incomplete
-     * list of WCF relays.
+     * Link to the next set of results. Not empty if value contains incomplete list of WCF relays.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of WcfRelaysListResult class.
+     */
+    public WcfRelaysListResult() {
+    }
+
+    /**
      * Get the value property: Result of the list WCF relay operation.
-     *
+     * 
      * @return the value value.
      */
     public List<WcfRelayInner> value() {
@@ -36,7 +45,7 @@ public final class WcfRelaysListResult {
 
     /**
      * Set the value property: Result of the list WCF relay operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the WcfRelaysListResult object itself.
      */
@@ -48,7 +57,7 @@ public final class WcfRelaysListResult {
     /**
      * Get the nextLink property: Link to the next set of results. Not empty if value contains incomplete list of WCF
      * relays.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -58,7 +67,7 @@ public final class WcfRelaysListResult {
     /**
      * Set the nextLink property: Link to the next set of results. Not empty if value contains incomplete list of WCF
      * relays.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WcfRelaysListResult object itself.
      */
@@ -69,12 +78,52 @@ public final class WcfRelaysListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WcfRelaysListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WcfRelaysListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WcfRelaysListResult.
+     */
+    public static WcfRelaysListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WcfRelaysListResult deserializedWcfRelaysListResult = new WcfRelaysListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WcfRelayInner> value = reader.readArray(reader1 -> WcfRelayInner.fromJson(reader1));
+                    deserializedWcfRelaysListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWcfRelaysListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWcfRelaysListResult;
+        });
     }
 }

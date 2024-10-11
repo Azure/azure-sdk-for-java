@@ -36,22 +36,28 @@ import com.azure.resourcemanager.automation.models.SourceControlListResult;
 import com.azure.resourcemanager.automation.models.SourceControlUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SourceControlsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SourceControlsClient.
+ */
 public final class SourceControlsClientImpl implements SourceControlsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SourceControlsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of SourceControlsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SourceControlsClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(SourceControlsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SourceControlsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,103 +67,75 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientSour")
-    private interface SourceControlsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
-        @ExpectedResponses({200, 201})
+    public interface SourceControlsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SourceControlInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SourceControlInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("sourceControlName") String sourceControlName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SourceControlCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SourceControlInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SourceControlInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("sourceControlName") String sourceControlName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SourceControlUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("sourceControlName") String sourceControlName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls/{sourceControlName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SourceControlInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SourceControlInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
             @PathParam("sourceControlName") String sourceControlName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/sourceControls")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/sourceControls")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SourceControlListResult>> listByAutomationAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SourceControlListResult>> listByAutomationAccount(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SourceControlListResult>> listByAutomationAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -168,16 +146,11 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceControlInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlCreateOrUpdateParameters parameters) {
+    private Mono<Response<SourceControlInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String sourceControlName, SourceControlCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -192,10 +165,8 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -206,24 +177,14 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            sourceControlName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                    sourceControlName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -235,17 +196,12 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceControlInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlCreateOrUpdateParameters parameters,
+    private Mono<Response<SourceControlInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String sourceControlName, SourceControlCreateOrUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,10 +216,8 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -273,22 +227,13 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                sourceControlName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+            sourceControlName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Create a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -299,39 +244,15 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SourceControlInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlCreateOrUpdateParameters parameters) {
+    private Mono<SourceControlInner> createOrUpdateAsync(String resourceGroupName, String automationAccountName,
+        String sourceControlName, SourceControlCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create a source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param parameters The parameters supplied to the create or update source control operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, sourceControlName, parameters).block();
-    }
-
-    /**
-     * Create a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -343,20 +264,35 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SourceControlInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlCreateOrUpdateParameters parameters,
+    public Response<SourceControlInner> createOrUpdateWithResponse(String resourceGroupName,
+        String automationAccountName, String sourceControlName, SourceControlCreateOrUpdateParameters parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, automationAccountName, sourceControlName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, parameters,
+            context).block();
+    }
+
+    /**
+     * Create a source control.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param parameters The parameters supplied to the create or update source control operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner createOrUpdate(String resourceGroupName, String automationAccountName,
+        String sourceControlName, SourceControlCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, automationAccountName, sourceControlName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Update a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -367,16 +303,11 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceControlInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlUpdateParameters parameters) {
+    private Mono<Response<SourceControlInner>> updateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String sourceControlName, SourceControlUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -391,10 +322,8 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -404,25 +333,14 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            sourceControlName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                sourceControlName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -434,17 +352,12 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceControlInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlUpdateParameters parameters,
+    private Mono<Response<SourceControlInner>> updateWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String sourceControlName, SourceControlUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -459,10 +372,8 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -472,22 +383,13 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                sourceControlName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName, sourceControlName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Update a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -498,39 +400,15 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SourceControlInner> updateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlUpdateParameters parameters) {
+    private Mono<SourceControlInner> updateAsync(String resourceGroupName, String automationAccountName,
+        String sourceControlName, SourceControlUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The source control name.
-     * @param parameters The parameters supplied to the update source control operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlUpdateParameters parameters) {
-        return updateAsync(resourceGroupName, automationAccountName, sourceControlName, parameters).block();
-    }
-
-    /**
-     * Update a source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The source control name.
@@ -542,19 +420,34 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SourceControlInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String sourceControlName,
-        SourceControlUpdateParameters parameters,
-        Context context) {
+    public Response<SourceControlInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, SourceControlUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, parameters, context)
             .block();
     }
 
     /**
+     * Update a source control.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The source control name.
+     * @param parameters The parameters supplied to the update source control operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner update(String resourceGroupName, String automationAccountName, String sourceControlName,
+        SourceControlUpdateParameters parameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, sourceControlName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Delete the source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -564,13 +457,11 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String sourceControlName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String sourceControlName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -585,32 +476,20 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            sourceControlName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                sourceControlName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -621,13 +500,11 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String sourceControlName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -642,29 +519,19 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                sourceControlName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName, sourceControlName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Delete the source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -681,22 +548,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
 
     /**
      * Delete the source control.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The name of source control.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String sourceControlName) {
-        deleteAsync(resourceGroupName, automationAccountName, sourceControlName).block();
-    }
-
-    /**
-     * Delete the source control.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -707,14 +559,29 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, context).block();
     }
 
     /**
+     * Delete the source control.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The name of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String sourceControlName) {
+        deleteWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE);
+    }
+
+    /**
      * Retrieve the source control identified by source control name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -724,13 +591,11 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceControlInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String sourceControlName) {
+    private Mono<Response<SourceControlInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String sourceControlName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -745,32 +610,20 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            sourceControlName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                sourceControlName, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the source control identified by source control name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -781,13 +634,11 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SourceControlInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
+    private Mono<Response<SourceControlInner>> getWithResponseAsync(String resourceGroupName,
+        String automationAccountName, String sourceControlName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -802,29 +653,19 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter sourceControlName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                sourceControlName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName, sourceControlName,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the source control identified by source control name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -834,31 +675,15 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SourceControlInner> getAsync(
-        String resourceGroupName, String automationAccountName, String sourceControlName) {
+    private Mono<SourceControlInner> getAsync(String resourceGroupName, String automationAccountName,
+        String sourceControlName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve the source control identified by source control name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param sourceControlName The name of source control.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the source control.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SourceControlInner get(String resourceGroupName, String automationAccountName, String sourceControlName) {
-        return getAsync(resourceGroupName, automationAccountName, sourceControlName).block();
-    }
-
-    /**
-     * Retrieve the source control identified by source control name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param sourceControlName The name of source control.
@@ -869,14 +694,30 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return definition of the source control along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SourceControlInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String sourceControlName, Context context) {
+    public Response<SourceControlInner> getWithResponse(String resourceGroupName, String automationAccountName,
+        String sourceControlName, Context context) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, sourceControlName, context).block();
     }
 
     /**
+     * Retrieve the source control identified by source control name.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param sourceControlName The name of source control.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the source control.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SourceControlInner get(String resourceGroupName, String automationAccountName, String sourceControlName) {
+        return getWithResponse(resourceGroupName, automationAccountName, sourceControlName, Context.NONE).getValue();
+    }
+
+    /**
      * Retrieve a list of source controls.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -884,16 +725,14 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list source controls operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SourceControlInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private Mono<PagedResponse<SourceControlInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -904,41 +743,22 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAutomationAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<SourceControlInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAutomationAccount(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, filter, this.client.getSubscriptionId(), apiVersion, accept, context))
+            .<PagedResponse<SourceControlInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of source controls.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -947,16 +767,14 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list source controls operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SourceControlInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private Mono<PagedResponse<SourceControlInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -967,38 +785,22 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAutomationAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                filter,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAutomationAccount(this.client.getEndpoint(), resourceGroupName, automationAccountName, filter,
+                this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve a list of source controls.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1008,8 +810,8 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return the response model for the list source controls operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SourceControlInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter) {
+    private PagedFlux<SourceControlInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
@@ -1017,7 +819,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
 
     /**
      * Retrieve a list of source controls.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1026,8 +828,8 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return the response model for the list source controls operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SourceControlInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName) {
+    private PagedFlux<SourceControlInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter),
@@ -1036,7 +838,7 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
 
     /**
      * Retrieve a list of source controls.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1047,8 +849,8 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @return the response model for the list source controls operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SourceControlInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    private PagedFlux<SourceControlInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         return new PagedFlux<>(
             () -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName, filter, context),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink, context));
@@ -1056,25 +858,25 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
 
     /**
      * Retrieve a list of source controls.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source controls operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list source controls operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SourceControlInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public PagedIterable<SourceControlInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         return new PagedIterable<>(listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter));
     }
 
     /**
      * Retrieve a list of source controls.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -1082,26 +884,25 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list source controls operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response model for the list source controls operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SourceControlInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
+    public PagedIterable<SourceControlInner> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
         return new PagedIterable<>(
             listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list source controls operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SourceControlInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1109,63 +910,43 @@ public final class SourceControlsClientImpl implements SourceControlsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SourceControlInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SourceControlInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list source controls operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SourceControlInner>> listByAutomationAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SourceControlInner>> listByAutomationAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

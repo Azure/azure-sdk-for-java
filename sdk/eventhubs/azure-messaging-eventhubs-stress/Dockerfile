@@ -19,6 +19,10 @@ RUN --mount=type=cache,target=/root/.m2 \
  mvn -f /stress-eh/eng/code-quality-reports/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/tools/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/core/azure-core/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress-eh/sdk/core/azure-core-http-netty/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress-eh/sdk/core/azure-core-http-okhttp/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress-eh/sdk/core/azure-core-http-vertx/pom.xml clean install ${SKIP_CHECKS} && \
+ mvn -f /stress-eh/sdk/core/azure-core-http-jdk-httpclient/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/core/azure-core-test/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/core/azure-core-amqp/pom.xml clean install ${SKIP_CHECKS} && \
  mvn -f /stress-eh/sdk/core/azure-core-http-netty/pom.xml clean install ${SKIP_CHECKS} && \

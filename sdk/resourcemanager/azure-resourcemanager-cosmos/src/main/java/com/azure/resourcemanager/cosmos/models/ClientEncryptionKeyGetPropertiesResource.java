@@ -107,7 +107,9 @@ public final class ClientEncryptionKeyGetPropertiesResource extends ClientEncryp
      */
     @Override
     public void validate() {
-        super.validate();
+        if (keyWrapMetadata() != null) {
+            keyWrapMetadata().validate();
+        }
     }
 
     /**

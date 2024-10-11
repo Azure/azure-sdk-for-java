@@ -12,7 +12,7 @@ public final class OperationValueInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OperationValueInner model = BinaryData.fromString(
-            "{\"origin\":\"zfikd\",\"name\":\"wq\",\"display\":{\"operation\":\"xzxcl\",\"resource\":\"thhqzonosggbh\",\"description\":\"hfwdsjnkaljutiis\",\"provider\":\"cffgdkzzewk\"},\"isDataAction\":true}")
+            "{\"origin\":\"flrwd\",\"name\":\"dlxyjrxs\",\"display\":{\"operation\":\"fcnihgwq\",\"resource\":\"nedgfbc\",\"description\":\"cvqvpkeqdcv\",\"provider\":\"hvoodsotbobzd\"},\"isDataAction\":false}")
             .toObject(OperationValueInner.class);
     }
 

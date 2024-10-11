@@ -67,16 +67,18 @@ public class IndexManagementTests extends SearchTestBase {
 
     @BeforeAll
     public static void setupSharedResources() {
+        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
+
+        if (TEST_MODE == TestMode.PLAYBACK) {
+            return;
+        }
+
         sharedIndexClient = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(TestHelpers.getTestTokenCredential())
             .buildClient();
 
-        sharedSynonymMap = new SynonymMap("sharedhotelmotel").setSynonyms("hotel,motel");
-
-        if (TEST_MODE != TestMode.PLAYBACK) {
-            sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
-        }
+        sharedSynonymMap = sharedIndexClient.createSynonymMap(sharedSynonymMap);
     }
 
     @AfterAll

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.16 (Unreleased)
+## 1.0.0-beta.18 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.17 (2024-10-01)
+
+### Breaking Changes
+
+- Change the default `ExecutorService` used by `JdkHttpClientBuilder` from using what the JDK `HttpClient` instatiates
+  to using `SharedExecutorService` if `JdkHttpClientBuilder.executor` isn't set.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.0.0-beta.16 (2024-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
 
 ## 1.0.0-beta.15 (2024-07-31)
 

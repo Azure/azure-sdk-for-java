@@ -25,95 +25,99 @@ import com.azure.resourcemanager.edgeorder.models.OrderItemUpdateParameter;
 import com.azure.resourcemanager.edgeorder.models.ProductFamiliesRequest;
 import com.azure.resourcemanager.edgeorder.models.ReturnOrderItemDetails;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> listOperations();
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OperationInner> listOperations(Context context);
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AddressResourceInner> list();
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     addresses.
+     * addresses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AddressResourceInner> list(String filter, String skipToken, Context context);
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProductFamilyInner> listProductFamilies(ProductFamiliesRequest productFamiliesRequest);
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @param expand $expand is supported on configurations parameter for product, which provides details on the
-     *     configurations for the product.
+     * configurations for the product.
      * @param skipToken $skipToken is supported on list of product families, which provides the next page in the list of
-     *     product families.
+     * product families.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductFamilyInner> listProductFamilies(
-        ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken, Context context);
+    PagedIterable<ProductFamilyInner> listProductFamilies(ProductFamiliesRequest productFamiliesRequest, String expand,
+        String skipToken, Context context);
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ConfigurationInner> listConfigurations(ConfigurationsRequest configurationsRequest);
@@ -121,133 +125,149 @@ public interface ResourceProvidersClient {
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @param skipToken $skipToken is supported on list of configurations, which provides the next page in the list of
-     *     configurations.
+     * configurations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConfigurationInner> listConfigurations(
-        ConfigurationsRequest configurationsRequest, String skipToken, Context context);
+    PagedIterable<ConfigurationInner> listConfigurations(ConfigurationsRequest configurationsRequest, String skipToken,
+        Context context);
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadata();
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on list of product families metadata, which provides the next page in
-     *     the list of product families metadata.
+     * the list of product families metadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ProductFamiliesMetadataDetailsInner> listProductFamiliesMetadata(String skipToken, Context context);
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrderResourceInner> listOrderAtSubscriptionLevel();
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrderResourceInner> listOrderAtSubscriptionLevel(String skipToken, Context context);
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrderItemResourceInner> listOrderItemsAtSubscriptionLevel();
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OrderItemResourceInner> listOrderItemsAtSubscriptionLevel(
-        String filter, String expand, String skipToken, Context context);
+    PagedIterable<OrderItemResourceInner> listOrderItemsAtSubscriptionLevel(String filter, String expand,
+        String skipToken, Context context);
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AddressResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     address.
+     * address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AddressResourceInner> listByResourceGroup(
-        String resourceGroupName, String filter, String skipToken, Context context);
+    PagedIterable<AddressResourceInner> listByResourceGroup(String resourceGroupName, String filter, String skipToken,
+        Context context);
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified address along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AddressResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String addressName,
+        Context context);
+
+    /**
+     * Gets information about the specified address.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param addressName The name of the address Resource within the specified resource group. address names must be
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -257,59 +277,43 @@ public interface ResourceProvidersClient {
     AddressResourceInner getByResourceGroup(String resourceGroupName, String addressName);
 
     /**
-     * Gets information about the specified address.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AddressResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String addressName, Context context);
-
-    /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource);
+    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(String addressName,
+        String resourceGroupName, AddressResourceInner addressResource);
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource, Context context);
+    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginCreateAddress(String addressName,
+        String resourceGroupName, AddressResourceInner addressResource, Context context);
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,14 +322,14 @@ public interface ResourceProvidersClient {
      * @return address Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AddressResourceInner createAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource);
+    AddressResourceInner createAddress(String addressName, String resourceGroupName,
+        AddressResourceInner addressResource);
 
     /**
      * Creates a new address with the specified parameters. Existing address can be updated with this API.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressResource Address details from request body.
      * @param context The context to associate with this operation.
@@ -335,44 +339,44 @@ public interface ResourceProvidersClient {
      * @return address Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AddressResourceInner createAddress(
-        String addressName, String resourceGroupName, AddressResourceInner addressResource, Context context);
+    AddressResourceInner createAddress(String addressName, String resourceGroupName,
+        AddressResourceInner addressResource, Context context);
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String addressName);
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String addressName, Context context);
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -382,10 +386,10 @@ public interface ResourceProvidersClient {
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -396,68 +400,44 @@ public interface ResourceProvidersClient {
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch);
+    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(String addressName,
+        String resourceGroupName, AddressUpdateParameter addressUpdateParameter);
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
+     * @return the {@link SyncPoller} for polling of address Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(
-        String addressName,
-        String resourceGroupName,
-        AddressUpdateParameter addressUpdateParameter,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<AddressResourceInner>, AddressResourceInner> beginUpdateAddress(String addressName,
+        String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch, Context context);
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressUpdateParameter Address update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AddressResourceInner updateAddress(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter, String ifMatch);
-
-    /**
-     * Updates the properties of an existing address.
-     *
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -466,18 +446,18 @@ public interface ResourceProvidersClient {
      * @return address Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AddressResourceInner updateAddress(
-        String addressName, String resourceGroupName, AddressUpdateParameter addressUpdateParameter);
+    AddressResourceInner updateAddress(String addressName, String resourceGroupName,
+        AddressUpdateParameter addressUpdateParameter);
 
     /**
      * Updates the properties of an existing address.
-     *
+     * 
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressUpdateParameter Address update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -485,43 +465,55 @@ public interface ResourceProvidersClient {
      * @return address Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AddressResourceInner updateAddress(
-        String addressName,
-        String resourceGroupName,
-        AddressUpdateParameter addressUpdateParameter,
-        String ifMatch,
-        Context context);
+    AddressResourceInner updateAddress(String addressName, String resourceGroupName,
+        AddressUpdateParameter addressUpdateParameter, String ifMatch, Context context);
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrderResourceInner> listOrderAtResourceGroupLevel(String resourceGroupName);
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OrderResourceInner> listOrderAtResourceGroupLevel(
-        String resourceGroupName, String skipToken, Context context);
+    PagedIterable<OrderResourceInner> listOrderAtResourceGroupLevel(String resourceGroupName, String skipToken,
+        Context context);
 
     /**
      * Gets an order.
-     *
+     * 
+     * @param orderName The name of the order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an order along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrderResourceInner> getOrderByNameWithResponse(String orderName, String resourceGroupName, String location,
+        Context context);
+
+    /**
+     * Gets an order.
+     * 
      * @param orderName The name of the order.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The name of Azure region.
@@ -534,57 +526,60 @@ public interface ResourceProvidersClient {
     OrderResourceInner getOrderByName(String orderName, String resourceGroupName, String location);
 
     /**
-     * Gets an order.
-     *
-     * @param orderName The name of the order.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrderResourceInner> getOrderByNameWithResponse(
-        String orderName, String resourceGroupName, String location, Context context);
-
-    /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrderItemResourceInner> listOrderItemsAtResourceGroupLevel(String resourceGroupName);
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OrderItemResourceInner> listOrderItemsAtResourceGroupLevel(
-        String resourceGroupName, String filter, String expand, String skipToken, Context context);
+    PagedIterable<OrderItemResourceInner> listOrderItemsAtResourceGroupLevel(String resourceGroupName, String filter,
+        String expand, String skipToken, Context context);
 
     /**
      * Gets an order item.
-     *
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an order item along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrderItemResourceInner> getOrderItemByNameWithResponse(String orderItemName, String resourceGroupName,
+        String expand, Context context);
+
+    /**
+     * Gets an order item.
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -596,44 +591,25 @@ public interface ResourceProvidersClient {
     OrderItemResourceInner getOrderItemByName(String orderItemName, String resourceGroupName);
 
     /**
-     * Gets an order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrderItemResourceInner> getOrderItemByNameWithResponse(
-        String orderItemName, String resourceGroupName, String expand, Context context);
-
-    /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource);
+    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItem(String orderItemName,
+        String resourceGroupName, OrderItemResourceInner orderItemResource);
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -641,16 +617,16 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource, Context context);
+    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginCreateOrderItem(String orderItemName,
+        String resourceGroupName, OrderItemResourceInner orderItemResource, Context context);
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -660,13 +636,13 @@ public interface ResourceProvidersClient {
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OrderItemResourceInner createOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource);
+    OrderItemResourceInner createOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemResourceInner orderItemResource);
 
     /**
      * Creates an order item. Existing order item cannot be updated with this api and should instead be updated with the
      * Update order item API.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemResource Order item details from request body.
@@ -677,40 +653,40 @@ public interface ResourceProvidersClient {
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OrderItemResourceInner createOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemResourceInner orderItemResource, Context context);
+    OrderItemResourceInner createOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemResourceInner orderItemResource, Context context);
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDeleteOrderItemByName(String orderItemName, String resourceGroupName);
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDeleteOrderItemByName(
-        String orderItemName, String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteOrderItemByName(String orderItemName, String resourceGroupName,
+        Context context);
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -722,7 +698,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -735,69 +711,40 @@ public interface ResourceProvidersClient {
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch);
+    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(String orderItemName,
+        String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter);
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
+     * @return the {@link SyncPoller} for polling of represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<OrderItemResourceInner>, OrderItemResourceInner> beginUpdateOrderItem(String orderItemName,
+        String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter, String ifMatch, Context context);
 
     /**
      * Updates the properties of an existing order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param orderItemUpdateParameter order item update parameters from request body.
-     * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents order item contract.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OrderItemResourceInner updateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch);
-
-    /**
-     * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
@@ -807,17 +754,17 @@ public interface ResourceProvidersClient {
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OrderItemResourceInner updateOrderItem(
-        String orderItemName, String resourceGroupName, OrderItemUpdateParameter orderItemUpdateParameter);
+    OrderItemResourceInner updateOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemUpdateParameter orderItemUpdateParameter);
 
     /**
      * Updates the properties of an existing order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param orderItemUpdateParameter order item update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the order on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -825,16 +772,28 @@ public interface ResourceProvidersClient {
      * @return represents order item contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OrderItemResourceInner updateOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        OrderItemUpdateParameter orderItemUpdateParameter,
-        String ifMatch,
-        Context context);
+    OrderItemResourceInner updateOrderItem(String orderItemName, String resourceGroupName,
+        OrderItemUpdateParameter orderItemUpdateParameter, String ifMatch, Context context);
 
     /**
      * Cancel order item.
-     *
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cancellationReason Reason for cancellation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> cancelOrderItemWithResponse(String orderItemName, String resourceGroupName,
+        CancellationReason cancellationReason, Context context);
+
+    /**
+     * Cancel order item.
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cancellationReason Reason for cancellation.
@@ -846,39 +805,23 @@ public interface ResourceProvidersClient {
     void cancelOrderItem(String orderItemName, String resourceGroupName, CancellationReason cancellationReason);
 
     /**
-     * Cancel order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cancellationReason Reason for cancellation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelOrderItemWithResponse(
-        String orderItemName, String resourceGroupName, CancellationReason cancellationReason, Context context);
-
-    /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails);
+    SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails);
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -886,15 +829,15 @@ public interface ResourceProvidersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails, Context context);
+    SyncPoller<PollResult<Void>, Void> beginReturnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails, Context context);
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -907,7 +850,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -917,6 +860,6 @@ public interface ResourceProvidersClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void returnOrderItem(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails, Context context);
+    void returnOrderItem(String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails,
+        Context context);
 }

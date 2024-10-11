@@ -550,7 +550,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(generateRandomResourceName("aks", 15))
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")
@@ -574,9 +574,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(generateRandomResourceName("aks", 15))
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.27.9")
+            .withVersion("1.29.7")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
@@ -590,11 +590,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.27.9", kubernetesCluster.version());
+        Assertions.assertEquals("1.29.7", kubernetesCluster.version());
 
-        kubernetesCluster.update().withVersion("1.28.5").apply();
+        kubernetesCluster.update().withVersion("1.30.3").apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.28.5", kubernetesCluster.version());
+        Assertions.assertEquals("1.30.3", kubernetesCluster.version());
     }
 
     @Test
@@ -603,9 +603,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withDefaultVersion()
+            .withVersion("1.30.3")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()

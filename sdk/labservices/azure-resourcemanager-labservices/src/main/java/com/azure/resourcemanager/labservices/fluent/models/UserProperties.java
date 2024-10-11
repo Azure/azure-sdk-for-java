@@ -5,62 +5,67 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.InvitationState;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RegistrationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** User resource properties. */
+/**
+ * User resource properties.
+ */
 @Fluent
 public final class UserProperties extends UserUpdateProperties {
     /*
      * Current provisioning state of the user resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Display name of the user, for example user's full name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Email address of the user.
      */
-    @JsonProperty(value = "email", required = true)
     private String email;
 
     /*
      * State of the user's registration within the lab.
      */
-    @JsonProperty(value = "registrationState", access = JsonProperty.Access.WRITE_ONLY)
     private RegistrationState registrationState;
 
     /*
      * State of the invitation message for the user.
      */
-    @JsonProperty(value = "invitationState", access = JsonProperty.Access.WRITE_ONLY)
     private InvitationState invitationState;
 
     /*
      * Date and time when the invitation message was sent to the user.
      */
-    @JsonProperty(value = "invitationSent", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime invitationSent;
 
     /*
      * How long the user has used their virtual machines in this lab.
      */
-    @JsonProperty(value = "totalUsage", access = JsonProperty.Access.WRITE_ONLY)
     private Duration totalUsage;
 
     /**
+     * Creates an instance of UserProperties class.
+     */
+    public UserProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the user resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -69,7 +74,7 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Get the displayName property: Display name of the user, for example user's full name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -78,7 +83,7 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Get the email property: Email address of the user.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -87,7 +92,7 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Set the email property: Email address of the user.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserProperties object itself.
      */
@@ -98,7 +103,7 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Get the registrationState property: State of the user's registration within the lab.
-     *
+     * 
      * @return the registrationState value.
      */
     public RegistrationState registrationState() {
@@ -107,7 +112,7 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Get the invitationState property: State of the invitation message for the user.
-     *
+     * 
      * @return the invitationState value.
      */
     public InvitationState invitationState() {
@@ -116,7 +121,7 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Get the invitationSent property: Date and time when the invitation message was sent to the user.
-     *
+     * 
      * @return the invitationSent value.
      */
     public OffsetDateTime invitationSent() {
@@ -125,14 +130,16 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Get the totalUsage property: How long the user has used their virtual machines in this lab.
-     *
+     * 
      * @return the totalUsage value.
      */
     public Duration totalUsage() {
         return this.totalUsage;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserProperties withAdditionalUsageQuota(Duration additionalUsageQuota) {
         super.withAdditionalUsageQuota(additionalUsageQuota);
@@ -141,18 +148,71 @@ public final class UserProperties extends UserUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (email() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property email in model UserProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property email in model UserProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("additionalUsageQuota", CoreUtils.durationToStringWithDays(additionalUsageQuota()));
+        jsonWriter.writeStringField("email", this.email);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserProperties.
+     */
+    public static UserProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserProperties deserializedUserProperties = new UserProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalUsageQuota".equals(fieldName)) {
+                    deserializedUserProperties.withAdditionalUsageQuota(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("email".equals(fieldName)) {
+                    deserializedUserProperties.email = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedUserProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedUserProperties.displayName = reader.getString();
+                } else if ("registrationState".equals(fieldName)) {
+                    deserializedUserProperties.registrationState = RegistrationState.fromString(reader.getString());
+                } else if ("invitationState".equals(fieldName)) {
+                    deserializedUserProperties.invitationState = InvitationState.fromString(reader.getString());
+                } else if ("invitationSent".equals(fieldName)) {
+                    deserializedUserProperties.invitationSent = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("totalUsage".equals(fieldName)) {
+                    deserializedUserProperties.totalUsage
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserProperties;
+        });
+    }
 }

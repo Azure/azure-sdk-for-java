@@ -8,8 +8,8 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileInner;
-import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileProperties;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfile;
+import com.azure.resourcemanager.automanage.models.ConfigurationProfileProperties;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileUpdate;
 import java.util.Collections;
 import java.util.Map;
@@ -85,23 +85,18 @@ public final class ConfigurationProfileImpl
     }
 
     public ConfigurationProfile create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationProfiles()
-                .createOrUpdateWithResponse(
-                    configurationProfileName, resourceGroupName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationProfiles()
+            .createOrUpdateWithResponse(configurationProfileName, resourceGroupName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationProfile create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationProfiles()
-                .createOrUpdateWithResponse(configurationProfileName, resourceGroupName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationProfiles()
+            .createOrUpdateWithResponse(configurationProfileName, resourceGroupName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -117,50 +112,43 @@ public final class ConfigurationProfileImpl
     }
 
     public ConfigurationProfile apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationProfiles()
-                .updateWithResponse(configurationProfileName, resourceGroupName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationProfiles()
+            .updateWithResponse(configurationProfileName, resourceGroupName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationProfile apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationProfiles()
-                .updateWithResponse(configurationProfileName, resourceGroupName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationProfiles()
+            .updateWithResponse(configurationProfileName, resourceGroupName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ConfigurationProfileImpl(
-        ConfigurationProfileInner innerObject, com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
+    ConfigurationProfileImpl(ConfigurationProfileInner innerObject,
+        com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.configurationProfileName = Utils.getValueFromIdByName(innerObject.id(), "configurationProfiles");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.configurationProfileName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "configurationProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public ConfigurationProfile refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationProfiles()
-                .getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationProfiles()
+            .getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ConfigurationProfile refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getConfigurationProfiles()
-                .getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getConfigurationProfiles()
+            .getByResourceGroupWithResponse(resourceGroupName, configurationProfileName, context)
+            .getValue();
         return this;
     }
 

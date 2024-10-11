@@ -5,55 +5,61 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.JobStreamType;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Definition of the job stream. */
+/**
+ * Definition of the job stream.
+ */
 @Fluent
-public final class JobStreamProperties {
+public final class JobStreamProperties implements JsonSerializable<JobStreamProperties> {
     /*
      * Gets or sets the id of the job stream.
      */
-    @JsonProperty(value = "jobStreamId")
     private String jobStreamId;
 
     /*
      * Gets or sets the creation time of the job.
      */
-    @JsonProperty(value = "time")
     private OffsetDateTime time;
 
     /*
      * Gets or sets the stream type.
      */
-    @JsonProperty(value = "streamType")
     private JobStreamType streamType;
 
     /*
      * Gets or sets the stream text.
      */
-    @JsonProperty(value = "streamText")
     private String streamText;
 
     /*
      * Gets or sets the summary.
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * Gets or sets the values of the job stream.
      */
-    @JsonProperty(value = "value")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> value;
 
     /**
+     * Creates an instance of JobStreamProperties class.
+     */
+    public JobStreamProperties() {
+    }
+
+    /**
      * Get the jobStreamId property: Gets or sets the id of the job stream.
-     *
+     * 
      * @return the jobStreamId value.
      */
     public String jobStreamId() {
@@ -62,7 +68,7 @@ public final class JobStreamProperties {
 
     /**
      * Set the jobStreamId property: Gets or sets the id of the job stream.
-     *
+     * 
      * @param jobStreamId the jobStreamId value to set.
      * @return the JobStreamProperties object itself.
      */
@@ -73,7 +79,7 @@ public final class JobStreamProperties {
 
     /**
      * Get the time property: Gets or sets the creation time of the job.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -82,7 +88,7 @@ public final class JobStreamProperties {
 
     /**
      * Set the time property: Gets or sets the creation time of the job.
-     *
+     * 
      * @param time the time value to set.
      * @return the JobStreamProperties object itself.
      */
@@ -93,7 +99,7 @@ public final class JobStreamProperties {
 
     /**
      * Get the streamType property: Gets or sets the stream type.
-     *
+     * 
      * @return the streamType value.
      */
     public JobStreamType streamType() {
@@ -102,7 +108,7 @@ public final class JobStreamProperties {
 
     /**
      * Set the streamType property: Gets or sets the stream type.
-     *
+     * 
      * @param streamType the streamType value to set.
      * @return the JobStreamProperties object itself.
      */
@@ -113,7 +119,7 @@ public final class JobStreamProperties {
 
     /**
      * Get the streamText property: Gets or sets the stream text.
-     *
+     * 
      * @return the streamText value.
      */
     public String streamText() {
@@ -122,7 +128,7 @@ public final class JobStreamProperties {
 
     /**
      * Set the streamText property: Gets or sets the stream text.
-     *
+     * 
      * @param streamText the streamText value to set.
      * @return the JobStreamProperties object itself.
      */
@@ -133,7 +139,7 @@ public final class JobStreamProperties {
 
     /**
      * Get the summary property: Gets or sets the summary.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -142,7 +148,7 @@ public final class JobStreamProperties {
 
     /**
      * Set the summary property: Gets or sets the summary.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the JobStreamProperties object itself.
      */
@@ -153,7 +159,7 @@ public final class JobStreamProperties {
 
     /**
      * Get the value property: Gets or sets the values of the job stream.
-     *
+     * 
      * @return the value value.
      */
     public Map<String, Object> value() {
@@ -162,7 +168,7 @@ public final class JobStreamProperties {
 
     /**
      * Set the value property: Gets or sets the values of the job stream.
-     *
+     * 
      * @param value the value value to set.
      * @return the JobStreamProperties object itself.
      */
@@ -173,9 +179,63 @@ public final class JobStreamProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobStreamId", this.jobStreamId);
+        jsonWriter.writeStringField("time",
+            this.time == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.time));
+        jsonWriter.writeStringField("streamType", this.streamType == null ? null : this.streamType.toString());
+        jsonWriter.writeStringField("streamText", this.streamText);
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeMapField("value", this.value, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobStreamProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobStreamProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobStreamProperties.
+     */
+    public static JobStreamProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobStreamProperties deserializedJobStreamProperties = new JobStreamProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobStreamId".equals(fieldName)) {
+                    deserializedJobStreamProperties.jobStreamId = reader.getString();
+                } else if ("time".equals(fieldName)) {
+                    deserializedJobStreamProperties.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("streamType".equals(fieldName)) {
+                    deserializedJobStreamProperties.streamType = JobStreamType.fromString(reader.getString());
+                } else if ("streamText".equals(fieldName)) {
+                    deserializedJobStreamProperties.streamText = reader.getString();
+                } else if ("summary".equals(fieldName)) {
+                    deserializedJobStreamProperties.summary = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    Map<String, Object> value = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedJobStreamProperties.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobStreamProperties;
+        });
     }
 }

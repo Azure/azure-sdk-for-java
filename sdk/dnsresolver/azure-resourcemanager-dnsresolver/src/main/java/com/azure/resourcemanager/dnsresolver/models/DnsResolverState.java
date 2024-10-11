@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dnsresolver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,26 +12,38 @@ import java.util.Collection;
  * ignored.
  */
 public final class DnsResolverState extends ExpandableStringEnum<DnsResolverState> {
-    /** Static value Connected for DnsResolverState. */
+    /**
+     * Static value Connected for DnsResolverState.
+     */
     public static final DnsResolverState CONNECTED = fromString("Connected");
 
-    /** Static value Disconnected for DnsResolverState. */
+    /**
+     * Static value Disconnected for DnsResolverState.
+     */
     public static final DnsResolverState DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of DnsResolverState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DnsResolverState() {
+    }
+
+    /**
      * Creates or finds a DnsResolverState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DnsResolverState.
      */
-    @JsonCreator
     public static DnsResolverState fromString(String name) {
         return fromString(name, DnsResolverState.class);
     }
 
     /**
      * Gets known DnsResolverState values.
-     *
+     * 
      * @return known DnsResolverState values.
      */
     public static Collection<DnsResolverState> values() {

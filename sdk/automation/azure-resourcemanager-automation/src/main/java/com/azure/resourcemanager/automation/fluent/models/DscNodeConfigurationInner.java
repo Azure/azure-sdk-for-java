@@ -6,22 +6,47 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.DscConfigurationAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of the dsc node configuration. */
+/**
+ * Definition of the dsc node configuration.
+ */
 @Fluent
 public final class DscNodeConfigurationInner extends ProxyResource {
     /*
      * Gets or sets the configuration properties.
      */
-    @JsonProperty(value = "properties")
     private DscNodeConfigurationProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DscNodeConfigurationInner class.
+     */
+    public DscNodeConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DscNodeConfigurationProperties innerProperties() {
@@ -29,8 +54,38 @@ public final class DscNodeConfigurationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -39,7 +94,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the DscNodeConfigurationInner object itself.
      */
@@ -53,7 +108,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets or sets creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -62,7 +117,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Set the creationTime property: Gets or sets creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the DscNodeConfigurationInner object itself.
      */
@@ -76,7 +131,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Get the configuration property: Gets or sets the configuration of the node.
-     *
+     * 
      * @return the configuration value.
      */
     public DscConfigurationAssociationProperty configuration() {
@@ -85,7 +140,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Set the configuration property: Gets or sets the configuration of the node.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DscNodeConfigurationInner object itself.
      */
@@ -99,7 +154,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Get the source property: Source of node configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -108,7 +163,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Set the source property: Source of node configuration.
-     *
+     * 
      * @param source the source value to set.
      * @return the DscNodeConfigurationInner object itself.
      */
@@ -122,7 +177,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Get the nodeCount property: Number of nodes with this node configuration assigned.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Long nodeCount() {
@@ -131,7 +186,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Set the nodeCount property: Number of nodes with this node configuration assigned.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the DscNodeConfigurationInner object itself.
      */
@@ -145,7 +200,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Get the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @return the incrementNodeConfigurationBuild value.
      */
     public Boolean incrementNodeConfigurationBuild() {
@@ -154,7 +209,7 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Set the incrementNodeConfigurationBuild property: If a new build version of NodeConfiguration is required.
-     *
+     * 
      * @param incrementNodeConfigurationBuild the incrementNodeConfigurationBuild value to set.
      * @return the DscNodeConfigurationInner object itself.
      */
@@ -168,12 +223,56 @@ public final class DscNodeConfigurationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscNodeConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscNodeConfigurationInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DscNodeConfigurationInner.
+     */
+    public static DscNodeConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscNodeConfigurationInner deserializedDscNodeConfigurationInner = new DscNodeConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDscNodeConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDscNodeConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDscNodeConfigurationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDscNodeConfigurationInner.innerProperties
+                        = DscNodeConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscNodeConfigurationInner;
+        });
     }
 }
