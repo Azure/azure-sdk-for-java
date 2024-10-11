@@ -120,6 +120,8 @@ public abstract class NotificationContent implements JsonSerializable<Notificati
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("text".equals(discriminatorValue)) {
                     return TextNotificationContent.fromJson(readerToUse.reset());
+                } else if ("image_v0".equals(discriminatorValue)) {
+                    return MediaNotificationContent.fromJson(readerToUse.reset());
                 } else if ("image".equals(discriminatorValue)) {
                     return ImageNotificationContent.fromJson(readerToUse.reset());
                 } else if ("document".equals(discriminatorValue)) {

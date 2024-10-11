@@ -22,6 +22,7 @@
     "com.azure.communication.messages.models.CommunicationMessagesChannel": "Azure.Communication.MessagesService.CommunicationMessagesChannel",
     "com.azure.communication.messages.models.DocumentNotificationContent": "Azure.Communication.MessagesService.DocumentNotificationContent",
     "com.azure.communication.messages.models.ImageNotificationContent": "Azure.Communication.MessagesService.ImageNotificationContent",
+    "com.azure.communication.messages.models.MediaNotificationContent": "Azure.Communication.MessagesService.MediaNotificationContent",
     "com.azure.communication.messages.models.MessageReceipt": "Azure.Communication.MessagesService.MessageReceipt",
     "com.azure.communication.messages.models.MessageTemplate": "Azure.Communication.MessagesService.MessageTemplate",
     "com.azure.communication.messages.models.MessageTemplateBindings": "Azure.Communication.MessagesService.MessageTemplateBindings",

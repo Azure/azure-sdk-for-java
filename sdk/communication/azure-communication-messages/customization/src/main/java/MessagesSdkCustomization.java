@@ -30,6 +30,7 @@ public class MessagesSdkCustomization extends Customization {
         updateModelClassModifierToAbstract(modelsPackage, "MessageTemplateItem");
         customizeMessageTemplateLocation(modelsPackage);
         customizeMessageTemplateItemModel(modelsPackage);
+        AddDeprecateAnnotationToClass(modelsPackage, "MediaNotificationContent");
 
         PackageCustomization channelsModelsPackage = libraryCustomization.getPackage(
             "com.azure.communication.messages.models.channels");
@@ -199,5 +200,9 @@ public class MessagesSdkCustomization extends Customization {
                 clazz.getMethodsByName("fromJsonKnownDiscriminator").get(0).remove();
             });
         });
+    }
+
+    private void AddDeprecateAnnotationToClass(PackageCustomization modelsPackage, String className) {
+        modelsPackage.getClass(className).addAnnotation("Deprecated");
     }
 }

@@ -24,12 +24,6 @@ public final class ImageNotificationContent extends NotificationContent {
     private CommunicationMessageKind kind = CommunicationMessageKind.IMAGE;
 
     /*
-     * Optional text content.
-     */
-    @Generated
-    private String content;
-
-    /*
      * A media url for the file. Required if the type is one of the supported media types, e.g. image
      */
     @Generated
@@ -60,28 +54,6 @@ public final class ImageNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the content property: Optional text content.
-     *
-     * @return the content value.
-     */
-    @Generated
-    public String getContent() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: Optional text content.
-     *
-     * @param content the content value to set.
-     * @return the ImageNotificationContent object itself.
-     */
-    @Generated
-    public ImageNotificationContent setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
      * Get the mediaUrl property: A media url for the file. Required if the type is one of the supported media types,
      * e.g. image.
      *
@@ -103,7 +75,7 @@ public final class ImageNotificationContent extends NotificationContent {
         jsonWriter.writeArrayField("to", getTo(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("mediaUri", this.mediaUrl);
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("caption", this.caption);
         return jsonWriter.writeEndObject();
     }
 
@@ -123,7 +95,7 @@ public final class ImageNotificationContent extends NotificationContent {
             List<String> to = null;
             String mediaUrl = null;
             CommunicationMessageKind kind = CommunicationMessageKind.IMAGE;
-            String content = null;
+            String caption = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -135,8 +107,8 @@ public final class ImageNotificationContent extends NotificationContent {
                     mediaUrl = reader.getString();
                 } else if ("kind".equals(fieldName)) {
                     kind = CommunicationMessageKind.fromString(reader.getString());
-                } else if ("content".equals(fieldName)) {
-                    content = reader.getString();
+                } else if ("caption".equals(fieldName)) {
+                    caption = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -144,8 +116,36 @@ public final class ImageNotificationContent extends NotificationContent {
             ImageNotificationContent deserializedImageNotificationContent
                 = new ImageNotificationContent(channelRegistrationId, to, mediaUrl);
             deserializedImageNotificationContent.kind = kind;
-            deserializedImageNotificationContent.content = content;
+            deserializedImageNotificationContent.caption = caption;
             return deserializedImageNotificationContent;
         });
+    }
+
+    /*
+     * Optional text content.
+     */
+    @Generated
+    private String caption;
+
+    /**
+     * Get the caption property: Optional text content.
+     *
+     * @return the caption value.
+     */
+    @Generated
+    public String getCaption() {
+        return this.caption;
+    }
+
+    /**
+     * Set the caption property: Optional text content.
+     *
+     * @param caption the caption value to set.
+     * @return the ImageNotificationContent object itself.
+     */
+    @Generated
+    public ImageNotificationContent setCaption(String caption) {
+        this.caption = caption;
+        return this;
     }
 }
