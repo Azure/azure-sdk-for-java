@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
     @Test
     public void testGetValidationDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"id\":\"rgmsplzga\",\"publicNetworkAccess\":\"SecuredByPerimeter\",\"connectionDetails\":[{\"id\":\"vnewgnxkympqanx\",\"privateIpAddress\":\"kixtwbtaoy\",\"linkIdentifier\":\"yghs\",\"groupId\":\"cyl\",\"memberName\":\"gmnsghpxy\"},{\"id\":\"hdrwjjkh\",\"privateIpAddress\":\"omacluzvxnqmhr\",\"linkIdentifier\":\"pd\",\"groupId\":\"mkoisqcssf\",\"memberName\":\"uifmc\"},{\"id\":\"p\",\"privateIpAddress\":\"kdqzrdzsylo\",\"linkIdentifier\":\"gtrczzydmxzjijpv\",\"groupId\":\"urkihci\",\"memberName\":\"defxrdc\"},{\"id\":\"nbkkjanurnnq\",\"privateIpAddress\":\"q\",\"linkIdentifier\":\"izxqltgrd\",\"groupId\":\"ypxrx\",\"memberName\":\"fihwu\"}]}";
+            = "{\"id\":\"l\",\"publicNetworkAccess\":\"Disabled\",\"connectionDetails\":[{\"id\":\"rpqaf\",\"privateIpAddress\":\"ug\",\"linkIdentifier\":\"n\",\"groupId\":\"yetefyp\",\"memberName\":\"octfjgtixrjvzuyt\"},{\"id\":\"mlmuowol\",\"privateIpAddress\":\"uir\",\"linkIdentifier\":\"ionszonwp\",\"groupId\":\"ajinnixjawrtmjfj\",\"memberName\":\"ccxlzhcoxovnek\"},{\"id\":\"nlusfnrd\",\"privateIpAddress\":\"xtxrdcqtjvidt\",\"linkIdentifier\":\"epu\",\"groupId\":\"vyjtcvu\",\"memberName\":\"asiz\"},{\"id\":\"sfuughtuqfecjx\",\"privateIpAddress\":\"gtuhxuicbu\",\"linkIdentifier\":\"mr\",\"groupId\":\"njlx\",\"memberName\":\"rhwpus\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,9 @@ public final class PrivateLinkScopesGetValidationDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PrivateLinkScopeValidationDetails response = manager.privateLinkScopes()
-            .getValidationDetailsWithResponse("psmgo", "guamlj", com.azure.core.util.Context.NONE)
+            .getValidationDetailsWithResponse("phwpnulaiywzej", "whslwkoj", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER, response.publicNetworkAccess());
+        Assertions.assertEquals(PublicNetworkAccessType.DISABLED, response.publicNetworkAccess());
     }
 }
