@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class MongoClusterManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
@@ -79,8 +80,8 @@ public class MongoClusterManagerTests extends TestProxyTestBase {
         MongoCluster mongoCluster = null;
         String clusterName = "cluster" + randomPadding();
         try {
-            String loginUser = "ClusterLoginUser";
-            String loginPwd = "!QA2ws#ED4rf";
+            String loginUser = "loginUser" + randomPadding();
+            String loginPwd = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedmeStart
             mongoCluster = mongoClusterManager.mongoClusters()
                 .define(clusterName)
