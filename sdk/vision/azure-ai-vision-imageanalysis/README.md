@@ -87,7 +87,8 @@ ImageAnalysisAsyncClient client = new ImageAnalysisClientBuilder()
 
 #### Using Entra ID
 
-Add an additional dependency on `azure-identity` in your `pom.xml`:
+To use the [DefaultAzureCredential](https://learn.microsoft.com/java/api/com.azure.identity.defaultazurecredential)
+provider, or other credential providers, add an additional dependency on `azure-identity` in your `pom.xml`:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
