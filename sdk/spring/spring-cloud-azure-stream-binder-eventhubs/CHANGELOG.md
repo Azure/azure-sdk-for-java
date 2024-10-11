@@ -1,18 +1,12 @@
 # Release History
 
-## 5.17.0 (Unreleased)
+## 5.17.1 (2024-10-11)
 
-Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#600-beta4-2022-12-07) for more details.
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#5171-2024-10-11) for more details.
 
-## 5.17.0-beta.1 (Unreleased)
+## 5.17.0 (2024-10-09)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#5170-2024-10-09) for more details.
 
 ## 5.16.0 (2024-09-09)
 
@@ -137,6 +131,10 @@ Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-jav
 ## 5.0.0 (2023-01-17)
 
 Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#500-2023-01-17) for more details.
+
+## 6.0.0-beta.4 (2022-12-07)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#600-beta4-2022-12-07) for more details.
 
 ## 4.5.0 (2022-12-06)
 
