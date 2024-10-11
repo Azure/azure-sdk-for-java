@@ -15,10 +15,10 @@ import com.azure.resourcemanager.computefleet.models.DiskEncryptionSetParameters
 import com.azure.resourcemanager.computefleet.models.OperatingSystemTypes;
 import com.azure.resourcemanager.computefleet.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.computefleet.models.StorageAccountTypes;
+import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
 import com.azure.resourcemanager.computefleet.models.VirtualHardDisk;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetManagedDiskParameters;
 import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetOSDisk;
-import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 

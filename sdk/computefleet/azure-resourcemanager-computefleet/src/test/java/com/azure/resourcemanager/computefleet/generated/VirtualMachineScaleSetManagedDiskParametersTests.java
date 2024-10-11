@@ -8,8 +8,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.computefleet.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.computefleet.models.SecurityEncryptionTypes;
 import com.azure.resourcemanager.computefleet.models.StorageAccountTypes;
-import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetManagedDiskParameters;
 import com.azure.resourcemanager.computefleet.models.VMDiskSecurityProfile;
+import com.azure.resourcemanager.computefleet.models.VirtualMachineScaleSetManagedDiskParameters;
 import org.junit.jupiter.api.Assertions;
 
 public final class VirtualMachineScaleSetManagedDiskParametersTests {
