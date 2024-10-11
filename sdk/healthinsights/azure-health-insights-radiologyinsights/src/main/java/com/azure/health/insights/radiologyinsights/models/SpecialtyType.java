@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SpecialtyType extends ExpandableStringEnum<SpecialtyType> {
      * @return the corresponding SpecialtyType.
      */
     @Generated
-    @JsonCreator
     public static SpecialtyType fromString(String name) {
         return fromString(name, SpecialtyType.class);
     }

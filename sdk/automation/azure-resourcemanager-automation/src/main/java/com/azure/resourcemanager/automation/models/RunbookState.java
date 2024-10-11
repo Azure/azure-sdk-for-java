@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the state of the runbook. */
+/**
+ * Gets or sets the state of the runbook.
+ */
 public final class RunbookState extends ExpandableStringEnum<RunbookState> {
-    /** Static value New for RunbookState. */
+    /**
+     * Static value New for RunbookState.
+     */
     public static final RunbookState NEW = fromString("New");
 
-    /** Static value Edit for RunbookState. */
+    /**
+     * Static value Edit for RunbookState.
+     */
     public static final RunbookState EDIT = fromString("Edit");
 
-    /** Static value Published for RunbookState. */
+    /**
+     * Static value Published for RunbookState.
+     */
     public static final RunbookState PUBLISHED = fromString("Published");
 
     /**
+     * Creates a new instance of RunbookState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RunbookState() {
+    }
+
+    /**
      * Creates or finds a RunbookState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RunbookState.
      */
-    @JsonCreator
     public static RunbookState fromString(String name) {
         return fromString(name, RunbookState.class);
     }
 
     /**
      * Gets known RunbookState values.
-     *
+     * 
      * @return known RunbookState values.
      */
     public static Collection<RunbookState> values() {

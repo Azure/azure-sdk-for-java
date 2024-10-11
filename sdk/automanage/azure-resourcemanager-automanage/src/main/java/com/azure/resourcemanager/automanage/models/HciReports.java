@@ -8,11 +8,30 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of HciReports. */
+/**
+ * Resource collection API of HciReports.
+ */
 public interface HciReports {
     /**
      * Get information about a report associated with a configuration profile assignment run.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @param configurationProfileAssignmentName The configuration profile assignment name.
+     * @param reportName The report name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a report associated with a configuration profile assignment run along with
+     * {@link Response}.
+     */
+    Response<Report> getWithResponse(String resourceGroupName, String clusterName,
+        String configurationProfileAssignmentName, String reportName, Context context);
+
+    /**
+     * Get information about a report associated with a configuration profile assignment run.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Arc machine.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
@@ -22,33 +41,12 @@ public interface HciReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a report associated with a configuration profile assignment run.
      */
-    Report get(
-        String resourceGroupName, String clusterName, String configurationProfileAssignmentName, String reportName);
-
-    /**
-     * Get information about a report associated with a configuration profile assignment run.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Arc machine.
-     * @param configurationProfileAssignmentName The configuration profile assignment name.
-     * @param reportName The report name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run along with {@link
-     *     Response}.
-     */
-    Response<Report> getWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String configurationProfileAssignmentName,
-        String reportName,
-        Context context);
+    Report get(String resourceGroupName, String clusterName, String configurationProfileAssignmentName,
+        String reportName);
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Arc machine.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
@@ -57,12 +55,12 @@ public interface HciReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Report> listByConfigurationProfileAssignments(
-        String resourceGroupName, String clusterName, String configurationProfileAssignmentName);
+    PagedIterable<Report> listByConfigurationProfileAssignments(String resourceGroupName, String clusterName,
+        String configurationProfileAssignmentName);
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Arc machine.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
@@ -72,6 +70,6 @@ public interface HciReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Report> listByConfigurationProfileAssignments(
-        String resourceGroupName, String clusterName, String configurationProfileAssignmentName, Context context);
+    PagedIterable<Report> listByConfigurationProfileAssignments(String resourceGroupName, String clusterName,
+        String configurationProfileAssignmentName, Context context);
 }

@@ -23,9 +23,10 @@ public final class IdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model = new Identity().withType(IdentityType.NONE).withUserAssignedIdentities(
-            mapOf("vmezy", new UserAssignedIdentity(), "oenkouknvudwti", new UserAssignedIdentity(), "npiucgygevqznty",
-                new UserAssignedIdentity(), "jzicwifsjt", new UserAssignedIdentity()));
+        Identity model = new Identity().withType(IdentityType.NONE)
+            .withUserAssignedIdentities(
+                mapOf("vmezy", new UserAssignedIdentity(), "oenkouknvudwti", new UserAssignedIdentity(),
+                    "npiucgygevqznty", new UserAssignedIdentity(), "jzicwifsjt", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals(IdentityType.NONE, model.type());
     }

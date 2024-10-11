@@ -20,9 +20,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * The ChainedTokenCredential is a convenience credential that allows users to chain together a set of TokenCredential
- * together. The credential executes each credential in the chain sequentially and returns the token from the first
- * credential in the chain that successfully authenticates.
+ * <p>ChainedTokenCredential allows you to chain together a set of TokenCredential instances. Each credential in the chain is attempted
+ * sequentially. The token from the first credential that successfully authenticates is returned. For more information, see
+ * <a href="https://aka.ms/azsdk/java/identity/credential-chains#chainedtokencredential-overview">ChainedTokenCredential overview</a>.</p>
  *
  * <p><strong>Sample: Construct a ChainedTokenCredential.</strong></p>
  *
@@ -34,17 +34,14 @@ import java.util.stream.Collectors;
  *
  * <!-- src_embed com.azure.identity.credential.chainedtokencredential.construct -->
  * <pre>
- * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;
- *     .clientId&#40;clientId&#41;
+ * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;.clientId&#40;clientId&#41;
  *     .username&#40;fakeUsernamePlaceholder&#41;
  *     .password&#40;fakePasswordPlaceholder&#41;
  *     .build&#40;&#41;;
- * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;
- *     .clientId&#40;clientId&#41;
+ * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.clientId&#40;clientId&#41;
  *     .port&#40;8765&#41;
  *     .build&#40;&#41;;
- * TokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;
- *     .addLast&#40;usernamePasswordCredential&#41;
+ * TokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;.addLast&#40;usernamePasswordCredential&#41;
  *     .addLast&#40;interactiveBrowserCredential&#41;
  *     .build&#40;&#41;;
  * </pre>

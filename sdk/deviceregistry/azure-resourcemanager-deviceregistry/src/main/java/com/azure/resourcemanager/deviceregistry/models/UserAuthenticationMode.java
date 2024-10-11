@@ -12,17 +12,17 @@ import java.util.Collection;
  */
 public final class UserAuthenticationMode extends ExpandableStringEnum<UserAuthenticationMode> {
     /**
-     * Static value Anonymous for UserAuthenticationMode.
+     * The user authentication mode is anonymous.
      */
     public static final UserAuthenticationMode ANONYMOUS = fromString("Anonymous");
 
     /**
-     * Static value Certificate for UserAuthenticationMode.
+     * The user authentication mode is an x509 certificate.
      */
     public static final UserAuthenticationMode CERTIFICATE = fromString("Certificate");
 
     /**
-     * Static value UsernamePassword for UserAuthenticationMode.
+     * The user authentication mode is a username and password.
      */
     public static final UserAuthenticationMode USERNAME_PASSWORD = fromString("UsernamePassword");
 

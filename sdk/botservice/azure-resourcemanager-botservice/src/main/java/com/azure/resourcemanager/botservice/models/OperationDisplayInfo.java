@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The operation supported by Bot Service Management. */
+/**
+ * The operation supported by Bot Service Management.
+ */
 @Fluent
-public final class OperationDisplayInfo {
+public final class OperationDisplayInfo implements JsonSerializable<OperationDisplayInfo> {
     /*
      * The description of the operation.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The action that users can perform, based on their permission level.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Service provider: Microsoft Bot Service.
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * Resource on which the operation is performed.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /**
+     * Creates an instance of OperationDisplayInfo class.
+     */
+    public OperationDisplayInfo() {
+    }
+
+    /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -45,7 +53,7 @@ public final class OperationDisplayInfo {
 
     /**
      * Set the description property: The description of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationDisplayInfo object itself.
      */
@@ -56,7 +64,7 @@ public final class OperationDisplayInfo {
 
     /**
      * Get the operation property: The action that users can perform, based on their permission level.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -65,7 +73,7 @@ public final class OperationDisplayInfo {
 
     /**
      * Set the operation property: The action that users can perform, based on their permission level.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationDisplayInfo object itself.
      */
@@ -76,7 +84,7 @@ public final class OperationDisplayInfo {
 
     /**
      * Get the provider property: Service provider: Microsoft Bot Service.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -85,7 +93,7 @@ public final class OperationDisplayInfo {
 
     /**
      * Set the provider property: Service provider: Microsoft Bot Service.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationDisplayInfo object itself.
      */
@@ -96,7 +104,7 @@ public final class OperationDisplayInfo {
 
     /**
      * Get the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -105,7 +113,7 @@ public final class OperationDisplayInfo {
 
     /**
      * Set the resource property: Resource on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationDisplayInfo object itself.
      */
@@ -116,9 +124,54 @@ public final class OperationDisplayInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDisplayInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDisplayInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationDisplayInfo.
+     */
+    public static OperationDisplayInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationDisplayInfo deserializedOperationDisplayInfo = new OperationDisplayInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedOperationDisplayInfo.description = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationDisplayInfo.operation = reader.getString();
+                } else if ("provider".equals(fieldName)) {
+                    deserializedOperationDisplayInfo.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationDisplayInfo.resource = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationDisplayInfo;
+        });
     }
 }

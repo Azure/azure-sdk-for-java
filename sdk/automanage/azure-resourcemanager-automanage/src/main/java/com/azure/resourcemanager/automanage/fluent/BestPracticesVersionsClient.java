@@ -11,24 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automanage.fluent.models.BestPracticeInner;
 
-/** An instance of this class provides access to all the operations defined in BestPracticesVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BestPracticesVersionsClient.
+ */
 public interface BestPracticesVersionsClient {
     /**
      * Get information about a Automanage best practice version.
-     *
-     * @param bestPracticeName The Automanage best practice name.
-     * @param versionName The Automanage best practice version name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a Automanage best practice version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BestPracticeInner get(String bestPracticeName, String versionName);
-
-    /**
-     * Get information about a Automanage best practice version.
-     *
+     * 
      * @param bestPracticeName The Automanage best practice name.
      * @param versionName The Automanage best practice version name.
      * @param context The context to associate with this operation.
@@ -41,8 +30,21 @@ public interface BestPracticesVersionsClient {
     Response<BestPracticeInner> getWithResponse(String bestPracticeName, String versionName, Context context);
 
     /**
+     * Get information about a Automanage best practice version.
+     * 
+     * @param bestPracticeName The Automanage best practice name.
+     * @param versionName The Automanage best practice version name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a Automanage best practice version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BestPracticeInner get(String bestPracticeName, String versionName);
+
+    /**
      * Retrieve a list of Automanage best practices versions.
-     *
+     * 
      * @param bestPracticeName The Automanage best practice name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +56,7 @@ public interface BestPracticesVersionsClient {
 
     /**
      * Retrieve a list of Automanage best practices versions.
-     *
+     * 
      * @param bestPracticeName The Automanage best practice name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

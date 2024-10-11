@@ -5,33 +5,34 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The results and errors from an execution of a pool autoscale formula.
  */
 @Fluent
-public final class AutoScaleRun {
+public final class AutoScaleRun implements JsonSerializable<AutoScaleRun> {
     /*
      * The time at which the autoscale formula was last evaluated.
      */
-    @JsonProperty(value = "evaluationTime", required = true)
     private OffsetDateTime evaluationTime;
 
     /*
-     * The final values of all variables used in the evaluation of the autoscale formula.
-     * 
      * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
      */
-    @JsonProperty(value = "results")
     private String results;
 
     /*
      * An error that occurred when autoscaling a pool.
      */
-    @JsonProperty(value = "error")
     private AutoScaleRunError error;
 
     /**
@@ -61,9 +62,8 @@ public final class AutoScaleRun {
     }
 
     /**
-     * Get the results property: The final values of all variables used in the evaluation of the autoscale formula.
-     * 
-     * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * Get the results property: Each variable value is returned in the form $variable=value, and variables are
+     * separated by semicolons.
      * 
      * @return the results value.
      */
@@ -72,9 +72,8 @@ public final class AutoScaleRun {
     }
 
     /**
-     * Set the results property: The final values of all variables used in the evaluation of the autoscale formula.
-     * 
-     * Each variable value is returned in the form $variable=value, and variables are separated by semicolons.
+     * Set the results property: Each variable value is returned in the form $variable=value, and variables are
+     * separated by semicolons.
      * 
      * @param results the results value to set.
      * @return the AutoScaleRun object itself.
@@ -111,8 +110,8 @@ public final class AutoScaleRun {
      */
     public void validate() {
         if (evaluationTime() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property evaluationTime in model AutoScaleRun"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property evaluationTime in model AutoScaleRun"));
         }
         if (error() != null) {
             error().validate();
@@ -120,4 +119,49 @@ public final class AutoScaleRun {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutoScaleRun.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("evaluationTime",
+            this.evaluationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.evaluationTime));
+        jsonWriter.writeStringField("results", this.results);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleRun from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleRun if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoScaleRun.
+     */
+    public static AutoScaleRun fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleRun deserializedAutoScaleRun = new AutoScaleRun();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("evaluationTime".equals(fieldName)) {
+                    deserializedAutoScaleRun.evaluationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("results".equals(fieldName)) {
+                    deserializedAutoScaleRun.results = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedAutoScaleRun.error = AutoScaleRunError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleRun;
+        });
+    }
 }

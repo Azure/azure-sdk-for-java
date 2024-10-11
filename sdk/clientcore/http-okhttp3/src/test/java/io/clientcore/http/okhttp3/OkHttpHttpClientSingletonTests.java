@@ -5,16 +5,13 @@ package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-@Execution(ExecutionMode.SAME_THREAD) // because singleton http client, it can avoid race condition.
 public class OkHttpHttpClientSingletonTests {
     @Test
-    public void testSingletonClientInstanceCreation() {
+    public void testGetSharedInstance() {
         HttpClient client1 = new OkHttpHttpClientProvider().getSharedInstance();
         HttpClient client2 = new OkHttpHttpClientProvider().getSharedInstance();
 
@@ -22,7 +19,7 @@ public class OkHttpHttpClientSingletonTests {
     }
 
     @Test
-    public void testNonDefaultClientInstanceCreation() {
+    public void testGetNewInstance() {
         HttpClient client1 = new OkHttpHttpClientProvider().getNewInstance();
         HttpClient client2 = new OkHttpHttpClientProvider().getNewInstance();
 

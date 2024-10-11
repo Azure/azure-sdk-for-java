@@ -4,20 +4,24 @@
 
 package com.azure.resourcemanager.alertsmanagement.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AlertProcessingRules Delete. */
+/**
+ * Samples for AlertProcessingRules Delete.
+ */
 public final class AlertProcessingRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/stable/2021-08-08/examples/AlertProcessingRules_Delete.json
+     * x-ms-original-file:
+     * specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/stable/2021-08-08/examples/
+     * AlertProcessingRules_Delete.json
      */
     /**
      * Sample code: DeleteAlertProcessingRule.
-     *
+     * 
      * @param manager Entry point to AlertsManagementManager.
      */
-    public static void deleteAlertProcessingRule(
-        com.azure.resourcemanager.alertsmanagement.AlertsManagementManager manager) {
-        manager.alertProcessingRules().deleteWithResponse("alertscorrelationrg", "DailySuppression", Context.NONE);
+    public static void
+        deleteAlertProcessingRule(com.azure.resourcemanager.alertsmanagement.AlertsManagementManager manager) {
+        manager.alertProcessingRules()
+            .deleteByResourceGroupWithResponse("alertscorrelationrg", "DailySuppression",
+                com.azure.core.util.Context.NONE);
     }
 }

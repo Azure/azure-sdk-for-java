@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.edgeorder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.models.Preferences;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Order item update properties. */
+/**
+ * Order item update properties.
+ */
 @Fluent
-public final class OrderItemUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderItemUpdateProperties.class);
-
+public final class OrderItemUpdateProperties implements JsonSerializable<OrderItemUpdateProperties> {
     /*
      * Updates forward shipping address and contact details.
      */
-    @JsonProperty(value = "forwardAddress")
     private AddressProperties forwardAddress;
 
     /*
      * Customer preference.
      */
-    @JsonProperty(value = "preferences")
     private Preferences preferences;
 
     /*
      * Additional notification email list.
      */
-    @JsonProperty(value = "notificationEmailList")
     private List<String> notificationEmailList;
 
     /**
+     * Creates an instance of OrderItemUpdateProperties class.
+     */
+    public OrderItemUpdateProperties() {
+    }
+
+    /**
      * Get the forwardAddress property: Updates forward shipping address and contact details.
-     *
+     * 
      * @return the forwardAddress value.
      */
     public AddressProperties forwardAddress() {
@@ -45,7 +50,7 @@ public final class OrderItemUpdateProperties {
 
     /**
      * Set the forwardAddress property: Updates forward shipping address and contact details.
-     *
+     * 
      * @param forwardAddress the forwardAddress value to set.
      * @return the OrderItemUpdateProperties object itself.
      */
@@ -56,7 +61,7 @@ public final class OrderItemUpdateProperties {
 
     /**
      * Get the preferences property: Customer preference.
-     *
+     * 
      * @return the preferences value.
      */
     public Preferences preferences() {
@@ -65,7 +70,7 @@ public final class OrderItemUpdateProperties {
 
     /**
      * Set the preferences property: Customer preference.
-     *
+     * 
      * @param preferences the preferences value to set.
      * @return the OrderItemUpdateProperties object itself.
      */
@@ -76,7 +81,7 @@ public final class OrderItemUpdateProperties {
 
     /**
      * Get the notificationEmailList property: Additional notification email list.
-     *
+     * 
      * @return the notificationEmailList value.
      */
     public List<String> notificationEmailList() {
@@ -85,7 +90,7 @@ public final class OrderItemUpdateProperties {
 
     /**
      * Set the notificationEmailList property: Additional notification email list.
-     *
+     * 
      * @param notificationEmailList the notificationEmailList value to set.
      * @return the OrderItemUpdateProperties object itself.
      */
@@ -96,7 +101,7 @@ public final class OrderItemUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -106,5 +111,49 @@ public final class OrderItemUpdateProperties {
         if (preferences() != null) {
             preferences().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("forwardAddress", this.forwardAddress);
+        jsonWriter.writeJsonField("preferences", this.preferences);
+        jsonWriter.writeArrayField("notificationEmailList", this.notificationEmailList,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderItemUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderItemUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrderItemUpdateProperties.
+     */
+    public static OrderItemUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderItemUpdateProperties deserializedOrderItemUpdateProperties = new OrderItemUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("forwardAddress".equals(fieldName)) {
+                    deserializedOrderItemUpdateProperties.forwardAddress = AddressProperties.fromJson(reader);
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedOrderItemUpdateProperties.preferences = Preferences.fromJson(reader);
+                } else if ("notificationEmailList".equals(fieldName)) {
+                    List<String> notificationEmailList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOrderItemUpdateProperties.notificationEmailList = notificationEmailList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderItemUpdateProperties;
+        });
     }
 }

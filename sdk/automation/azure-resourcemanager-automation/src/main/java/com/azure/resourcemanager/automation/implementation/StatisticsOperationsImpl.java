@@ -19,23 +19,23 @@ public final class StatisticsOperationsImpl implements StatisticsOperations {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public StatisticsOperationsImpl(
-        StatisticsOperationsClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public StatisticsOperationsImpl(StatisticsOperationsClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Statistics> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<StatisticsInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new StatisticsImpl(inner1, this.manager()));
+        PagedIterable<StatisticsInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StatisticsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Statistics> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
-        PagedIterable<StatisticsInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new StatisticsImpl(inner1, this.manager()));
+    public PagedIterable<Statistics> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context) {
+        PagedIterable<StatisticsInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StatisticsImpl(inner1, this.manager()));
     }
 
     private StatisticsOperationsClient serviceClient() {

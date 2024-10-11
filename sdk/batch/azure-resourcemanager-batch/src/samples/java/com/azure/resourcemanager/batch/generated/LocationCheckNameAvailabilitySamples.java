@@ -11,7 +11,7 @@ import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
  */
 public final class LocationCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/
      * LocationCheckNameAvailability_AlreadyExists.json
      */
     /**
@@ -21,12 +21,14 @@ public final class LocationCheckNameAvailabilitySamples {
      */
     public static void
         locationCheckNameAvailabilityAlreadyExists(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.locations().checkNameAvailabilityWithResponse("japaneast",
-            new CheckNameAvailabilityParameters().withName("existingaccountname"), com.azure.core.util.Context.NONE);
+        manager.locations()
+            .checkNameAvailabilityWithResponse("japaneast",
+                new CheckNameAvailabilityParameters().withName("existingaccountname"),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/
+     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/
      * LocationCheckNameAvailability_Available.json
      */
     /**
@@ -35,7 +37,8 @@ public final class LocationCheckNameAvailabilitySamples {
      * @param manager Entry point to BatchManager.
      */
     public static void locationCheckNameAvailabilityAvailable(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.locations().checkNameAvailabilityWithResponse("japaneast",
-            new CheckNameAvailabilityParameters().withName("newaccountname"), com.azure.core.util.Context.NONE);
+        manager.locations()
+            .checkNameAvailabilityWithResponse("japaneast",
+                new CheckNameAvailabilityParameters().withName("newaccountname"), com.azure.core.util.Context.NONE);
     }
 }

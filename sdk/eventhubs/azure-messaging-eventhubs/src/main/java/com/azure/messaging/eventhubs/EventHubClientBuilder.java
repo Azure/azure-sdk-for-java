@@ -986,9 +986,7 @@ public class EventHubClientBuilder implements
             prefetchCount = DEFAULT_PREFETCH_COUNT;
         }
 
-        final Meter meter = MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
-            clientOptions == null ? null : clientOptions.getMetricsOptions());
-
+        final Meter meter = createMeter();
         final MessageSerializer messageSerializer = new EventHubMessageSerializer();
 
         final ConnectionCacheWrapper processor;
@@ -1089,6 +1087,11 @@ public class EventHubClientBuilder implements
     Tracer createTracer() {
         return TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
             AZ_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
+    }
+
+    Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+            clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {

@@ -12,8 +12,8 @@ public final class HostSettingsResponseImpl implements HostSettingsResponse {
 
     private final com.azure.resourcemanager.botservice.BotServiceManager serviceManager;
 
-    HostSettingsResponseImpl(
-        HostSettingsResponseInner innerObject, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
+    HostSettingsResponseImpl(HostSettingsResponseInner innerObject,
+        com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

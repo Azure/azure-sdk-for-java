@@ -23,7 +23,8 @@ public final class ElasticSanUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ElasticSanUpdateProperties model = new ElasticSanUpdateProperties().withBaseSizeTiB(8963352586461588270L)
-            .withExtendedCapacitySizeTiB(5681518543466823728L).withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+            .withExtendedCapacitySizeTiB(5681518543466823728L)
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdateProperties.class);
         Assertions.assertEquals(8963352586461588270L, model.baseSizeTiB());
         Assertions.assertEquals(5681518543466823728L, model.extendedCapacitySizeTiB());

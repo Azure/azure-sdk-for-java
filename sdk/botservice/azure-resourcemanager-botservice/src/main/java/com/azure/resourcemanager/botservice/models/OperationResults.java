@@ -6,11 +6,13 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of OperationResults. */
+/**
+ * Resource collection API of OperationResults.
+ */
 public interface OperationResults {
     /**
      * Get the operation result for a long running operation.
-     *
+     * 
      * @param operationResultId The ID of the operation result to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -21,7 +23,7 @@ public interface OperationResults {
 
     /**
      * Get the operation result for a long running operation.
-     *
+     * 
      * @param operationResultId The ID of the operation result to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

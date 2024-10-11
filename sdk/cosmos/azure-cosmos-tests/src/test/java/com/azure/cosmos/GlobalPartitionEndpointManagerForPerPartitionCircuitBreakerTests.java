@@ -912,6 +912,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
         request.setResourceId(collectionResourceId);
 
         request.requestContext.resolvedPartitionKeyRange = new PartitionKeyRange(partitionKeyRangeId, minInclusive, maxExclusive);
+        request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRange;
         request.requestContext.locationEndpointToRoute = locationEndpointToRoute;
         request.requestContext.setExcludeRegions(Collections.emptyList());
         request.requestContext.setPointOperationContext(

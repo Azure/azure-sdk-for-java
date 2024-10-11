@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.13.1</version>
+    <version>1.13.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -81,21 +81,7 @@ See [Credential classes](#credential-classes) for a complete list of available c
 
 ### DefaultAzureCredential
 
-`DefaultAzureCredential` is appropriate for most scenarios where the application is intended to ultimately be run in Azure. This is because `DefaultAzureCredential` combines credentials commonly used to authenticate when deployed, with credentials used to authenticate in a development environment.
-
-> Note: `DefaultAzureCredential` is intended to simplify getting started with the SDK by handling common scenarios with reasonable default behaviors. Developers who want more control or whose scenario isn't served by the default settings should use other credential types.
-
-`DefaultAzureCredential` attempts to authenticate via the following mechanisms in order:
-
-![DefaultAzureCredential authentication flow](images/mermaidjs/DefaultAzureCredentialAuthFlow.svg)
-
-1. **Environment** - `DefaultAzureCredential` reads account information specified via [environment variables](#environment-variables) and uses it to authenticate.
-2. **Workload Identity** - If the app is deployed on Kubernetes with environment variables set by the workload identity webhook, `DefaultAzureCredential` authenticates the configured identity.
-3. **Managed Identity** - If the app is deployed to an Azure host with Managed Identity enabled, `DefaultAzureCredential` authenticates with that account.
-4. **Azure Developer CLI** - If the developer authenticated an account via the Azure Developer CLI `azd auth login` command, `DefaultAzureCredential` authenticates with that account.
-5. **IntelliJ** - If the developer authenticated via Azure Toolkit for IntelliJ, `DefaultAzureCredential` authenticates with that account.
-6. **Azure CLI** - If the developer authenticated an account via the Azure CLI `az login` command, `DefaultAzureCredential` authenticates with that account.
-7. **Azure PowerShell** - If the developer authenticated an account via the Azure PowerShell `Connect-AzAccount` command, `DefaultAzureCredential` authenticates with that account.
+`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview][dac_overview].
 
 #### Continuation policy
 
@@ -130,8 +116,6 @@ public void createDefaultAzureCredential() {
         .buildClient();
 }
 ```
-
-For more information on configuring `DefaultAzureCredential` for your workstation or Azure, see [Configure DefaultAzureCredential](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#default-azure-credential).
 
 ### Authenticate a user-assigned managed identity with `DefaultAzureCredential`
 
@@ -226,6 +210,34 @@ public void createManagedIdentityCredential() {
 ```
 
 ```java
+public void createManagedIdentityCredentialWithResourceId() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .resourceId("/subscriptions/<subscriptionID>/resourcegroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<MI name>") // only required for user-assigned
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
+```java
+public void createManagedIdentityCredentialWithObjectId() {
+    ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+        .objectId("<USER-ASSIGNED MANAGED IDENTITY OBJECT ID>") // only required for user-assigned
+        .build();
+
+    // Azure SDK client builders accept the credential as a parameter
+    SecretClient client = new SecretClientBuilder()
+        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+        .credential(managedIdentityCredential)
+        .buildClient();
+}
+```
+
+```java
 /**
  * Authenticate with a system-assigned managed identity.
  */
@@ -243,30 +255,7 @@ public void createManagedIdentityCredential() {
 
 ### Define a custom authentication flow with `ChainedTokenCredential`
 
-While `DefaultAzureCredential` is generally the quickest way to get started developing apps for Azure, more advanced users may want to customize the credentials considered when authenticating. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. This example demonstrates creating a `ChainedTokenCredential`, which will:
-
-- Attempt to authenticate using managed identity.
-- Fall back to authenticating via the Azure CLI if managed identity is unavailable in the current environment.
-
-```java
-// Authenticate using managed identity if it's available; otherwise use the Azure CLI to authenticate.
-
-ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
-    .build();
-AzureCliCredential cliCredential = new AzureCliCredentialBuilder()
-    .build();
-
-ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
-    .addLast(managedIdentityCredential)
-    .addLast(cliCredential)
-    .build();
-
-// Azure SDK client builders accept the credential as a parameter
-SecretClient client = new SecretClientBuilder()
-    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-    .credential(credential)
-    .buildClient();
-```
+While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
 
 ## Sovereign cloud configuration
 
@@ -463,6 +452,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cred_wic]: https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable
 [cred_wic_example]: https://learn.microsoft.com/azure/aks/workload-identity-overview?tabs=java#azure-identity-client-libraries
 [cred_wic_ref]: https://learn.microsoft.com/azure/aks/workload-identity-overview
+[ctc_overview]: https://aka.ms/azsdk/java/identity/credential-chains#chainedtokencredential-overview
+[dac_overview]: https://aka.ms/azsdk/java/identity/credential-chains#defaultazurecredential-overview
 [entraid_doc]: https://learn.microsoft.com/entra/identity/
 [javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable

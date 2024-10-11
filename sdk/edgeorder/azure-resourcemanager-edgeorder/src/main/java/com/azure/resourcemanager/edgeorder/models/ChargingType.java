@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ChargingType. */
+/**
+ * Charging type.
+ */
 public final class ChargingType extends ExpandableStringEnum<ChargingType> {
-    /** Static value PerOrder for ChargingType. */
+    /**
+     * Static value PerOrder for ChargingType.
+     */
     public static final ChargingType PER_ORDER = fromString("PerOrder");
 
-    /** Static value PerDevice for ChargingType. */
+    /**
+     * Static value PerDevice for ChargingType.
+     */
     public static final ChargingType PER_DEVICE = fromString("PerDevice");
 
     /**
+     * Creates a new instance of ChargingType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChargingType() {
+    }
+
+    /**
      * Creates or finds a ChargingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ChargingType.
      */
-    @JsonCreator
     public static ChargingType fromString(String name) {
         return fromString(name, ChargingType.class);
     }
 
-    /** @return known ChargingType values. */
+    /**
+     * Gets known ChargingType values.
+     * 
+     * @return known ChargingType values.
+     */
     public static Collection<ChargingType> values() {
         return values(ChargingType.class);
     }

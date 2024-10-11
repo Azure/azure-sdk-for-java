@@ -91,6 +91,8 @@ public final class Constants {
     public static final String SAS_SERVICE_VERSION = Configuration.getGlobalConfiguration()
         .get(PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2024-11-04");
 
+    public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
+
     private Constants() {
     }
 

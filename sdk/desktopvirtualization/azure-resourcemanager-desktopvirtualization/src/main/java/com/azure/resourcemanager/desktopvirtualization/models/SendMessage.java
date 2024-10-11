@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents message sent to a UserSession. */
+/**
+ * Represents message sent to a UserSession.
+ */
 @Fluent
-public final class SendMessage {
+public final class SendMessage implements JsonSerializable<SendMessage> {
     /*
      * Title of message.
      */
-    @JsonProperty(value = "messageTitle")
     private String messageTitle;
 
     /*
      * Body of message.
      */
-    @JsonProperty(value = "messageBody")
     private String messageBody;
 
-    /** Creates an instance of SendMessage class. */
+    /**
+     * Creates an instance of SendMessage class.
+     */
     public SendMessage() {
     }
 
     /**
      * Get the messageTitle property: Title of message.
-     *
+     * 
      * @return the messageTitle value.
      */
     public String messageTitle() {
@@ -37,7 +43,7 @@ public final class SendMessage {
 
     /**
      * Set the messageTitle property: Title of message.
-     *
+     * 
      * @param messageTitle the messageTitle value to set.
      * @return the SendMessage object itself.
      */
@@ -48,7 +54,7 @@ public final class SendMessage {
 
     /**
      * Get the messageBody property: Body of message.
-     *
+     * 
      * @return the messageBody value.
      */
     public String messageBody() {
@@ -57,7 +63,7 @@ public final class SendMessage {
 
     /**
      * Set the messageBody property: Body of message.
-     *
+     * 
      * @param messageBody the messageBody value to set.
      * @return the SendMessage object itself.
      */
@@ -68,9 +74,48 @@ public final class SendMessage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageTitle", this.messageTitle);
+        jsonWriter.writeStringField("messageBody", this.messageBody);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SendMessage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SendMessage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SendMessage.
+     */
+    public static SendMessage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SendMessage deserializedSendMessage = new SendMessage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageTitle".equals(fieldName)) {
+                    deserializedSendMessage.messageTitle = reader.getString();
+                } else if ("messageBody".equals(fieldName)) {
+                    deserializedSendMessage.messageBody = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSendMessage;
+        });
     }
 }

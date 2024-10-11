@@ -21,10 +21,22 @@ public final class PrivateLinksImpl implements PrivateLinks {
 
     private final com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager;
 
-    public PrivateLinksImpl(
-        PrivateLinksClient innerClient, com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager) {
+    public PrivateLinksImpl(PrivateLinksClient innerClient,
+        com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String resourceName, String groupId,
+        Context context) {
+        Response<PrivateLinkResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateLinkResource get(String resourceGroupName, String resourceName, String groupId) {
@@ -36,30 +48,15 @@ public final class PrivateLinksImpl implements PrivateLinks {
         }
     }
 
-    public Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String resourceName, String groupId, Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, groupId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName) {
         PagedIterable<PrivateLinkResourceInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
     private PrivateLinksClient serviceClient() {

@@ -5,46 +5,53 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.UsageName;
 import com.azure.resourcemanager.labservices.models.UsageUnit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The core usage details. */
+/**
+ * The core usage details.
+ */
 @Fluent
-public final class UsageInner {
+public final class UsageInner implements JsonSerializable<UsageInner> {
     /*
      * The current usage.
      */
-    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /*
      * The limit integer.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * The unit details.
      */
-    @JsonProperty(value = "unit")
     private UsageUnit unit;
 
     /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private UsageName name;
 
     /*
      * The fully qualified arm resource id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /**
+     * Creates an instance of UsageInner class.
+     */
+    public UsageInner() {
+    }
+
+    /**
      * Get the currentValue property: The current usage.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -53,7 +60,7 @@ public final class UsageInner {
 
     /**
      * Set the currentValue property: The current usage.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UsageInner object itself.
      */
@@ -64,7 +71,7 @@ public final class UsageInner {
 
     /**
      * Get the limit property: The limit integer.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -73,7 +80,7 @@ public final class UsageInner {
 
     /**
      * Set the limit property: The limit integer.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UsageInner object itself.
      */
@@ -84,7 +91,7 @@ public final class UsageInner {
 
     /**
      * Get the unit property: The unit details.
-     *
+     * 
      * @return the unit value.
      */
     public UsageUnit unit() {
@@ -93,7 +100,7 @@ public final class UsageInner {
 
     /**
      * Set the unit property: The unit details.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the UsageInner object itself.
      */
@@ -104,7 +111,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public UsageName name() {
@@ -113,7 +120,7 @@ public final class UsageInner {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the UsageInner object itself.
      */
@@ -124,7 +131,7 @@ public final class UsageInner {
 
     /**
      * Get the id property: The fully qualified arm resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -133,7 +140,7 @@ public final class UsageInner {
 
     /**
      * Set the id property: The fully qualified arm resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the UsageInner object itself.
      */
@@ -144,12 +151,60 @@ public final class UsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the UsageInner.
+     */
+    public static UsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageInner deserializedUsageInner = new UsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentValue".equals(fieldName)) {
+                    deserializedUsageInner.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsageInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedUsageInner.unit = UsageUnit.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsageInner.name = UsageName.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedUsageInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageInner;
+        });
     }
 }

@@ -5,36 +5,43 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The JobCreateProperties model. */
+/**
+ * The JobCreateProperties model.
+ */
 @Fluent
-public final class JobCreateProperties {
+public final class JobCreateProperties implements JsonSerializable<JobCreateProperties> {
     /*
      * Gets or sets the runbook.
      */
-    @JsonProperty(value = "runbook")
     private RunbookAssociationProperty runbook;
 
     /*
      * Gets or sets the parameters of the job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Gets or sets the runOn which specifies the group name where the job is to be executed.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /**
+     * Creates an instance of JobCreateProperties class.
+     */
+    public JobCreateProperties() {
+    }
+
+    /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -43,7 +50,7 @@ public final class JobCreateProperties {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the JobCreateProperties object itself.
      */
@@ -54,7 +61,7 @@ public final class JobCreateProperties {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -63,7 +70,7 @@ public final class JobCreateProperties {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the JobCreateProperties object itself.
      */
@@ -74,7 +81,7 @@ public final class JobCreateProperties {
 
     /**
      * Get the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -83,7 +90,7 @@ public final class JobCreateProperties {
 
     /**
      * Set the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the JobCreateProperties object itself.
      */
@@ -94,12 +101,55 @@ public final class JobCreateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (runbook() != null) {
             runbook().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("runbook", this.runbook);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("runOn", this.runOn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobCreateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobCreateProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobCreateProperties.
+     */
+    public static JobCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobCreateProperties deserializedJobCreateProperties = new JobCreateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("runbook".equals(fieldName)) {
+                    deserializedJobCreateProperties.runbook = RunbookAssociationProperty.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobCreateProperties.parameters = parameters;
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedJobCreateProperties.runOn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobCreateProperties;
+        });
     }
 }

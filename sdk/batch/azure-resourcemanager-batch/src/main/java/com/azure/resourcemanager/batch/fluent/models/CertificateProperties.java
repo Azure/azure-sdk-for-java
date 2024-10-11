@@ -5,11 +5,15 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.models.CertificateBaseProperties;
 import com.azure.resourcemanager.batch.models.CertificateFormat;
 import com.azure.resourcemanager.batch.models.CertificateProvisioningState;
 import com.azure.resourcemanager.batch.models.DeleteCertificateError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -20,37 +24,31 @@ public final class CertificateProperties extends CertificateBaseProperties {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioningState provisioningState;
 
     /*
      * The time at which the certificate entered its current state.
      */
-    @JsonProperty(value = "provisioningStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime provisioningStateTransitionTime;
 
     /*
      * The previous provisioned state of the resource
      */
-    @JsonProperty(value = "previousProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateProvisioningState previousProvisioningState;
 
     /*
      * The time at which the certificate entered its previous state.
      */
-    @JsonProperty(value = "previousProvisioningStateTransitionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime previousProvisioningStateTransitionTime;
 
     /*
      * The public key of the certificate.
      */
-    @JsonProperty(value = "publicData", access = JsonProperty.Access.WRITE_ONLY)
     private String publicData;
 
     /*
      * This is only returned when the certificate provisioningState is 'Failed'.
      */
-    @JsonProperty(value = "deleteCertificateError", access = JsonProperty.Access.WRITE_ONLY)
     private DeleteCertificateError deleteCertificateError;
 
     /**
@@ -149,9 +147,66 @@ public final class CertificateProperties extends CertificateBaseProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (deleteCertificateError() != null) {
             deleteCertificateError().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thumbprintAlgorithm", thumbprintAlgorithm());
+        jsonWriter.writeStringField("thumbprint", thumbprint());
+        jsonWriter.writeStringField("format", format() == null ? null : format().toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateProperties.
+     */
+    public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateProperties deserializedCertificateProperties = new CertificateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprintAlgorithm".equals(fieldName)) {
+                    deserializedCertificateProperties.withThumbprintAlgorithm(reader.getString());
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateProperties.withThumbprint(reader.getString());
+                } else if ("format".equals(fieldName)) {
+                    deserializedCertificateProperties.withFormat(CertificateFormat.fromString(reader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCertificateProperties.provisioningState
+                        = CertificateProvisioningState.fromString(reader.getString());
+                } else if ("provisioningStateTransitionTime".equals(fieldName)) {
+                    deserializedCertificateProperties.provisioningStateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("previousProvisioningState".equals(fieldName)) {
+                    deserializedCertificateProperties.previousProvisioningState
+                        = CertificateProvisioningState.fromString(reader.getString());
+                } else if ("previousProvisioningStateTransitionTime".equals(fieldName)) {
+                    deserializedCertificateProperties.previousProvisioningStateTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("publicData".equals(fieldName)) {
+                    deserializedCertificateProperties.publicData = reader.getString();
+                } else if ("deleteCertificateError".equals(fieldName)) {
+                    deserializedCertificateProperties.deleteCertificateError = DeleteCertificateError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateProperties;
+        });
     }
 }

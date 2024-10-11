@@ -6,18 +6,15 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.ElasticSan;
 import com.azure.resourcemanager.elasticsan.models.PublicNetworkAccess;
 import com.azure.resourcemanager.elasticsan.models.Sku;
 import com.azure.resourcemanager.elasticsan.models.SkuName;
 import com.azure.resourcemanager.elasticsan.models.SkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -25,42 +22,32 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ElasticSansCreateMockTests {
     @Test
     public void testCreate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"properties\":{\"sku\":{\"name\":\"Premium_LRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"nayrhyrnxxmueedn\"],\"provisioningState\":\"Succeeded\",\"baseSizeTiB\":199665361160492882,\"extendedCapacitySizeTiB\":3509094090426959627,\"totalVolumeSizeGiB\":5152017214547708245,\"volumeGroupCount\":4376097280926060724,\"totalIops\":2777563543070243433,\"totalMBps\":6465025791585269802,\"totalSizeTiB\":643354499607232618,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gpiohgwxrtfudxe\",\"xg\",\"qagvrvm\"]},\"id\":\"k\",\"name\":\"kghimdblxgwimfnj\",\"type\":\"fjxwmsz\"},{\"properties\":{\"provisioningState\":\"Creating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"eyfkzikfja\"]},\"id\":\"eaivxwczel\",\"name\":\"c\",\"type\":\"r\"}],\"publicNetworkAccess\":\"Disabled\"},\"location\":\"eae\",\"tags\":{\"an\":\"bfatklddxbjhwu\",\"youlp\":\"zjosp\"},\"id\":\"rvxaglrvimjwosy\",\"name\":\"xitc\",\"type\":\"kfcktqum\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ElasticSanManager manager = ElasticSanManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ElasticSan response
-            = manager.elasticSans().define("ox").withRegion("oocrkvcikhnv").withExistingResourceGroup("yzrpzbchckqqzq")
-                .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
-                .withBaseSizeTiB(2524267370563779328L).withExtendedCapacitySizeTiB(287834891121165780L)
-                .withTags(mapOf("gxk", "qgxqquezikyw")).withAvailabilityZones(Arrays.asList("zynkedya"))
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED).create();
+        ElasticSan response = manager.elasticSans()
+            .define("ox")
+            .withRegion("oocrkvcikhnv")
+            .withExistingResourceGroup("yzrpzbchckqqzq")
+            .withSku(new Sku().withName(SkuName.PREMIUM_ZRS).withTier(SkuTier.PREMIUM))
+            .withBaseSizeTiB(2524267370563779328L)
+            .withExtendedCapacitySizeTiB(287834891121165780L)
+            .withTags(mapOf("gxk", "qgxqquezikyw"))
+            .withAvailabilityZones(Arrays.asList("zynkedya"))
+            .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+            .create();
 
         Assertions.assertEquals("eae", response.location());
         Assertions.assertEquals("bfatklddxbjhwu", response.tags().get("an"));

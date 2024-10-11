@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class PublicIPAddressSkuTier extends ExpandableStringEnum<PublicIPAddressSkuTier> {
     /**
-     * Static value Regional for PublicIPAddressSkuTier.
+     * Regional sku tier.
      */
     public static final PublicIPAddressSkuTier REGIONAL = fromString("Regional");
 
     /**
-     * Static value Global for PublicIPAddressSkuTier.
+     * Global sku tier.
      */
     public static final PublicIPAddressSkuTier GLOBAL = fromString("Global");
 

@@ -4,36 +4,40 @@
 
 package com.azure.resourcemanager.dnsresolver.generated;
 
+import com.azure.core.management.SubResource;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkInner;
 import com.azure.resourcemanager.dnsresolver.models.VirtualNetworkLinkListResult;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public final class VirtualNetworkLinkListResultTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkLinkListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"etag\":\"shwankixzbinje\",\"properties\":{\"metadata\":{},\"provisioningState\":\"Updating\"},\"id\":\"rywn\",\"name\":\"zoqftiyqzrnkcqvy\",\"type\":\"lwh\"},{\"etag\":\"sicohoqqnwvlry\",\"properties\":{\"metadata\":{},\"provisioningState\":\"Creating\"},\"id\":\"eun\",\"name\":\"mqhgyxzkonocuk\",\"type\":\"klyaxuconu\"}],\"nextLink\":\"zf\"}")
-                .toObject(VirtualNetworkLinkListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkLinkListResult model = BinaryData.fromString(
+            "{\"value\":[{\"etag\":\"ec\",\"properties\":{\"virtualNetwork\":{\"id\":\"odebfqkkrbmpu\"},\"metadata\":{\"lzlfbxzpuz\":\"iw\",\"yydhibnuqqk\":\"cispnqzahmgkbr\",\"drgvtqagn\":\"ik\"},\"provisioningState\":\"Deleting\"},\"id\":\"hijggme\",\"name\":\"fsiarbutr\",\"type\":\"vpnazzm\"},{\"etag\":\"runmp\",\"properties\":{\"virtualNetwork\":{\"id\":\"tdbhrbnla\"},\"metadata\":{\"ny\":\"myskpbhenbtkcxy\",\"nlqidybyxczf\":\"nrs\"},\"provisioningState\":\"Updating\"},\"id\":\"axdbabph\",\"name\":\"wrqlfktsthsuco\",\"type\":\"mnyyazt\"},{\"etag\":\"twwrqp\",\"properties\":{\"virtualNetwork\":{\"id\":\"dckzywbiexz\"},\"metadata\":{\"xibxujwbhqwalm\":\"ue\",\"ux\":\"zyoxaepdkzjan\",\"zt\":\"hdwbavxbniwdjs\"},\"provisioningState\":\"Succeeded\"},\"id\":\"gnxytxhpzxbz\",\"name\":\"fzab\",\"type\":\"lcuhxwtctyqiklb\"}],\"nextLink\":\"vplwzbhv\"}")
+            .toObject(VirtualNetworkLinkListResult.class);
+        Assertions.assertEquals("odebfqkkrbmpu", model.value().get(0).virtualNetwork().id());
+        Assertions.assertEquals("iw", model.value().get(0).metadata().get("lzlfbxzpuz"));
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkLinkListResult model =
-            new VirtualNetworkLinkListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new VirtualNetworkLinkInner().withMetadata(mapOf()),
-                            new VirtualNetworkLinkInner().withMetadata(mapOf())));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkLinkListResult model = new VirtualNetworkLinkListResult().withValue(Arrays.asList(
+            new VirtualNetworkLinkInner().withVirtualNetwork(new SubResource().withId("odebfqkkrbmpu"))
+                .withMetadata(mapOf("lzlfbxzpuz", "iw", "yydhibnuqqk", "cispnqzahmgkbr", "drgvtqagn", "ik")),
+            new VirtualNetworkLinkInner().withVirtualNetwork(new SubResource().withId("tdbhrbnla"))
+                .withMetadata(mapOf("ny", "myskpbhenbtkcxy", "nlqidybyxczf", "nrs")),
+            new VirtualNetworkLinkInner().withVirtualNetwork(new SubResource().withId("dckzywbiexz"))
+                .withMetadata(mapOf("xibxujwbhqwalm", "ue", "ux", "zyoxaepdkzjan", "zt", "hdwbavxbniwdjs"))));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkLinkListResult.class);
+        Assertions.assertEquals("odebfqkkrbmpu", model.value().get(0).virtualNetwork().id());
+        Assertions.assertEquals("iw", model.value().get(0).metadata().get("lzlfbxzpuz"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

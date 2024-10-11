@@ -41,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     returnValueWireType = String.class&#41;
  * String getValue&#40;&#64;PathParam&#40;&quot;subpath&quot;&#41; String param1&#41;;
  *
- * &#47;&#47; In this case, if consumer pass &quot;a&#47;b&quot; as the value for param1 then the resolved url looks like:
+ * &#47;&#47; In this case, if consumer pass &quot;a&#47;b&quot; as the value for param1 then the resolved uri looks like:
  * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;a%2Fb&#47;value&quot;.
  * </pre>
  * <!-- end io.clientcore.core.annotation.http.PathParam.class2 -->
@@ -54,7 +54,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *     returnValueWireType = String.class&#41;
  * List&lt;String&gt; getValues&#40;&#64;PathParam&#40;value = &quot;subpath&quot;, encoded = true&#41; String param1&#41;;
  *
- * &#47;&#47; In this case, if consumer pass &quot;a&#47;b&quot; as the value for param1 then the resolved url looks as expected:
+ * &#47;&#47; In this case, if consumer pass &quot;a&#47;b&quot; as the value for param1 then the resolved uri looks as expected:
  * &#47;&#47; &quot;http:&#47;&#47;wq.com&#47;foo&#47;a&#47;b&#47;values&quot;.
  * </pre>
  * <!-- end io.clientcore.core.annotation.http.PathParam.class3 -->

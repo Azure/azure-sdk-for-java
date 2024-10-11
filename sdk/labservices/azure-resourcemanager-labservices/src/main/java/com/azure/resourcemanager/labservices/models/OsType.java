@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The operating system type. */
+/**
+ * The operating system type.
+ */
 public enum OsType {
-    /** Enum value Windows. */
+    /**
+     * Enum value Windows.
+     */
     WINDOWS("Windows"),
 
-    /** Enum value Linux. */
+    /**
+     * Enum value Linux.
+     */
     LINUX("Linux");
 
-    /** The actual serialized value for a OsType instance. */
+    /**
+     * The actual serialized value for a OsType instance.
+     */
     private final String value;
 
     OsType(String value) {
@@ -24,11 +29,10 @@ public enum OsType {
 
     /**
      * Parses a serialized value to a OsType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OsType object, or null if unable to parse.
      */
-    @JsonCreator
     public static OsType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum OsType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

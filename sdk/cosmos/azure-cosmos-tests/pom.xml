@@ -36,7 +36,7 @@ Licensed under the MIT License.
     <revapi.skip>true</revapi.skip>
 
     <!-- TODO: Remove this once all Javadoc warnings and errors are resolved -->
-    <doclint>all,-missing</doclint>
+    <doclintMissingInclusion>-</doclintMissingInclusion>
     <!-- Prevents Checkstyle validating test source files. -->
     <checkstyle.includeTestSourceDirectory>false</checkstyle.includeTestSourceDirectory>
     <cosmos.test.e2e.skip>false</cosmos.test.e2e.skip>
@@ -99,7 +99,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.64.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.64.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -150,7 +150,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.13.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

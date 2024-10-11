@@ -6,36 +6,43 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ConnectionTypeAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The properties of the create connection properties. */
+/**
+ * The properties of the create connection properties.
+ */
 @Fluent
-public final class ConnectionCreateOrUpdateProperties {
+public final class ConnectionCreateOrUpdateProperties implements JsonSerializable<ConnectionCreateOrUpdateProperties> {
     /*
      * Gets or sets the description of the connection.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Gets or sets the connectionType of the connection.
      */
-    @JsonProperty(value = "connectionType", required = true)
     private ConnectionTypeAssociationProperty connectionType;
 
     /*
      * Gets or sets the field definition properties of the connection.
      */
-    @JsonProperty(value = "fieldDefinitionValues")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> fieldDefinitionValues;
 
     /**
+     * Creates an instance of ConnectionCreateOrUpdateProperties class.
+     */
+    public ConnectionCreateOrUpdateProperties() {
+    }
+
+    /**
      * Get the description property: Gets or sets the description of the connection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -44,7 +51,7 @@ public final class ConnectionCreateOrUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the connection.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectionCreateOrUpdateProperties object itself.
      */
@@ -55,7 +62,7 @@ public final class ConnectionCreateOrUpdateProperties {
 
     /**
      * Get the connectionType property: Gets or sets the connectionType of the connection.
-     *
+     * 
      * @return the connectionType value.
      */
     public ConnectionTypeAssociationProperty connectionType() {
@@ -64,7 +71,7 @@ public final class ConnectionCreateOrUpdateProperties {
 
     /**
      * Set the connectionType property: Gets or sets the connectionType of the connection.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the ConnectionCreateOrUpdateProperties object itself.
      */
@@ -75,7 +82,7 @@ public final class ConnectionCreateOrUpdateProperties {
 
     /**
      * Get the fieldDefinitionValues property: Gets or sets the field definition properties of the connection.
-     *
+     * 
      * @return the fieldDefinitionValues value.
      */
     public Map<String, String> fieldDefinitionValues() {
@@ -84,7 +91,7 @@ public final class ConnectionCreateOrUpdateProperties {
 
     /**
      * Set the fieldDefinitionValues property: Gets or sets the field definition properties of the connection.
-     *
+     * 
      * @param fieldDefinitionValues the fieldDefinitionValues value to set.
      * @return the ConnectionCreateOrUpdateProperties object itself.
      */
@@ -95,19 +102,65 @@ public final class ConnectionCreateOrUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionType in model ConnectionCreateOrUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionType in model ConnectionCreateOrUpdateProperties"));
         } else {
             connectionType().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionCreateOrUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectionType", this.connectionType);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeMapField("fieldDefinitionValues", this.fieldDefinitionValues,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionCreateOrUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionCreateOrUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionCreateOrUpdateProperties.
+     */
+    public static ConnectionCreateOrUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionCreateOrUpdateProperties deserializedConnectionCreateOrUpdateProperties
+                = new ConnectionCreateOrUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionType".equals(fieldName)) {
+                    deserializedConnectionCreateOrUpdateProperties.connectionType
+                        = ConnectionTypeAssociationProperty.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedConnectionCreateOrUpdateProperties.description = reader.getString();
+                } else if ("fieldDefinitionValues".equals(fieldName)) {
+                    Map<String, String> fieldDefinitionValues = reader.readMap(reader1 -> reader1.getString());
+                    deserializedConnectionCreateOrUpdateProperties.fieldDefinitionValues = fieldDefinitionValues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionCreateOrUpdateProperties;
+        });
+    }
 }

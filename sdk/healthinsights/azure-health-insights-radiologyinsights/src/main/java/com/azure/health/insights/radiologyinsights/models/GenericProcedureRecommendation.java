@@ -5,21 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Generic procedure information.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = GenericProcedureRecommendation.class,
-    visible = true)
-@JsonTypeName("genericProcedureRecommendation")
 @Immutable
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
 
@@ -27,22 +21,18 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
      * Discriminator property for ProcedureRecommendation.
      */
     @Generated
-    @JsonTypeId
-    @JsonProperty(value = "kind")
     private String kind = "genericProcedureRecommendation";
 
     /*
      * Procedure modality : SNOMED CT code.
      */
     @Generated
-    @JsonProperty(value = "code")
     private final FhirR4CodeableConcept code;
 
     /*
      * Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -51,8 +41,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
      * @param code the code value to set.
      */
     @Generated
-    @JsonCreator
-    private GenericProcedureRecommendation(@JsonProperty(value = "code") FhirR4CodeableConcept code) {
+    private GenericProcedureRecommendation(FhirR4CodeableConcept code) {
         this.code = code;
     }
 
@@ -86,5 +75,76 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public String getDescription() {
         return this.description;
+    }
+
+    /*
+     * Additional Content defined by implementations
+     */
+    @Generated
+    private List<FhirR4Extension> extension;
+
+    /**
+     * Get the extension property: Additional Content defined by implementations.
+     *
+     * @return the extension value.
+     */
+    @Generated
+    @Override
+    public List<FhirR4Extension> getExtension() {
+        return this.extension;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("code", this.code);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenericProcedureRecommendation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenericProcedureRecommendation if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GenericProcedureRecommendation.
+     */
+    @Generated
+    public static GenericProcedureRecommendation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            List<FhirR4Extension> extension = null;
+            FhirR4CodeableConcept code = null;
+            String kind = "genericProcedureRecommendation";
+            String description = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("code".equals(fieldName)) {
+                    code = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            GenericProcedureRecommendation deserializedGenericProcedureRecommendation
+                = new GenericProcedureRecommendation(code);
+            deserializedGenericProcedureRecommendation.extension = extension;
+            deserializedGenericProcedureRecommendation.kind = kind;
+            deserializedGenericProcedureRecommendation.description = description;
+            return deserializedGenericProcedureRecommendation;
+        });
     }
 }

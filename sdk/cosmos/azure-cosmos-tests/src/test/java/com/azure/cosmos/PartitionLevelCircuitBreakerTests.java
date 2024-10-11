@@ -203,6 +203,9 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildServerGeneratedGoneErrorFaultInjectionRules
         = PartitionLevelCircuitBreakerTests::buildServerGeneratedGoneErrorFaultInjectionRules;
 
+    private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildPartitionIsSplittingFaultInjectionRules
+        = PartitionLevelCircuitBreakerTests::buildPartitionIsSplittingFaultInjectionRules;
+
     private final Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> buildTooManyRequestsErrorFaultInjectionRules
         = PartitionLevelCircuitBreakerTests::buildTooManyRequestsErrorFaultInjectionRules;
 
@@ -1213,6 +1216,150 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.writeRegions.size(),
                 25,
                 15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for CREATE_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.CREATE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.CREATE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for QUERY_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.QUERY_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for BATCH_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.BATCH_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.BATCH_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for DELETE_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.DELETE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.DELETE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for PATCH_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.PATCH_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.PATCH_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for REPLACE_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                String.format("Test with faulty %s with partition is splitting exception in first preferred region.", FaultInjectionOperationType.REPLACE_ITEM),
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.REPLACE_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                !NON_IDEMPOTENT_WRITE_RETRIES_ENABLED,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
             }
         };
     }
@@ -1452,10 +1599,10 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 15,
                 15
             },
-//             500 (internal server error) injected into first preferred region for READ_ITEM operation
-//             injected into all replicas of the faulty EPK range.
-//             Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
-//             should see a success from the second preferred region.
+            // 500 (internal server error) injected into first preferred region for READ_ITEM operation
+            // injected into all replicas of the faulty EPK range.
+            // Expectation is for the operation to fail with 500 until short-circuiting kicks in where the operation
+            // should see a success from the second preferred region.
             {
                 String.format("Test with faulty %s with internal server error in the first preferred region.", FaultInjectionOperationType.READ_ITEM),
                 new FaultInjectionRuleParamsWrapper()
@@ -1897,6 +2044,30 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 1,
                 15,
                 15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for QUERY_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                "Test faulty read many operation with too many requests error in first preferred region with threshold-based availability strategy enabled.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                executeReadManyOperation,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
+                1,
+                15,
+                15
             }
         };
     }
@@ -2097,6 +2268,30 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 this.validateDiagnosticsContextHasAllRegions,
                 this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
                 ALL_CONNECTION_MODES_INCLUDED,
+                1,
+                15,
+                15
+            },
+            // 410 seen due to partition splits injected into first preferred region (ideally cross-region phenomenon)
+            // for QUERY_ITEM operation injected into all replicas (cross-replica phenomenon as cross-region phenomenon)
+            // operation is expected to timeout due to e2e timeout policy as long as split is happening and there is no
+            // circuit breaking involved here (partition split will resolve to two new child partitions)
+            new Object[]{
+                "Test faulty read all operation with too many requests error in first preferred region with threshold-based availability strategy enabled.",
+                new FaultInjectionRuleParamsWrapper()
+                    .withFaultInjectionOperationType(FaultInjectionOperationType.QUERY_ITEM)
+                    .withFaultInjectionApplicableRegions(this.writeRegions.subList(0, 1))
+                    .withFaultInjectionDuration(Duration.ofSeconds(60)),
+                this.buildPartitionIsSplittingFaultInjectionRules,
+                executeReadAllOperation,
+                THREE_SECOND_END_TO_END_TIMEOUT_WITHOUT_AVAILABILITY_STRATEGY,
+                NO_REGION_SWITCH_HINT,
+                this.validateResponseHasOperationCancelledException,
+                this.validateResponseHasSuccess,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                this.validateDiagnosticsContextHasFirstPreferredRegionOnly,
+                ONLY_DIRECT_MODE,
                 1,
                 15,
                 15
@@ -3150,6 +3345,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             operationInvocationParamsWrapper,
             generateFaultInjectionRules,
             executeDataPlaneOperation,
+            e2eLatencyPolicyCfg,
             regionSwitchHint,
             validateResponseInPresenceOfFaults,
             validateResponseInAbsenceOfFaults,
@@ -3258,6 +3454,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             operationInvocationParamsWrapper,
             generateFaultInjectionRules,
             executeDataPlaneOperation,
+            e2eLatencyPolicyCfg,
             regionSwitchHint,
             validateResponseInPresenceOfFaults,
             validateResponseInAbsenceOfFaults,
@@ -3367,6 +3564,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             operationInvocationParamsWrapper,
             generateFaultInjectionRules,
             executeDataPlaneOperation,
+            e2eLatencyPolicyCfg,
             regionSwitchHint,
             validateResponseInPresenceOfFaults,
             validateResponseInAbsenceOfFaults,
@@ -3384,6 +3582,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         OperationInvocationParamsWrapper operationInvocationParamsWrapper,
         Function<FaultInjectionRuleParamsWrapper, List<FaultInjectionRule>> generateFaultInjectionRules,
         Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> executeDataPlaneOperation,
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig,
         CosmosRegionSwitchHint regionSwitchHint,
         Consumer<ResponseWrapper<?>> validateResponseInPresenceOfFailures,
         Consumer<ResponseWrapper<?>> validateResponseInAbsenceOfFailures,
@@ -3422,6 +3621,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         if (regionSwitchHint != null) {
             clientBuilder = clientBuilder
                 .sessionRetryOptions(new SessionRetryOptionsBuilder().regionSwitchHint(regionSwitchHint).build());
+        }
+
+        if (endToEndOperationLatencyPolicyConfig != null) {
+            if (faultInjectionRuleParamsWrapper.faultInjectionOperationType == FaultInjectionOperationType.BATCH_ITEM) {
+                clientBuilder = clientBuilder.endToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+            }
         }
 
         CosmosAsyncClient client = clientBuilder.buildAsyncClient();
@@ -4607,6 +4812,47 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
 
             FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("gone-rule-" + UUID.randomUUID())
+                .condition(faultInjectionCondition)
+                .result(faultInjectionServerErrorResult);
+
+            if (paramsWrapper.getFaultInjectionDuration() != null) {
+                faultInjectionRuleBuilder.duration(paramsWrapper.getFaultInjectionDuration());
+            }
+
+            if (paramsWrapper.getHitLimit() != null) {
+                faultInjectionRuleBuilder.hitLimit(paramsWrapper.getHitLimit());
+            }
+
+            faultInjectionRules.add(faultInjectionRuleBuilder.build());
+        }
+
+        return faultInjectionRules;
+    }
+
+    private static List<FaultInjectionRule> buildPartitionIsSplittingFaultInjectionRules(FaultInjectionRuleParamsWrapper paramsWrapper) {
+        FaultInjectionServerErrorResult faultInjectionServerErrorResult = FaultInjectionResultBuilders
+            .getResultBuilder(FaultInjectionServerErrorType.PARTITION_IS_SPLITTING)
+            .build();
+
+        List<FaultInjectionRule> faultInjectionRules = new ArrayList<>();
+
+        for (String applicableRegion : paramsWrapper.getFaultInjectionApplicableRegions()) {
+
+            FaultInjectionConditionBuilder faultInjectionConditionBuilder = new FaultInjectionConditionBuilder()
+                .connectionType(paramsWrapper.getFaultInjectionConnectionType())
+                .region(applicableRegion);
+
+            if (paramsWrapper.getFaultInjectionApplicableFeedRange() != null) {
+                faultInjectionConditionBuilder.endpoints(new FaultInjectionEndpointBuilder(paramsWrapper.getFaultInjectionApplicableFeedRange()).build());
+            }
+
+            if (!paramsWrapper.getIsOverrideFaultInjectionOperationType() && paramsWrapper.getFaultInjectionOperationType() != null) {
+                faultInjectionConditionBuilder.operationType(paramsWrapper.getFaultInjectionOperationType());
+            }
+
+            FaultInjectionCondition faultInjectionCondition = faultInjectionConditionBuilder.build();
+
+            FaultInjectionRuleBuilder faultInjectionRuleBuilder = new FaultInjectionRuleBuilder("invalid-partition-rule-" + UUID.randomUUID())
                 .condition(faultInjectionCondition)
                 .result(faultInjectionServerErrorResult);
 

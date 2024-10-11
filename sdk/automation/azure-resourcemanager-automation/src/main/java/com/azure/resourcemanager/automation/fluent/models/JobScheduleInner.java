@@ -5,41 +5,49 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import com.azure.resourcemanager.automation.models.ScheduleAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Definition of the job schedule. */
+/**
+ * Definition of the job schedule.
+ */
 @Fluent
-public final class JobScheduleInner {
+public final class JobScheduleInner implements JsonSerializable<JobScheduleInner> {
     /*
      * Gets the id of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Gets the name of the variable.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Gets or sets the properties of the job schedule.
      */
-    @JsonProperty(value = "properties")
     private JobScheduleProperties innerProperties;
 
     /**
+     * Creates an instance of JobScheduleInner class.
+     */
+    public JobScheduleInner() {
+    }
+
+    /**
      * Get the id property: Gets the id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -48,7 +56,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the name property: Gets the name of the variable.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +65,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -66,7 +74,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the job schedule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JobScheduleProperties innerProperties() {
@@ -75,7 +83,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the jobScheduleId property: Gets or sets the id of job schedule.
-     *
+     * 
      * @return the jobScheduleId value.
      */
     public String jobScheduleId() {
@@ -84,7 +92,7 @@ public final class JobScheduleInner {
 
     /**
      * Set the jobScheduleId property: Gets or sets the id of job schedule.
-     *
+     * 
      * @param jobScheduleId the jobScheduleId value to set.
      * @return the JobScheduleInner object itself.
      */
@@ -98,7 +106,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the schedule property: Gets or sets the schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public ScheduleAssociationProperty schedule() {
@@ -107,7 +115,7 @@ public final class JobScheduleInner {
 
     /**
      * Set the schedule property: Gets or sets the schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the JobScheduleInner object itself.
      */
@@ -121,7 +129,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -130,7 +138,7 @@ public final class JobScheduleInner {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the JobScheduleInner object itself.
      */
@@ -144,7 +152,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the runOn property: Gets or sets the hybrid worker group that the scheduled job should run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -153,7 +161,7 @@ public final class JobScheduleInner {
 
     /**
      * Set the runOn property: Gets or sets the hybrid worker group that the scheduled job should run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the JobScheduleInner object itself.
      */
@@ -167,7 +175,7 @@ public final class JobScheduleInner {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job schedule.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -176,7 +184,7 @@ public final class JobScheduleInner {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job schedule.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the JobScheduleInner object itself.
      */
@@ -190,12 +198,54 @@ public final class JobScheduleInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobScheduleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobScheduleInner.
+     */
+    public static JobScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobScheduleInner deserializedJobScheduleInner = new JobScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobScheduleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobScheduleInner.innerProperties = JobScheduleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobScheduleInner;
+        });
     }
 }

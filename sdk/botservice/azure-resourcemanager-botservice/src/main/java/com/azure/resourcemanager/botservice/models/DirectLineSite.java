@@ -6,258 +6,322 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A site for the Direct Line channel. */
+/**
+ * A site for the Direct Line channel.
+ */
 @Fluent
-public class DirectLineSite {
+public final class DirectLineSite extends Site {
     /*
-     * Site Id
+     * Whether this site is token enabled for channel
      */
-    @JsonProperty(value = "siteId", access = JsonProperty.Access.WRITE_ONLY)
-    private String siteId;
+    private Boolean isTokenEnabled;
 
     /*
-     * Site name
+     * Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "siteName", required = true)
-    private String siteName;
-
-    /*
-     * Primary key. Value only returned through POST to the action Channel List
-     * API, otherwise empty.
-     */
-    @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
-    private String key;
-
-    /*
-     * Secondary key. Value only returned through POST to the action Channel
-     * List API, otherwise empty.
-     */
-    @JsonProperty(value = "key2", access = JsonProperty.Access.WRITE_ONLY)
     private String key2;
 
     /*
-     * Whether this site is enabled for DirectLine channel.
+     * Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
      */
-    @JsonProperty(value = "isEnabled", required = true)
-    private boolean isEnabled;
+    private String key;
 
     /*
-     * Whether this site is enabled for Bot Framework V1 protocol.
+     * Site Id
      */
-    @JsonProperty(value = "isV1Enabled", required = true)
-    private boolean isV1Enabled;
-
-    /*
-     * Whether this site is enabled for Bot Framework V1 protocol.
-     */
-    @JsonProperty(value = "isV3Enabled", required = true)
-    private boolean isV3Enabled;
-
-    /*
-     * Whether this site is enabled for authentication with Bot Framework.
-     */
-    @JsonProperty(value = "isSecureSiteEnabled")
-    private Boolean isSecureSiteEnabled;
-
-    /*
-     * Whether this site is enabled for block user upload.
-     */
-    @JsonProperty(value = "isBlockUserUploadEnabled")
-    private Boolean isBlockUserUploadEnabled;
-
-    /*
-     * List of Trusted Origin URLs for this site. This field is applicable only
-     * if isSecureSiteEnabled is True.
-     */
-    @JsonProperty(value = "trustedOrigins")
-    private List<String> trustedOrigins;
+    private String siteId;
 
     /**
-     * Get the siteId property: Site Id.
-     *
-     * @return the siteId value.
+     * Creates an instance of DirectLineSite class.
      */
-    public String siteId() {
-        return this.siteId;
+    public DirectLineSite() {
     }
 
     /**
-     * Get the siteName property: Site name.
-     *
-     * @return the siteName value.
+     * Get the isTokenEnabled property: Whether this site is token enabled for channel.
+     * 
+     * @return the isTokenEnabled value.
      */
-    public String siteName() {
-        return this.siteName;
-    }
-
-    /**
-     * Set the siteName property: Site name.
-     *
-     * @param siteName the siteName value to set.
-     * @return the DirectLineSite object itself.
-     */
-    public DirectLineSite withSiteName(String siteName) {
-        this.siteName = siteName;
-        return this;
-    }
-
-    /**
-     * Get the key property: Primary key. Value only returned through POST to the action Channel List API, otherwise
-     * empty.
-     *
-     * @return the key value.
-     */
-    public String key() {
-        return this.key;
+    @Override
+    public Boolean isTokenEnabled() {
+        return this.isTokenEnabled;
     }
 
     /**
      * Get the key2 property: Secondary key. Value only returned through POST to the action Channel List API, otherwise
      * empty.
-     *
+     * 
      * @return the key2 value.
      */
+    @Override
     public String key2() {
         return this.key2;
     }
 
     /**
-     * Get the isEnabled property: Whether this site is enabled for DirectLine channel.
-     *
-     * @return the isEnabled value.
+     * Get the key property: Primary key. Value only returned through POST to the action Channel List API, otherwise
+     * empty.
+     * 
+     * @return the key value.
      */
-    public boolean isEnabled() {
-        return this.isEnabled;
+    @Override
+    public String key() {
+        return this.key;
     }
 
     /**
-     * Set the isEnabled property: Whether this site is enabled for DirectLine channel.
-     *
-     * @param isEnabled the isEnabled value to set.
-     * @return the DirectLineSite object itself.
+     * Get the siteId property: Site Id.
+     * 
+     * @return the siteId value.
      */
+    @Override
+    public String siteId() {
+        return this.siteId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withTenantId(String tenantId) {
+        super.withTenantId(tenantId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withSiteName(String siteName) {
+        super.withSiteName(siteName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DirectLineSite withIsEnabled(boolean isEnabled) {
-        this.isEnabled = isEnabled;
+        super.withIsEnabled(isEnabled);
         return this;
     }
 
     /**
-     * Get the isV1Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @return the isV1Enabled value.
+     * {@inheritDoc}
      */
-    public boolean isV1Enabled() {
-        return this.isV1Enabled;
-    }
-
-    /**
-     * Set the isV1Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @param isV1Enabled the isV1Enabled value to set.
-     * @return the DirectLineSite object itself.
-     */
-    public DirectLineSite withIsV1Enabled(boolean isV1Enabled) {
-        this.isV1Enabled = isV1Enabled;
+    @Override
+    public DirectLineSite withIsEndpointParametersEnabled(Boolean isEndpointParametersEnabled) {
+        super.withIsEndpointParametersEnabled(isEndpointParametersEnabled);
         return this;
     }
 
     /**
-     * Get the isV3Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @return the isV3Enabled value.
+     * {@inheritDoc}
      */
-    public boolean isV3Enabled() {
-        return this.isV3Enabled;
-    }
-
-    /**
-     * Set the isV3Enabled property: Whether this site is enabled for Bot Framework V1 protocol.
-     *
-     * @param isV3Enabled the isV3Enabled value to set.
-     * @return the DirectLineSite object itself.
-     */
-    public DirectLineSite withIsV3Enabled(boolean isV3Enabled) {
-        this.isV3Enabled = isV3Enabled;
+    @Override
+    public DirectLineSite withIsDetailedLoggingEnabled(Boolean isDetailedLoggingEnabled) {
+        super.withIsDetailedLoggingEnabled(isDetailedLoggingEnabled);
         return this;
     }
 
     /**
-     * Get the isSecureSiteEnabled property: Whether this site is enabled for authentication with Bot Framework.
-     *
-     * @return the isSecureSiteEnabled value.
+     * {@inheritDoc}
      */
-    public Boolean isSecureSiteEnabled() {
-        return this.isSecureSiteEnabled;
-    }
-
-    /**
-     * Set the isSecureSiteEnabled property: Whether this site is enabled for authentication with Bot Framework.
-     *
-     * @param isSecureSiteEnabled the isSecureSiteEnabled value to set.
-     * @return the DirectLineSite object itself.
-     */
-    public DirectLineSite withIsSecureSiteEnabled(Boolean isSecureSiteEnabled) {
-        this.isSecureSiteEnabled = isSecureSiteEnabled;
-        return this;
-    }
-
-    /**
-     * Get the isBlockUserUploadEnabled property: Whether this site is enabled for block user upload.
-     *
-     * @return the isBlockUserUploadEnabled value.
-     */
-    public Boolean isBlockUserUploadEnabled() {
-        return this.isBlockUserUploadEnabled;
-    }
-
-    /**
-     * Set the isBlockUserUploadEnabled property: Whether this site is enabled for block user upload.
-     *
-     * @param isBlockUserUploadEnabled the isBlockUserUploadEnabled value to set.
-     * @return the DirectLineSite object itself.
-     */
+    @Override
     public DirectLineSite withIsBlockUserUploadEnabled(Boolean isBlockUserUploadEnabled) {
-        this.isBlockUserUploadEnabled = isBlockUserUploadEnabled;
+        super.withIsBlockUserUploadEnabled(isBlockUserUploadEnabled);
         return this;
     }
 
     /**
-     * Get the trustedOrigins property: List of Trusted Origin URLs for this site. This field is applicable only if
-     * isSecureSiteEnabled is True.
-     *
-     * @return the trustedOrigins value.
+     * {@inheritDoc}
      */
-    public List<String> trustedOrigins() {
-        return this.trustedOrigins;
+    @Override
+    public DirectLineSite withIsNoStorageEnabled(Boolean isNoStorageEnabled) {
+        super.withIsNoStorageEnabled(isNoStorageEnabled);
+        return this;
     }
 
     /**
-     * Set the trustedOrigins property: List of Trusted Origin URLs for this site. This field is applicable only if
-     * isSecureSiteEnabled is True.
-     *
-     * @param trustedOrigins the trustedOrigins value to set.
-     * @return the DirectLineSite object itself.
+     * {@inheritDoc}
      */
+    @Override
+    public DirectLineSite withEtag(String etag) {
+        super.withEtag(etag);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withAppId(String appId) {
+        super.withAppId(appId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withIsV1Enabled(Boolean isV1Enabled) {
+        super.withIsV1Enabled(isV1Enabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withIsV3Enabled(Boolean isV3Enabled) {
+        super.withIsV3Enabled(isV3Enabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withIsSecureSiteEnabled(Boolean isSecureSiteEnabled) {
+        super.withIsSecureSiteEnabled(isSecureSiteEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DirectLineSite withTrustedOrigins(List<String> trustedOrigins) {
-        this.trustedOrigins = trustedOrigins;
+        super.withTrustedOrigins(trustedOrigins);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withIsWebChatSpeechEnabled(Boolean isWebChatSpeechEnabled) {
+        super.withIsWebChatSpeechEnabled(isWebChatSpeechEnabled);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DirectLineSite withIsWebchatPreviewEnabled(Boolean isWebchatPreviewEnabled) {
+        super.withIsWebchatPreviewEnabled(isWebchatPreviewEnabled);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (siteName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property siteName in model DirectLineSite"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property siteName in model DirectLineSite"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DirectLineSite.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("siteName", siteName());
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeStringField("tenantId", tenantId());
+        jsonWriter.writeBooleanField("isEndpointParametersEnabled", isEndpointParametersEnabled());
+        jsonWriter.writeBooleanField("isDetailedLoggingEnabled", isDetailedLoggingEnabled());
+        jsonWriter.writeBooleanField("isBlockUserUploadEnabled", isBlockUserUploadEnabled());
+        jsonWriter.writeBooleanField("isNoStorageEnabled", isNoStorageEnabled());
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeStringField("appId", appId());
+        jsonWriter.writeBooleanField("isV1Enabled", isV1Enabled());
+        jsonWriter.writeBooleanField("isV3Enabled", isV3Enabled());
+        jsonWriter.writeBooleanField("isSecureSiteEnabled", isSecureSiteEnabled());
+        jsonWriter.writeArrayField("trustedOrigins", trustedOrigins(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("isWebChatSpeechEnabled", isWebChatSpeechEnabled());
+        jsonWriter.writeBooleanField("isWebchatPreviewEnabled", isWebchatPreviewEnabled());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DirectLineSite from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DirectLineSite if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DirectLineSite.
+     */
+    public static DirectLineSite fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DirectLineSite deserializedDirectLineSite = new DirectLineSite();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("siteName".equals(fieldName)) {
+                    deserializedDirectLineSite.withSiteName(reader.getString());
+                } else if ("isEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsEnabled(reader.getBoolean());
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedDirectLineSite.withTenantId(reader.getString());
+                } else if ("siteId".equals(fieldName)) {
+                    deserializedDirectLineSite.siteId = reader.getString();
+                } else if ("key".equals(fieldName)) {
+                    deserializedDirectLineSite.key = reader.getString();
+                } else if ("key2".equals(fieldName)) {
+                    deserializedDirectLineSite.key2 = reader.getString();
+                } else if ("isTokenEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.isTokenEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isEndpointParametersEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite
+                        .withIsEndpointParametersEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isDetailedLoggingEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsDetailedLoggingEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isBlockUserUploadEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsBlockUserUploadEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isNoStorageEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsNoStorageEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedDirectLineSite.withEtag(reader.getString());
+                } else if ("appId".equals(fieldName)) {
+                    deserializedDirectLineSite.withAppId(reader.getString());
+                } else if ("isV1Enabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsV1Enabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isV3Enabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsV3Enabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isSecureSiteEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsSecureSiteEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("trustedOrigins".equals(fieldName)) {
+                    List<String> trustedOrigins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDirectLineSite.withTrustedOrigins(trustedOrigins);
+                } else if ("isWebChatSpeechEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsWebChatSpeechEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("isWebchatPreviewEnabled".equals(fieldName)) {
+                    deserializedDirectLineSite.withIsWebchatPreviewEnabled(reader.getNullable(JsonReader::getBoolean));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDirectLineSite;
+        });
+    }
 }

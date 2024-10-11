@@ -21,24 +21,35 @@ public final class ResourceSyncRulesImpl implements ResourceSyncRules {
 
     private final com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager;
 
-    public ResourceSyncRulesImpl(
-        ResourceSyncRulesClient innerClient,
+    public ResourceSyncRulesImpl(ResourceSyncRulesClient innerClient,
         com.azure.resourcemanager.extendedlocation.CustomLocationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ResourceSyncRule> listByCustomLocationId(String resourceGroupName, String resourceName) {
-        PagedIterable<ResourceSyncRuleInner> inner =
-            this.serviceClient().listByCustomLocationId(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new ResourceSyncRuleImpl(inner1, this.manager()));
+        PagedIterable<ResourceSyncRuleInner> inner
+            = this.serviceClient().listByCustomLocationId(resourceGroupName, resourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSyncRuleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ResourceSyncRule> listByCustomLocationId(
-        String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<ResourceSyncRuleInner> inner =
-            this.serviceClient().listByCustomLocationId(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceSyncRuleImpl(inner1, this.manager()));
+    public PagedIterable<ResourceSyncRule> listByCustomLocationId(String resourceGroupName, String resourceName,
+        Context context) {
+        PagedIterable<ResourceSyncRuleInner> inner
+            = this.serviceClient().listByCustomLocationId(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourceSyncRuleImpl(inner1, this.manager()));
+    }
+
+    public Response<ResourceSyncRule> getWithResponse(String resourceGroupName, String resourceName,
+        String childResourceName, Context context) {
+        Response<ResourceSyncRuleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, childResourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourceSyncRuleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ResourceSyncRule get(String resourceGroupName, String resourceName, String childResourceName) {
@@ -50,142 +61,87 @@ public final class ResourceSyncRulesImpl implements ResourceSyncRules {
         }
     }
 
-    public Response<ResourceSyncRule> getWithResponse(
-        String resourceGroupName, String resourceName, String childResourceName, Context context) {
-        Response<ResourceSyncRuleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, childResourceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ResourceSyncRuleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String childResourceName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, childResourceName, context);
     }
 
     public void delete(String resourceGroupName, String resourceName, String childResourceName) {
         this.serviceClient().delete(resourceGroupName, resourceName, childResourceName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String childResourceName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, childResourceName, context);
-    }
-
     public ResourceSyncRule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "customLocations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
         }
-        String childResourceName = Utils.getValueFromIdByName(id, "resourceSyncRules");
+        String childResourceName = ResourceManagerUtils.getValueFromIdByName(id, "resourceSyncRules");
         if (childResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, resourceName, childResourceName, Context.NONE).getValue();
     }
 
     public Response<ResourceSyncRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "customLocations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
         }
-        String childResourceName = Utils.getValueFromIdByName(id, "resourceSyncRules");
+        String childResourceName = ResourceManagerUtils.getValueFromIdByName(id, "resourceSyncRules");
         if (childResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, resourceName, childResourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "customLocations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
         }
-        String childResourceName = Utils.getValueFromIdByName(id, "resourceSyncRules");
+        String childResourceName = ResourceManagerUtils.getValueFromIdByName(id, "resourceSyncRules");
         if (childResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, resourceName, childResourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "customLocations");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'customLocations'.", id)));
         }
-        String childResourceName = Utils.getValueFromIdByName(id, "resourceSyncRules");
+        String childResourceName = ResourceManagerUtils.getValueFromIdByName(id, "resourceSyncRules");
         if (childResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceSyncRules'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, resourceName, childResourceName, context);
     }

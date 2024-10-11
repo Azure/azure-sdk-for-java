@@ -1,0 +1,74 @@
+# This script is used to prepare the patch release by generating patches for automatic releases.
+# It should be triggered manually by the release driver. Release driver should ensure that the CI pipeline is green
+# before manually trigger the patch release pipeline, 'java - patch-release'.
+# The release driver should also ensure that the patches are generated successfully and the PR is created successfully.
+#
+# What this script does:
+#   - Checks out a new release branch, 'release/patch/$currentDate'
+#   - Pushes the release branch to the repo
+#   - Runs the script to generate patches for automatic releases
+#   - Create a PR with the patches prepared
+
+trigger: none
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: PreparePatchRelease
+        displayName: Prepare Patch Release
+        variables:
+          - template: /eng/pipelines/templates/variables/image.yml
+        jobs:
+          - job: PreparePatchRelease
+            displayName: 'Prepare Patch Release'
+            timeoutInMinutes: 30
+            pool:
+              name: $(LINUXPOOL)
+              image: $(LINUXVMIMAGE)
+              os: linux
+            steps:
+              # Checkout a new release branch
+              - pwsh: |
+                  $currentDate = Get-Date -Format "yyyyMMdd"
+                  Write-Host "##vso[task.setvariable variable=PatchDate]$currentDate"
+                  
+                  $branchName = "release/patch/$currentDate"
+                  Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
+                  Write-Host "git checkout -b $branchName"
+                  git checkout -b $branchName
+                workingDirectory: $(Build.SourcesDirectory)
+                displayName: 'Create release branch'
+
+              # Push the release branch to the repo
+              - task: PowerShell@2
+                displayName: 'Push release branch to the repo'
+                inputs:
+                  pwsh: true
+                  workingDirectory: $(System.DefaultWorkingDirectory)
+                  filePath: eng/common/scripts/git-branch-push.ps1
+                  arguments: >
+                    -PRBranchName $(BaseBranchName)
+                    -CommitMsg "none"
+                    -GitUrl "https://$(azuresdk-github-pat)@github.com/Azure/azure-sdk-for-java.git"
+                    -SkipCommit $true
+
+              # Run the script to generate patches for automatic releases
+              - task: PowerShell@2
+                displayName: 'Run Generate-Patches-For-Automatic-Releases script'
+                inputs:
+                  pwsh: true
+                  filePath: eng/scripts/Generate-Patches-For-Automatic-Releases.ps1
+                  arguments: >
+                    -SourcesDirectory .
+                    -PackagesYmlPath eng/pipelines/patch-release.yml
+
+              # Create a PR with the patches prepared
+              - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
+                parameters:
+                  BaseBranchName: refs/heads/$(BaseBranchName)
+                  PRBranchName: prepare-patch-release-$(PatchDate)-$(Build.BuildId)
+                  PROwner: Azure
+                  CommitMsg: "Patch release preparation $(PatchDate)"
+                  PRTitle: "Prepare patch release $(PatchDate)"

@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.fluent.models.ProductLineProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Product line. */
+/**
+ * Product line.
+ */
 @Immutable
-public final class ProductLine {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductLine.class);
-
+public final class ProductLine implements JsonSerializable<ProductLine> {
     /*
      * Properties of product line
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ProductLineProperties innerProperties;
 
     /**
+     * Creates an instance of ProductLine class.
+     */
+    public ProductLine() {
+    }
+
+    /**
      * Get the innerProperties property: Properties of product line.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProductLineProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class ProductLine {
 
     /**
      * Get the products property: List of products in the product line.
-     *
+     * 
      * @return the products value.
      */
     public List<Product> products() {
@@ -42,7 +49,7 @@ public final class ProductLine {
 
     /**
      * Get the filterableProperties property: list of filters supported for a product.
-     *
+     * 
      * @return the filterableProperties value.
      */
     public List<FilterableProperty> filterableProperties() {
@@ -51,7 +58,7 @@ public final class ProductLine {
 
     /**
      * Get the displayName property: Display Name for the product system.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -60,7 +67,7 @@ public final class ProductLine {
 
     /**
      * Get the description property: Description related to the product system.
-     *
+     * 
      * @return the description value.
      */
     public Description description() {
@@ -69,7 +76,7 @@ public final class ProductLine {
 
     /**
      * Get the imageInformation property: Image information for the product system.
-     *
+     * 
      * @return the imageInformation value.
      */
     public List<ImageInformation> imageInformation() {
@@ -78,7 +85,7 @@ public final class ProductLine {
 
     /**
      * Get the costInformation property: Cost information for the product system.
-     *
+     * 
      * @return the costInformation value.
      */
     public CostInformation costInformation() {
@@ -87,7 +94,7 @@ public final class ProductLine {
 
     /**
      * Get the availabilityInformation property: Availability information of the product system.
-     *
+     * 
      * @return the availabilityInformation value.
      */
     public AvailabilityInformation availabilityInformation() {
@@ -96,7 +103,7 @@ public final class ProductLine {
 
     /**
      * Get the hierarchyInformation property: Hierarchy information of a product.
-     *
+     * 
      * @return the hierarchyInformation value.
      */
     public HierarchyInformation hierarchyInformation() {
@@ -105,12 +112,47 @@ public final class ProductLine {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductLine from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductLine if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductLine.
+     */
+    public static ProductLine fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductLine deserializedProductLine = new ProductLine();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedProductLine.innerProperties = ProductLineProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductLine;
+        });
     }
 }

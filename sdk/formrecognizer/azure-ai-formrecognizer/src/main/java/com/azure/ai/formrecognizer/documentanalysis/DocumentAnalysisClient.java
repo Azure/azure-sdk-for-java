@@ -43,9 +43,7 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Constants.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Transforms.getHttpResponseException;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.enableSyncRestProxy;
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getAnalyzeDocumentOptions;
-import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
 
 /**
  * <p>This class provides a synchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
@@ -226,13 +224,12 @@ public final class DocumentAnalysisClient {
                 + " be null or empty"));
         }
         final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(), finalAnalyzeDocumentOptions.getLocale(),
-                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(), null, documentUrl, finalContext).apply(cxt)),
-            pollingOperation(modelId, finalContext), getCancellationIsNotSupported(),
-            fetchingOperation(modelId, finalContext));
+                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(), null, documentUrl, context).apply(cxt)),
+            pollingOperation(modelId, context), getCancellationIsNotSupported(),
+            fetchingOperation(modelId, context));
     }
 
     /**
@@ -330,13 +327,12 @@ public final class DocumentAnalysisClient {
         }
 
         final AnalyzeDocumentOptions finalAnalyzeDocumentOptions = getAnalyzeDocumentOptions(analyzeDocumentOptions);
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, analyzeActivationOperation(modelId,
                 finalAnalyzeDocumentOptions.getPages(), finalAnalyzeDocumentOptions.getLocale(),
-                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(), document, null, finalContext).apply(cxt)),
-            pollingOperation(modelId, finalContext), getCancellationIsNotSupported(),
-            fetchingOperation(modelId, finalContext));
+                finalAnalyzeDocumentOptions.getDocumentAnalysisFeatures(), document, null, context).apply(cxt)),
+            pollingOperation(modelId, context), getCancellationIsNotSupported(),
+            fetchingOperation(modelId, context));
     }
 
     /**
@@ -487,12 +483,11 @@ public final class DocumentAnalysisClient {
                 + " be null"));
         }
 
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, classifyActivationOperation(classifierId,
-                document, null, finalContext).apply(cxt)),
-            pollingClassifierOperation(classifierId, finalContext), getCancellationIsNotSupported(),
-            fetchingClassifierOperation(classifierId, finalContext));
+                document, null, context).apply(cxt)),
+            pollingClassifierOperation(classifierId, context), getCancellationIsNotSupported(),
+            fetchingClassifierOperation(classifierId, context));
     }
 
     private SyncPoller<OperationResult, AnalyzeResult> beginClassifyDocumentFromUrlSync(String documentUrl,
@@ -505,12 +500,12 @@ public final class DocumentAnalysisClient {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'classifierId' is required and cannot"
                 + " be null or empty"));
         }
-        Context finalContext = enableSyncRestProxy(getTracingContext(context));
+
         return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, classifyActivationOperation(classifierId,
-                null, documentUrl, finalContext).apply(cxt)),
-            pollingClassifierOperation(classifierId, finalContext), getCancellationIsNotSupported(),
-            fetchingClassifierOperation(classifierId, finalContext));
+                null, documentUrl, context).apply(cxt)),
+            pollingClassifierOperation(classifierId, context), getCancellationIsNotSupported(),
+            fetchingClassifierOperation(classifierId, context));
     }
 
     private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
