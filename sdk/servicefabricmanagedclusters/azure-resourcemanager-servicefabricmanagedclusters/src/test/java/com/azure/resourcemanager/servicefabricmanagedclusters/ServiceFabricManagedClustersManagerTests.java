@@ -13,7 +13,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.ManagedCluster;
 import com.azure.resourcemanager.servicefabricmanagedclusters.models.Sku;
@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
@@ -33,7 +34,7 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
 
     @Override
     public void beforeTest() {
-        final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
+        final TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
         serviceFabricManagedClustersManager = ServiceFabricManagedClustersManager
@@ -74,7 +75,7 @@ public class ServiceFabricManagedClustersManagerTests extends TestProxyTestBase 
         try {
             String clusterName = "cluster" + randomPadding();
             String adminUser = "user" + randomPadding();
-            String adminPassWord = "!QA2ws#ED";
+            String adminPassWord = UUID.randomUUID().toString().replace("-", "@").substring(0, 13);
             // @embedStart
             managedCluster = serviceFabricManagedClustersManager
                 .managedClusters()
