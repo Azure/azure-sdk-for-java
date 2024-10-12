@@ -243,8 +243,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         } catch (Exception e) {
             vm.deallocate();
             Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
-            // make sure the VM state is refreshed after failure
+            // make sure the VM state is refreshed after deallocate
             Assertions.assertEquals(VirtualMachineSizeTypes.STANDARD_B1S, vm.size());
+            try {
+                // update with an unavailable size, causing it to fail for sure
+                vm.update().withSize(VirtualMachineSizeTypes.fromString("D2_v2_Promo")).apply();
+            } catch (Exception ex) {
+                // make sure the VM state is refreshed after failure
+                Assertions.assertEquals(VirtualMachineSizeTypes.STANDARD_B1S, vm.size());
+            }
         }
     }
 
