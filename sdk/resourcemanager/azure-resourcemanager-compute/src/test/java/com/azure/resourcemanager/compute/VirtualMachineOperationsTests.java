@@ -215,6 +215,40 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    public void canRefreshAfterDeallocation() {
+        // Create
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .create();
+
+        vm.powerOff();
+
+        try {
+            // update with an unavailable size, causing it to fail for sure
+            vm.update().withSize(VirtualMachineSizeTypes.fromString("D2_v2_Promo")).apply();
+        } catch (Exception e) {
+            vm.deallocate();
+            Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
+            // make sure the VM state is refreshed after failure
+            Assertions.assertEquals(VirtualMachineSizeTypes.STANDARD_B1S, vm.size());
+        }
+    }
+
+    @Test
     public void canCreateVirtualMachine() throws Exception {
         // Create
         computeManager
