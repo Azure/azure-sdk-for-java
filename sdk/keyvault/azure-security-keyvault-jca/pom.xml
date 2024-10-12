@@ -33,6 +33,7 @@
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-lts8on</artifactId>
       <version>2.73.6</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+      <optional>true</optional>
     </dependency>
     <!-- Apache HttpClient -->
     <dependency>
@@ -133,6 +134,7 @@
         <version>3.5.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
           <execution>
+            <id>minimize-shade</id>
             <goals>
               <goal>shade</goal>
             </goals>
@@ -140,6 +142,12 @@
               <shadeTestJar>false</shadeTestJar>
               <createSourcesJar>${createSourcesJar}</createSourcesJar>
               <shadeSourcesContent>true</shadeSourcesContent>
+              <minimizeJar>true</minimizeJar>
+              <artifactSet>
+                <includes>
+                  <include>org.bouncycastle:*</include>
+                </includes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>org.bouncycastle:*</artifact>
@@ -151,6 +159,31 @@
                   </excludes>
                 </filter>
               </filters>
+              <relocations>
+                <relocation>
+                  <pattern>org.bouncycastle</pattern>
+                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
+                </relocation>
+              </relocations>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+          <execution>
+            <id>full-shade</id>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadeTestJar>false</shadeTestJar>
+              <createSourcesJar>${createSourcesJar}</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.bouncycastle:*</exclude>
+                </excludes>
+              </artifactSet>
               <relocations>
                 <relocation>
                   <pattern>com.fasterxml.jackson</pattern>
@@ -178,10 +211,6 @@
                 <relocation>
                   <pattern>org.slf4j</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.bouncycastle</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
                 </relocation>
               </relocations>
               <transformers>
