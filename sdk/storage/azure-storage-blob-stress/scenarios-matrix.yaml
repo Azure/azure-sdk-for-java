@@ -5,7 +5,7 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
-      parallelRuns: 20
+      parallelRuns: 1
       downloadFaults: true
       durationMin: 25
       imageBuildDir: "../../.."
@@ -25,7 +25,8 @@ matrix:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "52428800"
-      parallelRuns: 10
+      parallelRuns: 5
+      maxConcurrency: 20
       downloadFaults: true
       durationMin: 30
       imageBuildDir: "../../.."

@@ -10,6 +10,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +41,8 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     @Override
     protected void runInternal(Context span) {
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
-        BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString());
+        BlobDownloadToFileOptions blobOptions = new BlobDownloadToFileOptions(downloadPath.toString())
+            .setParallelTransferOptions(parallelTransferOptions);
 
         try {
             syncClient.downloadToFileWithResponse(blobOptions, Duration.ofSeconds(options.getDuration()), span);
@@ -54,7 +56,7 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     protected Mono<Void> runInternalAsync(Context span) {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
-            path -> asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()))
+            path -> asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()).setParallelTransferOptions())
                 .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
             DownloadToFile::deleteFile);
     }

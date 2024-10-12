@@ -14,6 +14,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
@@ -21,7 +22,6 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
@@ -32,6 +32,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
     private final BlobContainerClient syncNoFaultContainerClient;
     private Instant startTime;
+    protected final ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions();
 
     public BlobScenarioBase(TOptions options) {
         super(options);
@@ -59,6 +60,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         syncNoFaultContainerClient = syncNoFaultClient.getBlobContainerClient(CONTAINER_NAME);
         syncContainerClient = syncClient.getBlobContainerClient(CONTAINER_NAME);
         asyncContainerClient = asyncClient.getBlobContainerAsyncClient(CONTAINER_NAME);
+        parallelTransferOptions.setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override
