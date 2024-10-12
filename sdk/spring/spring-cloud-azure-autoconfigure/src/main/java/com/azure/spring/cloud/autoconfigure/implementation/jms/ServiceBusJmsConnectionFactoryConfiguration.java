@@ -33,8 +33,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "false",
-        matchIfMissing = true)
+    @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "false")
     static class SimpleConnectionFactoryConfiguration {
 
         @Bean
@@ -46,8 +45,7 @@ class ServiceBusJmsConnectionFactoryConfiguration {
 
         @Configuration(proxyBeanMethods = false)
         @ConditionalOnClass(CachingConnectionFactory.class)
-        @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "true",
-            matchIfMissing = true)
+        @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "true")
         static class CachingConnectionFactoryConfiguration {
 
             @Bean
@@ -71,7 +69,8 @@ class ServiceBusJmsConnectionFactoryConfiguration {
     static class PooledConnectionFactoryConfiguration {
 
         @Bean(destroyMethod = "stop")
-        @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true")
+        @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true",
+            matchIfMissing = true)
         JmsPoolConnectionFactory jmsPoolConnectionFactory(AzureServiceBusJmsProperties properties,
                                                           ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
             ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
