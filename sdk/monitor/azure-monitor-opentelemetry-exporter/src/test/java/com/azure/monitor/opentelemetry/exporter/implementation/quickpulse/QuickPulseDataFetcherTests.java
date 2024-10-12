@@ -69,6 +69,7 @@ class QuickPulseDataFetcherTests {
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200, httpHeaders)))
             .tracer(new NoopTracer())
             .build();
+        // TODO: figure out how to build live metrics api here and incorporate http pipeline from above
         QuickPulsePingSender quickPulsePingSender
             = new QuickPulsePingSender(httpPipeline, connectionString::getLiveEndpoint,
                 connectionString::getInstrumentationKey, null, "instance1", "machine1", "qpid123", "testSdkVersion");

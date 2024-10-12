@@ -8,6 +8,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKs;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -16,15 +17,18 @@ class QuickPulseDataSender implements Runnable {
     private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
 
     private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    private final HttpPipeline httpPipeline;
+    private final HttpPipeline httpPipeline; // TODO: remove if not needed
     private volatile QuickPulseHeaderInfo quickPulseHeaderInfo;
     private long lastValidTransmission = 0;
 
     private final ArrayBlockingQueue<HttpRequest> sendQueue;
 
-    QuickPulseDataSender(HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue) {
+    private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
+
+    QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, HttpPipeline httpPipeline, ArrayBlockingQueue<HttpRequest> sendQueue) {
         this.httpPipeline = httpPipeline;
         this.sendQueue = sendQueue;
+        this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
     }
 
     @Override

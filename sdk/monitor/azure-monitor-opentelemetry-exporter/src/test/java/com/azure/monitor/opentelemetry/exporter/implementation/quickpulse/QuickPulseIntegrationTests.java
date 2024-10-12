@@ -21,6 +21,7 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// TODO: figure out the right builder/pipeline settings for these tests & fix ping/post constructors!
 public class QuickPulseIntegrationTests extends QuickPulseTestBase {
     private static final ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=ikey123");
     private static final String instrumentationKey = "ikey123";
@@ -85,6 +86,7 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         QuickPulsePingSender pingSender
             = getQuickPulsePingSenderWithValidator(new ValidationPolicy(pingCountDown, expectedPingRequestBody));
         QuickPulseHeaderInfo quickPulseHeaderInfo = pingSender.ping(null);
+        // TODO: figure out the right builder settings for this test
         QuickPulseDataSender dataSender = new QuickPulseDataSender(
             getHttpPipeline(new ValidationPolicy(postCountDown, expectedPostRequestBody)), sendQueue);
         QuickPulseDataCollector collector = new QuickPulseDataCollector();
