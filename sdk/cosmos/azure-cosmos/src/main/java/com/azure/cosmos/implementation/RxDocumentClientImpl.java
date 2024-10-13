@@ -95,7 +95,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
 import reactor.util.concurrent.Queues;
 import reactor.util.function.Tuple2;
-import reactor.util.retry.Retry;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -1881,10 +1880,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if( options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -1932,10 +1934,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             content);
 
         if (options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
@@ -1983,6 +1988,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+
+                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
                             addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
                         }
 
@@ -2364,6 +2371,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
                             addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
                             documentServiceRequestReference.set(request);
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -2490,7 +2498,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         checkNotNull(feedOperationContextForCircuitBreaker, "Argument 'feedOperationContextForCircuitBreaker' cannot be null!");
 
                         feedOperationContextForCircuitBreaker.addPartitionKeyRangeWithSuccess(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, request.getResourceId());
-                        this.globalPartitionEndpointManagerForCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
+                        this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationSuccessForPartitionKeyRange(request);
                     }
                 }
             })
@@ -2657,6 +2665,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+
+                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
                             addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -2896,10 +2906,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         if (options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext =
@@ -2937,6 +2950,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return requestObs.flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
                                 addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -3079,10 +3094,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
         if (options != null) {
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
         }
 
         if (retryPolicyInstance != null) {
@@ -3126,6 +3144,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             .flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
                                 addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -3242,10 +3262,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             if (options != null) {
+
+                DocumentServiceRequestContext requestContext = request.requestContext;
+
                 options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                    () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-                request.requestContext.setExcludeRegions(options.getExcludedRegions());
-                request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                    () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+                requestContext.setExcludeRegions(options.getExcludedRegions());
+                requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
             }
 
             if (retryPolicyInstance != null) {
@@ -3266,6 +3289,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             .flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
                                 addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -3395,10 +3420,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
+
+            DocumentServiceRequestContext requestContext = request.requestContext;
+
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
-                () -> request.requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
-            request.requestContext.setExcludeRegions(options.getExcludedRegions());
-            request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
+                () -> requestContext.setIsRequestCancelledOnTimeout(new AtomicBoolean(true)));
+            requestContext.setExcludeRegions(options.getExcludedRegions());
+            requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
@@ -3424,6 +3452,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             return requestObs.flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
+
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
                                 addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -4049,6 +4079,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 return Mono.error(new CollectionRoutingMapNotFoundException("Argument 'collectionRoutingMapValueHolder.v' cannot be null!"));
                             }
 
+                            RxDocumentClientImpl.this.addPartitionKeyRangeForPerPartitionAutomaticFailoverForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
                             RxDocumentClientImpl.this.addPartitionLevelUnavailableRegionsForFeedRequest(request, queryRequestOptions, collectionRoutingMapValueHolder.v);
 
                             // onBeforeSendRequest uses excluded regions to know the next location endpoint
@@ -4505,12 +4536,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                          ServerBatchRequest serverBatchRequest,
                                                          RequestOptions options,
                                                          boolean disableAutomaticIdGeneration) {
-        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(null);
         AtomicReference<RxDocumentServiceRequest> requestReference = new AtomicReference<>();
         RequestOptions nonNullRequestOptions = options != null ? options : new RequestOptions();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig =
             getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions, ResourceType.Document, OperationType.Batch);
         ScopedDiagnosticsFactory scopedDiagnosticsFactory = new ScopedDiagnosticsFactory(this, false);
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy(scopedDiagnosticsFactory);
         return handleCircuitBreakingFeedbackForPointOperation(
             getPointOperationResponseMonoWithE2ETimeout(
                 nonNullRequestOptions,
@@ -6053,6 +6084,69 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
+    public void addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
+        RxDocumentServiceRequest request,
+        RequestOptions options,
+        CollectionRoutingMap collectionRoutingMap,
+        DocumentClientRetryPolicy documentClientRetryPolicy) {
+
+        checkNotNull(request, "Argument 'request' cannot be null!");
+
+        if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
+
+            checkNotNull(options, "Argument 'options' cannot be null!");
+            checkNotNull(options.getPartitionKeyDefinition(), "Argument 'partitionKeyDefinition' within options cannot be null!");
+            checkNotNull(collectionRoutingMap, "Argument 'collectionRoutingMap' cannot be null!");
+
+            PartitionKeyRange resolvedPartitionKeyRange = null;
+
+            PartitionKeyDefinition partitionKeyDefinition = options.getPartitionKeyDefinition();
+            PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+            if (partitionKeyInternal != null) {
+                String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+
+                // cache the effective partition key if possible - can be a bottleneck,
+                // since it is also recomputed in AddressResolver
+                request.setEffectivePartitionKey(effectivePartitionKeyString);
+            } else if (request.getPartitionKeyRangeIdentity() != null) {
+                resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+            }
+
+            checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+            checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
+
+            // setting it here in case request.requestContext.resolvedPartitionKeyRange
+            // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+            // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+            // help failover as well)
+            // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+            // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+            request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+            // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+            // when the CosmosClient instance has to "reset" the request.requestContext.resolvedPartitionKeyRange
+            // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+            // such scenarios and PPAF in general
+            request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = resolvedPartitionKeyRange;
+
+            List<String> unavailableRegionsForPartition
+                = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                request.getResourceId(),
+                resolvedPartitionKeyRange,
+                request.getOperationType());
+
+            request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
+
+            // onBeforeSendRequest uses excluded regions to know the next location endpoint
+            // to route the request to unavailable regions are effectively excluded regions for this request
+            if (documentClientRetryPolicy != null) {
+                documentClientRetryPolicy.onBeforeSendRequest(request);
+            }
+        }
+    }
+
     public void mergeContextInformationIntoDiagnosticsForPointRequest(
         RxDocumentServiceRequest request,
         PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
@@ -6097,10 +6191,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // such scenarios and circuit breaking in general
         request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
-            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
-            checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForPerPartitionCircuitBreaker cannot be null!");
+            checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
 
             List<String> unavailableRegionsForPartition
                 = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
@@ -6112,10 +6204,44 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
+    public void addPartitionKeyRangeForPerPartitionAutomaticFailoverForFeedRequest(
+        RxDocumentServiceRequest request,
+        CosmosQueryRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap) {
+
+        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+        PartitionKeyRange resolvedPartitionKeyRange = null;
+
+        if (request.getPartitionKeyRangeIdentity() != null) {
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+        } else if (request.getPartitionKeyInternal() != null) {
+            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getPartitionKeyDefinition(options));
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+        }
+
+        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        // setting it here in case request.requestContext.resolvedPartitionKeyRange
+        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+        // help failover as well)
+        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+        // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+        // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+        // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+        // such scenarios and circuit breaking in general
+        request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = resolvedPartitionKeyRange;
+    }
+
     public void addPartitionLevelUnavailableRegionsForChangeFeedRequest(
         RxDocumentServiceRequest request,
         CosmosChangeFeedRequestOptions options,
         CollectionRoutingMap collectionRoutingMap) {
+
         checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
 
         PartitionKeyRange resolvedPartitionKeyRange = null;
@@ -6143,10 +6269,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // such scenarios and circuit breaking in general
         request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker = resolvedPartitionKeyRange;
 
-        if (this.globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
-            checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
-            checkNotNull(globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForPerPartitionCircuitBreaker cannot be null!");
+            checkNotNull(this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "globalPartitionEndpointManagerForCircuitBreaker cannot be null!");
 
             List<String> unavailableRegionsForPartition
                 = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
@@ -6156,6 +6280,39 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             request.requestContext.setUnavailableRegionsForPartition(unavailableRegionsForPartition);
         }
+    }
+
+    public void addPartitionKeyRangeForPerPartitionAutomaticFailoverForChangeFeedRequest(
+        RxDocumentServiceRequest request,
+        CosmosChangeFeedRequestOptions options,
+        CollectionRoutingMap collectionRoutingMap) {
+
+        checkNotNull(collectionRoutingMap, "collectionRoutingMap cannot be null!");
+
+        PartitionKeyRange resolvedPartitionKeyRange = null;
+
+        if (request.getPartitionKeyRangeIdentity() != null) {
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByPartitionKeyRangeId(request.getPartitionKeyRangeIdentity().getPartitionKeyRangeId());
+        } else if (request.getPartitionKeyInternal() != null) {
+            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(request.getPartitionKeyInternal(), ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor().getPartitionKeyDefinition(options));
+            resolvedPartitionKeyRange = collectionRoutingMap.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+        }
+
+        checkNotNull(resolvedPartitionKeyRange, "resolvedPartitionKeyRange cannot be null!");
+
+        // setting it here in case request.requestContext.resolvedPartitionKeyRange
+        // is not assigned in either GlobalAddressResolver / RxGatewayStoreModel (possible if there are Gateway timeouts)
+        // and circuit breaker also kicks in to mark a failure resolvedPartitionKeyRange (will result in NullPointerException and will
+        // help failover as well)
+        // also resolvedPartitionKeyRange will be overridden in GlobalAddressResolver / RxGatewayStoreModel irrespective
+        // so staleness is not an issue (after doing a validation of parent-child relationship b/w initial and new partitionKeyRange)
+        request.requestContext.resolvedPartitionKeyRange = resolvedPartitionKeyRange;
+
+        // maintaining a separate copy - request.requestContext.resolvedPartitionKeyRange can be set to null
+        // when the GoneAndRetryWithRetryPolicy has to "reset" the request.requestContext.resolvedPartitionKeyRange
+        // in partition split / merge and invalid partition scenarios - the separate copy will help identify
+        // such scenarios and PPAF in general
+        request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = resolvedPartitionKeyRange;
     }
 
     private Mono<ResourceResponse<Document>> wrapPointOperationWithAvailabilityStrategy(

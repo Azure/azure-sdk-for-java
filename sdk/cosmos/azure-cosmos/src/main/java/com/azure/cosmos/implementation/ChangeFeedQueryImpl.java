@@ -221,6 +221,7 @@ class ChangeFeedQueryImpl<T> {
                                 changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
                                 changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
 
+                                client.addPartitionKeyRangeForPerPartitionAutomaticFailoverForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
                                 client.addPartitionLevelUnavailableRegionsForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
 
                                 if (req.requestContext.getClientRetryPolicySupplier() != null) {

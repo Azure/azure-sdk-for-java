@@ -35,6 +35,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
     public volatile PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker;
+    public volatile PartitionKeyRange resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;

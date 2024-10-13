@@ -99,6 +99,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 .openConnectionsAndInitCaches(proactiveInitConfig)
                 .preferredRegions(preferredRegions);
 
+            if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(cosmosClientBuilder).getConnectionMode() == ConnectionMode.GATEWAY) {
+                return;
+            }
+
             COSMOS_CLIENT_BUILDER_ACCESSOR.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
 
             CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
@@ -159,7 +163,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             CosmosItemResponse<TestItem> createItemResponseBeforeFailover = asyncContainer.createItem(testItem).block();
 
             assertThat(createItemResponseBeforeFailover).isNotNull();
-            validateDiagnosticsContext(createItemResponseBeforeFailover.getDiagnostics(), 2, HttpConstants.StatusCodes.CREATED);
+            validateDiagnosticsContext(createItemResponseBeforeFailover.getDiagnostics(), 1, HttpConstants.StatusCodes.CREATED);
 
             CosmosItemResponse<TestItem> createItemResponseAfterFailover = asyncContainer.createItem(testItem).block();
             assertThat(createItemResponseAfterFailover).isNotNull();

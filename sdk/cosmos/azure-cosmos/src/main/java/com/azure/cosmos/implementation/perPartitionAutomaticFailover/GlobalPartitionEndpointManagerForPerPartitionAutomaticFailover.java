@@ -54,7 +54,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
 
         if (partitionKeyRange == null) {
@@ -99,7 +99,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
 
         if (partitionKeyRange == null) {
@@ -136,12 +136,13 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         return this.isPerPartitionAutomaticFailoverEnabled;
     }
 
-    private boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
-        if (this.globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList()).size() <= 1) {
+    public boolean isPerPartitionAutomaticFailoverApplicable(RxDocumentServiceRequest request) {
+
+        if (!this.isPerPartitionAutomaticFailoverEnabled) {
             return false;
         }
 
-        if (!this.isPerPartitionAutomaticFailoverEnabled) {
+        if (this.globalEndpointManager.getApplicableReadEndpoints(Collections.emptyList()).size() <= 1) {
             return false;
         }
 
