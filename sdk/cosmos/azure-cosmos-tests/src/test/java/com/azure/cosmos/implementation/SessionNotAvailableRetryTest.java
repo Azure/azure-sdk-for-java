@@ -287,9 +287,32 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 // for single master, when retrying 404/1002, it will retry on the write region
                 // so for write operation or if the first preferred region is the same as write region, the contracted region count should 1
                 if (operationType.isWriteOperation()
-                    || preferredLocationsWithLowerCase.get(0).equalsIgnoreCase(writeRegionList.get(0))) {
+                    || !preferredLocationsWithLowerCase.isEmpty() && preferredLocationsWithLowerCase.get(0).equalsIgnoreCase(writeRegionList.get(0))) {
                     assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
-                } else {
+                } else if (preferredLocations.isEmpty()) {
+                    assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
+
+                    // validate the contacted region sequence
+                    List<String> contactedRegions = new ArrayList<>();
+                    String previousContactedRegion = StringUtils.EMPTY;
+                    ClientSideRequestStatistics clientSideRequestStatistics = BridgeInternal.getClientSideRequestStatics(ex.getDiagnostics());
+                    for (ClientSideRequestStatistics.StoreResponseStatistics storeResponseStatistics : clientSideRequestStatistics.getResponseStatisticsList()) {
+                        if (!storeResponseStatistics.getRegionName().equalsIgnoreCase(previousContactedRegion)) {
+                            contactedRegions.add(storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT));
+                            previousContactedRegion = storeResponseStatistics.getRegionName().toLowerCase(Locale.ROOT);
+                        }
+                    }
+
+                    List<String> expectedContactedRegions = new ArrayList<>();
+
+                    // retries stick to sole write region in single-write accounts for read-semantic operations
+                    // where all preferred regions is not set on client
+                    expectedContactedRegions.addAll(writeRegionList);
+                    assertThat(contactedRegions.size()).isEqualTo(expectedContactedRegions.size());
+                    assertThat(contactedRegions.containsAll(expectedContactedRegions)).isTrue();
+                }
+                else {
+
                     assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(2);
 
                     // validate the contacted region sequence
