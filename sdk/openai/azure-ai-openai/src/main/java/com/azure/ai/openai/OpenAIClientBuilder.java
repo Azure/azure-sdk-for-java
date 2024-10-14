@@ -7,6 +7,7 @@ import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.OPEN_A
 
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
+import com.azure.ai.openai.implementation.RealtimesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -49,7 +50,12 @@ import java.util.Objects;
 /**
  * A builder for creating a new instance of the OpenAIClient type.
  */
-@ServiceClientBuilder(serviceClients = { OpenAIClient.class, OpenAIAsyncClient.class })
+@ServiceClientBuilder(
+    serviceClients = {
+        OpenAIClient.class,
+        OpenAIAsyncClient.class,
+        RealtimeClient.class,
+        RealtimeAsyncClient.class})
 public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>,
     ConfigurationTrait<OpenAIClientBuilder>, TokenCredentialTrait<OpenAIClientBuilder>,
     KeyCredentialTrait<OpenAIClientBuilder>, EndpointTrait<OpenAIClientBuilder> {
@@ -357,6 +363,20 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
         return useNonAzureOpenAIService()
             ? new OpenAIClient(buildInnerNonAzureOpenAIClient())
             : new OpenAIClient(buildInnerClient());
+    }
+
+    public RealtimeAsyncClient buildRealtimeAsyncClient() {
+        RealtimesImpl reatimesImpl = useNonAzureOpenAIService()
+            ? buildInnerNonAzureOpenAIClient().getRealtime()
+            : buildInnerClient().getRealtime();
+        return new RealtimeAsyncClient(reatimesImpl);
+    }
+
+    public RealtimeClient buildRealtimeClient() {
+        RealtimesImpl reatimesImpl = useNonAzureOpenAIService()
+            ? buildInnerNonAzureOpenAIClient().getRealtime()
+            : buildInnerClient().getRealtime();
+        return new RealtimeClient(reatimesImpl);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientBuilder.class);

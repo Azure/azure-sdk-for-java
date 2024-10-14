@@ -39,6 +39,12 @@ public final class NonAzureOpenAIClientImpl implements BaseOpenAIClient {
     /** The proxy service used to perform REST calls. */
     private final NonAzureOpenAIClientService service;
 
+    private final RealtimesImpl realtime;
+
+    public RealtimesImpl getRealtime() {
+        return this.realtime;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -78,6 +84,7 @@ public final class NonAzureOpenAIClientImpl implements BaseOpenAIClient {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.realtime = new RealtimesImpl(this);
     }
 
     /**
