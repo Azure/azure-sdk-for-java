@@ -7,41 +7,60 @@ package com.azure.resourcemanager.networkfunction.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkfunction.models.EmissionPoliciesPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.IngestionPolicyPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Collector policy resource. */
+/**
+ * Collector policy resource.
+ */
 @Fluent
 public final class CollectorPolicyInner extends Resource {
     /*
      * Properties of the Collector Policy.
      */
-    @JsonProperty(value = "properties")
     private CollectorPolicyPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CollectorPolicyInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CollectorPolicyInner class.
+     */
     public CollectorPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Collector Policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CollectorPolicyPropertiesFormat innerProperties() {
@@ -50,7 +69,7 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,21 +78,55 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CollectorPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CollectorPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -82,7 +135,7 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Get the ingestionPolicy property: Ingestion policies.
-     *
+     * 
      * @return the ingestionPolicy value.
      */
     public IngestionPolicyPropertiesFormat ingestionPolicy() {
@@ -91,7 +144,7 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Set the ingestionPolicy property: Ingestion policies.
-     *
+     * 
      * @param ingestionPolicy the ingestionPolicy value to set.
      * @return the CollectorPolicyInner object itself.
      */
@@ -105,7 +158,7 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Get the emissionPolicies property: Emission policies.
-     *
+     * 
      * @return the emissionPolicies value.
      */
     public List<EmissionPoliciesPropertiesFormat> emissionPolicies() {
@@ -114,7 +167,7 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Set the emissionPolicies property: Emission policies.
-     *
+     * 
      * @param emissionPolicies the emissionPolicies value to set.
      * @return the CollectorPolicyInner object itself.
      */
@@ -128,7 +181,7 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -137,12 +190,66 @@ public final class CollectorPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CollectorPolicyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CollectorPolicyInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CollectorPolicyInner.
+     */
+    public static CollectorPolicyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CollectorPolicyInner deserializedCollectorPolicyInner = new CollectorPolicyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCollectorPolicyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCollectorPolicyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCollectorPolicyInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCollectorPolicyInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCollectorPolicyInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCollectorPolicyInner.innerProperties = CollectorPolicyPropertiesFormat.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCollectorPolicyInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCollectorPolicyInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCollectorPolicyInner;
+        });
     }
 }
