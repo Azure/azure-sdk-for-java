@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
@@ -27,15 +28,30 @@ import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosBatch;
+import com.azure.cosmos.models.CosmosBatchResponse;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -49,6 +65,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -61,6 +78,46 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor COSMOS_CLIENT_BUILDER_ACCESSOR
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasTwoRegions = (ctx) -> {
+        assertThat(ctx).isNotNull();
+        assertThat(ctx.getContactedRegionNames()).isNotNull();
+        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(2);
+    };
+
+    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasOneRegion = (ctx) -> {
+        assertThat(ctx).isNotNull();
+        assertThat(ctx.getContactedRegionNames()).isNotNull();
+        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(1);
+    };
+
+    Consumer<ResponseWrapper<?>> validateResponseHasSuccess = (responseWrapper) -> {
+
+        assertThat(responseWrapper.cosmosException).isNull();
+
+        if (responseWrapper.feedResponse != null) {
+            assertThat(responseWrapper.feedResponse.getCosmosDiagnostics()).isNotNull();
+            assertThat(responseWrapper.feedResponse.getCosmosDiagnostics().getDiagnosticsContext()).isNotNull();
+
+            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
+
+            assertThat(diagnosticsContext.getStatusCode() == HttpConstants.StatusCodes.OK || diagnosticsContext.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED).isTrue();
+        } else if (responseWrapper.cosmosItemResponse != null) {
+            assertThat(responseWrapper.cosmosItemResponse.getDiagnostics()).isNotNull();
+            assertThat(responseWrapper.cosmosItemResponse.getDiagnostics().getDiagnosticsContext()).isNotNull();
+
+            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
+
+            assertThat(HttpConstants.StatusCodes.OK <= diagnosticsContext.getStatusCode() && diagnosticsContext.getStatusCode() <= HttpConstants.StatusCodes.NO_CONTENT).isTrue();
+        } else if (responseWrapper.batchResponse != null) {
+            assertThat(responseWrapper.batchResponse.getDiagnostics()).isNotNull();
+            assertThat(responseWrapper.batchResponse.getDiagnostics().getDiagnosticsContext()).isNotNull();
+
+            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.batchResponse.getDiagnostics().getDiagnosticsContext();
+
+            assertThat(HttpConstants.StatusCodes.OK <= diagnosticsContext.getStatusCode() && diagnosticsContext.getStatusCode() <= HttpConstants.StatusCodes.NO_CONTENT).isTrue();
+        }
+    };
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
     public GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests(CosmosClientBuilder clientBuilder) {
@@ -80,12 +137,49 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         this.accountLevelLocationReadableLocationContext = getAccountLevelLocationContext(databaseAccountSnapshot, false);
     }
 
-    @Test(groups = {"multi-region"})
+    @DataProvider(name = "ppafWithServiceUnavailableConfigs")
+    public Object[][] ppafWithServiceUnavailableConfigs() {
+
+        return new Object[][]{
+            {
+                OperationType.Create,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+            },
+            {
+                OperationType.Replace,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+            },
+            {
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+            },
+            {
+                OperationType.Delete,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+            },
+            {
+                OperationType.Patch,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+            }
+        };
+    }
+
+    @Test(groups = {"multi-region"}, dataProvider = "ppafWithServiceUnavailableConfigs")
     public void testPpafWithServiceUnavailable() throws URISyntaxException, JsonProcessingException {
 
         TransportClient transportClientMock = Mockito.mock(TransportClient.class);
         List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
         Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+
+
+        if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder()).getConnectionMode() == ConnectionMode.GATEWAY) {
+            return;
+        }
 
         try {
 
@@ -98,10 +192,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
                 .openConnectionsAndInitCaches(proactiveInitConfig)
                 .preferredRegions(preferredRegions);
-
-            if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(cosmosClientBuilder).getConnectionMode() == ConnectionMode.GATEWAY) {
-                return;
-            }
 
             COSMOS_CLIENT_BUILDER_ACCESSOR.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
 
@@ -163,7 +253,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             CosmosItemResponse<TestItem> createItemResponseBeforeFailover = asyncContainer.createItem(testItem).block();
 
             assertThat(createItemResponseBeforeFailover).isNotNull();
-            validateDiagnosticsContext(createItemResponseBeforeFailover.getDiagnostics(), 1, HttpConstants.StatusCodes.CREATED);
+            validateDiagnosticsContext(createItemResponseBeforeFailover.getDiagnostics(), 2, HttpConstants.StatusCodes.CREATED);
 
             CosmosItemResponse<TestItem> createItemResponseAfterFailover = asyncContainer.createItem(testItem).block();
             assertThat(createItemResponseAfterFailover).isNotNull();
@@ -277,5 +367,302 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         testPojo.setId(uuid);
         testPojo.setMypk(uuid);
         return testPojo;
+    }
+
+    private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(OperationType operationType) {
+
+        switch (operationType) {
+            case Read:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> readItemResponse = asyncContainer.readItem(
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions,
+                                TestObject.class)
+                            .block();
+
+                        return new ResponseWrapper<>(readItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case Upsert:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> upsertItemResponse = asyncContainer.upsertItem(
+                                createdTestObject,
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new ResponseWrapper<>(upsertItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case Create:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+                    TestObject createdTestObject = TestObject.create();
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> createItemResponse = asyncContainer.createItem(
+                                createdTestObject,
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new ResponseWrapper<>(createItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case Delete:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<Object> deleteItemResponse = asyncContainer.deleteItem(
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new ResponseWrapper<>(deleteItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case Patch:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosPatchItemRequestOptions patchItemRequestOptions = (CosmosPatchItemRequestOptions) paramsWrapper.patchItemRequestOptions;
+
+                    CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/number", 555);
+
+                    try {
+
+                        CosmosItemResponse<TestObject> patchItemResponse = asyncContainer.patchItem(
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                patchOperations,
+                                patchItemRequestOptions,
+                                TestObject.class)
+                            .block();
+
+                        return new ResponseWrapper<>(patchItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case Query:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+                    CosmosQueryRequestOptions queryRequestOptions = paramsWrapper.queryRequestOptions == null ? new CosmosQueryRequestOptions() : paramsWrapper.queryRequestOptions;
+                    queryRequestOptions = paramsWrapper.feedRangeForQuery == null ? queryRequestOptions.setFeedRange(FeedRange.forFullRange()) : queryRequestOptions.setFeedRange(paramsWrapper.feedRangeForQuery);
+
+                    try {
+
+                        FeedResponse<TestObject> queryItemResponse = asyncContainer.queryItems(
+                                "SELECT * FROM C",
+                                queryRequestOptions,
+                                TestObject.class)
+                            .byPage()
+                            .blockLast();
+
+                        return new ResponseWrapper<>(queryItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case Replace:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
+
+                    try {
+
+                        CosmosItemResponse<TestObject> deleteItemResponse = asyncContainer.replaceItem(
+                                createdTestObject,
+                                createdTestObject.getId(),
+                                new PartitionKey(createdTestObject.getId()),
+                                itemRequestOptions)
+                            .block();
+
+                        return new ResponseWrapper<>(deleteItemResponse);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case Batch:
+                return (paramsWrapper) -> {
+
+                    TestObject testObject = TestObject.create();
+                    CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(testObject.getId()));
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+
+                    batch.createItemOperation(testObject);
+                    batch.readItemOperation(testObject.getId());
+
+                    try {
+                        CosmosBatchResponse batchResponse = asyncContainer.executeCosmosBatch(batch).block();
+                        return new ResponseWrapper<>(batchResponse);
+                    } catch (Exception ex) {
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            case ReadFeed:
+                return (paramsWrapper) -> {
+
+                    CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
+
+                    try {
+
+                        FeedResponse<TestObject> feedResponseFromChangeFeed = asyncContainer.queryChangeFeed(
+                                CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(paramsWrapper.feedRangeToDrainForChangeFeed == null ? FeedRange.forFullRange() : paramsWrapper.feedRangeToDrainForChangeFeed),
+                                TestObject.class)
+                            .byPage()
+                            .blockLast();
+
+                        return new ResponseWrapper<>(feedResponseFromChangeFeed);
+                    } catch (Exception ex) {
+
+                        if (ex instanceof CosmosException) {
+                            CosmosException cosmosException = Utils.as(ex, CosmosException.class);
+                            return new ResponseWrapper<>(cosmosException);
+                        }
+
+                        throw ex;
+                    }
+                };
+            default:
+                throw new UnsupportedOperationException(String.format("Operation of type : %s is not supported", operationType));
+        }
+    }
+
+
+    private static class ResponseWrapper<T> {
+
+        private final CosmosItemResponse<T> cosmosItemResponse;
+        private final CosmosException cosmosException;
+        private final FeedResponse<T> feedResponse;
+        private final CosmosBatchResponse batchResponse;
+
+        ResponseWrapper(FeedResponse<T> feedResponse) {
+            this.feedResponse = feedResponse;
+            this.cosmosException = null;
+            this.cosmosItemResponse = null;
+            this.batchResponse = null;
+        }
+
+        ResponseWrapper(CosmosItemResponse<T> cosmosItemResponse) {
+            this.cosmosItemResponse = cosmosItemResponse;
+            this.cosmosException = null;
+            this.feedResponse = null;
+            this.batchResponse = null;
+        }
+
+        ResponseWrapper(CosmosException cosmosException) {
+            this.cosmosException = cosmosException;
+            this.cosmosItemResponse = null;
+            this.feedResponse = null;
+            this.batchResponse = null;
+        }
+
+        ResponseWrapper(CosmosBatchResponse batchResponse) {
+            this.cosmosException = null;
+            this.cosmosItemResponse = null;
+            this.feedResponse = null;
+            this.batchResponse = batchResponse;
+        }
+    }
+
+    private static class OperationInvocationParamsWrapper {
+        public CosmosAsyncContainer asyncContainer;
+        public TestObject createdTestObject;
+        public CosmosItemRequestOptions itemRequestOptions;
+        public CosmosQueryRequestOptions queryRequestOptions;
+        public CosmosReadManyRequestOptions readManyRequestOptions;
+        public CosmosItemRequestOptions patchItemRequestOptions;
+        public FeedRange feedRangeToDrainForChangeFeed;
+        public FeedRange feedRangeForQuery;
+        public List<CosmosItemIdentity> itemIdentitiesForReadManyOperation;
+        public PartitionKey partitionKeyForReadAllOperation;
+        public String containerIdToTarget;
+        public int itemCountToBootstrapContainerFrom;
+        public FeedRange faultyFeedRange;
+        public List<TestObject> testObjectsForDataPlaneOperationToWorkWith;
     }
 }

@@ -1989,7 +1989,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request) && options != null) {
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy, true);
                             addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
                         }
 
@@ -2371,7 +2371,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
-                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
+                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy, true);
                             addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, requestRetryPolicy);
                             documentServiceRequestReference.set(request);
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -2666,7 +2666,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                            addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance, true);
                             addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                             request.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -2951,7 +2951,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance, true);
                                 addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -3145,7 +3145,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance, true);
                                 addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -3290,7 +3290,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
-                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance, true);
                                 addPartitionLevelUnavailableRegionsForRequest(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -3453,7 +3453,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
 
-                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
+                                addPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(request, options, collectionRoutingMapValueHolder.v, retryPolicyInstance, false);
                                 addPartitionLevelUnavailableRegionsForRequest(req, options, collectionRoutingMapValueHolder.v, retryPolicyInstance);
 
                                 req.requestContext.setPointOperationContext(pointOperationContextForCircuitBreaker);
@@ -6088,7 +6088,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxDocumentServiceRequest request,
         RequestOptions options,
         CollectionRoutingMap collectionRoutingMap,
-        DocumentClientRetryPolicy documentClientRetryPolicy) {
+        DocumentClientRetryPolicy documentClientRetryPolicy,
+        boolean isWriteRequest) {
 
         checkNotNull(request, "Argument 'request' cannot be null!");
 
@@ -6130,6 +6131,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // in partition split / merge and invalid partition scenarios - the separate copy will help identify
             // such scenarios and PPAF in general
             request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = resolvedPartitionKeyRange;
+
+            request.isPerPartitionAutomaticFailoverEnabledAndWriteRequest
+                = isWriteRequest && this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled();
 
             List<String> unavailableRegionsForPartition
                 = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
