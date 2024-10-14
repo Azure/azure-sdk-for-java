@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Policy assignment summary. */
+/**
+ * Policy assignment summary.
+ */
 @Fluent
-public final class PolicyAssignmentSummary {
+public final class PolicyAssignmentSummary implements JsonSerializable<PolicyAssignmentSummary> {
     /*
      * Policy assignment ID.
      */
-    @JsonProperty(value = "policyAssignmentId")
     private String policyAssignmentId;
 
     /*
      * Policy set definition ID, if the policy assignment is for a policy set.
      */
-    @JsonProperty(value = "policySetDefinitionId")
     private String policySetDefinitionId;
 
     /*
      * Compliance summary for the policy assignment.
      */
-    @JsonProperty(value = "results")
     private SummaryResults results;
 
     /*
      * Policy definitions summary.
      */
-    @JsonProperty(value = "policyDefinitions")
     private List<PolicyDefinitionSummary> policyDefinitions;
 
     /*
      * Policy definition group summary.
      */
-    @JsonProperty(value = "policyGroups")
     private List<PolicyGroupSummary> policyGroups;
 
-    /** Creates an instance of PolicyAssignmentSummary class. */
+    /**
+     * Creates an instance of PolicyAssignmentSummary class.
+     */
     public PolicyAssignmentSummary() {
     }
 
     /**
      * Get the policyAssignmentId property: Policy assignment ID.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -56,7 +59,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Set the policyAssignmentId property: Policy assignment ID.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the PolicyAssignmentSummary object itself.
      */
@@ -67,7 +70,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Get the policySetDefinitionId property: Policy set definition ID, if the policy assignment is for a policy set.
-     *
+     * 
      * @return the policySetDefinitionId value.
      */
     public String policySetDefinitionId() {
@@ -76,7 +79,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Set the policySetDefinitionId property: Policy set definition ID, if the policy assignment is for a policy set.
-     *
+     * 
      * @param policySetDefinitionId the policySetDefinitionId value to set.
      * @return the PolicyAssignmentSummary object itself.
      */
@@ -87,7 +90,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Get the results property: Compliance summary for the policy assignment.
-     *
+     * 
      * @return the results value.
      */
     public SummaryResults results() {
@@ -96,7 +99,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Set the results property: Compliance summary for the policy assignment.
-     *
+     * 
      * @param results the results value to set.
      * @return the PolicyAssignmentSummary object itself.
      */
@@ -107,7 +110,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Get the policyDefinitions property: Policy definitions summary.
-     *
+     * 
      * @return the policyDefinitions value.
      */
     public List<PolicyDefinitionSummary> policyDefinitions() {
@@ -116,7 +119,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Set the policyDefinitions property: Policy definitions summary.
-     *
+     * 
      * @param policyDefinitions the policyDefinitions value to set.
      * @return the PolicyAssignmentSummary object itself.
      */
@@ -127,7 +130,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Get the policyGroups property: Policy definition group summary.
-     *
+     * 
      * @return the policyGroups value.
      */
     public List<PolicyGroupSummary> policyGroups() {
@@ -136,7 +139,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Set the policyGroups property: Policy definition group summary.
-     *
+     * 
      * @param policyGroups the policyGroups value to set.
      * @return the PolicyAssignmentSummary object itself.
      */
@@ -147,7 +150,7 @@ public final class PolicyAssignmentSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -160,5 +163,58 @@ public final class PolicyAssignmentSummary {
         if (policyGroups() != null) {
             policyGroups().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyAssignmentId", this.policyAssignmentId);
+        jsonWriter.writeStringField("policySetDefinitionId", this.policySetDefinitionId);
+        jsonWriter.writeJsonField("results", this.results);
+        jsonWriter.writeArrayField("policyDefinitions", this.policyDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("policyGroups", this.policyGroups, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyAssignmentSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyAssignmentSummary if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyAssignmentSummary.
+     */
+    public static PolicyAssignmentSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyAssignmentSummary deserializedPolicyAssignmentSummary = new PolicyAssignmentSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyAssignmentId".equals(fieldName)) {
+                    deserializedPolicyAssignmentSummary.policyAssignmentId = reader.getString();
+                } else if ("policySetDefinitionId".equals(fieldName)) {
+                    deserializedPolicyAssignmentSummary.policySetDefinitionId = reader.getString();
+                } else if ("results".equals(fieldName)) {
+                    deserializedPolicyAssignmentSummary.results = SummaryResults.fromJson(reader);
+                } else if ("policyDefinitions".equals(fieldName)) {
+                    List<PolicyDefinitionSummary> policyDefinitions
+                        = reader.readArray(reader1 -> PolicyDefinitionSummary.fromJson(reader1));
+                    deserializedPolicyAssignmentSummary.policyDefinitions = policyDefinitions;
+                } else if ("policyGroups".equals(fieldName)) {
+                    List<PolicyGroupSummary> policyGroups
+                        = reader.readArray(reader1 -> PolicyGroupSummary.fromJson(reader1));
+                    deserializedPolicyAssignmentSummary.policyGroups = policyGroups;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyAssignmentSummary;
+        });
     }
 }

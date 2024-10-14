@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the PolicyInsightsClientImpl type. */
-@ServiceClientBuilder(serviceClients = {PolicyInsightsClientImpl.class})
+/**
+ * A builder for creating a new instance of the PolicyInsightsClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { PolicyInsightsClientImpl.class })
 public final class PolicyInsightsClientBuilder {
     /*
      * Microsoft Azure subscription ID.
@@ -24,7 +26,7 @@ public final class PolicyInsightsClientBuilder {
 
     /**
      * Sets Microsoft Azure subscription ID.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the PolicyInsightsClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class PolicyInsightsClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the PolicyInsightsClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class PolicyInsightsClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the PolicyInsightsClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class PolicyInsightsClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the PolicyInsightsClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class PolicyInsightsClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the PolicyInsightsClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class PolicyInsightsClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the PolicyInsightsClientBuilder.
      */
@@ -115,30 +117,22 @@ public final class PolicyInsightsClientBuilder {
 
     /**
      * Builds an instance of PolicyInsightsClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of PolicyInsightsClientImpl.
      */
     public PolicyInsightsClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        PolicyInsightsClientImpl client =
-            new PolicyInsightsClientImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        PolicyInsightsClientImpl client = new PolicyInsightsClientImpl(localPipeline, localSerializerAdapter,
+            localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }
