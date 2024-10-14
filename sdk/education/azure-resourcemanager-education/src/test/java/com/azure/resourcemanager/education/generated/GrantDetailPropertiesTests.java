@@ -6,20 +6,17 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.fluent.models.GrantDetailProperties;
-import org.junit.jupiter.api.Test;
 
 public final class GrantDetailPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        GrantDetailProperties model =
-            BinaryData
-                .fromString(
-                    "{\"offerCap\":{\"currency\":\"xzjnchgejs\",\"value\":77.65428},\"effectiveDate\":\"2021-03-15T02:51:44Z\",\"offerType\":\"Academic\",\"expirationDate\":\"2021-10-26T17:31:17Z\",\"status\":\"Active\",\"allocatedBudget\":{\"currency\":\"jwyahuxinpmqnja\",\"value\":93.690834}}")
-                .toObject(GrantDetailProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GrantDetailProperties model = BinaryData.fromString(
+            "{\"offerCap\":{\"currency\":\"ixjsprozvcputeg\",\"value\":94.32142},\"effectiveDate\":\"2021-06-23T09:15:06Z\",\"offerType\":\"Student\",\"expirationDate\":\"2021-10-01T05:00:03Z\",\"status\":\"Inactive\",\"allocatedBudget\":{\"currency\":\"pjhulsuuvmkj\",\"value\":0.87149143}}")
+            .toObject(GrantDetailProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GrantDetailProperties model = new GrantDetailProperties();
         model = BinaryData.fromObject(model).toObject(GrantDetailProperties.class);
     }

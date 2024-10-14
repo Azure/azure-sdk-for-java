@@ -28,37 +28,32 @@ public final class GrantsImpl implements Grants {
 
     public PagedIterable<GrantDetails> listAll() {
         PagedIterable<GrantDetailsInner> inner = this.serviceClient().listAll();
-        return Utils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GrantDetails> listAll(Boolean includeAllocatedBudget, Context context) {
         PagedIterable<GrantDetailsInner> inner = this.serviceClient().listAll(includeAllocatedBudget, context);
-        return Utils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<GrantDetails> list(String billingAccountName, String billingProfileName) {
         PagedIterable<GrantDetailsInner> inner = this.serviceClient().list(billingAccountName, billingProfileName);
-        return Utils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<GrantDetails> list(
-        String billingAccountName, String billingProfileName, Boolean includeAllocatedBudget, Context context) {
-        PagedIterable<GrantDetailsInner> inner =
-            this.serviceClient().list(billingAccountName, billingProfileName, includeAllocatedBudget, context);
-        return Utils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
+    public PagedIterable<GrantDetails> list(String billingAccountName, String billingProfileName,
+        Boolean includeAllocatedBudget, Context context) {
+        PagedIterable<GrantDetailsInner> inner
+            = this.serviceClient().list(billingAccountName, billingProfileName, includeAllocatedBudget, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new GrantDetailsImpl(inner1, this.manager()));
     }
 
-    public Response<GrantDetails> getWithResponse(
-        String billingAccountName, String billingProfileName, Boolean includeAllocatedBudget, Context context) {
-        Response<GrantDetailsInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(billingAccountName, billingProfileName, includeAllocatedBudget, context);
+    public Response<GrantDetails> getWithResponse(String billingAccountName, String billingProfileName,
+        Boolean includeAllocatedBudget, Context context) {
+        Response<GrantDetailsInner> inner = this.serviceClient()
+            .getWithResponse(billingAccountName, billingProfileName, includeAllocatedBudget, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new GrantDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
