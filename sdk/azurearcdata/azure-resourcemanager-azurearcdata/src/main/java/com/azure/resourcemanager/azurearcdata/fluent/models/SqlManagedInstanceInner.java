@@ -8,46 +8,64 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurearcdata.models.ExtendedLocation;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceProperties;
 import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A SqlManagedInstance. */
+/**
+ * A SqlManagedInstance.
+ */
 @Fluent
 public final class SqlManagedInstanceInner extends Resource {
     /*
      * null
      */
-    @JsonProperty(value = "properties", required = true)
     private SqlManagedInstanceProperties properties;
 
     /*
      * The extendedLocation of the resource.
      */
-    @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
     /*
      * Resource sku.
      */
-    @JsonProperty(value = "sku")
     private SqlManagedInstanceSku sku;
 
     /*
      * Read only system data
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of SqlManagedInstanceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SqlManagedInstanceInner class.
+     */
     public SqlManagedInstanceInner() {
     }
 
     /**
      * Get the properties property: null.
-     *
+     * 
      * @return the properties value.
      */
     public SqlManagedInstanceProperties properties() {
@@ -56,7 +74,7 @@ public final class SqlManagedInstanceInner extends Resource {
 
     /**
      * Set the properties property: null.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SqlManagedInstanceInner object itself.
      */
@@ -67,7 +85,7 @@ public final class SqlManagedInstanceInner extends Resource {
 
     /**
      * Get the extendedLocation property: The extendedLocation of the resource.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -76,7 +94,7 @@ public final class SqlManagedInstanceInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extendedLocation of the resource.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the SqlManagedInstanceInner object itself.
      */
@@ -87,7 +105,7 @@ public final class SqlManagedInstanceInner extends Resource {
 
     /**
      * Get the sku property: Resource sku.
-     *
+     * 
      * @return the sku value.
      */
     public SqlManagedInstanceSku sku() {
@@ -96,7 +114,7 @@ public final class SqlManagedInstanceInner extends Resource {
 
     /**
      * Set the sku property: Resource sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SqlManagedInstanceInner object itself.
      */
@@ -107,21 +125,55 @@ public final class SqlManagedInstanceInner extends Resource {
 
     /**
      * Get the systemData property: Read only system data.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlManagedInstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlManagedInstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -130,15 +182,14 @@ public final class SqlManagedInstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model SqlManagedInstanceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model SqlManagedInstanceInner"));
         } else {
             properties().validate();
         }
@@ -151,4 +202,62 @@ public final class SqlManagedInstanceInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlManagedInstanceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlManagedInstanceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlManagedInstanceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlManagedInstanceInner.
+     */
+    public static SqlManagedInstanceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlManagedInstanceInner deserializedSqlManagedInstanceInner = new SqlManagedInstanceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSqlManagedInstanceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.properties = SqlManagedInstanceProperties.fromJson(reader);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.sku = SqlManagedInstanceSku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSqlManagedInstanceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlManagedInstanceInner;
+        });
+    }
 }
