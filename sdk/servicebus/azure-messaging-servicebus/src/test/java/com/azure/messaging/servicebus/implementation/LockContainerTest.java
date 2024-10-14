@@ -24,17 +24,22 @@ class LockContainerTest {
     @Mock
     private Consumer<String> onRemoved;
     private LockContainer<String> container;
+    private AutoCloseable openMocks;
 
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         container = new LockContainer<>(interval, onRemoved);
     }
 
     @AfterEach
-    void afterEach() {
+    void afterEach() throws Exception {
         if (container != null) {
             container.close();
+        }
+
+        if (openMocks != null) {
+            openMocks.close();
         }
     }
 

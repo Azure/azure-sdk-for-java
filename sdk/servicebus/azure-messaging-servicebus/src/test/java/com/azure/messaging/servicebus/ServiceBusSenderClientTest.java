@@ -46,9 +46,11 @@ public class ServiceBusSenderClientTest {
     private static final String TEST_CONTENTS = "My message for service bus queue!";
     private static final BinaryData TEST_CONTENTS_BINARY = BinaryData.fromString(TEST_CONTENTS);
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         when(asyncSender.getEntityPath()).thenReturn(ENTITY_NAME);
         when(asyncSender.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncSender.getIdentifier()).thenReturn(CLIENT_IDENTIFIER);
@@ -56,9 +58,13 @@ public class ServiceBusSenderClientTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         sender.close();
         Mockito.framework().clearInlineMock(this);
+
+        if (openMocks != null) {
+            openMocks.close();
+        }
     }
 
     @Test

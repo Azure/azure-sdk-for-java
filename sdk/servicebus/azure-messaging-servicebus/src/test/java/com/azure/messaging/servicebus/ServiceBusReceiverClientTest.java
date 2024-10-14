@@ -83,9 +83,11 @@ class ServiceBusReceiverClientTest {
     @Mock
     private ReceiverOptions sessionReceiverOptions;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
         when(asyncClient.getReceiverOptions()).thenReturn(createNonSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
@@ -96,8 +98,12 @@ class ServiceBusReceiverClientTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMock(this);
+
+        if (openMocks != null) {
+            openMocks.close();
+        }
     }
 
     @Test

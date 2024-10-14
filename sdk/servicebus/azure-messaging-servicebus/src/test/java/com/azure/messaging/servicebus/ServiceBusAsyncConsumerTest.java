@@ -64,11 +64,13 @@ class ServiceBusAsyncConsumerTest {
     @Mock
     private MessageSerializer serializer;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     void setup(TestInfo testInfo) {
         LOGGER.info("[{}]: Setting up.", testInfo.getDisplayName());
 
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         when(link.getEndpointStates()).thenReturn(endpointStateFlux);
         when(link.receive()).thenReturn(messageFlux);
@@ -81,10 +83,14 @@ class ServiceBusAsyncConsumerTest {
     }
 
     @AfterEach
-    void teardown(TestInfo testInfo) {
+    void teardown(TestInfo testInfo) throws Exception {
         LOGGER.info("[{}]: Tearing down.", testInfo.getDisplayName());
 
         Mockito.framework().clearInlineMock(this);
+
+        if (openMocks != null) {
+            openMocks.close();
+        }
 
         linkProcessor.dispose();
         linkPublisher.complete();

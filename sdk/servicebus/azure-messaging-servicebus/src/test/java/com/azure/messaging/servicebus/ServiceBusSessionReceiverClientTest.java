@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusR
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -29,16 +28,21 @@ class ServiceBusSessionReceiverClientTest {
     @Mock
     private ServiceBusReceiverAsyncClient asyncClient;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
-    void beforeEach(TestInfo testInfo) {
-        MockitoAnnotations.initMocks(this);
+    void beforeEach() {
+        openMocks = MockitoAnnotations.openMocks(this);
         when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
             "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
     }
 
     @AfterEach
-    void afterEach(TestInfo testInfo) {
+    void afterEach() throws Exception {
         Mockito.framework().clearInlineMock(this);
+        if (openMocks != null) {
+            openMocks.close();
+        }
     }
 
 

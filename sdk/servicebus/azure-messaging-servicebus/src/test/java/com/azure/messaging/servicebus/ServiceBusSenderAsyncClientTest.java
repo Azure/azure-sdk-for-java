@@ -151,9 +151,11 @@ class ServiceBusSenderAsyncClientTest {
     private ConnectionCacheWrapper connectionCacheWrapper;
     private ConnectionOptions connectionOptions;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         connectionOptions = new ConnectionOptions(NAMESPACE, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE,
@@ -186,8 +188,12 @@ class ServiceBusSenderAsyncClientTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMock(this);
+
+        if (openMocks != null) {
+            openMocks.close();
+        }
     }
 
     /**

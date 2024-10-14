@@ -82,9 +82,11 @@ class ServiceBusReceiveLinkProcessorTest {
     private ServiceBusReceiveLinkProcessor linkProcessor;
     private ServiceBusReceiveLinkProcessor linkProcessorNoPrefetch;
 
+    private AutoCloseable openMocks;
+
     @BeforeEach
     void setup() {
-        MockitoAnnotations.initMocks(this);
+        openMocks = MockitoAnnotations.openMocks(this);
 
         linkProcessor = new ServiceBusReceiveLinkProcessor(PREFETCH, retryPolicy);
         linkProcessorNoPrefetch = new ServiceBusReceiveLinkProcessor(0, retryPolicy);
@@ -95,8 +97,12 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     @AfterEach
-    void teardown() {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMock(this);
+
+        if (openMocks != null) {
+            openMocks.close();
+        }
     }
 
     @Test
