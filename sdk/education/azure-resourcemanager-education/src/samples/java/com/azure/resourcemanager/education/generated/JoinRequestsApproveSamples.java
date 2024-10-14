@@ -4,26 +4,23 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for JoinRequests Approve. */
+/**
+ * Samples for JoinRequests Approve.
+ */
 public final class JoinRequestsApproveSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/JoinRequestApproveAndDeny.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * JoinRequestApproveAndDeny.json
      */
     /**
      * Sample code: JoinRequestApprove.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void joinRequestApprove(com.azure.resourcemanager.education.EducationManager manager) {
-        manager
-            .joinRequests()
-            .approveWithResponse(
-                "{billingAccountName}",
-                "{billingProfileName}",
-                "{invoiceSectionName}",
-                "{joinRequestName}",
-                Context.NONE);
+        manager.joinRequests()
+            .approveWithResponse("{billingAccountName}", "{billingProfileName}", "{invoiceSectionName}",
+                "{joinRequestName}", com.azure.core.util.Context.NONE);
     }
 }
