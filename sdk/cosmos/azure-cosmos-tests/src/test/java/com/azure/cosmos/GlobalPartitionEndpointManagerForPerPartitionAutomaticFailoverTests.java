@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -12,22 +13,17 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
-import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
-import com.azure.cosmos.implementation.directconnectivity.GatewayAddressCache;
-import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
-import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
@@ -46,10 +42,11 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
+import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -57,14 +54,15 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -79,44 +77,71 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasTwoRegions = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(2);
-    };
+    BiConsumer<ResponseWrapper<?>, Integer> validateRegionContactedCountInResponseWrapper = (responseWrapper, regionCount) -> {
+        assertThat(responseWrapper).isNotNull();
 
-    Consumer<CosmosDiagnosticsContext> validateDiagnosticsContextHasOneRegion = (ctx) -> {
-        assertThat(ctx).isNotNull();
-        assertThat(ctx.getContactedRegionNames()).isNotNull();
-        assertThat(ctx.getContactedRegionNames().size()).isLessThanOrEqualTo(1);
+        Utils.ValueHolder<CosmosDiagnostics> cosmosDiagnosticsValueHolder = new Utils.ValueHolder<>();
+
+        if (responseWrapper.batchResponse != null) {
+
+            CosmosBatchResponse cosmosBatchResponse = responseWrapper.batchResponse;
+
+            assertThat(cosmosBatchResponse.getDiagnostics()).isNotNull();
+            cosmosDiagnosticsValueHolder.v = cosmosBatchResponse.getDiagnostics();
+        } else if (responseWrapper.cosmosItemResponse != null) {
+
+            CosmosItemResponse<?> cosmosItemResponse = responseWrapper.cosmosItemResponse;
+
+            assertThat(cosmosItemResponse.getDiagnostics()).isNotNull();
+            cosmosDiagnosticsValueHolder.v = cosmosItemResponse.getDiagnostics();
+        } else if (responseWrapper.feedResponse != null) {
+
+            FeedResponse<?> feedResponse = responseWrapper.feedResponse;
+
+            assertThat(feedResponse.getCosmosDiagnostics()).isNotNull();
+            cosmosDiagnosticsValueHolder.v = feedResponse.getCosmosDiagnostics();
+        } else if (responseWrapper.cosmosException != null) {
+
+            CosmosException cosmosException = responseWrapper.cosmosException;
+
+            assertThat(cosmosException.getDiagnostics()).isNotNull();
+            cosmosDiagnosticsValueHolder.v = cosmosException.getDiagnostics();
+        } else {
+            throw new AssertionError("One of batchResponse, cosmosItemResponse, feedResponse or cosmosException should be populated!");
+        }
+
+        assertThat(cosmosDiagnosticsValueHolder.v).isNotNull();
+        CosmosDiagnostics cosmosDiagnostics = cosmosDiagnosticsValueHolder.v;
+
+        assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+        assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotNull();
+        assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotEmpty();
+        assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames().size()).isEqualTo(regionCount);
     };
 
     Consumer<ResponseWrapper<?>> validateResponseHasSuccess = (responseWrapper) -> {
 
         assertThat(responseWrapper.cosmosException).isNull();
+        assertThat(responseWrapper).isNotNull();
+
+        Utils.ValueHolder<CosmosDiagnostics> cosmosDiagnosticsValueHolder = new Utils.ValueHolder<>();
 
         if (responseWrapper.feedResponse != null) {
             assertThat(responseWrapper.feedResponse.getCosmosDiagnostics()).isNotNull();
-            assertThat(responseWrapper.feedResponse.getCosmosDiagnostics().getDiagnosticsContext()).isNotNull();
-
-            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.feedResponse.getCosmosDiagnostics().getDiagnosticsContext();
-
-            assertThat(diagnosticsContext.getStatusCode() == HttpConstants.StatusCodes.OK || diagnosticsContext.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED).isTrue();
+            cosmosDiagnosticsValueHolder.v = responseWrapper.feedResponse.getCosmosDiagnostics();
         } else if (responseWrapper.cosmosItemResponse != null) {
             assertThat(responseWrapper.cosmosItemResponse.getDiagnostics()).isNotNull();
-            assertThat(responseWrapper.cosmosItemResponse.getDiagnostics().getDiagnosticsContext()).isNotNull();
-
-            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.cosmosItemResponse.getDiagnostics().getDiagnosticsContext();
-
-            assertThat(HttpConstants.StatusCodes.OK <= diagnosticsContext.getStatusCode() && diagnosticsContext.getStatusCode() <= HttpConstants.StatusCodes.NO_CONTENT).isTrue();
+            cosmosDiagnosticsValueHolder.v = responseWrapper.cosmosItemResponse.getDiagnostics();
         } else if (responseWrapper.batchResponse != null) {
             assertThat(responseWrapper.batchResponse.getDiagnostics()).isNotNull();
-            assertThat(responseWrapper.batchResponse.getDiagnostics().getDiagnosticsContext()).isNotNull();
-
-            CosmosDiagnosticsContext diagnosticsContext = responseWrapper.batchResponse.getDiagnostics().getDiagnosticsContext();
-
-            assertThat(HttpConstants.StatusCodes.OK <= diagnosticsContext.getStatusCode() && diagnosticsContext.getStatusCode() <= HttpConstants.StatusCodes.NO_CONTENT).isTrue();
+            cosmosDiagnosticsValueHolder.v = responseWrapper.batchResponse.getDiagnostics();
         }
+
+        CosmosDiagnostics cosmosDiagnostics = cosmosDiagnosticsValueHolder.v;
+
+        assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+        assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode() >= HttpConstants.StatusCodes.OK
+            && cosmosDiagnostics.getDiagnosticsContext().getStatusCode() <= HttpConstants.StatusCodes.NOT_MODIFIED).isTrue();
     };
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
@@ -137,48 +162,150 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         this.accountLevelLocationReadableLocationContext = getAccountLevelLocationContext(databaseAccountSnapshot, false);
     }
 
-    @DataProvider(name = "ppafWithServiceUnavailableConfigs")
-    public Object[][] ppafWithServiceUnavailableConfigs() {
+    @DataProvider(name = "ppafTestConfigsWithWriteOps")
+    public Object[][] ppafTestConfigsWithWriteOps() {
 
         return new Object[][]{
             {
                 OperationType.Create,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.CREATED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
             },
             {
                 OperationType.Replace,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
             },
             {
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
             },
             {
                 OperationType.Delete,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
             },
             {
                 OperationType.Patch,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Create,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.CREATED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Replace,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Delete,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Patch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+
+            {
+                OperationType.Create,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.CREATED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Replace,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Delete,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
+            },
+            {
+                OperationType.Patch,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                this.validateRegionContactedCountInResponseWrapper,
+                this.validateResponseHasSuccess
             }
         };
     }
 
-    @Test(groups = {"multi-region"}, dataProvider = "ppafWithServiceUnavailableConfigs")
-    public void testPpafWithServiceUnavailable() throws URISyntaxException, JsonProcessingException {
+    @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
+    public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
+        OperationType operationType,
+        int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
+        int successStatusCode,
+        BiConsumer<ResponseWrapper<?>, Integer> validateRegionsContactedFromResponseWrapper,
+        Consumer<ResponseWrapper<?>> validateResponseHasSuccess) {
 
         TransportClient transportClientMock = Mockito.mock(TransportClient.class);
         List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
         Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
-
+        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
 
         if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder()).getConnectionMode() == ConnectionMode.GATEWAY) {
-            return;
+            throw new SkipException("testPpafWithServiceUnavailable does not run in the GATEWAY connectivity mode!");
         }
 
         try {
@@ -196,6 +323,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             COSMOS_CLIENT_BUILDER_ACCESSOR.setPerPartitionAutomaticFailoverEnabled(cosmosClientBuilder, true);
 
             CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
+            cosmosAsyncClientValueHolder.v = asyncClient;
 
             CosmosAsyncContainer asyncContainer = asyncClient
                 .getDatabase(this.sharedDatabase.getId())
@@ -209,13 +337,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
             ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
-
-            RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(replicatedResourceClient);
-            RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
-
-            GlobalAddressResolver globalAddressResolver = ReflectionUtils.getGlobalAddressResolver(rxDocumentClient);
-            RxPartitionKeyRangeCache rxPartitionKeyRangeCache = ReflectionUtils.getPartitionKeyRangeCache(rxDocumentClient);
-
             Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
                 = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
 
@@ -223,14 +344,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
 
             PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
-
-            List<Pair<GatewayAddressCache, String>> orderedGatewayAddressCacheToRegion = new ArrayList<>();
-
-            for (String preferredRegion : preferredRegions) {
-                String endpoint = readableRegionNameToEndpoint.get(preferredRegion);
-                GatewayAddressCache gatewayAddressCache = globalAddressResolver.getGatewayAddressCache(new URI(endpoint));
-                orderedGatewayAddressCacheToRegion.add(new Pair<>(gatewayAddressCache, preferredRegion));
-            }
 
             assertThat(preferredRegions).isNotNull();
             assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
@@ -241,24 +354,41 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             ReflectionUtils.setTransportClient(storeReader, transportClientMock);
             ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
 
-            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(201));
+            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(successStatusCode));
+
+            CosmosException cosmosException = createCosmosException(
+                errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
             setupTransportClientToThrowCosmosException(
                 transportClientMock,
                 partitionKeyRangeWithIssues,
                 locationEndpointWithIssues,
-                new GoneException("", HttpConstants.SubStatusCodes.SERVER_GENERATED_410));
+                cosmosException);
 
             TestItem testItem = TestItem.createNewItem();
 
-            CosmosItemResponse<TestItem> createItemResponseBeforeFailover = asyncContainer.createItem(testItem).block();
+            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
 
-            assertThat(createItemResponseBeforeFailover).isNotNull();
-            validateDiagnosticsContext(createItemResponseBeforeFailover.getDiagnostics(), 2, HttpConstants.StatusCodes.CREATED);
+            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+            operationInvocationParamsWrapper.createdTestItem = testItem;
+            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+            operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
 
-            CosmosItemResponse<TestItem> createItemResponseAfterFailover = asyncContainer.createItem(testItem).block();
-            assertThat(createItemResponseAfterFailover).isNotNull();
-            validateDiagnosticsContext(createItemResponseAfterFailover.getDiagnostics(), 1, HttpConstants.StatusCodes.CREATED);
+            ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+            assertThat(responseBeforeFailover).isNotNull();
+            validateResponseHasSuccess.accept(responseBeforeFailover);
+            validateRegionsContactedFromResponseWrapper.accept(responseBeforeFailover, 2);
+
+            ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+            validateResponseHasSuccess.accept(responseAfterFailover);
+            validateRegionsContactedFromResponseWrapper.accept(responseAfterFailover, 1);
+        } catch (Exception e) {
+            Assertions.fail("The test ran into an exception {}", e);
         } finally {
+            safeClose(cosmosAsyncClientValueHolder.v);
         }
     }
 
@@ -369,14 +499,30 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
         return testPojo;
     }
 
-    private static Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(OperationType operationType) {
+    private CosmosException createCosmosException(int statusCode, int subStatusCode) {
+
+        switch (statusCode) {
+            case HttpConstants.StatusCodes.GONE:
+                return new GoneException("", subStatusCode);
+            case HttpConstants.StatusCodes.SERVICE_UNAVAILABLE:
+                return new ServiceUnavailableException(null, null, null, null, subStatusCode);
+            case HttpConstants.StatusCodes.FORBIDDEN:
+                ForbiddenException forbiddenException = new ForbiddenException(null, -1, null, new HashMap<>());
+                BridgeInternal.setSubStatusCode(forbiddenException, subStatusCode);
+                return forbiddenException;
+            default:
+                throw new UnsupportedOperationException(String.format("Uncovered erroneous status code %d", statusCode));
+        }
+    }
+
+    private Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> resolveDataPlaneOperation(OperationType operationType) {
 
         switch (operationType) {
             case Read:
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    TestItem createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
@@ -403,12 +549,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    TestItem createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
 
-                        CosmosItemResponse<TestObject> upsertItemResponse = asyncContainer.upsertItem(
+                        CosmosItemResponse<TestItem> upsertItemResponse = asyncContainer.upsertItem(
                                 createdTestObject,
                                 new PartitionKey(createdTestObject.getId()),
                                 itemRequestOptions)
@@ -429,12 +575,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestObject createdTestObject = TestObject.create();
+                    TestItem createdTestObject = TestItem.createNewItem();
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
 
-                        CosmosItemResponse<TestObject> createItemResponse = asyncContainer.createItem(
+                        CosmosItemResponse<TestItem> createItemResponse = asyncContainer.createItem(
                                 createdTestObject,
                                 new PartitionKey(createdTestObject.getId()),
                                 itemRequestOptions)
@@ -455,7 +601,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    TestItem createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
@@ -481,19 +627,19 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    TestItem createdTestObject = paramsWrapper.createdTestItem;
                     CosmosPatchItemRequestOptions patchItemRequestOptions = (CosmosPatchItemRequestOptions) paramsWrapper.patchItemRequestOptions;
 
                     CosmosPatchOperations patchOperations = CosmosPatchOperations.create().add("/number", 555);
 
                     try {
 
-                        CosmosItemResponse<TestObject> patchItemResponse = asyncContainer.patchItem(
+                        CosmosItemResponse<TestItem> patchItemResponse = asyncContainer.patchItem(
                                 createdTestObject.getId(),
                                 new PartitionKey(createdTestObject.getId()),
                                 patchOperations,
                                 patchItemRequestOptions,
-                                TestObject.class)
+                                TestItem.class)
                             .block();
 
                         return new ResponseWrapper<>(patchItemResponse);
@@ -538,12 +684,12 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 return (paramsWrapper) -> {
 
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
-                    TestObject createdTestObject = paramsWrapper.createdTestObject;
+                    TestItem createdTestObject = paramsWrapper.createdTestItem;
                     CosmosItemRequestOptions itemRequestOptions = paramsWrapper.itemRequestOptions;
 
                     try {
 
-                        CosmosItemResponse<TestObject> deleteItemResponse = asyncContainer.replaceItem(
+                        CosmosItemResponse<TestItem> deleteItemResponse = asyncContainer.replaceItem(
                                 createdTestObject,
                                 createdTestObject.getId(),
                                 new PartitionKey(createdTestObject.getId()),
@@ -564,7 +710,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             case Batch:
                 return (paramsWrapper) -> {
 
-                    TestObject testObject = TestObject.create();
+                    TestItem testObject = TestItem.createNewItem();
                     CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(testObject.getId()));
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
 
@@ -590,9 +736,9 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
 
                     try {
 
-                        FeedResponse<TestObject> feedResponseFromChangeFeed = asyncContainer.queryChangeFeed(
+                        FeedResponse<TestItem> feedResponseFromChangeFeed = asyncContainer.queryChangeFeed(
                                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(paramsWrapper.feedRangeToDrainForChangeFeed == null ? FeedRange.forFullRange() : paramsWrapper.feedRangeToDrainForChangeFeed),
-                                TestObject.class)
+                                TestItem.class)
                             .byPage()
                             .blockLast();
 
@@ -611,7 +757,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 throw new UnsupportedOperationException(String.format("Operation of type : %s is not supported", operationType));
         }
     }
-
 
     private static class ResponseWrapper<T> {
 
@@ -651,7 +796,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
 
     private static class OperationInvocationParamsWrapper {
         public CosmosAsyncContainer asyncContainer;
-        public TestObject createdTestObject;
+        public TestItem createdTestItem;
         public CosmosItemRequestOptions itemRequestOptions;
         public CosmosQueryRequestOptions queryRequestOptions;
         public CosmosReadManyRequestOptions readManyRequestOptions;
