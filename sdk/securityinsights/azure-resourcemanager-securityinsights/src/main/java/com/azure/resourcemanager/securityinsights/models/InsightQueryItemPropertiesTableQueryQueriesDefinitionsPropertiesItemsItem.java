@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem model. */
+/**
+ * The InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem model.
+ */
 @Fluent
-public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem {
+public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem
+    implements JsonSerializable<InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem> {
     /*
      * Insight Link Definition Projected Name.
      */
-    @JsonProperty(value = "projectedName")
     private String projectedName;
 
     /*
      * Insight Link Definition Query.
      */
-    @JsonProperty(value = "Query")
     private String query;
 
     /**
+     * Creates an instance of InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem class.
+     */
+    public InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem() {
+    }
+
+    /**
      * Get the projectedName property: Insight Link Definition Projected Name.
-     *
+     * 
      * @return the projectedName value.
      */
     public String projectedName() {
@@ -33,19 +44,19 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropert
 
     /**
      * Set the projectedName property: Insight Link Definition Projected Name.
-     *
+     * 
      * @param projectedName the projectedName value to set.
      * @return the InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem object itself.
      */
-    public InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem withProjectedName(
-        String projectedName) {
+    public InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem
+        withProjectedName(String projectedName) {
         this.projectedName = projectedName;
         return this;
     }
 
     /**
      * Get the query property: Insight Link Definition Query.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -54,7 +65,7 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropert
 
     /**
      * Set the query property: Insight Link Definition Query.
-     *
+     * 
      * @param query the query value to set.
      * @return the InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem object itself.
      */
@@ -65,9 +76,54 @@ public final class InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("projectedName", this.projectedName);
+        jsonWriter.writeStringField("Query", this.query);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem from the
+     * JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem if the
+     * JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem.
+     */
+    public static InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem
+        fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem
+                = new InsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("projectedName".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem.projectedName
+                        = reader.getString();
+                } else if ("Query".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem.query
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightQueryItemPropertiesTableQueryQueriesDefinitionsPropertiesItemsItem;
+        });
     }
 }

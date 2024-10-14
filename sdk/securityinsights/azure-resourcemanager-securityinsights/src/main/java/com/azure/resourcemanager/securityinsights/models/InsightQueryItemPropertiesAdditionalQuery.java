@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The activity query definitions. */
+/**
+ * The activity query definitions.
+ */
 @Fluent
-public final class InsightQueryItemPropertiesAdditionalQuery {
+public final class InsightQueryItemPropertiesAdditionalQuery
+    implements JsonSerializable<InsightQueryItemPropertiesAdditionalQuery> {
     /*
      * The insight query.
      */
-    @JsonProperty(value = "query")
     private String query;
 
     /*
      * The insight text.
      */
-    @JsonProperty(value = "text")
     private String text;
 
     /**
+     * Creates an instance of InsightQueryItemPropertiesAdditionalQuery class.
+     */
+    public InsightQueryItemPropertiesAdditionalQuery() {
+    }
+
+    /**
      * Get the query property: The insight query.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -33,7 +44,7 @@ public final class InsightQueryItemPropertiesAdditionalQuery {
 
     /**
      * Set the query property: The insight query.
-     *
+     * 
      * @param query the query value to set.
      * @return the InsightQueryItemPropertiesAdditionalQuery object itself.
      */
@@ -44,7 +55,7 @@ public final class InsightQueryItemPropertiesAdditionalQuery {
 
     /**
      * Get the text property: The insight text.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -53,7 +64,7 @@ public final class InsightQueryItemPropertiesAdditionalQuery {
 
     /**
      * Set the text property: The insight text.
-     *
+     * 
      * @param text the text value to set.
      * @return the InsightQueryItemPropertiesAdditionalQuery object itself.
      */
@@ -64,9 +75,49 @@ public final class InsightQueryItemPropertiesAdditionalQuery {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("text", this.text);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightQueryItemPropertiesAdditionalQuery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightQueryItemPropertiesAdditionalQuery if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InsightQueryItemPropertiesAdditionalQuery.
+     */
+    public static InsightQueryItemPropertiesAdditionalQuery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightQueryItemPropertiesAdditionalQuery deserializedInsightQueryItemPropertiesAdditionalQuery
+                = new InsightQueryItemPropertiesAdditionalQuery();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesAdditionalQuery.query = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    deserializedInsightQueryItemPropertiesAdditionalQuery.text = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightQueryItemPropertiesAdditionalQuery;
+        });
     }
 }

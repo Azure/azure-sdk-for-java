@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.RepoInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List all the source controls. */
+/**
+ * List all the source controls.
+ */
 @Fluent
-public final class RepoList {
+public final class RepoList implements JsonSerializable<RepoList> {
     /*
      * URL to fetch the next set of repositories.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of repositories.
      */
-    @JsonProperty(value = "value", required = true)
     private List<RepoInner> value;
 
     /**
+     * Creates an instance of RepoList class.
+     */
+    public RepoList() {
+    }
+
+    /**
      * Get the nextLink property: URL to fetch the next set of repositories.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class RepoList {
 
     /**
      * Get the value property: Array of repositories.
-     *
+     * 
      * @return the value value.
      */
     public List<RepoInner> value() {
@@ -45,7 +55,7 @@ public final class RepoList {
 
     /**
      * Set the value property: Array of repositories.
-     *
+     * 
      * @param value the value value to set.
      * @return the RepoList object itself.
      */
@@ -56,17 +66,57 @@ public final class RepoList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property value in model RepoList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model RepoList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RepoList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RepoList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RepoList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RepoList.
+     */
+    public static RepoList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RepoList deserializedRepoList = new RepoList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RepoInner> value = reader.readArray(reader1 -> RepoInner.fromJson(reader1));
+                    deserializedRepoList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRepoList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRepoList;
+        });
+    }
 }

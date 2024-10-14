@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Device importance, determines if the device classified as 'crown jewel'. */
+/**
+ * Device importance, determines if the device classified as 'crown jewel'.
+ */
 public final class DeviceImportance extends ExpandableStringEnum<DeviceImportance> {
-    /** Static value Unknown for DeviceImportance. */
+    /**
+     * Static value Unknown for DeviceImportance.
+     */
     public static final DeviceImportance UNKNOWN = fromString("Unknown");
 
-    /** Static value Low for DeviceImportance. */
+    /**
+     * Static value Low for DeviceImportance.
+     */
     public static final DeviceImportance LOW = fromString("Low");
 
-    /** Static value Normal for DeviceImportance. */
+    /**
+     * Static value Normal for DeviceImportance.
+     */
     public static final DeviceImportance NORMAL = fromString("Normal");
 
-    /** Static value High for DeviceImportance. */
+    /**
+     * Static value High for DeviceImportance.
+     */
     public static final DeviceImportance HIGH = fromString("High");
 
     /**
+     * Creates a new instance of DeviceImportance value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeviceImportance() {
+    }
+
+    /**
      * Creates or finds a DeviceImportance from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeviceImportance.
      */
-    @JsonCreator
     public static DeviceImportance fromString(String name) {
         return fromString(name, DeviceImportance.class);
     }
 
     /**
      * Gets known DeviceImportance values.
-     *
+     * 
      * @return known DeviceImportance values.
      */
     public static Collection<DeviceImportance> values() {

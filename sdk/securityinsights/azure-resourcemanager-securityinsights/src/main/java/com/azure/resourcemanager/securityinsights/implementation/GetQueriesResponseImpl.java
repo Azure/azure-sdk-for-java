@@ -15,8 +15,7 @@ public final class GetQueriesResponseImpl implements GetQueriesResponse {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    GetQueriesResponseImpl(
-        GetQueriesResponseInner innerObject,
+    GetQueriesResponseImpl(GetQueriesResponseInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

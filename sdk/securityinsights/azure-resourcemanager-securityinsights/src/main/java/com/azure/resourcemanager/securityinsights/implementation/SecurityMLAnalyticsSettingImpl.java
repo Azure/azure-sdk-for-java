@@ -7,14 +7,14 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.SecurityMLAnalyticsSettingInner;
 import com.azure.resourcemanager.securityinsights.models.SecurityMLAnalyticsSetting;
+import com.azure.resourcemanager.securityinsights.models.SecurityMLAnalyticsSettingsKind;
 
 public final class SecurityMLAnalyticsSettingImpl implements SecurityMLAnalyticsSetting {
     private SecurityMLAnalyticsSettingInner innerObject;
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    SecurityMLAnalyticsSettingImpl(
-        SecurityMLAnalyticsSettingInner innerObject,
+    SecurityMLAnalyticsSettingImpl(SecurityMLAnalyticsSettingInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -38,6 +38,10 @@ public final class SecurityMLAnalyticsSettingImpl implements SecurityMLAnalytics
 
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public SecurityMLAnalyticsSettingsKind kind() {
+        return this.innerModel().kind();
     }
 
     public SecurityMLAnalyticsSettingInner innerModel() {

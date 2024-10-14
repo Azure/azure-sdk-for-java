@@ -5,29 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The edge that connects the entity to the other entity. */
+/**
+ * The edge that connects the entity to the other entity.
+ */
 @Fluent
-public final class EntityEdges {
+public final class EntityEdges implements JsonSerializable<EntityEdges> {
     /*
      * The target entity Id.
      */
-    @JsonProperty(value = "targetEntityId")
     private String targetEntityId;
 
     /*
      * A bag of custom fields that should be part of the entity and will be presented to the user.
      */
-    @JsonProperty(value = "additionalData")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalData;
 
     /**
+     * Creates an instance of EntityEdges class.
+     */
+    public EntityEdges() {
+    }
+
+    /**
      * Get the targetEntityId property: The target entity Id.
-     *
+     * 
      * @return the targetEntityId value.
      */
     public String targetEntityId() {
@@ -36,7 +44,7 @@ public final class EntityEdges {
 
     /**
      * Set the targetEntityId property: The target entity Id.
-     *
+     * 
      * @param targetEntityId the targetEntityId value to set.
      * @return the EntityEdges object itself.
      */
@@ -48,7 +56,7 @@ public final class EntityEdges {
     /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -58,7 +66,7 @@ public final class EntityEdges {
     /**
      * Set the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @param additionalData the additionalData value to set.
      * @return the EntityEdges object itself.
      */
@@ -69,9 +77,50 @@ public final class EntityEdges {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetEntityId", this.targetEntityId);
+        jsonWriter.writeMapField("additionalData", this.additionalData,
+            (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityEdges from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityEdges if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityEdges.
+     */
+    public static EntityEdges fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityEdges deserializedEntityEdges = new EntityEdges();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetEntityId".equals(fieldName)) {
+                    deserializedEntityEdges.targetEntityId = reader.getString();
+                } else if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedEntityEdges.additionalData = additionalData;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityEdges;
+        });
     }
 }

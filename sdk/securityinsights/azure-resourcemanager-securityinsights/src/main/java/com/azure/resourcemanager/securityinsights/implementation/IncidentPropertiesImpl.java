@@ -24,8 +24,7 @@ public final class IncidentPropertiesImpl implements IncidentProperties {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    IncidentPropertiesImpl(
-        IncidentPropertiesInner innerObject,
+    IncidentPropertiesImpl(IncidentPropertiesInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

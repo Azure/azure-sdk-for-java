@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Resources created in user's repository for the source-control. */
+/**
+ * Resources created in user's repository for the source-control.
+ */
 @Fluent
-public final class RepositoryResourceInfo {
+public final class RepositoryResourceInfo implements JsonSerializable<RepositoryResourceInfo> {
     /*
      * The webhook object created for the source-control.
      */
-    @JsonProperty(value = "webhook")
     private Webhook webhook;
 
     /*
      * Resources created in GitHub for this source-control.
      */
-    @JsonProperty(value = "gitHubResourceInfo")
     private GitHubResourceInfo gitHubResourceInfo;
 
     /*
      * Resources created in Azure DevOps for this source-control.
      */
-    @JsonProperty(value = "azureDevOpsResourceInfo")
     private AzureDevOpsResourceInfo azureDevOpsResourceInfo;
 
     /**
+     * Creates an instance of RepositoryResourceInfo class.
+     */
+    public RepositoryResourceInfo() {
+    }
+
+    /**
      * Get the webhook property: The webhook object created for the source-control.
-     *
+     * 
      * @return the webhook value.
      */
     public Webhook webhook() {
@@ -39,7 +48,7 @@ public final class RepositoryResourceInfo {
 
     /**
      * Set the webhook property: The webhook object created for the source-control.
-     *
+     * 
      * @param webhook the webhook value to set.
      * @return the RepositoryResourceInfo object itself.
      */
@@ -50,7 +59,7 @@ public final class RepositoryResourceInfo {
 
     /**
      * Get the gitHubResourceInfo property: Resources created in GitHub for this source-control.
-     *
+     * 
      * @return the gitHubResourceInfo value.
      */
     public GitHubResourceInfo gitHubResourceInfo() {
@@ -59,7 +68,7 @@ public final class RepositoryResourceInfo {
 
     /**
      * Set the gitHubResourceInfo property: Resources created in GitHub for this source-control.
-     *
+     * 
      * @param gitHubResourceInfo the gitHubResourceInfo value to set.
      * @return the RepositoryResourceInfo object itself.
      */
@@ -70,7 +79,7 @@ public final class RepositoryResourceInfo {
 
     /**
      * Get the azureDevOpsResourceInfo property: Resources created in Azure DevOps for this source-control.
-     *
+     * 
      * @return the azureDevOpsResourceInfo value.
      */
     public AzureDevOpsResourceInfo azureDevOpsResourceInfo() {
@@ -79,7 +88,7 @@ public final class RepositoryResourceInfo {
 
     /**
      * Set the azureDevOpsResourceInfo property: Resources created in Azure DevOps for this source-control.
-     *
+     * 
      * @param azureDevOpsResourceInfo the azureDevOpsResourceInfo value to set.
      * @return the RepositoryResourceInfo object itself.
      */
@@ -90,7 +99,7 @@ public final class RepositoryResourceInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -103,5 +112,48 @@ public final class RepositoryResourceInfo {
         if (azureDevOpsResourceInfo() != null) {
             azureDevOpsResourceInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("webhook", this.webhook);
+        jsonWriter.writeJsonField("gitHubResourceInfo", this.gitHubResourceInfo);
+        jsonWriter.writeJsonField("azureDevOpsResourceInfo", this.azureDevOpsResourceInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RepositoryResourceInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RepositoryResourceInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RepositoryResourceInfo.
+     */
+    public static RepositoryResourceInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RepositoryResourceInfo deserializedRepositoryResourceInfo = new RepositoryResourceInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("webhook".equals(fieldName)) {
+                    deserializedRepositoryResourceInfo.webhook = Webhook.fromJson(reader);
+                } else if ("gitHubResourceInfo".equals(fieldName)) {
+                    deserializedRepositoryResourceInfo.gitHubResourceInfo = GitHubResourceInfo.fromJson(reader);
+                } else if ("azureDevOpsResourceInfo".equals(fieldName)) {
+                    deserializedRepositoryResourceInfo.azureDevOpsResourceInfo
+                        = AzureDevOpsResourceInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRepositoryResourceInfo;
+        });
     }
 }

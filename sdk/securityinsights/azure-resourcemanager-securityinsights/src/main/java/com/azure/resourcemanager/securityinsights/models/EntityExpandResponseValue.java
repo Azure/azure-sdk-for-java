@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The expansion result values. */
+/**
+ * The expansion result values.
+ */
 @Fluent
-public final class EntityExpandResponseValue {
+public final class EntityExpandResponseValue implements JsonSerializable<EntityExpandResponseValue> {
     /*
      * Array of the expansion result entities.
      */
-    @JsonProperty(value = "entities")
     private List<EntityInner> entities;
 
     /*
      * Array of edges that connects the entity to the list of entities.
      */
-    @JsonProperty(value = "edges")
     private List<EntityEdges> edges;
 
     /**
+     * Creates an instance of EntityExpandResponseValue class.
+     */
+    public EntityExpandResponseValue() {
+    }
+
+    /**
      * Get the entities property: Array of the expansion result entities.
-     *
+     * 
      * @return the entities value.
      */
     public List<EntityInner> entities() {
@@ -35,7 +45,7 @@ public final class EntityExpandResponseValue {
 
     /**
      * Set the entities property: Array of the expansion result entities.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the EntityExpandResponseValue object itself.
      */
@@ -46,7 +56,7 @@ public final class EntityExpandResponseValue {
 
     /**
      * Get the edges property: Array of edges that connects the entity to the list of entities.
-     *
+     * 
      * @return the edges value.
      */
     public List<EntityEdges> edges() {
@@ -55,7 +65,7 @@ public final class EntityExpandResponseValue {
 
     /**
      * Set the edges property: Array of edges that connects the entity to the list of entities.
-     *
+     * 
      * @param edges the edges value to set.
      * @return the EntityExpandResponseValue object itself.
      */
@@ -66,7 +76,7 @@ public final class EntityExpandResponseValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -76,5 +86,46 @@ public final class EntityExpandResponseValue {
         if (edges() != null) {
             edges().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("entities", this.entities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("edges", this.edges, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityExpandResponseValue from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityExpandResponseValue if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityExpandResponseValue.
+     */
+    public static EntityExpandResponseValue fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityExpandResponseValue deserializedEntityExpandResponseValue = new EntityExpandResponseValue();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entities".equals(fieldName)) {
+                    List<EntityInner> entities = reader.readArray(reader1 -> EntityInner.fromJson(reader1));
+                    deserializedEntityExpandResponseValue.entities = entities;
+                } else if ("edges".equals(fieldName)) {
+                    List<EntityEdges> edges = reader.readArray(reader1 -> EntityEdges.fromJson(reader1));
+                    deserializedEntityExpandResponseValue.edges = edges;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityExpandResponseValue;
+        });
     }
 }
