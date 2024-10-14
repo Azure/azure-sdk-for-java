@@ -14,12 +14,14 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.SerializerAdapter;
 import reactor.core.publisher.Mono;
 
 /**
@@ -31,20 +33,12 @@ public class RealtimesImpl {
      */
     private final RealtimesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private final BaseOpenAIClient client;
+    private final String endpoint;
 
-    /**
-     * Initializes an instance of RealtimesImpl.
-     *
-     * @param client the instance of the service client containing this operation class.
-     */
-    RealtimesImpl(BaseOpenAIClient client) {
+    RealtimesImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.service
-                = RestProxy.create(RealtimesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
+                = RestProxy.create(RealtimesService.class, httpPipeline, serializerAdapter);
+        this.endpoint = endpoint;
     }
 
     /**
@@ -110,7 +104,7 @@ public class RealtimesImpl {
                                                                             RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil
-                .withContext(context -> service.startRealtimeSession(client.getEndpoint(), accept, requestMessages, requestOptions, context));
+                .withContext(context -> service.startRealtimeSession(this.endpoint, accept, requestMessages, requestOptions, context));
     }
 
     /**
@@ -149,6 +143,6 @@ public class RealtimesImpl {
     public Response<BinaryData> startRealtimeSessionWithResponse(BinaryData requestMessages,
                                                                  RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.startRealtimeSessionSync(client.getEndpoint(), accept, requestMessages, requestOptions, Context.NONE);
+        return service.startRealtimeSessionSync(this.endpoint, accept, requestMessages, requestOptions, Context.NONE);
     }
 }

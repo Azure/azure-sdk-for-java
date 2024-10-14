@@ -40,7 +40,7 @@ import reactor.core.publisher.Mono;
 /**
  * Initializes a new instance of the OpenAIClient type.
  */
-public final class OpenAIClientImpl implements BaseOpenAIClient {
+public final class OpenAIClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
@@ -150,7 +150,7 @@ public final class OpenAIClientImpl implements BaseOpenAIClient {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service = RestProxy.create(OpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
-        this.realtime = new RealtimesImpl(this);
+        this.realtime = new RealtimesImpl(httpPipeline, serializerAdapter, endpoint);
     }
 
     /**

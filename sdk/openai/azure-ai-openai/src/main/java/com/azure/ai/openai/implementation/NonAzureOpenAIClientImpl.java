@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * Implementation for calling Non-Azure OpenAI Service
  */
-public final class NonAzureOpenAIClientImpl implements BaseOpenAIClient {
+public final class NonAzureOpenAIClientImpl {
     /** The proxy service used to perform REST calls. */
     private final NonAzureOpenAIClientService service;
 
@@ -84,7 +84,7 @@ public final class NonAzureOpenAIClientImpl implements BaseOpenAIClient {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
-        this.realtime = new RealtimesImpl(this);
+        this.realtime = new RealtimesImpl(httpPipeline, serializerAdapter, OPEN_AI_ENDPOINT);
     }
 
     /**
