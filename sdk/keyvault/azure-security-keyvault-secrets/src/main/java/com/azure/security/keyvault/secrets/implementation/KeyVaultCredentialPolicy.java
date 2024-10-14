@@ -405,10 +405,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 return next.process().flatMap(newResponse -> {
                     String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
 
-                    if (newResponse.getStatusCode() == 401 && authHeader != null
-                        && (isClaimsPresent(httpResponse) ^ isClaimsPresent(newResponse))) {
-
-                        return handleChallenge(context, newResponse, nextPolicy);
+                    if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
+                        && !isClaimsPresent(httpResponse)) {
+                           return handleChallenge(context, newResponse, nextPolicy);
                     } else {
                         return Mono.just(newResponse);
                     }
@@ -429,10 +428,9 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
             HttpResponse newResponse = next.processSync();
             String authHeader = newResponse.getHeaderValue(WWW_AUTHENTICATE);
 
-            if (newResponse.getStatusCode() == 401 && authHeader != null
-                && (isClaimsPresent(httpResponse) ^ isClaimsPresent(newResponse))) {
-
-                return handleChallengeSync(context, newResponse, nextPolicy);
+            if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
+                && !isClaimsPresent(httpResponse)) {
+                    return handleChallengeSync(context, newResponse, nextPolicy);
             }
 
             return newResponse;
