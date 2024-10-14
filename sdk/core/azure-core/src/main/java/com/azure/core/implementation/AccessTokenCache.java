@@ -254,8 +254,8 @@ public final class AccessTokenCache {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
                 ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() != null && tokenRequestContext.getClaims()
-                    .equals(this.tokenRequestContext.getClaims())))
+                : (tokenRequestContext.getClaims() != null
+                    && tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
