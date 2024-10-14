@@ -49,9 +49,9 @@ public class CreateVirtualMachineWithTrustedLaunchFromGalleryImage {
      */
     public static boolean runSample(AzureResourceManager azure) {
         final String rgName = Utils.randomResourceName(azure, "rg", 15);
-        final Region region = Region.US_WEST;
+        final Region region = Region.US_WEST2;
         final String newRgName = Utils.randomResourceName(azure, "rg", 15);
-        final Region newRegion = Region.US_WEST2;
+        final Region newRegion = Region.US_WEST3;
 
         ResourceGroup resourceGroup = null;
         ResourceGroup newResourceGroup = null;

@@ -207,6 +207,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @Disabled("io.netty.handler.codec.http.TooLongHttpHeaderException: HTTP header is larger than 8192 bytes.")
     public void testCreateVirtualMachineWithTrustedLaunchFromGalleryImage() {
         Assertions.assertTrue(CreateVirtualMachineWithTrustedLaunchFromGalleryImage.runSample(azureResourceManager));
     }

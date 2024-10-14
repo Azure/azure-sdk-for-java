@@ -2197,7 +2197,9 @@ class VirtualMachineImpl
                 .serviceClient()
                 .getVirtualMachines()
                 .updateAsync(resourceGroupName(), vmName, updateParameter)
-                .onErrorResume(e -> refreshAsync().then(Mono.error(e)))
+                .onErrorResume(e -> refreshAsync()
+                        .onErrorComplete() // ignore refresh error
+                        .then(Mono.error(e)))
                 .map(
                     virtualMachineInner -> {
                         reset(virtualMachineInner);
