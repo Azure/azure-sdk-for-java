@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyMetadataInner;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyMetadataInnerTests {
-    @Test
-    public void testDeserialize() {
-        PolicyMetadataInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"rpkhjwn\",\"requirements\":\"qsluicp\",\"metadataId\":\"gk\",\"category\":\"lvmbmpaxmodfvuef\",\"title\":\"sbpfvmwyhr\",\"owner\":\"uyfta\",\"additionalContentUrl\":\"cpwi\"},\"id\":\"qtmnubexkpzk\",\"type\":\"ondjmq\",\"name\":\"vypomgkopkwho\"}")
-                .toObject(PolicyMetadataInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyMetadataInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"okqgukkjq\",\"requirements\":\"broyla\",\"metadataId\":\"ulcdisdosf\",\"category\":\"jsvg\",\"title\":\"whryvycytdcl\",\"owner\":\"ccknfnwmbtmvp\",\"additionalContentUrl\":\"jdhttzaefedxi\",\"metadata\":\"datahrphkmcrjdqn\"},\"id\":\"fzpbgtgkyl\",\"type\":\"ghrjeuutl\",\"name\":\"ez\"}")
+            .toObject(PolicyMetadataInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PolicyMetadataInner model = new PolicyMetadataInner();
         model = BinaryData.fromObject(model).toObject(PolicyMetadataInner.class);
     }

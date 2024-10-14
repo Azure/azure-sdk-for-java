@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The compliance state rollup. */
+/**
+ * The compliance state rollup.
+ */
 @Fluent
-public final class ComplianceDetail {
+public final class ComplianceDetail implements JsonSerializable<ComplianceDetail> {
     /*
      * The compliance state.
      */
-    @JsonProperty(value = "complianceState")
     private String complianceState;
 
     /*
      * Summarized count value for this compliance state.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
-    /** Creates an instance of ComplianceDetail class. */
+    /**
+     * Creates an instance of ComplianceDetail class.
+     */
     public ComplianceDetail() {
     }
 
     /**
      * Get the complianceState property: The compliance state.
-     *
+     * 
      * @return the complianceState value.
      */
     public String complianceState() {
@@ -37,7 +43,7 @@ public final class ComplianceDetail {
 
     /**
      * Set the complianceState property: The compliance state.
-     *
+     * 
      * @param complianceState the complianceState value to set.
      * @return the ComplianceDetail object itself.
      */
@@ -48,7 +54,7 @@ public final class ComplianceDetail {
 
     /**
      * Get the count property: Summarized count value for this compliance state.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -57,7 +63,7 @@ public final class ComplianceDetail {
 
     /**
      * Set the count property: Summarized count value for this compliance state.
-     *
+     * 
      * @param count the count value to set.
      * @return the ComplianceDetail object itself.
      */
@@ -68,9 +74,48 @@ public final class ComplianceDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("complianceState", this.complianceState);
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComplianceDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComplianceDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComplianceDetail.
+     */
+    public static ComplianceDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComplianceDetail deserializedComplianceDetail = new ComplianceDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("complianceState".equals(fieldName)) {
+                    deserializedComplianceDetail.complianceState = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedComplianceDetail.count = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComplianceDetail;
+        });
     }
 }

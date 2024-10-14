@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Summary results. */
+/**
+ * Summary results.
+ */
 @Fluent
-public final class Summary {
+public final class Summary implements JsonSerializable<Summary> {
     /*
      * OData entity ID; always set to null since summaries do not have an entity ID.
      */
-    @JsonProperty(value = "@odata.id")
     private String odataId;
 
     /*
      * OData context string; used by OData clients to resolve type information based on metadata.
      */
-    @JsonProperty(value = "@odata.context")
     private String odataContext;
 
     /*
      * Compliance summary for all policy assignments.
      */
-    @JsonProperty(value = "results")
     private SummaryResults results;
 
     /*
      * Policy assignments summary.
      */
-    @JsonProperty(value = "policyAssignments")
     private List<PolicyAssignmentSummary> policyAssignments;
 
-    /** Creates an instance of Summary class. */
+    /**
+     * Creates an instance of Summary class.
+     */
     public Summary() {
     }
 
     /**
      * Get the odataId property: OData entity ID; always set to null since summaries do not have an entity ID.
-     *
+     * 
      * @return the odataId value.
      */
     public String odataId() {
@@ -50,7 +54,7 @@ public final class Summary {
 
     /**
      * Set the odataId property: OData entity ID; always set to null since summaries do not have an entity ID.
-     *
+     * 
      * @param odataId the odataId value to set.
      * @return the Summary object itself.
      */
@@ -62,7 +66,7 @@ public final class Summary {
     /**
      * Get the odataContext property: OData context string; used by OData clients to resolve type information based on
      * metadata.
-     *
+     * 
      * @return the odataContext value.
      */
     public String odataContext() {
@@ -72,7 +76,7 @@ public final class Summary {
     /**
      * Set the odataContext property: OData context string; used by OData clients to resolve type information based on
      * metadata.
-     *
+     * 
      * @param odataContext the odataContext value to set.
      * @return the Summary object itself.
      */
@@ -83,7 +87,7 @@ public final class Summary {
 
     /**
      * Get the results property: Compliance summary for all policy assignments.
-     *
+     * 
      * @return the results value.
      */
     public SummaryResults results() {
@@ -92,7 +96,7 @@ public final class Summary {
 
     /**
      * Set the results property: Compliance summary for all policy assignments.
-     *
+     * 
      * @param results the results value to set.
      * @return the Summary object itself.
      */
@@ -103,7 +107,7 @@ public final class Summary {
 
     /**
      * Get the policyAssignments property: Policy assignments summary.
-     *
+     * 
      * @return the policyAssignments value.
      */
     public List<PolicyAssignmentSummary> policyAssignments() {
@@ -112,7 +116,7 @@ public final class Summary {
 
     /**
      * Set the policyAssignments property: Policy assignments summary.
-     *
+     * 
      * @param policyAssignments the policyAssignments value to set.
      * @return the Summary object itself.
      */
@@ -123,7 +127,7 @@ public final class Summary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -133,5 +137,53 @@ public final class Summary {
         if (policyAssignments() != null) {
             policyAssignments().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.id", this.odataId);
+        jsonWriter.writeStringField("@odata.context", this.odataContext);
+        jsonWriter.writeJsonField("results", this.results);
+        jsonWriter.writeArrayField("policyAssignments", this.policyAssignments,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Summary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Summary if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Summary.
+     */
+    public static Summary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Summary deserializedSummary = new Summary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.id".equals(fieldName)) {
+                    deserializedSummary.odataId = reader.getString();
+                } else if ("@odata.context".equals(fieldName)) {
+                    deserializedSummary.odataContext = reader.getString();
+                } else if ("results".equals(fieldName)) {
+                    deserializedSummary.results = SummaryResults.fromJson(reader);
+                } else if ("policyAssignments".equals(fieldName)) {
+                    List<PolicyAssignmentSummary> policyAssignments
+                        = reader.readArray(reader1 -> PolicyAssignmentSummary.fromJson(reader1));
+                    deserializedSummary.policyAssignments = policyAssignments;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSummary;
+        });
     }
 }
