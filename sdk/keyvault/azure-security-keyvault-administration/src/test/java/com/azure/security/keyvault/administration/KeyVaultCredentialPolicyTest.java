@@ -35,6 +35,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,7 +67,7 @@ public class KeyVaultCredentialPolicyTest {
     private static final String BODY = "this is a sample body";
     private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(() ->
         Flux.fromStream(Stream.of(BODY.split("")).map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))));
-    private static final List<Function<TokenRequestContext, Boolean>> BASE_ASSERTIONS = List.of(
+    private static final List<Function<TokenRequestContext, Boolean>> BASE_ASSERTIONS = Arrays.asList(
         tokenRequestContext -> !tokenRequestContext.getScopes().isEmpty(),
         tokenRequestContext -> !isNullOrEmpty(tokenRequestContext.getTenantId()),
         TokenRequestContext::isCaeEnabled);
