@@ -20,8 +20,7 @@ public final class SavingsPlanOrderAliasModelImpl implements SavingsPlanOrderAli
 
     private final com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager;
 
-    SavingsPlanOrderAliasModelImpl(
-        SavingsPlanOrderAliasModelInner innerObject,
+    SavingsPlanOrderAliasModelImpl(SavingsPlanOrderAliasModelInner innerObject,
         com.azure.resourcemanager.billingbenefits.BillingBenefitsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -85,6 +84,10 @@ public final class SavingsPlanOrderAliasModelImpl implements SavingsPlanOrderAli
 
     public Commitment commitment() {
         return this.innerModel().commitment();
+    }
+
+    public Boolean renew() {
+        return this.innerModel().renew();
     }
 
     public SavingsPlanOrderAliasModelInner innerModel() {
