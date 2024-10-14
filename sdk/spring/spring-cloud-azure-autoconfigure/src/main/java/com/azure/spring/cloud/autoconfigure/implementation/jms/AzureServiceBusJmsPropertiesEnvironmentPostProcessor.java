@@ -20,15 +20,18 @@ class AzureServiceBusJmsPropertiesEnvironmentPostProcessor implements Environmen
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (environment.containsProperty("spring.jms.cache.enabled")) {
-            if (environment.containsProperty("spring.jms.servicebus.pool.enabled") && environment.getProperty("spring.jms.servicebus.pool.enabled").equals("true")) {
-                throw new IllegalStateException("spring.jms.cache.enabled and spring.jms.servicebus.pool.enabled cannot be set at the same time.");
+            if (environment.containsProperty("spring.jms.servicebus.pool.enabled") && environment.getProperty("spring"
+                + ".jms.servicebus.pool.enabled").equals("true")) {
+                throw new IllegalStateException("spring.jms.cache.enabled and spring.jms.servicebus.pool.enabled "
+                    + "cannot be set at the same time.");
             }
             Map<String, Object> servicebusJmsMode = new HashMap<>();
             servicebusJmsMode.put("spring.jms.servicebus.pool.enabled", "false");
             environment.getPropertySources().addFirst(new MapPropertySource("servicebusJmsMode", servicebusJmsMode));
-        }
-        else if (environment.containsProperty("spring.jms.servicebus.pool.enabled") && environment.getProperty("spring.jms.servicebus.pool.enabled").equals("false")) {
-            throw new IllegalStateException("spring.jms.cache.enabled must be set when spring.jms.servicebus.pool.enabled is set to false.");
+        } else if (environment.containsProperty("spring.jms.servicebus.pool.enabled") && environment.getProperty(
+            "spring.jms.servicebus.pool.enabled").equals("false")) {
+            throw new IllegalStateException("spring.jms.cache.enabled must be set when spring.jms.servicebus.pool"
+                + ".enabled is set to false.");
         }
     }
 
