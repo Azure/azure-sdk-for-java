@@ -45,7 +45,8 @@ class ServiceBusJmsAutoConfigurationTests {
         new AzureServiceBusJmsPropertiesEnvironmentPostProcessor();
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-        .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(JmsAutoConfiguration.class, ServiceBusJmsAutoConfiguration.class))
+        .withInitializer(context -> processor.postProcessEnvironment(context.getEnvironment(), null));
 
     private void testQueueJmsListenerContainerFactoryWithCustomSettings(AssertableApplicationContext loaded) {
         DefaultJmsListenerContainerFactory listenerContainerFactory =
@@ -297,9 +298,6 @@ class ServiceBusJmsAutoConfigurationTests {
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
-            .withInitializer(context -> {
-                processor.postProcessEnvironment(context.getEnvironment(), null);
-            })
             .run(context -> {
                 assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
@@ -310,17 +308,12 @@ class ServiceBusJmsAutoConfigurationTests {
     @ParameterizedTest
     @ValueSource(strings = { "standard", "premium" })
     void cachingConnectionFactoryBeanConfiguredByPropertyCondition(String pricingTier) {
-//        contextRunner.withSystemProperties("")
         this.contextRunner
             .withPropertyValues(
                 "spring.jms.servicebus.pricing-tier=" + pricingTier,
                 "spring.jms.cache.enabled=true",
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING)
-            .withInitializer(context -> {
-                processor.postProcessEnvironment(context.getEnvironment(), null);
-            })
             .run(context -> {
-                processor.postProcessEnvironment(context.getEnvironment(),null);
                 assertThat(context).hasSingleBean(CachingConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
                 assertThat(context).doesNotHaveBean(JmsPoolConnectionFactory.class);
@@ -336,9 +329,6 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.cache.enabled=false"
             )
-            .withInitializer(context -> {
-                processor.postProcessEnvironment(context.getEnvironment(), null);
-            })
             .run(context -> {
                     assertThat(context).hasSingleBean(ServiceBusJmsConnectionFactory.class);
                     assertThat(context).doesNotHaveBean(CachingConnectionFactory.class);
@@ -356,9 +346,6 @@ class ServiceBusJmsAutoConfigurationTests {
                 "spring.jms.servicebus.connection-string=" + CONNECTION_STRING,
                 "spring.jms.servicebus.pool.enabled=true"
             )
-            .withInitializer(context -> {
-                processor.postProcessEnvironment(context.getEnvironment(), null);
-            })
             .run(context -> {
                     assertThat(context).hasSingleBean(JmsPoolConnectionFactory.class);
                     assertThat(context).doesNotHaveBean(ServiceBusJmsConnectionFactory.class);
