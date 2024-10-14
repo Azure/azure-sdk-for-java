@@ -124,8 +124,8 @@ redis.clients:jedis;5.1.0
 io.lettuce:lettuce-core;6.3.2.RELEASE
 org.redisson:redisson;3.27.2
 net.bytebuddy:byte-buddy;1.12.23
-testdep_net.bytebuddy:byte-buddy;1.14.12
-testdep_net.bytebuddy:byte-buddy-agent;1.14.12
+testdep_net.bytebuddy:byte-buddy;1.15.4
+testdep_net.bytebuddy:byte-buddy-agent;1.15.4
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.7.18
