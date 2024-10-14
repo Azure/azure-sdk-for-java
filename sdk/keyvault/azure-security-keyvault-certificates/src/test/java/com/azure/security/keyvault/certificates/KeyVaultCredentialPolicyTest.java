@@ -61,6 +61,7 @@ public class KeyVaultCredentialPolicyTest {
         "Bearer realm=\"\", authorization_uri=\"https://login.microsoftonline.com/common/oauth2/authorize\", "
             + "error=\"insufficient_claims\", "
             + "claims=\"eyJhY2Nlc3NfdG9rZW4iOnsiYWNycyI6eyJlc3NlbnRpYWwiOnRydWUsInZhbHVlIjoiY3AxIn19fQ==\"";
+    private static final String DECODED_CLAIMS = "{\"access_token\":{\"acrs\":{\"essential\":true,\"value\":\"cp1\"}}}";
     private static final String BEARER = "Bearer";
     private static final String BODY = "this is a sample body";
     private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(() ->
@@ -243,7 +244,7 @@ public class KeyVaultCredentialPolicyTest {
                         assertTrue(firstToken.startsWith(BEARER));
 
                         testCredential.replaceAssertion(tokenRequestContext ->
-                            tokenRequestContext.getClaims() != null, 3);
+                            DECODED_CLAIMS.equals(tokenRequestContext.getClaims()), 3);
 
                         return policy.authorizeRequestOnChallenge(this.callContext, // Challenge with claims received
                                 this.unauthorizedHttpResponseWithHeaderAndClaims)
@@ -294,7 +295,8 @@ public class KeyVaultCredentialPolicyTest {
         assertFalse(firstToken.isEmpty());
         assertTrue(firstToken.startsWith(BEARER));
 
-        testCredential.replaceAssertion(tokenRequestContext -> tokenRequestContext.getClaims() != null, 3);
+        testCredential.replaceAssertion(tokenRequestContext ->
+            DECODED_CLAIMS.equals(tokenRequestContext.getClaims()), 3);
 
         // Challenge with claims received
         assertTrue(policy.authorizeRequestOnChallengeSync(this.callContext,
@@ -435,7 +437,8 @@ public class KeyVaultCredentialPolicyTest {
         // On a second attempt, a successful response was received.
         assertEquals(simpleResponse, firstResponse);
 
-        testCredential.replaceAssertion(tokenRequestContext -> tokenRequestContext.getClaims() != null, 3);
+        testCredential.replaceAssertion(tokenRequestContext ->
+            DECODED_CLAIMS.equals(tokenRequestContext.getClaims()), 3);
 
         // On receiving an unauthorized response with claims, the token should be updated and a new attempt to make the
         // original request should be made.
@@ -490,7 +493,8 @@ public class KeyVaultCredentialPolicyTest {
         // On a second attempt, a successful response was received.
         assertEquals(simpleResponse, firstResponse);
 
-        testCredential.replaceAssertion(tokenRequestContext -> tokenRequestContext.getClaims() != null, 3);
+        testCredential.replaceAssertion(tokenRequestContext ->
+            DECODED_CLAIMS.equals(tokenRequestContext.getClaims()), 3);
 
         HttpResponse newResponse = SyncAsyncExtension.execute(
             () -> pipeline.sendSync(this.callContext.getHttpRequest(), this.callContext.getContext()),
@@ -540,7 +544,8 @@ public class KeyVaultCredentialPolicyTest {
         // On a second attempt, a successful response was received.
         assertEquals(simpleResponse, firstResponse);
 
-        testCredential.replaceAssertion(tokenRequestContext -> tokenRequestContext.getClaims() != null, 3);
+        testCredential.replaceAssertion(tokenRequestContext ->
+            DECODED_CLAIMS.equals(tokenRequestContext.getClaims()), 3);
 
         HttpResponse newResponse = SyncAsyncExtension.execute(
             () -> pipeline.sendSync(this.callContext.getHttpRequest(), this.callContext.getContext()),
@@ -552,6 +557,57 @@ public class KeyVaultCredentialPolicyTest {
         assertNotEquals(firstToken, newToken);
         // A subsequent request was unsuccessful.
         assertEquals(unauthorizedHttpResponseWithHeader, newResponse);
+
+        KeyVaultCredentialPolicy.clearCache();
+    }
+
+    // Edge case: 401 Unauthorized -> 401 Unauthorized with claims -> 200 OK
+    @SyncAsyncTest
+    public void process401WithClaimsAfter401WithoutClaims() {
+        MutableTestCredential testCredential = new MutableTestCredential(new ArrayList<>(BASE_ASSERTIONS));
+        final String[] firstToken = new String[1];
+
+        testCredential.addAssertion(tokenRequestContext -> {
+            // This will ensure that that the first request does not contains claims, but the second does after
+            // receiving a 401 response with a challenge with claims.
+            testCredential.replaceAssertion(anotherTokenRequestContext ->
+                DECODED_CLAIMS.equals(anotherTokenRequestContext.getClaims()), 3);
+
+            // We will also store the value of the first credential before it changes on a second call
+            firstToken[0] = Base64Util.encodeToString(testCredential.getCredential().getBytes(StandardCharsets.UTF_8));
+
+            assertNotNull(firstToken[0]);
+
+            return tokenRequestContext.getClaims() == null;
+        });
+
+        HttpResponse[] responses = new HttpResponse[] {
+            unauthorizedHttpResponseWithHeader,
+            unauthorizedHttpResponseWithHeaderAndClaims,
+            simpleResponse
+        };
+        AtomicInteger currentResponse = new AtomicInteger();
+        KeyVaultCredentialPolicy policy = new KeyVaultCredentialPolicy(testCredential, false);
+
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(policy)
+            .httpClient(ignored -> Mono.just(responses[currentResponse.getAndIncrement()]))
+            .build();
+
+        // The first request to a Key Vault endpoint without an access token will always return a 401 Unauthorized
+        // response with a WWW-Authenticate header containing an authentication challenge.
+
+        HttpResponse firstResponse = SyncAsyncExtension.execute(
+            () -> pipeline.sendSync(this.callContext.getHttpRequest(), this.callContext.getContext()),
+            () -> pipeline.send(this.callContext.getHttpRequest(), this.callContext.getContext()));
+
+        String newToken = this.callContext.getHttpRequest().getHeaders().getValue(AUTHORIZATION);
+
+        // The first unauthorized response caused a token to be set on the request, then the token was updated on a
+        // subsequent unauthorized response with claims.
+        assertNotEquals(firstToken[0], newToken);
+        // Finally, a successful response was received.
+        assertEquals(simpleResponse, firstResponse);
 
         KeyVaultCredentialPolicy.clearCache();
     }
@@ -589,9 +645,6 @@ public class KeyVaultCredentialPolicyTest {
         @Override
         public Mono<AccessToken> getToken(TokenRequestContext requestContext) {
             if (requestContext.isCaeEnabled() && requestContext.getClaims() != null) {
-                assertEquals("{\"access_token\":{\"acrs\":{\"essential\":true,\"value\":\"cp1\"}}}",
-                    requestContext.getClaims());
-
                 credential = new Random().toString();
             }
 
@@ -622,6 +675,10 @@ public class KeyVaultCredentialPolicyTest {
             assertions.set(index, assertion);
 
             return this;
+        }
+
+        public String getCredential() {
+            return this.credential;
         }
     }
 }
