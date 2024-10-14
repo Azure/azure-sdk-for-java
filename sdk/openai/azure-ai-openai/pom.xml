@@ -68,6 +68,13 @@
       <version>1.15.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
+    <!-- netty-codec-http is included in dependency for internal WebSocket implementation -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-codec-http</artifactId>
+      <version>4.1.110.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+    </dependency>
+
     <!-- provided scope -->
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
