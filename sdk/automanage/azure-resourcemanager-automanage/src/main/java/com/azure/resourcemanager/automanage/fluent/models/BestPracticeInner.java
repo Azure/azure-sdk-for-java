@@ -7,35 +7,71 @@ package com.azure.resourcemanager.automanage.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.automanage.models.ConfigurationProfileProperties;
+import java.io.IOException;
 
-/** Definition of the Automanage best practice. */
+/**
+ * Definition of the Automanage best practice.
+ */
 @Fluent
 public final class BestPracticeInner extends ProxyResource {
     /*
      * Properties of the best practice.
      */
-    @JsonProperty(value = "properties")
-    private ConfigurationProfileProperties innerProperties;
+    private ConfigurationProfileProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Get the innerProperties property: Properties of the best practice.
-     *
-     * @return the innerProperties value.
+    /*
+     * The type of the resource.
      */
-    private ConfigurationProfileProperties innerProperties() {
-        return this.innerProperties;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BestPracticeInner class.
+     */
+    public BestPracticeInner() {
+    }
+
+    /**
+     * Get the properties property: Properties of the best practice.
+     * 
+     * @return the properties value.
+     */
+    public ConfigurationProfileProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Properties of the best practice.
+     * 
+     * @param properties the properties value to set.
+     * @return the BestPracticeInner object itself.
+     */
+    public BestPracticeInner withProperties(ConfigurationProfileProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -43,36 +79,88 @@ public final class BestPracticeInner extends ProxyResource {
     }
 
     /**
-     * Get the configuration property: configuration dictionary of the configuration profile.
-     *
-     * @return the configuration value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public Object configuration() {
-        return this.innerProperties() == null ? null : this.innerProperties().configuration();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the configuration property: configuration dictionary of the configuration profile.
-     *
-     * @param configuration the configuration value to set.
-     * @return the BestPracticeInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public BestPracticeInner withConfiguration(Object configuration) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ConfigurationProfileProperties();
-        }
-        this.innerProperties().withConfiguration(configuration);
-        return this;
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BestPracticeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BestPracticeInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BestPracticeInner.
+     */
+    public static BestPracticeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BestPracticeInner deserializedBestPracticeInner = new BestPracticeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBestPracticeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBestPracticeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBestPracticeInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBestPracticeInner.properties = ConfigurationProfileProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedBestPracticeInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBestPracticeInner;
+        });
     }
 }

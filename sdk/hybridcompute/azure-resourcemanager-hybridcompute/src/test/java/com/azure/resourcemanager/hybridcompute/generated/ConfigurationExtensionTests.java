@@ -11,7 +11,7 @@ public final class ConfigurationExtensionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConfigurationExtension model
-            = BinaryData.fromString("{\"publisher\":\"zuvccfwnfnbacfio\",\"type\":\"ebxetqgtzxdp\"}")
+            = BinaryData.fromString("{\"publisher\":\"ayvvtpgvdf\",\"type\":\"otkftutqxlngx\"}")
                 .toObject(ConfigurationExtension.class);
     }
 

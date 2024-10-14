@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automanage.fluent.models.ReportInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of the list report operation. */
+/**
+ * The response of the list report operation.
+ */
 @Fluent
-public final class ReportList {
+public final class ReportList implements JsonSerializable<ReportList> {
     /*
      * Result of the list report operation.
      */
-    @JsonProperty(value = "value")
     private List<ReportInner> value;
 
     /**
+     * Creates an instance of ReportList class.
+     */
+    public ReportList() {
+    }
+
+    /**
      * Get the value property: Result of the list report operation.
-     *
+     * 
      * @return the value value.
      */
     public List<ReportInner> value() {
@@ -29,7 +40,7 @@ public final class ReportList {
 
     /**
      * Set the value property: Result of the list report operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReportList object itself.
      */
@@ -40,12 +51,49 @@ public final class ReportList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ReportList.
+     */
+    public static ReportList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportList deserializedReportList = new ReportList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ReportInner> value = reader.readArray(reader1 -> ReportInner.fromJson(reader1));
+                    deserializedReportList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportList;
+        });
     }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyTrackedResourcesResourceType. */
+/**
+ * Defines values for PolicyTrackedResourcesResourceType.
+ */
 public final class PolicyTrackedResourcesResourceType extends ExpandableStringEnum<PolicyTrackedResourcesResourceType> {
-    /** Static value default for PolicyTrackedResourcesResourceType. */
+    /**
+     * Static value default for PolicyTrackedResourcesResourceType.
+     */
     public static final PolicyTrackedResourcesResourceType DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of PolicyTrackedResourcesResourceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyTrackedResourcesResourceType() {
+    }
+
+    /**
      * Creates or finds a PolicyTrackedResourcesResourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyTrackedResourcesResourceType.
      */
-    @JsonCreator
     public static PolicyTrackedResourcesResourceType fromString(String name) {
         return fromString(name, PolicyTrackedResourcesResourceType.class);
     }
 
     /**
      * Gets known PolicyTrackedResourcesResourceType values.
-     *
+     * 
      * @return known PolicyTrackedResourcesResourceType values.
      */
     public static Collection<PolicyTrackedResourcesResourceType> values() {

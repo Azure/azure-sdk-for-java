@@ -5,59 +5,61 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Component state details. */
+/**
+ * Component state details.
+ */
 @Fluent
-public final class ComponentStateDetails {
+public final class ComponentStateDetails implements JsonSerializable<ComponentStateDetails> {
     /*
      * Component Id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Component type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Component name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Component compliance evaluation timestamp.
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * Component compliance state.
      */
-    @JsonProperty(value = "complianceState")
     private String complianceState;
 
     /*
      * Component state details.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ComponentStateDetails class. */
+    /**
+     * Creates an instance of ComponentStateDetails class.
+     */
     public ComponentStateDetails() {
     }
 
     /**
      * Get the id property: Component Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -66,7 +68,7 @@ public final class ComponentStateDetails {
 
     /**
      * Set the id property: Component Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ComponentStateDetails object itself.
      */
@@ -77,7 +79,7 @@ public final class ComponentStateDetails {
 
     /**
      * Get the type property: Component type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -86,7 +88,7 @@ public final class ComponentStateDetails {
 
     /**
      * Set the type property: Component type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ComponentStateDetails object itself.
      */
@@ -97,7 +99,7 @@ public final class ComponentStateDetails {
 
     /**
      * Get the name property: Component name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -106,7 +108,7 @@ public final class ComponentStateDetails {
 
     /**
      * Set the name property: Component name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ComponentStateDetails object itself.
      */
@@ -117,7 +119,7 @@ public final class ComponentStateDetails {
 
     /**
      * Get the timestamp property: Component compliance evaluation timestamp.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -126,7 +128,7 @@ public final class ComponentStateDetails {
 
     /**
      * Set the timestamp property: Component compliance evaluation timestamp.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the ComponentStateDetails object itself.
      */
@@ -137,7 +139,7 @@ public final class ComponentStateDetails {
 
     /**
      * Get the complianceState property: Component compliance state.
-     *
+     * 
      * @return the complianceState value.
      */
     public String complianceState() {
@@ -146,7 +148,7 @@ public final class ComponentStateDetails {
 
     /**
      * Set the complianceState property: Component compliance state.
-     *
+     * 
      * @param complianceState the complianceState value to set.
      * @return the ComponentStateDetails object itself.
      */
@@ -157,17 +159,16 @@ public final class ComponentStateDetails {
 
     /**
      * Get the additionalProperties property: Component state details.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Component state details.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ComponentStateDetails object itself.
      */
@@ -176,19 +177,72 @@ public final class ComponentStateDetails {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeStringField("complianceState", this.complianceState);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComponentStateDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComponentStateDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComponentStateDetails.
+     */
+    public static ComponentStateDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComponentStateDetails deserializedComponentStateDetails = new ComponentStateDetails();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedComponentStateDetails.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedComponentStateDetails.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedComponentStateDetails.name = reader.getString();
+                } else if ("timestamp".equals(fieldName)) {
+                    deserializedComponentStateDetails.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("complianceState".equals(fieldName)) {
+                    deserializedComponentStateDetails.complianceState = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedComponentStateDetails.additionalProperties = additionalProperties;
+
+            return deserializedComponentStateDetails;
+        });
     }
 }

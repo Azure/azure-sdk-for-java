@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Aggregated property of each type. */
+/**
+ * Aggregated property of each type.
+ */
 @Fluent
-public final class SmartGroupAggregatedProperty {
+public final class SmartGroupAggregatedProperty implements JsonSerializable<SmartGroupAggregatedProperty> {
     /*
      * Name of the type.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Total number of items of type.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
     /**
+     * Creates an instance of SmartGroupAggregatedProperty class.
+     */
+    public SmartGroupAggregatedProperty() {
+    }
+
+    /**
      * Get the name property: Name of the type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +43,7 @@ public final class SmartGroupAggregatedProperty {
 
     /**
      * Set the name property: Name of the type.
-     *
+     * 
      * @param name the name value to set.
      * @return the SmartGroupAggregatedProperty object itself.
      */
@@ -44,7 +54,7 @@ public final class SmartGroupAggregatedProperty {
 
     /**
      * Get the count property: Total number of items of type.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -53,7 +63,7 @@ public final class SmartGroupAggregatedProperty {
 
     /**
      * Set the count property: Total number of items of type.
-     *
+     * 
      * @param count the count value to set.
      * @return the SmartGroupAggregatedProperty object itself.
      */
@@ -64,9 +74,48 @@ public final class SmartGroupAggregatedProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmartGroupAggregatedProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmartGroupAggregatedProperty if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SmartGroupAggregatedProperty.
+     */
+    public static SmartGroupAggregatedProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmartGroupAggregatedProperty deserializedSmartGroupAggregatedProperty = new SmartGroupAggregatedProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSmartGroupAggregatedProperty.name = reader.getString();
+                } else if ("count".equals(fieldName)) {
+                    deserializedSmartGroupAggregatedProperty.count = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmartGroupAggregatedProperty;
+        });
     }
 }

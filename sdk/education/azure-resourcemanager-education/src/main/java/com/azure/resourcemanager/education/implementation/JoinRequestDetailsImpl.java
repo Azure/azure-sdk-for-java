@@ -14,8 +14,8 @@ public final class JoinRequestDetailsImpl implements JoinRequestDetails {
 
     private final com.azure.resourcemanager.education.EducationManager serviceManager;
 
-    JoinRequestDetailsImpl(
-        JoinRequestDetailsInner innerObject, com.azure.resourcemanager.education.EducationManager serviceManager) {
+    JoinRequestDetailsImpl(JoinRequestDetailsInner innerObject,
+        com.azure.resourcemanager.education.EducationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

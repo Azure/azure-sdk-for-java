@@ -6,29 +6,39 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.WebhookCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The parameters supplied to the create or update webhook operation. */
+/**
+ * The parameters supplied to the create or update webhook operation.
+ */
 @Fluent
-public final class WebhookCreateOrUpdateParameters {
+public final class WebhookCreateOrUpdateParameters implements JsonSerializable<WebhookCreateOrUpdateParameters> {
     /*
      * Gets or sets the name of the webhook.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Gets or sets the properties of the webhook.
      */
-    @JsonProperty(value = "properties", required = true)
     private WebhookCreateOrUpdateProperties innerProperties = new WebhookCreateOrUpdateProperties();
 
     /**
+     * Creates an instance of WebhookCreateOrUpdateParameters class.
+     */
+    public WebhookCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the webhook.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +47,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the webhook.
-     *
+     * 
      * @param name the name value to set.
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
@@ -48,7 +58,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the webhook.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookCreateOrUpdateProperties innerProperties() {
@@ -57,7 +67,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Get the isEnabled property: Gets or sets the value of the enabled flag of webhook.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -66,7 +76,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Set the isEnabled property: Gets or sets the value of the enabled flag of webhook.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
@@ -80,7 +90,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Get the uri property: Gets or sets the uri.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -89,7 +99,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Set the uri property: Gets or sets the uri.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
@@ -103,7 +113,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Get the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -112,7 +122,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Set the expiryTime property: Gets or sets the expiry time.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
@@ -126,7 +136,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -135,7 +145,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
@@ -149,7 +159,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -158,7 +168,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
@@ -172,7 +182,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Get the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -181,7 +191,7 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Set the runOn property: Gets or sets the name of the hybrid worker group the webhook job will run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the WebhookCreateOrUpdateParameters object itself.
      */
@@ -195,25 +205,65 @@ public final class WebhookCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model WebhookCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model WebhookCreateOrUpdateParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model WebhookCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model WebhookCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebhookCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebhookCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebhookCreateOrUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebhookCreateOrUpdateParameters.
+     */
+    public static WebhookCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebhookCreateOrUpdateParameters deserializedWebhookCreateOrUpdateParameters
+                = new WebhookCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedWebhookCreateOrUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebhookCreateOrUpdateParameters.innerProperties
+                        = WebhookCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebhookCreateOrUpdateParameters;
+        });
+    }
 }

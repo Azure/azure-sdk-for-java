@@ -6,23 +6,48 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ConnectionTypeAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of the connection. */
+/**
+ * Definition of the connection.
+ */
 @Fluent
 public final class ConnectionInner extends ProxyResource {
     /*
      * Gets or sets the properties of the connection.
      */
-    @JsonProperty(value = "properties")
     private ConnectionProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConnectionInner class.
+     */
+    public ConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the properties of the connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectionProperties innerProperties() {
@@ -30,8 +55,38 @@ public final class ConnectionInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the connectionType property: Gets or sets the connectionType of the connection.
-     *
+     * 
      * @return the connectionType value.
      */
     public ConnectionTypeAssociationProperty connectionType() {
@@ -40,7 +95,7 @@ public final class ConnectionInner extends ProxyResource {
 
     /**
      * Set the connectionType property: Gets or sets the connectionType of the connection.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the ConnectionInner object itself.
      */
@@ -54,7 +109,7 @@ public final class ConnectionInner extends ProxyResource {
 
     /**
      * Get the fieldDefinitionValues property: Gets the field definition values of the connection.
-     *
+     * 
      * @return the fieldDefinitionValues value.
      */
     public Map<String, String> fieldDefinitionValues() {
@@ -63,7 +118,7 @@ public final class ConnectionInner extends ProxyResource {
 
     /**
      * Get the creationTime property: Gets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -72,7 +127,7 @@ public final class ConnectionInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Gets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -81,7 +136,7 @@ public final class ConnectionInner extends ProxyResource {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +145,7 @@ public final class ConnectionInner extends ProxyResource {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ConnectionInner object itself.
      */
@@ -104,12 +159,55 @@ public final class ConnectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionInner.
+     */
+    public static ConnectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionInner deserializedConnectionInner = new ConnectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConnectionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConnectionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConnectionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConnectionInner.innerProperties = ConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionInner;
+        });
     }
 }

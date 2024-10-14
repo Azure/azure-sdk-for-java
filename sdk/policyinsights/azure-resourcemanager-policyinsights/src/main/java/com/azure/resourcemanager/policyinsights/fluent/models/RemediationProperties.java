@@ -5,104 +5,101 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.models.RemediationDeploymentSummary;
 import com.azure.resourcemanager.policyinsights.models.RemediationFilters;
 import com.azure.resourcemanager.policyinsights.models.RemediationPropertiesFailureThreshold;
 import com.azure.resourcemanager.policyinsights.models.ResourceDiscoveryMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The remediation properties. */
+/**
+ * The remediation properties.
+ */
 @Fluent
-public final class RemediationProperties {
+public final class RemediationProperties implements JsonSerializable<RemediationProperties> {
     /*
      * The resource ID of the policy assignment that should be remediated.
      */
-    @JsonProperty(value = "policyAssignmentId")
     private String policyAssignmentId;
 
     /*
      * The policy definition reference ID of the individual definition that should be remediated. Required when the
      * policy assignment being remediated assigns a policy set definition.
      */
-    @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
 
     /*
      * The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
      */
-    @JsonProperty(value = "resourceDiscoveryMode")
     private ResourceDiscoveryMode resourceDiscoveryMode;
 
     /*
-     * The status of the remediation.
+     * The status of the remediation. This refers to the entire remediation task, not individual deployments. Allowed
+     * values are Evaluating, Canceled, Cancelling, Failed, Complete, or Succeeded.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The time at which the remediation was created.
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * The time at which the remediation was last updated.
      */
-    @JsonProperty(value = "lastUpdatedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
     /*
      * The filters that will be applied to determine which resources to remediate.
      */
-    @JsonProperty(value = "filters")
     private RemediationFilters filters;
 
     /*
      * The deployment status summary for all deployments created by the remediation.
      */
-    @JsonProperty(value = "deploymentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RemediationDeploymentSummary deploymentStatus;
 
     /*
      * The remediation status message. Provides additional details regarding the state of the remediation.
      */
-    @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String statusMessage;
 
     /*
      * The remediation correlation Id. Can be used to find events related to the remediation in the activity log.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * Determines the max number of resources that can be remediated by the remediation job. If not provided, the
      * default resource count is used.
      */
-    @JsonProperty(value = "resourceCount")
     private Integer resourceCount;
 
     /*
      * Determines how many resources to remediate at any given time. Can be used to increase or reduce the pace of the
      * remediation. If not provided, the default parallel deployments value is used.
      */
-    @JsonProperty(value = "parallelDeployments")
     private Integer parallelDeployments;
 
     /*
      * The remediation failure threshold settings
      */
-    @JsonProperty(value = "failureThreshold")
     private RemediationPropertiesFailureThreshold failureThreshold;
 
-    /** Creates an instance of RemediationProperties class. */
+    /**
+     * Creates an instance of RemediationProperties class.
+     */
     public RemediationProperties() {
     }
 
     /**
      * Get the policyAssignmentId property: The resource ID of the policy assignment that should be remediated.
-     *
+     * 
      * @return the policyAssignmentId value.
      */
     public String policyAssignmentId() {
@@ -111,7 +108,7 @@ public final class RemediationProperties {
 
     /**
      * Set the policyAssignmentId property: The resource ID of the policy assignment that should be remediated.
-     *
+     * 
      * @param policyAssignmentId the policyAssignmentId value to set.
      * @return the RemediationProperties object itself.
      */
@@ -123,7 +120,7 @@ public final class RemediationProperties {
     /**
      * Get the policyDefinitionReferenceId property: The policy definition reference ID of the individual definition
      * that should be remediated. Required when the policy assignment being remediated assigns a policy set definition.
-     *
+     * 
      * @return the policyDefinitionReferenceId value.
      */
     public String policyDefinitionReferenceId() {
@@ -133,7 +130,7 @@ public final class RemediationProperties {
     /**
      * Set the policyDefinitionReferenceId property: The policy definition reference ID of the individual definition
      * that should be remediated. Required when the policy assignment being remediated assigns a policy set definition.
-     *
+     * 
      * @param policyDefinitionReferenceId the policyDefinitionReferenceId value to set.
      * @return the RemediationProperties object itself.
      */
@@ -145,7 +142,7 @@ public final class RemediationProperties {
     /**
      * Get the resourceDiscoveryMode property: The way resources to remediate are discovered. Defaults to
      * ExistingNonCompliant if not specified.
-     *
+     * 
      * @return the resourceDiscoveryMode value.
      */
     public ResourceDiscoveryMode resourceDiscoveryMode() {
@@ -155,7 +152,7 @@ public final class RemediationProperties {
     /**
      * Set the resourceDiscoveryMode property: The way resources to remediate are discovered. Defaults to
      * ExistingNonCompliant if not specified.
-     *
+     * 
      * @param resourceDiscoveryMode the resourceDiscoveryMode value to set.
      * @return the RemediationProperties object itself.
      */
@@ -165,8 +162,9 @@ public final class RemediationProperties {
     }
 
     /**
-     * Get the provisioningState property: The status of the remediation.
-     *
+     * Get the provisioningState property: The status of the remediation. This refers to the entire remediation task,
+     * not individual deployments. Allowed values are Evaluating, Canceled, Cancelling, Failed, Complete, or Succeeded.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -175,7 +173,7 @@ public final class RemediationProperties {
 
     /**
      * Get the createdOn property: The time at which the remediation was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -184,7 +182,7 @@ public final class RemediationProperties {
 
     /**
      * Get the lastUpdatedOn property: The time at which the remediation was last updated.
-     *
+     * 
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime lastUpdatedOn() {
@@ -193,7 +191,7 @@ public final class RemediationProperties {
 
     /**
      * Get the filters property: The filters that will be applied to determine which resources to remediate.
-     *
+     * 
      * @return the filters value.
      */
     public RemediationFilters filters() {
@@ -202,7 +200,7 @@ public final class RemediationProperties {
 
     /**
      * Set the filters property: The filters that will be applied to determine which resources to remediate.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the RemediationProperties object itself.
      */
@@ -213,7 +211,7 @@ public final class RemediationProperties {
 
     /**
      * Get the deploymentStatus property: The deployment status summary for all deployments created by the remediation.
-     *
+     * 
      * @return the deploymentStatus value.
      */
     public RemediationDeploymentSummary deploymentStatus() {
@@ -223,7 +221,7 @@ public final class RemediationProperties {
     /**
      * Get the statusMessage property: The remediation status message. Provides additional details regarding the state
      * of the remediation.
-     *
+     * 
      * @return the statusMessage value.
      */
     public String statusMessage() {
@@ -233,7 +231,7 @@ public final class RemediationProperties {
     /**
      * Get the correlationId property: The remediation correlation Id. Can be used to find events related to the
      * remediation in the activity log.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -243,7 +241,7 @@ public final class RemediationProperties {
     /**
      * Get the resourceCount property: Determines the max number of resources that can be remediated by the remediation
      * job. If not provided, the default resource count is used.
-     *
+     * 
      * @return the resourceCount value.
      */
     public Integer resourceCount() {
@@ -253,7 +251,7 @@ public final class RemediationProperties {
     /**
      * Set the resourceCount property: Determines the max number of resources that can be remediated by the remediation
      * job. If not provided, the default resource count is used.
-     *
+     * 
      * @param resourceCount the resourceCount value to set.
      * @return the RemediationProperties object itself.
      */
@@ -266,7 +264,7 @@ public final class RemediationProperties {
      * Get the parallelDeployments property: Determines how many resources to remediate at any given time. Can be used
      * to increase or reduce the pace of the remediation. If not provided, the default parallel deployments value is
      * used.
-     *
+     * 
      * @return the parallelDeployments value.
      */
     public Integer parallelDeployments() {
@@ -277,7 +275,7 @@ public final class RemediationProperties {
      * Set the parallelDeployments property: Determines how many resources to remediate at any given time. Can be used
      * to increase or reduce the pace of the remediation. If not provided, the default parallel deployments value is
      * used.
-     *
+     * 
      * @param parallelDeployments the parallelDeployments value to set.
      * @return the RemediationProperties object itself.
      */
@@ -288,7 +286,7 @@ public final class RemediationProperties {
 
     /**
      * Get the failureThreshold property: The remediation failure threshold settings.
-     *
+     * 
      * @return the failureThreshold value.
      */
     public RemediationPropertiesFailureThreshold failureThreshold() {
@@ -297,7 +295,7 @@ public final class RemediationProperties {
 
     /**
      * Set the failureThreshold property: The remediation failure threshold settings.
-     *
+     * 
      * @param failureThreshold the failureThreshold value to set.
      * @return the RemediationProperties object itself.
      */
@@ -308,7 +306,7 @@ public final class RemediationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -321,5 +319,76 @@ public final class RemediationProperties {
         if (failureThreshold() != null) {
             failureThreshold().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("policyAssignmentId", this.policyAssignmentId);
+        jsonWriter.writeStringField("policyDefinitionReferenceId", this.policyDefinitionReferenceId);
+        jsonWriter.writeStringField("resourceDiscoveryMode",
+            this.resourceDiscoveryMode == null ? null : this.resourceDiscoveryMode.toString());
+        jsonWriter.writeJsonField("filters", this.filters);
+        jsonWriter.writeNumberField("resourceCount", this.resourceCount);
+        jsonWriter.writeNumberField("parallelDeployments", this.parallelDeployments);
+        jsonWriter.writeJsonField("failureThreshold", this.failureThreshold);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemediationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemediationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemediationProperties.
+     */
+    public static RemediationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemediationProperties deserializedRemediationProperties = new RemediationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("policyAssignmentId".equals(fieldName)) {
+                    deserializedRemediationProperties.policyAssignmentId = reader.getString();
+                } else if ("policyDefinitionReferenceId".equals(fieldName)) {
+                    deserializedRemediationProperties.policyDefinitionReferenceId = reader.getString();
+                } else if ("resourceDiscoveryMode".equals(fieldName)) {
+                    deserializedRemediationProperties.resourceDiscoveryMode
+                        = ResourceDiscoveryMode.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRemediationProperties.provisioningState = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedRemediationProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedOn".equals(fieldName)) {
+                    deserializedRemediationProperties.lastUpdatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("filters".equals(fieldName)) {
+                    deserializedRemediationProperties.filters = RemediationFilters.fromJson(reader);
+                } else if ("deploymentStatus".equals(fieldName)) {
+                    deserializedRemediationProperties.deploymentStatus = RemediationDeploymentSummary.fromJson(reader);
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedRemediationProperties.statusMessage = reader.getString();
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedRemediationProperties.correlationId = reader.getString();
+                } else if ("resourceCount".equals(fieldName)) {
+                    deserializedRemediationProperties.resourceCount = reader.getNullable(JsonReader::getInt);
+                } else if ("parallelDeployments".equals(fieldName)) {
+                    deserializedRemediationProperties.parallelDeployments = reader.getNullable(JsonReader::getInt);
+                } else if ("failureThreshold".equals(fieldName)) {
+                    deserializedRemediationProperties.failureThreshold
+                        = RemediationPropertiesFailureThreshold.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemediationProperties;
+        });
     }
 }

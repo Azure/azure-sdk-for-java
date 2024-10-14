@@ -5,40 +5,107 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The CodelessUiConnectorConfigPropertiesInstructionStepsItem model. */
+/**
+ * The CodelessUiConnectorConfigPropertiesInstructionStepsItem model.
+ */
 @Fluent
 public final class CodelessUiConnectorConfigPropertiesInstructionStepsItem extends InstructionSteps {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of CodelessUiConnectorConfigPropertiesInstructionStepsItem class.
+     */
+    public CodelessUiConnectorConfigPropertiesInstructionStepsItem() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessUiConnectorConfigPropertiesInstructionStepsItem withTitle(String title) {
         super.withTitle(title);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessUiConnectorConfigPropertiesInstructionStepsItem withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public CodelessUiConnectorConfigPropertiesInstructionStepsItem withInstructions(
-        List<InstructionStepsInstructionsItem> instructions) {
+    public CodelessUiConnectorConfigPropertiesInstructionStepsItem
+        withInstructions(List<InstructionStepsInstructionsItem> instructions) {
         super.withInstructions(instructions);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (instructions() != null) {
+            instructions().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", title());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("instructions", instructions(), (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessUiConnectorConfigPropertiesInstructionStepsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessUiConnectorConfigPropertiesInstructionStepsItem if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CodelessUiConnectorConfigPropertiesInstructionStepsItem.
+     */
+    public static CodelessUiConnectorConfigPropertiesInstructionStepsItem fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessUiConnectorConfigPropertiesInstructionStepsItem deserializedCodelessUiConnectorConfigPropertiesInstructionStepsItem
+                = new CodelessUiConnectorConfigPropertiesInstructionStepsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedCodelessUiConnectorConfigPropertiesInstructionStepsItem.withTitle(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedCodelessUiConnectorConfigPropertiesInstructionStepsItem
+                        .withDescription(reader.getString());
+                } else if ("instructions".equals(fieldName)) {
+                    List<InstructionStepsInstructionsItem> instructions
+                        = reader.readArray(reader1 -> InstructionStepsInstructionsItem.fromJson(reader1));
+                    deserializedCodelessUiConnectorConfigPropertiesInstructionStepsItem.withInstructions(instructions);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessUiConnectorConfigPropertiesInstructionStepsItem;
+        });
     }
 }

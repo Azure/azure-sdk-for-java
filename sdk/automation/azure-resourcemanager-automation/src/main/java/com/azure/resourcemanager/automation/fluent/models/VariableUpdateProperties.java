@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the update variable. */
+/**
+ * The properties of the update variable.
+ */
 @Fluent
-public final class VariableUpdateProperties {
+public final class VariableUpdateProperties implements JsonSerializable<VariableUpdateProperties> {
     /*
      * Gets or sets the value of the variable.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Gets or sets the description of the variable.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of VariableUpdateProperties class.
+     */
+    public VariableUpdateProperties() {
+    }
+
+    /**
      * Get the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -33,7 +43,7 @@ public final class VariableUpdateProperties {
 
     /**
      * Set the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @param value the value value to set.
      * @return the VariableUpdateProperties object itself.
      */
@@ -44,7 +54,7 @@ public final class VariableUpdateProperties {
 
     /**
      * Get the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +63,7 @@ public final class VariableUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @param description the description value to set.
      * @return the VariableUpdateProperties object itself.
      */
@@ -64,9 +74,48 @@ public final class VariableUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VariableUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VariableUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VariableUpdateProperties.
+     */
+    public static VariableUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VariableUpdateProperties deserializedVariableUpdateProperties = new VariableUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedVariableUpdateProperties.value = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedVariableUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVariableUpdateProperties;
+        });
     }
 }

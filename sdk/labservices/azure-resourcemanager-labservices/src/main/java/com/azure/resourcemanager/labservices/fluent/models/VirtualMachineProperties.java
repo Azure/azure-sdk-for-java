@@ -5,48 +5,55 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.VirtualMachineConnectionProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineState;
 import com.azure.resourcemanager.labservices.models.VirtualMachineType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Virtual machine resource properties. */
+/**
+ * Virtual machine resource properties.
+ */
 @Immutable
-public final class VirtualMachineProperties {
+public final class VirtualMachineProperties implements JsonSerializable<VirtualMachineProperties> {
     /*
      * Current provisioning state of the virtual machine.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The current state of the virtual machine
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineState state;
 
     /*
      * Profile for information about connecting to the virtual machine.
      */
-    @JsonProperty(value = "connectionProfile", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineConnectionProfile connectionProfile;
 
     /*
      * The lab user ID (not the PUID!) of who claimed the virtual machine.
      */
-    @JsonProperty(value = "claimedByUserId", access = JsonProperty.Access.WRITE_ONLY)
     private String claimedByUserId;
 
     /*
      * The type of this VM resource
      */
-    @JsonProperty(value = "vmType", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineType vmType;
 
     /**
+     * Creates an instance of VirtualMachineProperties class.
+     */
+    public VirtualMachineProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the virtual machine.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -55,7 +62,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the state property: The current state of the virtual machine.
-     *
+     * 
      * @return the state value.
      */
     public VirtualMachineState state() {
@@ -64,7 +71,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the connectionProfile property: Profile for information about connecting to the virtual machine.
-     *
+     * 
      * @return the connectionProfile value.
      */
     public VirtualMachineConnectionProfile connectionProfile() {
@@ -73,7 +80,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the claimedByUserId property: The lab user ID (not the PUID!) of who claimed the virtual machine.
-     *
+     * 
      * @return the claimedByUserId value.
      */
     public String claimedByUserId() {
@@ -82,7 +89,7 @@ public final class VirtualMachineProperties {
 
     /**
      * Get the vmType property: The type of this VM resource.
-     *
+     * 
      * @return the vmType value.
      */
     public VirtualMachineType vmType() {
@@ -91,12 +98,57 @@ public final class VirtualMachineProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionProfile() != null) {
             connectionProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineProperties.
+     */
+    public static VirtualMachineProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineProperties deserializedVirtualMachineProperties = new VirtualMachineProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.state = VirtualMachineState.fromString(reader.getString());
+                } else if ("connectionProfile".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.connectionProfile
+                        = VirtualMachineConnectionProfile.fromJson(reader);
+                } else if ("claimedByUserId".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.claimedByUserId = reader.getString();
+                } else if ("vmType".equals(fieldName)) {
+                    deserializedVirtualMachineProperties.vmType = VirtualMachineType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineProperties;
+        });
     }
 }

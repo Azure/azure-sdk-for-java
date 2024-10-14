@@ -7,10 +7,17 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 12.27.1 (2024-10-08)
+
+### Bugs Fixed
 - Fixed a bug where downloadToFile and openInputStream was throwing an InvalidRange exception if the target file size was a multiple of the
   authenticated region length.
 
-### Other Changes
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.28.0` to version `12.28.1`.
 
 ## 12.27.0 (2024-09-17)
 

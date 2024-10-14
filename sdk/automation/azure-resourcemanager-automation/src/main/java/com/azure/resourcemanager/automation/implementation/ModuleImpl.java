@@ -132,24 +132,20 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
     }
 
     public Module create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPython2Packages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, packageName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPython2Packages()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, packageName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Module create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPython2Packages()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, packageName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPython2Packages()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, packageName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -166,51 +162,42 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
     }
 
     public Module apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPython2Packages()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, packageName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPython2Packages()
+            .updateWithResponse(resourceGroupName, automationAccountName, packageName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Module apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPython2Packages()
-                .updateWithResponse(resourceGroupName, automationAccountName, packageName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPython2Packages()
+            .updateWithResponse(resourceGroupName, automationAccountName, packageName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     ModuleImpl(ModuleInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.packageName = Utils.getValueFromIdByName(innerObject.id(), "python2Packages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.packageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "python2Packages");
     }
 
     public Module refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPython2Packages()
-                .getWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPython2Packages()
+            .getWithResponse(resourceGroupName, automationAccountName, packageName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Module refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPython2Packages()
-                .getWithResponse(resourceGroupName, automationAccountName, packageName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPython2Packages()
+            .getWithResponse(resourceGroupName, automationAccountName, packageName, context)
+            .getValue();
         return this;
     }
 

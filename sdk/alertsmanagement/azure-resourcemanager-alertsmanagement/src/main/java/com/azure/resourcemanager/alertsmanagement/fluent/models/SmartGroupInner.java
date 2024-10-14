@@ -6,25 +6,50 @@ package com.azure.resourcemanager.alertsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.alertsmanagement.models.Severity;
 import com.azure.resourcemanager.alertsmanagement.models.SmartGroupAggregatedProperty;
 import com.azure.resourcemanager.alertsmanagement.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Set of related alerts grouped together smartly by AMS. */
+/**
+ * Set of related alerts grouped together smartly by AMS.
+ */
 @Fluent
 public final class SmartGroupInner extends ProxyResource {
     /*
      * Properties of smart group.
      */
-    @JsonProperty(value = "properties")
     private SmartGroupProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SmartGroupInner class.
+     */
+    public SmartGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of smart group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SmartGroupProperties innerProperties() {
@@ -32,8 +57,38 @@ public final class SmartGroupInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the alertsCount property: Total number of alerts in smart group.
-     *
+     * 
      * @return the alertsCount value.
      */
     public Long alertsCount() {
@@ -42,7 +97,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the alertsCount property: Total number of alerts in smart group.
-     *
+     * 
      * @param alertsCount the alertsCount value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -56,7 +111,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the smartGroupState property: Smart group state.
-     *
+     * 
      * @return the smartGroupState value.
      */
     public State smartGroupState() {
@@ -66,7 +121,7 @@ public final class SmartGroupInner extends ProxyResource {
     /**
      * Get the severity property: Severity of smart group is the highest(Sev0 &gt;... &gt; Sev4) severity of all the
      * alerts in the group.
-     *
+     * 
      * @return the severity value.
      */
     public Severity severity() {
@@ -75,7 +130,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the startDateTime property: Creation time of smart group. Date-Time in ISO-8601 format.
-     *
+     * 
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -84,7 +139,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the lastModifiedDateTime property: Last updated time of smart group. Date-Time in ISO-8601 format.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -93,7 +148,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the lastModifiedUsername property: Last modified by user name.
-     *
+     * 
      * @return the lastModifiedUsername value.
      */
     public String lastModifiedUsername() {
@@ -102,7 +157,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the resources property: Summary of target resources in the smart group.
-     *
+     * 
      * @return the resources value.
      */
     public List<SmartGroupAggregatedProperty> resources() {
@@ -111,7 +166,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the resources property: Summary of target resources in the smart group.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -125,7 +180,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the resourceTypes property: Summary of target resource types in the smart group.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<SmartGroupAggregatedProperty> resourceTypes() {
@@ -134,7 +189,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the resourceTypes property: Summary of target resource types in the smart group.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -148,7 +203,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the resourceGroups property: Summary of target resource groups in the smart group.
-     *
+     * 
      * @return the resourceGroups value.
      */
     public List<SmartGroupAggregatedProperty> resourceGroups() {
@@ -157,7 +212,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the resourceGroups property: Summary of target resource groups in the smart group.
-     *
+     * 
      * @param resourceGroups the resourceGroups value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -171,7 +226,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the monitorServices property: Summary of monitorServices in the smart group.
-     *
+     * 
      * @return the monitorServices value.
      */
     public List<SmartGroupAggregatedProperty> monitorServices() {
@@ -180,7 +235,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the monitorServices property: Summary of monitorServices in the smart group.
-     *
+     * 
      * @param monitorServices the monitorServices value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -194,7 +249,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the monitorConditions property: Summary of monitorConditions in the smart group.
-     *
+     * 
      * @return the monitorConditions value.
      */
     public List<SmartGroupAggregatedProperty> monitorConditions() {
@@ -203,7 +258,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the monitorConditions property: Summary of monitorConditions in the smart group.
-     *
+     * 
      * @param monitorConditions the monitorConditions value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -217,7 +272,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the alertStates property: Summary of alertStates in the smart group.
-     *
+     * 
      * @return the alertStates value.
      */
     public List<SmartGroupAggregatedProperty> alertStates() {
@@ -226,7 +281,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the alertStates property: Summary of alertStates in the smart group.
-     *
+     * 
      * @param alertStates the alertStates value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -240,7 +295,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Get the alertSeverities property: Summary of alertSeverities in the smart group.
-     *
+     * 
      * @return the alertSeverities value.
      */
     public List<SmartGroupAggregatedProperty> alertSeverities() {
@@ -249,7 +304,7 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Set the alertSeverities property: Summary of alertSeverities in the smart group.
-     *
+     * 
      * @param alertSeverities the alertSeverities value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -264,7 +319,7 @@ public final class SmartGroupInner extends ProxyResource {
     /**
      * Get the nextLink property: The URI to fetch the next page of alerts. Call ListNext() with this URI to fetch the
      * next page alerts.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -274,7 +329,7 @@ public final class SmartGroupInner extends ProxyResource {
     /**
      * Set the nextLink property: The URI to fetch the next page of alerts. Call ListNext() with this URI to fetch the
      * next page alerts.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SmartGroupInner object itself.
      */
@@ -288,12 +343,55 @@ public final class SmartGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmartGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmartGroupInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SmartGroupInner.
+     */
+    public static SmartGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmartGroupInner deserializedSmartGroupInner = new SmartGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSmartGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSmartGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSmartGroupInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSmartGroupInner.innerProperties = SmartGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmartGroupInner;
+        });
     }
 }

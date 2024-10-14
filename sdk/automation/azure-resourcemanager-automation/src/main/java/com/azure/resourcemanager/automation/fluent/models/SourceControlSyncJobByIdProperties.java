@@ -5,59 +5,65 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ProvisioningState;
 import com.azure.resourcemanager.automation.models.SyncType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of source control sync job properties. */
+/**
+ * Definition of source control sync job properties.
+ */
 @Fluent
-public final class SourceControlSyncJobByIdProperties {
+public final class SourceControlSyncJobByIdProperties implements JsonSerializable<SourceControlSyncJobByIdProperties> {
     /*
      * The source control sync job id.
      */
-    @JsonProperty(value = "sourceControlSyncJobId")
     private String sourceControlSyncJobId;
 
     /*
      * The creation time of the job.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The provisioning state of the job.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * The start time of the job.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The end time of the job.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The sync type.
      */
-    @JsonProperty(value = "syncType")
     private SyncType syncType;
 
     /*
      * The exceptions that occurred while running the sync job.
      */
-    @JsonProperty(value = "exception")
     private String exception;
 
     /**
+     * Creates an instance of SourceControlSyncJobByIdProperties class.
+     */
+    public SourceControlSyncJobByIdProperties() {
+    }
+
+    /**
      * Get the sourceControlSyncJobId property: The source control sync job id.
-     *
+     * 
      * @return the sourceControlSyncJobId value.
      */
     public String sourceControlSyncJobId() {
@@ -66,7 +72,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Set the sourceControlSyncJobId property: The source control sync job id.
-     *
+     * 
      * @param sourceControlSyncJobId the sourceControlSyncJobId value to set.
      * @return the SourceControlSyncJobByIdProperties object itself.
      */
@@ -77,7 +83,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Get the creationTime property: The creation time of the job.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -86,7 +92,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the job.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -95,7 +101,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Set the provisioningState property: The provisioning state of the job.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SourceControlSyncJobByIdProperties object itself.
      */
@@ -106,7 +112,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Get the startTime property: The start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -115,7 +121,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Get the endTime property: The end time of the job.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -124,7 +130,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Get the syncType property: The sync type.
-     *
+     * 
      * @return the syncType value.
      */
     public SyncType syncType() {
@@ -133,7 +139,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Set the syncType property: The sync type.
-     *
+     * 
      * @param syncType the syncType value to set.
      * @return the SourceControlSyncJobByIdProperties object itself.
      */
@@ -144,7 +150,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Get the exception property: The exceptions that occurred while running the sync job.
-     *
+     * 
      * @return the exception value.
      */
     public String exception() {
@@ -153,7 +159,7 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Set the exception property: The exceptions that occurred while running the sync job.
-     *
+     * 
      * @param exception the exception value to set.
      * @return the SourceControlSyncJobByIdProperties object itself.
      */
@@ -164,9 +170,66 @@ public final class SourceControlSyncJobByIdProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourceControlSyncJobId", this.sourceControlSyncJobId);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("syncType", this.syncType == null ? null : this.syncType.toString());
+        jsonWriter.writeStringField("exception", this.exception);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlSyncJobByIdProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlSyncJobByIdProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceControlSyncJobByIdProperties.
+     */
+    public static SourceControlSyncJobByIdProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlSyncJobByIdProperties deserializedSourceControlSyncJobByIdProperties
+                = new SourceControlSyncJobByIdProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceControlSyncJobId".equals(fieldName)) {
+                    deserializedSourceControlSyncJobByIdProperties.sourceControlSyncJobId = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedSourceControlSyncJobByIdProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSourceControlSyncJobByIdProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedSourceControlSyncJobByIdProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedSourceControlSyncJobByIdProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("syncType".equals(fieldName)) {
+                    deserializedSourceControlSyncJobByIdProperties.syncType = SyncType.fromString(reader.getString());
+                } else if ("exception".equals(fieldName)) {
+                    deserializedSourceControlSyncJobByIdProperties.exception = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlSyncJobByIdProperties;
+        });
     }
 }

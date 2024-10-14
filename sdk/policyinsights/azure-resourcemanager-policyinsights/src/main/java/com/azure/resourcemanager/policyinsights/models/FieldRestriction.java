@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The restrictions on a field imposed by a specific policy. */
+/**
+ * The restrictions on a field imposed by a specific policy.
+ */
 @Immutable
-public final class FieldRestriction {
+public final class FieldRestriction implements JsonSerializable<FieldRestriction> {
     /*
      * The type of restriction that is imposed on the field.
      */
-    @JsonProperty(value = "result", access = JsonProperty.Access.WRITE_ONLY)
     private FieldRestrictionResult result;
 
     /*
      * The value that policy will set for the field if the user does not provide a value.
      */
-    @JsonProperty(value = "defaultValue", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultValue;
 
     /*
      * The values that policy either requires or denies for the field.
      */
-    @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> values;
 
     /*
      * The details of the policy that is causing the field restriction.
      */
-    @JsonProperty(value = "policy", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyReference policy;
 
-    /** Creates an instance of FieldRestriction class. */
+    /**
+     * Creates an instance of FieldRestriction class.
+     */
     public FieldRestriction() {
     }
 
     /**
      * Get the result property: The type of restriction that is imposed on the field.
-     *
+     * 
      * @return the result value.
      */
     public FieldRestrictionResult result() {
@@ -50,7 +54,7 @@ public final class FieldRestriction {
 
     /**
      * Get the defaultValue property: The value that policy will set for the field if the user does not provide a value.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -59,7 +63,7 @@ public final class FieldRestriction {
 
     /**
      * Get the values property: The values that policy either requires or denies for the field.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -68,7 +72,7 @@ public final class FieldRestriction {
 
     /**
      * Get the policy property: The details of the policy that is causing the field restriction.
-     *
+     * 
      * @return the policy value.
      */
     public PolicyReference policy() {
@@ -77,12 +81,54 @@ public final class FieldRestriction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policy() != null) {
             policy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FieldRestriction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FieldRestriction if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FieldRestriction.
+     */
+    public static FieldRestriction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FieldRestriction deserializedFieldRestriction = new FieldRestriction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("result".equals(fieldName)) {
+                    deserializedFieldRestriction.result = FieldRestrictionResult.fromString(reader.getString());
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedFieldRestriction.defaultValue = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFieldRestriction.values = values;
+                } else if ("policy".equals(fieldName)) {
+                    deserializedFieldRestriction.policy = PolicyReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFieldRestriction;
+        });
     }
 }

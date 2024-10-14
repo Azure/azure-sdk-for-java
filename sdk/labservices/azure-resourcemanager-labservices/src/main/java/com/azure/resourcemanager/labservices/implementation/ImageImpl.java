@@ -133,22 +133,18 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getImages()
-                .createOrUpdateWithResponse(resourceGroupName, labPlanName, imageName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .createOrUpdateWithResponse(resourceGroupName, labPlanName, imageName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Image create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getImages()
-                .createOrUpdateWithResponse(resourceGroupName, labPlanName, imageName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .createOrUpdateWithResponse(resourceGroupName, labPlanName, imageName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -164,50 +160,42 @@ public final class ImageImpl implements Image, Image.Definition, Image.Update {
     }
 
     public Image apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getImages()
-                .updateWithResponse(resourceGroupName, labPlanName, imageName, updateBody, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .updateWithResponse(resourceGroupName, labPlanName, imageName, updateBody, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Image apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getImages()
-                .updateWithResponse(resourceGroupName, labPlanName, imageName, updateBody, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .updateWithResponse(resourceGroupName, labPlanName, imageName, updateBody, context)
+            .getValue();
         return this;
     }
 
     ImageImpl(ImageInner innerObject, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labPlanName = Utils.getValueFromIdByName(innerObject.id(), "labPlans");
-        this.imageName = Utils.getValueFromIdByName(innerObject.id(), "images");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labPlans");
+        this.imageName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "images");
     }
 
     public Image refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getImages()
-                .getWithResponse(resourceGroupName, labPlanName, imageName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .getWithResponse(resourceGroupName, labPlanName, imageName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Image refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getImages()
-                .getWithResponse(resourceGroupName, labPlanName, imageName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getImages()
+            .getWithResponse(resourceGroupName, labPlanName, imageName, context)
+            .getValue();
         return this;
     }
 

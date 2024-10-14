@@ -12,11 +12,13 @@ import com.azure.resourcemanager.policyinsights.fluent.models.CheckRestrictionsR
 import com.azure.resourcemanager.policyinsights.models.CheckManagementGroupRestrictionsRequest;
 import com.azure.resourcemanager.policyinsights.models.CheckRestrictionsRequest;
 
-/** An instance of this class provides access to all the operations defined in PolicyRestrictionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyRestrictionsClient.
+ */
 public interface PolicyRestrictionsClient {
     /**
      * Checks what restrictions Azure Policy will place on a resource within a subscription.
-     *
+     * 
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,12 +27,12 @@ public interface PolicyRestrictionsClient {
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckRestrictionsResultInner> checkAtSubscriptionScopeWithResponse(
-        CheckRestrictionsRequest parameters, Context context);
+    Response<CheckRestrictionsResultInner> checkAtSubscriptionScopeWithResponse(CheckRestrictionsRequest parameters,
+        Context context);
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a subscription.
-     *
+     * 
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface PolicyRestrictionsClient {
     /**
      * Checks what restrictions Azure Policy will place on a resource within a resource group. Use this when the
      * resource group the resource will be created in is already known.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
@@ -53,13 +55,13 @@ public interface PolicyRestrictionsClient {
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckRestrictionsResultInner> checkAtResourceGroupScopeWithResponse(
-        String resourceGroupName, CheckRestrictionsRequest parameters, Context context);
+    Response<CheckRestrictionsResultInner> checkAtResourceGroupScopeWithResponse(String resourceGroupName,
+        CheckRestrictionsRequest parameters, Context context);
 
     /**
      * Checks what restrictions Azure Policy will place on a resource within a resource group. Use this when the
      * resource group the resource will be created in is already known.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,12 +70,12 @@ public interface PolicyRestrictionsClient {
      * @return the result of a check policy restrictions evaluation on a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckRestrictionsResultInner checkAtResourceGroupScope(
-        String resourceGroupName, CheckRestrictionsRequest parameters);
+    CheckRestrictionsResultInner checkAtResourceGroupScope(String resourceGroupName,
+        CheckRestrictionsRequest parameters);
 
     /**
      * Checks what restrictions Azure Policy will place on resources within a management group.
-     *
+     * 
      * @param managementGroupId Management group ID.
      * @param parameters The check policy restrictions parameters.
      * @param context The context to associate with this operation.
@@ -83,12 +85,12 @@ public interface PolicyRestrictionsClient {
      * @return the result of a check policy restrictions evaluation on a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckRestrictionsResultInner> checkAtManagementGroupScopeWithResponse(
-        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters, Context context);
+    Response<CheckRestrictionsResultInner> checkAtManagementGroupScopeWithResponse(String managementGroupId,
+        CheckManagementGroupRestrictionsRequest parameters, Context context);
 
     /**
      * Checks what restrictions Azure Policy will place on resources within a management group.
-     *
+     * 
      * @param managementGroupId Management group ID.
      * @param parameters The check policy restrictions parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,6 +99,6 @@ public interface PolicyRestrictionsClient {
      * @return the result of a check policy restrictions evaluation on a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckRestrictionsResultInner checkAtManagementGroupScope(
-        String managementGroupId, CheckManagementGroupRestrictionsRequest parameters);
+    CheckRestrictionsResultInner checkAtManagementGroupScope(String managementGroupId,
+        CheckManagementGroupRestrictionsRequest parameters);
 }

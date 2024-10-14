@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.azurearcdata.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The license type to apply for this managed instance. */
+/**
+ * The license type to apply for this managed instance.
+ */
 public enum ArcSqlManagedInstanceLicenseType {
-    /** Enum value BasePrice. */
+    /**
+     * Enum value BasePrice.
+     */
     BASE_PRICE("BasePrice"),
 
-    /** Enum value LicenseIncluded. */
+    /**
+     * Enum value LicenseIncluded.
+     */
     LICENSE_INCLUDED("LicenseIncluded");
 
-    /** The actual serialized value for a ArcSqlManagedInstanceLicenseType instance. */
+    /**
+     * The actual serialized value for a ArcSqlManagedInstanceLicenseType instance.
+     */
     private final String value;
 
     ArcSqlManagedInstanceLicenseType(String value) {
@@ -24,11 +29,10 @@ public enum ArcSqlManagedInstanceLicenseType {
 
     /**
      * Parses a serialized value to a ArcSqlManagedInstanceLicenseType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ArcSqlManagedInstanceLicenseType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ArcSqlManagedInstanceLicenseType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum ArcSqlManagedInstanceLicenseType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

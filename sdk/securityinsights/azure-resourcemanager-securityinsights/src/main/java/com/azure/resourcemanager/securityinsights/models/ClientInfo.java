@@ -5,39 +5,48 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Information on the client (user or application) that made some action. */
+/**
+ * Information on the client (user or application) that made some action.
+ */
 @Fluent
-public final class ClientInfo {
+public final class ClientInfo implements JsonSerializable<ClientInfo> {
     /*
      * The email of the client.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * The name of the client.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The object id of the client.
      */
-    @JsonProperty(value = "objectId")
     private UUID objectId;
 
     /*
      * The user principal name of the client.
      */
-    @JsonProperty(value = "userPrincipalName")
     private String userPrincipalName;
 
     /**
+     * Creates an instance of ClientInfo class.
+     */
+    public ClientInfo() {
+    }
+
+    /**
      * Get the email property: The email of the client.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -46,7 +55,7 @@ public final class ClientInfo {
 
     /**
      * Set the email property: The email of the client.
-     *
+     * 
      * @param email the email value to set.
      * @return the ClientInfo object itself.
      */
@@ -57,7 +66,7 @@ public final class ClientInfo {
 
     /**
      * Get the name property: The name of the client.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -66,7 +75,7 @@ public final class ClientInfo {
 
     /**
      * Set the name property: The name of the client.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClientInfo object itself.
      */
@@ -77,7 +86,7 @@ public final class ClientInfo {
 
     /**
      * Get the objectId property: The object id of the client.
-     *
+     * 
      * @return the objectId value.
      */
     public UUID objectId() {
@@ -86,7 +95,7 @@ public final class ClientInfo {
 
     /**
      * Set the objectId property: The object id of the client.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the ClientInfo object itself.
      */
@@ -97,7 +106,7 @@ public final class ClientInfo {
 
     /**
      * Get the userPrincipalName property: The user principal name of the client.
-     *
+     * 
      * @return the userPrincipalName value.
      */
     public String userPrincipalName() {
@@ -106,7 +115,7 @@ public final class ClientInfo {
 
     /**
      * Set the userPrincipalName property: The user principal name of the client.
-     *
+     * 
      * @param userPrincipalName the userPrincipalName value to set.
      * @return the ClientInfo object itself.
      */
@@ -117,9 +126,55 @@ public final class ClientInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("objectId", Objects.toString(this.objectId, null));
+        jsonWriter.writeStringField("userPrincipalName", this.userPrincipalName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ClientInfo.
+     */
+    public static ClientInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientInfo deserializedClientInfo = new ClientInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("email".equals(fieldName)) {
+                    deserializedClientInfo.email = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClientInfo.name = reader.getString();
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedClientInfo.objectId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("userPrincipalName".equals(fieldName)) {
+                    deserializedClientInfo.userPrincipalName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientInfo;
+        });
     }
 }

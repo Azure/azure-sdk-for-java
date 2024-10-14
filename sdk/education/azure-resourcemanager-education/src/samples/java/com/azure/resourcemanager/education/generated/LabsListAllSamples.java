@@ -4,31 +4,36 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Labs ListAll. */
+/**
+ * Samples for Labs ListAll.
+ */
 public final class LabsListAllSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabList.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabList.json
      */
     /**
      * Sample code: LabList.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labList(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().listAll("{billingAccountName}", "{billingProfileName}", false, null, Context.NONE);
+        manager.labs()
+            .listAll("{billingAccountName}", "{billingProfileName}", false, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/LabListIncludeBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * LabListIncludeBudget.json
      */
     /**
      * Sample code: LabListIncludeBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void labListIncludeBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.labs().listAll("{billingAccountName}", "{billingProfileName}", true, null, Context.NONE);
+        manager.labs()
+            .listAll("{billingAccountName}", "{billingProfileName}", true, null, com.azure.core.util.Context.NONE);
     }
 }

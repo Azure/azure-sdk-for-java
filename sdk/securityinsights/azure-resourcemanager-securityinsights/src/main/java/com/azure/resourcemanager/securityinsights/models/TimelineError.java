@@ -6,32 +6,41 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Timeline Query Errors. */
+/**
+ * Timeline Query Errors.
+ */
 @Fluent
-public final class TimelineError {
+public final class TimelineError implements JsonSerializable<TimelineError> {
     /*
      * the query kind
      */
-    @JsonProperty(value = "kind", required = true)
     private EntityTimelineKind kind;
 
     /*
      * the query id
      */
-    @JsonProperty(value = "queryId")
     private String queryId;
 
     /*
      * the error message
      */
-    @JsonProperty(value = "errorMessage", required = true)
     private String errorMessage;
 
     /**
+     * Creates an instance of TimelineError class.
+     */
+    public TimelineError() {
+    }
+
+    /**
      * Get the kind property: the query kind.
-     *
+     * 
      * @return the kind value.
      */
     public EntityTimelineKind kind() {
@@ -40,7 +49,7 @@ public final class TimelineError {
 
     /**
      * Set the kind property: the query kind.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the TimelineError object itself.
      */
@@ -51,7 +60,7 @@ public final class TimelineError {
 
     /**
      * Get the queryId property: the query id.
-     *
+     * 
      * @return the queryId value.
      */
     public String queryId() {
@@ -60,7 +69,7 @@ public final class TimelineError {
 
     /**
      * Set the queryId property: the query id.
-     *
+     * 
      * @param queryId the queryId value to set.
      * @return the TimelineError object itself.
      */
@@ -71,7 +80,7 @@ public final class TimelineError {
 
     /**
      * Get the errorMessage property: the error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -80,7 +89,7 @@ public final class TimelineError {
 
     /**
      * Set the errorMessage property: the error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the TimelineError object itself.
      */
@@ -91,21 +100,62 @@ public final class TimelineError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (kind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kind in model TimelineError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property kind in model TimelineError"));
         }
         if (errorMessage() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property errorMessage in model TimelineError"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property errorMessage in model TimelineError"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TimelineError.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        jsonWriter.writeStringField("queryId", this.queryId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimelineError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimelineError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimelineError.
+     */
+    public static TimelineError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimelineError deserializedTimelineError = new TimelineError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedTimelineError.kind = EntityTimelineKind.fromString(reader.getString());
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedTimelineError.errorMessage = reader.getString();
+                } else if ("queryId".equals(fieldName)) {
+                    deserializedTimelineError.queryId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimelineError;
+        });
+    }
 }

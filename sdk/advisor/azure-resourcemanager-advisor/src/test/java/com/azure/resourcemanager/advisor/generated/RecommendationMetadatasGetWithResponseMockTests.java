@@ -6,68 +6,42 @@ package com.azure.resourcemanager.advisor.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.advisor.AdvisorManager;
 import com.azure.resourcemanager.advisor.models.MetadataEntity;
 import com.azure.resourcemanager.advisor.models.Scenario;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class RecommendationMetadatasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"id\":\"laocqxtccmg\",\"type\":\"dxyt\",\"name\":\"oyrxvwfudwpzntxh\",\"properties\":{\"displayName\":\"lrqjbhckfr\",\"dependsOn\":[\"xsbkyvpyca\",\"uzbpzkafku\"],\"applicableScenarios\":[\"Alerts\",\"Alerts\"],\"supportedValues\":[{\"id\":\"ehhseyvjusrts\",\"displayName\":\"spkdee\"},{\"id\":\"ofmxagkvtmelmqkr\",\"displayName\":\"hvljuahaquh\"}]}}";
 
-        String responseStr =
-            "{\"id\":\"sovmyokacspkwl\",\"type\":\"dobpxjmflbvvn\",\"name\":\"rkcciwwzjuqk\",\"properties\":{\"displayName\":\"ajiwkuo\",\"dependsOn\":[\"kg\",\"sauuimj\",\"vxieduugidyj\"],\"applicableScenarios\":[\"Alerts\"],\"supportedValues\":[]}}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AdvisorManager manager = AdvisorManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        MetadataEntity response = manager.recommendationMetadatas()
+            .getWithResponse("kqujidsuyono", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        AdvisorManager manager =
-            AdvisorManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MetadataEntity response =
-            manager.recommendationMetadatas().getWithResponse("iqzbq", com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("sovmyokacspkwl", response.id());
-        Assertions.assertEquals("dobpxjmflbvvn", response.type());
-        Assertions.assertEquals("rkcciwwzjuqk", response.name());
-        Assertions.assertEquals("ajiwkuo", response.displayName());
-        Assertions.assertEquals("kg", response.dependsOn().get(0));
+        Assertions.assertEquals("laocqxtccmg", response.id());
+        Assertions.assertEquals("dxyt", response.type());
+        Assertions.assertEquals("oyrxvwfudwpzntxh", response.name());
+        Assertions.assertEquals("lrqjbhckfr", response.displayName());
+        Assertions.assertEquals("xsbkyvpyca", response.dependsOn().get(0));
         Assertions.assertEquals(Scenario.ALERTS, response.applicableScenarios().get(0));
+        Assertions.assertEquals("ehhseyvjusrts", response.supportedValues().get(0).id());
+        Assertions.assertEquals("spkdee", response.supportedValues().get(0).displayName());
     }
 }

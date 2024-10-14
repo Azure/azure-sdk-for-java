@@ -5,85 +5,87 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.AutomationAccountState;
 import com.azure.resourcemanager.automation.models.EncryptionProperties;
 import com.azure.resourcemanager.automation.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Definition of the account property. */
+/**
+ * Definition of the account property.
+ */
 @Fluent
-public final class AutomationAccountProperties {
+public final class AutomationAccountProperties implements JsonSerializable<AutomationAccountProperties> {
     /*
      * Gets or sets the SKU of account.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Gets or sets the last modified by.
      */
-    @JsonProperty(value = "lastModifiedBy")
     private String lastModifiedBy;
 
     /*
      * Gets status of account.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private AutomationAccountState state;
 
     /*
      * Gets the creation time.
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * Gets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Encryption properties for the automation account
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /*
      * List of Automation operations supported by the Automation resource provider.
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is allowed from the public internet
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private Boolean publicNetworkAccess;
 
     /*
      * Indicates whether requests using non-AAD authentication are blocked
      */
-    @JsonProperty(value = "disableLocalAuth")
     private Boolean disableLocalAuth;
 
     /*
      * URL of automation hybrid service which is used for hybrid worker on-boarding.
      */
-    @JsonProperty(value = "automationHybridServiceUrl")
     private String automationHybridServiceUrl;
 
     /**
+     * Creates an instance of AutomationAccountProperties class.
+     */
+    public AutomationAccountProperties() {
+    }
+
+    /**
      * Get the sku property: Gets or sets the SKU of account.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -92,7 +94,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Set the sku property: Gets or sets the SKU of account.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AutomationAccountProperties object itself.
      */
@@ -103,7 +105,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Get the lastModifiedBy property: Gets or sets the last modified by.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -112,7 +114,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Set the lastModifiedBy property: Gets or sets the last modified by.
-     *
+     * 
      * @param lastModifiedBy the lastModifiedBy value to set.
      * @return the AutomationAccountProperties object itself.
      */
@@ -123,7 +125,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Get the state property: Gets status of account.
-     *
+     * 
      * @return the state value.
      */
     public AutomationAccountState state() {
@@ -132,7 +134,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Get the creationTime property: Gets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -141,7 +143,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Get the lastModifiedTime property: Gets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -150,7 +152,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -159,7 +161,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AutomationAccountProperties object itself.
      */
@@ -170,7 +172,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Get the encryption property: Encryption properties for the automation account.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -179,7 +181,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Set the encryption property: Encryption properties for the automation account.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the AutomationAccountProperties object itself.
      */
@@ -191,7 +193,7 @@ public final class AutomationAccountProperties {
     /**
      * Get the privateEndpointConnections property: List of Automation operations supported by the Automation resource
      * provider.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -201,12 +203,12 @@ public final class AutomationAccountProperties {
     /**
      * Set the privateEndpointConnections property: List of Automation operations supported by the Automation resource
      * provider.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the AutomationAccountProperties object itself.
      */
-    public AutomationAccountProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public AutomationAccountProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
@@ -214,7 +216,7 @@ public final class AutomationAccountProperties {
     /**
      * Get the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
      * allowed from the public internet.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public Boolean publicNetworkAccess() {
@@ -224,7 +226,7 @@ public final class AutomationAccountProperties {
     /**
      * Set the publicNetworkAccess property: Indicates whether traffic on the non-ARM endpoint (Webhook/Agent) is
      * allowed from the public internet.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AutomationAccountProperties object itself.
      */
@@ -235,7 +237,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Get the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -244,7 +246,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Set the disableLocalAuth property: Indicates whether requests using non-AAD authentication are blocked.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the AutomationAccountProperties object itself.
      */
@@ -256,7 +258,7 @@ public final class AutomationAccountProperties {
     /**
      * Get the automationHybridServiceUrl property: URL of automation hybrid service which is used for hybrid worker
      * on-boarding.
-     *
+     * 
      * @return the automationHybridServiceUrl value.
      */
     public String automationHybridServiceUrl() {
@@ -266,7 +268,7 @@ public final class AutomationAccountProperties {
     /**
      * Set the automationHybridServiceUrl property: URL of automation hybrid service which is used for hybrid worker
      * on-boarding.
-     *
+     * 
      * @param automationHybridServiceUrl the automationHybridServiceUrl value to set.
      * @return the AutomationAccountProperties object itself.
      */
@@ -277,7 +279,7 @@ public final class AutomationAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -290,5 +292,76 @@ public final class AutomationAccountProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("lastModifiedBy", this.lastModifiedBy);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("publicNetworkAccess", this.publicNetworkAccess);
+        jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
+        jsonWriter.writeStringField("automationHybridServiceUrl", this.automationHybridServiceUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationAccountProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomationAccountProperties.
+     */
+    public static AutomationAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationAccountProperties deserializedAutomationAccountProperties = new AutomationAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.sku = Sku.fromJson(reader);
+                } else if ("lastModifiedBy".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.lastModifiedBy = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.state
+                        = AutomationAccountState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.description = reader.getString();
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedAutomationAccountProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.publicNetworkAccess
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableLocalAuth".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.disableLocalAuth
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("automationHybridServiceUrl".equals(fieldName)) {
+                    deserializedAutomationAccountProperties.automationHybridServiceUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationAccountProperties;
+        });
     }
 }

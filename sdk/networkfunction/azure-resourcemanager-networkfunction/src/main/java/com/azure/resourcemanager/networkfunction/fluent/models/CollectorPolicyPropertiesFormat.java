@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.networkfunction.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkfunction.models.EmissionPoliciesPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.IngestionPolicyPropertiesFormat;
 import com.azure.resourcemanager.networkfunction.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection policy properties. */
+/**
+ * Collection policy properties.
+ */
 @Fluent
-public final class CollectorPolicyPropertiesFormat {
+public final class CollectorPolicyPropertiesFormat implements JsonSerializable<CollectorPolicyPropertiesFormat> {
     /*
      * Ingestion policies.
      */
-    @JsonProperty(value = "ingestionPolicy")
     private IngestionPolicyPropertiesFormat ingestionPolicy;
 
     /*
      * Emission policies.
      */
-    @JsonProperty(value = "emissionPolicies")
     private List<EmissionPoliciesPropertiesFormat> emissionPolicies;
 
     /*
      * The provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of CollectorPolicyPropertiesFormat class. */
+    /**
+     * Creates an instance of CollectorPolicyPropertiesFormat class.
+     */
     public CollectorPolicyPropertiesFormat() {
     }
 
     /**
      * Get the ingestionPolicy property: Ingestion policies.
-     *
+     * 
      * @return the ingestionPolicy value.
      */
     public IngestionPolicyPropertiesFormat ingestionPolicy() {
@@ -47,7 +52,7 @@ public final class CollectorPolicyPropertiesFormat {
 
     /**
      * Set the ingestionPolicy property: Ingestion policies.
-     *
+     * 
      * @param ingestionPolicy the ingestionPolicy value to set.
      * @return the CollectorPolicyPropertiesFormat object itself.
      */
@@ -58,7 +63,7 @@ public final class CollectorPolicyPropertiesFormat {
 
     /**
      * Get the emissionPolicies property: Emission policies.
-     *
+     * 
      * @return the emissionPolicies value.
      */
     public List<EmissionPoliciesPropertiesFormat> emissionPolicies() {
@@ -67,19 +72,19 @@ public final class CollectorPolicyPropertiesFormat {
 
     /**
      * Set the emissionPolicies property: Emission policies.
-     *
+     * 
      * @param emissionPolicies the emissionPolicies value to set.
      * @return the CollectorPolicyPropertiesFormat object itself.
      */
-    public CollectorPolicyPropertiesFormat withEmissionPolicies(
-        List<EmissionPoliciesPropertiesFormat> emissionPolicies) {
+    public CollectorPolicyPropertiesFormat
+        withEmissionPolicies(List<EmissionPoliciesPropertiesFormat> emissionPolicies) {
         this.emissionPolicies = emissionPolicies;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -88,7 +93,7 @@ public final class CollectorPolicyPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -98,5 +103,52 @@ public final class CollectorPolicyPropertiesFormat {
         if (emissionPolicies() != null) {
             emissionPolicies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("ingestionPolicy", this.ingestionPolicy);
+        jsonWriter.writeArrayField("emissionPolicies", this.emissionPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CollectorPolicyPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CollectorPolicyPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CollectorPolicyPropertiesFormat.
+     */
+    public static CollectorPolicyPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CollectorPolicyPropertiesFormat deserializedCollectorPolicyPropertiesFormat
+                = new CollectorPolicyPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ingestionPolicy".equals(fieldName)) {
+                    deserializedCollectorPolicyPropertiesFormat.ingestionPolicy
+                        = IngestionPolicyPropertiesFormat.fromJson(reader);
+                } else if ("emissionPolicies".equals(fieldName)) {
+                    List<EmissionPoliciesPropertiesFormat> emissionPolicies
+                        = reader.readArray(reader1 -> EmissionPoliciesPropertiesFormat.fromJson(reader1));
+                    deserializedCollectorPolicyPropertiesFormat.emissionPolicies = emissionPolicies;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedCollectorPolicyPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCollectorPolicyPropertiesFormat;
+        });
     }
 }

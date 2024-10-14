@@ -16,8 +16,7 @@ public final class EntityTimelineResponseImpl implements EntityTimelineResponse 
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    EntityTimelineResponseImpl(
-        EntityTimelineResponseInner innerObject,
+    EntityTimelineResponseImpl(EntityTimelineResponseInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

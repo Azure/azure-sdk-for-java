@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class DigitalTwinsLifecycleTests extends TestBase {
+public class DigitalTwinsLifecycleTests extends TestProxyTestBase {
 
     private static final String DEFAULT_INSTANCE_NAME = "DigitalTwinsSdk";
     private static final Region DEFAULT_REGION = Region.US_WEST_CENTRAL;

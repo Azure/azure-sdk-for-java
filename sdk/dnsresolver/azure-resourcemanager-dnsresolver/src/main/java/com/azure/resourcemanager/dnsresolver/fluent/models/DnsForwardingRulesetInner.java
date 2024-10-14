@@ -9,35 +9,58 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a DNS forwarding ruleset. */
+/**
+ * Describes a DNS forwarding ruleset.
+ */
 @Fluent
 public final class DnsForwardingRulesetInner extends Resource {
     /*
      * ETag of the DNS forwarding ruleset.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Properties of the DNS forwarding ruleset.
      */
-    @JsonProperty(value = "properties", required = true)
     private DnsForwardingRulesetProperties innerProperties = new DnsForwardingRulesetProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DnsForwardingRulesetInner class.
+     */
+    public DnsForwardingRulesetInner() {
+    }
 
     /**
      * Get the etag property: ETag of the DNS forwarding ruleset.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -46,7 +69,7 @@ public final class DnsForwardingRulesetInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the DNS forwarding ruleset.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DnsForwardingRulesetProperties innerProperties() {
@@ -55,21 +78,55 @@ public final class DnsForwardingRulesetInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DnsForwardingRulesetInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DnsForwardingRulesetInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -79,7 +136,7 @@ public final class DnsForwardingRulesetInner extends Resource {
     /**
      * Get the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
      * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
-     *
+     * 
      * @return the dnsResolverOutboundEndpoints value.
      */
     public List<SubResource> dnsResolverOutboundEndpoints() {
@@ -89,7 +146,7 @@ public final class DnsForwardingRulesetInner extends Resource {
     /**
      * Set the dnsResolverOutboundEndpoints property: The reference to the DNS resolver outbound endpoints that are used
      * to route DNS queries matching the forwarding rules in the ruleset to the target DNS servers.
-     *
+     * 
      * @param dnsResolverOutboundEndpoints the dnsResolverOutboundEndpoints value to set.
      * @return the DnsForwardingRulesetInner object itself.
      */
@@ -104,7 +161,7 @@ public final class DnsForwardingRulesetInner extends Resource {
     /**
      * Get the provisioningState property: The current provisioning state of the DNS forwarding ruleset. This is a
      * read-only property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -113,7 +170,7 @@ public final class DnsForwardingRulesetInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resourceGuid for the DNS forwarding ruleset.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -122,19 +179,73 @@ public final class DnsForwardingRulesetInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model DnsForwardingRulesetInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model DnsForwardingRulesetInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DnsForwardingRulesetInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsForwardingRulesetInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsForwardingRulesetInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DnsForwardingRulesetInner.
+     */
+    public static DnsForwardingRulesetInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsForwardingRulesetInner deserializedDnsForwardingRulesetInner = new DnsForwardingRulesetInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDnsForwardingRulesetInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetInner.innerProperties
+                        = DnsForwardingRulesetProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDnsForwardingRulesetInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsForwardingRulesetInner;
+        });
+    }
 }

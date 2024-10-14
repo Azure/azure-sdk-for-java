@@ -6,28 +6,39 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.ConnectionTypeCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create or update connection type operation. */
+/**
+ * The parameters supplied to the create or update connection type operation.
+ */
 @Fluent
-public final class ConnectionTypeCreateOrUpdateParameters {
+public final class ConnectionTypeCreateOrUpdateParameters
+    implements JsonSerializable<ConnectionTypeCreateOrUpdateParameters> {
     /*
      * Gets or sets the name of the connection type.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Gets or sets the value of the connection type.
      */
-    @JsonProperty(value = "properties", required = true)
     private ConnectionTypeCreateOrUpdateProperties innerProperties = new ConnectionTypeCreateOrUpdateProperties();
 
     /**
+     * Creates an instance of ConnectionTypeCreateOrUpdateParameters class.
+     */
+    public ConnectionTypeCreateOrUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the connection type.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -36,7 +47,7 @@ public final class ConnectionTypeCreateOrUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the connection type.
-     *
+     * 
      * @param name the name value to set.
      * @return the ConnectionTypeCreateOrUpdateParameters object itself.
      */
@@ -47,7 +58,7 @@ public final class ConnectionTypeCreateOrUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the value of the connection type.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ConnectionTypeCreateOrUpdateProperties innerProperties() {
@@ -56,7 +67,7 @@ public final class ConnectionTypeCreateOrUpdateParameters {
 
     /**
      * Get the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @return the isGlobal value.
      */
     public Boolean isGlobal() {
@@ -65,7 +76,7 @@ public final class ConnectionTypeCreateOrUpdateParameters {
 
     /**
      * Set the isGlobal property: Gets or sets a Boolean value to indicate if the connection type is global.
-     *
+     * 
      * @param isGlobal the isGlobal value to set.
      * @return the ConnectionTypeCreateOrUpdateParameters object itself.
      */
@@ -79,7 +90,7 @@ public final class ConnectionTypeCreateOrUpdateParameters {
 
     /**
      * Get the fieldDefinitions property: Gets or sets the field definitions of the connection type.
-     *
+     * 
      * @return the fieldDefinitions value.
      */
     public Map<String, FieldDefinition> fieldDefinitions() {
@@ -88,7 +99,7 @@ public final class ConnectionTypeCreateOrUpdateParameters {
 
     /**
      * Set the fieldDefinitions property: Gets or sets the field definitions of the connection type.
-     *
+     * 
      * @param fieldDefinitions the fieldDefinitions value to set.
      * @return the ConnectionTypeCreateOrUpdateParameters object itself.
      */
@@ -102,25 +113,65 @@ public final class ConnectionTypeCreateOrUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ConnectionTypeCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ConnectionTypeCreateOrUpdateParameters"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ConnectionTypeCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ConnectionTypeCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectionTypeCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionTypeCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionTypeCreateOrUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectionTypeCreateOrUpdateParameters.
+     */
+    public static ConnectionTypeCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionTypeCreateOrUpdateParameters deserializedConnectionTypeCreateOrUpdateParameters
+                = new ConnectionTypeCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedConnectionTypeCreateOrUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConnectionTypeCreateOrUpdateParameters.innerProperties
+                        = ConnectionTypeCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionTypeCreateOrUpdateParameters;
+        });
+    }
 }

@@ -35,6 +35,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile StoreResponse globalStrongWriteResponse;
     public volatile ConsistencyLevel originalRequestConsistencyLevel;
     public volatile PartitionKeyRange resolvedPartitionKeyRange;
+    public volatile PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker;
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
@@ -136,6 +137,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.globalStrongWriteResponse = this.globalStrongWriteResponse;
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
         context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
+        context.resolvedPartitionKeyRangeForCircuitBreaker = this.resolvedPartitionKeyRangeForCircuitBreaker;
         context.regionIndex = this.regionIndex;
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
