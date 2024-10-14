@@ -557,7 +557,7 @@ public class BlobApiTests extends BlobTestBase {
     @Test
     public void downloadWithRetryRange() {
         /*
-        We are going to make a request for some range on a blob. The Flux returned will throw an exception, forcing
+        We are going to make a request for some range on a blob. The output returned will throw an exception, forcing
         a retry per the DownloadRetryOptions. The next request should have the same range header, which was generated
         from the count and offset values in HttpGetterInfo that was constructed on the initial call to download. We
         don't need to check the data here, but we want to ensure that the correct range is set each time. This will
@@ -574,7 +574,7 @@ public class BlobApiTests extends BlobTestBase {
                 false, null, null));
 
         /*
-        Because the dummy Flux always throws an error. This will also validate that an IllegalArgumentException is
+        Because the dummy output always throws an error. This will also validate that an IllegalArgumentException is
         NOT thrown because the types would not match.
          */
         assertInstanceOf(IOException.class, e.getCause());

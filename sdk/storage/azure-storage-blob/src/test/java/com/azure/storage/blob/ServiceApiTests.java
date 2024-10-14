@@ -288,7 +288,7 @@ public class ServiceApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listContainersWithTimeoutStillBackedByPagedFlux() {
+    public void listContainersWithTimeoutStillBackedByPagedStream() {
         int numContainers = 5;
         int pageResults = 3;
 
@@ -451,6 +451,35 @@ public class ServiceApiTests extends BlobTestBase {
         cc.delete();
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @Test
+    public void findBlobsByPage() {
+        BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());
+        Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+
+        int numBlobs = 15;
+        int pageResults = 10;
+
+        for (int i = 0; i < numBlobs; i++) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags), null, null);
+        }
+
+        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+
+        String query = String.format("\"%s\"='%s'", tagKey, tagValue);
+        FindBlobsOptions searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12);
+
+        PagedResponse<TaggedBlobItem> response1 = primaryBlobServiceClient.findBlobsByTags(searchOptions, null,
+            Context.NONE).iterableByPage(pageResults).iterator().next();
+        assertEquals(pageResults, response1.getValue().size());
+
+        PagedResponse<TaggedBlobItem> response2 = primaryBlobServiceClient.findBlobsByTags(searchOptions, null,
+            Context.NONE).iterableByPage().iterator().next();
+        // since no number is specified, it should use the max number specified in options
+        assertEquals(12, response2.getValue().size());
+    }
+
     @Test
     public void findBlobsError() {
         assertThrows(BlobStorageException.class, () ->
@@ -469,7 +498,7 @@ public class ServiceApiTests extends BlobTestBase {
     @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
+    public void findBlobsWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
         BlobContainerClient cc = primaryBlobServiceClient.createBlobContainer(generateContainerName());

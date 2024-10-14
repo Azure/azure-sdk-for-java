@@ -1103,7 +1103,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listBlobsFlatWithTimeoutStillBackedByPagedFlux() {
+    public void listBlobsFlatWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
 
@@ -1118,7 +1118,7 @@ public class ContainerApiTests extends BlobTestBase {
     }
 
     @Test
-    public void listBlobsHierWithTimeoutStillBackedByPagedFlux() {
+    public void listBlobsHierWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
 
@@ -1686,7 +1686,7 @@ public class ContainerApiTests extends BlobTestBase {
     @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2021-04-10")
     @Test
-    public void findBlobsWithTimeoutStillBackedByPagedFlux() {
+    public void findBlobsWithTimeoutStillBackedByPagedStream() {
         int numBlobs = 5;
         int pageResults = 3;
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
