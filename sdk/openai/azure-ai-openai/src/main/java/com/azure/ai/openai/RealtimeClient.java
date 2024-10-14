@@ -18,6 +18,8 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.ai.openai.implementation.RealtimesImpl;
 import java.util.List;
 
+// TODO jpalvarezl: Not sure if this generated code would be usable with a WebSocketClient.
+// Need to evaluate whether we initialize the blocking version of the client with an underlying Async version like in WebPubSub.
 /**
  * Initializes a new instance of the synchronous OpenAIClient type.
  */

@@ -5,8 +5,6 @@ import com.azure.ai.openai.RealtimeAsyncClient;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
-import java.time.Duration;
-
 public class LowLevelClient {
     public static void main(String[] args) {
         String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");

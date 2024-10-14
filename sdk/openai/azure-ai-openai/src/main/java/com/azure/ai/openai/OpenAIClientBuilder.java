@@ -365,18 +365,20 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
             : new OpenAIClient(buildInnerClient());
     }
 
+    // TODO: jpalvarezl this would be the entry point, should we want to integrate Realtime into Inference
+    // All the webSocketClient setup in RealtimeClientBuilder would have to be moved here or made usable from here.
     public RealtimeAsyncClient buildRealtimeAsyncClient() {
-        RealtimesImpl reatimesImpl = useNonAzureOpenAIService()
-            ? buildInnerNonAzureOpenAIClient().getRealtime()
-            : buildInnerClient().getRealtime();
-        return new RealtimeAsyncClient(reatimesImpl);
+        return useNonAzureOpenAIService()
+            ? new RealtimeAsyncClient(buildInnerNonAzureOpenAIClient().getRealtime())
+            : new RealtimeAsyncClient(buildInnerClient().getRealtime());
     }
 
+    // TODO: jpalvarezl this would be the entry point, should we want to integrate Realtime into Inference
+    // All the webSocketClient setup in RealtimeClientBuilder would have to be moved here or made usable from here.
     public RealtimeClient buildRealtimeClient() {
-        RealtimesImpl reatimesImpl = useNonAzureOpenAIService()
-            ? buildInnerNonAzureOpenAIClient().getRealtime()
-            : buildInnerClient().getRealtime();
-        return new RealtimeClient(reatimesImpl);
+        return useNonAzureOpenAIService()
+            ? new RealtimeClient(buildInnerNonAzureOpenAIClient().getRealtime())
+            : new RealtimeClient(buildInnerClient().getRealtime());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OpenAIClientBuilder.class);
