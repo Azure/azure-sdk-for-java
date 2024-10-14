@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 
+// Does not take ParallelTransferOptions
 public class Read extends DataLakeScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final DataLakeFileClient syncClient;

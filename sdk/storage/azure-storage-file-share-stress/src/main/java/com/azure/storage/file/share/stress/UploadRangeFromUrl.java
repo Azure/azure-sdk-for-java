@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 
+// Does not take ParallelTransferOptions
 public class UploadRangeFromUrl extends ShareScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final ShareFileClient destinationFileClient;

@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
+// Does not take ParallelTransferOptions
 public class BlockBlobUpload extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;

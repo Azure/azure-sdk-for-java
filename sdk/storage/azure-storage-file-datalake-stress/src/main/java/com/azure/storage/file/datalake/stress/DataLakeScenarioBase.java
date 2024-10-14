@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileSystemClient;
 import com.azure.storage.file.datalake.DataLakeServiceAsyncClient;
@@ -21,7 +22,6 @@ import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
@@ -32,6 +32,7 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
     private final DataLakeFileSystemAsyncClient asyncNoFaultFileSystemClient;
     private final DataLakeFileSystemClient syncNoFaultFileSystemClient;
     private Instant startTime;
+    protected final ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions();
 
     public DataLakeScenarioBase(TOptions options) {
         super(options);
@@ -59,6 +60,7 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
         syncNoFaultFileSystemClient = syncNoFaultClient.getFileSystemClient(FILE_SYSTEM_NAME);
         syncFileSystemClient = syncClient.getFileSystemClient(FILE_SYSTEM_NAME);
         asyncFileSystemClient = asyncClient.getFileSystemAsyncClient(FILE_SYSTEM_NAME);
+        parallelTransferOptions.setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override

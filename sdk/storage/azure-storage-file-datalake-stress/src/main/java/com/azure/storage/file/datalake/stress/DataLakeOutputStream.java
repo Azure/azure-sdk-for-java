@@ -5,8 +5,10 @@ package com.azure.storage.file.datalake.stress;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
+import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.stress.utils.OriginalContent;
 import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
@@ -35,9 +37,11 @@ public class DataLakeOutputStream extends DataLakeScenarioBase<StorageStressOpti
 
     @Override
     protected void runInternal(Context span) throws IOException {
+        DataLakeFileOutputStreamOptions dataLakeFileOutputStreamOptions = new DataLakeFileOutputStreamOptions()
+            .setParallelTransferOptions(new ParallelTransferOptions().setMaxConcurrency(parallelTransferOptions.getMaxConcurrency()));
 
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize());
-             OutputStream outputStream = syncClient.getOutputStream(null, span)) {
+             OutputStream outputStream = syncClient.getOutputStream(dataLakeFileOutputStreamOptions, span)) {
             byte[] buffer = new byte[4096]; // Define a buffer
             int bytesRead;
 

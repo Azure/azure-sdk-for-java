@@ -9,6 +9,7 @@ import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.perf.test.core.PerfStressTest;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
@@ -32,6 +33,7 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
     private final ShareAsyncClient asyncNoFaultShareClient;
     private final ShareClient syncNoFaultShareClient;
     private Instant startTime;
+    protected final ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions();
 
     public ShareScenarioBase(TOptions options) {
         super(options);

@@ -56,7 +56,8 @@ public class DownloadToFile extends BlobScenarioBase<StorageStressOptions> {
     protected Mono<Void> runInternalAsync(Context span) {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
-            path -> asyncClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(path.toString()).setParallelTransferOptions())
+            path -> asyncClient.downloadToFileWithResponse(
+                new BlobDownloadToFileOptions(path.toString()).setParallelTransferOptions(parallelTransferOptions))
                 .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
             DownloadToFile::deleteFile);
     }

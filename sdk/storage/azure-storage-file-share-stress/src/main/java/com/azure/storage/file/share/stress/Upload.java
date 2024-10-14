@@ -36,6 +36,7 @@ public class Upload extends ShareScenarioBase<StorageStressOptions> {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
             syncClient.uploadWithResponse(new ShareFileUploadOptions(inputStream)
                     .setParallelTransferOptions(new ParallelTransferOptions()
+                        .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
                         .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)), null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
@@ -46,7 +47,9 @@ public class Upload extends ShareScenarioBase<StorageStressOptions> {
         Flux<ByteBuffer> byteBufferFlux = new CrcInputStream(originalContent.getContentHead(), options.getSize())
             .convertStreamToByteBuffer();
         return asyncClient.uploadWithResponse(new ShareFileUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                .setParallelTransferOptions(new ParallelTransferOptions()
+                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
+                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 

@@ -35,7 +35,9 @@ public class Upload extends BlobScenarioBase<StorageStressOptions> {
     protected void runInternal(Context span) {
         try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
             syncClient.uploadWithResponse(new BlobParallelUploadOptions(inputStream).setParallelTransferOptions(
-                new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)), null, span);
+                new ParallelTransferOptions()
+                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
+                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)), null, span);
             originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
@@ -47,7 +49,9 @@ public class Upload extends BlobScenarioBase<StorageStressOptions> {
 
         // Using the same Flux<ByteBuffer> that was used to upload the blob to check the content.
         return asyncClient.uploadWithResponse(new BlobParallelUploadOptions(byteBufferFlux)
-                .setParallelTransferOptions(new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
+                .setParallelTransferOptions(new ParallelTransferOptions()
+                    .setMaxConcurrency(parallelTransferOptions.getMaxConcurrency())
+                    .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)))
             .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
