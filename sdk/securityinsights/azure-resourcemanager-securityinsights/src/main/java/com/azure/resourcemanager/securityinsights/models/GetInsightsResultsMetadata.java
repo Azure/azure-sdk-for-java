@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Get Insights result metadata. */
+/**
+ * Get Insights result metadata.
+ */
 @Fluent
-public final class GetInsightsResultsMetadata {
+public final class GetInsightsResultsMetadata implements JsonSerializable<GetInsightsResultsMetadata> {
     /*
      * the total items found for the insights request
      */
-    @JsonProperty(value = "totalCount", required = true)
     private int totalCount;
 
     /*
      * information about the failed queries
      */
-    @JsonProperty(value = "errors")
     private List<GetInsightsErrorKind> errors;
 
     /**
+     * Creates an instance of GetInsightsResultsMetadata class.
+     */
+    public GetInsightsResultsMetadata() {
+    }
+
+    /**
      * Get the totalCount property: the total items found for the insights request.
-     *
+     * 
      * @return the totalCount value.
      */
     public int totalCount() {
@@ -34,7 +44,7 @@ public final class GetInsightsResultsMetadata {
 
     /**
      * Set the totalCount property: the total items found for the insights request.
-     *
+     * 
      * @param totalCount the totalCount value to set.
      * @return the GetInsightsResultsMetadata object itself.
      */
@@ -45,7 +55,7 @@ public final class GetInsightsResultsMetadata {
 
     /**
      * Get the errors property: information about the failed queries.
-     *
+     * 
      * @return the errors value.
      */
     public List<GetInsightsErrorKind> errors() {
@@ -54,7 +64,7 @@ public final class GetInsightsResultsMetadata {
 
     /**
      * Set the errors property: information about the failed queries.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the GetInsightsResultsMetadata object itself.
      */
@@ -65,12 +75,54 @@ public final class GetInsightsResultsMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("totalCount", this.totalCount);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetInsightsResultsMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetInsightsResultsMetadata if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GetInsightsResultsMetadata.
+     */
+    public static GetInsightsResultsMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetInsightsResultsMetadata deserializedGetInsightsResultsMetadata = new GetInsightsResultsMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("totalCount".equals(fieldName)) {
+                    deserializedGetInsightsResultsMetadata.totalCount = reader.getInt();
+                } else if ("errors".equals(fieldName)) {
+                    List<GetInsightsErrorKind> errors
+                        = reader.readArray(reader1 -> GetInsightsErrorKind.fromJson(reader1));
+                    deserializedGetInsightsResultsMetadata.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetInsightsResultsMetadata;
+        });
     }
 }

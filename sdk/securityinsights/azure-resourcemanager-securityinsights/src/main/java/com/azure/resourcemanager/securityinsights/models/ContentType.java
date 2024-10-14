@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The content type of a source control path. */
+/**
+ * The content type of a source control path.
+ */
 public final class ContentType extends ExpandableStringEnum<ContentType> {
-    /** Static value AnalyticRule for ContentType. */
+    /**
+     * Static value AnalyticRule for ContentType.
+     */
     public static final ContentType ANALYTIC_RULE = fromString("AnalyticRule");
 
-    /** Static value Workbook for ContentType. */
+    /**
+     * Static value Workbook for ContentType.
+     */
     public static final ContentType WORKBOOK = fromString("Workbook");
 
     /**
+     * Creates a new instance of ContentType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentType() {
+    }
+
+    /**
      * Creates or finds a ContentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentType.
      */
-    @JsonCreator
     public static ContentType fromString(String name) {
         return fromString(name, ContentType.class);
     }
 
     /**
      * Gets known ContentType values.
-     *
+     * 
      * @return known ContentType values.
      */
     public static Collection<ContentType> values() {
