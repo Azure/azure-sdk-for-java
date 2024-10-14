@@ -4,7 +4,6 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.BasicAuthenticationCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeaderName;
@@ -67,6 +66,8 @@ public class KeyVaultCredentialPolicyTest {
     private static final String BODY = "this is a sample body";
     private static final Flux<ByteBuffer> BODY_FLUX = Flux.defer(() ->
         Flux.fromStream(Stream.of(BODY.split("")).map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))));
+    private static final String FAKE_ENCODED_CREDENTIAL =
+        Base64Util.encodeToString("user:fakePasswordPlaceholder".getBytes(StandardCharsets.UTF_8));
     private static final List<Function<TokenRequestContext, Boolean>> BASE_ASSERTIONS = Arrays.asList(
         tokenRequestContext -> !tokenRequestContext.getScopes().isEmpty(),
         tokenRequestContext -> !isNullOrEmpty(tokenRequestContext.getTenantId()),
@@ -82,7 +83,7 @@ public class KeyVaultCredentialPolicyTest {
     private HttpPipelineCallContext testContext;
     private HttpPipelineCallContext bodyContext;
     private HttpPipelineCallContext bodyFluxContext;
-    private BasicAuthenticationCredential credential;
+    private TokenCredential credential;
 
     private static HttpPipelineCallContext createCallContext(HttpRequest request, Context context) {
         AtomicReference<HttpPipelineCallContext> callContextReference = new AtomicReference<>();
@@ -139,7 +140,10 @@ public class KeyVaultCredentialPolicyTest {
         this.testContext = createCallContext(request, Context.NONE);
         this.bodyContext = createCallContext(request, bodyContextContext);
         this.bodyFluxContext = createCallContext(request, bodyFluxContextContext);
-        this.credential = new BasicAuthenticationCredential("user", "fakePasswordPlaceholder");
+        // Can't use BasicAuthenticationCredential until the following PR is merged:
+        // https://github.com/Azure/azure-sdk-for-java/pull/42238
+        this.credential = tokenRequestContext ->
+            Mono.fromCallable(() -> new AccessToken(FAKE_ENCODED_CREDENTIAL, OffsetDateTime.MAX.minusYears(1)));
     }
 
     @AfterEach
@@ -657,7 +661,7 @@ public class KeyVaultCredentialPolicyTest {
                 }
             }
 
-            return Mono.fromCallable(() -> new AccessToken(encodedCredential, OffsetDateTime.MAX));
+            return Mono.fromCallable(() -> new AccessToken(encodedCredential, OffsetDateTime.MAX.minusYears(1)));
         }
 
         public MutableTestCredential setAssertions(List<Function<TokenRequestContext, Boolean>> assertions) {
