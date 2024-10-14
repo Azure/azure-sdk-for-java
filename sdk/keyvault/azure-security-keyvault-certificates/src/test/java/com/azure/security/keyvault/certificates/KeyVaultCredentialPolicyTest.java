@@ -635,11 +635,11 @@ public class KeyVaultCredentialPolicyTest {
         return onChallengeSync;
     }
 
-    private static class MutableTestCredential implements TokenCredential {
+    private static final class MutableTestCredential implements TokenCredential {
         private String credential;
         private List<Function<TokenRequestContext, Boolean>> assertions;
 
-        public MutableTestCredential(List<Function<TokenRequestContext, Boolean>> assertions) {
+        private MutableTestCredential(List<Function<TokenRequestContext, Boolean>> assertions) {
             this.credential = new Random().toString();
             this.assertions = assertions;
         }
@@ -664,25 +664,25 @@ public class KeyVaultCredentialPolicyTest {
             return Mono.fromCallable(() -> new AccessToken(encodedCredential, OffsetDateTime.MAX.minusYears(1)));
         }
 
-        public MutableTestCredential setAssertions(List<Function<TokenRequestContext, Boolean>> assertions) {
+        private MutableTestCredential setAssertions(List<Function<TokenRequestContext, Boolean>> assertions) {
             this.assertions = assertions;
 
             return this;
         }
 
-        public MutableTestCredential addAssertion(Function<TokenRequestContext, Boolean> assertion) {
+        private MutableTestCredential addAssertion(Function<TokenRequestContext, Boolean> assertion) {
             assertions.add(assertion);
 
             return this;
         }
 
-        public MutableTestCredential replaceAssertion(Function<TokenRequestContext, Boolean> assertion, int index) {
+        private MutableTestCredential replaceAssertion(Function<TokenRequestContext, Boolean> assertion, int index) {
             assertions.set(index, assertion);
 
             return this;
         }
 
-        public String getCredential() {
+        private String getCredential() {
             return this.credential;
         }
     }

@@ -407,7 +407,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
                     if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
                         && !isClaimsPresent(httpResponse)) {
-                           return handleChallenge(context, newResponse, nextPolicy);
+
+                        return handleChallenge(context, newResponse, nextPolicy);
                     } else {
                         return Mono.just(newResponse);
                     }
@@ -430,7 +431,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
             if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
                 && !isClaimsPresent(httpResponse)) {
-                    return handleChallengeSync(context, newResponse, nextPolicy);
+
+                return handleChallengeSync(context, newResponse, nextPolicy);
             }
 
             return newResponse;
