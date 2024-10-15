@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Management RP details. */
+/**
+ * Management RP details.
+ */
 @Immutable
-public final class ResourceProviderDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderDetails.class);
-
+public final class ResourceProviderDetails implements JsonSerializable<ResourceProviderDetails> {
     /*
      * Resource provider namespace
      */
-    @JsonProperty(value = "resourceProviderNamespace", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceProviderNamespace;
 
     /**
+     * Creates an instance of ResourceProviderDetails class.
+     */
+    public ResourceProviderDetails() {
+    }
+
+    /**
      * Get the resourceProviderNamespace property: Resource provider namespace.
-     *
+     * 
      * @return the resourceProviderNamespace value.
      */
     public String resourceProviderNamespace() {
@@ -31,9 +38,44 @@ public final class ResourceProviderDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderDetails.
+     */
+    public static ResourceProviderDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderDetails deserializedResourceProviderDetails = new ResourceProviderDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceProviderNamespace".equals(fieldName)) {
+                    deserializedResourceProviderDetails.resourceProviderNamespace = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderDetails;
+        });
     }
 }

@@ -6,25 +6,46 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Monitor service details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "metadataIdentifier")
-@JsonTypeName("MonitorServiceList")
+/**
+ * Monitor service details.
+ */
 @Fluent
 public final class MonitorServiceList extends AlertsMetadataProperties {
     /*
+     * Identification of the information to be retrieved by API call
+     */
+    private MetadataIdentifier metadataIdentifier = MetadataIdentifier.MONITOR_SERVICE_LIST;
+
+    /*
      * Array of operations
      */
-    @JsonProperty(value = "data", required = true)
     private List<MonitorServiceDetails> data;
 
     /**
+     * Creates an instance of MonitorServiceList class.
+     */
+    public MonitorServiceList() {
+    }
+
+    /**
+     * Get the metadataIdentifier property: Identification of the information to be retrieved by API call.
+     * 
+     * @return the metadataIdentifier value.
+     */
+    @Override
+    public MetadataIdentifier metadataIdentifier() {
+        return this.metadataIdentifier;
+    }
+
+    /**
      * Get the data property: Array of operations.
-     *
+     * 
      * @return the data value.
      */
     public List<MonitorServiceDetails> data() {
@@ -33,7 +54,7 @@ public final class MonitorServiceList extends AlertsMetadataProperties {
 
     /**
      * Set the data property: Array of operations.
-     *
+     * 
      * @param data the data value to set.
      * @return the MonitorServiceList object itself.
      */
@@ -44,20 +65,62 @@ public final class MonitorServiceList extends AlertsMetadataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (data() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property data in model MonitorServiceList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property data in model MonitorServiceList"));
         } else {
             data().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MonitorServiceList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("metadataIdentifier",
+            this.metadataIdentifier == null ? null : this.metadataIdentifier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorServiceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorServiceList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MonitorServiceList.
+     */
+    public static MonitorServiceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorServiceList deserializedMonitorServiceList = new MonitorServiceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("data".equals(fieldName)) {
+                    List<MonitorServiceDetails> data
+                        = reader.readArray(reader1 -> MonitorServiceDetails.fromJson(reader1));
+                    deserializedMonitorServiceList.data = data;
+                } else if ("metadataIdentifier".equals(fieldName)) {
+                    deserializedMonitorServiceList.metadataIdentifier
+                        = MetadataIdentifier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorServiceList;
+        });
+    }
 }

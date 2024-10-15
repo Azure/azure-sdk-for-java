@@ -302,9 +302,8 @@ public final class ChatCompletionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents some basic information about the AI model.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelInfo getModelInfo() {
+    public ModelInfo getModelInfo() {
         // Generated convenience method for getModelInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getModelInfoWithResponse(requestOptions).getValue().toObject(ModelInfo.class);

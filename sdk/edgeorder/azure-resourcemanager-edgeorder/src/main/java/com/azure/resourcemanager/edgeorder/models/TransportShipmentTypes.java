@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TransportShipmentTypes. */
+/**
+ * Indicates Shipment Logistics type that the customer preferred.
+ */
 public final class TransportShipmentTypes extends ExpandableStringEnum<TransportShipmentTypes> {
-    /** Static value CustomerManaged for TransportShipmentTypes. */
+    /**
+     * Static value CustomerManaged for TransportShipmentTypes.
+     */
     public static final TransportShipmentTypes CUSTOMER_MANAGED = fromString("CustomerManaged");
 
-    /** Static value MicrosoftManaged for TransportShipmentTypes. */
+    /**
+     * Static value MicrosoftManaged for TransportShipmentTypes.
+     */
     public static final TransportShipmentTypes MICROSOFT_MANAGED = fromString("MicrosoftManaged");
 
     /**
+     * Creates a new instance of TransportShipmentTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TransportShipmentTypes() {
+    }
+
+    /**
      * Creates or finds a TransportShipmentTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TransportShipmentTypes.
      */
-    @JsonCreator
     public static TransportShipmentTypes fromString(String name) {
         return fromString(name, TransportShipmentTypes.class);
     }
 
-    /** @return known TransportShipmentTypes values. */
+    /**
+     * Gets known TransportShipmentTypes values.
+     * 
+     * @return known TransportShipmentTypes values.
+     */
     public static Collection<TransportShipmentTypes> values() {
         return values(TransportShipmentTypes.class);
     }

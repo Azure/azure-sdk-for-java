@@ -5,36 +5,120 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.ActivityEntityQueriesProperties;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Represents Activity entity query. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Activity")
+/**
+ * Represents Activity entity query.
+ */
 @Fluent
 public final class ActivityEntityQuery extends EntityQueryInner {
     /*
+     * the entity query kind
+     */
+    private EntityQueryKind kind = EntityQueryKind.ACTIVITY;
+
+    /*
      * Activity entity query properties
      */
-    @JsonProperty(value = "properties")
     private ActivityEntityQueriesProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ActivityEntityQuery class.
+     */
+    public ActivityEntityQuery() {
+    }
+
+    /**
+     * Get the kind property: the entity query kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityQueryKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Activity entity query properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ActivityEntityQueriesProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActivityEntityQuery withEtag(String etag) {
         super.withEtag(etag);
@@ -43,7 +127,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the title property: The entity query title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -52,7 +136,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the title property: The entity query title.
-     *
+     * 
      * @param title the title value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -66,7 +150,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the content property: The entity query content to display in timeline.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -75,7 +159,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the content property: The entity query content to display in timeline.
-     *
+     * 
      * @param content the content value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -89,7 +173,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the description property: The entity query description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -98,7 +182,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the description property: The entity query description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -112,7 +196,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the queryDefinitions property: The Activity query definitions.
-     *
+     * 
      * @return the queryDefinitions value.
      */
     public ActivityEntityQueriesPropertiesQueryDefinitions queryDefinitions() {
@@ -121,7 +205,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the queryDefinitions property: The Activity query definitions.
-     *
+     * 
      * @param queryDefinitions the queryDefinitions value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -135,7 +219,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the inputEntityType property: The type of the query's source entity.
-     *
+     * 
      * @return the inputEntityType value.
      */
     public EntityType inputEntityType() {
@@ -144,7 +228,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the inputEntityType property: The type of the query's source entity.
-     *
+     * 
      * @param inputEntityType the inputEntityType value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -159,7 +243,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
     /**
      * Get the requiredInputFieldsSets property: List of the fields of the source entity that are required to run the
      * query.
-     *
+     * 
      * @return the requiredInputFieldsSets value.
      */
     public List<List<String>> requiredInputFieldsSets() {
@@ -169,7 +253,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
     /**
      * Set the requiredInputFieldsSets property: List of the fields of the source entity that are required to run the
      * query.
-     *
+     * 
      * @param requiredInputFieldsSets the requiredInputFieldsSets value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -183,7 +267,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @return the entitiesFilter value.
      */
     public Map<String, List<String>> entitiesFilter() {
@@ -192,7 +276,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the entitiesFilter property: The query applied only to entities matching to all filters.
-     *
+     * 
      * @param entitiesFilter the entitiesFilter value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -206,7 +290,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the templateName property: The template id this activity was created from.
-     *
+     * 
      * @return the templateName value.
      */
     public String templateName() {
@@ -215,7 +299,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the templateName property: The template id this activity was created from.
-     *
+     * 
      * @param templateName the templateName value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -229,7 +313,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the enabled property: Determines whether this activity is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -238,7 +322,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Set the enabled property: Determines whether this activity is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ActivityEntityQuery object itself.
      */
@@ -252,7 +336,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the createdTimeUtc property: The time the activity was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -261,7 +345,7 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Get the lastModifiedTimeUtc property: The last time the activity was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -270,14 +354,64 @@ public final class ActivityEntityQuery extends EntityQueryInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityEntityQuery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityEntityQuery if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActivityEntityQuery.
+     */
+    public static ActivityEntityQuery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityEntityQuery deserializedActivityEntityQuery = new ActivityEntityQuery();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActivityEntityQuery.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedActivityEntityQuery.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedActivityEntityQuery.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedActivityEntityQuery.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedActivityEntityQuery.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedActivityEntityQuery.kind = EntityQueryKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActivityEntityQuery.innerProperties = ActivityEntityQueriesProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityEntityQuery;
+        });
     }
 }

@@ -6,20 +6,31 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The available data types for Dynamics365 data connector. */
+/**
+ * The available data types for Dynamics365 data connector.
+ */
 @Fluent
-public final class Dynamics365DataConnectorDataTypes {
+public final class Dynamics365DataConnectorDataTypes implements JsonSerializable<Dynamics365DataConnectorDataTypes> {
     /*
      * Common Data Service data type connection.
      */
-    @JsonProperty(value = "dynamics365CdsActivities", required = true)
     private Dynamics365DataConnectorDataTypesDynamics365CdsActivities dynamics365CdsActivities;
 
     /**
+     * Creates an instance of Dynamics365DataConnectorDataTypes class.
+     */
+    public Dynamics365DataConnectorDataTypes() {
+    }
+
+    /**
      * Get the dynamics365CdsActivities property: Common Data Service data type connection.
-     *
+     * 
      * @return the dynamics365CdsActivities value.
      */
     public Dynamics365DataConnectorDataTypesDynamics365CdsActivities dynamics365CdsActivities() {
@@ -28,7 +39,7 @@ public final class Dynamics365DataConnectorDataTypes {
 
     /**
      * Set the dynamics365CdsActivities property: Common Data Service data type connection.
-     *
+     * 
      * @param dynamics365CdsActivities the dynamics365CdsActivities value to set.
      * @return the Dynamics365DataConnectorDataTypes object itself.
      */
@@ -40,20 +51,57 @@ public final class Dynamics365DataConnectorDataTypes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dynamics365CdsActivities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dynamics365CdsActivities in model"
-                            + " Dynamics365DataConnectorDataTypes"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dynamics365CdsActivities in model Dynamics365DataConnectorDataTypes"));
         } else {
             dynamics365CdsActivities().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Dynamics365DataConnectorDataTypes.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dynamics365CdsActivities", this.dynamics365CdsActivities);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Dynamics365DataConnectorDataTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Dynamics365DataConnectorDataTypes if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Dynamics365DataConnectorDataTypes.
+     */
+    public static Dynamics365DataConnectorDataTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Dynamics365DataConnectorDataTypes deserializedDynamics365DataConnectorDataTypes
+                = new Dynamics365DataConnectorDataTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dynamics365CdsActivities".equals(fieldName)) {
+                    deserializedDynamics365DataConnectorDataTypes.dynamics365CdsActivities
+                        = Dynamics365DataConnectorDataTypesDynamics365CdsActivities.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDynamics365DataConnectorDataTypes;
+        });
+    }
 }

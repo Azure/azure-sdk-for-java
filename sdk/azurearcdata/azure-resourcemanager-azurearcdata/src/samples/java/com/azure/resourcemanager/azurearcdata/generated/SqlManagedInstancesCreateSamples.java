@@ -19,59 +19,47 @@ import com.azure.resourcemanager.azurearcdata.models.SqlManagedInstanceSkuTier;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlManagedInstances Create. */
+/**
+ * Samples for SqlManagedInstances Create.
+ */
 public final class SqlManagedInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/CreateOrUpdateSqlManagedInstance.json
+     * x-ms-original-file:
+     * specification/azurearcdata/resource-manager/Microsoft.AzureArcData/stable/2021-08-01/examples/
+     * CreateOrUpdateSqlManagedInstance.json
      */
     /**
      * Sample code: Create or update a SQL Managed Instance.
-     *
+     * 
      * @param manager Entry point to AzureArcDataManager.
      */
-    public static void createOrUpdateASQLManagedInstance(
-        com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
-        manager
-            .sqlManagedInstances()
+    public static void
+        createOrUpdateASQLManagedInstance(com.azure.resourcemanager.azurearcdata.AzureArcDataManager manager) {
+        manager.sqlManagedInstances()
             .define("testsqlManagedInstance")
             .withRegion("northeurope")
             .withExistingResourceGroup("testrg")
             .withProperties(
-                new SqlManagedInstanceProperties()
-                    .withAdmin("Admin user")
+                new SqlManagedInstanceProperties().withAdmin("Admin user")
                     .withStartTime("Instance start time")
                     .withEndTime("Instance end time")
                     .withK8SRaw(
                         new SqlManagedInstanceK8SRaw()
-                            .withSpec(
-                                new SqlManagedInstanceK8SSpec()
-                                    .withScheduling(
-                                        new K8SScheduling()
-                                            .withDefaultProperty(
-                                                new K8SSchedulingOptions()
-                                                    .withResources(
-                                                        new K8SResourceRequirements()
-                                                            .withRequests(
-                                                                mapOf(
-                                                                    "additionalProperty",
-                                                                    "additionalValue",
-                                                                    "cpu",
-                                                                    "1",
-                                                                    "memory",
-                                                                    "8Gi"))
-                                                            .withLimits(
-                                                                mapOf(
-                                                                    "additionalProperty",
-                                                                    "additionalValue",
-                                                                    "cpu",
-                                                                    "1",
-                                                                    "memory",
-                                                                    "8Gi"))
-                                                            .withAdditionalProperties(mapOf()))
+                            .withSpec(new SqlManagedInstanceK8SSpec()
+                                .withScheduling(
+                                    new K8SScheduling()
+                                        .withDefaultProperty(
+                                            new K8SSchedulingOptions()
+                                                .withResources(new K8SResourceRequirements()
+                                                    .withRequests(mapOf("additionalProperty", "additionalValue", "cpu",
+                                                        "1", "memory", "8Gi"))
+                                                    .withLimits(mapOf("additionalProperty", "additionalValue", "cpu",
+                                                        "1", "memory", "8Gi"))
                                                     .withAdditionalProperties(mapOf()))
-                                            .withAdditionalProperties(mapOf()))
-                                    .withReplicas(1)
-                                    .withAdditionalProperties(mapOf()))
+                                                .withAdditionalProperties(mapOf()))
+                                        .withAdditionalProperties(mapOf()))
+                                .withReplicas(1)
+                                .withAdditionalProperties(mapOf()))
                             .withAdditionalProperties(mapOf("additionalProperty", 1234)))
                     .withBasicLoginInformation(
                         new BasicLoginInformation().withUsername("username").withPassword("fakeTokenPlaceholder"))
@@ -81,15 +69,14 @@ public final class SqlManagedInstancesCreateSamples {
                     .withExtensionId(
                         "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/connectedk8s/providers/Microsoft.KubernetesConfiguration/extensions/extension"))
             .withTags(mapOf("mytag", "myval"))
-            .withExtendedLocation(
-                new ExtendedLocation()
-                    .withName(
-                        "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation")
-                    .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
+            .withExtendedLocation(new ExtendedLocation().withName(
+                "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.ExtendedLocation/customLocations/arclocation")
+                .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
             .withSku(new SqlManagedInstanceSku().withTier(SqlManagedInstanceSkuTier.GENERAL_PURPOSE).withDev(true))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

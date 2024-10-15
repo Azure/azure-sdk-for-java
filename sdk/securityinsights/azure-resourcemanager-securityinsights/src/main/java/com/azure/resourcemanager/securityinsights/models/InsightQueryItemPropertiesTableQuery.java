@@ -5,27 +5,38 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The insight table query. */
+/**
+ * The insight table query.
+ */
 @Fluent
-public final class InsightQueryItemPropertiesTableQuery {
+public final class InsightQueryItemPropertiesTableQuery
+    implements JsonSerializable<InsightQueryItemPropertiesTableQuery> {
     /*
      * List of insight column definitions.
      */
-    @JsonProperty(value = "columnsDefinitions")
     private List<InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem> columnsDefinitions;
 
     /*
      * List of insight queries definitions.
      */
-    @JsonProperty(value = "queriesDefinitions")
     private List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem> queriesDefinitions;
 
     /**
+     * Creates an instance of InsightQueryItemPropertiesTableQuery class.
+     */
+    public InsightQueryItemPropertiesTableQuery() {
+    }
+
+    /**
      * Get the columnsDefinitions property: List of insight column definitions.
-     *
+     * 
      * @return the columnsDefinitions value.
      */
     public List<InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem> columnsDefinitions() {
@@ -34,19 +45,19 @@ public final class InsightQueryItemPropertiesTableQuery {
 
     /**
      * Set the columnsDefinitions property: List of insight column definitions.
-     *
+     * 
      * @param columnsDefinitions the columnsDefinitions value to set.
      * @return the InsightQueryItemPropertiesTableQuery object itself.
      */
-    public InsightQueryItemPropertiesTableQuery withColumnsDefinitions(
-        List<InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem> columnsDefinitions) {
+    public InsightQueryItemPropertiesTableQuery
+        withColumnsDefinitions(List<InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem> columnsDefinitions) {
         this.columnsDefinitions = columnsDefinitions;
         return this;
     }
 
     /**
      * Get the queriesDefinitions property: List of insight queries definitions.
-     *
+     * 
      * @return the queriesDefinitions value.
      */
     public List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem> queriesDefinitions() {
@@ -55,19 +66,19 @@ public final class InsightQueryItemPropertiesTableQuery {
 
     /**
      * Set the queriesDefinitions property: List of insight queries definitions.
-     *
+     * 
      * @param queriesDefinitions the queriesDefinitions value to set.
      * @return the InsightQueryItemPropertiesTableQuery object itself.
      */
-    public InsightQueryItemPropertiesTableQuery withQueriesDefinitions(
-        List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem> queriesDefinitions) {
+    public InsightQueryItemPropertiesTableQuery
+        withQueriesDefinitions(List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem> queriesDefinitions) {
         this.queriesDefinitions = queriesDefinitions;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -77,5 +88,53 @@ public final class InsightQueryItemPropertiesTableQuery {
         if (queriesDefinitions() != null) {
             queriesDefinitions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("columnsDefinitions", this.columnsDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("queriesDefinitions", this.queriesDefinitions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InsightQueryItemPropertiesTableQuery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InsightQueryItemPropertiesTableQuery if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InsightQueryItemPropertiesTableQuery.
+     */
+    public static InsightQueryItemPropertiesTableQuery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InsightQueryItemPropertiesTableQuery deserializedInsightQueryItemPropertiesTableQuery
+                = new InsightQueryItemPropertiesTableQuery();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("columnsDefinitions".equals(fieldName)) {
+                    List<InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem> columnsDefinitions
+                        = reader.readArray(
+                            reader1 -> InsightQueryItemPropertiesTableQueryColumnsDefinitionsItem.fromJson(reader1));
+                    deserializedInsightQueryItemPropertiesTableQuery.columnsDefinitions = columnsDefinitions;
+                } else if ("queriesDefinitions".equals(fieldName)) {
+                    List<InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem> queriesDefinitions
+                        = reader.readArray(
+                            reader1 -> InsightQueryItemPropertiesTableQueryQueriesDefinitionsItem.fromJson(reader1));
+                    deserializedInsightQueryItemPropertiesTableQuery.queriesDefinitions = queriesDefinitions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInsightQueryItemPropertiesTableQuery;
+        });
     }
 }

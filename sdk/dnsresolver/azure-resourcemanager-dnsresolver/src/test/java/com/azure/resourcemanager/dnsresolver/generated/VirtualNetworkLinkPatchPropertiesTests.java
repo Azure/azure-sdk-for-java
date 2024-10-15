@@ -9,26 +9,26 @@ import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkLinkPat
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkLinkPatchPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkLinkPatchProperties model =
-            BinaryData
-                .fromString("{\"metadata\":{\"alpbuxwgipwhon\":\"hajdeyeamdpha\"}}")
-                .toObject(VirtualNetworkLinkPatchProperties.class);
-        Assertions.assertEquals("hajdeyeamdpha", model.metadata().get("alpbuxwgipwhon"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkLinkPatchProperties model = BinaryData.fromString(
+            "{\"metadata\":{\"xerf\":\"ymuctqhjfbebrj\",\"phxepcyvahf\":\"wutttxfvjrbi\",\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\"}}")
+            .toObject(VirtualNetworkLinkPatchProperties.class);
+        Assertions.assertEquals("ymuctqhjfbebrj", model.metadata().get("xerf"));
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkLinkPatchProperties model =
-            new VirtualNetworkLinkPatchProperties().withMetadata(mapOf("alpbuxwgipwhon", "hajdeyeamdpha"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkLinkPatchProperties model
+            = new VirtualNetworkLinkPatchProperties().withMetadata(mapOf("xerf", "ymuctqhjfbebrj", "phxepcyvahf",
+                "wutttxfvjrbi", "gidokgjljyoxgvcl", "ljkyqxjvuuj", "jhtxfvgxbfsmxne", "bgsncghkjeszzhb"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworkLinkPatchProperties.class);
-        Assertions.assertEquals("hajdeyeamdpha", model.metadata().get("alpbuxwgipwhon"));
+        Assertions.assertEquals("ymuctqhjfbebrj", model.metadata().get("xerf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

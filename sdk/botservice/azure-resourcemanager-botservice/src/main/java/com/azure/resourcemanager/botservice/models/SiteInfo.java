@@ -6,26 +6,36 @@ package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Site information for WebChat or DirectLine Channels to identify which site to regenerate keys for. */
+/**
+ * Site information for WebChat or DirectLine Channels to identify which site to regenerate keys for.
+ */
 @Fluent
-public final class SiteInfo {
+public final class SiteInfo implements JsonSerializable<SiteInfo> {
     /*
      * The site name
      */
-    @JsonProperty(value = "siteName", required = true)
     private String siteName;
 
     /*
      * Determines which key is to be regenerated
      */
-    @JsonProperty(value = "key", required = true)
     private Key key;
 
     /**
+     * Creates an instance of SiteInfo class.
+     */
+    public SiteInfo() {
+    }
+
+    /**
      * Get the siteName property: The site name.
-     *
+     * 
      * @return the siteName value.
      */
     public String siteName() {
@@ -34,7 +44,7 @@ public final class SiteInfo {
 
     /**
      * Set the siteName property: The site name.
-     *
+     * 
      * @param siteName the siteName value to set.
      * @return the SiteInfo object itself.
      */
@@ -45,7 +55,7 @@ public final class SiteInfo {
 
     /**
      * Get the key property: Determines which key is to be regenerated.
-     *
+     * 
      * @return the key value.
      */
     public Key key() {
@@ -54,7 +64,7 @@ public final class SiteInfo {
 
     /**
      * Set the key property: Determines which key is to be regenerated.
-     *
+     * 
      * @param key the key value to set.
      * @return the SiteInfo object itself.
      */
@@ -65,20 +75,58 @@ public final class SiteInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (siteName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property siteName in model SiteInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property siteName in model SiteInfo"));
         }
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property key in model SiteInfo"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property key in model SiteInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SiteInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("siteName", this.siteName);
+        jsonWriter.writeStringField("key", this.key == null ? null : this.key.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteInfo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteInfo.
+     */
+    public static SiteInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteInfo deserializedSiteInfo = new SiteInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("siteName".equals(fieldName)) {
+                    deserializedSiteInfo.siteName = reader.getString();
+                } else if ("key".equals(fieldName)) {
+                    deserializedSiteInfo.key = Key.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteInfo;
+        });
+    }
 }

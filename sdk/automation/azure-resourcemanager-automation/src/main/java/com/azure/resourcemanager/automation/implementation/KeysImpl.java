@@ -25,26 +25,23 @@ public final class KeysImpl implements Keys {
         this.serviceManager = serviceManager;
     }
 
-    public KeyListResult listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        KeyListResultInner inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+    public Response<KeyListResult> listByAutomationAccountWithResponse(String resourceGroupName,
+        String automationAccountName, Context context) {
+        Response<KeyListResultInner> inner = this.serviceClient()
+            .listByAutomationAccountWithResponse(resourceGroupName, automationAccountName, context);
         if (inner != null) {
-            return new KeyListResultImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new KeyListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<KeyListResult> listByAutomationAccountWithResponse(
-        String resourceGroupName, String automationAccountName, Context context) {
-        Response<KeyListResultInner> inner =
-            this.serviceClient().listByAutomationAccountWithResponse(resourceGroupName, automationAccountName, context);
+    public KeyListResult listByAutomationAccount(String resourceGroupName, String automationAccountName) {
+        KeyListResultInner inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new KeyListResultImpl(inner.getValue(), this.manager()));
+            return new KeyListResultImpl(inner, this.manager());
         } else {
             return null;
         }

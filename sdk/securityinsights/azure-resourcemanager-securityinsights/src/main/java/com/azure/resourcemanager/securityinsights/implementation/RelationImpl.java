@@ -78,24 +78,20 @@ public final class RelationImpl implements Relation, Relation.Definition, Relati
     }
 
     public Relation create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarkRelations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarkRelations()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Relation create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarkRelations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarkRelations()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -110,54 +106,46 @@ public final class RelationImpl implements Relation, Relation.Definition, Relati
     }
 
     public Relation apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarkRelations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarkRelations()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Relation apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarkRelations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarkRelations()
+            .createOrUpdateWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    RelationImpl(
-        RelationInner innerObject, com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
+    RelationImpl(RelationInner innerObject,
+        com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.bookmarkId = Utils.getValueFromIdByName(innerObject.id(), "bookmarks");
-        this.relationName = Utils.getValueFromIdByName(innerObject.id(), "relations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.bookmarkId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bookmarks");
+        this.relationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "relations");
     }
 
     public Relation refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarkRelations()
-                .getWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarkRelations()
+            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Relation refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBookmarkRelations()
-                .getWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBookmarkRelations()
+            .getWithResponse(resourceGroupName, workspaceName, bookmarkId, relationName, context)
+            .getValue();
         return this;
     }
 

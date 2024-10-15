@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Definition of the activity parameter set. */
+/**
+ * Definition of the activity parameter set.
+ */
 @Fluent
-public final class ActivityParameterSet {
+public final class ActivityParameterSet implements JsonSerializable<ActivityParameterSet> {
     /*
      * Gets or sets the name of the activity parameter set.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the parameters of the activity parameter set.
      */
-    @JsonProperty(value = "parameters")
     private List<ActivityParameter> parameters;
 
     /**
+     * Creates an instance of ActivityParameterSet class.
+     */
+    public ActivityParameterSet() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the activity parameter set.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +44,7 @@ public final class ActivityParameterSet {
 
     /**
      * Set the name property: Gets or sets the name of the activity parameter set.
-     *
+     * 
      * @param name the name value to set.
      * @return the ActivityParameterSet object itself.
      */
@@ -45,7 +55,7 @@ public final class ActivityParameterSet {
 
     /**
      * Get the parameters property: Gets or sets the parameters of the activity parameter set.
-     *
+     * 
      * @return the parameters value.
      */
     public List<ActivityParameter> parameters() {
@@ -54,7 +64,7 @@ public final class ActivityParameterSet {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the activity parameter set.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ActivityParameterSet object itself.
      */
@@ -65,12 +75,53 @@ public final class ActivityParameterSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActivityParameterSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActivityParameterSet if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ActivityParameterSet.
+     */
+    public static ActivityParameterSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActivityParameterSet deserializedActivityParameterSet = new ActivityParameterSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedActivityParameterSet.name = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<ActivityParameter> parameters
+                        = reader.readArray(reader1 -> ActivityParameter.fromJson(reader1));
+                    deserializedActivityParameterSet.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActivityParameterSet;
+        });
     }
 }

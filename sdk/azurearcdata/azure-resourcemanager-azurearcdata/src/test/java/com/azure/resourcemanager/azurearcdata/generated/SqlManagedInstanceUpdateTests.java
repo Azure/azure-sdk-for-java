@@ -13,32 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlManagedInstanceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlManagedInstanceUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"zjuqkhrsaj\":\"cciw\",\"mjmvxieduugidyjr\":\"wkuofoskghsauu\",\"y\":\"f\",\"hslkevleggzf\":\"osvexcsonpclhoc\"}}")
-                .toObject(SqlManagedInstanceUpdate.class);
-        Assertions.assertEquals("cciw", model.tags().get("zjuqkhrsaj"));
+        SqlManagedInstanceUpdate model = BinaryData.fromString("{\"tags\":{\"konocu\":\"hheunmmqhgyx\"}}")
+            .toObject(SqlManagedInstanceUpdate.class);
+        Assertions.assertEquals("hheunmmqhgyx", model.tags().get("konocu"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlManagedInstanceUpdate model =
-            new SqlManagedInstanceUpdate()
-                .withTags(
-                    mapOf(
-                        "zjuqkhrsaj",
-                        "cciw",
-                        "mjmvxieduugidyjr",
-                        "wkuofoskghsauu",
-                        "y",
-                        "f",
-                        "hslkevleggzf",
-                        "osvexcsonpclhoc"));
+        SqlManagedInstanceUpdate model = new SqlManagedInstanceUpdate().withTags(mapOf("konocu", "hheunmmqhgyx"));
         model = BinaryData.fromObject(model).toObject(SqlManagedInstanceUpdate.class);
-        Assertions.assertEquals("cciw", model.tags().get("zjuqkhrsaj"));
+        Assertions.assertEquals("hheunmmqhgyx", model.tags().get("konocu"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -215,6 +215,47 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    public void canRefreshAfterDeallocation() {
+        // Create
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .create();
+
+        vm.powerOff();
+
+        try {
+            // update with an unavailable size, causing it to fail for sure
+            vm.update().withSize(VirtualMachineSizeTypes.fromString("D2_v2_Promo")).apply();
+        } catch (Exception e) {
+            vm.deallocate();
+            Assertions.assertEquals(PowerState.DEALLOCATED, vm.powerState());
+            // make sure the VM state is refreshed after deallocate
+            Assertions.assertEquals(VirtualMachineSizeTypes.STANDARD_B1S, vm.size());
+            try {
+                // update with an unavailable size, causing it to fail for sure
+                vm.update().withSize(VirtualMachineSizeTypes.fromString("D2_v2_Promo")).apply();
+            } catch (Exception ex) {
+                // make sure the VM state is refreshed after failure
+                Assertions.assertEquals(VirtualMachineSizeTypes.STANDARD_B1S, vm.size());
+            }
+        }
+    }
+
+    @Test
     public void canCreateVirtualMachine() throws Exception {
         // Create
         computeManager
@@ -386,7 +427,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLowPriority(VirtualMachineEvictionPolicyTypes.DEALLOCATE)
@@ -1460,6 +1501,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withRootUsername("jvuser2")
             .withSsh(sshPublicKey())
             .withExistingVirtualMachineScaleSet(flexibleVMSS)
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
             .create();
         flexibleVMSS.refresh();
         Assertions.assertEquals(flexibleVMSS.id(), regularVM.virtualMachineScaleSetId());
@@ -1492,7 +1534,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootUsername("jvuser3")
                 .withSsh(sshPublicKey())
                 .withUnmanagedDisks() /* UN-MANAGED OS and DATA DISKS */
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                 .withNewStorageAccount(storageAccountName)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .withExistingVirtualMachineScaleSet(flexibleVMSS)
@@ -1542,6 +1584,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername("jvuser5")
                 .withSsh(sshPublicKey())
+                .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                 .withExistingVirtualMachineScaleSet(uniformVMSS)
                 .create()
         );
@@ -1950,7 +1993,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withAdminUsername("Foo12")
             .withAdminPassword(password())
             .withUnmanagedDisks()
-            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
             .withOSDiskCaching(CachingTypes.READ_WRITE)
             .withOSDiskName("javatest")
             .withLicenseType("Windows_Server")

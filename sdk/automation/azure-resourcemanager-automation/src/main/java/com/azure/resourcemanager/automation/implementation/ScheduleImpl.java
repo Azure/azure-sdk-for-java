@@ -115,24 +115,20 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, scheduleName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, scheduleName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, scheduleName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, scheduleName, createParameters,
+                context)
+            .getValue();
         return this;
     }
 
@@ -149,51 +145,42 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     }
 
     public Schedule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .updateWithResponse(
-                    resourceGroupName, automationAccountName, scheduleName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .updateWithResponse(resourceGroupName, automationAccountName, scheduleName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .updateWithResponse(resourceGroupName, automationAccountName, scheduleName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .updateWithResponse(resourceGroupName, automationAccountName, scheduleName, updateParameters, context)
+            .getValue();
         return this;
     }
 
     ScheduleImpl(ScheduleInner innerObject, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.scheduleName = Utils.getValueFromIdByName(innerObject.id(), "schedules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.scheduleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedules");
     }
 
     public Schedule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .getWithResponse(resourceGroupName, automationAccountName, scheduleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .getWithResponse(resourceGroupName, automationAccountName, scheduleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Schedule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSchedules()
-                .getWithResponse(resourceGroupName, automationAccountName, scheduleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSchedules()
+            .getWithResponse(resourceGroupName, automationAccountName, scheduleName, context)
+            .getValue();
         return this;
     }
 

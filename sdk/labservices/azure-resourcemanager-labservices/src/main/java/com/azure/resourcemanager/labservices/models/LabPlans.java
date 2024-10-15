@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LabPlans. */
+/**
+ * Resource collection API of LabPlans.
+ */
 public interface LabPlans {
     /**
      * Get all lab plans for a subscription.
-     *
-     * <p>Returns a list of all lab plans within a subscription.
-     *
+     * 
+     * Returns a list of all lab plans within a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged list of lab plans as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface LabPlans {
 
     /**
      * Get all lab plans for a subscription.
-     *
-     * <p>Returns a list of all lab plans within a subscription.
-     *
+     * 
+     * Returns a list of all lab plans within a subscription.
+     * 
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,9 +39,9 @@ public interface LabPlans {
 
     /**
      * Get all lab plans for a subscription and resource group.
-     *
-     * <p>Returns a list of all lab plans for a subscription and resource group.
-     *
+     * 
+     * Returns a list of all lab plans for a subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -50,9 +52,9 @@ public interface LabPlans {
 
     /**
      * Get all lab plans for a subscription and resource group.
-     *
-     * <p>Returns a list of all lab plans for a subscription and resource group.
-     *
+     * 
+     * Returns a list of all lab plans for a subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,27 +66,12 @@ public interface LabPlans {
 
     /**
      * Retrieves a Lab Plan resource.
-     *
-     * <p>Retrieves the properties of a Lab Plan.
-     *
+     * 
+     * Retrieves the properties of a Lab Plan.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab Plans act as a permission container for creating labs via labs.azure.com.
-     */
-    LabPlan getByResourceGroup(String resourceGroupName, String labPlanName);
-
-    /**
-     * Retrieves a Lab Plan resource.
-     *
-     * <p>Retrieves the properties of a Lab Plan.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,14 +81,29 @@ public interface LabPlans {
     Response<LabPlan> getByResourceGroupWithResponse(String resourceGroupName, String labPlanName, Context context);
 
     /**
-     * Deletes a Lab Plan resource.
-     *
-     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
-     * nor does it delete shared images added to a gallery via the lab plan permission container.
-     *
+     * Retrieves a Lab Plan resource.
+     * 
+     * Retrieves the properties of a Lab Plan.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lab Plans act as a permission container for creating labs via labs.azure.com.
+     */
+    LabPlan getByResourceGroup(String resourceGroupName, String labPlanName);
+
+    /**
+     * Deletes a Lab Plan resource.
+     * 
+     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
+     * does it delete shared images added to a gallery via the lab plan permission container.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
+     * resource URIs and in UI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -110,13 +112,13 @@ public interface LabPlans {
 
     /**
      * Deletes a Lab Plan resource.
-     *
-     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
-     * nor does it delete shared images added to a gallery via the lab plan permission container.
-     *
+     * 
+     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
+     * does it delete shared images added to a gallery via the lab plan permission container.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -126,12 +128,12 @@ public interface LabPlans {
 
     /**
      * Save an image from a lab VM to the attached shared image gallery.
-     *
-     * <p>Saves an image from a lab VM to the attached shared image gallery.
-     *
+     * 
+     * Saves an image from a lab VM to the attached shared image gallery.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
      * @param body The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -141,12 +143,12 @@ public interface LabPlans {
 
     /**
      * Save an image from a lab VM to the attached shared image gallery.
-     *
-     * <p>Saves an image from a lab VM to the attached shared image gallery.
-     *
+     * 
+     * Saves an image from a lab VM to the attached shared image gallery.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
-     *     resource URIs and in UI.
+     * resource URIs and in UI.
      * @param body The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,9 +159,9 @@ public interface LabPlans {
 
     /**
      * Retrieves a Lab Plan resource.
-     *
-     * <p>Retrieves the properties of a Lab Plan.
-     *
+     * 
+     * Retrieves the properties of a Lab Plan.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,9 +172,9 @@ public interface LabPlans {
 
     /**
      * Retrieves a Lab Plan resource.
-     *
-     * <p>Retrieves the properties of a Lab Plan.
-     *
+     * 
+     * Retrieves the properties of a Lab Plan.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,10 +186,10 @@ public interface LabPlans {
 
     /**
      * Deletes a Lab Plan resource.
-     *
-     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
-     * nor does it delete shared images added to a gallery via the lab plan permission container.
-     *
+     * 
+     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
+     * does it delete shared images added to a gallery via the lab plan permission container.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,10 +199,10 @@ public interface LabPlans {
 
     /**
      * Deletes a Lab Plan resource.
-     *
-     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
-     * nor does it delete shared images added to a gallery via the lab plan permission container.
-     *
+     * 
+     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
+     * does it delete shared images added to a gallery via the lab plan permission container.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,7 +213,7 @@ public interface LabPlans {
 
     /**
      * Begins definition for a new LabPlan resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new LabPlan definition.
      */

@@ -14,32 +14,32 @@ public final class MachineExtensionUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MachineExtensionUpdateProperties model = BinaryData.fromString(
-            "{\"forceUpdateTag\":\"nxipeil\",\"publisher\":\"zuaejxd\",\"type\":\"tskzbbtdzumveek\",\"typeHandlerVersion\":\"wozuhkf\",\"enableAutomaticUpgrade\":false,\"autoUpgradeMinorVersion\":false,\"settings\":{\"dttouwaboekqvkel\":\"datadxluu\"},\"protectedSettings\":{\"aalnjixi\":\"datavbxwyjsflhh\"}}")
+            "{\"forceUpdateTag\":\"jbi\",\"publisher\":\"bpybsrfbjf\",\"type\":\"w\",\"typeHandlerVersion\":\"otftpvjzbexilz\",\"enableAutomaticUpgrade\":true,\"autoUpgradeMinorVersion\":false,\"settings\":{\"ruoujmk\":\"datawpmqt\"},\"protectedSettings\":{\"ervnaenqpehi\":\"datawqytjrybnwjewgdr\",\"mifthnzdnd\":\"datadoy\"}}")
             .toObject(MachineExtensionUpdateProperties.class);
-        Assertions.assertEquals("nxipeil", model.forceUpdateTag());
-        Assertions.assertEquals("zuaejxd", model.publisher());
-        Assertions.assertEquals("tskzbbtdzumveek", model.type());
-        Assertions.assertEquals("wozuhkf", model.typeHandlerVersion());
-        Assertions.assertEquals(false, model.enableAutomaticUpgrade());
+        Assertions.assertEquals("jbi", model.forceUpdateTag());
+        Assertions.assertEquals("bpybsrfbjf", model.publisher());
+        Assertions.assertEquals("w", model.type());
+        Assertions.assertEquals("otftpvjzbexilz", model.typeHandlerVersion());
+        Assertions.assertEquals(true, model.enableAutomaticUpgrade());
         Assertions.assertEquals(false, model.autoUpgradeMinorVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MachineExtensionUpdateProperties model = new MachineExtensionUpdateProperties().withForceUpdateTag("nxipeil")
-            .withPublisher("zuaejxd")
-            .withType("tskzbbtdzumveek")
-            .withTypeHandlerVersion("wozuhkf")
-            .withEnableAutomaticUpgrade(false)
+        MachineExtensionUpdateProperties model = new MachineExtensionUpdateProperties().withForceUpdateTag("jbi")
+            .withPublisher("bpybsrfbjf")
+            .withType("w")
+            .withTypeHandlerVersion("otftpvjzbexilz")
+            .withEnableAutomaticUpgrade(true)
             .withAutoUpgradeMinorVersion(false)
-            .withSettings(mapOf("dttouwaboekqvkel", "datadxluu"))
-            .withProtectedSettings(mapOf("aalnjixi", "datavbxwyjsflhh"));
+            .withSettings(mapOf("ruoujmk", "datawpmqt"))
+            .withProtectedSettings(mapOf("ervnaenqpehi", "datawqytjrybnwjewgdr", "mifthnzdnd", "datadoy"));
         model = BinaryData.fromObject(model).toObject(MachineExtensionUpdateProperties.class);
-        Assertions.assertEquals("nxipeil", model.forceUpdateTag());
-        Assertions.assertEquals("zuaejxd", model.publisher());
-        Assertions.assertEquals("tskzbbtdzumveek", model.type());
-        Assertions.assertEquals("wozuhkf", model.typeHandlerVersion());
-        Assertions.assertEquals(false, model.enableAutomaticUpgrade());
+        Assertions.assertEquals("jbi", model.forceUpdateTag());
+        Assertions.assertEquals("bpybsrfbjf", model.publisher());
+        Assertions.assertEquals("w", model.type());
+        Assertions.assertEquals("otftpvjzbexilz", model.typeHandlerVersion());
+        Assertions.assertEquals(true, model.enableAutomaticUpgrade());
         Assertions.assertEquals(false, model.autoUpgradeMinorVersion());
     }
 

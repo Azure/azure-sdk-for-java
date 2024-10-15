@@ -83,42 +83,26 @@ public final class VirtualNetworkLinkImpl
 
     private VirtualNetworkLinkPatch updateParameters;
 
-    public VirtualNetworkLinkImpl withExistingDnsForwardingRuleset(
-        String resourceGroupName, String dnsForwardingRulesetName) {
+    public VirtualNetworkLinkImpl withExistingDnsForwardingRuleset(String resourceGroupName,
+        String dnsForwardingRulesetName) {
         this.resourceGroupName = resourceGroupName;
         this.dnsForwardingRulesetName = dnsForwardingRulesetName;
         return this;
     }
 
     public VirtualNetworkLink create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkLinks()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    virtualNetworkLinkName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkLinks()
+            .createOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, this.innerModel(),
+                createIfMatch, createIfNoneMatch, Context.NONE);
         return this;
     }
 
     public VirtualNetworkLink create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkLinks()
-                .createOrUpdate(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    virtualNetworkLinkName,
-                    this.innerModel(),
-                    createIfMatch,
-                    createIfNoneMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkLinks()
+            .createOrUpdate(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, this.innerModel(),
+                createIfMatch, createIfNoneMatch, context);
         return this;
     }
 
@@ -137,61 +121,45 @@ public final class VirtualNetworkLinkImpl
     }
 
     public VirtualNetworkLink apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkLinks()
-                .update(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    virtualNetworkLinkName,
-                    updateParameters,
-                    updateIfMatch,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkLinks()
+            .update(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, updateParameters,
+                updateIfMatch, Context.NONE);
         return this;
     }
 
     public VirtualNetworkLink apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkLinks()
-                .update(
-                    resourceGroupName,
-                    dnsForwardingRulesetName,
-                    virtualNetworkLinkName,
-                    updateParameters,
-                    updateIfMatch,
-                    context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkLinks()
+            .update(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, updateParameters,
+                updateIfMatch, context);
         return this;
     }
 
-    VirtualNetworkLinkImpl(
-        VirtualNetworkLinkInner innerObject, com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
+    VirtualNetworkLinkImpl(VirtualNetworkLinkInner innerObject,
+        com.azure.resourcemanager.dnsresolver.DnsResolverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dnsForwardingRulesetName = Utils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
-        this.virtualNetworkLinkName = Utils.getValueFromIdByName(innerObject.id(), "virtualNetworkLinks");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dnsForwardingRulesetName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dnsForwardingRulesets");
+        this.virtualNetworkLinkName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualNetworkLinks");
     }
 
     public VirtualNetworkLink refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkLinks()
-                .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkLinks()
+            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VirtualNetworkLink refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualNetworkLinks()
-                .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualNetworkLinks()
+            .getWithResponse(resourceGroupName, dnsForwardingRulesetName, virtualNetworkLinkName, context)
+            .getValue();
         return this;
     }
 

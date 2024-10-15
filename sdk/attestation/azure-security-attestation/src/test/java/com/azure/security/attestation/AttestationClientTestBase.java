@@ -3,7 +3,6 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -62,8 +61,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-//import io.github.cdimascio.dotenv.Dotenv;
-
 /**
  * Specialization of the TestBase class for the attestation tests.
  * <p>
@@ -114,7 +111,7 @@ public class AttestationClientTestBase extends TestProxyTestBase {
 
     @BeforeAll
     public static void beforeAll() {
-        TestBase.setupClass();
+        TestProxyTestBase.setupClass();
         //        Dotenv.configure().ignoreIfMissing().systemProperties().load();
     }
 

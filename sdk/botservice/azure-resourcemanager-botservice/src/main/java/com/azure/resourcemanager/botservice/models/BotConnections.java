@@ -8,20 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BotConnections. */
+/**
+ * Resource collection API of BotConnections.
+ */
 public interface BotConnections {
     /**
      * Lists the available Service Providers for creating Connection Settings.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of bot service providers response.
-     */
-    ServiceProviderResponseList listServiceProviders();
-
-    /**
-     * Lists the available Service Providers for creating Connection Settings.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,8 +24,32 @@ public interface BotConnections {
     Response<ServiceProviderResponseList> listServiceProvidersWithResponse(Context context);
 
     /**
+     * Lists the available Service Providers for creating Connection Settings.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of bot service providers response.
+     */
+    ServiceProviderResponseList listServiceProviders();
+
+    /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
+     * @param resourceGroupName The name of the Bot resource group in the user subscription.
+     * @param resourceName The name of the Bot resource.
+     * @param connectionName The name of the Bot Service Connection Setting resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
+     */
+    Response<ConnectionSetting> listWithSecretsWithResponse(String resourceGroupName, String resourceName,
+        String connectionName, Context context);
+
+    /**
+     * Get a Connection Setting registration for a Bot Service.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -45,7 +62,7 @@ public interface BotConnections {
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -55,12 +72,12 @@ public interface BotConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Connection Setting registration for a Bot Service along with {@link Response}.
      */
-    Response<ConnectionSetting> listWithSecretsWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context);
+    Response<ConnectionSetting> getWithResponse(String resourceGroupName, String resourceName, String connectionName,
+        Context context);
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -72,8 +89,8 @@ public interface BotConnections {
     ConnectionSetting get(String resourceGroupName, String resourceName, String connectionName);
 
     /**
-     * Get a Connection Setting registration for a Bot Service.
-     *
+     * Deletes a Connection Setting registration for a Bot Service.
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -81,14 +98,14 @@ public interface BotConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Connection Setting registration for a Bot Service along with {@link Response}.
+     * @return the {@link Response}.
      */
-    Response<ConnectionSetting> getWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String connectionName,
+        Context context);
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param connectionName The name of the Bot Service Connection Setting resource.
@@ -99,23 +116,8 @@ public interface BotConnections {
     void delete(String resourceGroupName, String resourceName, String connectionName);
 
     /**
-     * Deletes a Connection Setting registration for a Bot Service.
-     *
-     * @param resourceGroupName The name of the Bot resource group in the user subscription.
-     * @param resourceName The name of the Bot resource.
-     * @param connectionName The name of the Bot Service Connection Setting resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String connectionName, Context context);
-
-    /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,7 +129,7 @@ public interface BotConnections {
 
     /**
      * Returns all the Connection Settings registered to a particular BotService resource.
-     *
+     * 
      * @param resourceGroupName The name of the Bot resource group in the user subscription.
      * @param resourceName The name of the Bot resource.
      * @param context The context to associate with this operation.
@@ -140,7 +142,7 @@ public interface BotConnections {
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,7 +153,7 @@ public interface BotConnections {
 
     /**
      * Get a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,7 +165,7 @@ public interface BotConnections {
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,7 +175,7 @@ public interface BotConnections {
 
     /**
      * Deletes a Connection Setting registration for a Bot Service.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,7 +187,7 @@ public interface BotConnections {
 
     /**
      * Begins definition for a new ConnectionSetting resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ConnectionSetting definition.
      */

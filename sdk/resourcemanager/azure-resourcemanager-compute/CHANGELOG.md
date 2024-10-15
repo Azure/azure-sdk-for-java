@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed a bug that VM state not refreshed after calling `VirtualMachine.deallocate`.
+
 ### Other Changes
 
 ## 2.43.0 (2024-09-27)

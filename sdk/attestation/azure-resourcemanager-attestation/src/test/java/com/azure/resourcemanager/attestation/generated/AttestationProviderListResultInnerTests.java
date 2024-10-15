@@ -16,58 +16,43 @@ import org.junit.jupiter.api.Assertions;
 public final class AttestationProviderListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttestationProviderListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"trustModel\":\"xyqj\",\"status\":\"Error\",\"attestUri\":\"t\",\"privateEndpointConnections\":[]},\"location\":\"ngj\",\"tags\":{\"ajvnysounqe\":\"czsqpjhvm\",\"oaeupfhyhltrpmo\":\"a\"},\"id\":\"jmcmatuokthfu\",\"name\":\"uaodsfcpk\",\"type\":\"xodpuozmyzydagfu\"},{\"properties\":{\"trustModel\":\"zyiuokk\",\"status\":\"Ready\",\"attestUri\":\"dxwzywqsmbsurexi\",\"privateEndpointConnections\":[]},\"location\":\"ryocfsfksymdd\",\"tags\":{\"qn\":\"kiiuxhqyudxor\"},\"id\":\"poczvyifqrvkdvjs\",\"name\":\"lrmv\",\"type\":\"d\"},{\"properties\":{\"trustModel\":\"kpnpulexxbczwtr\",\"status\":\"Ready\",\"attestUri\":\"zb\",\"privateEndpointConnections\":[]},\"location\":\"vsovmyokac\",\"tags\":{\"hzdobpxjmflbvvnc\":\"w\",\"rsa\":\"rkcciwwzjuqk\"},\"id\":\"iwkuofos\",\"name\":\"ghsauuimjmvxied\",\"type\":\"ugidyjrr\"},{\"properties\":{\"trustModel\":\"osvexcsonpclhoc\",\"status\":\"Error\",\"attestUri\":\"kevle\",\"privateEndpointConnections\":[]},\"location\":\"zfbuhf\",\"tags\":{\"th\":\"axkffei\",\"shxmzsbbzoggigrx\":\"vmezy\",\"ptkoenkoukn\":\"burvjxxjnspy\"},\"id\":\"udwtiukbl\",\"name\":\"ngkpocipazy\",\"type\":\"o\"}]}")
-                .toObject(AttestationProviderListResultInner.class);
-        Assertions.assertEquals("ngj", model.value().get(0).location());
-        Assertions.assertEquals("czsqpjhvm", model.value().get(0).tags().get("ajvnysounqe"));
-        Assertions.assertEquals("xyqj", model.value().get(0).trustModel());
-        Assertions.assertEquals(AttestationServiceStatus.ERROR, model.value().get(0).status());
-        Assertions.assertEquals("t", model.value().get(0).attestUri());
+        AttestationProviderListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"trustModel\":\"abgl\",\"status\":\"NotReady\",\"attestUri\":\"wtctyqi\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"ovplw\",\"name\":\"bhvgy\",\"type\":\"gu\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"vmkfssxqu\",\"name\":\"kfplgmgsxnk\",\"type\":\"zkd\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"lpvlopw\",\"name\":\"yighxpk\",\"type\":\"wzbaiue\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"a\",\"name\":\"m\",\"type\":\"yqupedeojnabckh\"}]},\"location\":\"mtxpsiebtfh\",\"tags\":{\"qmhjjdhtld\":\"sapskr\"},\"id\":\"kyzxuutk\",\"name\":\"cwscwsvlx\",\"type\":\"togt\"},{\"properties\":{\"trustModel\":\"qsx\",\"status\":\"NotReady\",\"attestUri\":\"cykvceo\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"ovnotyfjfcnjbkcn\",\"name\":\"dhbt\",\"type\":\"kphywpnvjto\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"ermclfplphoxuscr\",\"name\":\"abgy\",\"type\":\"psbjta\"}]},\"location\":\"qugxywpmueefjzwf\",\"tags\":{\"glaocq\":\"ujidsuyono\"},\"id\":\"tcc\",\"name\":\"g\",\"type\":\"udxytlmoyrx\"},{\"properties\":{\"trustModel\":\"dw\",\"status\":\"Ready\",\"attestUri\":\"xhdzhlrqjbhckf\",\"privateEndpointConnections\":[{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"xsbkyvpyca\",\"name\":\"uzbpzkafku\",\"type\":\"b\"},{\"properties\":{\"privateLinkServiceConnectionState\":{}},\"id\":\"nwbmeh\",\"name\":\"seyvj\",\"type\":\"srtslhspkdeem\"}]},\"location\":\"ofmxagkvtmelmqkr\",\"tags\":{\"aquhcdhm\":\"vljua\",\"rcrgvx\":\"ualaexqpvfadmw\",\"fmisg\":\"vgomz\"},\"id\":\"bnbbeldawkz\",\"name\":\"ali\",\"type\":\"urqhaka\"}]}")
+            .toObject(AttestationProviderListResultInner.class);
+        Assertions.assertEquals("mtxpsiebtfh", model.value().get(0).location());
+        Assertions.assertEquals("sapskr", model.value().get(0).tags().get("qmhjjdhtld"));
+        Assertions.assertEquals("abgl", model.value().get(0).trustModel());
+        Assertions.assertEquals(AttestationServiceStatus.NOT_READY, model.value().get(0).status());
+        Assertions.assertEquals("wtctyqi", model.value().get(0).attestUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttestationProviderListResultInner model =
-            new AttestationProviderListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AttestationProviderInner()
-                                .withLocation("ngj")
-                                .withTags(mapOf("ajvnysounqe", "czsqpjhvm", "oaeupfhyhltrpmo", "a"))
-                                .withTrustModel("xyqj")
-                                .withStatus(AttestationServiceStatus.ERROR)
-                                .withAttestUri("t"),
-                            new AttestationProviderInner()
-                                .withLocation("ryocfsfksymdd")
-                                .withTags(mapOf("qn", "kiiuxhqyudxor"))
-                                .withTrustModel("zyiuokk")
-                                .withStatus(AttestationServiceStatus.READY)
-                                .withAttestUri("dxwzywqsmbsurexi"),
-                            new AttestationProviderInner()
-                                .withLocation("vsovmyokac")
-                                .withTags(mapOf("hzdobpxjmflbvvnc", "w", "rsa", "rkcciwwzjuqk"))
-                                .withTrustModel("kpnpulexxbczwtr")
-                                .withStatus(AttestationServiceStatus.READY)
-                                .withAttestUri("zb"),
-                            new AttestationProviderInner()
-                                .withLocation("zfbuhf")
-                                .withTags(
-                                    mapOf("th", "axkffei", "shxmzsbbzoggigrx", "vmezy", "ptkoenkoukn", "burvjxxjnspy"))
-                                .withTrustModel("osvexcsonpclhoc")
-                                .withStatus(AttestationServiceStatus.ERROR)
-                                .withAttestUri("kevle")));
+        AttestationProviderListResultInner model = new AttestationProviderListResultInner().withValue(Arrays.asList(
+            new AttestationProviderInner().withLocation("mtxpsiebtfh")
+                .withTags(mapOf("qmhjjdhtld", "sapskr"))
+                .withTrustModel("abgl")
+                .withStatus(AttestationServiceStatus.NOT_READY)
+                .withAttestUri("wtctyqi"),
+            new AttestationProviderInner().withLocation("qugxywpmueefjzwf")
+                .withTags(mapOf("glaocq", "ujidsuyono"))
+                .withTrustModel("qsx")
+                .withStatus(AttestationServiceStatus.NOT_READY)
+                .withAttestUri("cykvceo"),
+            new AttestationProviderInner().withLocation("ofmxagkvtmelmqkr")
+                .withTags(mapOf("aquhcdhm", "vljua", "rcrgvx", "ualaexqpvfadmw", "fmisg", "vgomz"))
+                .withTrustModel("dw")
+                .withStatus(AttestationServiceStatus.READY)
+                .withAttestUri("xhdzhlrqjbhckf")));
         model = BinaryData.fromObject(model).toObject(AttestationProviderListResultInner.class);
-        Assertions.assertEquals("ngj", model.value().get(0).location());
-        Assertions.assertEquals("czsqpjhvm", model.value().get(0).tags().get("ajvnysounqe"));
-        Assertions.assertEquals("xyqj", model.value().get(0).trustModel());
-        Assertions.assertEquals(AttestationServiceStatus.ERROR, model.value().get(0).status());
-        Assertions.assertEquals("t", model.value().get(0).attestUri());
+        Assertions.assertEquals("mtxpsiebtfh", model.value().get(0).location());
+        Assertions.assertEquals("sapskr", model.value().get(0).tags().get("qmhjjdhtld"));
+        Assertions.assertEquals("abgl", model.value().get(0).trustModel());
+        Assertions.assertEquals(AttestationServiceStatus.NOT_READY, model.value().get(0).status());
+        Assertions.assertEquals("wtctyqi", model.value().get(0).attestUri());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

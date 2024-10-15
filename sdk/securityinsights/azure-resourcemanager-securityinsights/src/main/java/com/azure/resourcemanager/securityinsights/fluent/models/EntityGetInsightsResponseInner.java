@@ -5,29 +5,39 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityInsightItem;
 import com.azure.resourcemanager.securityinsights.models.GetInsightsResultsMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The Get Insights result operation response. */
+/**
+ * The Get Insights result operation response.
+ */
 @Fluent
-public final class EntityGetInsightsResponseInner {
+public final class EntityGetInsightsResponseInner implements JsonSerializable<EntityGetInsightsResponseInner> {
     /*
      * The metadata from the get insights operation results.
      */
-    @JsonProperty(value = "metaData")
     private GetInsightsResultsMetadata metadata;
 
     /*
      * The insights result values.
      */
-    @JsonProperty(value = "value")
     private List<EntityInsightItem> value;
 
     /**
+     * Creates an instance of EntityGetInsightsResponseInner class.
+     */
+    public EntityGetInsightsResponseInner() {
+    }
+
+    /**
      * Get the metadata property: The metadata from the get insights operation results.
-     *
+     * 
      * @return the metadata value.
      */
     public GetInsightsResultsMetadata metadata() {
@@ -36,7 +46,7 @@ public final class EntityGetInsightsResponseInner {
 
     /**
      * Set the metadata property: The metadata from the get insights operation results.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the EntityGetInsightsResponseInner object itself.
      */
@@ -47,7 +57,7 @@ public final class EntityGetInsightsResponseInner {
 
     /**
      * Get the value property: The insights result values.
-     *
+     * 
      * @return the value value.
      */
     public List<EntityInsightItem> value() {
@@ -56,7 +66,7 @@ public final class EntityGetInsightsResponseInner {
 
     /**
      * Set the value property: The insights result values.
-     *
+     * 
      * @param value the value value to set.
      * @return the EntityGetInsightsResponseInner object itself.
      */
@@ -67,7 +77,7 @@ public final class EntityGetInsightsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -77,5 +87,46 @@ public final class EntityGetInsightsResponseInner {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metaData", this.metadata);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityGetInsightsResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityGetInsightsResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityGetInsightsResponseInner.
+     */
+    public static EntityGetInsightsResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityGetInsightsResponseInner deserializedEntityGetInsightsResponseInner
+                = new EntityGetInsightsResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metaData".equals(fieldName)) {
+                    deserializedEntityGetInsightsResponseInner.metadata = GetInsightsResultsMetadata.fromJson(reader);
+                } else if ("value".equals(fieldName)) {
+                    List<EntityInsightItem> value = reader.readArray(reader1 -> EntityInsightItem.fromJson(reader1));
+                    deserializedEntityGetInsightsResponseInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityGetInsightsResponseInner;
+        });
     }
 }

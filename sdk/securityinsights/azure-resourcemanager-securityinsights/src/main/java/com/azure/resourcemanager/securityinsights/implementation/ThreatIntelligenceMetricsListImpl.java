@@ -15,8 +15,7 @@ public final class ThreatIntelligenceMetricsListImpl implements ThreatIntelligen
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    ThreatIntelligenceMetricsListImpl(
-        ThreatIntelligenceMetricsListInner innerObject,
+    ThreatIntelligenceMetricsListImpl(ThreatIntelligenceMetricsListInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

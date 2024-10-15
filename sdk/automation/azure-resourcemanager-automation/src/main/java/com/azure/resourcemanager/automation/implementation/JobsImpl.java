@@ -28,64 +28,56 @@ public final class JobsImpl implements Jobs {
         this.serviceManager = serviceManager;
     }
 
+    public Response<String> getOutputWithResponse(String resourceGroupName, String automationAccountName,
+        String jobName, String clientRequestId, Context context) {
+        return this.serviceClient()
+            .getOutputWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    }
+
     public String getOutput(String resourceGroupName, String automationAccountName, String jobName) {
         return this.serviceClient().getOutput(resourceGroupName, automationAccountName, jobName);
     }
 
-    public Response<String> getOutputWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context) {
-        return this
-            .serviceClient()
-            .getOutputWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    public Response<String> getRunbookContentWithResponse(String resourceGroupName, String automationAccountName,
+        String jobName, String clientRequestId, Context context) {
+        return this.serviceClient()
+            .getRunbookContentWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
     public String getRunbookContent(String resourceGroupName, String automationAccountName, String jobName) {
         return this.serviceClient().getRunbookContent(resourceGroupName, automationAccountName, jobName);
     }
 
-    public Response<String> getRunbookContentWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context) {
-        return this
-            .serviceClient()
-            .getRunbookContentWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    public Response<Void> suspendWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context) {
+        return this.serviceClient()
+            .suspendWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
     public void suspend(String resourceGroupName, String automationAccountName, String jobName) {
         this.serviceClient().suspend(resourceGroupName, automationAccountName, jobName);
     }
 
-    public Response<Void> suspendWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context) {
-        return this
-            .serviceClient()
-            .suspendWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    public Response<Void> stopWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context) {
+        return this.serviceClient()
+            .stopWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
     public void stop(String resourceGroupName, String automationAccountName, String jobName) {
         this.serviceClient().stop(resourceGroupName, automationAccountName, jobName);
     }
 
-    public Response<Void> stopWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context) {
-        return this
-            .serviceClient()
-            .stopWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+    public Response<Job> getWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context) {
+        Response<JobInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new JobImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Job get(String resourceGroupName, String automationAccountName, String jobName) {
@@ -97,86 +89,45 @@ public final class JobsImpl implements Jobs {
         }
     }
 
-    public Response<Job> getWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context) {
-        Response<JobInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new JobImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<JobCollectionItem> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
+        PagedIterable<JobCollectionItemInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobCollectionItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<JobCollectionItem> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
-        PagedIterable<JobCollectionItemInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new JobCollectionItemImpl(inner1, this.manager()));
+    public PagedIterable<JobCollectionItem> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, String clientRequestId, Context context) {
+        PagedIterable<JobCollectionItemInner> inner = this.serviceClient()
+            .listByAutomationAccount(resourceGroupName, automationAccountName, filter, clientRequestId, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobCollectionItemImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<JobCollectionItem> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        String clientRequestId,
-        Context context) {
-        PagedIterable<JobCollectionItemInner> inner =
-            this
-                .serviceClient()
-                .listByAutomationAccount(resourceGroupName, automationAccountName, filter, clientRequestId, context);
-        return Utils.mapPage(inner, inner1 -> new JobCollectionItemImpl(inner1, this.manager()));
+    public Response<Void> resumeWithResponse(String resourceGroupName, String automationAccountName, String jobName,
+        String clientRequestId, Context context) {
+        return this.serviceClient()
+            .resumeWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }
 
     public void resume(String resourceGroupName, String automationAccountName, String jobName) {
         this.serviceClient().resume(resourceGroupName, automationAccountName, jobName);
     }
 
-    public Response<Void> resumeWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String jobName,
-        String clientRequestId,
-        Context context) {
-        return this
-            .serviceClient()
-            .resumeWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
-    }
-
     public Job getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "jobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
         String localClientRequestId = null;
         return this
@@ -185,29 +136,20 @@ public final class JobsImpl implements Jobs {
     }
 
     public Response<Job> getByIdWithResponse(String id, String clientRequestId, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "jobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "jobs");
         if (jobName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'jobs'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, jobName, clientRequestId, context);
     }

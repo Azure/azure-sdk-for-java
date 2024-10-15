@@ -34,17 +34,23 @@ import com.azure.resourcemanager.automation.models.DscNodeListResult;
 import com.azure.resourcemanager.automation.models.DscNodeUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DscNodesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DscNodesClient.
+ */
 public final class DscNodesClientImpl implements DscNodesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DscNodesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of DscNodesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DscNodesClientImpl(AutomationClientImpl client) {
@@ -58,89 +64,61 @@ public final class DscNodesClientImpl implements DscNodesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientDscN")
-    private interface DscNodesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodes/{nodeId}")
-        @ExpectedResponses({200})
+    public interface DscNodesService {
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("nodeId") String nodeId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("nodeId") String nodeId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodes/{nodeId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscNodeInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscNodeInner>> get(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("nodeId") String nodeId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("nodeId") String nodeId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodes/{nodeId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes/{nodeId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscNodeInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscNodeInner>> update(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("nodeId") String nodeId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("automationAccountName") String automationAccountName, @PathParam("nodeId") String nodeId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DscNodeUpdateParameters dscNodeUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/nodes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/nodes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscNodeListResult>> listByAutomationAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DscNodeListResult>> listByAutomationAccount(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$inlinecount") String inlinecount,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("automationAccountName") String automationAccountName, @QueryParam("$filter") String filter,
+            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top,
+            @QueryParam("$inlinecount") String inlinecount, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DscNodeListResult>> listByAutomationAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Delete the dsc node identified by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -150,13 +128,11 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -170,32 +146,20 @@ public final class DscNodesClientImpl implements DscNodesClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeId,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                nodeId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the dsc node identified by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -206,13 +170,11 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -226,29 +188,19 @@ public final class DscNodesClientImpl implements DscNodesClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                nodeId,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, automationAccountName, nodeId,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Delete the dsc node identified by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -265,22 +217,7 @@ public final class DscNodesClientImpl implements DscNodesClient {
 
     /**
      * Delete the dsc node identified by node id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The node id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String automationAccountName, String nodeId) {
-        deleteAsync(resourceGroupName, automationAccountName, nodeId).block();
-    }
-
-    /**
-     * Delete the dsc node identified by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -291,14 +228,29 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String nodeId,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, nodeId, context).block();
     }
 
     /**
+     * Delete the dsc node identified by node id.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The node id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String automationAccountName, String nodeId) {
+        deleteWithResponse(resourceGroupName, automationAccountName, nodeId, Context.NONE);
+    }
+
+    /**
      * Retrieve the dsc node identified by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -308,13 +260,11 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return definition of a DscNode along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId) {
+    private Mono<Response<DscNodeInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -328,32 +278,20 @@ public final class DscNodesClientImpl implements DscNodesClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeId,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                nodeId, this.client.getSubscriptionId(), apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the dsc node identified by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -364,13 +302,11 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return definition of a DscNode along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeInner>> getWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String nodeId, Context context) {
+    private Mono<Response<DscNodeInner>> getWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -384,29 +320,19 @@ public final class DscNodesClientImpl implements DscNodesClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                nodeId,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, automationAccountName, nodeId,
+            this.client.getSubscriptionId(), apiVersion, accept, context);
     }
 
     /**
      * Retrieve the dsc node identified by node id.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -423,7 +349,25 @@ public final class DscNodesClientImpl implements DscNodesClient {
 
     /**
      * Retrieve the dsc node identified by node id.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId The node id.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of a DscNode along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DscNodeInner> getWithResponse(String resourceGroupName, String automationAccountName, String nodeId,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, automationAccountName, nodeId, context).block();
+    }
+
+    /**
+     * Retrieve the dsc node identified by node id.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId The node id.
@@ -434,30 +378,12 @@ public final class DscNodesClientImpl implements DscNodesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DscNodeInner get(String resourceGroupName, String automationAccountName, String nodeId) {
-        return getAsync(resourceGroupName, automationAccountName, nodeId).block();
-    }
-
-    /**
-     * Retrieve the dsc node identified by node id.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId The node id.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DscNodeInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String nodeId, Context context) {
-        return getWithResponseAsync(resourceGroupName, automationAccountName, nodeId, context).block();
+        return getWithResponse(resourceGroupName, automationAccountName, nodeId, Context.NONE).getValue();
     }
 
     /**
      * Update the dsc node.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId Parameters supplied to the update dsc node.
@@ -468,16 +394,11 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return definition of a DscNode along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters) {
+    private Mono<Response<DscNodeInner>> updateWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, DscNodeUpdateParameters dscNodeUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -491,40 +412,26 @@ public final class DscNodesClientImpl implements DscNodesClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (dscNodeUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dscNodeUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dscNodeUpdateParameters is required and cannot be null."));
         } else {
             dscNodeUpdateParameters.validate();
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            nodeId,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            dscNodeUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+                nodeId, this.client.getSubscriptionId(), apiVersion, dscNodeUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the dsc node.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId Parameters supplied to the update dsc node.
@@ -536,17 +443,11 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return definition of a DscNode along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscNodeInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters,
-        Context context) {
+    private Mono<Response<DscNodeInner>> updateWithResponseAsync(String resourceGroupName, String automationAccountName,
+        String nodeId, DscNodeUpdateParameters dscNodeUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -560,37 +461,25 @@ public final class DscNodesClientImpl implements DscNodesClient {
             return Mono.error(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (dscNodeUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter dscNodeUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter dscNodeUpdateParameters is required and cannot be null."));
         } else {
             dscNodeUpdateParameters.validate();
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                nodeId,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                dscNodeUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, automationAccountName, nodeId,
+            this.client.getSubscriptionId(), apiVersion, dscNodeUpdateParameters, accept, context);
     }
 
     /**
      * Update the dsc node.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId Parameters supplied to the update dsc node.
@@ -601,10 +490,7 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return definition of a DscNode on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscNodeInner> updateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
+    private Mono<DscNodeInner> updateAsync(String resourceGroupName, String automationAccountName, String nodeId,
         DscNodeUpdateParameters dscNodeUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -612,28 +498,7 @@ public final class DscNodesClientImpl implements DscNodesClient {
 
     /**
      * Update the dsc node.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param nodeId Parameters supplied to the update dsc node.
-     * @param dscNodeUpdateParameters Parameters supplied to the update dsc node.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of a DscNode.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscNodeInner update(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters) {
-        return updateAsync(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters).block();
-    }
-
-    /**
-     * Update the dsc node.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param nodeId Parameters supplied to the update dsc node.
@@ -645,20 +510,34 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return definition of a DscNode along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DscNodeInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String nodeId,
-        DscNodeUpdateParameters dscNodeUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters, context)
-            .block();
+    public Response<DscNodeInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String nodeId, DscNodeUpdateParameters dscNodeUpdateParameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters,
+            context).block();
+    }
+
+    /**
+     * Update the dsc node.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param nodeId Parameters supplied to the update dsc node.
+     * @param dscNodeUpdateParameters Parameters supplied to the update dsc node.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of a DscNode.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscNodeInner update(String resourceGroupName, String automationAccountName, String nodeId,
+        DscNodeUpdateParameters dscNodeUpdateParameters) {
+        return updateWithResponse(resourceGroupName, automationAccountName, nodeId, dscNodeUpdateParameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Retrieve a list of dsc nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -669,21 +548,14 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscNodeInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount) {
+    private Mono<PagedResponse<DscNodeInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -694,44 +566,23 @@ public final class DscNodesClientImpl implements DscNodesClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAutomationAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            filter,
-                            skip,
-                            top,
-                            inlinecount,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<DscNodeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAutomationAccount(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, filter, skip, top, inlinecount, this.client.getSubscriptionId(), apiVersion,
+                accept, context))
+            .<PagedResponse<DscNodeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve a list of dsc nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -743,22 +594,14 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscNodeInner>> listByAutomationAccountSinglePageAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
+    private Mono<PagedResponse<DscNodeInner>> listByAutomationAccountSinglePageAsync(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -769,41 +612,22 @@ public final class DscNodesClientImpl implements DscNodesClient {
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-01-13-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAutomationAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                filter,
-                skip,
-                top,
-                inlinecount,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAutomationAccount(this.client.getEndpoint(), resourceGroupName, automationAccountName, filter, skip,
+                top, inlinecount, this.client.getSubscriptionId(), apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve a list of dsc nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -816,23 +640,15 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeInner> listByAutomationAccountAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount) {
-        return new PagedFlux<>(
-            () ->
-                listByAutomationAccountSinglePageAsync(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount),
-            nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
+    private PagedFlux<DscNodeInner> listByAutomationAccountAsync(String resourceGroupName, String automationAccountName,
+        String filter, Integer skip, Integer top, String inlinecount) {
+        return new PagedFlux<>(() -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName,
+            filter, skip, top, inlinecount), nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve a list of dsc nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -841,22 +657,19 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeInner> listByAutomationAccountAsync(
-        String resourceGroupName, String automationAccountName) {
+    private PagedFlux<DscNodeInner> listByAutomationAccountAsync(String resourceGroupName,
+        String automationAccountName) {
         final String filter = null;
         final Integer skip = null;
         final Integer top = null;
         final String inlinecount = null;
-        return new PagedFlux<>(
-            () ->
-                listByAutomationAccountSinglePageAsync(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount),
-            nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName,
+            filter, skip, top, inlinecount), nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve a list of dsc nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -870,24 +683,16 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DscNodeInner> listByAutomationAccountAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByAutomationAccountSinglePageAsync(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context),
+    private PagedFlux<DscNodeInner> listByAutomationAccountAsync(String resourceGroupName, String automationAccountName,
+        String filter, Integer skip, Integer top, String inlinecount, Context context) {
+        return new PagedFlux<>(() -> listByAutomationAccountSinglePageAsync(resourceGroupName, automationAccountName,
+            filter, skip, top, inlinecount, context),
             nextLink -> listByAutomationAccountNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieve a list of dsc nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -907,7 +712,7 @@ public final class DscNodesClientImpl implements DscNodesClient {
 
     /**
      * Retrieve a list of dsc nodes.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param filter The filter to apply on the operation.
@@ -921,29 +726,21 @@ public final class DscNodesClientImpl implements DscNodesClient {
      * @return the response model for the list dsc nodes operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DscNodeInner> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
-        return new PagedIterable<>(
-            listByAutomationAccountAsync(
-                resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context));
+    public PagedIterable<DscNodeInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Integer skip, Integer top, String inlinecount, Context context) {
+        return new PagedIterable<>(listByAutomationAccountAsync(resourceGroupName, automationAccountName, filter, skip,
+            top, inlinecount, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscNodeInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -951,63 +748,43 @@ public final class DscNodesClientImpl implements DscNodesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DscNodeInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DscNodeInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response model for the list dsc nodes operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DscNodeInner>> listByAutomationAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DscNodeInner>> listByAutomationAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAutomationAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

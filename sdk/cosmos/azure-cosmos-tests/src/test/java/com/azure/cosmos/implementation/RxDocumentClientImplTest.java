@@ -96,7 +96,7 @@ public class RxDocumentClientImplTest {
         this.consistencyLevelMock = Mockito.mock(ConsistencyLevel.class);
         this.configsMock = Mockito.mock(Configs.class);
         this.cosmosAuthorizationTokenResolverMock = Mockito.mock(CosmosAuthorizationTokenResolver.class);
-        this.azureKeyCredentialMock = Mockito.mock(AzureKeyCredential.class);
+        this.azureKeyCredentialMock = new AzureKeyCredential("fakeKey");
         this.metadataCachesSnapshotMock = Mockito.mock(CosmosClientMetadataCachesSnapshot.class);
         this.apiTypeMock = Mockito.mock(ApiType.class);
         this.cosmosClientTelemetryConfigMock = Mockito.mock(CosmosClientTelemetryConfig.class);

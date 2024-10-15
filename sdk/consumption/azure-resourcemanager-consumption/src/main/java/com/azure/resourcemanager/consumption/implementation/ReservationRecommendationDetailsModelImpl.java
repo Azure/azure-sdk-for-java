@@ -17,8 +17,7 @@ public final class ReservationRecommendationDetailsModelImpl implements Reservat
 
     private final com.azure.resourcemanager.consumption.ConsumptionManager serviceManager;
 
-    ReservationRecommendationDetailsModelImpl(
-        ReservationRecommendationDetailsModelInner innerObject,
+    ReservationRecommendationDetailsModelImpl(ReservationRecommendationDetailsModelInner innerObject,
         com.azure.resourcemanager.consumption.ConsumptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

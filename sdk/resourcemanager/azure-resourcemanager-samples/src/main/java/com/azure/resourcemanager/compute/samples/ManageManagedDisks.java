@@ -46,7 +46,7 @@ public final class ManageManagedDisks {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_SOUTH_CENTRAL;
+        final Region region = Region.US_WEST2;
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOMV", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
@@ -71,7 +71,7 @@ public final class ManageManagedDisks {
                     .withRootUsername(userName)
                     .withSsh(sshPublicKey)
                     .withNewDataDisk(50)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created VM [with an implicit Managed OS disk and explicit Managed data disk]: " + linuxVM1.id());
@@ -137,7 +137,7 @@ public final class ManageManagedDisks {
                     .withNewDataDisk(50, 1, CachingTypes.READ_WRITE)
                     .withExistingDataDisk(dataDisk)
                     // End: Managed data disks
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B2S)
                     .create();
 
             System.out.println("Created VM [with new managed data disks and disk attached]");
@@ -185,7 +185,7 @@ public final class ManageManagedDisks {
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withSsh(sshPublicKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created VM [from custom image]: " + linuxVM3.id());
@@ -206,7 +206,7 @@ public final class ManageManagedDisks {
                     .withPrimaryPrivateIPAddressDynamic()
                     .withoutPrimaryPublicIPAddress()
                     .withSpecializedOSUnmanagedDisk(specializedVhd, OperatingSystemTypes.LINUX)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created VM [by attaching un-managed disk]: " + linuxVM4.id());
@@ -291,7 +291,7 @@ public final class ManageManagedDisks {
                     .withoutPrimaryPublicIPAddress()
                     .withSpecializedOSDisk(newOSDisk, OperatingSystemTypes.LINUX)
                     .withExistingDataDisk(newDataDisk)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created VM [with specialized OS managed disk]: " + linuxVM6.id());
@@ -313,7 +313,7 @@ public final class ManageManagedDisks {
                     .withSsh(sshPublicKey)
                     .withUnmanagedDisks() // uses storage accounts
                     .withNewUnmanagedDataDisk(50)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.STANDARD_B1S)
                     .create();
 
             System.out.println("Created VM [with un-managed disk for migration]");

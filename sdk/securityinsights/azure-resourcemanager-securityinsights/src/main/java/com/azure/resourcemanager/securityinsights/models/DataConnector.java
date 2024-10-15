@@ -7,46 +7,55 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
 
-/** An immutable client-side representation of DataConnector. */
+/**
+ * An immutable client-side representation of DataConnector.
+ */
 public interface DataConnector {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: Etag of the azure resource.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
+     * Gets the kind property: The data connector kind.
+     * 
+     * @return the kind value.
+     */
+    DataConnectorKind kind();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner object.
-     *
+     * 
      * @return the inner object.
      */
     DataConnectorInner innerModel();

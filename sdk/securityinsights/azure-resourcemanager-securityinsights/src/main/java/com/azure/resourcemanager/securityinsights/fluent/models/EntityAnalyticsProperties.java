@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityProviders;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** EntityAnalytics property bag. */
+/**
+ * EntityAnalytics property bag.
+ */
 @Fluent
-public final class EntityAnalyticsProperties {
+public final class EntityAnalyticsProperties implements JsonSerializable<EntityAnalyticsProperties> {
     /*
      * The relevant entity providers that are synced
      */
-    @JsonProperty(value = "entityProviders")
     private List<EntityProviders> entityProviders;
 
     /**
+     * Creates an instance of EntityAnalyticsProperties class.
+     */
+    public EntityAnalyticsProperties() {
+    }
+
+    /**
      * Get the entityProviders property: The relevant entity providers that are synced.
-     *
+     * 
      * @return the entityProviders value.
      */
     public List<EntityProviders> entityProviders() {
@@ -29,7 +40,7 @@ public final class EntityAnalyticsProperties {
 
     /**
      * Set the entityProviders property: The relevant entity providers that are synced.
-     *
+     * 
      * @param entityProviders the entityProviders value to set.
      * @return the EntityAnalyticsProperties object itself.
      */
@@ -40,9 +51,48 @@ public final class EntityAnalyticsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("entityProviders", this.entityProviders,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EntityAnalyticsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EntityAnalyticsProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EntityAnalyticsProperties.
+     */
+    public static EntityAnalyticsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EntityAnalyticsProperties deserializedEntityAnalyticsProperties = new EntityAnalyticsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityProviders".equals(fieldName)) {
+                    List<EntityProviders> entityProviders
+                        = reader.readArray(reader1 -> EntityProviders.fromString(reader1.getString()));
+                    deserializedEntityAnalyticsProperties.entityProviders = entityProviders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntityAnalyticsProperties;
+        });
     }
 }
